@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>January 2023</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">January 2023</h1>
+</header><div class="ABSTRACT" id="org409376a">
+<p>
+A desperate man is an angry man <br>
+Soon it will be you that’s forced to weep
+</p>
+
+</div>
+
+<dl class="org-dl">
+<dt>tags</dt><dd>TL;DRs</dd>
+</dl>
+
+<div id="outline-container-org975dac1" class="outline-2">
+<h2 id="org975dac1">Posts</h2>
+<div class="outline-text-2" id="text-org975dac1">
+</div>
+<div id="outline-container-org54ccb59" class="outline-3">
+<h3 id="org54ccb59">Monday, 09 January 2023</h3>
+<div class="outline-text-3" id="text-org54ccb59">
+<p>
+I'm pretty paranoid (as mostly claimed) of coding. I always think of the art of programming
+in its all ways (OO, XP, etc..); it had to be done right. Maybe the reason of that was that
+I've seen a good deal of computers abusement. In my first job I've seen some code like:
+</p>
+<pre class="example" id="orgc76ad86">
+class slider {
+  ...
+}
+</pre>
+<p>
+And the so-called 'developer' needed another slider in the UI, what do you think? Another
+object of the same type?
+</p>
+
+<pre class="example" id="orgba25554">
+class otherslider {
+  ...
+}
+</pre>
+
+<p>
+Yes. Anyways; always write programs like if it will count for you in the doomsday. I created
+this entity to talk about a different thing; that is me being equally paranoid about music.
+Or even much more. The reason that nobody probably noticed that is that I ennoble it
+that I would never approach it. What upsets me about that is that I feel the same caprice of
+indignation seeing someone writes ugly code, when I notice somebody underestimating the
+greatness of a symphony or a chant. People, music is one of the greatest gifts of humanity,
+it is not something to 'fill' your time<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup> with, it's something to embrace, contemplate
+and deep dive into it. Having a type of music that is 'shareable' is very unusual thing;
+it's like having four hundred friends; a friend of everybody is a friend to none. Have a
+look into the aesthetic philosophy of your music, lookup your enthusiasm there, and enjoy
+they journey of isolated autism with music.
+</p>
+
+<p>
+<i>obviously, if you prefer to listen to hiphop, rap, underground or any other خرا mainstream;
+you have much bigger problem to work on</i>.
+</p>
+</div>
+</div>
+<div id="outline-container-org1c27a99" class="outline-3">
+<h3 id="org1c27a99">Monday, 02 January 2023</h3>
+<div class="outline-text-3" id="text-org1c27a99">
+<p>
+I love the ability of teleportation with our future-selves (maybe a one-way teleportation
+would be more precise); I used to do this since an early age when I was thinking If I'd be
+able to reach the light switch the next age, actually I remember when I did and I recall
+when I remembered that I would remember; time goes these timeline-challenges changed; I was
+wondering if some day I'd be able to read faster, talk in a different language, if I would
+memorize the whole Quran sooner; being able to solve math and logic problem more easily;
+even at the more recency, in school, I was thinking if I will solve problems faster: I had a
+list of codeforces problems that I collected when I was at my first-year, the hardest of
+them didn't take more than 3 minutes to comprehend it which would take &gt; 40 for the old me.
+No new year resolution; but I'd leave some messages to the future me that I wonder if you
+will satisfy my expectation for the coming age.
+</p>
+
+<p>
+It never gets easier, you get better.
+</p>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Also you have much bigger problem to issue if you need something to fill out your time.
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-06-01 Thu 01:07.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

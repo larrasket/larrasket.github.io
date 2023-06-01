@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cinema (Only Ones that Will Leave a Value)</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link href="https://fonts.cdnfonts.com/css/times-new-roman" rel="stylesheet">
+<script async src="//static.getclicky.com/101390423.js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="preamble" class="status">
+<div id="preamble" class="status">
+<nav>
+  <ul class="center">
+    <li> <a href="/index.html">Home</a>
+    </li><li> <a href="/stack.html">TL;DRs</a>
+    </li><li class="center border"> The Mourner's Bench
+      <ul class="nopad">
+        <li> <a href="/fullbooks.html">Books</a>
+        </li><li> <a href="/fcinema.html">Cinema</a>
+        </li><li> <a href="/youtube.html">YT Channels</a>
+        </li><li> <a href="/nice.html">Commentary</a>
+      </li></ul>
+    </li><li> <a href="/p.html">Public Key</a>
+    </li><li> <a href="https://t.me/IneffableText">Telegram</a>
+  </li></ul>
+</nav>
+</div>
+</div>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Cinema (Only Ones that Will Leave a Value)</h1>
+</header>
+
+
+<div id="outline-container-orge014ed0" class="outline-2">
+<h2 id="orge014ed0">27 Mar, 2023 Log</h2>
+<div class="outline-text-2" id="text-orge014ed0">
+<p>
+Moved into letterboxed.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf1aafeb" class="outline-2">
+<h2 id="orgf1aafeb"><span class="todo TODO">TODO</span> RESTRICT</h2>
+<div class="outline-text-2" id="text-orgf1aafeb">
+<p>
+07 Oct, 2022. I still believe that this list need to purged, I've many possible
+thoughts to do that, all of them are so applicable and should be easy to me, but
+sadly I can hardly write line of JS code to implement any of them. Thus I'm left
+with writing compiled code to generate static HTML, which is tough (to me).
+</p>
+
+<p>
+Most important, however, is that there is mainly two types of cinema works
+here: 1. intellectual works. 2. consumption works. Please do not watch any of
+type 2, and do not pick until I filter them myself.
+</p>
+</div>
+</div>
+<div id="outline-container-org11c9e2b" class="outline-2">
+<h2 id="org11c9e2b">19 Aug, 2021 Log</h2>
+<div class="outline-text-2" id="text-org11c9e2b">
+<p>
+i feel that this list being very redundant by the time, I wish if I had enough
+time to build more-scalable database or software to maintain it.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf22c884" class="outline-2">
+<h2 id="orgf22c884">Content</h2>
+<div class="outline-text-2" id="text-orgf22c884">
+<ul class="org-ul">
+<li><a href="https://letterboxd.com/salih12/films/rated/5/by/date/">MW</a> and <a href="https://letterboxd.com/salih12/films/rated/4/by/date/">here</a>. (Respectful order)</li>
+<li><a href="https://letterboxd.com/salih12/films/rated/3/by/date/">Good</a> (Not always MW)</li>
+<li><a href="https://letterboxd.com/salih12/films/rated/2/by/date/">Fair-to-midding</a></li>
+<li><a href="https://letterboxd.com/salih12/films/rated/.5/by/date/">Sucks</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.4). Author: Salih Muhammed. Last build date: 2023-04-30 Sun 00:44.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

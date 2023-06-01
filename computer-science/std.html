@@ -1,0 +1,2454 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Language Built-in Feature Preview</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Language Built-in Feature Preview</h1>
+</header><div class="PREVIEW" id="org9c43a66">
+<p>
+Trying built-in feature in some programming languages and frameworks (i.e. STDs)
+</p>
+
+</div>
+
+
+<div id="outline-container-orga69a698" class="outline-2">
+<h2 id="orga69a698">C/C++</h2>
+<div class="outline-text-2" id="text-orga69a698">
+</div>
+<div id="outline-container-org9e24dc5" class="outline-3">
+<h3 id="org9e24dc5">Sorting</h3>
+<div class="outline-text-3" id="text-org9e24dc5">
+</div>
+<div id="outline-container-org0573877" class="outline-4">
+<h4 id="org0573877">Sorting Custom Objects</h4>
+<div class="outline-text-4" id="text-org0573877">
+<p>
+You can sort array of custom objects using the <code>std::sort</code> like this:
+</p>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">MyStruct</span>
+{
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">key</span>;
+    <span style="font-weight: bold; text-decoration: underline;">std</span>::<span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">stringValue</span>;
+
+    <span style="font-weight: bold;">MyStruct</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">k</span>, <span style="font-weight: bold;">const</span> <span style="font-weight: bold; text-decoration: underline;">std</span>::<span style="font-weight: bold; text-decoration: underline;">string</span>&amp; <span style="font-weight: bold; font-style: italic;">s</span>) : key(k), stringValue(s) {}
+};
+
+<span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">less_than_key</span>
+{
+    <span style="font-weight: bold;">inline</span> <span style="font-weight: bold; text-decoration: underline;">bool</span> <span style="font-weight: bold;">operator</span><span style="font-weight: bold;">()</span> (<span style="font-weight: bold;">const</span> <span style="font-weight: bold; text-decoration: underline;">MyStruct</span>&amp; <span style="font-weight: bold; font-style: italic;">struct1</span>, <span style="font-weight: bold;">const</span> <span style="font-weight: bold; text-decoration: underline;">MyStruct</span>&amp; <span style="font-weight: bold; font-style: italic;">struct2</span>)
+    {
+        <span style="font-weight: bold;">return</span> (struct1.key &lt; struct2.key);
+    }
+};
+
+<span style="font-weight: bold; text-decoration: underline;">std</span>::<span style="font-weight: bold; text-decoration: underline;">vector</span> &lt; <span style="font-weight: bold; text-decoration: underline;">MyStruct</span> &gt; <span style="font-weight: bold; font-style: italic;">vec</span>;
+
+vec.push_back(MyStruct(4, <span style="font-style: italic;">"test"</span>));
+vec.push_back(MyStruct(3, <span style="font-style: italic;">"a"</span>));
+vec.push_back(MyStruct(2, <span style="font-style: italic;">"is"</span>));
+vec.push_back(MyStruct(1, <span style="font-style: italic;">"this"</span>));
+
+<span style="font-weight: bold; text-decoration: underline;">std</span>::sort(vec.begin(), vec.end(), less_than_key());
+
+</pre>
+</div>
+
+<p>
+Also, since C++14 you can write an embedded functions inside the sort function:
+</p>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;vector&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;algorithm&gt;</span>
+
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; text-decoration: underline;">std</span>;
+
+<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt; MyStruct &gt; <span style="font-weight: bold; font-style: italic;">values</span>;
+
+sort( values.begin( ), values.end( ), [ ]( <span style="font-weight: bold;">const</span> <span style="font-weight: bold;">auto</span>&amp; <span style="font-weight: bold; font-style: italic;">lhs</span>, <span style="font-weight: bold;">const</span> <span style="font-weight: bold;">auto</span>&amp; <span style="font-weight: bold; font-style: italic;">rhs</span> )
+{
+   <span style="font-weight: bold;">return</span> lhs.key &lt; rhs.key;
+});
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org7ac9836" class="outline-4">
+<h4 id="org7ac9836">Sorting Descending</h4>
+<div class="outline-text-4" id="text-org7ac9836">
+<div class="org-src-container">
+<pre class="src src-cpp">sort(begin, end, greater&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;());
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgaaa7e2a" class="outline-4">
+<h4 id="orgaaa7e2a">When to return 1 in compare function</h4>
+<div class="outline-text-4" id="text-orgaaa7e2a">
+<p>
+-1 = means point 1 should come before point 2
++1 = means point 2 should come before point 1
+ 0 = means they r equal
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org4917e58" class="outline-3">
+<h3 id="org4917e58">Numbers</h3>
+<div class="outline-text-3" id="text-org4917e58">
+</div>
+<div id="outline-container-orgf54e859" class="outline-4">
+<h4 id="orgf54e859">Check If Prime Number</h4>
+<div class="outline-text-4" id="text-orgf54e859">
+<div class="org-src-container">
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">bool</span> <span style="font-weight: bold;">isPrimeNumber</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">n</span>) {
+   <span style="font-weight: bold;">if</span> (n &lt;= 1) <span style="font-weight: bold;">return</span> <span style="font-weight: bold; text-decoration: underline;">false</span>;
+   <span style="font-weight: bold;">if</span> (n &lt;= 3) <span style="font-weight: bold;">return</span> <span style="font-weight: bold; text-decoration: underline;">true</span>;
+   <span style="font-weight: bold;">if</span> (n%2 == 0 || n%3 == 0) <span style="font-weight: bold;">return</span> <span style="font-weight: bold; text-decoration: underline;">false</span>;
+   <span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">i</span>=5; i*i&lt;=n; i=i+6)
+      <span style="font-weight: bold;">if</span> (n%i == 0 || n%(i+2) == 0)
+         <span style="font-weight: bold;">return</span> <span style="font-weight: bold; text-decoration: underline;">false</span>;
+   <span style="font-weight: bold;">return</span> <span style="font-weight: bold; text-decoration: underline;">true</span>;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb8e9199" class="outline-4">
+<h4 id="orgb8e9199">Greater Common Divisor</h4>
+<div class="outline-text-4" id="text-orgb8e9199">
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;iostream&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;algorithm&gt;</span>
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; text-decoration: underline;">std</span>;
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>()
+{
+        cout &lt;&lt; __gcd(6, 20) &lt;&lt; endl;
+}
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge7d1986" class="outline-3">
+<h3 id="orge7d1986"><code>for_each</code></h3>
+<div class="outline-text-3" id="text-orge7d1986">
+<p>
+<a href="https://en.cppreference.com/w/cpp/algorithm/for_each">https://en.cppreference.com/w/cpp/algorithm/for_each</a>
+</p>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;vector&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;algorithm&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;iostream&gt;</span>
+
+<span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">Sum</span>
+{
+    <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">operator</span><span style="font-weight: bold;">()</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">n</span>) { sum += n; }
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">sum</span>{0};
+};
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>()
+{
+    <span style="font-weight: bold; text-decoration: underline;">std</span>::<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">nums</span>{3, 4, 2, 8, 15, 267};
+
+    <span style="font-weight: bold;">auto</span> <span style="font-weight: bold; font-style: italic;">print</span> = [](<span style="font-weight: bold;">const</span> <span style="font-weight: bold; text-decoration: underline;">int</span>&amp; <span style="font-weight: bold; font-style: italic;">n</span>) { <span style="font-weight: bold; text-decoration: underline;">std</span>::cout &lt;&lt; <span style="font-style: italic;">" "</span> &lt;&lt; n; };
+
+    <span style="font-weight: bold; text-decoration: underline;">std</span>::cout &lt;&lt; <span style="font-style: italic;">"before:"</span>;
+    <span style="font-weight: bold; text-decoration: underline;">std</span>::for_each(nums.cbegin(), nums.cend(), print);
+    <span style="font-weight: bold; text-decoration: underline;">std</span>::cout &lt;&lt; <span style="font-style: italic;">'\n'</span>;
+
+    <span style="font-weight: bold; text-decoration: underline;">std</span>::for_each(nums.begin(), nums.end(), [](<span style="font-weight: bold; text-decoration: underline;">int</span> &amp;<span style="font-weight: bold; font-style: italic;">n</span>){ n++; });
+
+    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">calls Sum::operator() for each number</span>
+    <span style="font-weight: bold; text-decoration: underline;">Sum</span> <span style="font-weight: bold; font-style: italic;">s</span> = <span style="font-weight: bold; text-decoration: underline;">std</span>::for_each(nums.begin(), nums.end(), Sum());
+
+    <span style="font-weight: bold; text-decoration: underline;">std</span>::cout &lt;&lt; <span style="font-style: italic;">"after: "</span>;
+    <span style="font-weight: bold; text-decoration: underline;">std</span>::for_each(nums.cbegin(), nums.cend(), print);
+    <span style="font-weight: bold; text-decoration: underline;">std</span>::cout &lt;&lt; <span style="font-style: italic;">'\n'</span>;
+    <span style="font-weight: bold; text-decoration: underline;">std</span>::cout &lt;&lt; <span style="font-style: italic;">"sum: "</span> &lt;&lt; s.sum &lt;&lt; <span style="font-style: italic;">'\n'</span>;
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd1d0de5" class="outline-3">
+<h3 id="orgd1d0de5">Other</h3>
+<div class="outline-text-3" id="text-orgd1d0de5">
+</div>
+<div id="outline-container-org619fbb4" class="outline-4">
+<h4 id="org619fbb4">Get Intersections</h4>
+<div class="outline-text-4" id="text-org619fbb4">
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;iostream&gt;</span>     <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">std::cout</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;algorithm&gt;</span>    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">std::set_intersection, std::sort</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;vector&gt;</span>       <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">std::vector</span>
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span> () {
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">first</span>[] = {5,10,15,20,25};
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">second</span>[] = {50,40,30,20,10};
+  <span style="font-weight: bold; text-decoration: underline;">std</span>::<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">v</span>(10);                      <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">0  0  0  0  0  0  0  0  0  0</span>
+  <span style="font-weight: bold; text-decoration: underline;">std</span>::<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;::<span style="font-weight: bold; text-decoration: underline;">iterator</span> <span style="font-weight: bold; font-style: italic;">it</span>;
+
+  <span style="font-weight: bold; text-decoration: underline;">std</span>::sort (first,first+5);     <span style="font-weight: bold; font-style: italic;">//  </span><span style="font-weight: bold; font-style: italic;">5 10 15 20 25</span>
+  <span style="font-weight: bold; text-decoration: underline;">std</span>::sort (second,second+5);   <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">10 20 30 40 50</span>
+
+  it=<span style="font-weight: bold; text-decoration: underline;">std</span>::set_intersection (first, first+5, second, second+5, v.begin());
+                                               <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">10 20 0  0  0  0  0  0  0  0</span>
+  v.resize(it-v.begin());                      <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">10 20</span>
+
+  <span style="font-weight: bold; text-decoration: underline;">std</span>::cout &lt;&lt; <span style="font-style: italic;">"The intersection has "</span> &lt;&lt; (v.size()) &lt;&lt; <span style="font-style: italic;">" elements:\n"</span>;
+  <span style="font-weight: bold;">for</span> (it=v.begin(); it!=v.end(); ++it)
+    <span style="font-weight: bold; text-decoration: underline;">std</span>::cout &lt;&lt; <span style="font-style: italic;">' '</span> &lt;&lt; *it;
+  <span style="font-weight: bold; text-decoration: underline;">std</span>::cout &lt;&lt; <span style="font-style: italic;">'\n'</span>;
+
+  <span style="font-weight: bold;">return</span> 0;
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org138909e" class="outline-3">
+<h3 id="org138909e">Lambda</h3>
+<div class="outline-text-3" id="text-org138909e">
+<p>
+Basic syntax:
+</p>
+<pre class="example">
+[ capture clause ] (parameters) -&gt; return-type
+{
+   definition of method
+}
+</pre>
+<p>
+Basic example:
+</p>
+<div class="org-src-container">
+<pre class="src src-C++"><span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>() {
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">arr</span>[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">f</span> = accumulate(arr, arr + 10, 1, [](<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">i</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">j</span>)
+    {
+        <span style="font-weight: bold;">return</span> i * j;
+    });
+    cout &lt;&lt; <span style="font-style: italic;">"Factorial of 10 is : "</span> &lt;&lt; f &lt;&lt; endl;
+}
+</pre>
+</div>
+
+<p>
+Capturing methods:
+</p>
+<ul class="org-ul">
+<li>[&amp;] : capture all external variable by reference</li>
+<li>[=] : capture all external variable by value</li>
+<li>[a, &amp;b] : capture a by value and b by reference</li>
+</ul>
+
+<p>
+Explicitly specifying a return type using ~ -&gt; T ~:
+</p>
+<div class="org-src-container">
+<pre class="src src-C++"><span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">func4</span>(<span style="font-weight: bold; text-decoration: underline;">std</span>::<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">double</span>&gt;&amp; <span style="font-weight: bold; font-style: italic;">v</span>) {
+    <span style="font-weight: bold; text-decoration: underline;">std</span>::transform(v.begin(), v.end(), v.begin(),
+        [](<span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">d</span>) -&gt; <span style="font-weight: bold; text-decoration: underline;">double</span> {
+            <span style="font-weight: bold;">if</span> (d &lt; 0.0001) {
+                <span style="font-weight: bold;">return</span> 0;
+            } <span style="font-weight: bold;">else</span> {
+                <span style="font-weight: bold;">return</span> d;
+            }
+        });
+}
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgcb77877" class="outline-3">
+<h3 id="orgcb77877">Strings</h3>
+<div class="outline-text-3" id="text-orgcb77877">
+<p>
+Get all substrings
+</p>
+<div class="org-src-container">
+<pre class="src src-c++"><span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">subString</span>(<span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">str</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">n</span>) {
+  <span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">len</span> = 1; len &lt;= n; len++) {
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">i</span> = 0; i &lt;= n - len; i++) {
+      <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">j</span> = i + len - 1;
+      cout &lt;&lt; str.substr(i, n - j);
+      cout &lt;&lt; endl;
+    }
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd1e29f7" class="outline-3">
+<h3 id="orgd1e29f7">String/Char to int in C(++)</h3>
+<div class="outline-text-3" id="text-orgd1e29f7">
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;sstream&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;iostream&gt;</span>
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; text-decoration: underline;">std</span>;
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>() {
+    <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">s</span> = <span style="font-style: italic;">"12345"</span>;
+    <span style="font-weight: bold; text-decoration: underline;">stringstream</span> <span style="font-weight: bold; font-style: italic;">geek</span>(s);
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">x</span> = 0;
+    geek &gt;&gt; x;
+    cout &lt;&lt; <span style="font-style: italic;">"Value of x : "</span> &lt;&lt; x;
+}
+</pre>
+</div>
+</div>
+<div id="outline-container-org646e2df" class="outline-4">
+<h4 id="org646e2df">Using <code>stoi()</code></h4>
+<div class="outline-text-4" id="text-org646e2df">
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;iostream&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;string&gt;</span>
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; text-decoration: underline;">std</span>;
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>()
+{
+    <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">str1</span> = <span style="font-style: italic;">"45"</span>;
+    <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">str2</span> = <span style="font-style: italic;">"3.14159"</span>;
+    <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">str3</span> = <span style="font-style: italic;">"31337 geek"</span>;
+
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">myint1</span> = stoi(str1);
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">myint2</span> = stoi(str2);
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">myint3</span> = stoi(str3);
+
+    cout &lt;&lt; <span style="font-style: italic;">"stoi(\""</span> &lt;&lt; str1 &lt;&lt; <span style="font-style: italic;">"\") is "</span>
+         &lt;&lt; myint1 &lt;&lt; <span style="font-style: italic;">'\n'</span>;
+    cout &lt;&lt; <span style="font-style: italic;">"stoi(\""</span> &lt;&lt; str2 &lt;&lt; <span style="font-style: italic;">"\") is "</span>
+         &lt;&lt; myint2 &lt;&lt; <span style="font-style: italic;">'\n'</span>;
+    cout &lt;&lt; <span style="font-style: italic;">"stoi(\""</span> &lt;&lt; str3 &lt;&lt; <span style="font-style: italic;">"\") is "</span>
+         &lt;&lt; myint3 &lt;&lt; <span style="font-style: italic;">'\n'</span>;
+
+    <span style="font-weight: bold;">return</span> 0;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org5a9e0ed" class="outline-4">
+<h4 id="org5a9e0ed">Using <code>atoi()</code></h4>
+<div class="outline-text-4" id="text-org5a9e0ed">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;cstdlib&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;iostream&gt;</span>
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; text-decoration: underline;">std</span>;
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>()
+{
+    <span style="font-weight: bold;">const</span> <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">str1</span> = <span style="font-style: italic;">"42"</span>;
+    <span style="font-weight: bold;">const</span> <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">str2</span> = <span style="font-style: italic;">"3.14159"</span>;
+    <span style="font-weight: bold;">const</span> <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">str3</span> = <span style="font-style: italic;">"31337 geek"</span>;
+
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">num1</span> = atoi(str1);
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">num2</span> = atoi(str2);
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">num3</span> = atoi(str3);
+
+    cout &lt;&lt; <span style="font-style: italic;">"atoi(\""</span> &lt;&lt; str1 &lt;&lt; <span style="font-style: italic;">"\") is "</span> &lt;&lt; num1 &lt;&lt; <span style="font-style: italic;">'\n'</span>;
+    cout &lt;&lt; <span style="font-style: italic;">"atoi(\""</span> &lt;&lt; str2 &lt;&lt; <span style="font-style: italic;">"\") is "</span> &lt;&lt; num2 &lt;&lt; <span style="font-style: italic;">'\n'</span>;
+    cout &lt;&lt; <span style="font-style: italic;">"atoi(\""</span> &lt;&lt; str3 &lt;&lt; <span style="font-style: italic;">"\") is "</span> &lt;&lt; num3 &lt;&lt; <span style="font-style: italic;">'\n'</span>;
+
+    <span style="font-weight: bold;">return</span> 0;
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orga660cdf" class="outline-4">
+<h4 id="orga660cdf">Which one to use?</h4>
+<div class="outline-text-4" id="text-orga660cdf">
+<p>
+I find std::atoi() a horrible function: It returns zero on error. If you consider zero as a
+valid input, then you cannot tell whether there was an error during the conversion or the
+input was zero. That's just bad.
+</p>
+
+<p>
+If you don't care about correctness or you know for sure that you won't have zero as input
+or you consider that an error anyway, then, perhaps the C functions might be faster
+(probably due to the lack of exception handling). It depends on your compiler, your standard
+library implementation, your hardware, your input, etc. The best way is to measure it.
+However, I suspect that the difference, if any, is negligible.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0e9b495" class="outline-4">
+<h4 id="org0e9b495">Using char asci</h4>
+<div class="outline-text-4" id="text-org0e9b495">
+<div class="org-src-container">
+<pre class="src src-c"><span style="font-weight: bold; text-decoration: underline;">char</span> <span style="font-weight: bold; font-style: italic;">a</span> = <span style="font-style: italic;">'4'</span>;
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">ia</span> = a - <span style="font-style: italic;">'0'</span>;
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge111c6e" class="outline-3">
+<h3 id="orge111c6e">Multiplay all elements of vector with n</h3>
+<div class="outline-text-3" id="text-orge111c6e">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="font-weight: bold; text-decoration: underline;">std</span>::transform(myv1.begin(), myv1.end(), myv1.begin(),
+               <span style="font-weight: bold; text-decoration: underline;">std</span>::bind(<span style="font-weight: bold; text-decoration: underline;">std</span>::multiplies&lt;T&gt;(), <span style="font-weight: bold; text-decoration: underline;">std</span>::<span style="font-weight: bold; text-decoration: underline;">placeholders</span>::_1, n));
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org16555de" class="outline-3">
+<h3 id="org16555de">Extract Vector</h3>
+<div class="outline-text-3" id="text-org16555de">
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">T</span>&gt;::const_iterator first = myVec.<span style="font-weight: bold;">begin</span>() + 100000;
+<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">T</span>&gt;::const_iterator last = myVec.<span style="font-weight: bold;">begin</span>() + 101000;
+<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">T</span>&gt; <span style="font-weight: bold;">newVec</span>(<span style="font-weight: bold; text-decoration: underline;">first</span>, <span style="font-weight: bold; text-decoration: underline;">last</span>);
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4aef7ff" class="outline-3">
+<h3 id="org4aef7ff">Check if all values are true</h3>
+<div class="outline-text-3" id="text-org4aef7ff">
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="font-weight: bold; text-decoration: underline;">std</span>::all_of(vec.begin(), vec.end(), [](<span style="font-weight: bold; text-decoration: underline;">bool</span> <span style="font-weight: bold; font-style: italic;">v</span>) { <span style="font-weight: bold;">return</span> v; });
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2c16747" class="outline-3">
+<h3 id="org2c16747">Remove Spaces From String</h3>
+<div class="outline-text-3" id="text-org2c16747">
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;iostream&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;string&gt;</span>
+
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; text-decoration: underline;">std</span>::cout; <span style="font-weight: bold;">using</span> <span style="font-weight: bold; text-decoration: underline;">std</span>::cin;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; text-decoration: underline;">std</span>::endl; <span style="font-weight: bold;">using</span> <span style="font-weight: bold; text-decoration: underline;">std</span>::string;
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>(){
+    <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">str</span> = <span style="font-style: italic;">"  Arbitrary   str ing with lots of spaces to be removed   ."</span>;
+
+    cout &lt;&lt; str &lt;&lt; endl;
+
+    str.erase(<span style="font-weight: bold; text-decoration: underline;">std</span>::remove(str.begin(), str.end(), <span style="font-style: italic;">' '</span>), str.end());
+
+    cout &lt;&lt; str &lt;&lt; endl;
+
+    <span style="font-weight: bold;">return</span> EXIT_SUCCESS;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgc953298" class="outline-3">
+<h3 id="orgc953298">Remove Every non alpha from string</h3>
+<div class="outline-text-3" id="text-orgc953298">
+<div class="org-src-container">
+<pre class="src src-c++">s.erase(<span style="font-weight: bold; text-decoration: underline;">std</span>::remove_if(s.begin(), s.end(), (<span style="font-weight: bold; text-decoration: underline;">int</span>(*)(<span style="font-weight: bold; text-decoration: underline;">int</span>))<span style="font-weight: bold; text-decoration: underline;">std</span>::isalnum), s.end());
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9f1c402" class="outline-3">
+<h3 id="org9f1c402">String To Upper</h3>
+<div class="outline-text-3" id="text-org9f1c402">
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="font-weight: bold; text-decoration: underline;">std</span>::transform(str.begin(), str.end(),str.begin(), ::toupper);
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org32ecf70" class="outline-3">
+<h3 id="org32ecf70">Sum of vector</h3>
+</div>
+<div id="outline-container-orgd5e27d6" class="outline-3">
+<h3 id="orgd5e27d6">Find First Element Less Than \(x\) Position</h3>
+<div class="outline-text-3" id="text-orgd5e27d6">
+<div class="org-src-container">
+<pre class="src src-c++"><span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">x</span>{1, 2, 3, 3, 5};
+cout &lt;&lt; lower_bound(begend(x), 2) - begin(x);
+<span style="font-weight: bold;">return</span> 0;
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orga331c29" class="outline-2">
+<h2 id="orga331c29">Qt</h2>
+<div class="outline-text-2" id="text-orga331c29">
+</div>
+<div id="outline-container-org94811aa" class="outline-3">
+<h3 id="org94811aa">Convert a Widget into a Central Widget</h3>
+<div class="outline-text-3" id="text-org94811aa">
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="font-weight: bold;">this</span>-&gt;setCentralWidget(ui-&gt;whateverWidget);
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgdd00637" class="outline-2">
+<h2 id="orgdd00637">C#</h2>
+<div class="outline-text-2" id="text-orgdd00637">
+</div>
+<div id="outline-container-org95786fe" class="outline-3">
+<h3 id="org95786fe">Get a Random Set of String</h3>
+<div class="outline-text-3" id="text-org95786fe">
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">public</span> <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold;">RandomString</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">length</span>)
+{
+    <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">random</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Random</span>();
+    <span style="font-weight: bold;">const</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">chars</span> = <span style="font-style: italic;">"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"</span>;
+    <span style="font-weight: bold;">return</span> <span style="font-weight: bold;">new</span> <span style="font-weight: bold;">string</span>(Enumerable.<span style="font-weight: bold;">Repeat</span>(chars, length)
+        .<span style="font-weight: bold;">Select</span>(s =&gt; s[random.<span style="font-weight: bold;">Next</span>(s.Length)]).<span style="font-weight: bold;">ToArray</span>());
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf1252f4" class="outline-3">
+<h3 id="orgf1252f4"><code>StringWriter</code> vs <code>StringBuilder</code></h3>
+<div class="outline-text-3" id="text-orgf1252f4">
+<p>
+<code>StringWriter</code> derives from <code>TextWriter</code>, which allows various classes to write text without
+caring where it's going. In the case of <code>StringWriter</code>, the output is just into memory. You
+would use this if you're calling an API which needs a <code>TextWriter</code> but you only want to build
+up results in memory.
+</p>
+
+<p>
+<code>StringBuilder</code> is essentially a buffer which allows you to perform multiple operations
+(typically appends) to a "logical string" without creating a new string object each time.
+You would use this to construct a string in multiple operations.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgaf8f269" class="outline-3">
+<h3 id="orgaf8f269">Deferred Execution vs Immediate Execution</h3>
+<div class="outline-text-3" id="text-orgaf8f269">
+<p>
+The LINQ queries are executed in two different ways as follows.
+</p>
+
+<ul class="org-ul">
+<li>Deferred execution</li>
+<li>Immediate execution</li>
+</ul>
+
+<p>
+Based on the above two types of execution, the LINQ operators are divided into 2 categories.
+They are as follows:
+</p>
+
+<ol class="org-ol">
+<li>Deferred or Lazy Operators:  These query operators are used for deferred execution. For example – <code>select</code>, <code>SelectMany</code>, <code>where</code>, <code>Take</code>, <code>Skip</code>, etc. are belongs to Deferred or Lazy Operators category.</li>
+<li>Immediate or Greedy Operators: These query operators are used for immediate execution. For Example – <code>count</code>, <code>average</code>, <code>min</code>, <code>max</code>, <code>First</code>, <code>Last</code>, <code>ToArray</code>, <code>ToList</code>, etc. are belongs to the Immediate or Greedy Operators category.</li>
+</ol>
+</div>
+
+
+<div id="outline-container-org4a72a6d" class="outline-4">
+<h4 id="org4a72a6d">Deferred Execution</h4>
+<div class="outline-text-4" id="text-org4a72a6d">
+<p>
+In this case, the LINQ Query is not executed at the point of its declaration. That means,
+when we write a LINQ query, it doesn’t execute by itself. It executes only when we access
+the query results. So, here the execution of the query is deferred until the query variable
+is iterated over using for each loop.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Collections</span>.<span style="font-weight: bold; font-style: italic;">Generic</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Employee</span>
+    {
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">ID</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">Name</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">Salary</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+    }
+
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>()
+        {
+            <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Employee</span>&gt; <span style="font-weight: bold; font-style: italic;">listEmployees</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Employee</span>&gt;
+            {
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Employee</span> { ID= 1001, Name = <span style="font-style: italic;">"Priyanka"</span>, Salary = 80000 },
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Employee</span> { <span style="font-weight: bold; font-style: italic;">ID</span>= 1002, <span style="font-weight: bold; font-style: italic;">Name</span> = <span style="font-style: italic;">"Anurag"</span>, <span style="font-weight: bold; font-style: italic;">Salary</span> = 90000 },
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Employee</span> { <span style="font-weight: bold; font-style: italic;">ID</span>= 1003, <span style="font-weight: bold; font-style: italic;">Name</span> = <span style="font-style: italic;">"Preety"</span>, <span style="font-weight: bold; font-style: italic;">Salary</span> = 80000 }
+            };
+
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">In the below statement the LINQ Query is only defined and not executed</span>
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">If the query is executed here, then the result should not display Santosh</span>
+            <span style="font-weight: bold; text-decoration: underline;">IEnumerable</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Employee</span>&gt; <span style="font-weight: bold; font-style: italic;">result</span> = <span style="font-weight: bold;">from</span> emp <span style="font-weight: bold;">in</span> listEmployees
+                                           <span style="font-weight: bold;">where</span> emp.Salary == 80000
+                                           <span style="font-weight: bold;">select</span> emp;
+
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Adding a new employee with Salary = 80000 to the collection listEmployees</span>
+            listEmployees.<span style="font-weight: bold;">Add</span>(<span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Employee</span> { <span style="font-weight: bold; font-style: italic;">ID</span> = 1004, <span style="font-weight: bold; font-style: italic;">Name</span> = <span style="font-style: italic;">"Santosh"</span>, <span style="font-weight: bold; font-style: italic;">Salary</span> = 80000 });
+
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">The LINQ query is actually executed when we iterate thru using a for each loop</span>
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">This is proved because Santosh is also included in the result</span>
+            <span style="font-weight: bold;">foreach</span> (Employee emp <span style="font-weight: bold;">in</span> result)
+            {
+                Console.<span style="font-weight: bold;">WriteLine</span>($<span style="font-style: italic;">" {emp.ID} {emp.Name} {emp.Salary}"</span>);
+            }
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+}
+</pre>
+</div>
+
+<p>
+We will get the following advantages
+</p>
+
+<ol class="org-ol">
+<li>It avoids unnecessary query execution which improves the performance of the application.</li>
+<li>The Query creation and the Query execution are decoupled which provide us the flexibility to create the query in several steps.</li>
+<li>A Linq deferred execution query is always re-evaluated when we re-enumerate. As a result, we always get the updated data.</li>
+</ol>
+
+<p>
+In the case of Immediate Execution, the LINQ query is executed at the point of its
+declaration. So, it forces the query to execute and gets the result immediately. Let us
+see an example for a better understanding. The following example is self-explained. So,
+please go through the comment lines.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org877b8c2" class="outline-4">
+<h4 id="org877b8c2">Immediate Execution</h4>
+<div class="outline-text-4" id="text-org877b8c2">
+<p>
+In the case of Immediate Execution, the LINQ query is executed at the point of its
+declaration. So, it forces the query to execute and gets the result immediately. Let us see
+an example for a better understanding. The following example is self-explained. So, please
+go through the comment lines.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Collections</span>.<span style="font-weight: bold; font-style: italic;">Generic</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Employee</span>
+    {
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">ID</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">Name</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">Salary</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+    }
+
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>()
+        {
+            <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Employee</span>&gt; <span style="font-weight: bold; font-style: italic;">listEmployees</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Employee</span>&gt;
+            {
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Employee</span> { ID= 1001, Name = <span style="font-style: italic;">"Priyanka"</span>, Salary = 80000 },
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Employee</span> { <span style="font-weight: bold; font-style: italic;">ID</span>= 1002, <span style="font-weight: bold; font-style: italic;">Name</span> = <span style="font-style: italic;">"Anurag"</span>, <span style="font-weight: bold; font-style: italic;">Salary</span> = 90000 },
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Employee</span> { <span style="font-weight: bold; font-style: italic;">ID</span>= 1003, <span style="font-weight: bold; font-style: italic;">Name</span> = <span style="font-style: italic;">"Preety"</span>, <span style="font-weight: bold; font-style: italic;">Salary</span> = 80000 }
+            };
+
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">In the following statement, the LINQ Query is executed immediately as we are</span>
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Using the ToList() method which is a greedy operator which forces the query</span>
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">to be executed immediately</span>
+            <span style="font-weight: bold; text-decoration: underline;">IEnumerable</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Employee</span>&gt; <span style="font-weight: bold; font-style: italic;">result</span> = (<span style="font-weight: bold;">from</span> emp <span style="font-weight: bold;">in</span> listEmployees
+                                           <span style="font-weight: bold;">where</span> emp.Salary == 80000
+                                           <span style="font-weight: bold;">select</span> emp).<span style="font-weight: bold;">ToList</span>();
+
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Adding a new employee with Salary = 80000 to the collection listEmployees</span>
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">will not have any effect on the result as the query is already executed</span>
+            listEmployees.<span style="font-weight: bold;">Add</span>(<span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Employee</span> { <span style="font-weight: bold; font-style: italic;">ID</span> = 1004, <span style="font-weight: bold; font-style: italic;">Name</span> = <span style="font-style: italic;">"Santosh"</span>, <span style="font-weight: bold; font-style: italic;">Salary</span> = 80000 });
+
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">The above LINQ query is executed at the time of its creation.</span>
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">This is proved because Santosh is not included in the result</span>
+            <span style="font-weight: bold;">foreach</span> (Employee emp <span style="font-weight: bold;">in</span> result)
+            {
+                Console.<span style="font-weight: bold;">WriteLine</span>($<span style="font-style: italic;">" {emp.ID} {emp.Name} {emp.Salary}"</span>);
+            }
+
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org0d4970e" class="outline-4">
+<h4 id="org0d4970e">Differences between <code>IEnumerable</code> and <code>IQueryable</code></h4>
+<div class="outline-text-4" id="text-org0d4970e">
+<p>
+The <code>IEnumerable</code> and <code>IQueryable</code> are used to hold a collection of data and also used to
+perform data manipulation operations such as filtering, Ordering, Grouping, etc.
+</p>
+
+
+<p>
+Here in this demo, we will create a console application that will retrieve the data from the
+SQL Server database using Entity Framework database first approach. We are going to fetch
+the following Student information from the Student table.
+</p>
+
+<p>
+Here is my scheme:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold; font-style: italic;">-- </span><span style="font-weight: bold; font-style: italic;">Create the required Student table</span>
+<span style="font-weight: bold;">CREATE</span> <span style="font-weight: bold;">TABLE</span> <span style="font-weight: bold;">Student</span>
+(
+     ID <span style="font-weight: bold; text-decoration: underline;">INT</span> <span style="font-weight: bold;">PRIMARY</span> <span style="font-weight: bold;">KEY</span>,
+     FirstName <span style="font-weight: bold; text-decoration: underline;">VARCHAR</span>(50),
+     LastName <span style="font-weight: bold; text-decoration: underline;">VARCHAR</span>(50),
+     Gender <span style="font-weight: bold; text-decoration: underline;">VARCHAR</span>(50)
+)
+<span style="font-weight: bold;">GO</span>
+
+<span style="font-weight: bold; font-style: italic;">-- </span><span style="font-weight: bold; font-style: italic;">Insert the required test data</span>
+<span style="font-weight: bold;">INSERT</span> <span style="font-weight: bold;">INTO</span> Student <span style="font-weight: bold;">VALUES</span> (101, <span style="font-style: italic;">'Steve'</span>, <span style="font-style: italic;">'Smith'</span>, <span style="font-style: italic;">'Male'</span>)
+<span style="font-weight: bold;">INSERT</span> <span style="font-weight: bold;">INTO</span> Student <span style="font-weight: bold;">VALUES</span> (102, <span style="font-style: italic;">'Sara'</span>, <span style="font-style: italic;">'Pound'</span>, <span style="font-style: italic;">'Female'</span>)
+<span style="font-weight: bold;">INSERT</span> <span style="font-weight: bold;">INTO</span> Student <span style="font-weight: bold;">VALUES</span> (103, <span style="font-style: italic;">'Ben'</span>, <span style="font-style: italic;">'Stokes'</span>, <span style="font-style: italic;">'Male'</span>)
+<span style="font-weight: bold;">INSERT</span> <span style="font-weight: bold;">INTO</span> Student <span style="font-weight: bold;">VALUES</span> (104, <span style="font-style: italic;">'Jos'</span>, <span style="font-style: italic;">'Butler'</span>, <span style="font-style: italic;">'Male'</span>)
+<span style="font-weight: bold;">INSERT</span> <span style="font-weight: bold;">INTO</span> Student <span style="font-weight: bold;">VALUES</span> (105, <span style="font-style: italic;">'Pam'</span>, <span style="font-style: italic;">'Semi'</span>, <span style="font-style: italic;">'Female'</span>)
+<span style="font-weight: bold;">GO</span>
+</pre>
+</div>
+
+<p>
+Let us modify the Program class as shown below.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Collections</span>.<span style="font-weight: bold; font-style: italic;">Generic</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>)
+        {
+            <span style="font-weight: bold; text-decoration: underline;">StudentDBContext</span> <span style="font-weight: bold; font-style: italic;">dBContext</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">StudentDBContext</span>();
+            <span style="font-weight: bold; text-decoration: underline;">IEnumerable</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Student</span>&gt; <span style="font-weight: bold; font-style: italic;">listStudents</span> = dBContext.Students.<span style="font-weight: bold;">Where</span>(x =&gt; x.Gender == <span style="font-style: italic;">"Male"</span>);
+            listStudents = listStudents.<span style="font-weight: bold;">Take</span>(2);
+
+            <span style="font-weight: bold;">foreach</span>(<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">std</span> <span style="font-weight: bold;">in</span> listStudents)
+            {
+                Console.<span style="font-weight: bold;">WriteLine</span>(std.FirstName + <span style="font-style: italic;">" "</span> + std.LastName);
+            }
+
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+}
+</pre>
+</div>
+
+<p>
+Here we create the LINQ Query using <code>IEnumerable</code>. Please use SQL Profiler to log the SQL
+Script. Now run the application and you will see the following SQL Script is generated and
+executed.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span>
+    [Extent1].[ID] <span style="font-weight: bold;">AS</span> [ID],
+    [Extent1].[FirstName] <span style="font-weight: bold;">AS</span> [FirstName],
+    [Extent1].[LastName] <span style="font-weight: bold;">AS</span> [LastName],
+    [Extent1].[Gender] <span style="font-weight: bold;">AS</span> [Gender]
+    <span style="font-weight: bold;">FROM</span> [dbo].[Student] <span style="font-weight: bold;">AS</span> [Extent1]
+    <span style="font-weight: bold;">WHERE</span> <span style="font-style: italic;">'Male'</span> = [Extent1].[Gender]
+</pre>
+</div>
+
+<p>
+As shown in the above SQL Script, it will not use the TOP clause. So here it will fetch the
+data from SQL Server to in-memory and then it will filter the data.
+</p>
+
+<p>
+Let's check it again using <code>IQuerable</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>)
+        {
+            <span style="font-weight: bold; text-decoration: underline;">StudentDBContext</span> <span style="font-weight: bold; font-style: italic;">dBContext</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">StudentDBContext</span>();
+            <span style="font-weight: bold; text-decoration: underline;">IQueryable</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Student</span>&gt; <span style="font-weight: bold; font-style: italic;">listStudents</span> = dBContext.Students
+                                .<span style="font-weight: bold;">AsQueryable</span>()
+                                .<span style="font-weight: bold;">Where</span>(x =&gt; x.Gender == <span style="font-style: italic;">"Male"</span>);
+            listStudents = listStudents.<span style="font-weight: bold;">Take</span>(2);
+
+            <span style="font-weight: bold;">foreach</span>(<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">std</span> <span style="font-weight: bold;">in</span> listStudents)
+            {
+                Console.<span style="font-weight: bold;">WriteLine</span>(std.FirstName + <span style="font-style: italic;">" "</span> + std.LastName);
+            }
+
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+}
+</pre>
+</div>
+
+<p>
+Check the SQL Script:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> TOP (2)
+    [Extent1].[ID] <span style="font-weight: bold;">AS</span> [ID],
+    [Extent1].[FirstName] <span style="font-weight: bold;">AS</span> [FirstName],
+    [Extent1].[LastName] <span style="font-weight: bold;">AS</span> [LastName],
+    [Extent1].[Gender] <span style="font-weight: bold;">AS</span> [Gender]
+    <span style="font-weight: bold;">FROM</span> [dbo].[Student] <span style="font-weight: bold;">AS</span> [Extent1]
+    <span style="font-weight: bold;">WHERE</span> <span style="font-style: italic;">'Male'</span> = [Extent1].[Gender]
+</pre>
+</div>
+
+<p>
+As you can see it includes the TOP clause in the SQL Script and then fetches the data from
+the database.
+</p>
+
+<p>
+<b>Main differences:</b>
+</p>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left"><code>IEnumerable</code></th>
+<th scope="col" class="org-left"><code>IQuerable</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><b>While querying the data from the database, the <code>IEnumerable</code> executes the “select statement” on the server-side (i.e. on the database), loads data into memory on the client-side, and then only applied the filters on the retrieved data.</b></td>
+<td class="org-left">While querying the data from a database, the <code>IQueryable</code> executes the “select query” with the applied filter on the server-side i.e. on the database, and then retrieves data.</td>
+</tr>
+
+<tr>
+<td class="org-left">So you need to use the <code>IEnumerable</code> when you need to query the data from in-memory collections like List, Array, and so on.</td>
+<td class="org-left">So you need to use the <code>IQueryable</code> when you want to query the data from out-memory such as remote database, service, etc.</td>
+</tr>
+
+<tr>
+<td class="org-left">The <code>IEnumerable</code> is mostly used for LINQ to Object and LINQ to XML queries.</td>
+<td class="org-left"><code>IQueryable</code> is mostly used for LINQ to SQL and LINQ to Entities queries.</td>
+</tr>
+
+<tr>
+<td class="org-left">The <code>IEnumerable</code> collection is of type forward only. That means it can only move in forward, it can’t move backward and between the items.</td>
+<td class="org-left">The collection of type IQueryable can move only forward, it can’t move backward and between the items.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>IEnumerable</code> supports deferred execution.</td>
+<td class="org-left"><code>IQueryable</code> supports deferred execution.</td>
+</tr>
+
+<tr>
+<td class="org-left">It doesn’t support custom queries.</td>
+<td class="org-left">It also supports custom queries using <code>CreateQuery</code> and Executes methods.</td>
+</tr>
+
+<tr>
+<td class="org-left">The <code>IEnumerable</code> doesn’t support lazy loading. Hence, it is not suitable for paging like scenarios.</td>
+<td class="org-left"><code>IQueryable</code> supports lazy loading and hence it is suitable for paging like scenarios.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd24a29a" class="outline-3">
+<h3 id="orgd24a29a"><code>IEnumerable</code>, <code>ICollection</code>, <code>IList</code> and <code>List</code></h3>
+<div class="outline-text-3" id="text-orgd24a29a">
+</div>
+<div id="outline-container-org4feb3f3" class="outline-4">
+<h4 id="org4feb3f3"><code>IEnumerable</code></h4>
+<div class="outline-text-4" id="text-org4feb3f3">
+<p>
+First of all, it is important to understand, that there are two different interfaces defined
+in the .NET base class library. There is a non-generic <code>IEnumerable</code> interface and there is a
+generic type-safe IEnumerable&lt;T&gt; interface.
+</p>
+
+<p>
+The <code>IEnumerable</code> interface is located in the <code>System.Collections</code> namespace and contains only a
+single method definition. The interface definition looks like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">public</span> <span style="font-weight: bold;">interface</span> <span style="font-weight: bold; text-decoration: underline;">IEnumerable</span>
+{
+  <span style="font-weight: bold; text-decoration: underline;">IEnumerator</span> <span style="font-weight: bold;">GetEnumerator</span>();
+}
+</pre>
+</div>
+
+<p>
+The <code>GetEnumerator</code> method must return an instance of an object of a class which implements
+the <code>IEnumerator</code> interface.
+</p>
+
+<p>
+It is important to know that the C# language foreach keyword works with all types that
+implement the IEnumerable interface. Only in C# it also works with things that don’t
+explicitly implement IEnumerable or <code>IEnumerable&lt;T&gt;</code>. I believe you have been using the
+foreach keyword many times and without worrying about the reason why and how it worked with
+that type.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb0ae922" class="outline-4">
+<h4 id="orgb0ae922"><code>IEnumerable&lt;T&gt;</code></h4>
+<div class="outline-text-4" id="text-orgb0ae922">
+<p>
+Let’s now take a look at the definition of the generic and type-safe version called
+<code>IEnumerable&lt;T&gt;</code> which is located in the <code>System.Collections.Generic</code> namespace:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">public</span> <span style="font-weight: bold;">interface</span> <span style="font-weight: bold; text-decoration: underline;">IEnumerable</span>&lt;<span style="font-weight: bold;">out</span> <span style="font-weight: bold; text-decoration: underline;">T</span>&gt; : <span style="font-weight: bold; text-decoration: underline;">IEnumerable</span>
+{
+  <span style="font-weight: bold; text-decoration: underline;">IEnumerator</span>&lt;<span style="font-weight: bold; text-decoration: underline;">T</span>&gt; <span style="font-weight: bold;">GetEnumerator</span>();
+}
+</pre>
+</div>
+
+<p>
+As you can see the <code>IEnumerable&lt;T&gt;</code> interface inherits from the IEnumerable interface.
+Therefore a type which implements <code>IEnumerable&lt;T&gt;</code> has also to implement the members of
+<code>IEnumerable</code>.
+</p>
+
+<p>
+<code>IEnumerable&lt;T&gt;</code> defines a single method <code>GetEnumerator</code> which returns an instance of an object
+that implements the <code>IEnumerator&lt;T&gt;</code> interface.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgbc6bb19" class="outline-4">
+<h4 id="orgbc6bb19"><code>ICollection</code></h4>
+<div class="outline-text-4" id="text-orgbc6bb19">
+<p>
+As you can imagine, there are also two versions of ICollection which are
+<code>System.Collections.ICollection</code> and the generic version
+<code>System.Collections.Generic.ICollection&lt;T&gt;</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">public</span> <span style="font-weight: bold;">interface</span> <span style="font-weight: bold; text-decoration: underline;">ICollection</span> : <span style="font-weight: bold; text-decoration: underline;">IEnumerable</span>
+{
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">Count</span> { <span style="font-weight: bold;">get</span>; }
+  <span style="font-weight: bold; text-decoration: underline;">bool</span> <span style="font-weight: bold; font-style: italic;">IsSynchronized</span> { <span style="font-weight: bold;">get</span>; }
+  <span style="font-weight: bold; text-decoration: underline;">Object</span> <span style="font-weight: bold; font-style: italic;">SyncRoot</span> { <span style="font-weight: bold;">get</span>; }
+
+  <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">CopyTo</span>(<span style="font-weight: bold; text-decoration: underline;">Array</span> <span style="font-weight: bold; font-style: italic;">array</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">index</span>);
+}
+</pre>
+</div>
+
+<p>
+<code>ICollection</code> inherits from <code>IEnumerable</code>. You therefore have all members from the <code>IEnumerable</code>
+interface implemented in all classes that implement the <code>ICollection</code> interface.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org3524af9" class="outline-4">
+<h4 id="org3524af9"><code>ICollection&lt;T&gt;</code></h4>
+<div class="outline-text-4" id="text-org3524af9">
+<p>
+When we look at the generic version of ICollection, you’ll recognize that it does not look
+exactly the same as the non-generic equivalent:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">public</span> <span style="font-weight: bold;">interface</span> <span style="font-weight: bold; text-decoration: underline;">ICollection</span>&lt;<span style="font-weight: bold; text-decoration: underline;">T</span>&gt; : <span style="font-weight: bold; text-decoration: underline;">IEnumerable</span>&lt;<span style="font-weight: bold; text-decoration: underline;">T</span>&gt;, <span style="font-weight: bold; text-decoration: underline;">IEnumerable</span>
+{
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">Count</span> { <span style="font-weight: bold;">get</span>; }
+  <span style="font-weight: bold; text-decoration: underline;">bool</span> <span style="font-weight: bold; font-style: italic;">IsReadOnly</span> { <span style="font-weight: bold;">get</span>; }
+  <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Add</span>(<span style="font-weight: bold; text-decoration: underline;">T</span> <span style="font-weight: bold; font-style: italic;">item</span>);
+  <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Clear</span>();
+  <span style="font-weight: bold; text-decoration: underline;">bool</span> <span style="font-weight: bold;">Contains</span>(<span style="font-weight: bold; text-decoration: underline;">T</span> <span style="font-weight: bold; font-style: italic;">item</span>);
+  <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">CopyTo</span>(<span style="font-weight: bold; text-decoration: underline;">T</span>[] <span style="font-weight: bold; font-style: italic;">array</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">arrayIndex</span>);
+  <span style="font-weight: bold; text-decoration: underline;">bool</span> <span style="font-weight: bold;">Remove</span>(<span style="font-weight: bold; text-decoration: underline;">T</span> <span style="font-weight: bold; font-style: italic;">item</span>);
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org988468c" class="outline-4">
+<h4 id="org988468c"><code>IList</code></h4>
+<div class="outline-text-4" id="text-org988468c">
+<p>
+The <code>IList</code> interface has of course a non-generic and a generic version. We start with looking
+at the non-generic <code>IList</code> interface:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">public</span> <span style="font-weight: bold;">interface</span> <span style="font-weight: bold; text-decoration: underline;">IList</span> : <span style="font-weight: bold; text-decoration: underline;">ICollection</span>, <span style="font-weight: bold; text-decoration: underline;">IEnumerable</span>
+{
+  <span style="font-weight: bold; text-decoration: underline;">bool</span> <span style="font-weight: bold; font-style: italic;">IsFixedSize</span> { <span style="font-weight: bold;">get</span>; }
+  <span style="font-weight: bold; text-decoration: underline;">bool</span> <span style="font-weight: bold; font-style: italic;">IsReadOnly</span> { <span style="font-weight: bold;">get</span>; }
+  <span style="font-weight: bold; text-decoration: underline;">Object</span> <span style="font-weight: bold;">this</span>[<span style="font-weight: bold; text-decoration: underline;">int</span> index] { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">Add</span>(Object <span style="font-weight: bold; text-decoration: underline;">value</span>);
+  <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Clear</span>();
+  <span style="font-weight: bold; text-decoration: underline;">bool</span> <span style="font-weight: bold;">Contains</span>(Object <span style="font-weight: bold; text-decoration: underline;">value</span>);
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">IndexOf</span>(Object <span style="font-weight: bold; text-decoration: underline;">value</span>);
+  <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Insert</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">index</span>, Object <span style="font-weight: bold; text-decoration: underline;">value</span>);
+  <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Remove</span>(Object <span style="font-weight: bold; text-decoration: underline;">value</span>);
+  <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">RemoveAt</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">index</span>);
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgaa5e238" class="outline-4">
+<h4 id="orgaa5e238">Which to Use?</h4>
+<div class="outline-text-4" id="text-orgaa5e238">
+<p>
+If you use a narrower interface type such as <code>IEnumerable</code> instead of IList, you protect your
+code against breaking changes. If you use IEnumerable, the caller of your method can provide
+any object which implements the IEnumerable interface. These are nearly all collection types
+of the base class library and in addition many custom defined types. The caller code can be
+changed in the future and your code won’t break that easily as it would if you had used
+ICollection or even worse IList.
+</p>
+
+
+<p>
+If you use a wider interface type such as IList, you are more in danger of breaking code
+changes. If someone wants to call your method with a custom defined object which only
+implements IEnumerable, it simply won’t work and will result in a compilation error.
+</p>
+
+<p>
+The following table gives you an overview of how you can decide which type you should depend
+on.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org718fc52" class="outline-3">
+<h3 id="org718fc52">Add Configuration to Console Application</h3>
+<div class="outline-text-3" id="text-org718fc52">
+<p>
+Create a console application using dotnet command line or visual studio. Once the
+application is created, add a reference to <code>Microsoft.Extensions.Hosting nuget</code> package. This
+package will provide all the necessary stuff.
+</p>
+
+<p>
+Add a json file, <code>appsettings.json</code>, to the console application project. Notice that we have
+not made any code changes, so the file is not being read yet.
+</p>
+
+<p>
+After adding the file, right click on <code>appsettings.json</code> and select properties. Then set “Copy
+to Ouptut Directory” option to Copy Always.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">private</span> <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">IConfiguration</span> <span style="font-weight: bold; font-style: italic;">_configuration</span>;
+<span style="font-weight: bold;">static</span> <span style="font-weight: bold;">InitConfig</span>()
+{
+    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">init configuration</span>
+    <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">builder</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">ConfigurationBuilder</span>().<span style="font-weight: bold;">AddJsonFile</span>(<span style="font-style: italic;">"settings.json"</span>, <span style="font-weight: bold; text-decoration: underline;">true</span>, <span style="font-weight: bold; text-decoration: underline;">true</span>);
+    _configuration = builder.<span style="font-weight: bold;">Build</span>();
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org49f8ddd" class="outline-3">
+<h3 id="org49f8ddd">Add Font &amp; Wrine On a Picture</h3>
+<div class="outline-text-3" id="text-org49f8ddd">
+<p>
+To draw multiple strings, call <code>graphics.DrawString</code> multiple times. You can specify the
+location of the drawn string. This example we will draw two strings <code>"Hello"</code>, <code>"Word"</code> (<code>"Hello"</code>
+in blue color upfront <code>"Word"</code> in red color):
+</p>
+
+<p>
+#+begin_src csharp
+string firstText = "Hello";
+string secondText = "World";
+</p>
+
+<p>
+PointF firstLocation = new PointF(10f, 10f);
+PointF secondLocation = new PointF(10f, 50f);
+</p>
+
+<p>
+string imageFilePath = @"path\picture.bmp"
+Bitmap bitmap = (Bitmap)Image.FromFile(imageFilePath);//load the image file
+</p>
+
+<p>
+using(Graphics graphics = Graphics.FromImage(bitmap))
+{
+    using (Font arialFont =  new Font("Arial", 10))
+    {
+        graphics.DrawString(firstText, arialFont, Brushes.Blue, firstLocation);
+        graphics.DrawString(secondText, arialFont, Brushes.Red, secondLocation);
+    }
+}
+bitmap.Save(imageFilePath);//save the image file#+end_src
+#+end_src csharp
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd800d5d" class="outline-3">
+<h3 id="orgd800d5d">Load Font From a File</h3>
+<div class="outline-text-3" id="text-orgd800d5d">
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold; text-decoration: underline;">PrivateFontCollection</span> <span style="font-weight: bold; font-style: italic;">collection</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">PrivateFontCollection</span>();
+collection.<span style="font-weight: bold;">AddFontFile</span>(@<span style="font-style: italic;">"C:\Projects\MyProj\free3of9.ttf"</span>);
+<span style="font-weight: bold; text-decoration: underline;">FontFamily</span> <span style="font-weight: bold; font-style: italic;">fontFamily</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">FontFamily</span>(<span style="font-style: italic;">"Free 3 of 9"</span>, collection);
+<span style="font-weight: bold; text-decoration: underline;">Font</span> <span style="font-weight: bold; font-style: italic;">font</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Font</span>(fontFamily, height);
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orge075f06" class="outline-3">
+<h3 id="orge075f06">Check If an Object is Number</h3>
+<div class="outline-text-3" id="text-orge075f06">
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">public</span> <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">bool</span> <span style="font-weight: bold;">IsNumber</span>(<span style="font-weight: bold;">this</span> <span style="font-weight: bold; text-decoration: underline;">object</span> <span style="font-weight: bold; text-decoration: underline;">value</span>)
+{
+    <span style="font-weight: bold;">return</span> <span style="font-weight: bold; text-decoration: underline;">value</span> <span style="font-weight: bold;">is</span> <span style="font-weight: bold; text-decoration: underline;">sbyte</span>
+            || <span style="font-weight: bold; text-decoration: underline;">value</span> <span style="font-weight: bold;">is</span> <span style="font-weight: bold; text-decoration: underline;">byte</span>
+            || <span style="font-weight: bold; text-decoration: underline;">value</span> <span style="font-weight: bold;">is</span> <span style="font-weight: bold; text-decoration: underline;">short</span>
+            || <span style="font-weight: bold; text-decoration: underline;">value</span> <span style="font-weight: bold;">is</span> <span style="font-weight: bold; text-decoration: underline;">ushort</span>
+            || <span style="font-weight: bold; text-decoration: underline;">value</span> <span style="font-weight: bold;">is</span> <span style="font-weight: bold; text-decoration: underline;">int</span>
+            || <span style="font-weight: bold; text-decoration: underline;">value</span> <span style="font-weight: bold;">is</span> <span style="font-weight: bold; text-decoration: underline;">uint</span>
+            || <span style="font-weight: bold; text-decoration: underline;">value</span> <span style="font-weight: bold;">is</span> <span style="font-weight: bold; text-decoration: underline;">long</span>
+            || <span style="font-weight: bold; text-decoration: underline;">value</span> <span style="font-weight: bold;">is</span> <span style="font-weight: bold; text-decoration: underline;">ulong</span>
+            || <span style="font-weight: bold; text-decoration: underline;">value</span> <span style="font-weight: bold;">is</span> <span style="font-weight: bold; text-decoration: underline;">float</span>
+            || <span style="font-weight: bold; text-decoration: underline;">value</span> <span style="font-weight: bold;">is</span> <span style="font-weight: bold; text-decoration: underline;">double</span>
+            || <span style="font-weight: bold; text-decoration: underline;">value</span> <span style="font-weight: bold;">is</span> <span style="font-weight: bold; text-decoration: underline;">decimal</span>;
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb6ddd95" class="outline-3">
+<h3 id="orgb6ddd95">Check If a Char is Digit</h3>
+<div class="outline-text-3" id="text-orgb6ddd95">
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+
+<span style="font-weight: bold;">public</span> <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">IsDigitSample</span> {
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>() {
+        <span style="font-weight: bold; text-decoration: underline;">char</span> <span style="font-weight: bold; font-style: italic;">ch</span> = <span style="font-style: italic;">'8'</span>;
+
+        Console.<span style="font-weight: bold;">WriteLine</span>(Char.<span style="font-weight: bold;">IsDigit</span>(<span style="font-weight: bold; text-decoration: underline;">ch</span>));                                    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Output: "True"</span>
+        Console.<span style="font-weight: bold;">WriteLine</span>(Char.<span style="font-weight: bold;">IsDigit</span>(<span style="font-style: italic;">"sample string"</span>, 7));    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Output: "False"</span>
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgbab2a48" class="outline-3">
+<h3 id="orgbab2a48">Merge Two Images</h3>
+<div class="outline-text-3" id="text-orgbab2a48">
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold; text-decoration: underline;">Image</span> <span style="font-weight: bold; font-style: italic;">image1</span> = <span style="font-weight: bold;">GetFirstImage</span>();
+
+       <span style="font-weight: bold; text-decoration: underline;">Image</span> <span style="font-weight: bold; font-style: italic;">image2</span> = <span style="font-weight: bold;">GetSecondImage</span>();
+
+       <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">bitmapImage</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Bitmap</span>(Math.<span style="font-weight: bold;">Max</span>(image1.Width, image2.Width), (image1.Height + image2.Height));
+</pre>
+</div>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> (<span style="font-weight: bold; text-decoration: underline;">Graphics</span> <span style="font-weight: bold; font-style: italic;">g</span> = Graphics.<span style="font-weight: bold;">FromImage</span>(bitmapImage))
+{
+    g.<span style="font-weight: bold;">DrawImage</span>(image1, 0, 0);
+    g.<span style="font-weight: bold;">DrawImage</span>(image2, 0, image1.Height);
+}
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb1968e2" class="outline-3">
+<h3 id="orgb1968e2">Add Image To Pdf</h3>
+<div class="outline-text-3" id="text-orgb1968e2">
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">IO</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">PdfSharp</span>.<span style="font-weight: bold; font-style: italic;">Drawing</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">PdfSharp</span>.<span style="font-weight: bold; font-style: italic;">Pdf</span>;
+
+<span style="font-weight: bold;">public</span> <span style="font-weight: bold;">sealed</span> <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">PdfHelper</span>
+{
+    <span style="font-weight: bold;">private</span> <span style="font-weight: bold;">PdfHelper</span>()
+    {
+    }
+
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">PdfHelper</span> <span style="font-weight: bold; font-style: italic;">Instance</span> { <span style="font-weight: bold;">get</span>; } = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">PdfHelper</span>();
+
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">SaveImageAsPdf</span>(<span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">imageFileName</span>, <span style="font-weight: bold; text-decoration: underline;">PdfDocument</span> <span style="font-weight: bold; font-style: italic;">x</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">width</span> = 1117)
+    {
+        System.Text.Encoding.<span style="font-weight: bold;">RegisterProvider</span>(System.Text.CodePagesEncodingProvider.<span style="font-weight: bold; text-decoration: underline;">Instance</span>);
+
+        <span style="font-weight: bold;">using</span> (<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">document</span> = x )
+        {
+            <span style="font-weight: bold; text-decoration: underline;">PdfPage</span> <span style="font-weight: bold; font-style: italic;">page</span> = document.<span style="font-weight: bold;">AddPage</span>();
+            <span style="font-weight: bold;">using</span> (<span style="font-weight: bold; text-decoration: underline;">XImage</span> <span style="font-weight: bold; font-style: italic;">img</span> = XImage.<span style="font-weight: bold;">FromFile</span>(<span style="font-weight: bold; text-decoration: underline;">imageFileName</span>))
+            {
+                <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Calculate new height to keep image ratio</span>
+                <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">height</span> = (<span style="font-weight: bold; text-decoration: underline;">int</span>) (((<span style="font-weight: bold; text-decoration: underline;">double</span>) width / (<span style="font-weight: bold; text-decoration: underline;">double</span>) img.PixelWidth) * img.PixelHeight);
+
+                <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Change PDF Page size to match image</span>
+                page.Width = width;
+                page.Height = height;
+
+                <span style="font-weight: bold; text-decoration: underline;">XGraphics</span> <span style="font-weight: bold; font-style: italic;">gfx</span> = XGraphics.<span style="font-weight: bold;">FromPdfPage</span>(<span style="font-weight: bold; text-decoration: underline;">page</span>);
+                gfx.<span style="font-weight: bold;">DrawImage</span>(<span style="font-weight: bold; text-decoration: underline;">img</span>, 0, 0, <span style="font-weight: bold; text-decoration: underline;">width</span>, <span style="font-weight: bold; text-decoration: underline;">height</span>);
+            }
+
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">document.Save("file.pdf");</span>
+        }
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org5dcfb8b" class="outline-3">
+<h3 id="org5dcfb8b">Init-Only Property</h3>
+<div class="outline-text-3" id="text-org5dcfb8b">
+<p>
+The following code:
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">public</span> <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Member</span> {
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">Id</span> {
+        <span style="font-weight: bold;">get</span>;
+        init;
+    } <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">set is replaced with init</span>
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">Name</span> {
+        <span style="font-weight: bold;">get</span>;
+        <span style="font-weight: bold;">set</span>;
+    }
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">Address</span> {
+        <span style="font-weight: bold;">get</span>;
+        <span style="font-weight: bold;">set</span>;
+    }
+}
+
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">C_9</span>.<span style="font-weight: bold; font-style: italic;">_0</span> {
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span> {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>) {
+            <span style="font-weight: bold; text-decoration: underline;">Member</span> <span style="font-weight: bold; font-style: italic;">memberObj</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Member</span> {
+                <span style="font-weight: bold; font-style: italic;">Id</span> = 1
+            };
+}
+</pre>
+</div>
+
+<p>
+Is equive to:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">public</span> <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Member</span>
+{
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold;">Member</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">memberId</span>)
+    {
+        Id = memberId;
+    }
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">Id</span> { <span style="font-weight: bold;">get</span>; }
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">Name</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">Address</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+}
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">C_9</span>.<span style="font-weight: bold; font-style: italic;">_0</span> {
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span> {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>) {
+            <span style="font-weight: bold; text-decoration: underline;">Member</span> <span style="font-weight: bold; font-style: italic;">memberObj</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Member</span>(1);
+
+}
+</pre>
+</div>
+
+<p>
+In other words, the Id propery is immutable in both cases.
+</p>
+</div>
+</div>
+<div id="outline-container-org1d3d8f0" class="outline-3">
+<h3 id="org1d3d8f0">Records</h3>
+<div class="outline-text-3" id="text-org1d3d8f0">
+<p>
+Let's discuss the below code snippet:
+</p>
+<pre class="example">
+public class Member
+{
+    public int ID { get; init; }
+    public string FirstName { get; init; }
+    public string LastName { get; init; }
+    public string Address { get; init; }
+}
+
+</pre>
+
+<p>
+Init properties are immutable properties which means member class properties cannot change.
+What will you do if you want to add a new property in the Member class (like the middle
+name) or change the value of the address property? The only way is you have to create new
+objects and then assign a new value, right?
+</p>
+
+<p>
+Here I am going to create a new Membar class object and assign values to it.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">member</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Member</span>
+{
+    <span style="font-weight: bold; font-style: italic;">Id</span>=1,
+    <span style="font-weight: bold; font-style: italic;">FirstName</span>=<span style="font-style: italic;">"Kirtesh"</span>,
+    <span style="font-weight: bold; font-style: italic;">LastName</span>=<span style="font-style: italic;">"Shah"</span>,
+    <span style="font-weight: bold; font-style: italic;">Address</span>=<span style="font-style: italic;">"Vadodara"</span>
+};
+</pre>
+</div>
+
+<p>
+Assume that you want to change the address from "Vadodara "" to "Mumbai":
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold;">new</span> <span style="font-weight: bold; font-style: italic;">member</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Member</span>
+{
+    <span style="font-weight: bold; font-style: italic;">Id</span> = member.Id,
+    <span style="font-weight: bold; font-style: italic;">FirstName</span> = member.FirstName,
+    <span style="font-weight: bold; font-style: italic;">LastName</span> = member.LastName,
+    <span style="font-weight: bold; font-style: italic;">Address</span> = <span style="font-style: italic;">"Mumbai"</span>
+};
+</pre>
+</div>
+
+<p>
+Now suppose we want to add new property, Middle Name, in Member class.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">public</span> <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Member</span>
+{
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">ID</span> { <span style="font-weight: bold;">get</span>; init; }
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">FirstName</span> { <span style="font-weight: bold;">get</span>; init; }
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">MiddleName</span> { <span style="font-weight: bold;">get</span>; init; }
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">LastName</span> { <span style="font-weight: bold;">get</span>; init; }
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">Address</span> { <span style="font-weight: bold;">get</span>; init; }
+}
+
+<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">member</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Member</span>
+{
+    <span style="font-weight: bold; font-style: italic;">Id</span>=1,
+    <span style="font-weight: bold; font-style: italic;">FirstName</span>=<span style="font-style: italic;">"Kirtesh"</span>,
+    <span style="font-weight: bold; font-style: italic;">MiddleName</span> = <span style="font-style: italic;">"D"</span>,
+    <span style="font-weight: bold; font-style: italic;">LastName</span>=<span style="font-style: italic;">"Shah"</span>,
+    <span style="font-weight: bold; font-style: italic;">Address</span> = <span style="font-style: italic;">"Vadodara"</span>
+};
+
+<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">newMember</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Member</span>
+{
+    <span style="font-weight: bold; font-style: italic;">Id</span> = member.Id,
+    <span style="font-weight: bold; font-style: italic;">FirstName</span> = member.FirstName,
+    <span style="font-weight: bold; font-style: italic;">MiddleName</span> = member.MiddleName,
+    <span style="font-weight: bold; font-style: italic;">LastName</span> = member.LastName,
+    <span style="font-weight: bold; font-style: italic;">Address</span> = <span style="font-style: italic;">"Mumbai"</span>
+};
+</pre>
+</div>
+
+<p>
+What you will do if you have hundreds of properties? It will become so difficult, right?
+Hence C# 9.0 introduced Record type to work with immutable data and solve the above issue.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">record</span> <span style="font-weight: bold; font-style: italic;">Member</span>
+{
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">ID</span> { <span style="font-weight: bold;">get</span>; init; }
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">FirstName</span> { <span style="font-weight: bold;">get</span>; init; }
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">LastName</span> { <span style="font-weight: bold;">get</span>; init; }
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">Address</span> { <span style="font-weight: bold;">get</span>; init; }
+}
+</pre>
+</div>
+
+<p>
+What's the difference between the earlier Member class and the new Member record type? The
+only change is, we have replaced, Class,  keyword with, Recor, . Now Member
+record type is treated as an immutable data value.
+</p>
+</div>
+<div id="outline-container-org6fadf23" class="outline-4">
+<h4 id="org6fadf23"><code>with</code></h4>
+<div class="outline-text-4" id="text-org6fadf23">
+<p>
+C# 9.0 introduces the 'With' expression with RecordType. It is mainly used to create new
+objects more effectively.
+</p>
+
+<p>
+Before we understand the 'With' expression let's discuss the below code,
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">member</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Member</span>
+{
+    <span style="font-weight: bold; font-style: italic;">Id</span>=1,
+    <span style="font-weight: bold; font-style: italic;">FirstName</span>=<span style="font-style: italic;">"Kirtesh"</span>,
+    <span style="font-weight: bold; font-style: italic;">LastName</span>=<span style="font-style: italic;">"Shah"</span>,
+    <span style="font-weight: bold; font-style: italic;">Address</span> = <span style="font-style: italic;">"Vadodara"</span>
+};
+
+<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">newMember</span> = member with { Address = <span style="font-style: italic;">"Mumbai"</span> };
+</pre>
+</div>
+
+<p>
+Another feature of the records, is that you can grap properties using the syntax sugar:
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold; text-decoration: underline;">var</span> (<span style="font-weight: bold; text-decoration: underline;">name</span>, <span style="font-weight: bold; text-decoration: underline;">dateOfBirth</span>) = x;
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orge5f310b" class="outline-3">
+<h3 id="orge5f310b">Unique Identifier Example</h3>
+<div class="outline-text-3" id="text-orge5f310b">
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">public</span> <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">project</span>
+{
+    [<span style="font-weight: bold; font-style: italic;">Key</span>]
+    [<span style="font-weight: bold;">DatabaseGenerated</span>(DatabaseGeneratedOption.<span style="font-weight: bold; text-decoration: underline;">Identity</span>)]
+    <span style="font-weight: bold;">public</span> Guid id { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+
+    [<span style="font-weight: bold; font-style: italic;">Required</span>]
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> aliasName { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+
+    [<span style="font-weight: bold;">ForeignKey</span>(<span style="font-style: italic;">"Features"</span>)]
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold;">virtual</span> <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; featureIds { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+}
+</pre>
+</div>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">public</span> <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">feature</span>
+{
+    [<span style="font-weight: bold; font-style: italic;">Key</span>]
+    [<span style="font-weight: bold;">DatabaseGenerated</span>(DatabaseGeneratedOption.<span style="font-weight: bold; text-decoration: underline;">Identity</span>)]
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">int</span> id { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+
+    [<span style="font-weight: bold; font-style: italic;">Required</span>]
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> name { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+
+    [<span style="font-weight: bold;">DataType</span>(DataType.<span style="font-weight: bold; text-decoration: underline;">MultilineText</span>)]
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> description { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+}
+</pre>
+</div>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">DbSet</span>&lt;project&gt; <span style="font-weight: bold; font-style: italic;">Projects</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+<span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">DbSet</span>&lt;feature&gt; <span style="font-weight: bold; font-style: italic;">Features</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org438d2b5" class="outline-3">
+<h3 id="org438d2b5">RestSharp Notes</h3>
+<div class="outline-text-3" id="text-org438d2b5">
+<p>
+Before making a request using <code>RestClient</code>, you need to create a request instance:
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">request</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">RestRequest</span>(resource); <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">resource is the sub-path of the client base path</span>
+</pre>
+</div>
+<p>
+The default request type is GET and you can override it by setting the Method property. You
+can also set the method using the constructor overload:
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">request</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">RestRequest</span>(resource, Method.Post);
+</pre>
+</div>
+<p>
+After you've created a <code>RestRequest</code>, you can add parameters to it. Below, you can find all
+the parameter types supported by RestSharp. Client is instanciated like:
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">client</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">RestClient</span>(<span style="font-style: italic;">"https://api.twitter.com/1.1"</span>)
+</pre>
+</div>
+</div>
+<div id="outline-container-orgac9bb54" class="outline-4">
+<h4 id="orgac9bb54"><span class="todo TODO">TODO</span> Authentication</h4>
+</div>
+<div id="outline-container-org9ebdfb3" class="outline-4">
+<h4 id="org9ebdfb3">Adding Parameters</h4>
+<div class="outline-text-4" id="text-org9ebdfb3">
+<div class="org-src-container">
+<pre class="src src-csharp">request.<span style="font-weight: bold;">AddParameter</span>(<span style="font-style: italic;">"status"</span>, 1);
+request.<span style="font-weight: bold;">AddParameter</span>(<span style="font-style: italic;">"priority"</span>, <span style="font-style: italic;">"high"</span>);
+request.<span style="font-weight: bold;">AddParameter</span>(<span style="font-style: italic;">"ids"</span>, <span style="font-style: italic;">"123,456"</span>);
+</pre>
+</div>
+<p>
+or:
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold;">params</span> = <span style="font-weight: bold;">new</span> {
+    <span style="font-weight: bold; font-style: italic;">status</span> = 1,
+    <span style="font-weight: bold; font-style: italic;">priority</span> = <span style="font-style: italic;">"high"</span>,
+    <span style="font-weight: bold; font-style: italic;">ids</span> = <span style="font-weight: bold;">new</span> [] { <span style="font-style: italic;">"123"</span>, <span style="font-style: italic;">"456"</span> }
+};
+request.<span style="font-weight: bold;">AddObject</span>(<span style="font-weight: bold;">params</span>);
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf648503" class="outline-4">
+<h4 id="orgf648503">Url Segments</h4>
+<div class="outline-text-4" id="text-orgf648503">
+<p>
+Unlike GetOrPost, this ParameterType replaces placeholder values in the RequestUrl:
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">request</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">RestRequest</span>(<span style="font-style: italic;">"health/{entity}/status"</span>)
+    .<span style="font-weight: bold;">AddUrlSegment</span>(<span style="font-style: italic;">"entity"</span>, <span style="font-style: italic;">"s2"</span>);
+</pre>
+</div>
+<p>
+When the request executes, RestSharp will try to match any {placeholder} with a parameter of
+that name (without the {}) and replace it with the value. So the above code results in
+<code>health/s2/status</code> being the url.
+</p>
+</div>
+</div>
+<div id="outline-container-org8987f82" class="outline-4">
+<h4 id="org8987f82">Add Json Body</h4>
+<div class="outline-text-4" id="text-org8987f82">
+<p>
+When you call AddJsonBody, it does the following for you:
+</p>
+
+<ul class="org-ul">
+<li>Instructs the RestClient to serialize the object parameter as JSON when making a request</li>
+<li>Sets the content type to application/json</li>
+<li>Sets the internal data type of the request body to DataType.Json</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">param</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">MyClass</span> { <span style="font-weight: bold; font-style: italic;">IntData</span> = 1, <span style="font-weight: bold; font-style: italic;">StringData</span> = <span style="font-style: italic;">"test123"</span> };
+request.<span style="font-weight: bold;">AddJsonBody</span>(param);
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org5e34865" class="outline-4">
+<h4 id="org5e34865"><span class="todo TODO">TODO</span> Query Strings</h4>
+</div>
+<div id="outline-container-org1e35a2e" class="outline-4">
+<h4 id="org1e35a2e">Calling</h4>
+<div class="outline-text-4" id="text-org1e35a2e">
+<p>
+To make a simple GET call and get a deserialized JSON response with a pre-formed resource string, use this:
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">client</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">RestClient</span>(<span style="font-style: italic;">"https://example.org"</span>);
+<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">args</span> = <span style="font-weight: bold;">new</span> {
+    <span style="font-weight: bold; font-style: italic;">id</span> = <span style="font-style: italic;">"123"</span>,
+    <span style="font-weight: bold; font-style: italic;">foo</span> = <span style="font-style: italic;">"bar"</span>
+};
+<span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Will make a call to https://example.org/endpoint/123?foo=bar</span>
+<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">response</span> = <span style="font-weight: bold;">await</span> client.<span style="font-weight: bold;">GetJsonAsync</span>&lt;<span style="font-weight: bold; text-decoration: underline;">TResponse</span>&gt;(<span style="font-style: italic;">"endpoint/{id}"</span>, args, cancellationToken);
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org8492f2a" class="outline-4">
+<h4 id="org8492f2a"><span class="todo TODO">TODO</span> Files</h4>
+</div>
+</div>
+<div id="outline-container-orgf64af08" class="outline-3">
+<h3 id="orgf64af08">Deserialize <code>data</code> from a RESTful Response</h3>
+<div class="outline-text-3" id="text-orgf64af08">
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">client</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">RestClient</span>(<span style="font-style: italic;">"http://api.alquran.cloud/v1/edition"</span>);
+<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">f</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">RestRequest</span>(<span style="font-style: italic;">""</span>);
+<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">data</span> = JObject.<span style="font-weight: bold;">Parse</span>(client.<span style="font-weight: bold;">ExecuteAsync</span>(f).Result.Content)[<span style="font-style: italic;">"data"</span>].ToObject&lt;<span style="font-weight: bold; text-decoration: underline;">IEnumerable</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Edition</span>&gt;&gt;();
+</pre>
+</div>
+
+<p>
+Or, as an extention method:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">T</span>? <span style="font-weight: bold;">GetData</span>&lt;<span style="font-weight: bold; text-decoration: underline;">T</span>&gt;(<span style="font-weight: bold;">this</span> <span style="font-weight: bold; text-decoration: underline;">RestClient</span> <span style="font-weight: bold; font-style: italic;">t</span>, <span style="font-weight: bold; text-decoration: underline;">RestRequest</span> <span style="font-weight: bold; font-style: italic;">request</span>)
+{
+    <span style="font-weight: bold;">return</span> JObject.<span style="font-weight: bold;">Parse</span>(t.<span style="font-weight: bold;">ExecuteAsync</span>(request).Result.Content)[<span style="font-style: italic;">"data"</span>].<span style="font-weight: bold;">ToObject</span>&lt;<span style="font-weight: bold; text-decoration: underline;">T</span>&gt;();
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org63f1411" class="outline-3">
+<h3 id="org63f1411">Round Float</h3>
+<div class="outline-text-3" id="text-org63f1411">
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold; text-decoration: underline;">float</span> <span style="font-weight: bold; text-decoration: underline;">value</span> = 92.197354542F;
+<span style="font-weight: bold; text-decoration: underline;">value</span> = (<span style="font-weight: bold; text-decoration: underline;">float</span>)System.Math.<span style="font-weight: bold;">Round</span>(<span style="font-weight: bold; text-decoration: underline;">value</span>,2);
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgc697174" class="outline-3">
+<h3 id="orgc697174">Create a new array with a thousand true values:</h3>
+<div class="outline-text-3" id="text-orgc697174">
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">items</span> = Enumerable.<span style="font-weight: bold;">Repeat</span>&lt;<span style="font-weight: bold; text-decoration: underline;">bool</span>&gt;(<span style="font-weight: bold; text-decoration: underline;">true</span>, 1000).<span style="font-weight: bold;">ToArray</span>();  <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Or ToList(), etc.</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org40cea98" class="outline-3">
+<h3 id="org40cea98">Reverse String</h3>
+<div class="outline-text-3" id="text-org40cea98">
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold;">Reverse</span>(<span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">text</span>)
+{
+   <span style="font-weight: bold;">if</span> (text == <span style="font-weight: bold; text-decoration: underline;">null</span>) <span style="font-weight: bold;">return</span> <span style="font-weight: bold; text-decoration: underline;">null</span>;
+
+   <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">this was posted by petebob as well</span>
+   <span style="font-weight: bold; text-decoration: underline;">char</span>[] <span style="font-weight: bold; font-style: italic;">array</span> = text.<span style="font-weight: bold;">ToCharArray</span>();
+   Array.<span style="font-weight: bold;">Reverse</span>(array);
+   <span style="font-weight: bold;">return</span> <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">String</span>(array);
+}
+
+<span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold;">ReverseString</span>(<span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">srtVarable</span>)
+{
+    <span style="font-weight: bold;">return</span> <span style="font-weight: bold;">new</span> <span style="font-weight: bold;">string</span>(srtVarable.<span style="font-weight: bold;">Reverse</span>().<span style="font-weight: bold;">ToArray</span>());
+}
+
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb3fcd5d" class="outline-3">
+<h3 id="orgb3fcd5d">ASP.NET Notes</h3>
+<div class="outline-text-3" id="text-orgb3fcd5d">
+</div>
+<div id="outline-container-org8825811" class="outline-4">
+<h4 id="org8825811">Redirect Manage to Login</h4>
+<div class="outline-text-4" id="text-org8825811">
+<div class="org-src-container">
+<pre class="src src-csharp">app.<span style="font-weight: bold;">UseEndpoints</span>(endpoints =&gt;
+    {
+        endpoints.<span style="font-weight: bold;">MapGet</span>(<span style="font-style: italic;">"/Identity/Account/Register"</span>, context =&gt; Task.Factory.<span style="font-weight: bold;">StartNew</span>(() =&gt; context.Response.<span style="font-weight: bold;">Redirect</span>(<span style="font-style: italic;">"/Identity/Account/Login"</span>, <span style="font-weight: bold; text-decoration: underline;">true</span>, <span style="font-weight: bold; text-decoration: underline;">true</span>)));
+        endpoints.<span style="font-weight: bold;">MapPost</span>(<span style="font-style: italic;">"/Identity/Account/Register"</span>, context =&gt; Task.Factory.<span style="font-weight: bold;">StartNew</span>(() =&gt; context.Response.<span style="font-weight: bold;">Redirect</span>(<span style="font-style: italic;">"/Identity/Account/Login"</span>, <span style="font-weight: bold; text-decoration: underline;">true</span>, <span style="font-weight: bold; text-decoration: underline;">true</span>)));
+    });
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1ab929b" class="outline-4">
+<h4 id="org1ab929b">Middleware Definition</h4>
+<div class="outline-text-4" id="text-org1ab929b">
+<p>
+ASP.NET Core introduced a new concept called Middleware. A middleware is nothing but a
+component (class) which is executed on every request in ASP.NET Core application. In the
+classic ASP.NET, <code>HttpHandlers</code> and <code>HttpModules</code> were part of request pipeline. Middleware is
+similar to <code>HttpHandlers</code> and <code>HttpModules</code> where both needs to be configured and executed in
+each request.
+</p>
+
+<p>
+Typically, there will be multiple middleware in ASP.NET Core web application. It can be
+either framework provided middleware, added via NuGet or your own custom middleware. We can
+set the order of middleware execution in the request pipeline. Each middleware adds or
+modifies http request and optionally passes control to the next middleware component. The
+following figure illustrates the execution of middleware components.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb1b9c4e" class="outline-4">
+<h4 id="orgb1b9c4e">Adding User Without Register</h4>
+<div class="outline-text-4" id="text-orgb1b9c4e">
+<p>
+You could do this easily by creating a <code>CreateRoles</code> method in your startup class. This helps
+check if the roles are created, and creates the roles if they aren't; on application
+startup. Like so.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">private</span> <span style="font-weight: bold;">async</span> <span style="font-weight: bold; text-decoration: underline;">Task</span> <span style="font-weight: bold;">CreateRoles</span>(<span style="font-weight: bold; text-decoration: underline;">IServiceProvider</span> <span style="font-weight: bold; font-style: italic;">serviceProvider</span>)
+    {
+        <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">initializing custom roles</span>
+        <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">RoleManager</span> = serviceProvider.GetRequiredService&lt;<span style="font-weight: bold; text-decoration: underline;">RoleManager</span>&lt;<span style="font-weight: bold; text-decoration: underline;">IdentityRole</span>&gt;&gt;();
+        <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">UserManager</span> = serviceProvider.GetRequiredService&lt;<span style="font-weight: bold; text-decoration: underline;">UserManager</span>&lt;<span style="font-weight: bold; text-decoration: underline;">ApplicationUser</span>&gt;&gt;();
+        <span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">roleNames</span> = { <span style="font-style: italic;">"Admin"</span>, <span style="font-style: italic;">"Store-Manager"</span>, <span style="font-style: italic;">"Member"</span> };
+        <span style="font-weight: bold; text-decoration: underline;">IdentityResult</span> <span style="font-weight: bold; font-style: italic;">roleResult</span>;
+        <span style="font-weight: bold;">foreach</span> (<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">roleName</span> <span style="font-weight: bold;">in</span> roleNames)
+        {
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">roleExist</span> = <span style="font-weight: bold;">await</span> RoleManager.<span style="font-weight: bold;">RoleExistsAsync</span>(roleName);
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">ensure that the role does not exist</span>
+            <span style="font-weight: bold;">if</span> (!roleExist)
+            {
+                <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">create the roles and seed them to the database:</span>
+                roleResult = <span style="font-weight: bold;">await</span> RoleManager.<span style="font-weight: bold;">CreateAsync</span>(<span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">IdentityRole</span>(roleName));
+            }
+        }
+        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">find the user with the admin email</span>
+        <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">_user</span> = <span style="font-weight: bold;">await</span> UserManager.<span style="font-weight: bold;">FindByEmailAsync</span>(<span style="font-style: italic;">"admin@email.com"</span>);
+
+       <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">check if the user exists</span>
+       <span style="font-weight: bold;">if</span>(_user == <span style="font-weight: bold; text-decoration: underline;">null</span>)
+       {
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Here you could create the super admin who will maintain the web app</span>
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">poweruser</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">ApplicationUser</span>
+            {
+                <span style="font-weight: bold; font-style: italic;">UserName</span> = <span style="font-style: italic;">"Admin"</span>,
+                <span style="font-weight: bold; font-style: italic;">Email</span> = <span style="font-style: italic;">"admin@email.com"</span>,
+            };
+            <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">adminPassword</span> = <span style="font-style: italic;">"p@$$w0rd"</span>;
+
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">createPowerUser</span> = <span style="font-weight: bold;">await</span> UserManager.<span style="font-weight: bold;">CreateAsync</span>(poweruser, adminPassword);
+            <span style="font-weight: bold;">if</span> (createPowerUser.Succeeded)
+            {
+                <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">here we tie the new user to the role</span>
+                <span style="font-weight: bold;">await</span> UserManager.<span style="font-weight: bold;">AddToRoleAsync</span>(poweruser, <span style="font-style: italic;">"Admin"</span>);
+
+            }
+       }
+    }
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org34fc21a" class="outline-4">
+<h4 id="org34fc21a">Handling Errors</h4>
+<div class="outline-text-4" id="text-org34fc21a">
+<p>
+There are several ways in which you can improve on this generic error page. A simple
+solution is to check for the HTTP status code 404 in the response. If found, you can
+redirect the control to a page that exists. The following code snippet illustrates how you
+can write the necessary code in the Configure method of the Startup class to redirect to the
+home page if a 404 error has occurred.
+</p>
+</div>
+<div id="outline-container-orgaae2f3a" class="outline-5">
+<h5 id="orgaae2f3a">Check <code>Response.StatueCode</code></h5>
+<div class="outline-text-5" id="text-orgaae2f3a">
+<div class="org-src-container">
+<pre class="src src-csharp">app.<span style="font-weight: bold;">Use</span>(<span style="font-weight: bold;">async</span> (<span style="font-weight: bold; text-decoration: underline;">context</span>, <span style="font-weight: bold; text-decoration: underline;">next</span>) =&gt;
+   {
+       <span style="font-weight: bold;">await</span> <span style="font-weight: bold;">next</span>();
+       <span style="font-weight: bold;">if</span> (context.Response.StatusCode == 404)
+       {
+           context.Request.Path = <span style="font-style: italic;">"/Home"</span>;
+           <span style="font-weight: bold;">await</span> <span style="font-weight: bold;">next</span>();
+       }
+   });
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org43e5e01" class="outline-5">
+<h5 id="org43e5e01">Using <code>UseStatuesCodePages</code> Middleware in ASP.NET MVC</h5>
+<div class="outline-text-5" id="text-org43e5e01">
+<div class="org-src-container">
+<pre class="src src-csharp">app.<span style="font-weight: bold;">UseStatusCodePages</span>();
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgaea8135" class="outline-5">
+<h5 id="orgaea8135"><code>UseStatusCodePagesWithReExecute</code></h5>
+<div class="outline-text-5" id="text-orgaea8135">
+<p>
+<code>HomeController</code> has this action method:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">IActionResult</span> <span style="font-weight: bold;">Error</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">statusCode</span>)
+{
+    <span style="font-weight: bold;">if</span> (statusCode == 404)
+    {
+        <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">statusFeature</span> = HttpContext.Features.<span style="font-weight: bold;">Get</span>&lt;<span style="font-weight: bold; text-decoration: underline;">IStatusCodeReExecuteFeature</span>&gt;();
+        <span style="font-weight: bold;">if</span> (statusFeature != <span style="font-weight: bold; text-decoration: underline;">null</span>)
+        {
+            log.<span style="font-weight: bold;">LogWarning</span>(<span style="font-style: italic;">"handled 404 for url: {OriginalPath}"</span>, statusFeature.OriginalPath);
+        }
+    }
+    <span style="font-weight: bold;">return</span> <span style="font-weight: bold;">View</span>(statusCode);
+}
+
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-csharp">[<span style="font-weight: bold;">Route</span>(<span style="font-style: italic;">"/Home/HandleError/{code:int}"</span>)]
+<span style="font-weight: bold;">public</span> IActionResult <span style="font-weight: bold;">HandleError</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">code</span>)
+{
+   <span style="font-weight: bold; text-decoration: underline;">ViewData</span>[<span style="font-style: italic;">"ErrorMessage"</span>] = $<span style="font-style: italic;">"Error occurred. The ErrorCode is: {code}"</span>;
+   <span style="font-weight: bold;">return</span> <span style="font-weight: bold;">View</span>(<span style="font-style: italic;">"~/Views/Shared/HandleError.cshtml"</span>);
+}
+</pre>
+</div>
+
+<p>
+And this view:
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold; text-decoration: underline;">@model</span> <span style="font-weight: bold; text-decoration: underline;">int</span>
+<span style="font-weight: bold; font-style: italic;">@</span>{
+    <span style="font-weight: bold;">switch</span> (Model)
+    {
+        <span style="font-weight: bold;">case</span> 400:
+            <span style="font-weight: bold; text-decoration: underline;">ViewData</span>[<span style="font-style: italic;">"Icon"</span>] = <span style="font-style: italic;">"fa fa-ban text-danger"</span>;
+            <span style="font-weight: bold; text-decoration: underline;">ViewData</span>[<span style="font-style: italic;">"Title"</span>] = <span style="font-style: italic;">"Bad Request"</span>;
+            <span style="font-weight: bold; text-decoration: underline;">ViewData</span>[<span style="font-style: italic;">"Description"</span>] = <span style="font-style: italic;">"Your browser sent a request that this server could not understand."</span>;
+            <span style="font-weight: bold;">break</span>;
+        <span style="font-weight: bold;">case</span> 401:
+            <span style="font-weight: bold; text-decoration: underline;">ViewData</span>[<span style="font-style: italic;">"Icon"</span>] = <span style="font-style: italic;">"fa fa-ban text-danger"</span>;
+            <span style="font-weight: bold; text-decoration: underline;">ViewData</span>[<span style="font-style: italic;">"Title"</span>] = <span style="font-style: italic;">"Unauthorized"</span>;
+            <span style="font-weight: bold; text-decoration: underline;">ViewData</span>[<span style="font-style: italic;">"Description"</span>] = <span style="font-style: italic;">"Sorry, but the page requires authentication."</span>;
+        <span style="font-weight: bold;">break</span>;
+        <span style="font-weight: bold;">case</span> 403:
+            <span style="font-weight: bold; text-decoration: underline;">ViewData</span>[<span style="font-style: italic;">"Icon"</span>] = <span style="font-style: italic;">"fa fa-exclamation-circle text-danger"</span>;
+            <span style="font-weight: bold; text-decoration: underline;">ViewData</span>[<span style="font-style: italic;">"Title"</span>] = <span style="font-style: italic;">"Forbidden"</span>;
+            <span style="font-weight: bold; text-decoration: underline;">ViewData</span>[<span style="font-style: italic;">"Description"</span>] = <span style="font-style: italic;">"Sorry, but you don't have permission to access this page."</span>;
+        <span style="font-weight: bold;">break</span>;
+        <span style="font-weight: bold;">case</span> 404:
+            <span style="font-weight: bold; text-decoration: underline;">ViewData</span>[<span style="font-style: italic;">"Icon"</span>] = <span style="font-style: italic;">"fa fa-exclamation-circle text-danger"</span>;
+            <span style="font-weight: bold; text-decoration: underline;">ViewData</span>[<span style="font-style: italic;">"Title"</span>] = <span style="font-style: italic;">"Page Not Found"</span>;
+            <span style="font-weight: bold; text-decoration: underline;">ViewData</span>[<span style="font-style: italic;">"Description"</span>] = <span style="font-style: italic;">"Sorry, but the page you were looking for can't be found."</span>;
+            <span style="font-weight: bold;">break</span>;
+        <span style="font-weight: bold;">case</span> 500:
+        <span style="font-weight: bold;">default</span>:
+            ViewData[<span style="font-style: italic;">"Icon"</span>] = <span style="font-style: italic;">"fa fa-exclamation-circle text-danger"</span>;
+            <span style="font-weight: bold; text-decoration: underline;">ViewData</span>[<span style="font-style: italic;">"Title"</span>] = <span style="font-style: italic;">"Unexpected Error"</span>;
+            <span style="font-weight: bold; text-decoration: underline;">ViewData</span>[<span style="font-style: italic;">"Description"</span>] = <span style="font-style: italic;">"Well, this is embarrassing. An error occurred while processing your request. Rest assured, this problem has been logged and hamsters have been released to fix the problem."</span>;
+            <span style="font-weight: bold;">break</span>;
+    }
+}
+
+&lt;<span style="font-weight: bold; text-decoration: underline;">div</span> <span style="font-weight: bold;">class</span>=<span style="font-style: italic;">"jumbotron text-center"</span>&gt;
+    &lt;header&gt;
+        &lt;h1&gt;&lt;span aria-hidden=<span style="font-style: italic;">"true"</span> <span style="font-weight: bold;">class</span>=<span style="font-style: italic;">"@ViewData["</span>Icon<span style="font-style: italic;">"]"</span>&gt;&lt;/span&gt; <span style="font-weight: bold; text-decoration: underline;">@ViewData</span>[<span style="font-style: italic;">"Title"</span>]&lt;/h1&gt;
+    &lt;/header&gt;
+    &lt;p&gt;<span style="font-weight: bold; text-decoration: underline;">@ViewData</span>[<span style="font-style: italic;">"Description"</span>]&lt;/p&gt;
+    &lt;<span style="font-weight: bold; text-decoration: underline;">a</span> <span style="font-weight: bold;">class</span>=<span style="font-style: italic;">"btn btn-primary btn-lg"</span> href=<span style="font-style: italic;">"@Url.RouteUrl("</span>/<span style="font-style: italic;">")"</span>&gt;&lt;span aria-hidden=<span style="font-style: italic;">"true"</span> <span style="font-weight: bold;">class</span>=<span style="font-style: italic;">"fa fa-home"</span>&gt;&lt;/span&gt; Site <span style="font-weight: bold; text-decoration: underline;">Home</span>&lt;/a&gt;
+&lt;/div&gt;
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgdb1460e" class="outline-4">
+<h4 id="orgdb1460e">PSQL Connection String</h4>
+<div class="outline-text-4" id="text-orgdb1460e">
+<p>
+Standard:
+</p>
+<div class="org-src-container">
+<pre class="src src-txt">Server=127.0.0.1;Port=5432;Database=myDataBase;User Id=myUsername;Password=myPassword;
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgce16e95" class="outline-4">
+<h4 id="orgce16e95">Filters in ASP.NET Core</h4>
+<div class="outline-text-4" id="text-orgce16e95">
+<p>
+Filters in ASP.NET Core allow code to run before or after specific stages in the request
+processing pipeline.
+</p>
+
+<p>
+There are some types of filters:
+</p>
+
+<ul class="org-ul">
+<li>Authorization filter
+<ul class="org-ul">
+<li>Run first.</li>
+<li>Determine whether the user is quthorized for the request.</li>
+<li>Short-circuit the pipeline if the request is not authorized.</li>
+</ul></li>
+<li>Resource filiter
+<ul class="org-ul">
+<li>Run after authorization.</li>
+<li><code>OnResourceExcuting</code> runs code before the rest of filiter pipline.</li>
+<li><code>OnResourceExcuting</code> runs code after the rest of the pipline has completed.</li>
+</ul></li>
+<li>Action filiter
+<ul class="org-ul">
+<li>Run immediately before and after an action method is called.</li>
+<li>Can change the arguments passed into an action.</li>
+<li>Can change the result returned from the action.</li>
+<li>Are not supported in Razor Pages.</li>
+</ul></li>
+</ul>
+
+
+<p>
+Synchronous filters run before and after their pipeline stage. For example,
+<code>OnActionExecuting</code> is called before the action method is called. <code>OnActionExecuted</code> is called
+after the action method returns:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">public</span> <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">SampleActionFilter</span> : <span style="font-weight: bold; text-decoration: underline;">IActionFilter</span>
+{
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">OnActionExecuting</span>(<span style="font-weight: bold; text-decoration: underline;">ActionExecutingContext</span> <span style="font-weight: bold; font-style: italic;">context</span>)
+    {
+        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Do something before the action executes.</span>
+    }
+
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">OnActionExecuted</span>(<span style="font-weight: bold; text-decoration: underline;">ActionExecutedContext</span> <span style="font-weight: bold; font-style: italic;">context</span>)
+    {
+        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Do something after the action executes.</span>
+    }
+}
+</pre>
+</div>
+
+<p>
+Implement either the synchronous or the async version of a filter interface, <b>not both</b>. The
+runtime checks first to see if the filter implements the async interface, and if so, it
+calls that. If not, it calls the synchronous interface's method(s). If both asynchronous and
+synchronous interfaces are implemented in one class, <span class="underline">only the async method is called</span>. When
+using abstract classes like <code>ActionFilterAttribute</code>, override only the synchronous methods or
+the asynchronous methods for each filter type.
+</p>
+
+<p>
+ASP.NET Core includes built-in attribute-based filters that can be subclassed and
+customized. For example, the following result filter adds a header to the response:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">public</span> <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">ResponseHeaderAttribute</span> : <span style="font-weight: bold; text-decoration: underline;">ActionFilterAttribute</span>
+{
+    <span style="font-weight: bold;">private</span> <span style="font-weight: bold;">readonly</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">_name</span>;
+    <span style="font-weight: bold;">private</span> <span style="font-weight: bold;">readonly</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">_value</span>;
+
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold;">ResponseHeaderAttribute</span>(<span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">name</span>, <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; text-decoration: underline;">value</span>) =&gt;
+        (_name, _value) = (name, <span style="font-weight: bold; text-decoration: underline;">value</span>);
+
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold;">override</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">OnResultExecuting</span>(<span style="font-weight: bold; text-decoration: underline;">ResultExecutingContext</span> <span style="font-weight: bold; font-style: italic;">context</span>)
+    {
+        context.HttpContext.Response.Headers.<span style="font-weight: bold;">Add</span>(_name, _value);
+
+        <span style="font-weight: bold;">base</span>.<span style="font-weight: bold;">OnResultExecuting</span>(context);
+    }
+}
+</pre>
+</div>
+
+
+<p>
+Attributes allow filters to accept arguments, as shown in the preceding example. Apply the
+ResponseHeaderAttribute to a controller or action method and specify the name and value of
+the HTTP header:
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp">[<span style="font-weight: bold;">ResponseHeader</span>(<span style="font-style: italic;">"Filter-Header"</span>, <span style="font-style: italic;">"Filter Value"</span>)]
+<span style="font-weight: bold;">public</span> <span style="font-weight: bold;">class</span> ResponseHeaderController : <span style="font-weight: bold; text-decoration: underline;">ControllerBase</span>
+{
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">IActionResult</span> <span style="font-weight: bold;">Index</span>() =&gt;
+        <span style="font-weight: bold;">Content</span>(<span style="font-style: italic;">"Examine the response headers using the F12 developer tools."</span>);
+
+    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">...</span>
+</pre>
+</div>
+
+<p>
+A filter can be added to the pipeline at one of three scopes:
+</p>
+
+<ul class="org-ul">
+<li>Using an attribute on a controller or Razor Page.</li>
+<li>Using an attribute on a controller action. Filter attributes cannot be applied to Razor Pages handler methods.</li>
+<li><p>
+Globally for all controllers, actions, and Razor Pages as shown in the following code:
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">builder</span> = WebApplication.<span style="font-weight: bold;">CreateBuilder</span>(args);
+
+builder.Services.<span style="font-weight: bold;">AddControllersWithViews</span>(options =&gt;
+{
+    options.Filters.<span style="font-weight: bold;">Add</span>&lt;<span style="font-weight: bold; text-decoration: underline;">GlobalSampleActionFilter</span>&gt;();
+});
+</pre>
+</div></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org3816bf0" class="outline-4">
+<h4 id="org3816bf0">Block Filter</h4>
+<div class="outline-text-4" id="text-org3816bf0">
+<p>
+You could use a filter to block requests to the register page. This example filter redirects
+the request to the root path, but you could redirect to a page informing the user about the
+disabled registration. This way you are only adding an attribute without changing any
+registration code.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">Microsoft</span>.<span style="font-weight: bold; font-style: italic;">AspNetCore</span>.<span style="font-weight: bold; font-style: italic;">Mvc</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">Microsoft</span>.<span style="font-weight: bold; font-style: italic;">AspNetCore</span>.<span style="font-weight: bold; font-style: italic;">Mvc</span>.<span style="font-weight: bold; font-style: italic;">Filters</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">MySite</span>.<span style="font-weight: bold; font-style: italic;">Filters</span>
+{
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">BlockFilter</span> : <span style="font-weight: bold; text-decoration: underline;">IAuthorizationFilter</span>
+    {
+
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold;">BlockFilter</span>()
+        {
+        }
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">OnAuthorization</span>(<span style="font-weight: bold; text-decoration: underline;">AuthorizationFilterContext</span> <span style="font-weight: bold; font-style: italic;">context</span>)
+        {
+            <span style="font-weight: bold;">if</span> (context == <span style="font-weight: bold; text-decoration: underline;">null</span>)
+                <span style="font-weight: bold;">throw</span> <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">ArgumentNullException</span>(<span style="font-weight: bold;">nameof</span>(<span style="font-weight: bold; font-style: italic;">context</span>));
+
+            context.Result = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">RedirectResult</span>(<span style="font-style: italic;">"/"</span>); <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Redirect to you desired page</span>
+        }
+    }
+
+    [<span style="font-weight: bold;">AttributeUsage</span>(AttributeTargets.Class | AttributeTargets.Method)]
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold;">class</span> BlockAttribute : <span style="font-weight: bold; text-decoration: underline;">TypeFilterAttribute</span>
+    {
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold;">BlockAttribute</span>() : <span style="font-weight: bold;">base</span>(<span style="font-weight: bold;">typeof</span>(BlockFilter))
+        {
+        }
+    }
+}
+</pre>
+</div>
+<div class="org-src-container">
+<pre class="src src-csharp">services.<span style="font-weight: bold;">AddControllersWithViews</span>(options =&gt;
+{
+    options.Filters.<span style="font-weight: bold;">Add</span>(<span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">BlockAttribute</span>());
+});
+
+services.<span style="font-weight: bold;">AddRazorPages</span>();
+</pre>
+</div>
+<div class="org-src-container">
+<pre class="src src-csharp">[<span style="font-weight: bold; font-style: italic;">AllowAnonymous</span>]
+[<span style="font-weight: bold; font-style: italic;">Block</span>]
+<span style="font-weight: bold;">public</span> <span style="font-weight: bold;">class</span> RegisterModel : <span style="font-weight: bold; text-decoration: underline;">PageModel</span>
+{
+  ....
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org3a28029" class="outline-4">
+<h4 id="org3a28029">Disable Page By Routing</h4>
+<div class="outline-text-4" id="text-org3a28029">
+<div class="org-src-container">
+<pre class="src src-csharp">app.<span style="font-weight: bold;">UseEndpoints</span>(endpoints =&gt;
+    {
+        endpoints.<span style="font-weight: bold;">MapGet</span>(<span style="font-style: italic;">"/Identity/Account/Register"</span>, context =&gt; Task.Factory.<span style="font-weight: bold;">StartNew</span>(() =&gt; context.Response.<span style="font-weight: bold;">Redirect</span>(<span style="font-style: italic;">"/Identity/Account/Login"</span>, <span style="font-weight: bold; text-decoration: underline;">true</span>, <span style="font-weight: bold; text-decoration: underline;">true</span>)));
+        endpoints.<span style="font-weight: bold;">MapPost</span>(<span style="font-style: italic;">"/Identity/Account/Register"</span>, context =&gt; Task.Factory.<span style="font-weight: bold;">StartNew</span>(() =&gt; context.Response.<span style="font-weight: bold;">Redirect</span>(<span style="font-style: italic;">"/Identity/Account/Login"</span>, <span style="font-weight: bold; text-decoration: underline;">true</span>, <span style="font-weight: bold; text-decoration: underline;">true</span>)));
+    });
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org45159c3" class="outline-4">
+<h4 id="org45159c3">EF Add Unique Key</h4>
+<div class="outline-text-4" id="text-org45159c3">
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">MyContext</span> : <span style="font-weight: bold; text-decoration: underline;">DbContext</span>
+{
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">DbSet</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Person</span>&gt; <span style="font-weight: bold; font-style: italic;">People</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+    <span style="font-weight: bold;">protected</span> <span style="font-weight: bold;">override</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">OnModelCreating</span>(<span style="font-weight: bold; text-decoration: underline;">ModelBuilder</span> <span style="font-weight: bold; font-style: italic;">modelBuilder</span>)
+    {
+        modelBuilder.<span style="font-weight: bold;">Entity</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Person</span>&gt;()
+            .<span style="font-weight: bold;">HasIndex</span>(p =&gt; <span style="font-weight: bold;">new</span> { <span style="font-weight: bold; font-style: italic;">p.FirstName</span>, <span style="font-weight: bold; font-style: italic;">p.LastName</span> })
+            .<span style="font-weight: bold;">IsUnique</span>(<span style="font-weight: bold; text-decoration: underline;">true</span>);
+    }
+}
+
+<span style="font-weight: bold;">public</span> <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Person</span>
+{
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">PersonId</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">FirstName</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">LastName</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+}
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1ef5dc9" class="outline-4">
+<h4 id="org1ef5dc9">Multicheck boxes</h4>
+<div class="outline-text-4" id="text-org1ef5dc9">
+<p>
+<b>Controller:</b>
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp">    <span style="font-weight: bold;">public</span> <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">StudentsController</span> : <span style="font-weight: bold; text-decoration: underline;">Controller</span>
+            {
+                <span style="font-weight: bold;">private</span> <span style="font-weight: bold;">readonly</span> <span style="font-weight: bold; text-decoration: underline;">CheckBoxListDbConetxt</span> <span style="font-weight: bold; font-style: italic;">_dbConetxt</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">CheckBoxListDbConetxt</span>();
+
+
+        [<span style="font-weight: bold; font-style: italic;">HttpGet</span>]
+        <span style="font-weight: bold;">public</span> IActionResult <span style="font-weight: bold;">CreateStudent</span>()
+                {
+
+                    ViewBag.AllCourses = _dbConetxt.Courses.<span style="font-weight: bold;">ToList</span>();
+                    <span style="font-weight: bold;">return</span> <span style="font-weight: bold;">View</span>();
+                }
+
+                <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">POST: Students/Create</span>
+                [<span style="font-weight: bold; font-style: italic;">HttpPost</span>]
+                [<span style="font-weight: bold; font-style: italic;">ValidateAntiForgeryToken</span>]
+                <span style="font-weight: bold;">public</span> IActionResult <span style="font-weight: bold;">CreateStudent</span>(<span style="font-weight: bold; text-decoration: underline;">Student</span> <span style="font-weight: bold; font-style: italic;">student</span>, <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">selectedCourses</span>)
+                {
+                    <span style="font-weight: bold;">if</span> (ModelState.IsValid)
+                    {
+                        <span style="font-weight: bold;">if</span> (selectedCourses != <span style="font-weight: bold; text-decoration: underline;">null</span>)
+                        {
+                            <span style="font-weight: bold;">foreach</span> (<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">item</span> <span style="font-weight: bold;">in</span> selectedCourses)
+                            {
+                                <span style="font-weight: bold; text-decoration: underline;">Course</span> <span style="font-weight: bold; font-style: italic;">course</span> = _dbConetxt.Courses.<span style="font-weight: bold;">Find</span>(item);
+                                student.Courses.<span style="font-weight: bold;">Add</span>(course);
+                            }
+                        }
+
+                        _dbConetxt.Students.<span style="font-weight: bold;">Add</span>(student);
+                        _dbConetxt.<span style="font-weight: bold;">SaveChanges</span>();
+                        <span style="font-weight: bold;">return</span> <span style="font-weight: bold;">RedirectToAction</span>(<span style="font-style: italic;">"Index"</span>);
+                    }
+
+                    ViewBag.AllCourses = _dbConetxt.Courses.<span style="font-weight: bold;">ToList</span>();
+                    <span style="font-weight: bold;">return</span> <span style="font-weight: bold;">View</span>(student);
+                }
+}
+</pre>
+</div>
+<p>
+<b>View:</b>
+</p>
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span style="font-weight: bold;">div</span> <span style="font-weight: bold; font-style: italic;">class</span>=<span style="font-style: italic;">"form-group"</span>&gt;
+            &lt;<span style="font-weight: bold;">div</span> <span style="font-weight: bold; font-style: italic;">class</span>=<span style="font-style: italic;">"col-md-2 input-label"</span>&gt;
+                &lt;<span style="font-weight: bold;">label</span> <span style="font-weight: bold; font-style: italic;">class</span>=<span style="font-style: italic;">"control-label"</span>&gt;Course&lt;/<span style="font-weight: bold;">label</span>&gt;
+            &lt;/<span style="font-weight: bold;">div</span>&gt;
+
+            &lt;<span style="font-weight: bold;">div</span> <span style="font-weight: bold; font-style: italic;">class</span>=<span style="font-style: italic;">"col-md-10 input-box"</span>&gt;
+                &lt;<span style="font-weight: bold;">div</span> <span style="font-weight: bold; font-style: italic;">class</span>=<span style="font-style: italic;">"form-control"</span>&gt;
+                    @{
+                        var count = Enumerable.Count(ViewBag.AllCourses);
+                        foreach (var item in ViewBag.AllCourses)
+                        {
+                            &lt;<span style="font-weight: bold;">input</span> <span style="font-weight: bold; font-style: italic;">type</span>=<span style="font-style: italic;">"checkbox"</span> <span style="font-weight: bold; font-style: italic;">name</span>=<span style="font-style: italic;">"selectedCourses"</span> <span style="font-weight: bold; font-style: italic;">value</span>=<span style="font-style: italic;">"@item.Id"</span> /&gt;
+                            @item.Name
+                            if (--count &gt; 0)
+                            {
+                                @:|
+                        }
+                        }
+                    }
+
+&lt;/<span style="font-weight: bold;">div</span>&gt;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc89a223" class="outline-4">
+<h4 id="orgc89a223">Multi Implementation for Same Interface, Using Services Resolver</h4>
+<div class="outline-text-4" id="text-orgc89a223">
+<p>
+First declare shared delegate:
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">public</span> <span style="font-weight: bold;">delegate</span> <span style="font-weight: bold; text-decoration: underline;">IMetaCollector</span>? <span style="font-weight: bold;">ServiceResolver</span>(<span style="font-weight: bold; text-decoration: underline;">Services</span> <span style="font-weight: bold; font-style: italic;">key</span>);
+</pre>
+</div>
+<p>
+Second, add your services:
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp">builder.Services.<span style="font-weight: bold;">AddSingleton</span>&lt;<span style="font-weight: bold; text-decoration: underline;">MetaFacebook</span>&gt;();
+builder.Services.<span style="font-weight: bold;">AddSingleton</span>&lt;<span style="font-weight: bold; text-decoration: underline;">MetaTwitter</span>&gt;();
+builder.Services.<span style="font-weight: bold;">AddSingleton</span>&lt;<span style="font-weight: bold; text-decoration: underline;">MetaInstagram</span>&gt;();
+</pre>
+</div>
+<p>
+In this case, all of them implements IMetaCollector interface. Now Implement the services
+resolver;
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp">builder.Services.AddSingleton&lt;Helper.ServiceResolver&gt;(provider =&gt; key =&gt;
+{
+    <span style="font-weight: bold;">return</span> key <span style="font-weight: bold;">switch</span>
+    {
+        Services.Facebook =&gt; provider.<span style="font-weight: bold;">GetService</span>&lt;<span style="font-weight: bold; text-decoration: underline;">MetaFacebook</span>&gt;(),
+        Services.Twitter =&gt; <span style="font-weight: bold;">throw</span> <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">NotImplementedException</span>(),
+        Services.Instagram =&gt; <span style="font-weight: bold;">throw</span> <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">NotImplementedException</span>(),
+        _ =&gt; <span style="font-weight: bold;">throw</span> <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">KeyNotFoundException</span>()
+    };
+});
+</pre>
+</div>
+<p>
+To consume it:
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org8b3bda2" class="outline-3">
+<h3 id="org8b3bda2">Entity Framework</h3>
+<div class="outline-text-3" id="text-org8b3bda2">
+</div>
+<div id="outline-container-org664ffb1" class="outline-4">
+<h4 id="org664ffb1">Update Entity</h4>
+<div class="outline-text-4" id="text-org664ffb1">
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">public</span> <span style="font-weight: bold;">async</span> <span style="font-weight: bold; text-decoration: underline;">Task</span>&lt;<span style="font-weight: bold; text-decoration: underline;">bool</span>&gt; <span style="font-weight: bold;">Update</span>(<span style="font-weight: bold; text-decoration: underline;">MyObject</span> <span style="font-weight: bold; font-style: italic;">item</span>)
+{
+    Context.<span style="font-weight: bold;">Entry</span>(<span style="font-weight: bold;">await</span> Context.MyDbSet.<span style="font-weight: bold;">FirstOrDefaultAsync</span>(x =&gt; x.Id == item.Id)).CurrentValues.<span style="font-weight: bold;">SetValues</span>(item);
+    <span style="font-weight: bold;">return</span> (<span style="font-weight: bold;">await</span>   Context.<span style="font-weight: bold;">SaveChangesAsync</span>()) &gt; 0;
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgaa20e02" class="outline-2">
+<h2 id="orgaa20e02">Regex</h2>
+<div class="outline-text-2" id="text-orgaa20e02">
+<p>
+Match everything except for specified strings
+</p>
+<div class="org-src-container">
+<pre class="src src-regex">^(?!.*(red|green|blue))
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-06-01 Thu 01:34.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

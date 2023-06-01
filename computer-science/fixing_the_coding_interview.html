@@ -1,0 +1,2126 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Fixing The Coding Interview</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Fixing The Coding Interview</h1>
+</header><div class="PREVIEW" id="orgaba5495">
+<p>
+We've cracked more than enough.
+</p>
+
+</div>
+
+<p>
+I don't like to see people mistreat algorithms' science as an interview
+resource to 'prepare' for these interviews, this IMO offend to this science.
+</p>
+
+<p>
+Many years ago, big companies started asking simple algorithm questions as a
+language agnostic way to Guage candidates coding and critical thinking ability.
+Then a book was published called 'cracking the coding interview' . This was a
+beginning of Era where candidates started to 'prepare' for these interview. As
+average candidate got better, and the questions were made openly available, the
+interviews had to be evolved and made harder and harder. This is where we end up
+after all these years. (killwish1991).
+</p>
+
+<p>
+So it is being inevitable anyway to deeply study some algorithms to get a fine
+job these days but I don't want to mismatch my algorithms posts to those that
+are supposed to help people in the tech industry, thus I decided to dedicate
+this page to every resource and knowledge that I think will help you.
+</p>
+
+<div id="outline-container-org177b53f" class="outline-2">
+<h2 id="org177b53f">Algorithms Analysis</h2>
+<div class="outline-text-2" id="text-org177b53f">
+<p>
+The problem that made us think of asymptotic analysis should be known to you; 1.
+No time to test each algorithm manually. 2. No guarantee that the algorithms are
+written in their best format. 3. Test cases might be more suitable for some
+algorithms than others.
+</p>
+
+<p>
+These problems can often be avoided by using asymptotic analysis. The asymptotic
+analysis measures the efficiency of an algorithm, or its implementation as a
+program, as the input size becomes large. It is an estimating technique and does
+not tell us anything about the relative merits of two programs where one is
+always “slightly faster” than the other. However, asymptotic analysis has proved
+useful to computer scientists who must determine if a particular algorithm is
+worth considering for implementation.
+</p>
+
+<p>
+Of primary consideration when estimating an algorithm’s performance is the
+number of basic operations required by the algorithm to process an input of a
+certain size. The terms “basic operations” and “size” are both rather vague and
+depend on the algorithm being analyzed.  Size is often the number of inputs
+processed. For example, when comparing sorting algorithms, the size of the
+problem is typically measured by the number of records to be sorted. A basic
+operation must have the property that its time to complete does not depend on
+the particular values of its operands. Adding or comparing two integer variables
+are examples of basic operations in most programming languages. Summing the
+contents of an array containing \(n\) integers is not, because the cost depends on
+the value of \(n\) (i.e., the size of the input).
+</p>
+
+<p>
+Consider a simple algorithm to solve the problem of finding the largest value in
+an array of \(n\) integers. The algorithm looks at each integer in turn, saving
+the position of the largest value is seen so far. This algorithm is called
+the largest-value sequential search and is illustrated by the following
+function:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Return position of largest value in "A" of size "n"</span>
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">largest</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">A</span>[], <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">n</span>) {
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">currlarge</span> = 0; <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Holds largest element position</span>
+<span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">i</span>=1; i&lt;n; i++)
+<span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">For each array element</span>
+<span style="font-weight: bold;">if</span> (A[currlarge] &lt; A[i]) <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">if A[i] is larger</span>
+currlarge = i;
+<span style="font-weight: bold; font-style: italic;">//</span>
+remember its position
+<span style="font-weight: bold;">return</span> currlarge;
+<span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Return largest position</span>
+}
+</pre>
+</div>
+
+<p>
+We often express the time \(T\) to run the algorithm as a function of \(n\), written
+as \(T(n)\).  We will always assume \(T(n)\) is a non-negative value.
+</p>
+
+<p>
+Let us call \(c\) the amount of time required to compare two integers in the
+function largest.  We do not care right now what the precise value of \(c\) might
+be. Nor are we concerned with the time required to increment variable \(i\)
+because this must be done for each value in the array, or the time for the
+actual assignment when a larger value is found, or the little bit of extra time
+taken to initialize <code>currlarge</code>. We just want a reasonable approximation for the
+time taken to execute the algorithm. The total time to run largest is therefore
+approximately \(c \cdot n\), because we must make \(n\) comparisons, with each
+comparison costing \(c\) time. We say that function largest (and by extension, the
+largest-value sequential search algorithm for any typical implementation) has a
+running time expressed by the equation
+</p>
+
+\begin{equation*} $T(n) = c \cdot n$ \end{equation*}
+
+
+<div class="org-src-container">
+<pre class="src src-c">sum = 0;
+<span style="font-weight: bold;">for</span> (i=1; i&lt;=n; i++)
+<span style="font-weight: bold;">for</span> (j=1; j&lt;=n; j++)
+sum++;
+</pre>
+</div>
+
+<p>
+What is the running time for this code fragment? Clearly it takes longer to run
+when n is larger. The basic operation in this example is the increment operation
+for variable sum. We can assume that incrementing takes constant time; call this
+time \(c_2\) . (We can ignore the time required to initialize sum, and to
+increment the loop counters \(i\) and \(j\). In practice, these costs can safely be
+bundled into time \(c_2\)) The total number of increment operations is \(n^2\) .
+Thus, we say that the running time is \(T(n) = c^2 \cdot n^2\) .
+</p>
+
+
+<p>
+When you buy a faster computer or a faster compiler, the new problem size that
+can be run in a given amount of time for a given growth rate is larger by the
+same factor, regardless of the constant on the running-time equation. The time
+curves for two algorithms with different growth rates still cross, regardless of
+their running-time equation constants. For these reasons, we usually ignore the
+constants when we want an estimate of the growth rate for the running time or
+other resource requirements of an algorithm. This simplifies the analysis and
+keeps us thinking about the most important aspect: the growth rate. This is
+called asymptotic algorithm analysis. To be precise, asymptotic analysis refers
+to the study of an algorithm as the input size “gets big” or reaches a limit (in
+the calculus sense).  However, it has proved to be so useful to ignore all
+constant factors that asymptotic analysis is used for most algorithm
+comparisons.
+</p>
+</div>
+
+<div id="outline-container-org0eda321" class="outline-3">
+<h3 id="org0eda321">Upper Bounds</h3>
+<div class="outline-text-3" id="text-org0eda321">
+<p>
+Several terms are used to describe the running-time equation for an algorithm.
+These terms — and their associated symbols — indicate precisely what aspect of
+the algorithm’s behavior is being described. One is the upper bound for the
+growth of the algorithm’s running time.  It indicates the upper or highest
+growth rate that the algorithm can have.
+</p>
+
+<p>
+Because the phrase “has an upper bound to its growth rate of \(f(n)\)” is long and
+often used when discussing algorithms, we adopt a special notation, called
+big-Oh notation.
+</p>
+
+<p>
+If the upper bound for an algorithm’s growth rate (for, say, the worst case) is
+\(f(n)\), then we would write that this algorithm is “in the set $O(f (n))$in the
+worst case” (or just “in \(O(f (n))\) in the worst case”). For example, if \(n^2\)
+grows as fast as \(T(n)\) (the running time of our algorithm) for the worst-case
+input, we would say the algorithm is “in \(O(n^2)\) in the worst case.”
+</p>
+</div>
+</div>
+<div id="outline-container-org22cf096" class="outline-3">
+<h3 id="org22cf096">Lower Bounds</h3>
+<div class="outline-text-3" id="text-org22cf096">
+<p>
+Big-Oh notation describes an upper bound. In other words, big-Oh notation states
+a claim about the greatest amount of some resource (usually time) that is
+required by an algorithm for some class of inputs of size \(n\) (typically the
+worst such input, the average of all possible inputs, or the best such input).
+</p>
+
+<p>
+Similar notation is used to describe the least amount of a resource that an
+algorithm needs for some class of input. Like big-Oh notation, this is a measure
+of the algorithm’s growth rate. Like big-Oh notation, it works for any resource,
+but we most often measure the least amount of time required. And again, like
+big-Oh notation, we are measuring the resource required for some particular
+class of inputs: the worst-, average-, or best-case input of size \(n\).
+</p>
+
+<p>
+The lower bound for an algorithm (or a problem, as explained later) is denoted
+by the symbol \(\Omega\), pronounced “big-Omega” or just “Omega.” The following
+defi- nition for \(\Omega\) is symmetric with the definition of big-Oh.
+</p>
+</div>
+</div>
+<div id="outline-container-org4011507" class="outline-3">
+<h3 id="org4011507">\(\Theta\\) Notation</h3>
+<div class="outline-text-3" id="text-org4011507">
+<p>
+The definitions for big-Oh and \(\Omega\) give us ways to describe the upper bound
+for an algorithm (if we can find an equation for the maximum cost of a
+particular class of inputs of size \(n\)) and the lower bound for an algorithm (if
+we can find an equation for the minimum cost for a particular class of inputs of
+size \(n\)). When the upper and lower bounds are the same within a constant
+factor, we indicate this by using \(\Theta\) (big-Theta) notation. An algorithm is
+said to be \(\Theta(h(n))\) if it is in \(O(h(n))\) and \(\Omega (h(n))\)
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8351011" class="outline-2">
+<h2 id="org8351011">Algorithms for Coding Interviews</h2>
+<div class="outline-text-2" id="text-org8351011">
+</div>
+<div id="outline-container-org738e41c" class="outline-3">
+<h3 id="org738e41c">Backtracking</h3>
+<div class="outline-text-3" id="text-org738e41c">
+<p>
+It is a class of Algorithms for finding solutions to some computational problems,
+notably constraint satisfaction problems, that incrementally builds candidates to the
+solutions, and abandons a candidate ("backtracks") as soon as it determines that the
+candidate cannot possibly be completed to a valid solution.The classic textbook example of
+the use of backtracking is the eight queens puzzle, that asks for all arrangements of eight
+chess queens on a standard chessboard so that no queen attacks any other.
+</p>
+
+<div class="PREVIEW" id="orga3e7dc4">
+<p>
+In the common backtracking approach, the partial candidates are arrangements of k queens in
+the first k rows of the board, all in different rows and columns. Any partial solution that
+contains two mutually attacking queens can be abandoned. Backtracking can be applied only
+for problems which admit the concept of a "partial candidate solution" and a relatively
+quick test of whether it can possibly be completed to a valid solution.
+</p>
+
+</div>
+
+
+<p>
+It is useless, for example, for locating a given value in an unordered table. When it is
+applicable, however, backtracking is often much faster than brute-force enumeration of all
+complete candidates, since it can eliminate many candidates with a single test. Backtracking
+is an important tool for solving constraint satisfaction problems, such as crosswords,
+verbal arithmetic, Sudoku, and many other puzzles. It is often the most convenient technique
+for parsing, for the knapsack problem and other combinatorial optimization problems. It is
+also the basis of the so-called logic programming languages such as Icon, Planner and
+Prolog. Backtracking depends on user-given "black box procedures" that define the problem to
+be solved, the nature of the partial candidates, and how they are extended into complete
+candidates.
+</p>
+
+<p>
+Here is the general implementation for it:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">backtrack</span>(arguments) {
+        <span style="font-weight: bold;">if</span> (condition == <span style="font-weight: bold; text-decoration: underline;">true</span>) { <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Condition when we should stop our exploration.</span>
+                result.push_back(current);
+                <span style="font-weight: bold;">return</span>;
+        }
+        <span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">i</span> = num; i &lt;= last; i++) {
+                current.push_back(i); <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Explore candidate.</span>
+                backtrack(arguments);
+                current.pop_back();   <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Abandon candidate.</span>
+        }
+}
+</pre>
+</div>
+
+<p>
+There is somethings to keep in mind before do backtracking, that is:
+</p>
+
+<ol class="org-ol">
+<li><b>Permutation</b>: can be thought of number of ways to order some input.
+<ul class="org-ul">
+<li>Example: permutations of ABCD, taken 3 at a time (24 variants): ABC, ACB, BAC, BCA, &#x2026;</li>
+</ul></li>
+<li><b>Combination</b>: can be thought as the number of ways of selecting from some input.
+<ul class="org-ul">
+<li>Example: combination of ABCD, taken 3 at a time (4 variants): ABC, ABD, ACD, and BCD.</li>
+</ul></li>
+<li><b>Subset</b>: can be thought as a selection of objects form the original set.
+<ul class="org-ul">
+<li>Example: subset of ABCD: 'A', 'B', 'C', 'D,' 'A,B' , 'A,C', 'A,D', 'B,C', 'B,D', 'C,D',
+'A,B,C', &#x2026;</li>
+</ul></li>
+</ol>
+
+<p>
+From now let's start to apply this algorithm to solve some backtracking problems. <a href="https://leetcode.com/problems/permutations/">46.
+Permutations.</a> Any backtracking problem have the same main characteristics:
+</p>
+
+<ol class="org-ol">
+<li>There is a decisions you have to make; causes a decision tree.</li>
+<li>You try a decision.</li>
+<li>You undo your trail (and record its results if needed).</li>
+</ol>
+</div>
+
+<div id="outline-container-org10fc5c1" class="outline-4">
+<h4 id="org10fc5c1">Permutation</h4>
+<div class="outline-text-4" id="text-org10fc5c1">
+<p>
+Let's apply this on the permutation problem:
+</p>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Solution</span> {
+<span style="font-weight: bold;">public</span>:
+  <span style="font-weight: bold; text-decoration: underline;">map</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>, <span style="font-weight: bold; text-decoration: underline;">bool</span>&gt; <span style="font-weight: bold; font-style: italic;">used</span>;
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">n</span>;
+  <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">backtrack</span>(<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; &amp;<span style="font-weight: bold; font-style: italic;">nums</span>, <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; &amp;<span style="font-weight: bold; font-style: italic;">current</span>,
+                 <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt; &amp;<span style="font-weight: bold; font-style: italic;">result</span>) {
+    <span style="font-weight: bold;">if</span> (current.size() == nums.size()) {
+      result.push_back(current);
+      <span style="font-weight: bold;">return</span>;
+    }
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">i</span> = 0; i &lt; n; i++) {
+      <span style="font-weight: bold;">if</span> (!used[i]) {
+        current.push_back(<span style="font-weight: bold; text-decoration: underline;">nums</span>[i]);
+        used[i] = 1;
+        backtrack(<span style="font-weight: bold; text-decoration: underline;">nums</span>, current, result);
+        used[i] = 0;
+        current.pop_back();
+      }
+    }
+  }
+  <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt; <span style="font-weight: bold;">permute</span>(<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; &amp;<span style="font-weight: bold; font-style: italic;">nums</span>) {
+    <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt; <span style="font-weight: bold; font-style: italic;">res</span>;
+    <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">curren</span>;
+    n = nums.size();
+    backtrack(<span style="font-weight: bold; text-decoration: underline;">nums</span>, curren, res);
+    <span style="font-weight: bold;">return</span> res;
+  }
+};
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orga92e2c3" class="outline-4">
+<h4 id="orga92e2c3">Letter Combinations of a Phone Number</h4>
+<div class="outline-text-4" id="text-orga92e2c3">
+<p>
+<a href="https://leetcode.com/problems/letter-combinations-of-a-phone-number/">This</a> is very similar problem, the only difference is that we are not going to need to track
+visited indices.
+</p>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Solution</span> {
+  <span style="font-weight: bold; text-decoration: underline;">map</span>&lt;<span style="font-weight: bold; text-decoration: underline;">char</span>, <span style="font-weight: bold; text-decoration: underline;">string</span>&gt; <span style="font-weight: bold; font-style: italic;">mp</span>{
+      {<span style="font-style: italic;">'2'</span>, <span style="font-style: italic;">"abc"</span>}, {<span style="font-style: italic;">'3'</span>, <span style="font-style: italic;">"def"</span>},  {<span style="font-style: italic;">'4'</span>, <span style="font-style: italic;">"ghi"</span>}, {<span style="font-style: italic;">'5'</span>, <span style="font-style: italic;">"jkl"</span>},
+      {<span style="font-style: italic;">'6'</span>, <span style="font-style: italic;">"mno"</span>}, {<span style="font-style: italic;">'7'</span>, <span style="font-style: italic;">"pqrs"</span>}, {<span style="font-style: italic;">'8'</span>, <span style="font-style: italic;">"tuv"</span>}, {<span style="font-style: italic;">'9'</span>, <span style="font-style: italic;">"wxyz"</span>},
+  };
+  <span style="font-weight: bold; text-decoration: underline;">map</span>&lt;<span style="font-weight: bold; text-decoration: underline;">char</span>, <span style="font-weight: bold; text-decoration: underline;">bool</span>&gt; <span style="font-weight: bold; font-style: italic;">used</span>;
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">n</span>;
+
+  <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">backtrack</span>(<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">string</span>&gt; &amp;<span style="font-weight: bold; font-style: italic;">res</span>, <span style="font-weight: bold; text-decoration: underline;">string</span> &amp;<span style="font-weight: bold; font-style: italic;">dgts</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">st</span>,
+                 <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">current</span> = <span style="font-style: italic;">""</span>) {
+    <span style="font-weight: bold;">if</span> (current.size() == n) {
+      res.push_back(current);
+      <span style="font-weight: bold;">return</span>;
+    }
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">i</span> = 0; i &lt; mp[dgts[st]].size(); i++) {
+      current.push_back(<span style="font-weight: bold; text-decoration: underline;">mp</span>[dgts[st]][i]);
+      backtrack(res, dgts, st + 1, current);
+      current.pop_back();
+    }
+  }
+
+<span style="font-weight: bold;">public</span>:
+  <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">string</span>&gt; <span style="font-weight: bold;">letterCombinations</span>(<span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">digits</span>) {
+    <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">string</span>&gt; <span style="font-weight: bold; font-style: italic;">res</span>;
+    n = digits.size();
+    <span style="font-weight: bold;">if</span> (!n)
+      <span style="font-weight: bold;">return</span> res;
+    backtrack(res, digits, 0);
+    <span style="font-weight: bold;">return</span> res;
+  }
+};
+</pre>
+</div>
+
+<p>
+If you are still confused try to contemplate the mentioned 3 characteristics and apply them.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org419e024" class="outline-3">
+<h3 id="org419e024">Binary Trees</h3>
+<div class="outline-text-3" id="text-org419e024">
+<p>
+<i>(Further, deep reading: <a href="graph.html">Representations, Implementations and Algorithms of
+Graphs (and Trees)</a>)</i>
+</p>
+
+<p>
+Let's start with the some definitions the always causes confusionn these types
+of algorithms; The <b>depth</b> of a node \(M\) in the tree is the length of the path
+from the root of the tree to M.  The height of a tree is <b>one more than</b> the
+depth of <b>the deepest node</b> in the tree.  All nodes of depth \(d\) are at level
+\(d\) in the tree. The root is the only node at level 0, and its depth is 0. A
+leaf node is any node that has two empty children. An internal node is any node
+that has at least one non-empty child.
+</p>
+
+<p>
+Two restricted forms of binary tree are sufficiently important to warrant
+special names. Each node in a full binary tree is either (1) an internal node
+with exactly two non-empty children or (2) a leaf. A complete binary tree has a
+restricted shape obtained by starting at the root and filling the tree by levels
+from left to right. In the complete binary tree of height \(d\), all levels except
+possibly level \(d−1\) are completely full. The bottom level has its nodes filled
+in from the left side.
+</p>
+
+<p>
+Perfect Binary Tree: 1. All the Internal nodes must having two children. 2. All
+the leaf nodes are at the same level.
+</p>
+
+<pre class="example" id="orgaa79bd0">
+Example :
+
+         A1
+     B1       B2
+  C1    C2  C3  C4
+
+</pre>
+
+
+<p>
+Complete Binary Tree: All the levels are completely filled except possibly the
+last level
+</p>
+
+<p>
+Example :
+</p>
+
+<pre class="example" id="org024cc40">
+         A1
+     B1       B2
+  C1    C2  C3  C4
+D1  D2 D3
+</pre>
+
+
+<p>
+Full Binary Tree: Simply Every node has 0 or 2 children.
+</p>
+
+<pre class="example" id="org840da8b">
+         A1
+     B1       B2
+  C1    C2  C3  C4
+D1  D2
+</pre>
+
+
+
+
+<p>
+Some binary tree implementations store data only at the leaf nodes, using the
+internal nodes to provide structure to the tree. More generally, binary tree
+implementations might require some amount of space for internal nodes, and a
+different amount for leaf nodes. Thus, to analyze the space required by such
+implementations, it is useful to know the minimum and maximum fraction of the
+nodes that are leaves in a tree containing \(n\) internal nodes.
+</p>
+
+<p>
+<b>The number of leaves in a non-empty full binary tree is one more than the number
+of internal nodes.</b>
+</p>
+
+<p>
+<b>The number of empty subtrees in a non-empty binary tree is one more than the
+number of nodes in the tree.</b>
+</p>
+</div>
+<div id="outline-container-org605b85d" class="outline-4">
+<h4 id="org605b85d">Array Implementation (Complete Trees Only)</h4>
+<div class="outline-text-4" id="text-org605b85d">
+<p>
+We begin by assigning numbers to the node positions in the complete binary tree,
+level by level, from left to right as shown in. An array can store the tree’s
+data values efficiently, placing each data value in the array position
+corresponding to that node’s position within the tree. The <a href="https://i.imgur.com/pf5FwnR.png%20">table</a> lists the array
+indices for the children, parent, and siblings of each node.
+</p>
+
+<ul class="org-ul">
+<li>Parent \((r) = \lfloor(r - 1)/2\rfloor\)</li>
+<li>Left child \((r) = 2r +1\)</li>
+<li>Right child \((r) = 2r + 2\)</li>
+<li>Left sibling \((r) = r - 1\)</li>
+<li>Right sibling \((r) = r +1\)</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org9e40246" class="outline-4">
+<h4 id="org9e40246"><span class="todo TODO">TODO</span> Heaps and Priority Queues</h4>
+<div class="outline-text-4" id="text-org9e40246">
+<p>
+There are many situations, both in real life and in computing applications, where
+we wish to choose the next “most important” from a collection of people, tasks,
+or objects. For example, doctors in a hospital emergency room often choose to
+see next the “most critical” patient rather than the one who arrived first. When
+scheduling programs for execution in a multitasking operating system, at any given
+moment there might be several programs (usually called jobs) ready to run. The
+next job selected is the one with the highest priority. Priority is indicated by a
+particular value associated with the job (and might change while the job remains in
+the wait list).
+</p>
+
+<p>
+When a collection of objects is organized by importance or priority, we call
+this a priority queue. A normal queue data structure will not implement a
+priority queue efficiently because search for the element with highest priority
+will take \(O(n)\) time. A list, whether sorted or not, will also require O(n)
+time for either insertion or removal. A BST that organizes records by priority
+could be used, with the total of n inserts and n remove operations requiring
+\(O(n\log(n))\) time in the average case. However, there is always the possibility
+that the BST will become unbalanced, leading to bad performance. Instead, we
+would like to find a data structure that is guaranteed to have good performance
+for this special application.
+</p>
+
+
+<p>
+A <b>max-heap</b> has the property that every node stores a value that is greater than
+or equal to the value of either of its children. Because the root has a value
+greater than or equal to its children, which in turn have values greater than or
+equal to their children, the root stores the maximum of all values in the tree.
+</p>
+
+<p>
+A <b>min-heap</b> has the property that every node stores a value that is less than or
+equal to that of its children. Because the root has a value less than or equal
+to its children, which in turn have values less than or equal to their children,
+the root stores the minimum of all values in the tree
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org6b1bfe3" class="outline-3">
+<h3 id="org6b1bfe3">Dynamic Programming</h3>
+<div class="outline-text-3" id="text-org6b1bfe3">
+<div class="PREVIEW" id="org7dd800c">
+<p>
+Follows:
+Roofgarden, T. (2019). <i>Algorithms Illuminated (Part 3): Greedy Algorithms and Dynamic
+Programming</i> (Illustrated ed.). Soundlikeyourself Publishing, LLC. <a href="https://www.youtube.com/channel/UCcH4Ga14Y4ELFKrEYM1vXCg/videos">Channel @ YouTube.com</a>
+</p>
+
+</div>
+</div>
+<div id="outline-container-org4f6091f" class="outline-4">
+<h4 id="org4f6091f">Memory And Functions</h4>
+<div class="outline-text-4" id="text-org4f6091f">
+<p>
+Consider the following C code:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">g</span> = 5;
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>() {
+    <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span>;
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">b</span>;
+    <span style="font-weight: bold; text-decoration: underline;">int</span> *<span style="font-weight: bold; font-style: italic;">p</span>;
+    p = (<span style="font-weight: bold; text-decoration: underline;">int</span>*) malloc (<span style="font-weight: bold;">sizeof</span>(<span style="font-weight: bold; text-decoration: underline;">int</span>));
+    *p = 10;
+ }
+</pre>
+</div>
+
+
+<p>
+After this we get the standard executable file. Once you run it, first it is loaded into the
+random access memory -&gt; process address space, which includes memory segmentation. It has
+the following segments:
+</p>
+</div>
+
+<div id="outline-container-org1c5095b" class="outline-5">
+<h5 id="org1c5095b">Code Segment</h5>
+<div class="outline-text-5" id="text-org1c5095b">
+<ul class="org-ul">
+<li>Contains the machine code of the executable file.</li>
+<li>Read-Only segment.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org985c85f" class="outline-5">
+<h5 id="org985c85f">Data Segment</h5>
+<div class="outline-text-5" id="text-org985c85f">
+<ul class="org-ul">
+<li>Contains all global and static data variable (henceforward <i>load-time</i> variables).</li>
+<li>Loaded before <code>main</code> function is called.</li>
+<li>It has also two data areas:
+<ul class="org-ul">
+<li>Initialized data variables: includes all pre-initialized (e.g <code>static int i = 8</code>)
+<ul class="org-ul">
+<li>uninitialized data variable: which is going to be initialized by zero.</li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org4e9a8fe" class="outline-5">
+<h5 id="org4e9a8fe">Stack Segment</h5>
+<div class="outline-text-5" id="text-org4e9a8fe">
+<ul class="org-ul">
+<li>Contains an <i>Activation Records</i> of all active functions</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">function_II</span>();
+<span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">functions_I</span>();
+<span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">functions_II</span>();
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>() {
+    fucntion_I();
+ }
+<span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">functions_I</span>() {
+    function_II();
+}
+<span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">functions_II</span>() {
+}
+</pre>
+</div>
+
+<p>
+When the program is executed, <code>main()</code> is the only active function, when main call
+<code>function_I</code>, both <code>main()</code> and <code>function_I</code> are active, and so on when it calls
+<code>function_II</code> they are all active and their activation records are in stack.
+</p>
+
+
+<p>
+When <code>function_II</code> returns, its activation record is popped from the stack, and the
+execution is back in <code>function_I</code>, and so on with <code>function_II</code>.
+</p>
+
+<ul class="org-ul">
+<li>The size of the stack keeps change as the program is running and calling new functions.</li>
+<li><code>SP register</code> Keeps track of the top of the stack.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org4e6e244" class="outline-5">
+<h5 id="org4e6e244">Heap Segment</h5>
+<div class="outline-text-5" id="text-org4e6e244">
+<ul class="org-ul">
+<li>This is where new memory is allocated (using either <code>new</code> in C++ or C's <code>malloc()</code>), it's
+also called <i>dynamic memory</i> and <i>run-time memory</i>.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org6b046e9" class="outline-5">
+<h5 id="org6b046e9">Running</h5>
+<div class="outline-text-5" id="text-org6b046e9">
+<p>
+Consider the following code:
+</p>
+<div class="org-src-container">
+<pre class="src src-C"><span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;stdio.h&gt;</span>
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">total</span>;
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">square</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">x</span>) {
+    <span style="font-weight: bold;">return</span> x*x;
+}
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">squareOfsum</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">x</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">y</span>) {
+    <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">count</span> = 0;
+    count++;
+    printf(<span style="font-style: italic;">"Function is called %d times"</span>, count);
+    <span style="font-weight: bold;">return</span> square(x+y);
+}
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>() {
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span> =4, <span style="font-weight: bold; font-style: italic;">b</span> =2;
+    total = squareOfsum(a,b);
+    printf(<span style="font-style: italic;">"Square of Sum = %d"</span>, total);
+}
+</pre>
+</div>
+
+
+<p>
+After running the executable file of this program and loading it into your RAM. The load
+variables are loaded in the Data Segment area. Then after <code>main()</code> functions is
+called.
+</p>
+
+<p>
+When a function is called:
+</p>
+<ol class="org-ol">
+<li>State (register values, Instruction Pointer value, etc.) of calling function is saved")
+in the memory.</li>
+
+<li>Activation record of called function is created and pushed on the top of Stack. Local
+variables of called function are allocated memory inside the AR.</li>
+
+<li>Instruction pointer (IP register) moves to the first executable instruction of called function.</li>
+
+<li>Execution of the called function begins.</li>
+</ol>
+
+<p>
+Similarly when the called function returns back (to the calling function), following work is
+done:
+</p>
+
+<ol class="org-ol">
+<li>Return value of the function is stored in some register.</li>
+
+<li>AR of called function is popped from the memory (Stack size is reduced and freed memory
+gets added to the free pool, which can be used by either the stack or heap).</li>
+
+<li>State of the calling function is restored back to what it was before the function call
+(Point-1 in function call process above).</li>
+
+<li>Instruction pointer moves back to the instruction where it was before calling the</li>
+</ol>
+<p>
+function and execution of calling function begins from the point at which it was
+paused".
+</p>
+<ol class="org-ol">
+<li>Value returned from called function is replaced at the point of call in calling</li>
+</ol>
+<p>
+function.
+</p>
+
+<p>
+(This can be optimized using <code>inline functions</code> in some compilers)
+</p>
+</div>
+</div>
+<div id="outline-container-org95b63e8" class="outline-5">
+<h5 id="org95b63e8">Conclusion</h5>
+<div class="outline-text-5" id="text-org95b63e8">
+<p>
+Function call is a lot of overhead in both terms of time and memory. This is why macros
+using is ubiquitous in C.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;iostream&gt;</span>
+<span style="font-weight: bold;">#incldue</span> &lt;vector&gt;
+<span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">it</span>(){
+    <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;<span style="font-weight: bold; font-style: italic;">i</span> = {1,2,3,4,5,6,7};
+    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">for (int i = 0 ; i &lt; i.size(); i++ )</span>
+    <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">{</span>
+    <span style="font-weight: bold; font-style: italic;">//         </span><span style="font-weight: bold; font-style: italic;">do something</span>
+    <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">}</span>
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">size</span>=i.size();
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">i</span> = 0 ; i &lt; size; i++ )
+   {
+       <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">do something</span>
+    }
+
+ }
+</pre>
+</div>
+
+<p>
+Consider the following recursive and iterative solutions to calculate the factorial of n:
+</p>
+<div class="org-src-container">
+<pre class="src src-c"><span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">sum</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">n</span>) {
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">sum</span> =0;
+  <span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">i</span> = 1; i &lt;= n; i++) sum +=i;
+  <span style="font-weight: bold;">return</span> sum;
+}
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">sum</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">n</span>) {
+  <span style="font-weight: bold;">if</span> (n==1) <span style="font-weight: bold;">return</span> 1;
+  <span style="font-weight: bold;">else</span> <span style="font-weight: bold;">return</span> n + (sum n -1);
+}
+</pre>
+</div>
+
+<p>
+for the recursive solution, when we call it for 3 as sum(3); It will call <code>sum(2)</code>; which
+will in-turn call sum(1). At this point, the memory stack will have three activation records
+of function sum, each of them having a local variable n. In the iterative solution, there is
+only one function call to <code>sum(3)</code> and three local variables.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org9e0f295" class="outline-4">
+<h4 id="org9e0f295">Optimal Substructure</h4>
+<div class="outline-text-4" id="text-org9e0f295">
+<p>
+Optimal substructure means, that optimal solution to a problem of size n (having n elements)
+is based on an optimal solution to the same problem of smaller size (less than n elements).
+i.e while building the solution for a problem of size n, define it in terms of similar
+problems of smaller size, say, k (k &lt; n). We find optimal solutions of less elements and
+combine the solutions to get final result.
+</p>
+
+<p>
+Consider finding the shortest path for traveling between two cities by car. A person want to
+drive from city A to city C, city B lies in between the two cities.
+</p>
+
+<p>
+The shortest path of going from A to C (30 km) will involve both, taking the shortest path
+from A to B and shortest path from B to C.
+</p>
+</div>
+</div>
+<div id="outline-container-orgedcbf9b" class="outline-4">
+<h4 id="orgedcbf9b">Overlapping Subproblems</h4>
+<div class="outline-text-4" id="text-orgedcbf9b">
+<p>
+Here is a new kind of problems, in which subproblems are not solved just once (not like
+singular recursion). Consider the example of finding the \(n^{th}\) from a Fibonacci series
+like: [1, 2, 3, 5, 8, 13, 12 ..].
+</p>
+
+
+<p>
+Fibonacci(1) = Fibonacci(2) = 1                   For \(n=1, \text{\ } n=2\)
+Fibonacci(n) = Fibonacci (n-1) + Fibonacci (n-2). For \(n>2\)
+</p>
+
+<p>
+The simplest algorithm to compute \(n^{th}\) term of Fibonacci is a direct translation of the
+mathematical definition using recursion function:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c"><span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">fib</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">n</span>) {
+    <span style="font-weight: bold;">if</span>(n==1 || n==2) <span style="font-weight: bold;">return</span> 1;
+    <span style="font-weight: bold;">else</span> <span style="font-weight: bold;">return</span>
+             fib(n-1) + fib(n-2);
+}
+</pre>
+</div>
+
+<p>
+This is an equation for exponential time. The reason why it is taking exponential time for
+such a simple algorithm is because it is solving the subproblems (computing kth term, k&lt;n)
+multiple times.
+</p>
+
+<p>
+The function fib(n), where n=5, call itself twice with n=4 and n=3.  Function with n=4 will
+in turn call fib function twice with n=3 and n=2.  Note that fib (3) is called twice, from
+fib(4) and fib (5) respectively (see Picture 4.2). In fact fib (2) is called three times.
+</p>
+
+<p>
+The following code shows non-recursive solution that uses the first two terms to compute the
+third one:
+</p>
+<div class="org-src-container">
+<pre class="src src-c"><span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">fib</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">n</span>) {
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">a</span> = 1, <span style="font-weight: bold; font-style: italic;">b</span> = 1, <span style="font-weight: bold; font-style: italic;">c</span>, <span style="font-weight: bold; font-style: italic;">cnt</span> 3;
+  <span style="font-weight: bold;">if</span> (n == 1 || n == 2)
+    <span style="font-weight: bold;">return</span> 1;
+  <span style="font-weight: bold;">for</span> (cnt = 3; cnt &lt;= n; cnt++) {
+    c = a + b;
+    a = b;
+    b = c;
+  }
+  <span style="font-weight: bold;">return</span> ci
+}
+</pre>
+</div>
+
+<p>
+This is \(O(n)\) solution.
+</p>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-right">
+
+<col  class="org-right">
+
+<col  class="org-right">
+
+<col  class="org-right">
+
+<col  class="org-right">
+
+<col  class="org-right">
+
+<col  class="org-right">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">n</th>
+<th scope="col" class="org-right">2</th>
+<th scope="col" class="org-right">3</th>
+<th scope="col" class="org-right">4</th>
+<th scope="col" class="org-right">5</th>
+<th scope="col" class="org-right">10</th>
+<th scope="col" class="org-right">20</th>
+<th scope="col" class="org-right">40</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Recursive</td>
+<td class="org-right">1</td>
+<td class="org-right">3</td>
+<td class="org-right">5</td>
+<td class="org-right">9</td>
+<td class="org-right">109</td>
+<td class="org-right">13529</td>
+<td class="org-right">204668309</td>
+</tr>
+
+<tr>
+<td class="org-left">Iterative</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-org6862832" class="outline-4">
+<h4 id="org6862832">Memoization</h4>
+<div class="outline-text-4" id="text-org6862832">
+<p>
+Consider the <a href="https://leetcode.com/problems/climbing-stairs/">Climbing Stairs</a> problem.
+</p>
+
+<p>
+In memoization we store the solution of a subproblems in some sort of a cache when it is
+solved for the first time. When the same subproblem is encountered again, then the problem
+is not solved from scratch, rather, it's already solved result is returned from the cache.
+</p>
+
+<p>
+Recursion itself is bad in terms of execution time and memory. In the Fibonacci problem, the
+problem gets worse when we compute value of fib(x) from scratch again even when it was
+computed earlier (overlapping subproblems).  When fib (10) is calculated for the first time
+we can just remember the result and store it a cache. Next time when a call is made for
+fib(10) we just look into the cache and return the stored result in 0(1) time rather than
+making 109 recursive calls all over again.
+</p>
+
+<p>
+This approach is called Memoization. In memoization we store the solution of a subproblems
+in some sort of a cache when it is solved for the first time. When the same subproblem is
+encountered again, then the problem is not solved from scratch, rather, it's already solved
+result is returned from the cache.
+</p>
+
+<p>
+Consider computing nth Fibonacci term again, let us add an integer array, memo of size n
+that will act as cache to store result of subproblems (N = max value of n that need to be
+computed).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C"><span style="font-weight: bold;">#define</span> <span style="font-weight: bold; font-style: italic;">MAX</span> 100
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">memo</span>[MAX];
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">fib</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">n</span>) {
+    <span style="font-weight: bold;">if</span>(n==1 || n == 2) memo[n] = 1;
+    <span style="font-weight: bold;">else</span> memo[n] = fib(n-1)+fib(n-2);
+    <span style="font-weight: bold;">return</span> memo[n];
+}
+<span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">O(N)</span>
+</pre>
+</div>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-right">
+
+<col  class="org-right">
+
+<col  class="org-right">
+
+<col  class="org-right">
+
+<col  class="org-right">
+
+<col  class="org-right">
+
+<col  class="org-right">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">n</th>
+<th scope="col" class="org-right">2</th>
+<th scope="col" class="org-right">3</th>
+<th scope="col" class="org-right">4</th>
+<th scope="col" class="org-right">5</th>
+<th scope="col" class="org-right">10</th>
+<th scope="col" class="org-right">20</th>
+<th scope="col" class="org-right">40</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Recursive</td>
+<td class="org-right">1</td>
+<td class="org-right">3</td>
+<td class="org-right">5</td>
+<td class="org-right">9</td>
+<td class="org-right">109</td>
+<td class="org-right">13529</td>
+<td class="org-right">204668309</td>
+</tr>
+
+<tr>
+<td class="org-left">Iterative</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+<td class="org-right">1</td>
+</tr>
+
+<tr>
+<td class="org-left">Memoization</td>
+<td class="org-right">1</td>
+<td class="org-right">3</td>
+<td class="org-right">5</td>
+<td class="org-right">7</td>
+<td class="org-right">17</td>
+<td class="org-right">37</td>
+<td class="org-right">77</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-org635619d" class="outline-4">
+<h4 id="org635619d">Dynamic Programming</h4>
+<div class="outline-text-4" id="text-org635619d">
+<p>
+Dynamic programming is "A method for solving a complex problem by breaking
+it down into a collection of simpler subproblems, solving each of those subproblems just
+once, and storing their solutions - ideally, using a memory- based data structure.”
+</p>
+
+<p>
+By this definition, memoization is also dynamic programming. Some authors in fact use the
+term “Memoized Dynamic Programming' or 'Top-Down dynamic programming for Memoization and
+they use "Bottom-up dynamic programming' to describe what we are calling Dynamic Programming
+here. We use the terms 'Memoization' and 'Dynamic Programming, to refer
+to top-down and bottom-up approaches of problem solving where a subproblem is solved only
+once.
+</p>
+
+<p>
+In other words, dynamic programming unroll the recursion. Consider the following dynamic
+solution to the Fibonacci problem:
+</p>
+<div class="org-src-container">
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">fib</span> (<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">n</span>) {
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">arr</span>[100 <span style="font-weight: bold; font-style: italic;">/* </span><span style="font-weight: bold; font-style: italic;">MAX</span><span style="font-weight: bold; font-style: italic;"> */</span>];
+    arr[1] = 1, arr [2] = 1;
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">i</span> =3; i &lt;= n; i++) {
+        arr[i] = arr [i-1] + arr[i-2];
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgac23e73" class="outline-4">
+<h4 id="orgac23e73">Problems</h4>
+<div class="outline-text-4" id="text-orgac23e73">
+<p>
+Practice makes prefect
+</p>
+</div>
+<div id="outline-container-org886b152" class="outline-5">
+<h5 id="org886b152">The Fibonacci Sequence</h5>
+<div class="outline-text-5" id="text-org886b152">
+<p>
+Return the \(n\) th number in the Fibonacci sequence. The first two numbers in the Fibonacci
+sequence are equal to 1; any other number is equal to the sum of the preceding two numbers.
+</p>
+</div>
+<ul class="org-ul">
+<li><a id="org0c56e4e"></a>Brute Force, \(O(2^n)\)<br>
+<div class="outline-text-6" id="text-org0c56e4e">
+<div class="org-src-container">
+<pre class="src src-go">func fib(n int) int {
+        if n == 0 {
+                return 0
+        }
+        if n == 1 {
+                return 1
+        }
+        return fib(n-1) + fib(n-2)
+}
+</pre>
+</div>
+
+<p>
+The above code is correct but too slow due to redundancies. We can see this if we add logging
+to the function.
+</p>
+</div>
+</li>
+<li><a id="orgbd1b6fb"></a>Dynamic Programming, Top-Down<br>
+<div class="outline-text-6" id="text-orgbd1b6fb">
+<p>
+While computing the Fibonacci sequence recursively is useful for pedagogical reasons, it is
+more intuitive to compute it iteratively starting from the smaller numbers, just like a human
+would do:
+</p>
+
+<pre class="example" id="org3a9646f">
+def fibonacci(n):
+series = [1, 1]
+while len(series) &lt; n:
+series.append(series[­1] + series[­2])
+return series[­1]
+</pre>
+
+<pre class="example" id="org295ef28">
+def fibonacci(n):
+    previous = 1
+    current = 1
+for i in range(n ­ 2):
+        next = current + previous
+        previous, current = current, next
+return curren
+</pre>
+
+<p>
+We have written an algorithm that starts from the smallest subproblem (the first two numbers
+in the sequence), then expands the solution to reach the original problem (the n-th number
+in the sequence). This approach is called bottom-up dynamic programming. By contrast, the
+previous approach of solving the problem recursively starting from the top is called top
+down dynamic programming. Both approaches are equally valid; one or the other may be more
+intuitive, depending on the problem.
+</p>
+</div>
+</li>
+</ul>
+</div>
+<div id="outline-container-org83a2712" class="outline-5">
+<h5 id="org83a2712"><span class="todo TODO">TODO</span> Optimal Stock Market Strategy</h5>
+<div class="outline-text-5" id="text-org83a2712">
+<p>
+When evaluating stock market trading strategies, it is useful to determine the maximum
+possible profit that can be made by trading a certain stock. Write an algorithm that, given
+the daily price of a stock, computes the maximum profit that can be made by buying and
+selling that stock. Assume that you are allowed to own no more than 1 share at any time, and
+that you have an unlimited budget.
+</p>
+
+
+<p>
+Example 2: The stock price over several days is [2, 5, 1, 3]. The best strategy is to buy a
+share on the first day for price 2, then sell it on the second day for price 5, obtaining a
+profit of 3; then buy it again on the third day for price 1, and sell it on the fourth day
+for price 3, obtaining an overall profit of 5.
+</p>
+</div>
+<ul class="org-ul">
+<li><a id="org13150d0"></a>Dynamic Programming, Top Down, \(O(n)\)<br>
+<div class="outline-text-6" id="text-org13150d0">
+<p>
+The first idea that comes to mind while approaching this problem is using a state machine.
+This is because on any day, our state can be described by:
+</p>
+
+<ul class="org-ul">
+<li>whether we own the share or not;</li>
+<li>the amount of money we have.</li>
+</ul>
+
+<p>
+Between the states of consecutive days, we have only four possible transitions:
+</p>
+
+<ul class="org-ul">
+<li>If at the end of the previous day we did not own the share:
+<ul class="org-ul">
+<li>buying the stock, so we now own it, but we have less money;</li>
+<li>avoiding the stock, so we keep our money unchanged;</li>
+</ul></li>
+<li>If at the end of the previous day we owned the share:
+<ul class="org-ul">
+<li>selling the stock, so we no longer own it, and have more money;</li>
+<li>holding the stock, so we keep both the stock and our money unchanged.</li>
+</ul></li>
+</ul>
+
+
+<p>
+Knowing this, we can model the entire problem using a state machine. In our initial state,
+we have some amount of cash and no shares. In the final state, we have some other amount of
+cash (ideally higher), and no shares. In between, we have state transitions:
+</p>
+
+<figure id="org0942e37">
+<a href="#" onclick="toggleImage(this, '&quot;https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Problems/2022-12-07_17-42-44_screenshot.png&quot;')">Click here to show the image</a><div class="image-container" style="display:none"><img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Problems/2022-12-07_17-42-44_screenshot.png" alt=""></div>max_profit</span>(daily_price):
+    <span style="font-weight: bold;">def</span> <span style="font-weight: bold;">get_best_profit</span>(day, have_stock):
+<span style="font-style: italic;">"""</span>
+<span style="font-style: italic;">Returns the best profit that can be obtained by the end of the day.</span>
+<span style="font-style: italic;">At the end of the day:</span>
+<span style="font-style: italic;">"""</span>
+<span style="font-weight: bold; font-style: italic;"># </span><span style="font-weight: bold; font-style: italic;">TODO ...</span>
+<span style="font-weight: bold; font-style: italic;"># </span><span style="font-weight: bold; font-style: italic;">Final state: end of last day, no shares owned.</span>
+        <span style="font-weight: bold; font-style: italic;">last_day</span> = <span style="font-weight: bold;">len</span>(daily_price) &#173; 1
+        <span style="font-weight: bold; font-style: italic;">no_stock</span> = <span style="font-weight: bold; text-decoration: underline;">False</span>
+        <span style="font-weight: bold;">return</span> get_best_profit(last_day, no_stock)
+</pre>
+</div>
+
+<p>
+Note that we defined a helper function <code>get_best_profit</code> which takes as parameters the
+identifiers of a state: the day number and whether we own the stock or not at the end of the
+day. We use get_best_profit to compute the profit for a specific state in the state machine.
+</p>
+
+
+<p>
+Let’s now implement the helper using a recurrence relation. We need to consider the previous
+states that can transition into the current state, and choose the best one:
+</p>
+</div>
+</li>
+</ul>
+</div>
+<div id="outline-container-org4674b33" class="outline-5">
+<h5 id="org4674b33">Change-Making</h5>
+<div class="outline-text-5" id="text-org4674b33">
+<p>
+Given a money amount and a list of coin denominations, provide the combination of coins
+adding up to that amount, that uses the fewest coins.
+</p>
+
+<p>
+Example 1: Pay amount 9 using coin denominations [1, 2, 5]. The combination having the
+fewest coins is [5, 2, 2]. A suboptimal combination is [5, 1, 1, 1, 1]: it adds up to 9, but
+is using 5 coins instead of 3, thus it cannot be the solution.
+</p>
+
+<p>
+Example 2: Pay amount 12 using coin denominations [1, 6, 10]. The combination having the
+fewest coins is [6, 6]. A suboptimal combination is [10, 1, 1].
+</p>
+</div>
+<ul class="org-ul">
+<li><a id="orgb7d8807"></a>Dynamic Programming, Top Down, \(O(nv)\)<br>
+<div class="outline-text-6" id="text-orgb7d8807">
+<p>
+We can formulate a top-down dynamic programming solution if we model the problem as a
+recurrence. For any non-zero amount that has to be paid optimally using the given coins, we
+know that at least one of the coins has to be used. The problem is that we do not know which
+one. If we knew, we could use that as a starting point to reach a subproblem: we could
+subtract its value from the amount, then solve an instance of the problem for the remaining,
+smaller amount. We would continue in this way until the remaining amount becomes 0.
+</p>
+
+
+<p>
+However, we do not know which coin to choose first optimally. In this situation, we have no
+other choice but try all possible options in brute-force style. For each coin, we subtract
+its value from the amount, then solve by recurrence the subproblem—this leads to a candi-
+date solution for each choice of the first coin. Once we are done, we compare the candidate
+solutions and choose the one using the fewest coins.
+</p>
+
+
+<p>
+Here is an example of how we would form the optimal change for amount 9, using coins [1, 2,
+5]. We represent each amount as a node in a tree. Whenever we subtract a coin value from
+that amount, we add an edge to a new node with a smaller value.
+</p>
+
+
+<p>
+For solving the subproblems, we use the same procedure. The only difference is that we
+need to pay attention to two edge cases: the terminating condition (reaching amount 0), and
+avoiding choices where we are paying too much (reaching negative amounts). To understand
+these better, let’s take a look at the subproblems:
+</p>
+
+
+
+<figure id="org00b36f8">
+<a href="#" onclick="toggleImage(this, '&quot;https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Problems/2022-12-08_17-42-28_screenshot.png&quot;')">Click here to show the image</a><div class="image-container" style="display:none"><img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Problems/2022-12-08_17-42-28_screenshot.png" alt=""></div>
+<li>When the amount becomes 0, we have to stop the iteration, since the subproblem is solved
+and there is nothing left to be paid. We can see the 0 node in several of the subproblem
+trees.</li>
+<li>When the amount goes below zero, the given amount cannot be formed with that coin. For
+example, trying to pay amount 3 using coin 5 would require solving the subproblem for
+amount -2, which does not make sense.</li>
+</ul>
+
+
+<p>
+In addition to that, we can also notice that there are many redundancies among the
+subproblems. This is very important, as it affects the performance of the algorithm. We
+originally thought about solving the problem using brute force, which results in a slow
+algorithm: \(O(nv)\), where 𝑛 is the number of coins and 𝑣 is the value of the amount we have
+to pay. In other words, the brute-force solution has exponential complexity, with very poor
+performance.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;algorithm&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;array&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;climits&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;cmath&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;deque&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;iomanip&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;iostream&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;iterator&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;list&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;map&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;numeric&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;queue&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;set&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;stack&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;string&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;tuple&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;unordered_map&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;unordered_set&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;vector&gt;</span>
+<span style="font-weight: bold;">#define</span> <span style="font-weight: bold;">begend</span>(<span style="font-weight: bold; font-style: italic;">v</span>) ((v).begin()), ((v).end())
+<span style="font-weight: bold;">#define</span> <span style="font-weight: bold;">sz</span>(<span style="font-weight: bold; font-style: italic;">v</span>) ((<span style="font-weight: bold; text-decoration: underline;">int</span>)((v).size()))
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; text-decoration: underline;">std</span>;
+<span style="font-weight: bold;">typedef</span> <span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; text-decoration: underline;">pi</span>;
+<span style="font-weight: bold; text-decoration: underline;">priority_queue</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pi</span>, <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pi</span>&gt;, <span style="font-weight: bold; text-decoration: underline;">greater</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pi</span>&gt;&gt; <span style="font-weight: bold; font-style: italic;">pq</span>;
+
+<span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Solution</span> {
+  <span style="font-weight: bold; text-decoration: underline;">unordered_map</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">mp</span>;
+
+<span style="font-weight: bold;">public</span>:
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">coinChange</span>(<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; &amp;<span style="font-weight: bold; font-style: italic;">coins</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">amount</span>) {
+    <span style="font-weight: bold;">if</span> (!amount)
+      <span style="font-weight: bold;">return</span> 0;
+    <span style="font-weight: bold;">if</span> (amount &lt; 0)
+      <span style="font-weight: bold;">return</span> -1;
+    <span style="font-weight: bold;">if</span> (mp.count(amount)) {
+      <span style="font-weight: bold;">return</span> mp[amount];
+    }
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">ans</span> = -1;
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold;">auto</span> &amp;<span style="font-weight: bold; font-style: italic;">i</span> : coins) {
+      <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">pans</span> = coinChange(coins, amount - i);
+      <span style="font-weight: bold;">if</span> (pans == -1)
+        <span style="font-weight: bold;">continue</span>;
+      <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">cand</span> = pans + 1;
+      <span style="font-weight: bold;">if</span> (ans == -1 || cand &lt; ans)
+        ans = cand;
+    }
+    mp[amount] = ans;
+    <span style="font-weight: bold;">return</span> ans;
+  }
+};
+</pre>
+</div>
+</div>
+</li>
+<li><a id="org0f183b9"></a><span class="todo TODO">TODO</span> Dynamic Programming, Bottom-Up \(O(nv)\)<br>
+<div class="outline-text-6" id="text-org0f183b9">
+<p>
+Once we have implemented the top-down solution, we can rewrite it as bottom-up: we start
+from the amount 0, and keep adding coins in all possible ways until reaching the amount to
+be paid:
+</p>
+</div>
+</li>
+</ul>
+</div>
+<div id="outline-container-orgc5accf0" class="outline-5">
+<h5 id="orgc5accf0">Number of Expression With a Target Result</h5>
+<div class="outline-text-5" id="text-orgc5accf0">
+<p>
+Given a list of integers and a target result, count the number of ways in which we can add
+</p>
+<ul class="org-ul">
+<li>or ­ operators between the integers such that the expression that is formed is equal to the</li>
+</ul>
+<p>
+target result.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgec87488" class="outline-3">
+<h3 id="orgec87488">Shortest Path</h3>
+<div class="outline-text-3" id="text-orgec87488">
+<div class="PREVIEW" id="org76e1bfd">
+<p>
+In graph theory, the shortest path problem is the problem of finding a path
+between two vertices (or nodes) in a graph such that the sum of the weights of
+its constituent edges is minimized.
+</p>
+
+</div>
+
+
+
+<p>
+The problem of finding the shortest path between two intersections on a road map
+may be modeled as a special case of the shortest path problem in graphs, where
+the vertices correspond to intersections and the edges correspond to road
+segments, each weighted by the length of the segment.
+</p>
+
+<p>
+Please study Representations, Implementations and Algorithms of Graphs (and Trees) (<a href="graph.html">link</a>) carefully before you move to this problem.
+</p>
+</div>
+
+
+<div id="outline-container-orgd1f6ae6" class="outline-4">
+<h4 id="orgd1f6ae6">Dijkstra's Algorithm</h4>
+<div class="outline-text-4" id="text-orgd1f6ae6">
+<p>
+Dijkstra's algorithm (<i>ˈdaɪkstrəz</i> DYKE-strəz) is an algorithm for finding the
+shortest paths between nodes in a weighted graph, which may represent, for
+example, road networks.
+</p>
+
+<p>
+Let the node at which we are starting be called the initial node. Let the
+distance of node Y be the distance from the initial node to Y. Dijkstra's
+algorithm will initially start with infinite distances and will try to improve
+them step by step.
+</p>
+
+<ol class="org-ol">
+<li>Mark all nodes unvisited. Create a set of all the unvisited nodes called the
+unvisited set.</li>
+<li>Assign to every node a tentative distance value: set it to zero for our
+initial node and to infinity for all other nodes. During the run of the
+algorithm, the tentative distance of a node v is the length of the shortest
+path discovered so far between the node v and the starting node. Since
+initially no path is known to any other vertex than the source itself (which
+is a path of length zero), all other tentative distances are initially set to
+infinity. Set the initial node as current</li>
+<li>For the current node, consider all of its unvisited neighbors and calculate
+their tentative distances through the current node. Compare the newly
+calculated tentative distance to the one currently assigned to the neighbor
+and assign it the smaller one. For example, if the current node A is marked
+with a distance of 6, and the edge connecting it with a neighbor B has length
+2, then the distance to B through A will be 6 + 2 = 8. If B was previously
+marked with a distance greater than 8 then change it to 8. Otherwise, the
+current value will be kept.</li>
+<li>When we are done considering all of the unvisited neighbors of the current
+node, mark the current node as visited and remove it from the unvisited set.
+A visited node will never be checked again (this is valid and optimal in
+connection with the behavior in step 6.: that the next nodes to visit will
+always be in the order of 'smallest distance from initial node first' so any
+visits after would have a greater distance).</li>
+<li>If the destination node has been marked visited (when planning a route
+between two specific nodes) or if the smallest tentative distance among the
+nodes in the unvisited set is infinity (when planning a complete traversal;
+occurs when there is no connection between the initial node and remaining
+unvisited nodes), then stop. The algorithm has finished.</li>
+<li>Otherwise, select the unvisited node that is marked with the smallest
+tentative distance, set it as the new current node, and go back to step 3.</li>
+</ol>
+
+
+<p>
+In more algorithmatic words:
+</p>
+<pre class="example" id="org0bb5142">
+
+Set a flag in all vertices to "UNSEEN"
+Pick a starting vertex and mark it as "IN TREE"
+Mark all vertices adjacent to the start vertex as "FRINGE"
+Loop while there are vertices in the graph not marked as "IN TREE"
+ 	Find the vertex in the fringe at a minimum distance from the start vertex.
+ 	Add that vertex to the tree and mark it as "IN TREE"
+ 	For each vertex adjacent to this vertex
+ 	 	Set the state of the adjacent vertex to "FRINGE"
+Calculate its' distance from the starting vertex
+Set the shortest distance to each node in the fringe
+end loop
+Return Shortest Distance
+</pre>
+
+<p>
+Consider the following graph in which there are six nodes in a directed graph
+with edge weights as shown in this figure:
+</p>
+
+
+<figure id="orgf65bcd8">
+<a href="#" onclick="toggleImage(this, '&quot;https://link.storjshare.io/raw/juyia46jwfo36dkssb7oiceceo7a/blog/public/SPA_01.jpg&quot;')">Click here to show the image</a><div class="image-container" style="display:none"><img src="https://link.storjshare.io/raw/juyia46jwfo36dkssb7oiceceo7a/blog/public/SPA_01.jpg" alt=""></div>
+Paths to 1: 1--&gt;1 (0)
+Paths to 2: 1--&gt;2 (3)
+Paths to 3: 1--&gt;2--&gt;3 (10), 1--&gt;6--&gt;3 (13)
+Paths to 4: 1--&gt;2--&gt;3--&gt;4 (15), 1--&gt;6--&gt;4 (7), 1--&gt;6--&gt;3--&gt;4 (18)
+Paths to 5: 1--&gt;2--&gt;3--&gt;4--&gt;5 (21), 1--&gt;2--&gt;3--&gt;5 (11)
+	      1--&gt;2--&gt;6--&gt;3--&gt;4--&gt;5 (32), 1--&gt;2--&gt;6--&gt;4--&gt;5 (21),
+	      1--&gt;6--&gt;4--&gt;5 (13), 1--&gt;6--&gt;3--&gt;5 (14)
+Paths to 6: 1--&gt;6 (5), 1--&gt;2--&gt;6 (13), 1--&gt;2--&gt;3--&gt;5--&gt;6 (22),
+	      1--&gt;2--&gt;3--&gt;4--&gt;5--&gt;6 (38)
+</pre>
+
+
+<p>
+You can go through this list and pick the shortest path from all the possible
+paths to each node. We can build a diagram which would give us the shortest
+paths. To do this we will rebuild the graph diagram into a tree At any point in
+the building of the tree the nodes in the graph will be classified in one of
+three categories: (1) "intree"&#x2013;those nodes which have already been added to the
+tree, (2) "fringe" &#x2013; those nodes which are immediately adjacent to any of the
+nodes in the tree, (3) "unseen" &#x2013; all remaining nodes.
+</p>
+
+<p>
+As an example let's trace the paths from node 1 to node 5. Beginning with node 1
+as the starting point we see that there are two nodes in the fringe {2,6}and
+three nodes unseen {3,4,5}. With no additional information the path to node 2
+and the path to node 6 represent the current shortest path to each. This gives
+us a tree as shown in this figure:
+</p>
+
+
+<figure id="org7933334">
+<a href="#" onclick="toggleImage(this, '&quot;https://link.storjshare.io/raw/jwzc65pl7qltdfaik2hfisnuvdoq/blog/public/SPA_02.jpg&quot;')">Click here to show the image</a><div class="image-container" style="display:none"><img src="https://link.storjshare.io/raw/jwzc65pl7qltdfaik2hfisnuvdoq/blog/public/SPA_02.jpg" alt=""></div>1</a></sup> . Adding it to the tree and updating the fringe we get the tree in
+figure 3. Note that node 6 is in the fringe for node 2 but the path to node 6
+via node 2 is longer than the direct path from node 1 to node 6 so we don't
+consider path 1&#x2013;&gt;2&#x2013;&gt;6 as acceptable.
+</p>
+
+
+<figure id="orgf63de15">
+<a href="#" onclick="toggleImage(this, '&quot;https://link.storjshare.io/raw/jxmq5lejeoqtw3jlek3bzrmuwoqa/blog/public/SPA_03.jpg&quot;')">Click here to show the image</a><div class="image-container" style="display:none"><img src="https://link.storjshare.io/raw/jxmq5lejeoqtw3jlek3bzrmuwoqa/blog/public/SPA_03.jpg" alt=""></div>
+
+</figure>
+
+
+<p>
+Node 4 is now the closest to node 1 of all the nodes in the fringe so it is
+selected and the nodes adjacent to it added to the fringe. This gives the tree
+shown:
+</p>
+
+
+<figure id="orgba29b2d">
+<a href="#" onclick="toggleImage(this, '&quot;https://link.storjshare.io/raw/jwm7ka74epkbl74wxm4u3n3yoxra/blog/public/SPA_05.jpg&quot;')">Click here to show the image</a><div class="image-container" style="display:none"><img src="https://link.storjshare.io/raw/jwm7ka74epkbl74wxm4u3n3yoxra/blog/public/SPA_05.jpg" alt=""></div>
+
+</figure>
+
+
+<p>
+Next we add node 3 to the tree since it is the closest to node 1. This will also
+reveal another path to node 5, 1&#x2013;&gt;2&#x2013;&gt;3&#x2013;&gt;5 = 11 which is shorter than the
+current path length of 13 so 11 is substituted for 13. Node 3 is added to the
+tree.
+</p>
+
+<p>
+We can imagine the implementation as the following:
+</p>
+
+<pre class="example" id="orgac495a1">
+#define MAXVERTICES     6     // only for this example
+#define MAXLINKS        5     // only for this example
+#define Minimum(X,Y)    ((X) &lt; (Y)) ? (X) : (Y)
+typdef enum{intree, fringe, unseen} StatusType;
+
+Define an array of type Node.
+Insert all data in the array to build the graph.
+Input start (v) and end (w) node numbers from user
+Call ShortestPath(AdjacencyList, 6, v, w)
+
+int ShortestPath(Node AdjacencyList[], int n, int v, int w)
+	// AdjacencyList -- adjacency list of nodes in graph
+	// n -- number of nodes in the graph (MAXVERTICES)
+	// v -- number of the starting vertex (1..MAXVERTICES)
+	// w -- number of the destination vertex (1..MAXVERTICES)
+
+	int			ShortestDist[MAXVERTICES];
+	int			W[MAXVERTICES];
+	StatusType		status[MAXVERTICES];
+
+	// --------------------   INITIALIZATION SECTION --------------------
+	Initialize tree array W to empty.
+	Initialize ShortestDist array to all maximum.
+	Initialize status array to all unseen.
+	// --------------------------- SETUP SECTION ---------------------------
+	Add node v to W array
+	Set shortest distance from v to v = 0
+	Set status of v to intree
+	For each node adjacent to v
+		Set status to fringe
+		Set shortest distance to weight of link from v
+	// ----------------------- MAIN LOOP SECTION -----------------------
+	// Repeatedly enlarge W until it includes all vertices in the graph
+	while(there are nodes in the graph not in W)
+		Find node n, among those in the fringe, at the minimum distance from v
+		Add node n to W array
+		Set status of node n to intree
+		For each node adjacent to node n
+			Set status of adjacent node to fringe
+			Calculate distance D from v to adjacent node through node n, i.e.
+			   shortest distance to n + distance from n to adjacent node.
+			Set shortest distance to the adjacent node to
+			   Minimum(D, ShortestDist[adjacent node])
+	end while
+	return ShortestDist[node w]
+end ShortestPath function
+
+</pre>
+
+<p>
+Minimal implementation:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++"><span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;bits/stdc++.h&gt;</span>
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; text-decoration: underline;">std</span>;
+
+<span style="font-weight: bold;">const</span> <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">INF</span> = 2147483647;
+<span style="font-weight: bold;">const</span> <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">MAX</span> = 5005;
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">D</span>[MAX], <span style="font-weight: bold; font-style: italic;">N</span>; <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Keeps minimum distance to each node</span>
+<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>,<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt; <span style="font-weight: bold; font-style: italic;">E</span>[MAX]; <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Adjacency list</span>
+
+<span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">dijkstra</span>()
+{
+    <span style="font-weight: bold;">for</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">i</span> = 1; i &lt;= N; i++) D[i] = INF;
+    D[1] = 0;
+    <span style="font-weight: bold; text-decoration: underline;">priority_queue</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>,<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;,<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>,<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;,<span style="font-weight: bold; text-decoration: underline;">greater</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>,<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;&gt; <span style="font-weight: bold; font-style: italic;">q</span>;
+    q.push({0,1});
+
+    <span style="font-weight: bold;">while</span>(!q.empty())
+    {
+        <span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>,<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">p</span> = q.top();
+        q.pop();
+
+        <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">u</span> = p.second, <span style="font-weight: bold; font-style: italic;">dist</span> = p.first;
+        <span style="font-weight: bold;">if</span>(dist &gt; D[u]) <span style="font-weight: bold;">continue</span>;
+
+        <span style="font-weight: bold;">for</span>(<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>,<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">pr</span> : E[u])
+        {
+            <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">v</span> = pr.first;
+            <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">next_dist</span> = dist + pr.second;
+
+            <span style="font-weight: bold;">if</span>(next_dist &lt; D[v])
+            {
+                D[v] = next_dist;
+                q.push({next_dist,v});
+            }
+        }
+    }
+}
+</pre>
+</div>
+
+<p>
+Other implementation without optimization:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++"><span style="font-weight: bold;">#define</span> <span style="font-weight: bold; font-style: italic;">MAXVERTICES</span>     6     <span style="font-weight: bold; font-style: italic;">/* </span><span style="font-weight: bold; font-style: italic;">only for this example</span><span style="font-weight: bold; font-style: italic;"> */</span>
+<span style="font-weight: bold;">#define</span> <span style="font-weight: bold; font-style: italic;">MAXLINKS</span>        5     <span style="font-weight: bold; font-style: italic;">/* </span><span style="font-weight: bold; font-style: italic;">only for this example</span><span style="font-weight: bold; font-style: italic;"> */</span>
+<span style="font-weight: bold;">#define</span> <span style="font-weight: bold;">Minimum</span>(<span style="font-weight: bold; font-style: italic;">X</span>,<span style="font-weight: bold; font-style: italic;">Y</span>)    ((X) &lt; (Y)) ? (X) : (Y)
+<span style="font-weight: bold;">enum</span> <span style="font-weight: bold; text-decoration: underline;">StatusType</span> {<span style="font-weight: bold; font-style: italic;">intree</span>, <span style="font-weight: bold; font-style: italic;">fringe</span>, <span style="font-weight: bold; font-style: italic;">unseen</span>} <span style="font-weight: bold; font-style: italic;">StatusType</span>;
+
+
+<span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">-------------------------------------------</span>
+<span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">ShortestPath()</span>
+<span style="font-weight: bold; font-style: italic;">//</span>
+<span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Find shortest path from node v to</span>
+<span style="font-weight: bold; font-style: italic;">//   </span><span style="font-weight: bold; font-style: italic;">node w using Dijkstra's shortest</span>
+<span style="font-weight: bold; font-style: italic;">//   </span><span style="font-weight: bold; font-style: italic;">path algorithm.</span>
+<span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Returns total number of units in shortest</span>
+<span style="font-weight: bold; font-style: italic;">//   </span><span style="font-weight: bold; font-style: italic;">path</span>
+<span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">-------------------------------------------</span>
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">ShortestPath</span>(<span style="font-weight: bold; text-decoration: underline;">Node</span> <span style="font-weight: bold; font-style: italic;">AdjacencyList</span>[], <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">n</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">v</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">w</span>)
+{
+        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">AdjacencyList -- adjacency list of nodes in graph</span>
+        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">n -- number of nodes in the graph (6)</span>
+        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">v -- number of the starting vertex (1..6)</span>
+        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">w -- number of the destination vertex (1..6)</span>
+        <span style="font-weight: bold; text-decoration: underline;">int</span>             <span style="font-weight: bold; font-style: italic;">MinDistance</span>;
+        <span style="font-weight: bold; text-decoration: underline;">int</span>             <span style="font-weight: bold; font-style: italic;">ShortestDist</span>[MAXVERTICES];
+        <span style="font-weight: bold; text-decoration: underline;">int</span>             <span style="font-weight: bold; font-style: italic;">W</span>[MAXVERTICES];
+        <span style="font-weight: bold; text-decoration: underline;">int</span>             <span style="font-weight: bold; font-style: italic;">nextWIdx</span> = 0;
+        <span style="font-weight: bold; text-decoration: underline;">int</span>             <span style="font-weight: bold; font-style: italic;">i</span>;
+        <span style="font-weight: bold; text-decoration: underline;">int</span>             <span style="font-weight: bold; font-style: italic;">wNode</span>;          <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Index of node being considered</span>
+        <span style="font-weight: bold; text-decoration: underline;">int</span>             <span style="font-weight: bold; font-style: italic;">tempIdx</span>;        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Temporary use index</span>
+        <span style="font-weight: bold; text-decoration: underline;">StatusType</span>      <span style="font-weight: bold; font-style: italic;">status</span>[MAXVERTICES];
+
+        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">-------------------- INITIALIZATION SECTION --------------------</span>
+        <span style="font-weight: bold;">for</span>(i = 0; i &lt; MAXVERTICES; i++)
+        {
+                W[i] = -1;                   <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Init W to empty</span>
+                ShortestDist[i] = MAXINT;    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Init shortest dists to infinity</span>
+                status[i] = unseen;          <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Init all nodes to unseen</span>
+        }
+        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">------------------------ SETUP SECTION -------------------------</span>
+        W[nextWIdx] = v;         <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Add first node to W</span>
+        nextWIdx++;              <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Increment index into W</span>
+        ShortestDist[v-1] = 0;   <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Set shortest dist from v to v</span>
+        status[v-1] = intree;    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Set status of v in W</span>
+
+        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Set shortest distance and status from v to all nodes adjacent to it</span>
+        <span style="font-weight: bold;">for</span>(i = 0; i &lt; MAXLINKS; i++)
+        {
+                ShortestDist[AdjacencyList[v-1].links[i].link - 1] =
+                        AdjacencyList[v-1].links[i].weight;
+                status[AdjacencyList[v-1].links[i].link - 1] = fringe;
+        }
+        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">---------------------- MAIN lOOP SECTION -----------------------</span>
+        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Repeatedly enlarge W until it includes all vertices in the graph</span>
+        <span style="font-weight: bold;">while</span>(nextWIdx &lt; MAXVERTICES)
+        {
+                <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Find the vertex n in V - W at the minimum distance from v</span>
+                MinDistance = MAXINT;
+                <span style="font-weight: bold;">for</span>(i = 0; i &lt; MAXVERTICES; i++)
+                {
+                        <span style="font-weight: bold;">if</span>(status[i] == fringe)
+                        {
+                                <span style="font-weight: bold;">if</span>(ShortestDist[i] &lt; MinDistance)
+                                {
+                                        MinDistance = ShortestDist[i];
+                                        wNode = i + 1;  <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Convert index to node number</span>
+                                }
+                        }
+                }
+
+                <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Add w to W</span>
+                W[nextWIdx] = wNode;
+                status[wNode - 1] = intree;
+                nextWIdx++;
+
+                <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Update the shortest distances to vertices in V - W</span>
+                <span style="font-weight: bold;">for</span>(i = 0; i &lt; MAXLINKS; i++)
+                {
+                        tempIdx = AdjacencyList[wNode -1].links[i].link - 1;
+                        ShortestDist[tempIdx] = Minimum(ShortestDist[tempIdx],
+                                ShortestDist[wNode - 1] + AdjacencyList[wNode - 1].links[i].weight);
+                        status[tempIdx] = fringe;
+                }
+        } <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">End while</span>
+        <span style="font-weight: bold;">return</span>(ShortestDist[w - 1]);
+}
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-org4afb69d" class="outline-5">
+<h5 id="org4afb69d">Problem: LC 1514. Path with Maximum Probability</h5>
+<div class="outline-text-5" id="text-org4afb69d">
+<p>
+(<a href="https://leetcode.com/problems/path-with-maximum-probability/">link</a>)
+</p>
+
+<p>
+This is very interesting problem actually because it does require a small
+variation of the algorithm since we are techincally looking for the longest path
+instead, so basically we can use our main implementation:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Solution</span> {
+<span style="font-weight: bold;">public</span>:
+  <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold;">maxProbability</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">n</span>, <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt; &amp;<span style="font-weight: bold; font-style: italic;">edges</span>,
+                        <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">double</span>&gt; &amp;<span style="font-weight: bold; font-style: italic;">succProb</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">start</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">end</span>) {
+    <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">double</span>&gt; <span style="font-weight: bold; font-style: italic;">dist</span>(n, INT_MIN);
+    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">build list</span>
+    <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">double</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;&gt; <span style="font-weight: bold; font-style: italic;">adj</span>(n, vector&lt;pair&lt;<span style="font-weight: bold; text-decoration: underline;">double</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;());
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">ctr</span> = 0;
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold;">auto</span> &amp;<span style="font-weight: bold; font-style: italic;">i</span> : edges) {
+      adj[i[0]].push_back({succProb[ctr], <span style="font-weight: bold; text-decoration: underline;">i</span>[1]});
+      adj[i[1]].push_back({succProb[ctr], <span style="font-weight: bold; text-decoration: underline;">i</span>[0]});
+      ctr++;
+    }
+    <span style="font-weight: bold; text-decoration: underline;">priority_queue</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">double</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;, <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">double</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;,
+                   <span style="font-weight: bold; text-decoration: underline;">less</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">double</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;&gt; <span style="font-weight: bold; font-style: italic;">q</span>;
+    q.push({1, start});
+    dist[start] = 1;
+    <span style="font-weight: bold;">while</span> (!q.empty()) {
+      <span style="font-weight: bold;">auto</span> <span style="font-weight: bold; font-style: italic;">tp</span> = q.top();
+      q.pop();
+      <span style="font-weight: bold;">if</span> (tp.first &lt; dist[tp.second])
+        <span style="font-weight: bold;">continue</span>;
+      <span style="font-weight: bold;">for</span> (<span style="font-weight: bold;">auto</span> &amp;<span style="font-weight: bold; font-style: italic;">i</span> : adj[tp.second]) {
+        <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">nd</span> = i.second;
+        <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">w</span> = i.first * tp.first;
+        <span style="font-weight: bold;">if</span> (dist[nd] &lt; w) {
+          dist[nd] = w;
+          q.push({w, nd});
+        }
+      }
+    }
+    <span style="font-weight: bold;">return</span> dist[end] == INT_MIN ? 0 : dist[end];
+  }
+};
+</pre>
+</div>
+
+<p>
+Note the following:
+</p>
+
+<p>
+a.
+</p>
+<div class="org-src-container">
+<pre class="src src-c++"><span style="font-weight: bold; text-decoration: underline;">priority_queue</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">double</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;, <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">double</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;,
+               <span style="font-weight: bold; text-decoration: underline;">less</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">double</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;&gt;<span style="font-weight: bold; font-style: italic;">q</span>;
+</pre>
+</div>
+<p>
+     We are using <code>less&lt;&gt;</code> because we are interested in a reverse order of
+     sorting.
+b.
+</p>
+<div class="org-src-container">
+<pre class="src src-c++">q.push({1, start});
+dist[start] = 1;
+</pre>
+</div>
+<p>
+    Now here you might think of using 0 or <code>INT_MIN</code> instead of 1 in this case,
+    and actually 0 makes a lot of sense (I even solved it like that initially)
+    but note that we usually use 0 because zero is an <a href="https://en.wikipedia.org/wiki/Identity_element">identity element</a>, but in
+    this case it does not act like an identity element, 1 does because we are not
+    adding sums but producting weights.
+c.
+</p>
+<div class="org-src-container">
+<pre class="src src-c++">      <span style="font-weight: bold;">if</span> (tp.first &lt; dist[tp.second])
+                  <span style="font-weight: bold;">continue</span>;
+...
+          <span style="font-weight: bold;">if</span> (dist[nd] &lt; w) {
+                  ...
+          }
+
+</pre>
+</div>
+<p>
+We exclude in a reversed order (usually we exclude bigger weight)
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6564aff" class="outline-5">
+<h5 id="org6564aff">Problem: LC 743. Network Delay Time</h5>
+<div class="outline-text-5" id="text-org6564aff">
+<p>
+(<a href="https://leetcode.com/problems/network-delay-time/description/">link</a>)
+Straight forward problem, use standard implementation and calculate max time.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++"><span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Solution</span> {
+<span style="font-weight: bold;">public</span>:
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">networkDelayTime</span>(<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt; &amp;<span style="font-weight: bold; font-style: italic;">times</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">n</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">k</span>) {
+    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">build list</span>
+    <span style="font-weight: bold; text-decoration: underline;">unordered_map</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>, <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;&gt; <span style="font-weight: bold; font-style: italic;">mp</span>;
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">ans</span>(-1);
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold;">auto</span> &amp;<span style="font-weight: bold; font-style: italic;">i</span> : times) {
+      mp[i[0]].push_back({i[2], <span style="font-weight: bold; text-decoration: underline;">i</span>[1]});
+    }
+    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">q</span>
+    <span style="font-weight: bold; text-decoration: underline;">priority_queue</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;, <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;,
+                   <span style="font-weight: bold; text-decoration: underline;">greater</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;&gt;
+        <span style="font-weight: bold; font-style: italic;">q</span>;
+    <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">dist</span>(n + 1, INT_MAX);
+    dist[k] = 0;
+    q.push({0, k});
+    <span style="font-weight: bold;">while</span> (!q.empty()) {
+      <span style="font-weight: bold;">auto</span> <span style="font-weight: bold; font-style: italic;">tp</span> = q.top();
+      q.pop();
+      <span style="font-weight: bold;">if</span> (tp.first &gt; dist[tp.second])
+        <span style="font-weight: bold;">continue</span>;
+      <span style="font-weight: bold;">for</span> (<span style="font-weight: bold;">auto</span> &amp;<span style="font-weight: bold; font-style: italic;">i</span> : mp[tp.second]) {
+        <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">node</span> = i.second, <span style="font-weight: bold; font-style: italic;">nw</span> = i.first + tp.first;
+        <span style="font-weight: bold;">if</span> (nw &lt; dist[node]) {
+          dist[node] = nw;
+          q.push({nw, node});
+        }
+      }
+    }
+
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">i</span> = 1; i &lt; dist.size(); ++i)
+      <span style="font-weight: bold;">if</span> (dist[i] != INT_MAX) {
+        <span style="font-weight: bold;">if</span> (dist[i] &gt; ans)
+          ans = dist[i];
+      } <span style="font-weight: bold;">else</span>
+        <span style="font-weight: bold;">return</span> -1;
+    <span style="font-weight: bold;">return</span> ans;
+  }
+};
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org555c3c1" class="outline-3">
+<h3 id="org555c3c1">Misc</h3>
+<div class="outline-text-3" id="text-org555c3c1">
+<p>
+Good to know stuff.
+</p>
+</div>
+<div id="outline-container-orgecac95b" class="outline-4">
+<h4 id="orgecac95b">Run-length encoding</h4>
+<div class="outline-text-4" id="text-orgecac95b">
+<p>
+Run-length encoding (RLE) is a form of lossless data compression in which runs
+of data (sequences in which the same data value occurs in many consecutive data
+elements) are stored as a single data value and count, rather than as the
+original run. This is most efficient on data that contains many such runs, for
+example, simple graphic images such as icons, line drawings, Conway's Game of
+Life, and animations. For files that do not have many runs, RLE could increase
+the file size.
+</p>
+
+<p>
+Consider a screen containing plain black text on a solid white background. There
+will be many long runs of white pixels in the blank space, and many short runs
+of black pixels within the text. A hypothetical scan line, with B representing a
+black pixel and W representing white, might read as follows:
+</p>
+
+<pre class="example" id="org565dde6">
+WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWBWWWWWWWWWWWWWW
+</pre>
+
+<p>
+With a run-length encoding (RLE) data compression algorithm applied to the above
+hypothetical scan line, it can be rendered as follows:
+</p>
+
+<pre class="example" id="orgd4e6aa5">
+12W1B12W3B24W1B14W
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Note that this can be calculated via a priority queue.
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html") {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.4). Author: Salih Muhammed. Last build date: 2023-04-30 Sun 00:44.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

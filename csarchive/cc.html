@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>POV: You Just Read Clean Code</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">POV: You Just Read Clean Code</h1>
+</header><div class="PREVIEW" id="org235691e">
+<p>
+I recently subscribed to the daily WTF, and I'm really happy to see other people who
+experienced that feelings of reading ugly, too ugly code. I decided to devote this page to
+list the most remarkable daily WTFs I've seen since Nov 2022.
+</p>
+
+</div>
+
+<div id="outline-container-orgbc6270f" class="outline-2">
+<h2 id="orgbc6270f">Parameters</h2>
+<div class="outline-text-2" id="text-orgbc6270f">
+<div class="org-src-container">
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">int32_t</span> <span style="font-weight: bold;">plink</span>(<span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">outname</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">outname_end</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">bedname</span>,
+    <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">bimname</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">famname</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">cm_map_fname</span>,
+    <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">cm_map_chrname</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">phenoname</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">extractname</span>,
+    <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">excludename</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">keepname</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">removename</span>,
+    <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">keepfamname</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">removefamname</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">filtername</span>,
+    <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">freqname</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">distance_wts_fname</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">read_dists_fname</span>,
+    <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">read_dists_id_fname</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">evecname</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">mergename1</span>,
+    <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">mergename2</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">mergename3</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">missing_mid_template</span>,
+    <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">missing_marker_id_match</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">makepheno_str</span>,
+    <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">phenoname_str</span>, <span style="font-weight: bold; text-decoration: underline;">Two_col_params</span>* <span style="font-weight: bold; font-style: italic;">a1alleles</span>,
+    <span style="font-weight: bold; text-decoration: underline;">Two_col_params</span>* <span style="font-weight: bold; font-style: italic;">a2alleles</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">recode_allele_name</span>,
+    <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">covar_fname</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">update_alleles_fname</span>,
+    <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">read_genome_fname</span>, <span style="font-weight: bold; text-decoration: underline;">Two_col_params</span>* <span style="font-weight: bold; font-style: italic;">qual_filter</span>,
+    <span style="font-weight: bold; text-decoration: underline;">Two_col_params</span>* <span style="font-weight: bold; font-style: italic;">update_chr</span>, <span style="font-weight: bold; text-decoration: underline;">Two_col_params</span>* <span style="font-weight: bold; font-style: italic;">update_cm</span>,
+    <span style="font-weight: bold; text-decoration: underline;">Two_col_params</span>* <span style="font-weight: bold; font-style: italic;">update_map</span>, <span style="font-weight: bold; text-decoration: underline;">Two_col_params</span>* <span style="font-weight: bold; font-style: italic;">update_name</span>,
+    <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">update_ids_fname</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">update_parents_fname</span>,
+    <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">update_sex_fname</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">loop_assoc_fname</span>,
+    <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">flip_fname</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">flip_subset_fname</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">sample_sort_fname</span>,
+    <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">filtervals_flattened</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">condition_mname</span>,
+    <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">condition_fname</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">filter_attrib_fname</span>,
+    <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">filter_attrib_liststr</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">filter_attrib_sample_fname</span>,
+    <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">filter_attrib_sample_liststr</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">rplugin_fname</span>,
+    <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">rplugin_host_or_socket</span>, <span style="font-weight: bold; text-decoration: underline;">int32_t</span> <span style="font-weight: bold; font-style: italic;">rplugin_port</span>,
+    <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">qual_min_thresh</span>, <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">qual_max_thresh</span>, <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">thin_keep_prob</span>,
+    <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">thin_keep_sample_prob</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">new_id_max_allele_len</span>,
+    <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">thin_keep_ct</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">thin_keep_sample_ct</span>,
+    <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">min_bp_space</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">mfilter_col</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">fam_cols</span>,
+    <span style="font-weight: bold; text-decoration: underline;">int32_t</span> <span style="font-weight: bold; font-style: italic;">missing_pheno</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">output_missing_pheno</span>,
+    <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">mpheno_col</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">pheno_modifier</span>,
+    <span style="font-weight: bold; text-decoration: underline;">Chrom_info</span>* <span style="font-weight: bold; font-style: italic;">chrom_info_ptr</span>, <span style="font-weight: bold; text-decoration: underline;">Oblig_missing_info</span>* <span style="font-weight: bold; font-style: italic;">om_ip</span>,
+    <span style="font-weight: bold; text-decoration: underline;">Family_info</span>* <span style="font-weight: bold; font-style: italic;">fam_ip</span>, <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">check_sex_fthresh</span>,
+    <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">check_sex_mthresh</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">check_sex_f_yobs</span>,
+    <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">check_sex_m_yobs</span>, <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">distance_exp</span>, <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">min_maf</span>,
+    <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">max_maf</span>, <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">geno_thresh</span>, <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">mind_thresh</span>,
+    <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">hwe_thresh</span>, <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">tail_bottom</span>, <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">tail_top</span>,
+    <span style="font-weight: bold; text-decoration: underline;">uint64_t</span> <span style="font-weight: bold; font-style: italic;">misc_flags</span>, <span style="font-weight: bold; text-decoration: underline;">uint64_t</span> <span style="font-weight: bold; font-style: italic;">filter_flags</span>, <span style="font-weight: bold; text-decoration: underline;">uint64_t</span> <span style="font-weight: bold; font-style: italic;">calculation_type</span>,
+    <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">dist_calc_type</span>, <span style="font-weight: bold; text-decoration: underline;">uintptr_t</span> <span style="font-weight: bold; font-style: italic;">groupdist_iters</span>,
+    <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">groupdist_d</span>, <span style="font-weight: bold; text-decoration: underline;">uintptr_t</span> <span style="font-weight: bold; font-style: italic;">regress_iters</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">regress_d</span>,
+    <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">parallel_idx</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">parallel_tot</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">splitx_bound1</span>,
+    <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">splitx_bound2</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">ppc_gap</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">sex_missing_pheno</span>,
+    <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">update_sex_col</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">hwe_modifier</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">min_ac</span>,
+    <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">max_ac</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">genome_modifier</span>, <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">genome_min_pi_hat</span>,
+    <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">genome_max_pi_hat</span>, <span style="font-weight: bold; text-decoration: underline;">Homozyg_info</span>* <span style="font-weight: bold; font-style: italic;">homozyg_ptr</span>,
+    <span style="font-weight: bold; text-decoration: underline;">Cluster_info</span>* <span style="font-weight: bold; font-style: italic;">cluster_ptr</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">neighbor_n1</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">neighbor_n2</span>,
+    <span style="font-weight: bold; text-decoration: underline;">Set_info</span>* <span style="font-weight: bold; font-style: italic;">sip</span>, <span style="font-weight: bold; text-decoration: underline;">Ld_info</span>* <span style="font-weight: bold; font-style: italic;">ldip</span>, <span style="font-weight: bold; text-decoration: underline;">Epi_info</span>* <span style="font-weight: bold; font-style: italic;">epi_ip</span>, <span style="font-weight: bold; text-decoration: underline;">Clump_info</span>* <span style="font-weight: bold; font-style: italic;">clump_ip</span>,
+    <span style="font-weight: bold; text-decoration: underline;">Rel_info</span>* <span style="font-weight: bold; font-style: italic;">relip</span>, <span style="font-weight: bold; text-decoration: underline;">Score_info</span>* <span style="font-weight: bold; font-style: italic;">sc_ip</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">recode_modifier</span>,
+    <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">allelexxxx</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">merge_type</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">sample_sort</span>,
+    <span style="font-weight: bold; text-decoration: underline;">int32_t</span> <span style="font-weight: bold; font-style: italic;">marker_pos_start</span>, <span style="font-weight: bold; text-decoration: underline;">int32_t</span> <span style="font-weight: bold; font-style: italic;">marker_pos_end</span>,
+    <span style="font-weight: bold; text-decoration: underline;">int32_t</span> <span style="font-weight: bold; font-style: italic;">snp_window_size</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">markername_from</span>, <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">markername_to</span>,
+    <span style="font-weight: bold; text-decoration: underline;">char</span>* <span style="font-weight: bold; font-style: italic;">markername_snp</span>, <span style="font-weight: bold; text-decoration: underline;">Range_list</span>* <span style="font-weight: bold; font-style: italic;">snps_range_list_ptr</span>,
+    <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">write_var_range_ct</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">covar_modifier</span>,
+    <span style="font-weight: bold; text-decoration: underline;">Range_list</span>* <span style="font-weight: bold; font-style: italic;">covar_range_list_ptr</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">write_covar_modifier</span>,
+    <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">write_covar_dummy_max_categories</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">dupvar_modifier</span>,
+    <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">mwithin_col</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">model_modifier</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">model_cell_ct</span>,
+    <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">model_mperm_val</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">glm_modifier</span>,
+    <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">glm_vif_thresh</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">glm_xchr_model</span>,
+    <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">glm_mperm_val</span>, <span style="font-weight: bold; text-decoration: underline;">Range_list</span>* <span style="font-weight: bold; font-style: italic;">parameters_range_list_ptr</span>,
+    <span style="font-weight: bold; text-decoration: underline;">Range_list</span>* <span style="font-weight: bold; font-style: italic;">tests_range_list_ptr</span>, <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">ci_size</span>, <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">pfilter</span>,
+    <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">output_min_p</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">mtest_adjust</span>, <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">adjust_lambda</span>,
+    <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">gxe_mcovar</span>, <span style="font-weight: bold; text-decoration: underline;">Aperm_info</span>* <span style="font-weight: bold; font-style: italic;">apip</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">mperm_save</span>,
+    <span style="font-weight: bold; text-decoration: underline;">uintptr_t</span> <span style="font-weight: bold; font-style: italic;">ibs_test_perms</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">perm_batch_size</span>, <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">lasso_h2</span>,
+    <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">lasso_lambda_iters</span>, <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">lasso_minlambda</span>,
+    <span style="font-weight: bold; text-decoration: underline;">Range_list</span>* <span style="font-weight: bold; font-style: italic;">lasso_select_covars_range_list_ptr</span>,
+    <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">testmiss_modifier</span>, <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">testmiss_mperm_val</span>,
+    <span style="font-weight: bold; text-decoration: underline;">uint32_t</span> <span style="font-weight: bold; font-style: italic;">permphe_ct</span>, <span style="font-weight: bold; text-decoration: underline;">int32_t</span> <span style="font-weight: bold; font-style: italic;">known_procs</span>,
+    <span style="font-weight: bold; text-decoration: underline;">Ll_str</span>** <span style="font-weight: bold; font-style: italic;">file_delete_list_ptr</span>)
+
+</pre>
+</div>
+
+
+<p>
+Very nice API:
+</p>
+<pre class="example" id="orgb0ef650">
+retval = plink(outname, outname_end, pedname, mapname, famname, cm_map_fname, cm_map_chrname, phenoname, extractname, excludename, keepname, removename, keepfamname, removefamname, filtername, freqname, distance_wts_fname, read_dists_fname, read_dists_id_fname, evecname, mergename1, mergename2, mergename3, missing_mid_template, missing_marker_id_match, makepheno_str, phenoname_str, a1alleles, a2alleles, recode_allele_name, covar_fname, update_alleles_fname, read_genome_fname, qual_filter, update_chr, update_cm, update_map, update_name, update_ids_fname, update_parents_fname, update_sex_fname, loop_assoc_fname, flip_fname, flip_subset_fname, sample_sort_fname, filtervals_flattened, condition_mname, condition_fname, filter_attrib_fname, filter_attrib_liststr, filter_attrib_sample_fname, filter_attrib_sample_liststr, rplugin_fname, rplugin_host_or_socket, rplugin_port, qual_min_thresh, qual_max_thresh, thin_keep_prob, thin_keep_sample_prob, new_id_max_allele_len, thin_keep_ct, thin_keep_sample_ct, min_bp_space, mfilter_col, fam_cols, missing_pheno, output_missing_pheno, mpheno_col, pheno_modifier, &amp;chrom_info, &amp;oblig_missing_info, &amp;family_info, check_sex_fthresh, check_sex_mthresh, check_sex_f_yobs, check_sex_m_yobs, distance_exp, min_maf, max_maf, geno_thresh, mind_thresh, hwe_thresh, tail_bottom, tail_top, misc_flags, filter_flags, calculation_type, dist_calc_type, groupdist_iters, groupdist_d, regress_iters, regress_d, parallel_idx, parallel_tot, splitx_bound1, splitx_bound2, ppc_gap, sex_missing_pheno, update_sex_col, hwe_modifier, min_ac, max_ac, genome_modifier, genome_min_pi_hat, genome_max_pi_hat, &amp;homozyg, &amp;cluster, neighbor_n1, neighbor_n2, &amp;set_info, &amp;ld_info, &amp;epi_info, &amp;clump_info, &amp;rel_info, &amp;score_info, recode_modifier, allelexxxx, merge_type, sample_sort, marker_pos_start, marker_pos_end, snp_window_size, markername_from, markername_to, markername_snp, &amp;snps_range_list, write_var_range_ct, covar_modifier, &amp;covar_range_list, write_covar_modifier, write_covar_dummy_max_categories, dupvar_modifier, mwithin_col, model_modifier, (uint32_t)model_cell_ct, model_mperm_val, glm_modifier, glm_vif_thresh, glm_xchr_model, glm_mperm_val, &amp;parameters_range_list, &amp;tests_range_list, ci_size, pfilter, output_min_p, mtest_adjust, adjust_lambda, gxe_mcovar, &amp;aperm, mperm_save, ibs_test_perms, perm_batch_size, lasso_h2, lasso_lambda_iters, lasso_minlambda, &amp;lasso_select_covars_range_list, testmiss_modifier, testmiss_mperm_val, permphe_ct, known_procs, &amp;file_delete_list);
+</pre>
+</div>
+</div>
+<div id="outline-container-orgc6f3ddd" class="outline-2">
+<h2 id="orgc6f3ddd">SQL With No Equal</h2>
+<div class="outline-text-2" id="text-orgc6f3ddd">
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">select</span> bars.*, DATE_FORMAT(bars.date_entered,<span style="font-style: italic;">'%Y-%m-%d %h:%i'</span>) <span style="font-weight: bold;">as</span> entered,
+        sales_reps.<span style="font-weight: bold;">name</span> <span style="font-weight: bold;">as</span> rep_name,
+        <span style="font-weight: bold;">case</span> monthly_sales <span style="font-weight: bold;">when</span> <span style="font-style: italic;">'Not in business yet'</span> <span style="font-weight: bold;">then</span> <span style="font-style: italic;">'no business'</span>
+                <span style="font-weight: bold;">else</span> monthly_sales <span style="font-weight: bold;">end</span> <span style="font-weight: bold;">as</span> new_monthly_sales,
+        <span style="font-weight: bold;">left</span>(bars.<span style="font-weight: bold;">name</span>,20) <span style="font-weight: bold;">as</span> new_name, <span style="font-weight: bold;">left</span>(bars.company,15) <span style="font-weight: bold;">as</span> new_company,
+        <span style="font-weight: bold;">left</span>(bars.email,23) <span style="font-weight: bold;">as</span> new_email,
+        (<span style="font-weight: bold;">select</span> <span style="font-weight: bold;">max</span>(action_date) <span style="font-weight: bold;">from</span> bar_action
+                <span style="font-weight: bold;">where</span> bar_action.bar_id=bars.id) <span style="font-weight: bold;">as</span> modify_date,
+        (<span style="font-weight: bold;">select</span> <span style="font-weight: bold;">count</span>(<span style="font-weight: bold;">distinct</span> foo_id) <span style="font-weight: bold;">from</span> bar_foos
+                <span style="font-weight: bold;">where</span> bar_foos.bar_id=bars.id) <span style="font-weight: bold;">as</span> total_foos,
+        bar_action.id <span style="font-weight: bold;">AS</span> credit_report_uploaded,
+        credit_report_requests.id <span style="font-weight: bold;">AS</span> credit_report_requested,
+        applications.id <span style="font-weight: bold;">as</span> app_id
+<span style="font-weight: bold;">from</span> bars <span style="font-weight: bold;">LEFT</span> <span style="font-weight: bold;">JOIN</span> sales_reps <span style="font-weight: bold;">ON</span> bars.rep_id=sales_reps.id
+        <span style="font-weight: bold;">LEFT</span> <span style="font-weight: bold;">JOIN</span> applications <span style="font-weight: bold;">ON</span> bars.id=applications.bar_id
+        <span style="font-weight: bold;">LEFT</span> <span style="font-weight: bold;">JOIN</span> bar_action <span style="font-weight: bold;">ON</span>
+                (bars.id=bar_action.bar_id <span style="font-weight: bold;">AND</span> action_desc=<span style="font-style: italic;">'credit_report_uploaded'</span>)
+        <span style="font-weight: bold;">LEFT</span> <span style="font-weight: bold;">JOIN</span> credit_report_requests <span style="font-weight: bold;">ON</span> bars.id=credit_report_requests.bar_id
+<span style="font-weight: bold;">WHERE</span> bars.is_deleted =0 <span style="font-weight: bold;">and</span>
+        bars.status <span style="font-weight: bold;">IN</span> (<span style="font-style: italic;">'O/LU'</span>,<span style="font-style: italic;">'O/LAU'</span>,<span style="font-style: italic;">'O/LA'</span>,<span style="font-style: italic;">'O/LAA'</span>,<span style="font-style: italic;">'IP/L'</span>,<span style="font-style: italic;">'IP/LA'</span>,<span style="font-style: italic;">'H/'</span>,<span style="font-style: italic;">'IP/N'</span>)
+<span style="font-weight: bold;">ORDER</span> <span style="font-weight: bold;">BY</span> <span style="font-weight: bold;">CASE</span> assign_date <span style="font-weight: bold;">WHEN</span> <span style="font-weight: bold;">NULL</span> <span style="font-weight: bold;">THEN</span> bars.date_entered
+        <span style="font-weight: bold;">WHEN</span> <span style="font-style: italic;">'0000-00-00 00:00:00'</span> <span style="font-weight: bold;">THEN</span> bars.date_entered
+        <span style="font-weight: bold;">ELSE</span> assign_date <span style="font-weight: bold;">END</span> <span style="font-weight: bold;">DESC</span> <span style="font-weight: bold;">LIMIT</span> 0,5
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org978b14d" class="outline-2">
+<h2 id="org978b14d">Most Clean .NET Architecture</h2>
+<div class="outline-text-2" id="text-org978b14d">
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">try</span>
+            {
+                basicHttpBinding = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">BasicHttpBinding</span>(BasicHttpSecurityMode.Transport);
+                basicHttpBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
+                endpointAddress = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">EndpointAddress</span>(<span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Uri</span>(<span style="font-style: italic;">"https://Service-engine-dev.110apps.net/Package/TempSoftware.svc?wsdl"</span>));
+                factory = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">ChannelFactory</span>&lt;<span style="font-weight: bold; text-decoration: underline;">IRequestChannel</span>&gt;(basicHttpBinding, endpointAddress);
+                <span style="font-weight: bold; text-decoration: underline;">IRequestChannel</span> <span style="font-weight: bold; font-style: italic;">channel</span> = factory.<span style="font-weight: bold;">CreateChannel</span>();
+                <span style="font-weight: bold; text-decoration: underline;">HttpRequestMessageProperty</span> <span style="font-weight: bold; font-style: italic;">httpRequestMessage</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">HttpRequestMessageProperty</span>();
+                <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">apikey</span> = <span style="font-style: italic;">"OAvHGAAatytiZno"</span>;
+                httpRequestMessage.Headers.<span style="font-weight: bold;">Add</span>(<span style="font-style: italic;">"apikey"</span>, apikey);
+                OperationContext.Current.OutgoingMessageProperties[HttpRequestMessageProperty.Name] = httpRequestMessage;
+
+                    service.<span style="font-weight: bold;">OpenAsync</span>();
+                    <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">result2</span> = <span style="font-weight: bold;">await</span> service.<span style="font-weight: bold;">PRequestAsync</span>(reqedata, partner);
+                    <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">data</span> = result2;
+            }
+            <span style="font-weight: bold;">catch</span>(Exception e)
+            {
+                <span style="font-weight: bold;">throw</span>;
+            }
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb67a723" class="outline-2">
+<h2 id="orgb67a723">Rounding Percentages</h2>
+<div class="outline-text-2" id="text-orgb67a723">
+<div class="org-src-container">
+<pre class="src src-java"><span style="font-weight: bold;">private</span> <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold;">GetPercentageRounds</span>(<span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">percentage</span>)
+{
+    <span style="font-weight: bold;">if</span> (percentage == 0)
+        <span style="font-weight: bold;">return</span> <span style="font-style: italic;">"&#9898;&#9898;&#9898;&#9898;&#9898;&#9898;&#9898;&#9898;&#9898;&#9898;"</span>;
+    <span style="font-weight: bold;">if</span> (percentage &gt; 0.0 &amp;&amp; percentage &lt;= 0.1)
+        <span style="font-weight: bold;">return</span> <span style="font-style: italic;">"&#128309;&#9898;&#9898;&#9898;&#9898;&#9898;&#9898;&#9898;&#9898;&#9898;"</span>;
+    <span style="font-weight: bold;">if</span> (percentage &gt; 0.1 &amp;&amp; percentage &lt;= 0.2)
+        <span style="font-weight: bold;">return</span> <span style="font-style: italic;">"&#128309;&#128309;&#9898;&#9898;&#9898;&#9898;&#9898;&#9898;&#9898;&#9898;"</span>;
+    <span style="font-weight: bold;">if</span> (percentage &gt; 0.2 &amp;&amp; percentage &lt;= 0.3)
+        <span style="font-weight: bold;">return</span> <span style="font-style: italic;">"&#128309;&#128309;&#128309;&#9898;&#9898;&#9898;&#9898;&#9898;&#9898;&#9898;"</span>;
+    <span style="font-weight: bold;">if</span> (percentage &gt; 0.3 &amp;&amp; percentage &lt;= 0.4)
+        <span style="font-weight: bold;">return</span> <span style="font-style: italic;">"&#128309;&#128309;&#128309;&#128309;&#9898;&#9898;&#9898;&#9898;&#9898;&#9898;"</span>;
+    <span style="font-weight: bold;">if</span> (percentage &gt; 0.4 &amp;&amp; percentage &lt;= 0.5)
+        <span style="font-weight: bold;">return</span> <span style="font-style: italic;">"&#128309;&#128309;&#128309;&#128309;&#128309;&#9898;&#9898;&#9898;&#9898;&#9898;"</span>;
+    <span style="font-weight: bold;">if</span> (percentage &gt; 0.5 &amp;&amp; percentage &lt;= 0.6)
+        <span style="font-weight: bold;">return</span> <span style="font-style: italic;">"&#128309;&#128309;&#128309;&#128309;&#128309;&#128309;&#9898;&#9898;&#9898;&#9898;"</span>;
+    <span style="font-weight: bold;">if</span> (percentage &gt; 0.6 &amp;&amp; percentage &lt;= 0.7)
+        <span style="font-weight: bold;">return</span> <span style="font-style: italic;">"&#128309;&#128309;&#128309;&#128309;&#128309;&#128309;&#128309;&#9898;&#9898;&#9898;"</span>;
+    <span style="font-weight: bold;">if</span> (percentage &gt; 0.7 &amp;&amp; percentage &lt;= 0.8)
+        <span style="font-weight: bold;">return</span> <span style="font-style: italic;">"&#128309;&#128309;&#128309;&#128309;&#128309;&#128309;&#128309;&#128309;&#9898;&#9898;"</span>;
+    <span style="font-weight: bold;">if</span> (percentage &gt; 0.8 &amp;&amp; percentage &lt;= 0.9)
+        <span style="font-weight: bold;">return</span> <span style="font-style: italic;">"&#128309;&#128309;&#128309;&#128309;&#128309;&#128309;&#128309;&#128309;&#128309;&#9898;"</span>;
+
+    <span style="font-weight: bold;">return</span> <span style="font-style: italic;">"&#128309;&#128309;&#128309;&#128309;&#128309;&#128309;&#128309;&#128309;&#128309;&#128309;"</span>;
+}
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-04-30 Sun 00:44.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

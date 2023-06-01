@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Publications Archive</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Publications Archive</h1>
+</header>
+
+<div id="outline-container-org90f0aa1" class="outline-2">
+<h2 id="org90f0aa1"><a href="pub/stem.html">(2023-05-23) Report on the Current Available Open Source Arabic Language Stemming Algorithms and Services</a></h2>
+<div class="outline-text-2" id="text-org90f0aa1">
+<p>
+This article presents a comprehensive report on the current landscape of
+open-source Arabic language stemming algorithms and services. Stemming, a
+fundamental task in natural language processing, involves reducing Arabic words
+to their root forms, thereby enabling efficient information retrieval, text
+analysis, and machine learning applications. The study evaluates five different
+stemming algorithms, each developed by independent researchers and communities.
+The aim of this research is to compare and analyze the performance of these
+stemmers in terms of accuracy, computational efficiency, and language coverage.
+The evaluation includes a diverse set of Arabic texts, encompassing various
+domains and genres. The results highlight the strengths and weaknesses of each
+algorithm, shedding light on their applicability to different scenarios. The
+findings contribute to the Arabic NLP community by offering an in-depth analysis
+of open-source stemming tools and facilitating informed decision-making for
+researchers, developers, and practitioners.
+</p>
+</div>
+</div>
+<div id="outline-container-org9e1b2ae" class="outline-2">
+<h2 id="org9e1b2ae"><a href="pub/islam.html">(2021-11-07) Pervez Hoodbhoy's Islam and Science: How Not to Read History</a></h2>
+<div class="outline-text-2" id="text-org9e1b2ae">
+<p>
+There are a lot of examples of this, American creationists exert a lot of efforts based on
+false beliefs, they even created a fully so called 'scientific journal' called
+<i><a href="https://bio-complexity.org/ojs/index.php/main">biocomplexity</a></i> which tries to prove that bio-objects are too complicated to be created by a
+blind watch maker. This is led by the misunderstanding to every evolutionary fact, all of
+the creationists claims however in how many pages it is descried, it is probably can be
+refuted in a few paragraphs which might sounds insanity to someone who watching this happens
+from afar.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-05-23 Tue 09:08.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Shortest Path Problem</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link href="https://fonts.cdnfonts.com/css/times-new-roman" rel="stylesheet">
+<script async src="//static.getclicky.com/101390423.js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+    <a style="text-decoration:none" accesskey="h" href="/index.html"> Home </a> /
+    <a style="text-decoration:none" href="https://luggages.github.io/dynk/index.html">Gallery</a> /
+    <a style="text-decoration:none" accesskey="H" href="/stack.html">Stack</a> 
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Shortest Path Problem</h1>
+</header><div class="PREVIEW" id="org52bf5d1">
+<p>
+In graph theory, the shortest path problem is the problem of finding a path
+between two vertices (or nodes) in a graph such that the sum of the weights of
+its constituent edges is minimized.
+</p>
+
+</div>
+
+
+
+<p>
+The problem of finding the shortest path between two intersections on a road map
+may be modeled as a special case of the shortest path problem in graphs, where
+the vertices correspond to intersections and the edges correspond to road
+segments, each weighted by the length of the segment.
+</p>
+
+<p>
+Please study Representations, Implementations and Algorithms of Graphs (and Trees) (<a href="graph.html">link</a>) carefully before you move to this problem.
+</p>
+
+
+<div id="outline-container-org5e3144b" class="outline-2">
+<h2 id="org5e3144b">Dijkstra's Algorithm</h2>
+<div class="outline-text-2" id="text-org5e3144b">
+<p>
+Dijkstra's algorithm (<i>ˈdaɪkstrəz</i> DYKE-strəz) is an algorithm for finding the
+shortest paths between nodes in a weighted graph, which may represent, for
+example, road networks.
+</p>
+
+<p>
+Let the node at which we are starting be called the initial node. Let the
+distance of node Y be the distance from the initial node to Y. Dijkstra's
+algorithm will initially start with infinite distances and will try to improve
+them step by step.
+</p>
+
+<ol class="org-ol">
+<li>Mark all nodes unvisited. Create a set of all the unvisited nodes called the
+unvisited set.</li>
+<li>Assign to every node a tentative distance value: set it to zero for our
+initial node and to infinity for all other nodes. During the run of the
+algorithm, the tentative distance of a node v is the length of the shortest
+path discovered so far between the node v and the starting node. Since
+initially no path is known to any other vertex than the source itself (which
+is a path of length zero), all other tentative distances are initially set to
+infinity. Set the initial node as current</li>
+<li>For the current node, consider all of its unvisited neighbors and calculate
+their tentative distances through the current node. Compare the newly
+calculated tentative distance to the one currently assigned to the neighbor
+and assign it the smaller one. For example, if the current node A is marked
+with a distance of 6, and the edge connecting it with a neighbor B has length
+2, then the distance to B through A will be 6 + 2 = 8. If B was previously
+marked with a distance greater than 8 then change it to 8. Otherwise, the
+current value will be kept.</li>
+<li>When we are done considering all of the unvisited neighbors of the current
+node, mark the current node as visited and remove it from the unvisited set.
+A visited node will never be checked again (this is valid and optimal in
+connection with the behavior in step 6.: that the next nodes to visit will
+always be in the order of 'smallest distance from initial node first' so any
+visits after would have a greater distance).</li>
+<li>If the destination node has been marked visited (when planning a route
+between two specific nodes) or if the smallest tentative distance among the
+nodes in the unvisited set is infinity (when planning a complete traversal;
+occurs when there is no connection between the initial node and remaining
+unvisited nodes), then stop. The algorithm has finished.</li>
+<li>Otherwise, select the unvisited node that is marked with the smallest
+tentative distance, set it as the new current node, and go back to step 3.</li>
+</ol>
+
+
+<p>
+In more algorithmatic words:
+</p>
+<pre class="example" id="org98e4f64">
+
+Set a flag in all vertices to "UNSEEN"
+Pick a starting vertex and mark it as "IN TREE"
+Mark all vertices adjacent to the start vertex as "FRINGE"
+Loop while there are vertices in the graph not marked as "IN TREE"
+ 	Find the vertex in the fringe at a minimum distance from the start vertex.
+ 	Add that vertex to the tree and mark it as "IN TREE"
+ 	For each vertex adjacent to this vertex
+ 	 	Set the state of the adjacent vertex to "FRINGE"
+Calculate its' distance from the starting vertex
+Set the shortest distance to each node in the fringe
+end loop
+Return Shortest Distance
+</pre>
+
+<p>
+Consider the following graph in which there are six nodes in a directed graph
+with edge weights as shown in this figure:
+</p>
+
+
+<figure id="orgf6caed5">
+<a href="#" onclick="toggleImage(this, '&quot;https://link.storjshare.io/raw/juyia46jwfo36dkssb7oiceceo7a/blog/public/SPA_01.jpg&quot;')">Click here to show the image</a><div class="image-container" style="display:none"><img src="https://link.storjshare.io/raw/juyia46jwfo36dkssb7oiceceo7a/blog/public/SPA_01.jpg" alt="SPA_01.jpg"></div>
+
+</figure>
+
+
+<p>
+If we are searching for the shortest path from node 1 to any other given node in
+the graph we need to look at all the possible paths from node 1 to node w and
+pick the shortest. Listing all the possible paths from node 1 to the other nodes
+with their lengths gives:
+</p>
+
+<pre class="example" id="org9d12f03">
+Paths to 1: 1--&gt;1 (0)
+Paths to 2: 1--&gt;2 (3)
+Paths to 3: 1--&gt;2--&gt;3 (10), 1--&gt;6--&gt;3 (13)
+Paths to 4: 1--&gt;2--&gt;3--&gt;4 (15), 1--&gt;6--&gt;4 (7), 1--&gt;6--&gt;3--&gt;4 (18)
+Paths to 5: 1--&gt;2--&gt;3--&gt;4--&gt;5 (21), 1--&gt;2--&gt;3--&gt;5 (11)
+	      1--&gt;2--&gt;6--&gt;3--&gt;4--&gt;5 (32), 1--&gt;2--&gt;6--&gt;4--&gt;5 (21),
+	      1--&gt;6--&gt;4--&gt;5 (13), 1--&gt;6--&gt;3--&gt;5 (14)
+Paths to 6: 1--&gt;6 (5), 1--&gt;2--&gt;6 (13), 1--&gt;2--&gt;3--&gt;5--&gt;6 (22),
+	      1--&gt;2--&gt;3--&gt;4--&gt;5--&gt;6 (38)
+</pre>
+
+
+<p>
+You can go through this list and pick the shortest path from all the possible
+paths to each node. We can build a diagram which would give us the shortest
+paths. To do this we will rebuild the graph diagram into a tree At any point in
+the building of the tree the nodes in the graph will be classified in one of
+three categories: (1) "intree"&#x2013;those nodes which have already been added to the
+tree, (2) "fringe" &#x2013; those nodes which are immediately adjacent to any of the
+nodes in the tree, (3) "unseen" &#x2013; all remaining nodes.
+</p>
+
+<p>
+As an example let's trace the paths from node 1 to node 5. Beginning with node 1
+as the starting point we see that there are two nodes in the fringe {2,6}and
+three nodes unseen {3,4,5}. With no additional information the path to node 2
+and the path to node 6 represent the current shortest path to each. This gives
+us a tree as shown in this figure:
+</p>
+
+
+<figure id="orgaaaafe0">
+<a href="#" onclick="toggleImage(this, '&quot;https://link.storjshare.io/raw/jwzc65pl7qltdfaik2hfisnuvdoq/blog/public/SPA_02.jpg&quot;')">Click here to show the image</a><div class="image-container" style="display:none"><img src="https://link.storjshare.io/raw/jwzc65pl7qltdfaik2hfisnuvdoq/blog/public/SPA_02.jpg" alt="SPA_02.jpg"></div>
+
+</figure>
+
+
+<p>
+We select node 2 first, because it is the closest to 1 of all the nodes in the
+fringe<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup> . Adding it to the tree and updating the fringe we get the tree in
+figure 3. Note that node 6 is in the fringe for node 2 but the path to node 6
+via node 2 is longer than the direct path from node 1 to node 6 so we don't
+consider path 1&#x2013;&gt;2&#x2013;&gt;6 as acceptable.
+</p>
+
+
+<figure id="org3eb3c2f">
+<a href="#" onclick="toggleImage(this, '&quot;https://link.storjshare.io/raw/jxmq5lejeoqtw3jlek3bzrmuwoqa/blog/public/SPA_03.jpg&quot;')">Click here to show the image</a><div class="image-container" style="display:none"><img src="https://link.storjshare.io/raw/jxmq5lejeoqtw3jlek3bzrmuwoqa/blog/public/SPA_03.jpg" alt="SPA_03.jpg"></div>
+
+</figure>
+
+<p>
+Of the two nodes in the fringe now, node 6 is closest so it is added to the tree
+and all the nodes adjacent to 6 are moved into the fringe.
+</p>
+
+
+<figure id="org94079bd">
+<a href="#" onclick="toggleImage(this, '&quot;https://link.storjshare.io/raw/jxzgfrvgdwyrzbi7borlb5xbkf2a/blog/public/SPA_04.jpg&quot;')">Click here to show the image</a><div class="image-container" style="display:none"><img src="https://link.storjshare.io/raw/jxzgfrvgdwyrzbi7borlb5xbkf2a/blog/public/SPA_04.jpg" alt="SPA_04.jpg"></div>
+
+</figure>
+
+
+<p>
+Node 4 is now the closest to node 1 of all the nodes in the fringe so it is
+selected and the nodes adjacent to it added to the fringe. This gives the tree
+shown:
+</p>
+
+
+<figure id="orgf3b2a8f">
+<a href="#" onclick="toggleImage(this, '&quot;https://link.storjshare.io/raw/jwm7ka74epkbl74wxm4u3n3yoxra/blog/public/SPA_05.jpg&quot;')">Click here to show the image</a><div class="image-container" style="display:none"><img src="https://link.storjshare.io/raw/jwm7ka74epkbl74wxm4u3n3yoxra/blog/public/SPA_05.jpg" alt="SPA_05.jpg"></div>
+
+</figure>
+
+
+<p>
+Next we add node 3 to the tree since it is the closest to node 1. This will also
+reveal another path to node 5, 1&#x2013;&gt;2&#x2013;&gt;3&#x2013;&gt;5 = 11 which is shorter than the
+current path length of 13 so 11 is substituted for 13. Node 3 is added to the
+tree.
+</p>
+
+<p>
+We can imagine the implementation as the following:
+</p>
+
+<pre class="example" id="org3b02b5d">
+#define MAXVERTICES     6     // only for this example
+#define MAXLINKS        5     // only for this example
+#define Minimum(X,Y)    ((X) &lt; (Y)) ? (X) : (Y)
+typdef enum{intree, fringe, unseen} StatusType;
+
+Define an array of type Node.
+Insert all data in the array to build the graph.
+Input start (v) and end (w) node numbers from user
+Call ShortestPath(AdjacencyList, 6, v, w)
+
+int ShortestPath(Node AdjacencyList[], int n, int v, int w)
+	// AdjacencyList -- adjacency list of nodes in graph
+	// n -- number of nodes in the graph (MAXVERTICES)
+	// v -- number of the starting vertex (1..MAXVERTICES)
+	// w -- number of the destination vertex (1..MAXVERTICES)
+
+	int			ShortestDist[MAXVERTICES];
+	int			W[MAXVERTICES];
+	StatusType		status[MAXVERTICES];
+
+	// --------------------   INITIALIZATION SECTION --------------------
+	Initialize tree array W to empty.
+	Initialize ShortestDist array to all maximum.
+	Initialize status array to all unseen.
+	// --------------------------- SETUP SECTION ---------------------------
+	Add node v to W array
+	Set shortest distance from v to v = 0
+	Set status of v to intree
+	For each node adjacent to v
+		Set status to fringe
+		Set shortest distance to weight of link from v
+	// ----------------------- MAIN LOOP SECTION -----------------------
+	// Repeatedly enlarge W until it includes all vertices in the graph
+	while(there are nodes in the graph not in W)
+		Find node n, among those in the fringe, at the minimum distance from v
+		Add node n to W array
+		Set status of node n to intree
+		For each node adjacent to node n
+			Set status of adjacent node to fringe
+			Calculate distance D from v to adjacent node through node n, i.e.
+			   shortest distance to n + distance from n to adjacent node.
+			Set shortest distance to the adjacent node to
+			   Minimum(D, ShortestDist[adjacent node])
+	end while
+	return ShortestDist[node w]
+end ShortestPath function
+
+</pre>
+
+<p>
+Minimal implementation:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++"><span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;bits/stdc++.h&gt;</span>
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; text-decoration: underline;">std</span>;
+
+<span style="font-weight: bold;">const</span> <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">INF</span> = 2147483647;
+<span style="font-weight: bold;">const</span> <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">MAX</span> = 5005;
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">D</span>[MAX], <span style="font-weight: bold; font-style: italic;">N</span>; <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Keeps minimum distance to each node</span>
+<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>,<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt; <span style="font-weight: bold; font-style: italic;">E</span>[MAX]; <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Adjacency list</span>
+
+<span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">dijkstra</span>()
+{
+    <span style="font-weight: bold;">for</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">i</span> = 1; i &lt;= N; i++) D[i] = INF;
+    D[1] = 0;
+    <span style="font-weight: bold; text-decoration: underline;">priority_queue</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>,<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;,<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>,<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;,<span style="font-weight: bold; text-decoration: underline;">greater</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>,<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;&gt; <span style="font-weight: bold; font-style: italic;">q</span>;
+    q.push({0,1});
+
+    <span style="font-weight: bold;">while</span>(!q.empty())
+    {
+        <span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>,<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">p</span> = q.top();
+        q.pop();
+
+        <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">u</span> = p.second, <span style="font-weight: bold; font-style: italic;">dist</span> = p.first;
+        <span style="font-weight: bold;">if</span>(dist &gt; D[u]) <span style="font-weight: bold;">continue</span>;
+
+        <span style="font-weight: bold;">for</span>(<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>,<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">pr</span> : E[u])
+        {
+            <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">v</span> = pr.first;
+            <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">next_dist</span> = dist + pr.second;
+
+            <span style="font-weight: bold;">if</span>(next_dist &lt; D[v])
+            {
+                D[v] = next_dist;
+                q.push({next_dist,v});
+            }
+        }
+    }
+}
+</pre>
+</div>
+
+<p>
+Other implementation without optimization:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++"><span style="font-weight: bold;">#define</span> <span style="font-weight: bold; font-style: italic;">MAXVERTICES</span>     6     <span style="font-weight: bold; font-style: italic;">/* </span><span style="font-weight: bold; font-style: italic;">only for this example</span><span style="font-weight: bold; font-style: italic;"> */</span>
+<span style="font-weight: bold;">#define</span> <span style="font-weight: bold; font-style: italic;">MAXLINKS</span>        5     <span style="font-weight: bold; font-style: italic;">/* </span><span style="font-weight: bold; font-style: italic;">only for this example</span><span style="font-weight: bold; font-style: italic;"> */</span>
+<span style="font-weight: bold;">#define</span> <span style="font-weight: bold;">Minimum</span>(<span style="font-weight: bold; font-style: italic;">X</span>,<span style="font-weight: bold; font-style: italic;">Y</span>)    ((X) &lt; (Y)) ? (X) : (Y)
+<span style="font-weight: bold;">enum</span> <span style="font-weight: bold; text-decoration: underline;">StatusType</span> {<span style="font-weight: bold; font-style: italic;">intree</span>, <span style="font-weight: bold; font-style: italic;">fringe</span>, <span style="font-weight: bold; font-style: italic;">unseen</span>} <span style="font-weight: bold; font-style: italic;">StatusType</span>;
+
+
+<span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">-------------------------------------------</span>
+<span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">ShortestPath()</span>
+<span style="font-weight: bold; font-style: italic;">//</span>
+<span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Find shortest path from node v to</span>
+<span style="font-weight: bold; font-style: italic;">//   </span><span style="font-weight: bold; font-style: italic;">node w using Dijkstra's shortest</span>
+<span style="font-weight: bold; font-style: italic;">//   </span><span style="font-weight: bold; font-style: italic;">path algorithm.</span>
+<span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Returns total number of units in shortest</span>
+<span style="font-weight: bold; font-style: italic;">//   </span><span style="font-weight: bold; font-style: italic;">path</span>
+<span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">-------------------------------------------</span>
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">ShortestPath</span>(<span style="font-weight: bold; text-decoration: underline;">Node</span> <span style="font-weight: bold; font-style: italic;">AdjacencyList</span>[], <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">n</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">v</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">w</span>)
+{
+        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">AdjacencyList -- adjacency list of nodes in graph</span>
+        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">n -- number of nodes in the graph (6)</span>
+        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">v -- number of the starting vertex (1..6)</span>
+        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">w -- number of the destination vertex (1..6)</span>
+        <span style="font-weight: bold; text-decoration: underline;">int</span>             <span style="font-weight: bold; font-style: italic;">MinDistance</span>;
+        <span style="font-weight: bold; text-decoration: underline;">int</span>             <span style="font-weight: bold; font-style: italic;">ShortestDist</span>[MAXVERTICES];
+        <span style="font-weight: bold; text-decoration: underline;">int</span>             <span style="font-weight: bold; font-style: italic;">W</span>[MAXVERTICES];
+        <span style="font-weight: bold; text-decoration: underline;">int</span>             <span style="font-weight: bold; font-style: italic;">nextWIdx</span> = 0;
+        <span style="font-weight: bold; text-decoration: underline;">int</span>             <span style="font-weight: bold; font-style: italic;">i</span>;
+        <span style="font-weight: bold; text-decoration: underline;">int</span>             <span style="font-weight: bold; font-style: italic;">wNode</span>;          <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Index of node being considered</span>
+        <span style="font-weight: bold; text-decoration: underline;">int</span>             <span style="font-weight: bold; font-style: italic;">tempIdx</span>;        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Temporary use index</span>
+        <span style="font-weight: bold; text-decoration: underline;">StatusType</span>      <span style="font-weight: bold; font-style: italic;">status</span>[MAXVERTICES];
+
+        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">-------------------- INITIALIZATION SECTION --------------------</span>
+        <span style="font-weight: bold;">for</span>(i = 0; i &lt; MAXVERTICES; i++)
+        {
+                W[i] = -1;                   <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Init W to empty</span>
+                ShortestDist[i] = MAXINT;    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Init shortest dists to infinity</span>
+                status[i] = unseen;          <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Init all nodes to unseen</span>
+        }
+        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">------------------------ SETUP SECTION -------------------------</span>
+        W[nextWIdx] = v;         <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Add first node to W</span>
+        nextWIdx++;              <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Increment index into W</span>
+        ShortestDist[v-1] = 0;   <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Set shortest dist from v to v</span>
+        status[v-1] = intree;    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Set status of v in W</span>
+
+        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Set shortest distance and status from v to all nodes adjacent to it</span>
+        <span style="font-weight: bold;">for</span>(i = 0; i &lt; MAXLINKS; i++)
+        {
+                ShortestDist[AdjacencyList[v-1].links[i].link - 1] =
+                        AdjacencyList[v-1].links[i].weight;
+                status[AdjacencyList[v-1].links[i].link - 1] = fringe;
+        }
+        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">---------------------- MAIN lOOP SECTION -----------------------</span>
+        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Repeatedly enlarge W until it includes all vertices in the graph</span>
+        <span style="font-weight: bold;">while</span>(nextWIdx &lt; MAXVERTICES)
+        {
+                <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Find the vertex n in V - W at the minimum distance from v</span>
+                MinDistance = MAXINT;
+                <span style="font-weight: bold;">for</span>(i = 0; i &lt; MAXVERTICES; i++)
+                {
+                        <span style="font-weight: bold;">if</span>(status[i] == fringe)
+                        {
+                                <span style="font-weight: bold;">if</span>(ShortestDist[i] &lt; MinDistance)
+                                {
+                                        MinDistance = ShortestDist[i];
+                                        wNode = i + 1;  <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Convert index to node number</span>
+                                }
+                        }
+                }
+
+                <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Add w to W</span>
+                W[nextWIdx] = wNode;
+                status[wNode - 1] = intree;
+                nextWIdx++;
+
+                <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Update the shortest distances to vertices in V - W</span>
+                <span style="font-weight: bold;">for</span>(i = 0; i &lt; MAXLINKS; i++)
+                {
+                        tempIdx = AdjacencyList[wNode -1].links[i].link - 1;
+                        ShortestDist[tempIdx] = Minimum(ShortestDist[tempIdx],
+                                ShortestDist[wNode - 1] + AdjacencyList[wNode - 1].links[i].weight);
+                        status[tempIdx] = fringe;
+                }
+        } <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">End while</span>
+        <span style="font-weight: bold;">return</span>(ShortestDist[w - 1]);
+}
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-org9e3fd26" class="outline-3">
+<h3 id="org9e3fd26">Problem: LC 1514. Path with Maximum Probability</h3>
+<div class="outline-text-3" id="text-org9e3fd26">
+<p>
+(<a href="https://leetcode.com/problems/path-with-maximum-probability/">link</a>)
+</p>
+
+<p>
+This is very interesting problem actually because it does require a small
+variation of the algorithm since we are techincally looking for the longest path
+instead, so basically we can use our main implementation:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Solution</span> {
+<span style="font-weight: bold;">public</span>:
+  <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold;">maxProbability</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">n</span>, <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt; &amp;<span style="font-weight: bold; font-style: italic;">edges</span>,
+                        <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">double</span>&gt; &amp;<span style="font-weight: bold; font-style: italic;">succProb</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">start</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">end</span>) {
+    <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">double</span>&gt; <span style="font-weight: bold; font-style: italic;">dist</span>(n, INT_MIN);
+    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">build list</span>
+    <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">double</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;&gt; <span style="font-weight: bold; font-style: italic;">adj</span>(n, vector&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">double</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;());
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">ctr</span> = 0;
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold;">auto</span> &amp;<span style="font-weight: bold; font-style: italic;">i</span> : edges) {
+      adj[i[0]].push_back({succProb[ctr], <span style="font-weight: bold; text-decoration: underline;">i</span>[1]});
+      adj[i[1]].push_back({succProb[ctr], <span style="font-weight: bold; text-decoration: underline;">i</span>[0]});
+      ctr++;
+    }
+    <span style="font-weight: bold; text-decoration: underline;">priority_queue</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">double</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;, <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">double</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;,
+                   <span style="font-weight: bold; text-decoration: underline;">less</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">double</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;&gt; <span style="font-weight: bold; font-style: italic;">q</span>;
+    q.push({1, start});
+    dist[start] = 1;
+    <span style="font-weight: bold;">while</span> (!q.empty()) {
+      <span style="font-weight: bold;">auto</span> <span style="font-weight: bold; font-style: italic;">tp</span> = q.top();
+      q.pop();
+      <span style="font-weight: bold;">if</span> (tp.first &lt; dist[tp.second])
+        <span style="font-weight: bold;">continue</span>;
+      <span style="font-weight: bold;">for</span> (<span style="font-weight: bold;">auto</span> &amp;<span style="font-weight: bold; font-style: italic;">i</span> : adj[tp.second]) {
+        <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">nd</span> = i.second;
+        <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">w</span> = i.first * tp.first;
+        <span style="font-weight: bold;">if</span> (dist[nd] &lt; w) {
+          dist[nd] = w;
+          q.push({w, nd});
+        }
+      }
+    }
+    <span style="font-weight: bold;">return</span> dist[end] == INT_MIN ? 0 : dist[end];
+  }
+};
+</pre>
+</div>
+
+<p>
+Note the following:
+</p>
+
+<p>
+a.
+</p>
+<div class="org-src-container">
+<pre class="src src-c++"><span style="font-weight: bold; text-decoration: underline;">priority_queue</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">double</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;, <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">double</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;,
+               <span style="font-weight: bold; text-decoration: underline;">less</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">double</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;&gt;<span style="font-weight: bold; font-style: italic;">q</span>;
+</pre>
+</div>
+<p>
+     We are using <code>less&lt;&gt;</code> because we are interested in a reverse order of
+     sorting.
+b.
+</p>
+<div class="org-src-container">
+<pre class="src src-c++">q.push({1, start});
+dist[start] = 1;
+</pre>
+</div>
+<p>
+    Now here you might think of using 0 or <code>INT_MIN</code> instead of 1 in this case,
+    and actually 0 makes a lot of sense (I even solved it like that initially)
+    but note that we usually use 0 because zero is an <a href="https://en.wikipedia.org/wiki/Identity_element">identity element</a>, but in
+    this case it does not act like an identity element, 1 does because we are not
+    adding sums but producting weights.
+c.
+</p>
+<div class="org-src-container">
+<pre class="src src-c++">      <span style="font-weight: bold;">if</span> (tp.first &lt; dist[tp.second])
+                  <span style="font-weight: bold;">continue</span>;
+...
+          <span style="font-weight: bold;">if</span> (dist[nd] &lt; w) {
+                  ...
+          }
+
+</pre>
+</div>
+<p>
+We exclude in a reversed order (usually we exclude bigger weight)
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgeb741eb" class="outline-3">
+<h3 id="orgeb741eb">Problem: LC 743. Network Delay Time</h3>
+<div class="outline-text-3" id="text-orgeb741eb">
+<p>
+(<a href="https://leetcode.com/problems/network-delay-time/description/">link</a>)
+Straight forward problem, use standard implementation and calculate max time.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++"><span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Solution</span> {
+<span style="font-weight: bold;">public</span>:
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">networkDelayTime</span>(<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt; &amp;<span style="font-weight: bold; font-style: italic;">times</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">n</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">k</span>) {
+    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">build list</span>
+    <span style="font-weight: bold; text-decoration: underline;">unordered_map</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>, <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;&gt; <span style="font-weight: bold; font-style: italic;">mp</span>;
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">ans</span>(-1);
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold;">auto</span> &amp;<span style="font-weight: bold; font-style: italic;">i</span> : times) {
+      mp[i[0]].push_back({i[2], <span style="font-weight: bold; text-decoration: underline;">i</span>[1]});
+    }
+    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">q</span>
+    <span style="font-weight: bold; text-decoration: underline;">priority_queue</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;, <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;,
+                   <span style="font-weight: bold; text-decoration: underline;">greater</span>&lt;<span style="font-weight: bold; text-decoration: underline;">pair</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>, <span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;&gt;
+        <span style="font-weight: bold; font-style: italic;">q</span>;
+    <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">dist</span>(n + 1, INT_MAX);
+    dist[k] = 0;
+    q.push({0, k});
+    <span style="font-weight: bold;">while</span> (!q.empty()) {
+      <span style="font-weight: bold;">auto</span> <span style="font-weight: bold; font-style: italic;">tp</span> = q.top();
+      q.pop();
+      <span style="font-weight: bold;">if</span> (tp.first &gt; dist[tp.second])
+        <span style="font-weight: bold;">continue</span>;
+      <span style="font-weight: bold;">for</span> (<span style="font-weight: bold;">auto</span> &amp;<span style="font-weight: bold; font-style: italic;">i</span> : mp[tp.second]) {
+        <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">node</span> = i.second, <span style="font-weight: bold; font-style: italic;">nw</span> = i.first + tp.first;
+        <span style="font-weight: bold;">if</span> (nw &lt; dist[node]) {
+          dist[node] = nw;
+          q.push({nw, node});
+        }
+      }
+    }
+
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">i</span> = 1; i &lt; dist.size(); ++i)
+      <span style="font-weight: bold;">if</span> (dist[i] != INT_MAX) {
+        <span style="font-weight: bold;">if</span> (dist[i] &gt; ans)
+          ans = dist[i];
+      } <span style="font-weight: bold;">else</span>
+        <span style="font-weight: bold;">return</span> -1;
+    <span style="font-weight: bold;">return</span> ans;
+  }
+};
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Note that this can be calculated via a priority queue.
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="author">Author: Salih Muhammed</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>A Cursed Journey of Getting a Third Monitor to Work</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">A Cursed Journey of Getting a Third Monitor to Work</h1>
+</header><div class="PREVIEW" id="org547797e">
+<p>
+Isn't a shame that this place of the internet is supposed to be a blog yet doesn't contain
+blogs but obscure philosophies?
+</p>
+
+</div>
+
+<p>
+Reallocated in my family home again, a colleague told me that he knows somebody that is able
+to provide me a nice frameless-touchscreen 23.80 inches monitor for a very low price,
+comparable to the average prices here due to customs, it's pretty low; so he just exports it
+for personal use and sell it for profit. Fair enough, I said. So I went there, tested the
+monitor, everything looks great.
+</p>
+
+<p>
+I already have a secondary as mentioned, it's plugged through the only HDMI port into my
+laptop, "Where will I plug the new one?" I asked, "Hmmm I don't know, but since it's just
+about data transfer through an external port like USB-C or something" my internal voice
+responded.  (No need to mention that I didn't know that I can use dock and solve this whole
+issue, I'm a relatively uncivilized third-world human and I never knew such a thing
+existed), I was left was the following thoughts;
+</p>
+
+<ul class="org-ul">
+<li>HDMI Splitter (Suggested by the seller)</li>
+<li>USB-C Adapter</li>
+<li>USB-A Adapter</li>
+</ul>
+
+
+<div id="outline-container-org3158d59" class="outline-2">
+<h2 id="org3158d59">First Try; HDMI Splitter</h2>
+<div class="outline-text-2" id="text-org3158d59">
+<p>
+Worked fine but there is one main issue, it doesn't plug a second monitor to your machine
+the but it plugs a new monitor to the monitor plugged in your machine. I.e. it will send the
+signal for both of them, just like an old fashion DSL splitter.
+</p>
+
+
+<figure id="orgdd6eb77">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/First_Try;_HDMI_Splitter/2023-01-23_06-47-11_screenshot.png" alt="2023-01-23_06-47-11_screenshot.png">
+
+</figure>
+</div>
+</div>
+<div id="outline-container-org0664c8a" class="outline-2">
+<h2 id="org0664c8a">Second Try; USB-C</h2>
+<div class="outline-text-2" id="text-org0664c8a">
+<p>
+Like my head voice suggested the first thing that came out to my mind is using Type-C USB
+converter, it's pretty fast and Apple already did that before with Mac books, and the
+monitor is modern enough to be compatible with this setup. I ordered "USB31_C_HDMI_ADP",
+three days later it was delivered. Never worked, not even given a single sign that it's
+going to work, after some investigation found out that my machine USB-C specification said
+"that's simply not possible".
+</p>
+
+<blockquote>
+<p>
+Connect to an external storage, or data devices.  Note: An appropriate adapter may be needed
+for connecting external devices. This connector cannot be used to connect external display
+devices
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org5aa5c1d" class="outline-2">
+<h2 id="org5aa5c1d">Third Try; USB-A</h2>
+<div class="outline-text-2" id="text-org5aa5c1d">
+<p>
+After while I learned that using DisplayLink is possible, yet I couldn't find a way to
+purchase a one without paying +$100 for customs. So I had to use a USB-A converter that uses
+the manufacturers' firmware (which implies, of course, my machine have to be compatible with
+those firmware). Again, I purchased a USB-A converter "MACROSILICON Display Adapter".
+</p>
+
+
+<p>
+After I plugged it into my machine, reading <code>dmesg</code> I noticed that it's being linked to
+<code>/sys/bus/usb/drivers/snd-usb-audio/</code>, which means that it's being treated as a USB audio
+device. So I had to force it to <code>unbind</code> this, using this <code>udevadm</code> role:
+</p>
+
+<pre class="example" id="org784bb79">
+# For HDMI-to-USB adaptor:
+SUBSYSTEM=="usb", DRIVER=="snd-usb-audio", ATTRS{idProduct}=="2109", ATTRS{idVendor}=="534d", \
+    RUN+="/bin/sh -c 'echo -n $kernel &gt; /sys/bus/usb/drivers/snd-usb-audio/unbind'"
+</pre>
+
+<p>
+After this amount of work I found out that this piece should be used for USB video device
+class like webcams, digital camcorders, transcoders, analog video converters and still-image
+cameras, etc..
+</p>
+
+<p>
+So, getting this to work was in vain.
+</p>
+</div>
+</div>
+<div id="outline-container-org6e14c6d" class="outline-2">
+<h2 id="org6e14c6d">Fourth Try; USB-A (Right Piece)</h2>
+<div class="outline-text-2" id="text-org6e14c6d">
+<p>
+I found an abscure company called Fresco Logic that develops this kind of solution with
+claimed Linux/Android driver support, and that's the other story.
+</p>
+</div>
+<div id="outline-container-orgc6f07e4" class="outline-3">
+<h3 id="orgc6f07e4">Linux Driver</h3>
+<div class="outline-text-3" id="text-orgc6f07e4">
+<p>
+It sounds like the so-called driver that fresco logic developed was disconnected since 2021,
+I use the latest 6.1.7 kernel which means this will never compile, note that you have to
+build it yourself since it uses your linux-headers toolchain to build, so at least you need
+to use a build that matches your current kernel, otherwise you will get invalid object
+message.
+</p>
+
+<p>
+Another is story is me trying to downgrade the Kernel to 5.6 to get this to work, but we
+shall not proceed into this for now, a plot-twist is even after swapping to 5.6 it didn't
+compile. "So why not go through the code, update the APIs and get it to work for you?", I'd
+have you to look at the code first my dear;
+</p>
+
+
+<figure id="org0d5a64a">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Fourth_Try;_USB-A_(Right_Piece)/2023-01-23_07-06-11_screenshot.png" alt="2023-01-23_07-06-11_screenshot.png">
+
+</figure>
+
+<p>
+Anyway, I tried 5.7, 5.5, 5.8, 5.15, and eventually 5.10 worked (no idea of how). So now it
+compiled, how to use it? Plot-twist 2: it is not a driver, it's a prototype proof of
+concept that this piece can be used in linux, but no DRM available.
+</p>
+
+<p>
+Meanwhile.. Windows A ubiquitous advantage for Windows that is commonly mentioned in these
+situations that it 'just works'. So I installed Windows to give it a try, sadly it was right.
+</p>
+
+
+<figure id="org0ba8427">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Fourth_Try;_USB-A_(Right_Piece)/2023-01-23_07-10-32_screenshot.png" alt="2023-01-23_07-10-32_screenshot.png">
+
+</figure>
+
+<p>
+After working 12 hours on it I was able to get a basic DRM to work for it, it's a little
+buggy but at least it does the job.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org6808a41" class="outline-2">
+<h2 id="org6808a41">Final Results</h2>
+<div class="outline-text-2" id="text-org6808a41">
+<p>
+The DRM I coded was very insecure unfortunately and I couldn't risk depending on it, when I
+was completely desperate an idea came to my mind reminding me that I had an old unused
+laptop with Windows installed, I could use it connected to the monitor and connect it with
+barrier to my main laptop, so it feels like it is just another monitor (with restricted
+filesystem access lol). Unexpectedly it worked:
+</p>
+
+
+<figure id="orgc605792">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Final_Results/2023-01-23_07-33-42_screenshot.png" alt="2023-01-23_07-33-42_screenshot.png">
+
+</figure>
+
+
+<p>
+This experience raised some questions to my head about the reliability of LKMs, the Windows
+driver efficiently works in like all Windows versions (each has many different build
+versions), and due to kernel APIs change in linux-headers it can not work after any related
+kernel patches, could that be the reason that the NVIDIA drivers have too frequent updates
+in Linux compared to Windows? To make sure it will work? I don't know I'm not a kernel
+engineer, but really this experience could be much pleasant than that easily.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-04-30 Sun 00:44.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

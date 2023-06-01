@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Concurrency: OS Approach</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Concurrency: OS Approach</h1>
+</header>
+<div id="outline-container-orgc6d71e9" class="outline-2">
+<h2 id="orgc6d71e9">Introduction</h2>
+<div class="outline-text-2" id="text-orgc6d71e9">
+<p>
+Let's start with the most known running process: the thread.
+</p>
+
+<p>
+Instead of our classic view of a single point of execution within a program (i.e., a single
+PC where instructions are being fetched from and executed), a multi-threaded program has
+more than one point of execution (i.e., multiple PCs, each of which is being fetched and
+executed from). Perhaps another way to think of this is that each thread is very much like a
+a separate process, except for one difference: they share the same address space and thus can
+access the same data.
+</p>
+
+
+
+<p>
+Each thread has its own private set of registers it uses for computation; thus, if two
+threads are running on a single processor, when switching from running one (T1) to running
+the other (T2), a context switch must take place. The context switch between threads is
+quite similar to the context switch between processes, as the register state of T1 must be
+saved and the register state of T2 restored before running T2. With processes, we saved the
+state to a process control block (PCB); now, we’ll need one or more thread control blocks
+(TCBs) to store the state of each thread of a process. There is one major difference,
+though, in the context switch we perform between threads as compared to processes: the
+address space remains the same (i.e., there is no need to switch which page table we are
+using).
+</p>
+</div>
+
+<div id="outline-container-org2d8e0e7" class="outline-3">
+<h3 id="org2d8e0e7">Why Bother?</h3>
+<div class="outline-text-3" id="text-org2d8e0e7">
+<p>
+There are at least two major reasons you should use threads. The first is simple:
+parallelism. Imagine you are writing a program that performs operations on very large
+arrays, for example, adding two large arrays together, or incrementing the value of each
+element in the array by some amount. If you are running on just a single processor, the
+task is straightforward: just perform each operation and be done.  However, if you are
+executing the program on a system with multiple processors, you have the potential of
+speeding up this process considerably by using the processors to each perform a portion of
+the work. The task of transforming your standard single-threaded program into a program that
+does this sort of work on multiple CPUs is called parallelization and using a thread per
+CPU to do this work is a natural and typical way to make programs run faster on modern
+hardware.
+</p>
+
+
+<p>
+The second reason is a bit more subtle: to avoid blocking program progress due to slow I/O.
+Imagine that you are writing a program that performs different types of I/O: either waiting
+to send or receive a message, for an explicit disk I/O to complete, or even (implicitly) for
+a page fault to finish. Instead of waiting, your program may wish to do something else,
+including utilizing the CPU to perform computation or even issuing further I/O requests.
+Using threads is a natural way to avoid getting stuck; while one thread in your program
+waits (i.e., is blocked waiting for I/O), the CPU scheduler can switch to other threads,
+which are ready to run and do something useful. Threading enables overlap of I/O with other
+activities within a single program, much like multiprogramming did for processes across
+programs; as a result, many modern server-based applications (web servers, database
+management systems, and the like) make use of threads in their implementations.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C"><span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;stdio.h&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;stdlib.h&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;unistd.h&gt;</span>  <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Header file for sleep(). man 3 sleep for details.</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;pthread.h&gt;</span>
+
+<span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">A normal C function that is executed as a thread</span>
+<span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">when its name is specified in pthread_create()</span>
+<span style="font-weight: bold; text-decoration: underline;">void</span> *<span style="font-weight: bold;">myThreadFun</span>(<span style="font-weight: bold; text-decoration: underline;">void</span> *<span style="font-weight: bold; font-style: italic;">vargp</span>)
+{
+    sleep(1);
+    printf(<span style="font-style: italic;">"Printing from Thread \n"</span>);
+    <span style="font-weight: bold;">return</span> <span style="font-weight: bold; text-decoration: underline;">NULL</span>;
+}
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>()
+{
+    <span style="font-weight: bold; text-decoration: underline;">pthread_t</span> <span style="font-weight: bold; font-style: italic;">thread_id</span>;
+    printf(<span style="font-style: italic;">"Before Thread\n"</span>);
+    pthread_create(&amp;thread_id, <span style="font-weight: bold; text-decoration: underline;">NULL</span>, myThreadFun, <span style="font-weight: bold; text-decoration: underline;">NULL</span>);
+    pthread_join(thread_id, <span style="font-weight: bold; text-decoration: underline;">NULL</span>);
+    printf(<span style="font-style: italic;">"After Thread\n"</span>);
+    exit(0);
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-04-30 Sun 00:44.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

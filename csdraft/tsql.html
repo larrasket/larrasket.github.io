@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>T/SQL Cookbook</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">T/SQL Cookbook</h1>
+</header><div class="PREVIEW" id="orgebb56f5">
+<p>
+T/SQL mini-cookbook, with SQL Server exclusive notes
+</p>
+
+</div>
+
+<div id="outline-container-orgd5c0af0" class="outline-2">
+<h2 id="orgd5c0af0">Basic Data Types</h2>
+<div class="outline-text-2" id="text-orgd5c0af0">
+<p>
+Expect the common SQL data types to exist within T-SQL, commonly used types: (Note that max
+value is the positive signal of min value)
+</p>
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Type</th>
+<th scope="col" class="org-left">Min value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><code>bigint</code></td>
+<td class="org-left">-9,223,372,036,854,775,808</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>int</code></td>
+<td class="org-left">C's <code>INT_MIN</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>smallint</code></td>
+<td class="org-left">-32,768</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>tinyint</code></td>
+<td class="org-left">0 to 255</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>bit</code></td>
+<td class="org-left">0 to 1</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>decimal</code></td>
+<td class="org-left">\(-10^{38} +1\)</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>numeric</code></td>
+<td class="org-left">\(-10^{38} +1\)</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>money</code></td>
+<td class="org-left">-922,337,203,685,477.5808</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>smallmoney</code></td>
+<td class="org-left">-214,748.3648</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div id="outline-container-org117655f" class="outline-3">
+<h3 id="org117655f">Character Strings</h3>
+<div class="outline-text-3" id="text-org117655f">
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Type</th>
+<th scope="col" class="org-left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><code>char</code></td>
+<td class="org-left">Fixed-length non-Unicode character data with a maximum length of 8,000 characters.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>varchar</code></td>
+<td class="org-left">Variable-length non-Unicode data with a maximum of 8,000 characters.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>Varchar (max)</code></td>
+<td class="org-left">Variable-length non-Unicode data with a maximum length of 231 characters.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>text</code></td>
+<td class="org-left">Variable-length non-Unicode data with a maximum length of 2,147,483,647 characters</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Those are the most commonly used data types, some dumb-asses uses things like
+<code>varbinary(max)</code> and <code>image</code> to store images, this is redundancy as fuck, do not do it.
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org463db41" class="outline-2">
+<h2 id="org463db41">Basic Operations</h2>
+<div class="outline-text-2" id="text-org463db41">
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">CREATE</span> <span style="font-weight: bold;">TABLE</span> <span style="font-weight: bold;">CUSTOMERS</span>(
+   ID   <span style="font-weight: bold; text-decoration: underline;">INT</span>              <span style="font-weight: bold;">NOT</span> <span style="font-weight: bold;">NULL</span>,
+   <span style="font-weight: bold;">NAME</span> <span style="font-weight: bold; text-decoration: underline;">VARCHAR</span> (20)     <span style="font-weight: bold;">NOT</span> <span style="font-weight: bold;">NULL</span>,
+   AGE  <span style="font-weight: bold; text-decoration: underline;">INT</span>              <span style="font-weight: bold;">NOT</span> <span style="font-weight: bold;">NULL</span>,
+   ADDRESS  <span style="font-weight: bold; text-decoration: underline;">CHAR</span> (25) ,
+   SALARY   <span style="font-weight: bold; text-decoration: underline;">DECIMAL</span> (18, 2),
+   <span style="font-weight: bold;">PRIMARY</span> <span style="font-weight: bold;">KEY</span> (ID));
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">INSERT</span> <span style="font-weight: bold;">INTO</span> CUSTOMERS (ID,<span style="font-weight: bold;">NAME</span>,AGE,ADDRESS,SALARY)
+<span style="font-weight: bold;">VALUES</span> (1, <span style="font-style: italic;">'Ramesh'</span>, 32, <span style="font-style: italic;">'Ahmedabad'</span>, 2000.00 );
+
+<span style="font-weight: bold;">INSERT</span> <span style="font-weight: bold;">INTO</span> CUSTOMERS (ID,<span style="font-weight: bold;">NAME</span>,AGE,ADDRESS,SALARY)
+<span style="font-weight: bold;">VALUES</span> (2, <span style="font-style: italic;">'Khilan'</span>, 25, <span style="font-style: italic;">'Delhi'</span>, 1500.00 );
+
+<span style="font-weight: bold;">INSERT</span> <span style="font-weight: bold;">INTO</span> CUSTOMERS (ID,<span style="font-weight: bold;">NAME</span>,AGE,ADDRESS,SALARY)
+<span style="font-weight: bold;">VALUES</span> (3, <span style="font-style: italic;">'kaushik'</span>, 23, <span style="font-style: italic;">'Kota'</span>, 2000.00 );
+
+<span style="font-weight: bold;">INSERT</span> <span style="font-weight: bold;">INTO</span> CUSTOMERS (ID,<span style="font-weight: bold;">NAME</span>,AGE,ADDRESS,SALARY)
+<span style="font-weight: bold;">VALUES</span> (4, <span style="font-style: italic;">'Chaitali'</span>, 25, <span style="font-style: italic;">'Mumbai'</span>, 6500.00 );
+
+<span style="font-weight: bold;">INSERT</span> <span style="font-weight: bold;">INTO</span> CUSTOMERS (ID,<span style="font-weight: bold;">NAME</span>,AGE,ADDRESS,SALARY)
+<span style="font-weight: bold;">VALUES</span> (5, <span style="font-style: italic;">'Hardik'</span>, 27, <span style="font-style: italic;">'Bhopal'</span>, 8500.00 );
+
+<span style="font-weight: bold;">INSERT</span> <span style="font-weight: bold;">INTO</span> CUSTOMERS (ID,<span style="font-weight: bold;">NAME</span>,AGE,ADDRESS,SALARY)
+<span style="font-weight: bold;">VALUES</span> (6, <span style="font-style: italic;">'Komal'</span>, 22, <span style="font-style: italic;">'MP'</span>, 4500.00 );
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">UPDATE</span> CUSTOMERS
+<span style="font-weight: bold;">SET</span> ADDRESS = <span style="font-style: italic;">'Pune'</span>
+<span style="font-weight: bold;">WHERE</span> ID = 6;
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> *
+         <span style="font-weight: bold;">FROM</span> CUSTOMERS;
+</pre>
+</div>
+
+
+<p>
+If you want to modify all ADDRESS and SALARY column values in CUSTOMERS table, you do not
+need to use WHERE clause. UPDATE query would be as follows −
+</p>
+
+
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">UPDATE</span> CUSTOMERS
+<span style="font-weight: bold;">SET</span> ADDRESS = <span style="font-style: italic;">'Pune'</span>, SALARY = 1000.00;
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> *
+         <span style="font-weight: bold;">FROM</span> CUSTOMERS;
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org6d0603c" class="outline-3">
+<h3 id="org6d0603c">DELETE, WHERE</h3>
+<div class="outline-text-3" id="text-org6d0603c">
+<p>
+Same as regular SQL.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge146539" class="outline-3">
+<h3 id="orge146539">Like</h3>
+<div class="outline-text-3" id="text-orge146539">
+<p>
+The MS SQL Server LIKE clause is used to compare a value to similar values using wildcard
+operators. There are two wildcards used in conjunction with the LIKE operator −
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> * <span style="font-weight: bold;">FROM</span> CUSTOMERS
+<span style="font-weight: bold;">WHERE</span> SALARY <span style="font-weight: bold;">LIKE</span> <span style="font-style: italic;">'100%'</span>;
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org2154a16" class="outline-3">
+<h3 id="org2154a16">Order</h3>
+<div class="outline-text-3" id="text-org2154a16">
+<p>
+The MS SQL Server ORDER BY clause is used to sort the data in ascending or descending order,
+based on one or more columns. Some database sort query results in ascending order by
+default.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> * <span style="font-weight: bold;">FROM</span> CUSTOMERS
+   <span style="font-weight: bold;">ORDER</span> <span style="font-weight: bold;">BY</span> <span style="font-weight: bold;">NAME</span>, SALARY
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org7c28194" class="outline-3">
+<h3 id="org7c28194">Group by</h3>
+<div class="outline-text-3" id="text-org7c28194">
+<p>
+The SQL Server GROUP BY clause is used in collaboration with the SELECT statement to arrange
+identical data into groups.
+</p>
+
+<p>
+The GROUP BY clause follows the WHERE clause in a SELECT statement and precedes the ORDER BY
+clause.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> <span style="font-weight: bold;">NAME</span>, <span style="font-weight: bold;">SUM</span>(SALARY) <span style="font-weight: bold;">as</span> [<span style="font-weight: bold;">sum</span> <span style="font-weight: bold;">of</span> salary] <span style="font-weight: bold;">FROM</span> CUSTOMERS
+   <span style="font-weight: bold;">GROUP</span> <span style="font-weight: bold;">BY</span> <span style="font-weight: bold;">NAME</span>;
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-04-30 Sun 00:44.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

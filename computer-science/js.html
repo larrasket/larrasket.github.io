@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Quick JavaScript</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Quick JavaScript</h1>
+</header><div class="PREVIEW" id="org159438e">
+<p>
+Reading Matuszek's Quick Javascript
+</p>
+
+</div>
+
+<div id="outline-container-org1f7637d" class="outline-2">
+<h2 id="org1f7637d">Why?</h2>
+<div class="outline-text-2" id="text-org1f7637d">
+<p>
+I decided finally to learn JavaScript, which for people who know me personally, a very
+strange move since I despise interpreted languages in general and JavaScript in particular,
+I've talked more than once in public about how I think the web is messed up, and how
+JavaScript was one of the main reasons for it.
+</p>
+
+<p>
+However, I despise XML specification than I do with CSS, thus I still believe that building
+a web front-end (in JavaScript, of course) is still understandable nonetheless I'd never
+forgive the guy who thought once "oh it's a nice language let's use it for the side server".
+My main purpose of this new adventure is to be able to build minimal front-end by myself.
+</p>
+</div>
+</div>
+<div id="outline-container-orgfae7cf8" class="outline-2">
+<h2 id="orgfae7cf8">Quick JavaScript</h2>
+<div class="outline-text-2" id="text-orgfae7cf8">
+<p>
+I'd choose one of the O'Reilly publications or packet's, however I believe that a language
+that was made in 10 days deserves only a 70 pages book.
+</p>
+</div>
+</div>
+<div id="outline-container-org29f56d1" class="outline-2">
+<h2 id="org29f56d1">Specifications</h2>
+<div class="outline-text-2" id="text-org29f56d1">
+</div>
+<div id="outline-container-org96cf5f3" class="outline-3">
+<h3 id="org96cf5f3">Comments</h3>
+<div class="outline-text-3" id="text-org96cf5f3">
+<p>
+The comments in JavaScript is similar to C/C++'s, <code>//</code> introduces a one line comment, <i>**</i>
+introduces multi-line comments.
+</p>
+</div>
+</div>
+<div id="outline-container-org194ec84" class="outline-3">
+<h3 id="org194ec84">Data Types</h3>
+<div class="outline-text-3" id="text-org194ec84">
+<p>
+JavaScript is known very well for it's fucked up weak type system.
+</p>
+</div>
+<div id="outline-container-org7b0d9ef" class="outline-4">
+<h4 id="org7b0d9ef">Primitives</h4>
+<div class="outline-text-4" id="text-org7b0d9ef">
+<p>
+There are eight data types:
+</p>
+<ul class="org-ul">
+<li>A <code>number</code>. may be written with or without a decimal point, but all numbers are stored as
+double precision floating point.</li>
+<li>A <code>bigint</code> is an integer with an arbitrarily large number of digits.</li>
+<li>The two <code>boolean</code> values are written as <code>true</code> and <code>false</code>.</li>
+<li>A <code>string</code> may be enclosed in either single quotes, double quotes, or backticks (`). There
+is no “character” type.</li>
+<li>A <code>symbol</code> is a value that is guaranteed to be unique; no other value is equal to it. A
+symbol is created by calling Symbol() or Symbol(name), where name is a (not necessarily
+unique) value that may be helpful in debugging.</li>
+<li>The <code>undefined</code> type has a single value, undefined. It is the value of a variable that has
+been declared but not yet given a value.</li>
+<li>The <code>null</code> type has a single value, null, meaning that the value does not exist.</li>
+<li>An <code>object</code> is any more complicated data type. Functions, arrays, sets, maps, regular
+expressions, errors, and dates are all special types of object, as are user-defined
+objects.</li>
+</ul>
+
+
+
+<p>
+The type of a value can be determined by <code>typeof</code>, which can be used as either an operator,
+<code>typeof</code> x, or as a function, <code>typeof(x)</code>.  It will return, as a string, one of the type names
+given above (for example, "number").
+</p>
+
+
+<p>
+There are two exceptions to the above.
+</p>
+
+
+<ul class="org-ul">
+<li>The value of typeof(null) is "object". This is generally regarded as an error in the
+design of the language.</li>
+</ul>
+
+
+<ul class="org-ul">
+<li>For any type of object except a function, typeof will return "object". Applied to a
+function, typeof will return "function".</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org90d1171" class="outline-4">
+<h4 id="org90d1171">Objects</h4>
+<div class="outline-text-4" id="text-org90d1171">
+<p>
+An object is a collection of named values, called its properties. You can define an object
+by putting property:value pairs inside braces and later refer to the values with the syntax
+object.property. For example,
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js"><span style="font-weight: bold;">let</span> <span style="font-weight: bold; font-style: italic;">friend</span> = { givenName: <span style="font-style: italic;">"Anna"</span>,
+surname: <span style="font-style: italic;">"Lang"</span> };
+alert(<span style="font-style: italic;">"Hello, "</span> + friend.givenName);
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org9dddac9" class="outline-4">
+<h4 id="org9dddac9">Built-in Objects</h4>
+<div class="outline-text-4" id="text-org9dddac9">
+<p>
+JavaScript comes with a number of built-in, or predefined, object
+types. Among these are arrays, sets, maps, dates, and regular
+expressions.
+</p>
+</div>
+</div>
+<div id="outline-container-org91908f4" class="outline-4">
+<h4 id="org91908f4">Arrays</h4>
+<div class="outline-text-4" id="text-org91908f4">
+<p>
+An array is an ordered collection of values. An array literal can be
+defined by enclosing comma-separated values in square brackets:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js"><span style="font-weight: bold;">let</span> <span style="font-weight: bold; font-style: italic;">ary</span> = [<span style="font-style: italic;">"cat"</span>, <span style="font-style: italic;">"dog"</span>, <span style="font-style: italic;">"mouse"</span>];
+</pre>
+</div>
+
+<p>
+Commas can be used either between values or after values, so the
+above assignment is exactly equivalent to:
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-js"><span style="font-weight: bold;">let</span> <span style="font-weight: bold; font-style: italic;">ary</span> = [<span style="font-style: italic;">"cat"</span>, <span style="font-style: italic;">"dog"</span>, <span style="font-style: italic;">"mouse"</span>, ];
+</pre>
+</div>
+
+<p>
+A less-often used form is Array(values):
+</p>
+<div class="org-src-container">
+<pre class="src src-js"><span style="font-weight: bold;">let</span> <span style="font-weight: bold; font-style: italic;">ary</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Array</span>(<span style="font-style: italic;">"cat"</span>, <span style="font-style: italic;">"dog"</span>, <span style="font-style: italic;">"mouse"</span>);
+</pre>
+</div>
+
+<p>
+This form is not generally recommended. One odd feature of it is that if the
+argument is a single numeric value, Array(n), the result is a sparse array of n
+locations, not an array containing the single value n.
+</p>
+
+
+<p>
+In a sparse array, no storage is allocated for the elements of the array until
+they have been assigned values; unassigned locations will appear to have the
+value undefined. A sparse array can be arbitrarily large (only the actual values
+in it contribute to its size), but it is slower to work with.
+</p>
+</div>
+</div>
+<div id="outline-container-Sets" class="outline-4">
+<h4 id="Sets">Sets</h4>
+<div class="outline-text-4" id="text-Sets">
+<p>
+A set is a collection of values, such that (1) no value appears more
+than once, and (2) the order in which the values occur in the set
+is irrelevant.
+</p>
+
+<ul class="org-ul">
+<li><code>new Set(iter)</code> — Creates and returns a new set containing the values in the
+iterable object iter (often an array). To create an empty set, omit iter.
+<ul class="org-ul">
+<li>If <code>iter</code> is a map, the result is a set of [key, value] arrays<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>.</li>
+</ul></li>
+<li><code>set.has(value)</code> — Tests if value is a member of set.</li>
+<li><code>set.add(value)</code> — Adds value to set if it is not already present, and
+returns set.</li>
+<li><code>set.delete(value)</code> — If value is in set, it is deleted. delete does not
+return set; it returns true if value was in set, and false otherwise.</li>
+<li><code>set.clear()</code> — Removes all values from set and returns undefined.</li>
+<li><code>set.size</code> — Returns the number of elements in set.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org9e58465" class="outline-4">
+<h4 id="org9e58465">Maps</h4>
+<div class="outline-text-4" id="text-org9e58465">
+<p>
+Maps are lookup tables. Each entry in a map consists of a key
+value pair. Keys must be unique, but the same value may occur
+multiple times.
+</p>
+
+<p>
+Operations are the same as <a href="#Sets">sets</a> with the following added:
+</p>
+<ul class="org-ul">
+<li><code>map.set(key, value)</code> — Sets or changes the value associated with key to
+value and returns the modified map.</li>
+</ul>
+
+<p>
+Maps can use values of any type as keys.
+</p>
+
+<p>
+<b>Caution: The notations map.value and map[value] refer to map properties, not to
+map entries. Use set and get to access the entries.</b>
+</p>
+</div>
+</div>
+<div id="outline-container-orgbe3a710" class="outline-4">
+<h4 id="orgbe3a710">Dates</h4>
+<div class="outline-text-4" id="text-orgbe3a710">
+<p>
+JavaScript has a Date object, which can be created in any of the
+following ways:
+</p>
+
+
+
+<ul class="org-ul">
+<li>new Date() — Returns the current date and time in the browser’s time zone.</li>
+<li>new Date(ms) — Returns the date that corresponds to the number of milliseconds
+since “epoch” (January 1, 1970).</li>
+
+<li>new Date(year, month, day, hours, minutes, seconds, milliseconds)
+<ul class="org-ul">
+<li>Up to five arguments may be omitted from the right end, for example, new
+Date(year, month, day).</li>
+<li>You cannot supply just a year, because a single argument will be taken as
+milliseconds.</li>
+<li>If the year is less than 100, 1900 will be added to it.</li>
+</ul></li>
+</ul>
+
+
+<p>
+<b>Caution: Without new in front of it, Date() returns a string,
+not a date, and is equivalent to String(new Date()).</b>
+</p>
+
+
+<p>
+To access specific components of a Date object, use the following
+methods:
+</p>
+
+
+
+<ul class="org-ul">
+<li><code>date.getFullYear()</code> and <code>date.setFullYear(year)</code>
+<ul class="org-ul">
+<li><code>date.setFullYear</code> may also be given month and day arguments.</li>
+</ul></li>
+<li><code>date.getMonth()</code> and <code>date.setMonth(n)</code>, where n is 0 (January) to 11 (December).</li>
+<li><code>date.getDate()</code> and <code>date.setDate(n)</code>, where n is 1 to 31.</li>
+<li><code>date.getHours()</code> and <code>date.setHours(n)</code>, where n is 0 to 23.</li>
+<li><code>date.getMinutes()</code> and <code>date.setMinutes(n)</code>, where n is 0 to 59.</li>
+<li><code>date.getSeconds()</code> and <code>date.setSeconds(n)</code>, where n is 0 to 59.</li>
+</ul>
+
+<p>
+• <code>date.getMilliseconds()</code> and <code>date.setMilliseconds(n)</code>, where n is 0 to 999.
+• <code>date.getTime()</code> and <code>date.setTime(n)</code>, where n is milliseconds since epoch.
+• <code>Date.now()</code> also returns milliseconds since epoch but is shorter than new
+  <code>Date().getTime()</code>.
+• <code>date.getDay()</code> returns 0 to 6, where 0 means Sunday (regardless of where you are, and despite ISO 8601 specify- ing Monday as the first day of the week).
+</p>
+</div>
+</div>
+<div id="outline-container-org2877b56" class="outline-4">
+<h4 id="org2877b56"><span class="todo TODO">TODO</span> Regular Expressions</h4>
+</div>
+</div>
+<div id="outline-container-org2b0919d" class="outline-3">
+<h3 id="org2b0919d">Identifiers</h3>
+<div class="outline-text-3" id="text-org2b0919d">
+<p>
+Identifiers consist of letters, digits, underscores, and/or dollar
+signs; the first character may not be a digit.
+</p>
+</div>
+</div>
+<div id="outline-container-orgc308ef5" class="outline-3">
+<h3 id="orgc308ef5">Let</h3>
+<div class="outline-text-3" id="text-orgc308ef5">
+<p>
+JavaScript variables are untyped: Any variable can hold any type
+of value.
+</p>
+
+<p>
+Variables are declared with the keyword let, along with an
+optional initial value; for example, let x or let x = 5. More
+than one variable can be declared in a let statement, for example,
+</p>
+
+<pre class="example" id="org5244275">
+let x = 5, y, z = 3; // leaves y undefined
+</pre>
+
+<p>
+Constants are declared with the word const and must be given a
+value at the time of declaration. Often the names of constants are
+written with all capital letters. For example,
+</p>
+
+<pre class="example" id="orgb376247">
+const zero = 0;
+const RED = "#FF0000";
+</pre>
+
+
+<p>
+Using a <code>const name = object</code>; declaration prevents any later
+assignment to name, so name will always refer to the same object,
+but it does not prevent changes to that object.
+</p>
+</div>
+</div>
+<div id="outline-container-orgc16aa46" class="outline-3">
+<h3 id="orgc16aa46">Var</h3>
+<div class="outline-text-3" id="text-orgc16aa46">
+<p>
+The modern way to declare a variable is with let. The older way,
+using var in place of let, or simply assigning a value to a variable,
+should be avoided. Variables declared the old way follow unusual,
+and generally undesirable, scope rules.
+</p>
+
+<ul class="org-ul">
+<li>The parameters to a function, and any variables declared with var inside that
+function, are local to the function. They may be used anywhere inside that
+function, even before the declaration. This is different from block scope.
+
+<ul class="org-ul">
+<li>This can only be done in non-strict mode (sometimes called “sloppy mode”).</li>
+</ul></li>
+
+<li>If a variable has been declared with var but not assigned a value, it has the special value undefined.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgd63e9e2" class="outline-3">
+<h3 id="orgd63e9e2">Operators</h3>
+<div class="outline-text-3" id="text-orgd63e9e2">
+<p>
+Operators are pretty the same like most programming language.
+</p>
+
+
+<p>
+<b>Caution: When comparing values of different types, JavaScript attempts to
+convert them to numbers. Despite the fact that undefined is converted to NaN and
+null is converted to 0, nevertheless <code>undefined==null</code> is true. Don’t compare
+values if one or both of them could be null or undefined; check first using
+<code>===</code>, which is always safe.</b>
+</p>
+</div>
+</div>
+<div id="outline-container-orgd45c55d" class="outline-3">
+<h3 id="orgd45c55d">Equality</h3>
+<div class="outline-text-3" id="text-orgd45c55d">
+<p>
+The <code>= and !</code> comparison operators try to convert their operands
+to the same type. The results may be surprising. For example, <code>123</code>,
+<code>"123"</code>, <code>[123]</code>, and even <code>["123"]</code> are all considered equal when using <code>==.</code>
+</p>
+
+
+<p>
+The “strict” tests <code>=</code> and !== will regard values as unequal if they are of
+different types. Unless you want the automatic conversion, these operators
+should be preferred.
+</p>
+
+
+<p>
+For objects (arrays, sets, etc.), the “equality” operators are actually
+tests of identity. That is, an object is “equal” only to itself, not to
+any other object. The comparison <code>[1] == [1]</code> is false because two
+arrays are created, then compared.
+</p>
+
+<p>
+Assignment of objects does not create new objects. After the sequence <code>a = [1];
+b = a</code>;, the test <code>a == b</code> will return true. This is because a and b are now
+references to the same object. Changes made to the object from either a or b
+will be visible to the other variable.
+</p>
+</div>
+</div>
+<div id="outline-container-orgd25625c" class="outline-3">
+<h3 id="orgd25625c">Conversions</h3>
+<div class="outline-text-3" id="text-orgd25625c">
+<p>
+JavaScript performs most conversions (also called coercions)
+automatically. Here are some that might require some care.
+</p>
+
+<p>
+Any arithmetic performed on primitives will cause them to be
+converted to numbers. Strings of digits will be converted in the
+obvious way. Boolean true will be converted to 1, null and false to
+0, and undefined to NaN.
+</p>
+</div>
+</div>
+<div id="outline-container-orgfae4933" class="outline-3">
+<h3 id="orgfae4933">Statements</h3>
+<div class="outline-text-3" id="text-orgfae4933">
+<p>
+Many statements in JavaScript are almost identical to those in
+Java. For the convenience of Java programmers, these statements
+are described separately from statements unique to JavaScript.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org25f84f0" class="outline-2">
+<h2 id="org25f84f0"><span class="todo RUNNING">RUNNING</span> 'More Details' <code>[0/1]</code></h2>
+<div class="outline-text-2" id="text-org25f84f0">
+<p>
+I always said that JS designers cared about colors and rainbows more than they
+did with logic and functionalities, that's why the last 270 lines are pretty
+much adequate to go with it. This section provide more details about the
+language specifications, notes, and some tips.
+</p>
+</div>
+<div id="outline-container-orgf2461cc" class="outline-3">
+<h3 id="orgf2461cc">Strict</h3>
+<div class="outline-text-3" id="text-orgf2461cc">
+<p>
+JavaScript allows some things that, in retrospect, should not have been allowed.
+JavaScript now has a strict mode to disallow those features and to modify
+others. To turn strict mode on globally, put the string
+</p>
+<pre class="example" id="org7703c10">
+"use strict";
+</pre>
+
+
+
+<p>
+Turning on strict mode makes the following things illegal:
+</p>
+<ul class="org-ul">
+<li>Assigning to a variable that has not been declared with var, let, or const.</li>
+<li>The with statement<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup> .</li>
+<li>Defining a function within a conditional or a loop statement.</li>
+<li>Using eval to create variables.</li>
+<li>Using delete to delete a variable, object, function, or an undeletable
+property (such as prototype).</li>
+<li>Modifying a read-only or get-only property.</li>
+<li>Using eval, with, or any of the reserved keywords as variable names.</li>
+<li>Writing a number with a leading 0 to make it octal, for example, 077.</li>
+<li>Octal escape sequences (other than "\0" to represent the NUL character, which
+is still allowed).</li>
+<li>Duplicate parameter names in a function, for instance, function foo(a, a).</li>
+<li>Accessing the caller, callee, and arguments properties of functions.</li>
+</ul>
+
+
+
+<p>
+In strict mode, the keyword this inside a function refers to the
+object that called the function.
+</p>
+</div>
+</div>
+<div id="outline-container-orgcca88e1" class="outline-3">
+<h3 id="orgcca88e1">Destructuring</h3>
+<div class="outline-text-3" id="text-orgcca88e1">
+<p>
+As an example, we use the following object:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js"><span style="font-weight: bold;">let</span> <span style="font-weight: bold; font-style: italic;">p</span> = { givenName: <span style="font-style: italic;">"Sally"</span>,
+                  familyName: <span style="font-style: italic;">"Willis"</span>,
+                  occupation: <span style="font-style: italic;">"doctor"</span> };
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-js"><span style="font-weight: bold;">let</span> <span style="font-weight: bold; font-style: italic;">givenName</span> = p.givenName;
+<span style="font-weight: bold;">let</span> <span style="font-weight: bold; font-style: italic;">familyName</span> = p.familyName;
+<span style="font-weight: bold;">let</span> <span style="font-weight: bold; font-style: italic;">occupation</span> = p.occupation;
+</pre>
+</div>
+
+<p>
+Destructuring is a shorter way to do exactly the same thing:
+</p>
+<div class="org-src-container">
+<pre class="src src-js"><span style="font-weight: bold;">let</span> {givenName, familyName, occupation} = p;
+</pre>
+</div>
+
+<p>
+To work with a similar object of the same type, say p2, you cannot use let again
+because variables may only be declared once.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js"><span style="font-weight: bold;">let</span> {givenName, familyName, occupation} = p2;
+<span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">SyntaxError: Identifier 'givenName' has</span>
+<span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">already been declared</span>
+</pre>
+</div>
+
+
+<p>
+Neither can you simply omit the word let because starting with
+an open brace, {, indicates a block.
+</p>
+
+<p>
+The solution is to enclose the entire statement, up the semicolon, in
+parentheses.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">({givenName, familyName, occupation} = p2);
+</pre>
+</div>
+
+<p>
+You can also provide default values:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js">({givenName: name, country = <span style="font-style: italic;">"USA"</span>} = p);
+<span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">name = "Sally", country = "USA"</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org626aeaa" class="outline-3">
+<h3 id="org626aeaa"><span class="todo TODO">TODO</span> More on Datatypes</h3>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+An example of this type of arrays is: <code>var arr = { "one": 1, "two": 2, "three": 3 };</code>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/with">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/with</a>
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html") {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.4). Author: Salih Muhammed. Last build date: 2023-04-30 Sun 00:44.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

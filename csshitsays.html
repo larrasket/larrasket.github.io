@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CS Shitposting (AKA Blogposts)</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">CS Shitposting (AKA Blogposts)</h1>
+</header><div id="outline-container-orga61586b" class="outline-2">
+<h2 id="orga61586b"><a href="csblog/andy_tanenbaum.html">(2022-11-30) Andy Tanenbaum hasn’t learned anything</a></h2>
+<div class="outline-text-2" id="text-orga61586b">
+<p>
+I found this old email by Rob Pike, Dave Presotto, Ken Thompson and Phil Winterbottom titled
+"Andy Tanenbaum hasn’t learned anything". Now I can tell why they were named gang.
+</p>
+</div>
+</div>
+<div id="outline-container-org59d452f" class="outline-2">
+<h2 id="org59d452f"><a href="csblog/egrub.html">(2022-11-30) grub.el</a></h2>
+<div class="outline-text-2" id="text-org59d452f">
+<p>
+GRUB3 will be elisp serialized as xml jited to jvm running as eclipse plugin on a mac running in a virtual pc in a xen instance on a 286er.
+</p>
+</div>
+</div>
+<div id="outline-container-org9634919" class="outline-2">
+<h2 id="org9634919"><a href="csblog/rocks.html">(2022-11-24) Web Extensions That Rocks</a></h2>
+<div class="outline-text-2" id="text-org9634919">
+<p>
+Web is one of the biggest thing that was done wrong in the software industry, in my opinion.
+For now, there is no and there is not going to be a web browser that is capable of being
+'proper'. I'm using ungoolged-chromium. This page contains some of the extensions that makes
+the web less painful to me.
+</p>
+</div>
+</div>
+<div id="outline-container-orgf91b7a4" class="outline-2">
+<h2 id="orgf91b7a4"><a href="csblog/grub.html">(2022-10-30) I Fixed grub without grub</a></h2>
+<div class="outline-text-2" id="text-orgf91b7a4">
+<p>
+It wasn't a big deal but I felt great that I could do it without reinstalling grub.
+</p>
+</div>
+</div>
+<div id="outline-container-org6ec1d40" class="outline-2">
+<h2 id="org6ec1d40"><a href="csblog/tor.html">(2022-09-11) TOR with FoxyProxy (RelyBridges Enabled)</a></h2>
+<div class="outline-text-2" id="text-org6ec1d40">
+<p>
+This post was written ~3 months ago, however, for some reason TOR couldn't work anymore with
+my ISP in Cairo, so I had to use bride with some g custom configuration.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-04-30 Sun 00:44.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

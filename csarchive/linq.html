@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>LINQ Notes</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">LINQ Notes</h1>
+</header>
+<div id="outline-container-orga992e0c" class="outline-2">
+<h2 id="orga992e0c">Motivation</h2>
+<div class="outline-text-2" id="text-orga992e0c">
+<p>
+<b>What is LINQ?</b>
+</p>
+
+
+<p>
+Suppose you are writing an application using .NET. Chances are high that at
+some point you’ll need to persist objects to a database, query the database, and load the
+results back into objects. The problem is that in most cases, at least with relational
+databases, there is a gap between your programming language and the database. Good attempts
+have been made to provide object-oriented databases, which would be closer to
+object-oriented platforms and imperative programming lan- guages such as C# and VB.NET.
+However, after all these years, relational databases are still pervasive, and you still have
+to struggle with data access and persistence in all of your programs.
+</p>
+
+<div class="PREVIEW" id="org9ec6610">
+<p>
+The original motivation behind LINQ was to address the conceptual and tech- nical
+difficulties encountered when using databases with .NET programming lan- guages. With LINQ,
+Microsoft’s intention was to provide a solution for the problem of object-relational
+mapping, as well as to simplify the interaction between objects and data sources. LINQ
+eventually evolved into a general-purpose language-integrated querying toolset. This toolset
+can be used to access data com- ing from in-memory objects (LINQ to Objects), databases
+(LINQ to SQL), XML documents (LINQ to XML), a file-system, or any other source.
+</p>
+
+</div>
+
+
+
+<p>
+sions to these languages: LINQ means Language-INtegrated Query.
+ Before LINQ, we had to juggle different languages like SQL, XML, or XPath
+along with various technologies and APIs like ADO.NET or System.Xml in every
+application written using general-purpose languages such as C# or VB.NET. It goes
+without saying that this approach had several drawbacks.1 LINQ glues several
+worlds together. It helps us avoid the bumps we would usually find on the road
+from one world to another: using XML with objects, objects with relational data,
+and relational data with XML are some of the tasks that LINQ will simplify.
+</p>
+
+<p>
+ One of the key aspects of LINQ is that it was designed to be used against any
+type of object or data source and to provide a consistent programming model for
+doing so. The syntax and concepts are the same across all of its uses: Once you
+learn how to use LINQ against an array or a collection, you also know most of the
+concepts needed to take advantage of LINQ with a database or an XML file.
+</p>
+
+<p>
+<b>Why Do We Need LINQ?</b>
+</p>
+
+<p>
+We have just provided you with an overview of LINQ. The big questions at this point are: Why
+do we want a tool like LINQ? What makes the previous tools incon- venient? Was LINQ created
+only to make working with programming languages, relational data, and XML at the same time
+more convenient?
+</p>
+
+
+<p>
+At the origin of the LINQ project is a simple fact: The vast majority of applica- tions that
+are developed access data or talk to a relational database. Consequently, in order to
+program applications, learning a language such as C# is not enough. You also have to learn
+another language such as SQL, and the APIs that tie it together with C# to form your full
+application.
+</p>
+
+<p>
+ We’ll start by taking a look at a piece of data-access code that uses the standard
+.NET APIs. This will allow us to point out the common problems that are encoun-
+tered in this kind of code. We will then extend our analysis by showing how these
+problems exist with other kinds of data such as XML. You’ll see that LINQ
+addresses a general impedance mismatch between data sources and programming
+languages. Finally, a short code sample will give you a glimpse at how LINQ is a
+solution to the problem.
+</p>
+
+<p>
+The frequent use of databases in applications requires that the .NET Framework
+address the need for APIs that can access the data stored within. Of course, this
+has been the case since the first appearance of .NET. The .NET Framework Class
+Library (FCL) includes ADO.NET, which provides an API to access relational data-
+bases and to represent relational data in memory. This API consists of classes such
+as SqlConnection, SqlCommand, SqlReader, DataSet, and DataTable, to name a
+few. The problem with these classes is that they force the developer to work explic-
+itly with tables, records, and columns, while modern languages such as C# and
+VB.NET use object-oriented paradigms.
+</p>
+
+<p>
+Now that the object-oriented paradigm is the prevailing model in software
+development, developers incur a large amount of overhead in mapping it to other
+abstractions, specifically relational databases and XML. The result is that a lot of
+time is spent on writing plumbing code.3 Removing this burden would increase
+productivity in data-intensive programming, which LINQ helps us do.
+</p>
+
+<p>
+But it’s not only about productivity! It also impacts quality. Writing tedious
+and fragile plumbing code can lead to insidious defects in software or degraded
+performance.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc89e36c" class="outline-2">
+<h2 id="orgc89e36c">Hello LINQ to Object</h2>
+<div class="outline-text-2" id="text-orgc89e36c">
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">words</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">string</span>[] { <span style="font-style: italic;">"Hello"</span>, <span style="font-style: italic;">"Wonderful"</span>, <span style="font-style: italic;">"Linq"</span>, <span style="font-style: italic;">"Beatiful"</span>, <span style="font-style: italic;">"World"</span> };
+<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">shortWords</span> =
+    <span style="font-weight: bold;">from</span> word <span style="font-weight: bold;">in</span> words
+    <span style="font-weight: bold;">where</span> word.Length &lt;= 5
+    <span style="font-weight: bold;">select</span> word;
+<span style="font-weight: bold;">foreach</span> (<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">word</span> <span style="font-weight: bold;">in</span> shortWords) Console.<span style="font-weight: bold;">WriteLine</span>(word);
+</pre>
+</div>
+<p>
+As is evident from the results, we have filtered a list of words to select only the
+ones whose length is less than or equal to five characters.
+</p>
+
+<p>
+We could argue that the same result could be achieved without LINQ using the following code:
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">words</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">string</span>[] {
+  <span style="font-style: italic;">"hello"</span>, <span style="font-style: italic;">"wonderful"</span>, <span style="font-style: italic;">"linq"</span>, <span style="font-style: italic;">"beautiful"</span>, <span style="font-style: italic;">"world"</span> };
+<span style="font-weight: bold;">foreach</span> (<span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">word</span> <span style="font-weight: bold;">in</span> words)
+  <span style="font-weight: bold;">if</span> (word.Length &lt;= 5)
+   Console.<span style="font-weight: bold;">WriteLine</span>(word);
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9891242" class="outline-2">
+<h2 id="org9891242">LINQ to SQL</h2>
+<div class="outline-text-2" id="text-org9891242">
+<p>
+The time has come to look at some code using LINQ to SQL. As you saw in our
+Hello LINQ example, we are able to write queries against a collection of objects.
+The following C# code snippet filters an in-memory collection of contacts based
+on their city:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">from</span> contact <span style="font-weight: bold;">in</span> contacts
+<span style="font-weight: bold;">where</span> contact.City == "Paris"
+<span style="font-weight: bold;">select</span> contact;
+</pre>
+</div>
+
+<p>
+The good news is that thanks to LINQ to SQL, doing the same on data from a relational
+database is direct:
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">from</span> contact <span style="font-weight: bold;">in</span> db.<span style="font-weight: bold;">GetTable</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Contact</span>&gt;()
+<span style="font-weight: bold;">where</span> contact.City == <span style="font-style: italic;">"Paris"</span>
+<span style="font-weight: bold;">select</span> contact;
+</pre>
+</div>
+
+<p>
+This query works on a list of contacts from a database. Notice how subtle the dif-
+ference is between the two queries. Only the object on which we are working is
+different; the query syntax is exactly the same. This shows how we’ll be able to
+work the same way with multiple types of data.
+</p>
+
+<p>
+Let’s walk through a simple complete example. To begin with,
+you’re probably wondering what <code>db.GetTable&lt;Contact&gt;()</code> means in our LINQ to SQL.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0fc9dcb" class="outline-2">
+<h2 id="org0fc9dcb">LINQ in Depth <code>[22/49]</code></h2>
+<div class="outline-text-2" id="text-org0fc9dcb">
+<p>
+After being familiar with LINQ basic syntax, you should be able to write queries using old
+knowledge in querying any quaring language (i.e SQL) and use it with LINQ intuitively,
+therefore I will not include the banal basic querying methods.
+</p>
+
+<p>
+You may want to read <a href="https://salehmu.github.io/notes/psql/">Introduction into PostgreSQL</a>.
+</p>
+</div>
+<div id="outline-container-org5d3c27d" class="outline-3">
+<h3 id="org5d3c27d"><span class="done DONE">DONE</span> <code>IEnumerable</code> and <code>IQueryable</code></h3>
+<div class="outline-text-3" id="text-org5d3c27d">
+<p>
+Consider the following program:
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Collections</span>.<span style="font-weight: bold; font-style: italic;">Generic</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>)
+        {
+            <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">integerList</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;()
+            {
+                1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+            };
+
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">QuerySyntax</span> = <span style="font-weight: bold;">from</span> obj <span style="font-weight: bold;">in</span> integerList
+                              <span style="font-weight: bold;">where</span> obj &gt; 5
+                              <span style="font-weight: bold;">select</span> obj;
+
+            <span style="font-weight: bold;">foreach</span> (<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">item</span> <span style="font-weight: bold;">in</span> QuerySyntax)
+            {
+                Console.<span style="font-weight: bold;">Write</span>(item + <span style="font-style: italic;">" "</span>);
+            }
+
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+}
+</pre>
+</div>
+
+<p>
+we use the var keyword to create the variable and store the result of the LINQ query. So
+let’s check what is the type of the variable? In order to check this, just mouseover the
+pointer on to the QuerySynntax variable and you will see that the type is <code>IEnumerable&lt;int&gt;</code>
+which is a generic type. So it is important to understand what is <code>IEnumerable</code>?
+</p>
+
+<p>
+<code>IEnumerable</code> is an interface that is available in <code>System.Collection</code> namespace. The
+<code>IEnumerable</code> interface is a type of iteration design pattern. It means we can iterate on the
+collection of the type <code>IEnumerable</code>. As you can see in the above definition, the <code>IEnumerable</code>
+interface has one method called <code>GetEnumerator</code> which will return an <code>IEnumerator</code> that iterates
+through a collection.
+</p>
+
+<p>
+The most important point that you need to remember is, in C#, all the collection classes
+(both generic and non-generic) implements the <code>IEnumerable</code> interface.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Collections</span>.<span style="font-weight: bold; font-style: italic;">Generic</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>)
+        {
+            <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Student</span>&gt; <span style="font-weight: bold; font-style: italic;">studentList</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Student</span>&gt;()
+            {
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Student</span>(){ID = 1, Name = <span style="font-style: italic;">"James"</span>, Gender = <span style="font-style: italic;">"Male"</span>},
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Student</span>(){ID = 2, Name = <span style="font-style: italic;">"Sara"</span>, Gender = <span style="font-style: italic;">"Female"</span>},
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Student</span>(){ID = 3, Name = <span style="font-style: italic;">"Steve"</span>, Gender = <span style="font-style: italic;">"Male"</span>},
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Student</span>(){ID = 4, Name = <span style="font-style: italic;">"Pam"</span>, Gender = <span style="font-style: italic;">"Female"</span>}
+            };
+
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Linq Query to Fetch all students with Gender Male</span>
+            <span style="font-weight: bold; text-decoration: underline;">IEnumerable</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Student</span>&gt; <span style="font-weight: bold; font-style: italic;">QuerySyntax</span> = <span style="font-weight: bold;">from</span> std <span style="font-weight: bold;">in</span> studentList
+                                               <span style="font-weight: bold;">where</span> std.Gender == <span style="font-style: italic;">"Male"</span>
+                                               <span style="font-weight: bold;">select</span> std;
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Iterate through the collection</span>
+            <span style="font-weight: bold;">foreach</span> (<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">student</span> <span style="font-weight: bold;">in</span> QuerySyntax)
+            {
+                Console.<span style="font-weight: bold;">WriteLine</span>( $<span style="font-style: italic;">"ID : {student.ID}  Name : {student.Name}"</span>);
+            }
+
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Student</span>
+    {
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">ID</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">Name</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">Gender</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+    }
+}
+</pre>
+</div>
+
+<p>
+<b>IQueryable</b>
+</p>
+
+<p>
+<code>IQueryable</code> is an interface and it is available in <code>System.Linq</code> namespace. The <code>IQuerable</code>
+interface is a child of the <code>IEnumerable</code> interface. So we can store <code>IQuerable</code> in a variable
+of type IEnumerable. The <code>IQuerable</code> interface has a property called Provider which is of type
+<code>IQueryProvider</code> interface:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Collections</span>.<span style="font-weight: bold; font-style: italic;">Generic</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>)
+        {
+            <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Student</span>&gt; <span style="font-weight: bold; font-style: italic;">studentList</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Student</span>&gt;()
+            {
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Student</span>(){ID = 1, Name = <span style="font-style: italic;">"James"</span>, Gender = <span style="font-style: italic;">"Male"</span>},
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Student</span>(){ID = 2, Name = <span style="font-style: italic;">"Sara"</span>, Gender = <span style="font-style: italic;">"Female"</span>},
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Student</span>(){ID = 3, Name = <span style="font-style: italic;">"Steve"</span>, Gender = <span style="font-style: italic;">"Male"</span>},
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Student</span>(){ID = 4, Name = <span style="font-style: italic;">"Pam"</span>, Gender = <span style="font-style: italic;">"Female"</span>}
+            };
+
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Linq Query to Fetch all students with Gender Male</span>
+            <span style="font-weight: bold; text-decoration: underline;">IQueryable</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Student</span>&gt; <span style="font-weight: bold; font-style: italic;">MethodSyntax</span> = studentList.<span style="font-weight: bold;">AsQueryable</span>()
+                                .<span style="font-weight: bold;">Where</span>(std =&gt; std.Gender == <span style="font-style: italic;">"Male"</span>);
+
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Iterate through the collection</span>
+            <span style="font-weight: bold;">foreach</span> (<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">student</span> <span style="font-weight: bold;">in</span> MethodSyntax)
+            {
+                Console.<span style="font-weight: bold;">WriteLine</span>( $<span style="font-style: italic;">"ID : {student.ID}  Name : {student.Name}"</span>);
+            }
+
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Student</span>
+    {
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">ID</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">Name</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">Gender</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org1432595" class="outline-3">
+<h3 id="org1432595"><span class="done DONE">DONE</span> Differences between <code>IEnumerable</code> and <code>IQueryable</code></h3>
+<div class="outline-text-3" id="text-org1432595">
+<p>
+The <code>IEnumerable</code> and <code>IQueryable</code> are used to hold a collection of data and also used to
+perform data manipulation operations such as filtering, Ordering, Grouping, etc.
+</p>
+
+<p>
+(BROKEN)
+</p>
+
+
+<p>
+Here in this demo, we will create a console application that will retrieve the data from the
+SQL Server database using Entity Framework database first approach. We are going to fetch
+the following Student information from the Student table.
+</p>
+
+
+<p>
+(BROKEN)
+</p>
+
+
+<p>
+Here is my scheme:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold; font-style: italic;">-- </span><span style="font-weight: bold; font-style: italic;">Create the required Student table</span>
+<span style="font-weight: bold;">CREATE</span> <span style="font-weight: bold;">TABLE</span> <span style="font-weight: bold;">Student</span>
+(
+     ID <span style="font-weight: bold; text-decoration: underline;">INT</span> <span style="font-weight: bold;">PRIMARY</span> <span style="font-weight: bold;">KEY</span>,
+     FirstName <span style="font-weight: bold; text-decoration: underline;">VARCHAR</span>(50),
+     LastName <span style="font-weight: bold; text-decoration: underline;">VARCHAR</span>(50),
+     Gender <span style="font-weight: bold; text-decoration: underline;">VARCHAR</span>(50)
+)
+<span style="font-weight: bold;">GO</span>
+
+<span style="font-weight: bold; font-style: italic;">-- </span><span style="font-weight: bold; font-style: italic;">Insert the required test data</span>
+<span style="font-weight: bold;">INSERT</span> <span style="font-weight: bold;">INTO</span> Student <span style="font-weight: bold;">VALUES</span> (101, <span style="font-style: italic;">'Steve'</span>, <span style="font-style: italic;">'Smith'</span>, <span style="font-style: italic;">'Male'</span>)
+<span style="font-weight: bold;">INSERT</span> <span style="font-weight: bold;">INTO</span> Student <span style="font-weight: bold;">VALUES</span> (102, <span style="font-style: italic;">'Sara'</span>, <span style="font-style: italic;">'Pound'</span>, <span style="font-style: italic;">'Female'</span>)
+<span style="font-weight: bold;">INSERT</span> <span style="font-weight: bold;">INTO</span> Student <span style="font-weight: bold;">VALUES</span> (103, <span style="font-style: italic;">'Ben'</span>, <span style="font-style: italic;">'Stokes'</span>, <span style="font-style: italic;">'Male'</span>)
+<span style="font-weight: bold;">INSERT</span> <span style="font-weight: bold;">INTO</span> Student <span style="font-weight: bold;">VALUES</span> (104, <span style="font-style: italic;">'Jos'</span>, <span style="font-style: italic;">'Butler'</span>, <span style="font-style: italic;">'Male'</span>)
+<span style="font-weight: bold;">INSERT</span> <span style="font-weight: bold;">INTO</span> Student <span style="font-weight: bold;">VALUES</span> (105, <span style="font-style: italic;">'Pam'</span>, <span style="font-style: italic;">'Semi'</span>, <span style="font-style: italic;">'Female'</span>)
+<span style="font-weight: bold;">GO</span>
+</pre>
+</div>
+
+<p>
+Let us modify the Program class as shown below.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Collections</span>.<span style="font-weight: bold; font-style: italic;">Generic</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>)
+        {
+            <span style="font-weight: bold; text-decoration: underline;">StudentDBContext</span> <span style="font-weight: bold; font-style: italic;">dBContext</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">StudentDBContext</span>();
+            <span style="font-weight: bold; text-decoration: underline;">IEnumerable</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Student</span>&gt; <span style="font-weight: bold; font-style: italic;">listStudents</span> = dBContext.Students.<span style="font-weight: bold;">Where</span>(x =&gt; x.Gender == <span style="font-style: italic;">"Male"</span>);
+            listStudents = listStudents.<span style="font-weight: bold;">Take</span>(2);
+
+            <span style="font-weight: bold;">foreach</span>(<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">std</span> <span style="font-weight: bold;">in</span> listStudents)
+            {
+                Console.<span style="font-weight: bold;">WriteLine</span>(std.FirstName + <span style="font-style: italic;">" "</span> + std.LastName);
+            }
+
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+}
+</pre>
+</div>
+
+<p>
+Here we create the LINQ Query using <code>IEnumerable</code>. Please use SQL Profiler to log the SQL
+Script. Now run the application and you will see the following SQL Script is generated and
+executed.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span>
+    [Extent1].[ID] <span style="font-weight: bold;">AS</span> [ID],
+    [Extent1].[FirstName] <span style="font-weight: bold;">AS</span> [FirstName],
+    [Extent1].[LastName] <span style="font-weight: bold;">AS</span> [LastName],
+    [Extent1].[Gender] <span style="font-weight: bold;">AS</span> [Gender]
+    <span style="font-weight: bold;">FROM</span> [dbo].[Student] <span style="font-weight: bold;">AS</span> [Extent1]
+    <span style="font-weight: bold;">WHERE</span> <span style="font-style: italic;">'Male'</span> = [Extent1].[Gender]
+</pre>
+</div>
+
+<p>
+As shown in the above SQL Script, it will not use the TOP clause. So here it will fetch the
+data from SQL Server to in-memory and then it will filter the data.
+</p>
+
+<p>
+Let's check it again using <code>IQuerable</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>)
+        {
+            <span style="font-weight: bold; text-decoration: underline;">StudentDBContext</span> <span style="font-weight: bold; font-style: italic;">dBContext</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">StudentDBContext</span>();
+            <span style="font-weight: bold; text-decoration: underline;">IQueryable</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Student</span>&gt; <span style="font-weight: bold; font-style: italic;">listStudents</span> = dBContext.Students
+                                .<span style="font-weight: bold;">AsQueryable</span>()
+                                .<span style="font-weight: bold;">Where</span>(x =&gt; x.Gender == <span style="font-style: italic;">"Male"</span>);
+            listStudents = listStudents.<span style="font-weight: bold;">Take</span>(2);
+
+            <span style="font-weight: bold;">foreach</span>(<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">std</span> <span style="font-weight: bold;">in</span> listStudents)
+            {
+                Console.<span style="font-weight: bold;">WriteLine</span>(std.FirstName + <span style="font-style: italic;">" "</span> + std.LastName);
+            }
+
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+}
+</pre>
+</div>
+
+<p>
+Check the SQL Script:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> TOP (2)
+    [Extent1].[ID] <span style="font-weight: bold;">AS</span> [ID],
+    [Extent1].[FirstName] <span style="font-weight: bold;">AS</span> [FirstName],
+    [Extent1].[LastName] <span style="font-weight: bold;">AS</span> [LastName],
+    [Extent1].[Gender] <span style="font-weight: bold;">AS</span> [Gender]
+    <span style="font-weight: bold;">FROM</span> [dbo].[Student] <span style="font-weight: bold;">AS</span> [Extent1]
+    <span style="font-weight: bold;">WHERE</span> <span style="font-style: italic;">'Male'</span> = [Extent1].[Gender]
+</pre>
+</div>
+
+<p>
+As you can see it includes the TOP clause in the SQL Script and then fetches the data from
+the database.
+</p>
+
+<p>
+<b>Main differences:</b>
+</p>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left"><code>IEnumerable</code></th>
+<th scope="col" class="org-left"><code>IQuerable</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><b>While querying the data from the database, the <code>IEnumerable</code> executes the “select statement” on the server-side (i.e. on the database), loads data into memory on the client-side, and then only applied the filters on the retrieved data.</b></td>
+<td class="org-left">While querying the data from a database, the <code>IQueryable</code> executes the “select query” with the applied filter on the server-side i.e. on the database, and then retrieves data.</td>
+</tr>
+
+<tr>
+<td class="org-left">So you need to use the <code>IEnumerable</code> when you need to query the data from in-memory collections like List, Array, and so on.</td>
+<td class="org-left">So you need to use the <code>IQueryable</code> when you want to query the data from out-memory such as remote database, service, etc.</td>
+</tr>
+
+<tr>
+<td class="org-left">The <code>IEnumerable</code> is mostly used for LINQ to Object and LINQ to XML queries.</td>
+<td class="org-left"><code>IQueryable</code> is mostly used for LINQ to SQL and LINQ to Entities queries.</td>
+</tr>
+
+<tr>
+<td class="org-left">The <code>IEnumerable</code> collection is of type forward only. That means it can only move in forward, it can’t move backward and between the items.</td>
+<td class="org-left">The collection of type IQueryable can move only forward, it can’t move backward and between the items.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>IEnumerable</code> supports deferred execution.</td>
+<td class="org-left"><code>IQueryable</code> supports deferred execution.</td>
+</tr>
+
+<tr>
+<td class="org-left">It doesn’t support custom queries.</td>
+<td class="org-left">It also supports custom queries using <code>CreateQuery</code> and Executes methods.</td>
+</tr>
+
+<tr>
+<td class="org-left">The <code>IEnumerable</code> doesn’t support lazy loading. Hence, it is not suitable for paging like scenarios.</td>
+<td class="org-left"><code>IQueryable</code> supports lazy loading and hence it is suitable for paging like scenarios.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgeafe240" class="outline-3">
+<h3 id="orgeafe240"><span class="done DONE">DONE</span> <code>OfType</code></h3>
+<div class="outline-text-3" id="text-orgeafe240">
+<p>
+The <code>OfType</code> Operator in LINQ is used to filter specific type data from a data source based on
+the data type we passed to this operator. For example, if we have a collection that stores
+both integer and string values and if we need to fetch either only the integer values or
+only the string values from that collection then we need to use the <code>OfType</code> operator.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Collections</span>.<span style="font-weight: bold; font-style: italic;">Generic</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>)
+        {
+            <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">object</span>&gt; <span style="font-weight: bold; font-style: italic;">dataSource</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">object</span>&gt;()
+            {
+                <span style="font-style: italic;">"Tom"</span>, <span style="font-style: italic;">"Mary"</span>, 50, <span style="font-style: italic;">"Prince"</span>, <span style="font-style: italic;">"Jack"</span>, 10, 20, 30, 40, <span style="font-style: italic;">"James"</span>
+            };
+
+            <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">intData</span> = dataSource.<span style="font-weight: bold;">OfType</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;().<span style="font-weight: bold;">ToList</span>();
+
+            <span style="font-weight: bold;">foreach</span> (<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">number</span> <span style="font-weight: bold;">in</span> intData)
+            {
+                Console.<span style="font-weight: bold;">Write</span>(number + <span style="font-style: italic;">" "</span>);
+            }
+
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+}
+</pre>
+</div>
+
+<p>
+In querying syntax:
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">stringData</span> = (<span style="font-weight: bold;">from</span> name <span style="font-weight: bold;">in</span> dataSource
+               <span style="font-weight: bold;">where</span> name <span style="font-weight: bold;">is</span> <span style="font-weight: bold; text-decoration: underline;">string</span>
+               <span style="font-weight: bold;">select</span> name).<span style="font-weight: bold;">ToList</span>();
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgfb143b1" class="outline-3">
+<h3 id="orgfb143b1"><span class="done DONE">DONE</span> <code>Distinct</code></h3>
+<div class="outline-text-3" id="text-orgfb143b1">
+<p>
+The LINQ Distinct Method in C# is used to return the distinct elements from a single data
+source.
+</p>
+
+<p>
+The one and the only difference between these two methods is the second overloaded version
+takes an <code>IEqualityComparer</code> as input that means the Distinct Operator can also be used with
+Comparer also. If this is not clear at the moment, don’t worry we will cover the use of the
+Comparer in this article also.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Collections</span>.<span style="font-weight: bold; font-style: italic;">Generic</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>)
+        {
+            <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">intCollection</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;()
+            {
+                1,2,3,2,3,4,4,5,6,3,4,5
+            };
+
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Using Method Syntax</span>
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">MS</span> = intCollection.<span style="font-weight: bold;">Distinct</span>();
+
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Using Query Syntax</span>
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">QS</span> = (<span style="font-weight: bold;">from</span> num <span style="font-weight: bold;">in</span> intCollection
+                      <span style="font-weight: bold;">select</span> num).<span style="font-weight: bold;">Distinct</span>();
+            <span style="font-weight: bold;">foreach</span> (<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">item</span> <span style="font-weight: bold;">in</span> MS)
+            {
+                Console.<span style="font-weight: bold;">WriteLine</span>(<span style="font-weight: bold; text-decoration: underline;">item</span>);
+            }
+
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd56cc03" class="outline-3">
+<h3 id="orgd56cc03"><span class="done DONE">DONE</span> <code>Except</code></h3>
+<div class="outline-text-3" id="text-orgd56cc03">
+<p>
+The LINQ Except Method in C# is used to return the elements which are present in the first data source but not in the second data source.
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>)
+        {
+            <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">dataSource1</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;() { 1, 2, 3, 4, 5, 6 };
+            <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">dataSource2</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;() { 1, 3, 5, 8, 9, 10 };
+
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Method Syntax</span>
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">MS</span> = dataSource1.<span style="font-weight: bold;">Except</span>(<span style="font-weight: bold; text-decoration: underline;">dataSource2</span>).<span style="font-weight: bold;">ToList</span>();
+
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Query Syntax</span>
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">QS</span> = (<span style="font-weight: bold;">from</span> num <span style="font-weight: bold;">in</span> dataSource1
+                      <span style="font-weight: bold;">select</span> num)
+                      .<span style="font-weight: bold;">Except</span>(<span style="font-weight: bold; text-decoration: underline;">dataSource2</span>).<span style="font-weight: bold;">ToList</span>();
+
+            <span style="font-weight: bold;">foreach</span> (<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">item</span> <span style="font-weight: bold;">in</span> QS)
+            {
+                Console.<span style="font-weight: bold;">WriteLine</span>(<span style="font-weight: bold; text-decoration: underline;">item</span>);
+            }
+
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org775786d" class="outline-3">
+<h3 id="org775786d"><span class="done DONE">DONE</span> <code>Intersect</code></h3>
+<div class="outline-text-3" id="text-org775786d">
+<p>
+The LINQ Intersect Method in C# is used to return the common elements from both the
+collections. The elements that are present in both the data sources.
+</p>
+
+<p>
+The one and the only difference between the above two LINQ Intersect methods is that the
+second overloaded version takes IEqualityComparer as an argument. That means the Intersect
+Method is also used for Comparer.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Collections</span>.<span style="font-weight: bold; font-style: italic;">Generic</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>)
+        {
+            <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">dataSource1</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;() { 1, 2, 3, 4, 5, 6 };
+            <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">dataSource2</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;() { 1, 3, 5, 8, 9, 10 };
+
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Method Syntax</span>
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">MS</span> = dataSource1.<span style="font-weight: bold;">Intersect</span>(<span style="font-weight: bold; text-decoration: underline;">dataSource2</span>).<span style="font-weight: bold;">ToList</span>();
+
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Query Syntax</span>
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">QS</span> = (<span style="font-weight: bold;">from</span> num <span style="font-weight: bold;">in</span> dataSource1
+                      <span style="font-weight: bold;">select</span> num)
+                      .<span style="font-weight: bold;">Intersect</span>(<span style="font-weight: bold; text-decoration: underline;">dataSource2</span>).<span style="font-weight: bold;">ToList</span>();
+
+            <span style="font-weight: bold;">foreach</span> (<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">item</span> <span style="font-weight: bold;">in</span> MS)
+            {
+                Console.<span style="font-weight: bold;">WriteLine</span>(<span style="font-weight: bold; text-decoration: underline;">item</span>);
+            }
+
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1dca910" class="outline-3">
+<h3 id="org1dca910"><span class="done DONE">DONE</span> <code>Union</code></h3>
+<div class="outline-text-3" id="text-org1dca910">
+<p>
+The LINQ Union Method in C# is used to combine the multiple data sources into one data
+source by removing the duplicate elements.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Collections</span>.<span style="font-weight: bold; font-style: italic;">Generic</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>)
+        {
+            <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">dataSource1</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;() { 1, 2, 3, 4, 5, 6 };
+            <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">dataSource2</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;() { 1, 3, 5, 8, 9, 10 };
+
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Method Syntax</span>
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">MS</span> = dataSource1.<span style="font-weight: bold;">Union</span>(<span style="font-weight: bold; text-decoration: underline;">dataSource2</span>).<span style="font-weight: bold;">ToList</span>();
+
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Query Syntax</span>
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">QS</span> = (<span style="font-weight: bold;">from</span> num <span style="font-weight: bold;">in</span> dataSource1
+                      <span style="font-weight: bold;">select</span> num)
+                      .<span style="font-weight: bold;">Union</span>(<span style="font-weight: bold; text-decoration: underline;">dataSource2</span>).<span style="font-weight: bold;">ToList</span>();
+
+            <span style="font-weight: bold;">foreach</span> (<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">item</span> <span style="font-weight: bold;">in</span> MS)
+            {
+                Console.<span style="font-weight: bold;">WriteLine</span>(<span style="font-weight: bold; text-decoration: underline;">item</span>);
+            }
+
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orge633d03" class="outline-3">
+<h3 id="orge633d03"><span class="done DONE">DONE</span> <code>SelectMany</code></h3>
+<div class="outline-text-3" id="text-orge633d03">
+<p>
+The <code>SelectMany</code> in LINQ is used to project each element of a sequence to an IEnumerable&lt;T&gt;
+and then flatten the resulting sequences into one sequence. That means the <code>SelectMany</code>
+operator combines the records from a sequence of results and then converts it into one
+result. If this is not clear at the moment, then don’t worry we will see it in practice.
+</p>
+
+<p>
+#+begin_src csharp
+List&lt;string&gt; nameList =new List&lt;string&gt;(){"Pranaya", "Kumar" }; IEnumerable&lt;char&gt;
+methodSyntax = nameList.SelectMany(x =&gt; x); foreach(char c in methodSyntax) {
+Console.Write(c + " "); } #+end_src
+</p>
+
+<pre class="example">
+P r a n a y a K u m a r
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org0d56f21" class="outline-3">
+<h3 id="org0d56f21"><span class="done DONE">DONE</span> <code>Concat</code></h3>
+<div class="outline-text-3" id="text-org0d56f21">
+<p>
+The Linq Concat Method in C# is used to concatenate two sequences into one sequence.
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Collections</span>.<span style="font-weight: bold; font-style: italic;">Generic</span>;
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>)
+        {
+            <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">sequence1</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; { 1, 2, 3, 4 };
+            <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">sequence2</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; { 2, 4, 6, 8 };
+
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">result</span> = sequence1.<span style="font-weight: bold;">Concat</span>(<span style="font-weight: bold; text-decoration: underline;">sequence2</span>);
+
+            <span style="font-weight: bold;">foreach</span> (<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">item</span> <span style="font-weight: bold;">in</span> result)
+            {
+                Console.<span style="font-weight: bold;">WriteLine</span>(<span style="font-weight: bold; text-decoration: underline;">item</span>);
+            }
+
+            Console.<span style="font-weight: bold;">ReadLine</span>();
+        }
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org599105e" class="outline-3">
+<h3 id="org599105e"><span class="done DONE">DONE</span> <code>OrderBy</code></h3>
+<div class="outline-text-3" id="text-org599105e">
+<p>
+The Linq OrderBy method in C# is used to sort the data in ascending order. The most
+important point that you need to keep in mind is this method is not going to change the data
+rather it is just changing the order of the data.
+</p>
+
+<p>
+You can use the OrderBy method on any data type i.e. you can use character, string, decimal,
+integer, etc. Let us understand the use of the LINQ OrderBy method in C# using both query
+syntax and method syntax.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Collections</span>.<span style="font-weight: bold; font-style: italic;">Generic</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>)
+        {
+            <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">intList</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;() { 10, 45, 35, 29, 100, 69, 58, 50 };
+
+            Console.<span style="font-weight: bold;">WriteLine</span>(<span style="font-style: italic;">"Before Sorting : "</span>);
+            <span style="font-weight: bold;">foreach</span> (<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">item</span> <span style="font-weight: bold;">in</span> intList)
+            {
+                Console.<span style="font-weight: bold;">Write</span>(item + <span style="font-style: italic;">" "</span>);
+            }
+
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Sorting the data in Ascending Order</span>
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Using Method Syntax</span>
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">MS</span> = intList.<span style="font-weight: bold;">OrderBy</span>(num =&gt; num);
+
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Using Query Syntax</span>
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">QS</span> = (<span style="font-weight: bold;">from</span> num <span style="font-weight: bold;">in</span> intList
+                      <span style="font-weight: bold;">orderby</span> num
+                      <span style="font-weight: bold;">select</span> num).<span style="font-weight: bold;">ToList</span>();
+
+            Console.<span style="font-weight: bold;">WriteLine</span>();
+            Console.<span style="font-weight: bold;">WriteLine</span>(<span style="font-style: italic;">"After Sorting : "</span>);
+            <span style="font-weight: bold;">foreach</span> (<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">item</span> <span style="font-weight: bold;">in</span> QS)
+            {
+                Console.<span style="font-weight: bold;">Write</span>(item + <span style="font-style: italic;">" "</span>);
+            }
+
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgc8509ab" class="outline-3">
+<h3 id="orgc8509ab"><span class="done DONE">DONE</span> <code>OrderByDescending</code></h3>
+<div class="outline-text-3" id="text-orgc8509ab">
+<p>
+The LINQ OrderByDescending method in C# is used to sort the data in descending order. The
+point that you need to remember is, the OrderByDescending method is not going to change the
+data, it is just changing the order of the data.
+</p>
+
+<p>
+Like the OrderBy method, you can also use the OrderByDescending method on any data type such
+as string, character, float, integer, etc. Let us understand how to use the
+OrderByDescending method in C# using both query and method syntax.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Collections</span>.<span style="font-weight: bold; font-style: italic;">Generic</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>)
+        {
+            <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">intList</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;() { 10, 45, 35, 29, 100, 69, 58, 50 };
+
+            Console.<span style="font-weight: bold;">WriteLine</span>(<span style="font-style: italic;">"Before Sorting the Data: "</span>);
+            <span style="font-weight: bold;">foreach</span> (<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">item</span> <span style="font-weight: bold;">in</span> intList)
+            {
+                Console.<span style="font-weight: bold;">Write</span>(item + <span style="font-style: italic;">" "</span>);
+            }
+
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Sorting the data in Descending Order</span>
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Using Method Syntax</span>
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">MS</span> = intList.<span style="font-weight: bold;">OrderByDescending</span>(num =&gt; num);
+
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Using Query Syntax</span>
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">QS</span> = (<span style="font-weight: bold;">from</span> num <span style="font-weight: bold;">in</span> intList
+                      <span style="font-weight: bold;">orderby</span> num <span style="font-weight: bold;">descending</span>
+                      <span style="font-weight: bold;">select</span> num).<span style="font-weight: bold;">ToList</span>();
+
+            Console.<span style="font-weight: bold;">WriteLine</span>();
+            Console.<span style="font-weight: bold;">WriteLine</span>(<span style="font-style: italic;">"After Sorting the Data in Descending Order: "</span>);
+            <span style="font-weight: bold;">foreach</span> (<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">item</span> <span style="font-weight: bold;">in</span> QS)
+            {
+                Console.<span style="font-weight: bold;">Write</span>(item + <span style="font-style: italic;">" "</span>);
+            }
+
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6dbbc5e" class="outline-3">
+<h3 id="org6dbbc5e"><span class="done DONE">DONE</span> <code>ThenBy</code> and <code>ThenByDescending</code></h3>
+<div class="outline-text-3" id="text-org6dbbc5e">
+<p>
+The LINQ OrderBy or OrderByDescending method works fine when you want to sort the data based
+on a single value or a single expression. But if you want to sort the data based on multiple
+values or multiple expressions then you need to use the LINQ <code>ThenBy</code> and <code>ThenByDescending</code>
+Method along with <code>OrderBy</code> or <code>OrderByDescending</code> Method.
+</p>
+
+<p>
+The Linq ThenBy Method in C# is
+used to sort the data in ascending order from the second level onwards. On the other hand,
+the  Linq <code>ThenByDescending</code> Method in C# is used to sort the data in descending order also
+from the second level onwards.
+</p>
+
+<p>
+These two methods are used along with OrderBy or OrderByDescending method. You can use the
+ThenBy or ThenByDescending method more than once in the same LINQ query.
+</p>
+
+<p>
+The OrderBy or OrderByDescending method is generally used for primary sorting. ThenBy or
+ThenByDescending are used for secondary sorting and so on. For example, first, sort the
+student by First Name and then sort the student by the Last Name.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Collections</span>.<span style="font-weight: bold; font-style: italic;">Generic</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Student</span>
+    {
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">ID</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">FirstName</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">LastName</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">Branch</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Student</span>&gt; <span style="font-weight: bold;">GetAllStudents</span>()
+        {
+            <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Student</span>&gt; <span style="font-weight: bold; font-style: italic;">listStudents</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Student</span>&gt;()
+            {
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Student</span>{<span style="font-weight: bold; font-style: italic;">ID</span>= 101,<span style="font-weight: bold; font-style: italic;">FirstName</span> = <span style="font-style: italic;">"Preety"</span>,<span style="font-weight: bold; font-style: italic;">LastName</span> = <span style="font-style: italic;">"Tiwary"</span>,<span style="font-weight: bold; font-style: italic;">Branch</span> = <span style="font-style: italic;">"CSE"</span>},
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Student</span>{<span style="font-weight: bold; font-style: italic;">ID</span>= 102,<span style="font-weight: bold; font-style: italic;">FirstName</span> = <span style="font-style: italic;">"Preety"</span>,<span style="font-weight: bold; font-style: italic;">LastName</span> = <span style="font-style: italic;">"Agrawal"</span>,<span style="font-weight: bold; font-style: italic;">Branch</span> = <span style="font-style: italic;">"ETC"</span>},
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Student</span>{<span style="font-weight: bold; font-style: italic;">ID</span>= 103,<span style="font-weight: bold; font-style: italic;">FirstName</span> = <span style="font-style: italic;">"Priyanka"</span>,<span style="font-weight: bold; font-style: italic;">LastName</span> = <span style="font-style: italic;">"Dewangan"</span>,<span style="font-weight: bold; font-style: italic;">Branch</span> = <span style="font-style: italic;">"ETC"</span>},
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Student</span>{<span style="font-weight: bold; font-style: italic;">ID</span>= 104,<span style="font-weight: bold; font-style: italic;">FirstName</span> = <span style="font-style: italic;">"Hina"</span>,<span style="font-weight: bold; font-style: italic;">LastName</span> = <span style="font-style: italic;">"Sharma"</span>,<span style="font-weight: bold; font-style: italic;">Branch</span> = <span style="font-style: italic;">"ETC"</span>},
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Student</span>{<span style="font-weight: bold; font-style: italic;">ID</span>= 105,<span style="font-weight: bold; font-style: italic;">FirstName</span> = <span style="font-style: italic;">"Anugrag"</span>,<span style="font-weight: bold; font-style: italic;">LastName</span> = <span style="font-style: italic;">"Mohanty"</span>,<span style="font-weight: bold; font-style: italic;">Branch</span> = <span style="font-style: italic;">"CSE"</span>},
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Student</span>{<span style="font-weight: bold; font-style: italic;">ID</span>= 106,<span style="font-weight: bold; font-style: italic;">FirstName</span> = <span style="font-style: italic;">"Anurag"</span>,<span style="font-weight: bold; font-style: italic;">LastName</span> = <span style="font-style: italic;">"Sharma"</span>,<span style="font-weight: bold; font-style: italic;">Branch</span> = <span style="font-style: italic;">"CSE"</span>},
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Student</span>{<span style="font-weight: bold; font-style: italic;">ID</span>= 107,<span style="font-weight: bold; font-style: italic;">FirstName</span> = <span style="font-style: italic;">"Pranaya"</span>,<span style="font-weight: bold; font-style: italic;">LastName</span> = <span style="font-style: italic;">"Kumar"</span>,<span style="font-weight: bold; font-style: italic;">Branch</span> = <span style="font-style: italic;">"CSE"</span>},
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Student</span>{<span style="font-weight: bold; font-style: italic;">ID</span>= 108,<span style="font-weight: bold; font-style: italic;">FirstName</span> = <span style="font-style: italic;">"Manoj"</span>,<span style="font-weight: bold; font-style: italic;">LastName</span> = <span style="font-style: italic;">"Kumar"</span>,<span style="font-weight: bold; font-style: italic;">Branch</span> = <span style="font-style: italic;">"ETC"</span>},
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Student</span>{<span style="font-weight: bold; font-style: italic;">ID</span>= 109,<span style="font-weight: bold; font-style: italic;">FirstName</span> = <span style="font-style: italic;">"Pranaya"</span>,<span style="font-weight: bold; font-style: italic;">LastName</span> = <span style="font-style: italic;">"Rout"</span>,<span style="font-weight: bold; font-style: italic;">Branch</span> = <span style="font-style: italic;">"ETC"</span>},
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Student</span>{<span style="font-weight: bold; font-style: italic;">ID</span>= 110,<span style="font-weight: bold; font-style: italic;">FirstName</span> = <span style="font-style: italic;">"Saurav"</span>,<span style="font-weight: bold; font-style: italic;">LastName</span> = <span style="font-style: italic;">"Rout"</span>,<span style="font-weight: bold; font-style: italic;">Branch</span> = <span style="font-style: italic;">"CSE"</span>}
+            };
+
+            <span style="font-weight: bold;">return</span> listStudents;
+        }
+    }
+}
+
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>)
+        {
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Method Syntax</span>
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">MS</span> = Student.<span style="font-weight: bold;">GetAllStudents</span>()
+                              .<span style="font-weight: bold;">OrderBy</span>(x =&gt; x.FirstName)
+                              .<span style="font-weight: bold;">ThenBy</span>(y =&gt; y.LastName)
+                              .<span style="font-weight: bold;">ToList</span>();
+
+            <span style="font-weight: bold;">foreach</span> (<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">student</span> <span style="font-weight: bold;">in</span> MS)
+            {
+                Console.<span style="font-weight: bold;">WriteLine</span>( <span style="font-style: italic;">"First Name :"</span> + student.FirstName + <span style="font-style: italic;">", Last Name : "</span> + student.LastName);
+            }
+
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+}
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org50b107c" class="outline-3">
+<h3 id="org50b107c"><span class="done DONE">DONE</span> <code>Reverse</code></h3>
+<div class="outline-text-3" id="text-org50b107c">
+<p>
+The LINQ Reverse method is used to reverse the data stored in a data source. That means this
+method will not change the data rather it simple reverse the data stored in the data source.
+So, as a result, we will get the output in reverse order.
+</p>
+
+<p>
+The Reverse Method is implemented in two different namespaces such as System.LInq and
+System.Collections.Generic namespaces.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Collections</span>.<span style="font-weight: bold; font-style: italic;">Generic</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>)
+        {
+            <span style="font-weight: bold; text-decoration: underline;">int</span>[] <span style="font-weight: bold; font-style: italic;">intArray</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">int</span>[] { 10, 30, 50, 40,60,20,70,100 };
+            Console.<span style="font-weight: bold;">WriteLine</span>(<span style="font-style: italic;">"Before Reverse the Data"</span>);
+            <span style="font-weight: bold;">foreach</span> (<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">number</span> <span style="font-weight: bold;">in</span> intArray)
+            {
+                Console.<span style="font-weight: bold;">Write</span>(number + <span style="font-style: italic;">" "</span>);
+            }
+            Console.<span style="font-weight: bold;">WriteLine</span>();
+
+            <span style="font-weight: bold; text-decoration: underline;">IEnumerable</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt; <span style="font-weight: bold; font-style: italic;">ArrayReversedData</span> = intArray.<span style="font-weight: bold;">Reverse</span>();
+            Console.<span style="font-weight: bold;">WriteLine</span>(<span style="font-style: italic;">"After Reverse the Data"</span>);
+            <span style="font-weight: bold;">foreach</span> (<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">number</span> <span style="font-weight: bold;">in</span> ArrayReversedData)
+            {
+                Console.<span style="font-weight: bold;">Write</span>(number + <span style="font-style: italic;">" "</span>);
+            }
+
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgdc63d54" class="outline-3">
+<h3 id="orgdc63d54"><span class="done DONE">DONE</span> <code>Aggregate</code></h3>
+<div class="outline-text-3" id="text-orgdc63d54">
+<p>
+The Linq Aggregate extension method performs an accumulative operation.
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>)
+        {
+            <span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">skills</span> = { <span style="font-style: italic;">"C#.NET"</span>, <span style="font-style: italic;">"MVC"</span>, <span style="font-style: italic;">"WCF"</span>, <span style="font-style: italic;">"SQL"</span>, <span style="font-style: italic;">"LINQ"</span>, <span style="font-style: italic;">"ASP.NET"</span> };
+
+            <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">result</span> = skills.<span style="font-weight: bold;">Aggregate</span>((<span style="font-weight: bold; text-decoration: underline;">s1</span>, <span style="font-weight: bold; text-decoration: underline;">s2</span>) =&gt; s1 + <span style="font-style: italic;">", "</span> + s2);
+
+            Console.<span style="font-weight: bold;">WriteLine</span>(<span style="font-weight: bold; text-decoration: underline;">result</span>);
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org3124a04" class="outline-3">
+<h3 id="org3124a04"><span class="done DONE">DONE</span> <code>All</code></h3>
+<div class="outline-text-3" id="text-org3124a04">
+<p>
+The Linq All Operator in C# is used to check whether all the elements of a data source
+satisfy a given condition or not. If all the elements satisfy the condition, then it returns
+true else return false.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>)
+        {
+            <span style="font-weight: bold; text-decoration: underline;">int</span>[] <span style="font-weight: bold; font-style: italic;">IntArray</span> = { 11, 22, 33, 44, 55 };
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">Result</span> = IntArray.<span style="font-weight: bold;">All</span>(x =&gt; x &gt; 10);
+            Console.<span style="font-weight: bold;">WriteLine</span>(<span style="font-style: italic;">"Is All Numbers are greater than 10 : "</span> + Result);
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb1c6c8f" class="outline-3">
+<h3 id="orgb1c6c8f"><span class="done DONE">DONE</span> <code>Any</code></h3>
+<div class="outline-text-3" id="text-orgb1c6c8f">
+<p>
+The C# Linq Any Operator is used to check whether at least one of the elements of a data
+source satisfies a given condition or not. If any of the elements satisfy the given
+condition, then it returns true else return false.
+</p>
+
+<p>
+It is also used to check whether a collection contains some data or not. That means it
+checks the length of the collection also. If it contains any data then it returns true else
+return false.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>)
+        {
+            <span style="font-weight: bold; text-decoration: underline;">int</span>[] <span style="font-weight: bold; font-style: italic;">IntArray</span> = { 11, 22, 33, 44, 55 };
+
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Using Method Syntax</span>
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">ResultMS</span> = IntArray.<span style="font-weight: bold;">Any</span>();
+
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Using Query Syntax</span>
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">ResultQS</span> = (<span style="font-weight: bold;">from</span> num <span style="font-weight: bold;">in</span> IntArray
+                            <span style="font-weight: bold;">select</span> num).<span style="font-weight: bold;">Any</span>();
+
+            Console.<span style="font-weight: bold;">WriteLine</span>(<span style="font-style: italic;">"Is there any element in the collection : "</span> + ResultMS);
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf39a7b0" class="outline-3">
+<h3 id="orgf39a7b0"><span class="done DONE">DONE</span> <code>Contains</code></h3>
+<div class="outline-text-3" id="text-orgf39a7b0">
+<p>
+The Linq Contains Method in C# is used to check whether a sequence or collection (i.e. data
+source) contains a specified element or not. If the data source contains the specified
+element, then it returns true else return false.
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>)
+        {
+            <span style="font-weight: bold; text-decoration: underline;">int</span>[] <span style="font-weight: bold; font-style: italic;">IntArray</span> = { 11, 22, 33, 44, 55 };
+
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Using Method Syntax</span>
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">IsExistsMS</span> = IntArray.<span style="font-weight: bold;">Contains</span>(33);
+
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Using Query Syntax</span>
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">IsExistsQS</span> = (<span style="font-weight: bold;">from</span> num <span style="font-weight: bold;">in</span> IntArray
+                              <span style="font-weight: bold;">select</span> num).<span style="font-weight: bold;">Contains</span>(33);
+
+            Console.<span style="font-weight: bold;">WriteLine</span>(<span style="font-weight: bold; text-decoration: underline;">IsExistsMS</span>);
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgad1434b" class="outline-3">
+<h3 id="orgad1434b"><span class="done DONE">DONE</span> <code>Contains</code> or <code>Any</code>?</h3>
+<div class="outline-text-3" id="text-orgad1434b">
+<p>
+<code>Contains</code> takes an object, <code>Any</code> takes a predicate.
+</p>
+
+<p>
+Contains:
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp">listOFInts.<span style="font-weight: bold;">Contains</span>(1);
+</pre>
+</div>
+<p>
+Any:
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp">listOfInts.<span style="font-weight: bold;">Any</span>(i =&gt; i == 1);
+listOfInts.<span style="font-weight: bold;">Any</span>(i =&gt; i % 2 == 0); <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Check if any element is an Even Number</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1998c40" class="outline-3">
+<h3 id="org1998c40"><span class="done DONE">DONE</span> <code>GroupBy</code></h3>
+<div class="outline-text-3" id="text-org1998c40">
+<p>
+The Linq GroupBy in C# belongs to the Grouping Operators category and exactly does the same
+thing as the Group By clause does in SQL Query. This method takes a flat sequence of
+elements and then organizes the elements into groups (i.e. <code>IGrouping&lt;TKey, TSource&gt;</code>) based
+on a given key.
+</p>
+
+<p>
+If you go the definition of <code>GroupBy</code> method then you will see that it return an
+<code>IEnumerable&lt;IGrouping&lt;TKey, TSource&gt;&gt;</code> where TKey is nothing but the Key value on which the
+grouping has been formed and <code>TSource</code> is the collection of elements that matches the grouping
+key value.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Collections</span>.<span style="font-weight: bold; font-style: italic;">Generic</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">GroupByDemo</span>
+{
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>)
+        {
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Using Method Syntax</span>
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">GroupByMS</span> = Student.<span style="font-weight: bold;">GetStudents</span>().<span style="font-weight: bold;">GroupBy</span>(s =&gt; s.Barnch);
+
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Using Query Syntax</span>
+            <span style="font-weight: bold; text-decoration: underline;">IEnumerable</span>&lt;<span style="font-weight: bold; text-decoration: underline;">IGrouping</span>&lt;<span style="font-weight: bold; text-decoration: underline;">string</span>, <span style="font-weight: bold; text-decoration: underline;">Student</span>&gt;&gt; <span style="font-weight: bold; font-style: italic;">GroupByQS</span> = (<span style="font-weight: bold;">from</span> std <span style="font-weight: bold;">in</span> Student.<span style="font-weight: bold;">GetStudents</span>()
+                             <span style="font-weight: bold;">group</span> std <span style="font-weight: bold;">by</span> std.Barnch);
+
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">It will iterate through each groups</span>
+            <span style="font-weight: bold;">foreach</span>(<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold;">group</span> <span style="font-weight: bold;">in</span> GroupByMS)
+            {
+                Console.<span style="font-weight: bold;">WriteLine</span>(<span style="font-weight: bold;">group</span>.Key +<span style="font-style: italic;">" : "</span> + <span style="font-weight: bold;">group</span>.<span style="font-weight: bold;">Count</span>());
+
+                <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Iterate through each student of a group</span>
+                <span style="font-weight: bold;">foreach</span>(<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">student</span> <span style="font-weight: bold;">in</span> <span style="font-weight: bold;">group</span>)
+                {
+                    Console.<span style="font-weight: bold;">WriteLine</span>(<span style="font-style: italic;">"  Name :"</span> + student.Name + <span style="font-style: italic;">", Age: "</span> + student.Age + <span style="font-style: italic;">", Gender :"</span> + student.Gender);
+                }
+            }
+
+            Console.<span style="font-weight: bold;">Read</span>();
+        }
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org612adb8" class="outline-3">
+<h3 id="org612adb8"><span class="done DONE">DONE</span> <code>Zip</code></h3>
+<div class="outline-text-3" id="text-org612adb8">
+<p>
+The Linq Zip Method in C# is used to apply a specified function to the corresponding
+elements of two sequences and producing a sequence of the results.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+<span style="font-weight: bold; text-decoration: underline;">int</span>[] <span style="font-weight: bold; font-style: italic;">numbersSequence</span> = { 10, 20, 30, 40, 50 };
+<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">wordsSequence</span> = { <span style="font-style: italic;">"Ten"</span>, <span style="font-style: italic;">"Twenty"</span>, <span style="font-style: italic;">"Thirty"</span>, <span style="font-style: italic;">"Fourty"</span> };
+<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">resultSequence</span> = numbersSequence.<span style="font-weight: bold;">Zip</span>(wordsSequence, (first, second) =&gt; first + <span style="font-style: italic;">" - "</span> + second);
+<span style="font-weight: bold;">foreach</span> (<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">item</span> <span style="font-weight: bold;">in</span> resultSequence)
+{
+    Console.<span style="font-weight: bold;">WriteLine</span>(item);
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3d6810e" class="outline-3">
+<h3 id="org3d6810e"><span class="todo TODO">TODO</span> <code>GroupBy</code> By Multiple Keys</h3>
+</div>
+<div id="outline-container-org03b11ed" class="outline-3">
+<h3 id="org03b11ed"><span class="done DONE">DONE</span> Deferred Execution vs Immediate Execution</h3>
+<div class="outline-text-3" id="text-org03b11ed">
+<p>
+The LINQ queries are executed in two different ways as follows.
+</p>
+
+<ul class="org-ul">
+<li>Deferred execution</li>
+<li>Immediate execution</li>
+</ul>
+
+<p>
+Based on the above two types of execution, the LINQ operators are divided into 2 categories.
+They are as follows:
+</p>
+
+<ol class="org-ol">
+<li>Deferred or Lazy Operators:  These query operators are used for deferred execution. For example – <code>select</code>, <code>SelectMany</code>, <code>where</code>, <code>Take</code>, <code>Skip</code>, etc. are belongs to Deferred or Lazy Operators category.</li>
+<li>Immediate or Greedy Operators: These query operators are used for immediate execution. For Example – <code>count</code>, <code>average</code>, <code>min</code>, <code>max</code>, <code>First</code>, <code>Last</code>, <code>ToArray</code>, <code>ToList</code>, etc. are belongs to the Immediate or Greedy Operators category.</li>
+</ol>
+</div>
+
+
+<div id="outline-container-org7544921" class="outline-4">
+<h4 id="org7544921">Deferred Execution</h4>
+<div class="outline-text-4" id="text-org7544921">
+<p>
+In this case, the LINQ Query is not executed at the point of its declaration. That means,
+when we write a LINQ query, it doesn’t execute by itself. It executes only when we access
+the query results. So, here the execution of the query is deferred until the query variable
+is iterated over using for each loop.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Collections</span>.<span style="font-weight: bold; font-style: italic;">Generic</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Employee</span>
+    {
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">ID</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">Name</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">Salary</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+    }
+
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>()
+        {
+            <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Employee</span>&gt; <span style="font-weight: bold; font-style: italic;">listEmployees</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Employee</span>&gt;
+            {
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Employee</span> { ID= 1001, Name = <span style="font-style: italic;">"Priyanka"</span>, Salary = 80000 },
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Employee</span> { <span style="font-weight: bold; font-style: italic;">ID</span>= 1002, <span style="font-weight: bold; font-style: italic;">Name</span> = <span style="font-style: italic;">"Anurag"</span>, <span style="font-weight: bold; font-style: italic;">Salary</span> = 90000 },
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Employee</span> { <span style="font-weight: bold; font-style: italic;">ID</span>= 1003, <span style="font-weight: bold; font-style: italic;">Name</span> = <span style="font-style: italic;">"Preety"</span>, <span style="font-weight: bold; font-style: italic;">Salary</span> = 80000 }
+            };
+
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">In the below statement the LINQ Query is only defined and not executed</span>
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">If the query is executed here, then the result should not display Santosh</span>
+            <span style="font-weight: bold; text-decoration: underline;">IEnumerable</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Employee</span>&gt; <span style="font-weight: bold; font-style: italic;">result</span> = <span style="font-weight: bold;">from</span> emp <span style="font-weight: bold;">in</span> listEmployees
+                                           <span style="font-weight: bold;">where</span> emp.Salary == 80000
+                                           <span style="font-weight: bold;">select</span> emp;
+
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Adding a new employee with Salary = 80000 to the collection listEmployees</span>
+            listEmployees.<span style="font-weight: bold;">Add</span>(<span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Employee</span> { <span style="font-weight: bold; font-style: italic;">ID</span> = 1004, <span style="font-weight: bold; font-style: italic;">Name</span> = <span style="font-style: italic;">"Santosh"</span>, <span style="font-weight: bold; font-style: italic;">Salary</span> = 80000 });
+
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">The LINQ query is actually executed when we iterate thru using a for each loop</span>
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">This is proved because Santosh is also included in the result</span>
+            <span style="font-weight: bold;">foreach</span> (Employee emp <span style="font-weight: bold;">in</span> result)
+            {
+                Console.<span style="font-weight: bold;">WriteLine</span>($<span style="font-style: italic;">" {emp.ID} {emp.Name} {emp.Salary}"</span>);
+            }
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+}
+</pre>
+</div>
+
+<p>
+We will get the following advantages
+</p>
+
+<ol class="org-ol">
+<li>It avoids unnecessary query execution which improves the performance of the application.</li>
+<li>The Query creation and the Query execution are decoupled which provide us the flexibility to create the query in several steps.</li>
+<li>A Linq deferred execution query is always re-evaluated when we re-enumerate. As a result, we always get the updated data.</li>
+</ol>
+
+<p>
+In the case of Immediate Execution, the LINQ query is executed at the point of its
+declaration. So, it forces the query to execute and gets the result immediately. Let us
+see an example for a better understanding. The following example is self-explained. So,
+please go through the comment lines.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orga9a111b" class="outline-4">
+<h4 id="orga9a111b">Immediate Execution</h4>
+<div class="outline-text-4" id="text-orga9a111b">
+<p>
+In the case of Immediate Execution, the LINQ query is executed at the point of its
+declaration. So, it forces the query to execute and gets the result immediately. Let us see
+an example for a better understanding. The following example is self-explained. So, please
+go through the comment lines.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Collections</span>.<span style="font-weight: bold; font-style: italic;">Generic</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">LINQDemo</span>
+{
+    <span style="font-weight: bold;">public</span> <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Employee</span>
+    {
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">ID</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">string</span> <span style="font-weight: bold; font-style: italic;">Name</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">Salary</span> { <span style="font-weight: bold;">get</span>; <span style="font-weight: bold;">set</span>; }
+    }
+
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">public</span> <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>()
+        {
+            <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Employee</span>&gt; <span style="font-weight: bold; font-style: italic;">listEmployees</span> = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">List</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Employee</span>&gt;
+            {
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Employee</span> { ID= 1001, Name = <span style="font-style: italic;">"Priyanka"</span>, Salary = 80000 },
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Employee</span> { <span style="font-weight: bold; font-style: italic;">ID</span>= 1002, <span style="font-weight: bold; font-style: italic;">Name</span> = <span style="font-style: italic;">"Anurag"</span>, <span style="font-weight: bold; font-style: italic;">Salary</span> = 90000 },
+                <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Employee</span> { <span style="font-weight: bold; font-style: italic;">ID</span>= 1003, <span style="font-weight: bold; font-style: italic;">Name</span> = <span style="font-style: italic;">"Preety"</span>, <span style="font-weight: bold; font-style: italic;">Salary</span> = 80000 }
+            };
+
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">In the following statement, the LINQ Query is executed immediately as we are</span>
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Using the ToList() method which is a greedy operator which forces the query</span>
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">to be executed immediately</span>
+            <span style="font-weight: bold; text-decoration: underline;">IEnumerable</span>&lt;<span style="font-weight: bold; text-decoration: underline;">Employee</span>&gt; <span style="font-weight: bold; font-style: italic;">result</span> = (<span style="font-weight: bold;">from</span> emp <span style="font-weight: bold;">in</span> listEmployees
+                                           <span style="font-weight: bold;">where</span> emp.Salary == 80000
+                                           <span style="font-weight: bold;">select</span> emp).<span style="font-weight: bold;">ToList</span>();
+
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Adding a new employee with Salary = 80000 to the collection listEmployees</span>
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">will not have any effect on the result as the query is already executed</span>
+            listEmployees.<span style="font-weight: bold;">Add</span>(<span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">Employee</span> { <span style="font-weight: bold; font-style: italic;">ID</span> = 1004, <span style="font-weight: bold; font-style: italic;">Name</span> = <span style="font-style: italic;">"Santosh"</span>, <span style="font-weight: bold; font-style: italic;">Salary</span> = 80000 });
+
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">The above LINQ query is executed at the time of its creation.</span>
+            <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">This is proved because Santosh is not included in the result</span>
+            <span style="font-weight: bold;">foreach</span> (Employee emp <span style="font-weight: bold;">in</span> result)
+            {
+                Console.<span style="font-weight: bold;">WriteLine</span>($<span style="font-style: italic;">" {emp.ID} {emp.Name} {emp.Salary}"</span>);
+            }
+
+            Console.<span style="font-weight: bold;">ReadKey</span>();
+        }
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org19ed1ad" class="outline-3">
+<h3 id="org19ed1ad"><span class="done DONE">DONE</span> <code>ToLookup</code></h3>
+<div class="outline-text-3" id="text-org19ed1ad">
+<p>
+The Linq <code>ToLookup</code> Method in C# exactly does the same thing as the <code>GroupBy</code> Operator does in
+Linq. The only difference between these two methods is the GroupBy method uses deferred
+execution whereas the execution of the <code>ToLookup</code> method is immediate.
+</p>
+<div class="org-src-container">
+<pre class="src src-csharp"><span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold; font-style: italic;">System</span>.<span style="font-weight: bold; font-style: italic;">Linq</span>;
+
+<span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; font-style: italic;">GroupByDemo</span>
+{
+    <span style="font-weight: bold;">class</span> <span style="font-weight: bold; text-decoration: underline;">Program</span>
+    {
+        <span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">Main</span>(<span style="font-weight: bold; text-decoration: underline;">string</span>[] <span style="font-weight: bold; font-style: italic;">args</span>)
+        {
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Using Method Syntax</span>
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">GroupByMS</span> = Student.<span style="font-weight: bold;">GetStudents</span>().<span style="font-weight: bold;">ToLookup</span>(s =&gt; s.Barnch);
+
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Using Query Syntax</span>
+            <span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">GroupByQS</span> = (<span style="font-weight: bold;">from</span> std <span style="font-weight: bold;">in</span> Student.<span style="font-weight: bold;">GetStudents</span>()
+                             <span style="font-weight: bold;">select</span> std).<span style="font-weight: bold;">ToLookup</span>(x =&gt; x.Barnch);
+
+            <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">It will iterate through each group</span>
+            <span style="font-weight: bold;">foreach</span> (<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold;">group</span> <span style="font-weight: bold;">in</span> GroupByMS)
+            {
+                Console.<span style="font-weight: bold;">WriteLine</span>(<span style="font-weight: bold;">group</span>.Key + <span style="font-style: italic;">" : "</span> + <span style="font-weight: bold;">group</span>.<span style="font-weight: bold;">Count</span>());
+
+                <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Iterate through each student of a group</span>
+                <span style="font-weight: bold;">foreach</span> (<span style="font-weight: bold; text-decoration: underline;">var</span> <span style="font-weight: bold; font-style: italic;">student</span> <span style="font-weight: bold;">in</span> <span style="font-weight: bold;">group</span>)
+                {
+                    Console.<span style="font-weight: bold;">WriteLine</span>(<span style="font-style: italic;">"  Name :"</span> + student.Name + <span style="font-style: italic;">", Age: "</span> + student.Age + <span style="font-style: italic;">", Gender :"</span> + student.Gender);
+                }
+            }
+
+            Console.<span style="font-weight: bold;">Read</span>();
+        }
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org4801e44" class="outline-3">
+<h3 id="org4801e44"><span class="todo TODO">TODO</span> Inner Join</h3>
+</div>
+<div id="outline-container-orgc50e15d" class="outline-3">
+<h3 id="orgc50e15d"><span class="todo TODO">TODO</span> Join with Multiple Data Sources</h3>
+</div>
+<div id="outline-container-org1d75c22" class="outline-3">
+<h3 id="org1d75c22"><span class="todo TODO">TODO</span> Group Join</h3>
+</div>
+<div id="outline-container-org5943a1b" class="outline-3">
+<h3 id="org5943a1b"><span class="todo TODO">TODO</span> Left Join</h3>
+</div>
+<div id="outline-container-orgb51d826" class="outline-3">
+<h3 id="orgb51d826"><span class="todo TODO">TODO</span> Cross Join</h3>
+</div>
+<div id="outline-container-org656a172" class="outline-3">
+<h3 id="org656a172"><span class="todo TODO">TODO</span> <code>ElementAt</code> and <code>ElementAtOrDefault</code></h3>
+</div>
+<div id="outline-container-orgc1734c5" class="outline-3">
+<h3 id="orgc1734c5"><span class="todo TODO">TODO</span> <code>First</code> and <code>FirstOrDefault</code></h3>
+</div>
+<div id="outline-container-orgc6cdb23" class="outline-3">
+<h3 id="orgc6cdb23"><span class="todo TODO">TODO</span> <code>Last</code> and <code>LastOrDefault</code></h3>
+</div>
+<div id="outline-container-org9e5374a" class="outline-3">
+<h3 id="org9e5374a"><span class="todo TODO">TODO</span> <code>Single</code> and <code>SingleOrDefault</code></h3>
+</div>
+<div id="outline-container-orgd31dcb1" class="outline-3">
+<h3 id="orgd31dcb1"><span class="todo TODO">TODO</span> <code>DefaultIfEmpty</code></h3>
+</div>
+<div id="outline-container-orge345072" class="outline-3">
+<h3 id="orge345072"><span class="todo TODO">TODO</span> <code>SequenceEqual</code></h3>
+</div>
+<div id="outline-container-org8281a52" class="outline-3">
+<h3 id="org8281a52"><span class="todo TODO">TODO</span> <code>Partitioning</code></h3>
+</div>
+<div id="outline-container-orga384db1" class="outline-3">
+<h3 id="orga384db1"><span class="todo TODO">TODO</span> <code>Take</code></h3>
+</div>
+<div id="outline-container-org76bb558" class="outline-3">
+<h3 id="org76bb558"><span class="todo TODO">TODO</span> <code>TakeWhile</code></h3>
+</div>
+<div id="outline-container-org5e68d57" class="outline-3">
+<h3 id="org5e68d57"><span class="todo TODO">TODO</span> <code>Skip</code></h3>
+</div>
+<div id="outline-container-org3dc07b2" class="outline-3">
+<h3 id="org3dc07b2"><span class="todo TODO">TODO</span> <code>SkipWhile</code></h3>
+</div>
+<div id="outline-container-org2538432" class="outline-3">
+<h3 id="org2538432"><span class="todo TODO">TODO</span> Paging Using Skip and Take</h3>
+</div>
+<div id="outline-container-orgb36ae71" class="outline-3">
+<h3 id="orgb36ae71"><span class="todo TODO">TODO</span> <code>Range</code></h3>
+</div>
+<div id="outline-container-orge6505f2" class="outline-3">
+<h3 id="orge6505f2"><span class="todo TODO">TODO</span> <code>Repeat</code></h3>
+</div>
+<div id="outline-container-orga6d4b3e" class="outline-3">
+<h3 id="orga6d4b3e"><span class="todo TODO">TODO</span> <code>Empty</code></h3>
+</div>
+<div id="outline-container-orgcbfef33" class="outline-3">
+<h3 id="orgcbfef33"><span class="todo TODO">TODO</span> <code>Append</code></h3>
+</div>
+<div id="outline-container-orgc5da5b8" class="outline-3">
+<h3 id="orgc5da5b8"><span class="todo TODO">TODO</span> <code>Prepend</code></h3>
+</div>
+<div id="outline-container-orgada8569" class="outline-3">
+<h3 id="orgada8569"><span class="todo TODO">TODO</span> <code>ToList</code> and <code>ToArray</code></h3>
+</div>
+<div id="outline-container-org8ef6929" class="outline-3">
+<h3 id="org8ef6929"><span class="todo TODO">TODO</span> <code>ToDictionary</code></h3>
+</div>
+<div id="outline-container-orga63f44a" class="outline-3">
+<h3 id="orga63f44a"><span class="todo TODO">TODO</span> Cast Operator</h3>
+</div>
+<div id="outline-container-orgda255d1" class="outline-3">
+<h3 id="orgda255d1"><span class="todo TODO">TODO</span> Difference between Cast and OfType Operators</h3>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-04-30 Sun 00:44.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>“Connection” and “Meant-To-Be”</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">“Connection” and “Meant-To-Be”</h1>
+</header><div class="PREVIEW" id="org0b776f4">
+<p>
+2 concepts that seem really nice and agreeable, but I find are psychically terrible, are
+“connection” and “meant-to-be”.
+</p>
+
+</div>
+
+
+<p>
+My issue with the concept of connection is that it requires equally the notion of
+disconnection, which I find logically leads to mass-extinction-production as
+suicide-bomber-ideology. The idea we are disconnected - which is different from the
+perspective that we are alienated (with connection/disconnection being a mode of
+alienation) - and must acquire connection, religious or spiritual or technological, I find
+to be a psychic trap, like a hamster wheel that never goes anywhere. The destruction of
+connection-disconnection is the eco-egoism of finding the oneness of individuality as the
+oneness of the world - which is why connectivity thought is so disastrous for environmental
+thought, which is embracing ever more the connectivity-techno-logic of alienation.
+</p>
+
+<p>
+My issue with the idea of meant-to-be is primarily that the notion insists upon there being
+a right way for the world to be and a wrong way for the world to be. This first of all takes
+a Gods-eye-view upon the world and assumes a level of gnostic-awareness that I don’t believe
+anyone can authentically actually hold, from the perspective of the stupid earth level
+badger I am. This also constructs the duality of right and wrong, with people constantly
+bickering over which is which. My perspective is that the world is neither right nor wrong,
+but just is - as is my desires regarding the world, with my desire being part of the world,
+and it being my responsibility to actualise my desires. My feeling is that if individuals
+sympathetic to environmental thought were to talk in terms of desire (in other words,
+honestly/sincerely) they might be heard more - the statement “the badger cull is wrong”
+requires epistemological justification, whereas “I don’t want to see badgers abused”
+doesn’t, as experience is immediate.
+</p>
+
+<p>
+I personally encounter the world as more beautiful when I destroy these (human, all too
+human) concepts for myself!
+</p>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-04-30 Sun 00:44.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

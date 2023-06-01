@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chess and Brains</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Chess and Brains</h1>
+</header><div class="abstract" id="orgf862e33">
+<p>
+<i>Text found on the internet</i>
+</p>
+
+</div>
+
+<div class="PREVIEW" id="org16af1d5">
+<p>
+Several enthusiastic historical practitioners of chess have espoused their beliefs that the
+skills associated with chess can be extrapolated to external scenarios. One of the first
+documented cases of an intellectual asserting that connections exist between chess
+proficiency and other skills is Benjamin Franklin’s 1750 essay The Morales of Chess. In this
+essay, Franklin hypothesized that “The game of Chess is not merely an idle amusement.
+Several very valuable qualities of the mind, useful in the course of human life, are to be
+acquired or strengthened by it, so as to become habits, ready on all occasions.” He then
+enumerated these specific qualities, listing them as “1. Foresight… 2. Circumspection… 3.
+Caution… [and] lastly… the habit of not being discouraged by present bad appearances in the
+state of our affairs.”
+</p>
+
+</div>
+
+
+
+<p>
+Franklin’s foundation of enumerating the skills cultivated by playing chess eventually
+became the groundwork for several academic studies conducted in the 20th and 21st centuries.
+These studies, in turn, have helped parents and school administrators across the world to
+justify teaching young children chess, in the hopes of simultaneously improving their
+cognitive capabilities. Chess education is a mandatory component of elementary school in
+Armenia, and local school districts across United States, Russia, and other nations, have
+chosen to incorporate chess into their curricula in order to stimulate the cognitive skills
+of children (Milat, 1997).
+</p>
+
+<p>
+Many studies have been done associating study of chess with heightened intellectual prowess
+in school aged children (Ferguson, 1995). Dr. Robert Ferguson, a researcher with a keen
+interest in the effects of chess on cognitive development, compiled and discussed a list of
+supporting studies in his 1995 research summary Chess in Education. Ferguson discussed
+numerous studies, conducted in multiple different nations, during the timeframe 1974
+to 1995. Each study reinforced initial hypotheses that playing chess can potentially
+contribute to improved cognitive capabilities outside of the game.
+</p>
+
+<p>
+The first of the studies discussed by Ferguson took place in Zaire during the mid 1970s.
+Approximately 100 students, aged 16-18, were randomly selected to either be a part of the
+treatment or the control group. The treatment group received two hours of weekly chess
+instruction over the course of an academic year, while the control group instead was exposed
+to two hours of additional schooling in the default curriculum. Both groups took exams
+designed to measure problem solving, verbal, and mathematical skills, both at the beginning
+of the year and at the end of the year (Ferguson, 1995).
+</p>
+
+<p>
+Despite having pretest scores similar to those earned by students in the control group,
+students in the treatment group ended up scoring markedly higher than their control group
+counterparts on the posttest analysis. This increase in scores was shown to be statistically
+significant across the entire treatment group, and was not just limited to the more skilled
+chess players. Researchers used this information to conclude that receiving the one year of
+chess instruction led to improved verbal and mathematical aptitudes in test subjects
+(Ferguson, 1995). The conclusion that chess proficiency is positively correlated with
+cognitive development led to the researchers making the normative claim that “the
+introduction of chess as a regular elective course [in schools] would be of positive
+benefit.”
+</p>
+
+<p>
+The results of the Zaire experiment have been supported by the results of a myriad other
+trials by other researchers. In an experiment conducted in Belgium from 1974-1976,
+researcher Johan Christiaen concluded that the inclusion of chess lessons in an elementary
+school classroom facilitated “earlier intellectual maturation” as defined the experimenters
+and measured by standardized examinations (Christiaen, 1977). From 1979-1983, Ferguson
+conducted a study in which a treatment group of randomly selected elementary school children
+received regular chess instruction in their classrooms. The results of his study supported
+his initial hypothesis, and led to the conclusion that receiving chess instruction generally
+leads to statistically significant improvements in both the raw test scores and percentile
+rankings of students (Ferguson, 1995).
+</p>
+
+<p>
+In 2001, Jim Celone conducted a research study in which a small, self-selected, group of
+elementary school children received chess instruction over the course of eight weeks. The
+study aimed to determine if a correlation exists between chess proficiency and the ability
+for children to solve logical thinking problems both related and unrelated to chess. A
+comparison of pretest and posttest results indicated that receiving regular chess
+instruction led students to be more adept at solving logical thinking problems in both
+categories. Students scored significantly higher on the posttest chess puzzles than they had
+on similar pretest chess puzzles, and also made improvements from pretest to posttest on an
+examination of logic puzzles that were not based around chess (Celone, 2001).
+</p>
+
+<p>
+In addition to these various studies, which have documented a positive correlation between
+chess proficiency and scores on standardized examinations, several studies have associated
+chess playing with improvement in other cognitive traits, such as memory, creativity,
+critical thinking, and originality (Ferguson, 1995). While many studies have demonstrated
+that chess can be effectively used as a tool to facilitate improvement on standardized
+examinations, admittedly fewer studies have examined the correlation between chess
+proficiency and otherwise unrelated intellectual pursuits.
+</p>
+
+<p>
+One study, conducted by Philip Rifner from 1991-1992, aimed to determine whether or not
+students who practiced general problem solving skills through playing chess could
+successfully apply those skills to an unrelated domain, in this case, poetic analysis. The
+study concluded that chess proficiency develops skills which students can indeed apply to
+other fields. Students were shown to be more adept at poetic analysis as a result of
+exposure to chess, leading to the conclusion that chess potentially accelerates cognitive
+development in a multitude of capacities (Rifner, 1992).
+</p>
+
+<p>
+Due to the widespread acknowledgement of the intellectual benefits associated with playing
+chess, initiatives have been undertaken across the globe to incorporate the game into school
+curricula. In the United States, the initiative has been spearheaded by the American Chess
+Foundation (ACF) and the United States Chess Federation (USCF) (Milat, 1997). One specific
+initiative, based in New Jersey, officially sanctioned the use of chess as an educational
+tool in elementary schools, declaring that “instruction in chess during the second grade
+will enable pupils to learn skills which will serve them throughout their lives.” Similar
+efforts to incorporate chess into school curricula have taken place in nations as diverse as
+Russia, Venezuela, and Armenia. The legislative bodies responsible for these initiatives
+have officially stated their beliefs that learning chess helps students develop cognitive
+skills which are directly applicable to their external lives.
+</p>
+
+<p>
+Unfortunately, research into skills enhanced by chess proficiency typically focuses on case
+studies of elementary school, middle school, and high school aged children. There is a
+glaring lack of research into the impacts of chess proficiency on the capabilities of adults
+to succeed in external endeavors. President Truman famously compared international politics
+to a game of chess, referencing inherent similarities between the two subject matters,
+specifically the need for strategic decision making in a competitive environment (Truman,
+1947). Because studies have shown that children have the capacity to apply skills honed by
+chess proficiency to external domains, it is not entirely unreasonable to hypothesize that
+adults who regularly play chess will also be able to apply techniques of strategic decision
+making to their personal endeavors, giving them a competitive edge over those adults who do
+not play chess (Rifner, 1992, Van Zyl, 1991).
+</p>
+
+<p>
+Celone, J. (2001). The effects of a chess program on abstract reasoning and problem-solving
+in elementary school children. Southern Connecticut State University). ProQuest
+Dissertations and Theses, , 42-42 p. Retrieved
+<a href="http://search.proquest.com/docview/250187240?accountid=15053">http://search.proquest.com/docview/250187240?accountid=15053</a>. (250187240).
+</p>
+
+<p>
+Van Zyl, Anna Sophia,Aletta Johanna. (1991). The significance of playing chess in improving
+a child's intellectual actualisation. (afrikaans text); University of Pretoria (South
+Africa)). ProQuest Dissertations and Theses, , 0-1. Retrieved from
+<a href="http://search.proquest.com/docview/303963721?accountid=15053">http://search.proquest.com/docview/303963721?accountid=15053</a>. (303963721).
+</p>
+
+<p>
+Pearson, T. R. (2009). The effects of learning to play chess on the nonverbal reasoning
+abilities of grade 5 students. Nipissing University (Canada)). ProQuest Dissertations and
+Theses, , 150. Retrieved from <a href="http://search.proquest.com/docview/305060144?accountid=15053">http://search.proquest.com/docview/305060144?accountid=15053</a>.
+(305060144).
+</p>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html") {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.4). Author: Salih Muhammed. Last build date: 2023-04-30 Sun 00:44.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

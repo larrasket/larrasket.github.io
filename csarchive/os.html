@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Introduction into Operating Systems</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Introduction into Operating Systems</h1>
+</header><div class="abstract" id="org325dcfa">
+<p>
+notes and exercises from OPERATING-SYSTEM CONCEPTS
+</p>
+
+</div>
+
+<p>
+An operating system is software that manages a computer’s hardware. It also provides a basis
+for application programs and acts as an intermediary between the computer user and the
+computer hardware. An amazing aspect of operating systems is how they vary in accomplishing
+these tasks in a wide variety of computing environments. Operating systems are everywhere,
+from cars and home appliances that include “Internet of Things” devices, to smart phones,
+phones, personal computers, enterprise computers, and cloud computing environments.
+</p>
+
+<p>
+The user’s view of the computer varies according to the interface being used.  Many computer
+users sit with a laptop or in front of a PC consisting of a monitor, keyboard, and mouse.
+Such a system is designed for one user to monopolize its resources. The goal is to maximize
+the work (or play) that the user is performing. In this case, the operating system is
+designed mostly for ease of use, with some attention paid to performance and security and
+none paid to resource utilization—how various hardware and software resources are shared.
+</p>
+
+<div class="PREVIEW" id="orgdcc2d20">
+<p>
+Although there are many practitioners of computer science, only a small percentage of them
+will be involved in the creation or modification of an operating system. Why, then, study
+operating systems and how they work? Simply because, as almost all code runs on top of an
+operating system, knowledge of how operating systems work is crucial to proper, efficient,
+effective, and secure programming. Understanding the fundamentals of operating systems, how
+they drive computer hardware, and what they provide to applications is not only essential to
+those who program them but also highly useful to those who write programs on them and use
+them.
+</p>
+
+</div>
+
+<p>
+A modern general-purpose computer system consists of one or more CPUs and a number of device
+controllers connected through a common bus that provides access between components and
+shared memory (Figure 1.2). Each device controller is in charge of a specific type of device
+(for example, a disk drive, audio device, or graphics display). Depending on the controller,
+more than one device may be attached. For instance, one system USB port can connect to a USB
+hub, to which several devices can connect. A device controller maintains some local buffer
+storage and a set of special-purpose registers. The device controller is responsible for
+moving the data between the peripheral devices that it controls and its local buffer
+storage.
+</p>
+
+<div id="outline-container-org277d859" class="outline-2">
+<h2 id="org277d859">Computer-System Organization&#xa0;&#xa0;&#xa0;<span class="tag"><span class="chapter_1">chapter_1</span></span></h2>
+<div class="outline-text-2" id="text-org277d859">
+<p>
+Consider a typical computer operation: a program performing I/O. To start an
+I/O operation, the device driver loads the appropriate registers in the device
+controller. The device controller, in turn, examines the contents of these reg-
+isters to determine what action to take (such as “read a character from the
+keyboard”). The controller starts the transfer of data from the device to its local
+buffer. Once the transfer of data is complete, the device controller informs the
+device driver that it has finished its operation. The device driver then gives
+control to other parts of the operating system, possibly returning the data or a
+pointer to the data if the operation was a read. For other operations, the device
+driver returns status information such as “write completed successfully” or
+“device busy”. But how does the controller inform the device driver that it has
+finished its operation? This is accomplished via an interrupt.
+</p>
+</div>
+
+<div id="outline-container-orgc8e8f9e" class="outline-3">
+<h3 id="orgc8e8f9e">Interrupts</h3>
+<div class="outline-text-3" id="text-orgc8e8f9e">
+<p>
+Typically, operating systems have a device driver for each device controller. This device
+driver understands the device controller and provides the rest of the operating system with
+a uniform interface to the device. The CPU and the device controllers can execute in
+parallel, competing for memory cycles. To ensure orderly access to the shared memory, a
+memory controller synchronizes access to the memory.
+</p>
+
+<p>
+When the CPU is interrupted, it stops what it is doing and immediately <span class="underline">transfers execution
+to a fixed location</span>. The fixed location usually contains the starting address where the
+service routine for the interrupt is located.  The interrupt service routine executes; on
+completion, the CPU resumes the interrupted computation.
+</p>
+
+<p>
+Interrupts are an important part of a computer architecture. Each computer design has its
+own interrupt mechanism, but several functions are common.  The interrupt must transfer
+control to the appropriate <i>interrupt service routine<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup></i>.  The straightforward method for
+managing this transfer would be to invoke a generic routine to examine the interrupt
+information. The routine, in turn, would call the interrupt-specific handler. However,
+interrupts must be handled quickly, as they occur very frequently. <b>A table</b> of pointers to
+interrupt routines can be used instead to provide the necessary speed. The interrupt routine
+is called indirectly through the table, with no intermediate routine needed.  Generally, the
+table of pointers is stored in low memory (<b>the first hundred</b> or so locations). These
+locations hold the addresses of the interrupt service routines for the various devices. This
+array, or <b>interrupt vector</b>, of addresses is then indexed by a unique number, given with
+the interrupt request, to provide the address of the interrupt service routine for the
+interrupting device. Operating systems as different as Windows and UNIX dispatch interrupts
+in this manner.
+</p>
+
+<p>
+The interrupt architecture must also save the state information of whatever was interrupted,
+so that it can restore this information after servicing the interrupt. If the interrupt
+routine needs to modify the processor state —for instance, by modifying register values—it
+must explicitly save the current state and then restore that state before returning. After
+the interrupt is serviced, the saved return address is loaded into the program counter, and
+the interrupted computation resumes as though the interrupt had not occurred.
+</p>
+
+<p>
+The basic interrupt mechanism works as follows:
+</p>
+
+<ul class="org-ul">
+<li>The CPU hardware has a wire called the <b>interrupt-request line</b> that the CPU <span class="underline">senses after executing every instruction</span>.</li>
+<li>When the CPU detects that a controller has asserted a signal on the interrupt-request line, it reads the interrupt number and jumps to the interrupt-handler routine by using that interrupt number as an index into the interrupt vector.</li>
+<li>It then starts execution at the address associated with that index. The interrupt handler saves any state it will be changing during its operation, determines the cause of the interrupt, performs the necessary processing, performs a state restore, and executes a return from interrupt instruction to return the CPU to the execution state prior to the interrupt.</li>
+</ul>
+
+<p>
+We say that the device controller raises an interrupt by asserting a signal on the interrupt
+request line, the CPU catches the interrupt and dispatches it to the interrupt handler, and
+the handler clears the interrupt by servicing the device. The following figure summarizes
+the cycle:
+</p>
+
+<p>
+(BROKEN)
+</p>
+
+<p>
+The CPU can load instructions only from memory, so any programs must first be loaded into
+memory to run. General-purpose computers run most of their programs from rewritable memory,
+called main memory (also called random-access memory, or RAM). Main memory commonly is
+implemented in a semiconductor technology called dynamic random-access memory (DRAM).
+</p>
+
+<p>
+Computers use other forms of memory as well. For example, the first pro- gram to run on
+computer power-on is a bootstrap program, which then loads the operating system. Since RAM
+is volatile—loses its content when power is turned off or otherwise lost—we cannot trust it
+to hold the bootstrap pro- gram. Instead, for this and some other purposes, the computer
+uses electrically erasable programmable read-only memory (EEPROM) and other forms of
+firmware storage that is infrequently written to and is nonvolatile. EEPROM can be changed
+but cannot be changed frequently. In addition, it is low speed, and so it contains mostly
+static programs and data that aren’t frequently used.  For example, the iPhone uses EEPROM
+to store serial numbers and hardware information about the device.
+</p>
+
+<p>
+All forms of memory provide an array of bytes. Each byte has its own address. Interaction is
+achieved through a sequence of load or store instructions to specific memory addresses.
+The load instruction moves a byte or word from main memory to an internal register within
+the CPU, whereas the store instruction moves the content of a register to main memory. Aside
+from explicit loads and stores, the CPU automatically loads instructions from main memory
+for execution from the location stored in the program counter.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org62d6a2e" class="outline-3">
+<h3 id="org62d6a2e"><span class="todo TODO">TODO</span> Processing&#xa0;&#xa0;&#xa0;<span class="tag"><span class="introductive">introductive</span></span></h3>
+</div>
+<div id="outline-container-orgdfa80aa" class="outline-3">
+<h3 id="orgdfa80aa"><span class="done DONE">DONE</span> Multiprocessor System&#xa0;&#xa0;&#xa0;<span class="tag"><span class="introductive">introductive</span></span></h3>
+<div class="outline-text-3" id="text-orgdfa80aa">
+<p>
+On modern computers, from mobile devices to servers, multiprocessor systems now dominate
+the landscape of computing. Traditionally, such systems have two (or more) processors, each
+with a single-core CPU. The processors share the computer bus and sometimes the clock,
+memory, and peripheral devices. The primary advantage of multiprocessor systems is
+increased throughput. That is, by increasing the number of processors, we expect to get more
+work done in less time. The speed-up ratio with N processors is not N, however; it is less
+than N. When multiple processors cooperate on a task, a certain amount of overhead is
+incurred in keeping all the parts working correctly.  This overhead, plus contention for
+shared resources, lowers the expected gain from additional processors.
+</p>
+</div>
+</div>
+<div id="outline-container-org4bd6773" class="outline-3">
+<h3 id="org4bd6773">Why Applications are Operating-System-Specific&#xa0;&#xa0;&#xa0;<span class="tag"><span class="chapter_2">chapter_2</span></span></h3>
+<div class="outline-text-3" id="text-org4bd6773">
+<p>
+Why Applications Are Operating-System Specific Fundamentally, applications compiled on one
+operating system are not executable on other operating systems. If they were, the world
+would be a better place, and our choice of what operating system to use would depend on
+utility and features rather than which applications were available.
+</p>
+
+<p>
+Based on our earlier discussion, we can now see part of the problem—each operating system
+provides a unique set of system calls. System calls are part of the set of services provided
+by operating systems for use by applications. Even if system calls were somehow uniform,
+other barriers would make it difficult for us to execute application programs on different
+operating systems. But if you have used multiple operating systems, you may have used some
+of the same applications on them. How is that possible?  An application can be made
+available to run on multiple operating systems in one of three ways:
+</p>
+
+<ol class="org-ol">
+<li>The application can be written in an interpreted language (such as Python or Ruby) that has an interpreter available for multiple operating systems.  The interpreter reads each line of the source program, executes equivalent instructions on the native instruction set, and calls native operating sys- tem calls. Performance suffers relative to that for native applications, and the interpreter provides only a subset of each operating system’s features, possibly limiting the feature sets of the associated applications.</li>
+</ol>
+
+
+
+<ol class="org-ol">
+<li>The application can be written in a language that includes a virtual machine containing the running application. The virtual machine is part of the language’s full RTE. One example of this method is Java. Java has an RTE that includes a loader, byte-code verifier, and other components that load the Java application into the Java virtual machine. This RTE has been ported, or developed, for many operating systems, from mainframes to smartphones, and in theory any Java app can run within the RTE wherever it is available. Systems of this kind have disadvantages similar to those of interpreters, discussed above.</li>
+</ol>
+
+
+
+<ol class="org-ol">
+<li>The application developer can use a standard language or API in which the compiler generates binaries in a machine- and operating-system- specific language. The application must be ported to each operating sys- tem on which it will run. This porting can be quite time consuming and must be done for each new version of the application, with subsequent testing and debugging. Perhaps the best-known example is the POSIX API and its set of standards for maintaining source-code compatibility between different variants of UNIX-like operating systems.</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-org9897992" class="outline-2">
+<h2 id="org9897992">System Calls&#xa0;&#xa0;&#xa0;<span class="tag"><span class="chapter_2">chapter_2</span></span></h2>
+<div class="outline-text-2" id="text-org9897992">
+<p>
+System calls provide an interface to the services made available by an operating system.
+These calls are generally available as functions written in C and C++, although certain
+low-level tasks (for example, tasks where hardware must be accessed directly) may have to be
+written using assembly-language instructions.
+</p>
+
+<p>
+Before we discuss how an operating system makes system calls available, let’s
+first use an example to illustrate how system calls are used: writing a simple
+program to read data from one file and copy them to another file. The first
+input that the program will need is the names of the two files: the input file
+and the output file. These names can be specified in many ways, depending
+on the operating-system design. One approach is to pass the names of the two
+files as part of the command —for example, the UNIX cp command:
+</p>
+
+
+<pre class="example" id="org33102a4">
+cp in.txt out.txt
+</pre>
+
+
+<p>
+This command copies the input file in.txt to the output file out.txt. A second approach is
+for the program to ask the user for the names. In an interactive system, this approach will
+require a sequence of system calls, first to write a prompting message on the screen and
+then to read from the keyboard the characters that define the two files. On mouse-based and
+icon-based systems, a menu of file names is usually displayed in a window. The user can then
+use the mouse to select the source name, and a window can be opened for the destination name
+to be specified. This sequence requires many I/O system calls.
+</p>
+
+
+<p>
+Once the two file names have been obtained, the program must open the
+input file and create and open the output file. Each of these operations requires
+another system call. Possible error conditions for each system call must be
+handled. For example, when the program tries to open the input file, it may
+find that there is no file of that name or that the file is protected against access.
+In these cases, the program should output an error message (another sequence
+of system calls) and then terminate abnormally (another system call). If the
+input file exists, then we must create a new output file. We may find that there
+is already an output file with the same name. This situation may cause the
+program to abort (a system call), or we may delete the existing file (another
+system call) and create a new one (yet another system call). Another option, in
+an interactive system, is to ask the user (via a sequence of system calls to output
+the prompting message and to read the response from the terminal) whether
+to replace the existing file or to abort the program.
+</p>
+
+<ul class="org-ul">
+<li>Note That
+<ul class="org-ul">
+<li>A system call is just like a normal function calls, but it will cause system interruption.</li>
+</ul></li>
+</ul>
+</div>
+<div id="outline-container-org3769ca8" class="outline-3">
+<h3 id="org3769ca8">Types</h3>
+<div class="outline-text-3" id="text-org3769ca8">
+<p>
+System calls can be grouped roughly into six major categories: process control, fil
+management, device management, information maintenance, communications, and protection.
+</p>
+</div>
+<div id="outline-container-orge75711f" class="outline-4">
+<h4 id="orge75711f">Process Control</h4>
+</div>
+</div>
+</div>
+<div id="outline-container-org486e332" class="outline-2">
+<h2 id="org486e332">Operating-System Design And Implementation&#xa0;&#xa0;&#xa0;<span class="tag"><span class="chapter_2">chapter_2</span></span></h2>
+<div class="outline-text-2" id="text-org486e332">
+<p>
+The first problem in designing a system is to define goals and specifications. At the
+highest level, the design of the system will be affected by the choice of hard- ware and the
+type of system: traditional desktop/laptop, mobile, distributed, or real time<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>.
+</p>
+
+
+<p>
+Beyond this highest design level, the requirements may be much harder to specify. The
+requirements can, however, be divided into two basic groups: <span class="underline">user goals</span> and <span class="underline">system goals</span>.
+</p>
+
+<p>
+User<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup>s want certain obvious properties in a system. The system should be convenient to use,
+easy to learn and to use, reliable, safe, and fast. Of course, these specifications are not
+particularly useful in the system design, since there is no general agreement on how to
+achieve them.
+</p>
+</div>
+
+
+<div id="outline-container-org7bf09ee" class="outline-3">
+<h3 id="org7bf09ee">Mechanisms and Policies&#xa0;&#xa0;&#xa0;<span class="tag"><span class="introductive">introductive</span></span></h3>
+<div class="outline-text-3" id="text-org7bf09ee">
+<p>
+<b>Mechanisms determine how to do something</b>; policies determine <span class="underline">what will be done</span>.  For
+example, the timer construct is a mechanism for ensuring CPU protection, but deciding how
+long the timer is to be set for a particular user is a policy decision.
+</p>
+
+<p>
+The separation of policy and mechanism is important for flexibility. Policies are likely to
+change across places or over time. In the worst case, each change in policy would require a
+change in the underlying mechanism. A general mechanism flexible enough to work across a
+range of policies is preferable.  A change in policy would then require redefinition of only
+certain parameters of the system. For instance, consider a mechanism for giving priority to
+certain types of programs over others. If the mechanism is properly separated from policy,
+it can be used either to support a policy decision that I/O-intensive programs should have
+priority over CPU-intensive ones or to support the opposite policy.
+</p>
+
+
+<p>
+Microkernel-based operating systems (will be discussed later) take the separation of
+mechanism and policy to one extreme by implementing a basic set of primitive building
+blocks. These blocks are almost policy free, allowing more advanced mechanisms and policies
+to be added via user-created kernel modules or user programs themselves. In contrast,
+consider Windows, an enormously popular commercial operating system available for over three
+decades. Microsoft has closely encoded both mechanism and policy into the system to enforce
+a global look and feel across all devices that run the Windows operating system. All
+applications have similar interfaces, because the interface itself is built into the kernel
+and system libraries. Apple has adopted a similar strategy with its macOS and iOS operating
+systems.
+</p>
+
+<p>
+We can make a similar comparison between commercial and open-source operating systems. For
+instance, contrast Windows, discussed above, with Linux, an open-source operating system
+that runs on a wide range of computing devices and has been available for over 25 years.
+The “standard” Linux kernel has a specific CPU scheduling algorithm, which is a mechanism
+that supports a certain policy. However, anyone is free to modify or replace the scheduler
+to support a different policy.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org8c53b35" class="outline-2">
+<h2 id="org8c53b35">Operating-System Structure&#xa0;&#xa0;&#xa0;<span class="tag"><span class="chapter_2">chapter_2</span></span></h2>
+<div class="outline-text-2" id="text-org8c53b35">
+<p>
+A system as large and complex as a modern operating system must be engineered carefully if
+it is to function properly and be modified easily. A common approach is to partition the
+task into small components, or modules, rather than have one single system. Each of these
+modules should be a well-defined portion of the system, with carefully defined interfaces
+and functions. You may use a similar approach when you structure your programs: rather than
+placing all of your code in the <code>main()</code> function, you instead separate logic into a number
+of functions, clearly articulate parameters and return values, and then call those functions
+from <code>main()</code>.
+</p>
+</div>
+
+<div id="outline-container-org923e112" class="outline-3">
+<h3 id="org923e112">Monolithic Structure<sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup></h3>
+<div class="outline-text-3" id="text-org923e112">
+<p>
+(BROKEN)
+</p>
+
+
+<p>
+The simplest structure for organizing an operating system is no structure at all.  That is,
+place all of the functionality of the kernel into a single, static binary file that runs in
+a single address space. This approach—known as a monolithic structure—is a common technique
+for designing operating systems.
+</p>
+
+
+<p>
+An example of such limited structuring is the original UNIX operating system, which consists
+of two separable parts: the kernel and the system programs. The kernel is further separated
+into a series of interfaces and device drivers, which have been added and expanded over the
+years as UNIX has evolved. We can view the traditional UNIX operating system as being
+layered to some extent, as shown in Figure 2.12. Everything below the system-call interface
+and above the physical hardware is the kernel. The kernel provides the file system, CPU
+scheduling, memory management, and other operating- system functions through system calls.
+Taken in sum, that is an enormous amount of functionality to be combined into one single
+address space.
+</p>
+
+<p>
+The Linux operating system is based on UNIX and is structured similarly, as shown:
+</p>
+
+<p>
+(BROKEN)
+</p>
+
+
+
+<p>
+Applications typically use the glibc standard C library when communicating with the system
+call interface to the kernel. The Linux kernel is <code>monolithic</code> in that it runs entirely in
+kernel mode in a single address space, but as we shall, it does have a modular design that
+allows the kernel to be modified during run time.  Despite the apparent simplicity of
+monolithic kernels, they are difficult to implement and extend. Monolithic kernels do have a
+distinct performance advantage, however: there is very little overhead in the system-call
+interface, and communication within the kernel is fast. Therefore, despite the drawbacks of
+monolithic kernels, their speed and efficiency explains why we still see evidence of this
+structure in the UNIX, Linux, and Windows operating systems.
+</p>
+</div>
+</div>
+<div id="outline-container-org0bea795" class="outline-3">
+<h3 id="org0bea795">Layered Approach</h3>
+<div class="outline-text-3" id="text-org0bea795">
+<p>
+The monolithic approach is often known as a tightly coupled system because changes to one
+part of the system can have wide-ranging effects on other parts.  Alternatively, we could
+design <b>a loosely coupled system</b>. Such a system is divided into separate, smaller components
+that have specific and limited functionality. All these components together comprise the
+kernel. The advantage of this modular approach is that changes in one component affect only
+that component, and no others, allowing system implementers more freedom in creating and
+changing the inner workings of the system.
+</p>
+
+<p>
+A system can be made modular in many ways. One method is the layered approach, in which the
+operating system is broken into a number of layers (levels). The bottom layer (layer 0) is
+the hardware; the highest (layer N<sup><a id="fnr.5" class="footref" href="#fn.5" role="doc-backlink">5</a></sup>) is the user interface. This layering structure is
+depicted in Figure 2.14.
+</p>
+
+<p>
+An operating-system layer is an implementation of an abstract object made up of data and the
+operations that can manipulate those data. A typical operating-system layer—say, layer
+M—consists of data structures and a set of functions that can be invoked by higher-level
+layers. Layer M, in turn, can invoke operations on lower-level layers.
+</p>
+
+<p>
+The main advantage of the layered approach is simplicity of construction
+and debugging. The layers are selected so that each uses functions (operations)
+and services of only lower-level layers. This approach simplifies debugging
+and system verification. The first layer can be debugged without any concern
+for the rest of the system, because, by definition, it uses only the basic hardware
+(which is assumed correct) to implement its functions. Once the first layer is
+debugged, its correct functioning can be assumed while the second layer is
+debugged, and so on. If an error is found during the debugging of a particular
+layer, the error must be on that layer, because the layers below it are already
+debugged. Thus, the design and implementation of the system are simplified.
+</p>
+
+
+<p>
+(BROKEN)
+</p>
+</div>
+</div>
+<div id="outline-container-org8a9b3cb" class="outline-3">
+<h3 id="org8a9b3cb">Microkernels</h3>
+<div class="outline-text-3" id="text-org8a9b3cb">
+<p>
+As UNIX expanded, the kernel became large and difficult to manage.  In the mid-1980s,
+researchers at Carnegie Mellon University developed an operating system called Mach that
+modularized the kernel using the <b>micro-kernel</b> approach. This method structures the
+operating system by removing all nonessential components from the kernel and implementing
+them as user- level programs that reside in separate address spaces. The result is a smaller
+kernel. There is little consensus regarding which services should remain in the kernel and
+which should be implemented in user space<sup><a id="fnr.6" class="footref" href="#fn.6" role="doc-backlink">6</a></sup>. Typically, however, microkernels provide minimal
+process and memory management, in addition to a communication facility. Figure 2.15
+illustrates the architecture of a typical microkernel.
+</p>
+
+
+<p>
+(BROKEN)
+</p>
+
+
+<p>
+One benefit of the microkernel approach is that it makes extending the operating system
+easier. All new services are added to user space and consequently do not require
+modification of the kernel. When the kernel does have to be modified, the changes tend to be
+fewer, because the microkernel is a smaller kernel. The resulting operating system is easier
+to port from one hardware design to another. The microkernel also provides more security and
+reliability, since most services are running as user—rather than kernel—processes. If a
+service fails, the rest of the operating system remains untouched.
+</p>
+</div>
+</div>
+<div id="outline-container-org3324c15" class="outline-3">
+<h3 id="org3324c15">Hybrid Systems</h3>
+<div class="outline-text-3" id="text-org3324c15">
+<p>
+In practice, very few operating systems adopt a single, strictly defined struc-
+ture. Instead, they combine different structures, resulting in hybrid systems
+that address performance, security, and usability issues. For example, Linux
+is monolithic, because having the operating system in a single address space
+provides very efficient performance. However, it also modular, so that ne           w
+functionality can be dynamically added to the kernel. Windows is largely
+monolithic as well (again primarily for performance reasons), but it retains
+some behavior typical of microkernel systems, including providing support
+for separate subsystems (known as operating-system personalities) that run as
+user-mode processes. Windows systems also provide support for dynamically
+loadable kernel modules.
+</p>
+</div>
+
+<div id="outline-container-org8aa9cf6" class="outline-4">
+<h4 id="org8aa9cf6">macOS and iOS</h4>
+<div class="outline-text-4" id="text-org8aa9cf6">
+<p>
+Apple’s macOS operating system is designed to run primarily on desktop and
+laptop computer systems, whereas iOS is a mobile operating system designed
+for the iPhone smartphone and iPad tablet computer. Architecturally, macOS
+and iOS have much in common, and so we present them together, highlighting
+what they share as well as how they differ from each other.
+</p>
+
+
+<ul class="org-ul">
+<li><b>User experience layer</b>. This layer defines the software interface that allows users to interact with the computing devices. macOS uses the Aqua user interface, which is designed for a mouse or trackpad, whereas iOS uses the Springboard user interface, which is designed for touch devices.</li>
+
+<li><b>Application frameworks layer</b>. This layer includes the Cocoa and Cocoa Touch frameworks, which provide an API for the Objective-C and Swift programming languages. The primary difference between Cocoa and Cocoa Touch is that the former is used for developing macOS applications, and the latter by iOS to provide support for hardware features unique to mobile devices, such as touch screens.</li>
+<li><b>Core frameworks</b>. This layer defines frameworks that support graphics and media including Quicktime and OpenGL.</li>
+
+<li><b>Kernel environment</b>. This environment, also known as Darwin, includes the Mach microkernel and the BSD UNIX kernel. We will elaborate on Darwin shortly.</li>
+</ul>
+</div>
+
+
+<div id="outline-container-org3a32999" class="outline-5">
+<h5 id="org3a32999"><span class="todo TODO">TODO</span> Android</h5>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orge2ab639" class="outline-2">
+<h2 id="orge2ab639">Linux Kernel Modules&#xa0;&#xa0;&#xa0;<span class="tag"><span class="programming_proeject">programming_proeject</span>&#xa0;<span class="chapter_2">chapter_2</span></span></h2>
+<div class="outline-text-2" id="text-orge2ab639">
+<hr>
+
+<p>
+<i>TIP!</i>
+</p>
+
+<p>
+<i>Kernel modules are loaded using the insmod command, which is run as follows:</i>
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">sudo insmod model.ko
+</pre>
+</div>
+
+<p>
+<i>To check whether the module has loaded, enter the lsmod command and search
+for the module simple. Recall that the module entry point is invoked when the
+module is inserted into the kernel. To check the contents of this message in the
+kernel log buffer, enter the command</i>
+</p>
+
+<p>
+<i>Removing the kernel module involves invoking the rmmod command (notice that the .ko suffix
+is unnecessary)</i>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell">sudo rmmode model
+</pre>
+</div>
+
+<p>
+<i>and use <code>dmesg</code> to read your outputs from the kernel's log buffer (if any).</i>
+</p>
+
+<hr>
+
+<p>
+The first part of this project involves following a series of steps for creating and
+inserting a module into the Linux kernel.  You can list all kernel modules that are
+currently loaded by entering the command
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">lsmod
+</pre>
+</div>
+
+<p>
+This command will list the current kernel modules in three columns: name,
+size, and where the module is being used.
+</p>
+
+<p>
+Now, observe the following file<sup><a id="fnr.7" class="footref" href="#fn.7" role="doc-backlink">7</a></sup>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;linux/init.h&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;linux/kernel.h&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;linux/module.h&gt;</span>
+<span style="font-weight: bold; font-style: italic;">/* </span><span style="font-weight: bold; font-style: italic;">This function is called when the module is loaded.</span><span style="font-weight: bold; font-style: italic;"> */</span>
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">simple</span> init(<span style="font-weight: bold; text-decoration: underline;">void</span>)
+{
+printk(KERN INFO <span style="font-style: italic;">"Loading Kernel Module&#8726;n"</span>);
+}
+<span style="font-weight: bold;">return</span> 0;
+<span style="font-weight: bold; font-style: italic;">/* </span><span style="font-weight: bold; font-style: italic;">This function is called when the module is removed.</span><span style="font-weight: bold; font-style: italic;"> */</span>
+<span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold; font-style: italic;">simple</span> exit(<span style="font-weight: bold; text-decoration: underline;">void</span>)
+{
+printk(KERN INFO <span style="font-style: italic;">"Removing Kernel Module&#8726;n"</span>);
+}
+<span style="font-weight: bold; font-style: italic;">/* </span><span style="font-weight: bold; font-style: italic;">Macros for registering module entry and exit points.</span><span style="font-weight: bold; font-style: italic;"> */</span>
+<span style="font-weight: bold;">module</span> init(simple init);
+<span style="font-weight: bold;">module</span> exit(simple exit);
+<span style="font-weight: bold; text-decoration: underline;">MODULE</span> <span style="font-weight: bold; font-style: italic;">LICENSE</span>(<span style="font-style: italic;">"GPL"</span>);
+<span style="font-weight: bold; text-decoration: underline;">MODULE</span> <span style="font-weight: bold; font-style: italic;">DESCRIPTION</span>(<span style="font-style: italic;">"Simple Module"</span>);
+<span style="font-weight: bold; text-decoration: underline;">MODULE</span> <span style="font-weight: bold; font-style: italic;">AUTHOR</span>(<span style="font-style: italic;">"SGG"</span>);
+</pre>
+</div>
+
+<p>
+The function simple <code>init()</code> is the module entry point, which represents the function that is
+invoked when the module is loaded into the kernel. Similarly, the simple <code>exit()</code> function
+is the module exit point—the function that is called when the module is removed from the
+kernel.
+</p>
+
+<p>
+Notice in the figure how the module entry and exit point functions make calls to the
+<code>printk()</code> function. <code>printk()</code> is the kernel equivalent of <code>printf()</code>, but its output is sent to
+a kernel log buffer whose contents can be read by the dmesg command. One difference between
+<code>printf()</code> and <code>printk()</code> is that <code>printk()</code> allows us to specify a priority flag, whose values
+are given in the <code>&lt;linux/printk.h&gt;</code> include file. In this instance, the priority is <code>KERN INFO</code>,
+which is defined as an informational message.
+</p>
+
+<p>
+As kernel modules are running within the kernel, it is possible to obtain
+values and call functions that are available only in the kernel and not to regular
+user applications. For example, the Linux include file <code>&lt;linux/hash.h&gt;</code> defines
+several hashing functions for use within the kernel. This file also defines the
+constant value <code>GOLDEN_RATIO_PRIME</code> (which is defined as an unsigned long).
+This value can be printed out as follows:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C"><span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;linux/printk.h&gt;</span>
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>() {
+    printk(KERN INFO <span style="font-style: italic;">"%lu&#8726;n"</span>, GOLDEN_RATIO_PRIME);
+}
+</pre>
+</div>
+
+<p>
+As another example, the include file <code>&lt;linux/gcd.h&gt;</code> defines the following function
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C"><span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; text-decoration: underline;">long</span> <span style="font-weight: bold;">gcd</span>(<span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; text-decoration: underline;">long</span> <span style="font-weight: bold; font-style: italic;">a</span>, <span style="font-weight: bold; text-decoration: underline;">unsigned</span> <span style="font-weight: bold; font-style: italic;">b</span>);
+</pre>
+</div>
+
+<p>
+which returns the greatest common divisor of the parameters \(a\) and \(b\).
+</p>
+
+<p>
+What we have to do, is:
+</p>
+
+<ol class="org-ol">
+<li><p>
+Print out the value of <code>GOLDEN_RATIO_PRIME</code> in the <code>simple_init()</code> function.
+</p>
+<div class="org-src-container">
+<pre class="src src-C"><span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">simple_init</span>(<span style="font-weight: bold; text-decoration: underline;">void</span>) {
+  printk(KERN_INFO <span style="font-style: italic;">"Loading Module\n"</span>);
+  printk(GOLDEN_RATIO_PRIME) <span style="font-weight: bold;">return</span> 0;
+}
+</pre>
+</div></li>
+<li><p>
+Print out the greatest common divisor of 3,300 and 24 in the <code>simple_exit()</code> function.
+</p>
+<div class="org-src-container">
+<pre class="src src-C"><span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;linux/gcd.h&gt;</span>
+<span style="font-weight: bold;">static</span> <span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">simple_exit</span>(<span style="font-weight: bold; text-decoration: underline;">void</span>) {
+  printk(KERN_INFO <span style="font-style: italic;">"Removing Module\n"</span>);
+  printk(gcd(3300, 24));
+}
+</pre>
+</div></li>
+</ol>
+
+<p>
+ntdlr. solution: <a href="https://github.com/athultr1997/OS/blob/master/os_concepts_abraham_silberschatz/chapter_2/programming_projects/linux_kernel_modules/simple.c">here</a>
+</p>
+</div>
+</div>
+<div id="outline-container-org779cb45" class="outline-2">
+<h2 id="org779cb45">The Process&#xa0;&#xa0;&#xa0;<span class="tag"><span class="chapter_4">chapter_4</span></span></h2>
+<div class="outline-text-2" id="text-org779cb45">
+<p>
+The definition of a process, informally, is quite simple: it is a running program The
+program itself is a lifeless thing: it just sits there on the disk, a bunch of instructions
+(and maybe some static data), waiting to spring into action. It is the oper- ating system
+that takes these bytes and gets them running, transforming the program into something
+useful.
+</p>
+
+<p>
+The OS creates this illusion by virtualization the CPU. By running one process, then stopping
+it and running another, and so forth, the OS can promote the illusion that many virtual CPUs
+exist when in fact there is only one physical CPU (or a few). This basic technique, known as
+<b>time sharing</b> of the CPU, allows users to run as many concurrent processes as they would
+like; the potential cost is performance, as each will run more slowly if the CPU(s) must be shared.
+</p>
+
+<p>
+The abstraction provided by the OS of a running program is something we will call a process.
+As we said above, a process is simply a running program; at any instant in time, we can
+summarize a process by taking an inventory of the different pieces of the system it accesses
+or affects during the course of its execution.
+</p>
+
+<p>
+To understand what constitutes a process, we thus have to understand
+its machine state: what a program can read or update when it is running.
+At any given time, what parts of the machine are important to the execution of this program?
+</p>
+
+<ul class="org-ul">
+<li>One obvious component of machine state that comprises a process is its memory.
+Instructions lie in memory; the data that the running pro- gram reads and writes sits in
+memory as well. Thus the memory that the process can address (called its address space)
+is part of the process</li>
+<li><p>
+Also part of the process’s machine state are registers; many instructions explicitly read
+or update registers and thus clearly they are important to the execution of the process.
+</p>
+
+<p>
+Note that there are some particularly special registers that form part of this machine
+state. For example, the <b>program counter</b> (PC) (sometimes called the <b>instruction
+pointer</b> or IP) tells us which instruction of the program <span class="underline">is currently being executed</span>;
+similarly a <b>stack pointer</b> and associated <b>frame pointer</b> are used to manage the stack
+for <b>function parameters</b>, <b>local variables</b>, and <b>return addresses</b>.
+</p></li>
+
+<li><b>Programming Interface</b>
+The following APIs, in some form, are available on any modern operating system.
+
+<ul class="org-ul">
+<li><p>
+<b>Create</b>: An operating system must include some method to create new processes. When
+you type a command into the shell, or double-click on an application icon, the OS is
+invoked to create a new process to run the program you have indicated.
+</p>
+
+<p>
+One mystery that we should unmask a bit is how programs are trans- formed into
+processes. Specifically, how does the OS get a program up and running? How does
+process creation actually work?
+</p>
+
+<p>
+The first thing that the OS must do to run a program is to load its code and any
+static data (e.g., initialized variables) into memory, into the ad- dress space of the
+process. Programs initially reside on disk (or, in some modern systems, flash-based
+SSDs) in some kind of executable format; thus, the process of loading a program and
+static data into memory re- quires the OS to read those bytes from disk and place them
+in memory somewhere.
+</p>
+
+<p>
+In early (or simple) operating systems, the loading process is done eagerly, i.e.,
+all at once before running the program; modern OSes perform the process lazily, i.e.,
+by loading pieces of code or data only as they are needed during program execution.
+</p>
+
+<p>
+Once the code and static data are loaded into memory, there are a few other things the
+OS needs to do before running the process. Some memory must be allocated for the
+program’s run-time stack (or just stack). As you should likely already know, <b>C
+programs use the stack for local variables, function parameters, and return addresses</b>;
+the OS allocates this memory and gives it to the process. The OS will also likely
+initialize the stack with arguments; specifically, it will fill in the parameters to
+the main() function, i.e., <code>argc</code> and the <code>argv</code> array.
+</p>
+
+<p>
+The OS may also allocate some memory for the program’s heap. In C programs, the heap
+is used for explicitly requested <i>dynamically-allocated data</i>; programs request such
+space by calling <b>malloc()</b> and free it explicitly by calling <b>free()</b>. The heap is
+needed for data structures such as linked lists, hash tables, trees, and other
+interesting data structures. The heap will be small at first; as the program runs, and
+requests more mem- ory via the malloc() library API, the OS may get involved and
+allocate more memory to the process to help satisfy such calls.
+</p>
+<ul class="org-ul">
+<li><b>Destroy</b>: As there is an interface for process creation, systems also provide an interface
+to destroy processes forcefully. Of course, many processes will run and just exit by
+themselves when complete; when they don’t, however, the user may wish to kill them, and
+thus an interface to halt a runaway process is quite useful.</li>
+
+<li><b>Wait</b>: Sometimes it is useful to wait for a process to stop running; thus some kind of
+waiting interface is often provided.</li>
+
+<li><b>Miscellaneous Control</b>: Other than killing or waiting for a process, there are sometimes
+other controls that are possible. For example, most operating systems provide some kind of
+method to suspend a process (stop it from running for a while) and then resume it (continue it running).</li>
+
+<li><p>
+<b>Status</b>: There are usually interfaces to get some status information about a process as
+well, such as how long it has run for, or what state it is in.
+</p>
+
+<p>
+In a simplified view, a process can be in one of three states:
+</p>
+
+<ul class="org-ul">
+<li><b>Running</b>: In the running state, a process is running on a processor. This means it is executing instructions.</li>
+
+<li><b>Ready</b>: In the ready state, a process is ready to run but for some reason the OS has chosen not to run it at this given moment.</li>
+
+<li><b>Blocked</b>: In the blocked state, a process has performed some kind of operation that makes it not ready to run until some other event takes place. A common example: when a process initiates an I/O request to a disk, it becomes blocked and thus some other process can use the processor.</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+
+<p>
+Process can be described as either I/O bound or CPU bound. Briefly we can say that an I/O
+process is a process that does I/O more than CPU, and vice versa.
+</p>
+
+<p>
+A question that arises in discussing operating systems involves what to call all the CPU
+activities. Early computers were batch systems that executed jobs, followed by the emergence
+of time-shared systems that ran user programs, or tasks. Even on a single-user system, a
+user may be able to run several programs at one time: a word processor, a web browser, and
+an e-mail package. And even if a computer can execute only one program at a time, such as on
+an embedded device that does not support multitasking, the operating system may need to
+support its own internal programmed activities, such as memory management.  In many
+respects, all these activities are similar, so we call all of them processes.
+</p>
+
+<p>
+Informally, as mentioned earlier, a process is a program in execution. The status of the
+current activity of a process is represented by the value of the program counter and the
+contents of the processor’s registers. The memory layout of a process is typically divided
+into multiple sections:
+</p>
+
+<ul class="org-ul">
+<li>Text section— the executable code.</li>
+<li>Data section— global variables.</li>
+<li>Heap section —memory that is dynamically allocated during program run time</li>
+<li>Stack section —temporary data storage when invoking functions (such as function
+parameters, return addresses, and local variables)</li>
+</ul>
+
+
+<p>
+Notice that the sizes of the text and data sections are fixed, as their sizes do
+not change during program run time. However, the stack and heap sections can
+shrink and grow dynamically during program execution. Each time a function
+is called, an <b>activation record</b> containing function parameters, local variables,
+and the return address is pushed onto the stack; when control is returned from
+the function, the <b>activation record</b> is popped from the stack. Similarly, the heap
+will grow as memory is dynamically allocated, and will shrink when memory
+is returned to the system. Although the stack and heap sections grow toward
+one another, the operating system must ensure they do not overlap one another.
+</p>
+</div>
+
+<div id="outline-container-orge02751b" class="outline-3">
+<h3 id="orge02751b">Data Structure</h3>
+<div class="outline-text-3" id="text-orge02751b">
+<p>
+The OS is a program, and like any program, it has some key data structures that track
+various relevant pieces of information. To track the state of each process, for example, the
+OS likely will keep some kind of process list for all processes that are ready and some
+additional information to track which process is currently running. The OS must also track,
+in some way, blocked processes; when an I/O event completes, the OS should make sure to wake
+the correct process and ready it to run again.
+</p>
+
+<p>
+The following code shows what type of information an OS needs to track about
+each process in the xv6 kernel. Similar process structures exist
+in “real” operating systems such as Linux, Mac OS X, or Windows; look
+them up and see how much more complex they are.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-C"><span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">context</span> {
+  <span style="font-weight: bold; text-decoration: underline;">uint</span> <span style="font-weight: bold; font-style: italic;">edi</span>;
+  <span style="font-weight: bold; text-decoration: underline;">uint</span> <span style="font-weight: bold; font-style: italic;">esi</span>;
+  <span style="font-weight: bold; text-decoration: underline;">uint</span> <span style="font-weight: bold; font-style: italic;">ebx</span>;
+  <span style="font-weight: bold; text-decoration: underline;">uint</span> <span style="font-weight: bold; font-style: italic;">ebp</span>;
+  <span style="font-weight: bold; text-decoration: underline;">uint</span> <span style="font-weight: bold; font-style: italic;">eip</span>;
+};
+
+<span style="font-weight: bold;">enum</span> <span style="font-weight: bold; text-decoration: underline;">procstate</span> { <span style="font-weight: bold; font-style: italic;">UNUSED</span>, <span style="font-weight: bold; font-style: italic;">EMBRYO</span>, <span style="font-weight: bold; font-style: italic;">SLEEPING</span>, <span style="font-weight: bold; font-style: italic;">RUNNABLE</span>, <span style="font-weight: bold; font-style: italic;">RUNNING</span>, <span style="font-weight: bold; font-style: italic;">ZOMBIE</span> };
+
+<span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Per-process state</span>
+<span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">proc</span> {
+  <span style="font-weight: bold; text-decoration: underline;">uint</span> <span style="font-weight: bold; font-style: italic;">sz</span>;                     <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Size of process memory (bytes)</span>
+  <span style="font-weight: bold; text-decoration: underline;">pde_t</span>* <span style="font-weight: bold; font-style: italic;">pgdir</span>;                <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Page table</span>
+  <span style="font-weight: bold; text-decoration: underline;">char</span> *<span style="font-weight: bold; font-style: italic;">kstack</span>;                <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Bottom of kernel stack for this process</span>
+  <span style="font-weight: bold;">enum</span> <span style="font-weight: bold; text-decoration: underline;">procstate</span> <span style="font-weight: bold; font-style: italic;">state</span>;        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Process state</span>
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">pid</span>;                     <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Process ID</span>
+  <span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">proc</span> *<span style="font-weight: bold; font-style: italic;">parent</span>;         <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Parent process</span>
+  <span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">trapframe</span> *<span style="font-weight: bold; font-style: italic;">tf</span>;        <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Trap frame for current syscall</span>
+  <span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">context</span> *<span style="font-weight: bold; font-style: italic;">context</span>;     <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">swtch() here to run process</span>
+  <span style="font-weight: bold; text-decoration: underline;">void</span> *<span style="font-weight: bold; font-style: italic;">chan</span>;                  <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">If non-zero, sleeping on chan</span>
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">killed</span>;                  <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">If non-zero, have been killed</span>
+  <span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">file</span> *<span style="font-weight: bold; font-style: italic;">ofile</span>[NOFILE];  <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Open files</span>
+  <span style="font-weight: bold;">struct</span> <span style="font-weight: bold; text-decoration: underline;">inode</span> *<span style="font-weight: bold; font-style: italic;">cwd</span>;           <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Current directory</span>
+  <span style="font-weight: bold; text-decoration: underline;">char</span> <span style="font-weight: bold; font-style: italic;">name</span>[16];               <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Process name (debugging)</span>
+};
+</pre>
+</div>
+
+<p>
+In general, a process control block should have the following properties:
+</p>
+
+<ul class="org-ul">
+<li>Process state. The state may be new, ready, running, waiting, halted, and so on.</li>
+<li>Program counter. The counter indicates the address of the next instruction to be executed
+for this process.</li>
+<li>CPU registers.<sup><a id="fnr.8" class="footref" href="#fn.8" role="doc-backlink">8</a></sup> The registers vary in number and type, depending on the computer
+architecture. They include accumulators, index registers, stack pointers, and
+general-purpose registers, plus any condition-code informa- tion. Along with the program
+counter, this state information must be saved when an interrupt occurs, to allow the
+process to be continued correctly afterward when it is rescheduled to run.</li>
+<li>CPU-scheduling information.  This information includes a process prior- ity, pointers to
+scheduling queues, and any other scheduling parameters.</li>
+<li>Memory-management information. This information may include such items as the value of the
+base and limit registers and the page tables, or the segment tables, depending on the
+memory system used by the operating system</li>
+<li>Accounting information. This information includes the amount of CPU and real time used,
+time limits, account numbers, job or process numbers, and so on.</li>
+<li>I/O status information. This information includes the list of I/O devices allocated to the
+process, a list of open files, and so on. In brief, the PCB simply serves as the
+repository for all the dat</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgdddb1b8" class="outline-2">
+<h2 id="orgdddb1b8">Mechanism: Limited Directed Execution</h2>
+<div class="outline-text-2" id="text-orgdddb1b8">
+<p>
+What happen within a function call in a process? A function call translates to a jump
+instruction i.e. the instructions points somewhere else, while the program counter points in
+the consequential instruction. Before that happens, a stack frame is created with all
+information of this program counter (that, it will be used to return again from this
+function call). Then the CPU moves to the desired location from the stack frame, when it
+does finish you now are allowed to pop the counter from the stack frame.
+</p>
+
+
+<p>
+There are some differences between a system call and a function call, that's function calls
+mostly executes within the user mode, some of the system calls also run within user mode but
+lots of them run only within kernel mode. Another difference is that kernel does not trust
+user stack, it uses a septate kernel stack when it is running in kernel mode.
+</p>
+
+<p>
+One of the reasons that Kernel does not trust the user stack for, is that the user can
+provide a wrong address (or a malicious one), so the kernel sets up <b>Interrupt Descriptor
+Table (IDT)</b> at boot time, which has addresses of kernel function to run for a system call
+and other events.
+</p>
+
+<p>
+When a system calls accrues, the compiler inserts a special trap instruction (e.g. when you
+try to read). First thing that happens within these instructions, is that it changes user mode into
+kernel mode. Now, the stack pointer updates to point to the kernel stack, on the kernel
+stack we save the old context (registers and etc.. just like function calls), then the trap
+instructions looks up the IDT and jump to the desired function
+</p>
+
+<p>
+In order to virtualize the CPU, the operating system needs to somehow share the physical CPU
+among many jobs running seemingly at the same time. The basic idea is simple: run one
+process for a little while, then run another one, and so forth. By time sharing the CPU in
+this manner, virtualization is achieved.
+</p>
+
+<p>
+There are a few challenges, however, in building such virtualization machinery. The first is
+performance: how can we implement virtualization without adding excessive overhead to the
+system? The second is control: how can we run processes efficiently while retaining control
+over the CPU? Control is particularly important to the OS, as it is in charge of resources;
+without control, a process could simply run forever and take over the machine, or access
+information that it should not be allowed to access. Obtaining high performance while
+maintaining control is thus one of the central challenges in building an operating system.
+</p>
+
+<p>
+To make a program run as fast as one might expect, not surprisingly OS developers came up
+with a technique, which we call limited direct execution. The “direct execution” part of the
+idea is simple: just run the program directly on the CPU. Thus, when the OS wishes to start
+a pro- gram running, it creates a process entry for it in a process list, allocates some
+memory for it, loads the program code into memory (from disk), lo- cates its entry point
+(i.e., the <code>main()</code> routine or something similar), jumps to it, and starts running the user’s
+code.
+</p>
+
+
+<p>
+Sounds simple, no? But this approach gives rise to a few problems in our quest to virtualize
+the CPU. The first is simple: if we just run a program, how can the OS make sure the program
+doesn’t do anything that we don’t want it to do, while still running it efficiently? The
+second: when we are running a process, how does the operating system stop it from running
+and switch to another process, thus implementing the time sharing we require to virtualize
+the CPU?
+</p>
+</div>
+
+<div id="outline-container-orgcd1a8e2" class="outline-3">
+<h3 id="orgcd1a8e2">Problem #1: Restricted Operations</h3>
+<div class="outline-text-3" id="text-orgcd1a8e2">
+<p>
+Direct execution has the obvious advantage of being fast; the program runs naively on the
+hardware CPU and thus executes as quickly as one would expect. But running on the CPU
+introduces a problem: what if the process wishes to perform some kind of restricted
+operation, such as issuing an I/O request to a disk, or gaining access to more system
+resources such as CPU or memory?
+</p>
+
+<p>
+The approach we take is to introduce a new processor mode, known as user mode; code that
+runs in user mode is restricted in what it can do. For example, when running in user mode, a
+process can’t issue I/O requests; doing so would result in the processor raising an
+exception; the OS would then likely kill the process.
+</p>
+
+<p>
+In contrast to user mode is kernel mode, which the operating system (or kernel) runs in. In
+this mode, code that runs can do what it likes, including privileged operations such as
+issuing I/O requests and executing all types of restricted instructions.
+</p>
+
+
+<p>
+We are still left with a challenge, however: what should a user process do when it wishes to
+perform some kind of privileged operation, such as reading from disk? To enable this,
+virtually all modern hard- ware provides the ability for user programs to perform a system
+call.  Pioneered on ancient machines such as the Atlas, system calls allow the kernel to
+carefully expose certain key pieces of functionality to user programs, such as accessing the
+file system, creating and destroy- ing processes, communicating with other processes, and
+allocating more memory. Most operating systems provide a few hundred calls.
+</p>
+
+<p>
+To execute a system call, a program must execute a special trap instruction. This
+instruction simultaneously jumps into the kernel and raises the privilege level to kernel
+mode; once in the kernel, the system can now per- form whatever privileged operations are
+needed (if allowed), and thus do the required work for the calling process. When finished,
+the OS calls a special return-from-trap instruction, which, as you might expect, returns
+into the calling user program while simultaneously reducing the privilege level back to user
+mode.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org71c02d7" class="outline-3">
+<h3 id="org71c02d7">Problem #2: Switching Between Processes</h3>
+<div class="outline-text-3" id="text-org71c02d7">
+<p>
+The next problem with direct execution is achieving a switch between processes. Switching
+between processes should be simple, right? The OS should just decide to stop one process and
+start another. What’s the big deal? But it actually is a little bit tricky: specifically, if
+a process is running on the CPU, this by definition means the OS is not running<sup><a id="fnr.9" class="footref" href="#fn.9" role="doc-backlink">9</a></sup> . If the OS
+is not running, how can it do anything at all? (hint: it can’t) While this sounds almost
+philosophical, it is a real problem: there is clearly no way for the OS to take an action if
+it is not running on the CPU. Thus we arrive at the crux of the problem.
+</p>
+
+
+<p>
+One approach that some systems have taken in the past (for example, early versions of the
+Macintosh operating system, or the old Xerox Alto system) is known as the <b>cooperative
+approach</b>. In this style, the OS trusts the <i>processes</i> of the system to behave reasonably.
+Processes that run for too long are assumed to periodically give up the CPU so that the OS
+can decide to run some other task.
+</p>
+
+<p>
+Thus, you might ask, how does a friendly process give up the CPU in this utopian world? Most
+processes, as it turns out, transfer control of the CPU to the OS quite frequently by making
+system calls, for example, to open a file and subsequently read it, or to send a message to
+another machine, or to create a new process. Systems like this often include an explicit
+yield system call, which does nothing except to transfer control to the OS so it can run
+other processes.
+</p>
+
+<p>
+Applications also transfer control to the OS when they do something illegal. For example, if
+an application divides by zero, or tries to access memory that it shouldn’t be able to
+access, it will generate a trap to the OS. The OS will then have control of the CPU again
+(and likely terminate the offending process).
+</p>
+
+
+<p>
+Thus, in a cooperative scheduling system, the OS regains control of the CPU by waiting for a
+system call or an illegal operation of some kind to take place. You might also be thinking:
+isn’t this passive approach less than ideal? What happens, for example, if a process
+(whether malicious, or just full of bugs) ends up in an infinite loop, and never makes a
+system call? What can the OS do then?
+</p>
+
+<p>
+<b>The OS Takes Control</b>
+</p>
+
+<p>
+Without some additional help from the hardware, it turns out the OS can’t do much at all
+when a process refuses to make system calls (or mistakes) and thus return control to the OS.
+In fact, in the cooperative approach, your only recourse when a process gets stuck in an
+infinite loop is to resort to the age-old solution to all problems in computer systems:
+reboot the machine. Thus, we again arrive at a subproblem of our general quest to gain
+control of the CPU.
+</p>
+
+<p>
+The answer turns out to be simple and was discovered by a number of people building computer
+systems many years ago: a timer interrupt. A timer device can be programmed to raise an
+interrupt every so many milliseconds; when the interrupt is raised, the currently running
+process is halted, and a pre-configured interrupt handler in the OS runs.  At this point,
+the OS has regained control of the CPU, and thus can do what it pleases: stop the current
+process, and start a different one<sup><a id="fnr.10" class="footref" href="#fn.10" role="doc-backlink">10</a></sup> .
+</p>
+
+<p>
+As we discussed before with system calls, the OS must inform the hardware of which code to
+run when the timer interrupt occurs; thus, at boot time, the OS does exactly that. Second,
+also during the boot sequence, the OS must start the timer, which is of course a privileged
+operation. Once the timer has begun, the OS can thus feel safe in that control will
+eventually be returned to it, and thus the OS is free to run user programs. The timer can
+also be turned off (also a privileged operation), something we will discuss later when we
+understand concurrency in more detail.
+</p>
+
+<p>
+Note that the hardware has some responsibility when an interrupt occurs, in particular to
+save enough of the state of the program that was running when the interrupt occurred such
+that a subsequent return-from- trap instruction will be able to resume the running program
+correctly.  This set of actions is quite similar to the behavior of the hardware during an
+explicit system-call trap into the kernel, with various registers thus getting saved (e.g.,
+onto a kernel stack) and thus easily restored by the return-from-trap instruction.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org7ab2d95" class="outline-2">
+<h2 id="org7ab2d95">The Multi-Level Feedback Queue</h2>
+<div class="outline-text-2" id="text-org7ab2d95">
+<p>
+One of the most well-known approaches to scheduling is known as the Multi-level Feedback
+Queue.  was first described by Corbato et al. in 1962 [C+62] in a system known as the
+Compatible Time-Sharing System (CTSS), and this work, along with later work on Multics, led
+the ACM to award Corbato its highest honor, the Turing Award. The scheduler has subsequently
+been refined throughout the years to the implementations you will encounter in some modern
+systems.
+</p>
+
+<p>
+The fundamental problem MLFQ tries to address is two-fold. First, it would like to optimize
+turnaround time, which, as we saw in the previous note, is done by running shorter jobs
+first; unfortunately, the OS doesn’t generally know how long a job will run for, exactly the
+knowledge that algorithms like SJF (or STCF) require. Second, MLFQ would like to make a
+system feel responsive to interactive users (i.e., users sitting and staring at the screen,
+waiting for a process to finish), and thus minimize response time; unfortunately, algorithms
+like Round Robin reduce response time but are terrible for turnaround time. Thus, our
+problem: given that we in general do not know anything about a process, how can we build a
+scheduler to achieve these goals? How can the scheduler learn, as the system runs, the
+characteristics of the jobs it is running, and thus make better scheduling decisions?
+</p>
+
+<p>
+By now low-level mechanisms of running processes (e.g., context switching) should be clear;
+if they are not, go back a note or two, and read the description of how that stuff works
+again. However, we have yet to understand the high-level policies that an OS scheduler
+employs. We will now do just that, presenting a series of scheduling policies (sometimes
+called disciplines) that various smart and hard-working people have developed over the
+years.
+</p>
+
+
+<p>
+Each process have a parent, like a k-tree, the root/parent of all processes is the init
+process. If we have a process, let's say a parent process that excutes <code>fork()</code>, which
+creates a process <code>pid</code> in UNIX, when the process is created, both the process and its
+parent are running concurrently.
+</p>
+
+<p>
+Running concurrently means that both are actng and computing for the CPU, let a system have
+a single CPU
+</p>
+</div>
+</div>
+<div id="outline-container-orgdfaf763" class="outline-2">
+<h2 id="orgdfaf763"><span class="todo TODO">TODO</span> Lottery scheduling</h2>
+</div>
+<div id="outline-container-org6fc9c01" class="outline-2">
+<h2 id="org6fc9c01"><span class="todo TODO">TODO</span> Multi-CPU scheduling</h2>
+</div>
+<div id="outline-container-org629e367" class="outline-2">
+<h2 id="org629e367"><span class="todo TODO">TODO</span> Summary dialogue on cpu virtualization</h2>
+</div>
+<div id="outline-container-org66dcf2d" class="outline-2">
+<h2 id="org66dcf2d"><span class="todo TODO">TODO</span> A dialogue on memory virtualization</h2>
+</div>
+<div id="outline-container-org7159a44" class="outline-2">
+<h2 id="org7159a44"><span class="todo TODO">TODO</span> Address spaces</h2>
+</div>
+<div id="outline-container-org53cb895" class="outline-2">
+<h2 id="org53cb895"><span class="todo TODO">TODO</span> Memory API</h2>
+</div>
+<div id="outline-container-org4643793" class="outline-2">
+<h2 id="org4643793"><span class="todo TODO">TODO</span> Address translation</h2>
+</div>
+<div id="outline-container-org7ee2616" class="outline-2">
+<h2 id="org7ee2616"><span class="todo TODO">TODO</span> Segmentation</h2>
+</div>
+<div id="outline-container-org6a1d728" class="outline-2">
+<h2 id="org6a1d728"><span class="todo TODO">TODO</span> Free space management</h2>
+</div>
+<div id="outline-container-orgafbce46" class="outline-2">
+<h2 id="orgafbce46"><span class="todo TODO">TODO</span> Introduction to paging</h2>
+</div>
+<div id="outline-container-org8bd4a23" class="outline-2">
+<h2 id="org8bd4a23"><span class="todo TODO">TODO</span> Translation lookaside buffers</h2>
+</div>
+<div id="outline-container-orgcbe2089" class="outline-2">
+<h2 id="orgcbe2089"><span class="todo TODO">TODO</span> Advanced page tables</h2>
+</div>
+<div id="outline-container-orgfe35a25" class="outline-2">
+<h2 id="orgfe35a25"><span class="todo TODO">TODO</span> Swapping: mechanisms</h2>
+</div>
+<div id="outline-container-orgbc8e6a7" class="outline-2">
+<h2 id="orgbc8e6a7"><span class="todo TODO">TODO</span> Swapping: policies</h2>
+</div>
+<div id="outline-container-orgadc2fef" class="outline-2">
+<h2 id="orgadc2fef"><span class="todo TODO">TODO</span> Complete WM system</h2>
+</div>
+<div id="outline-container-org1a62a74" class="outline-2">
+<h2 id="org1a62a74"><span class="todo TODO">TODO</span> A dialogue on concurrency</h2>
+</div>
+<div id="outline-container-org5231461" class="outline-2">
+<h2 id="org5231461"><span class="todo TODO">TODO</span> Concurrency and threads</h2>
+</div>
+<div id="outline-container-orgeae8aa0" class="outline-2">
+<h2 id="orgeae8aa0"><span class="todo TODO">TODO</span> Thread API</h2>
+</div>
+<div id="outline-container-orge52ecc6" class="outline-2">
+<h2 id="orge52ecc6"><span class="todo TODO">TODO</span> Locks</h2>
+</div>
+<div id="outline-container-org9e52067" class="outline-2">
+<h2 id="org9e52067"><span class="todo TODO">TODO</span> Locked data structures</h2>
+</div>
+<div id="outline-container-org0dbf5c5" class="outline-2">
+<h2 id="org0dbf5c5"><span class="todo TODO">TODO</span> Condition variables</h2>
+</div>
+<div id="outline-container-orgca907ed" class="outline-2">
+<h2 id="orgca907ed"><span class="todo TODO">TODO</span> Semaphores</h2>
+</div>
+<div id="outline-container-org001cbd3" class="outline-2">
+<h2 id="org001cbd3"><span class="todo TODO">TODO</span> Concurrency bugs</h2>
+</div>
+<div id="outline-container-org6a991e0" class="outline-2">
+<h2 id="org6a991e0"><span class="todo TODO">TODO</span> Event-based concurrency</h2>
+</div>
+<div id="outline-container-org54966b6" class="outline-2">
+<h2 id="org54966b6"><span class="todo TODO">TODO</span> Summary dialogue on concurrency</h2>
+</div>
+<div id="outline-container-org5b877c8" class="outline-2">
+<h2 id="org5b877c8"><span class="todo TODO">TODO</span> Persistence</h2>
+</div>
+<div id="outline-container-org2a92259" class="outline-2">
+<h2 id="org2a92259"><span class="todo TODO">TODO</span> A Dialogue on Persistence</h2>
+</div>
+<div id="outline-container-org71d402f" class="outline-2">
+<h2 id="org71d402f"><span class="todo TODO">TODO</span> I/O Devices</h2>
+</div>
+<div id="outline-container-org89cdb55" class="outline-2">
+<h2 id="org89cdb55"><span class="todo TODO">TODO</span> Hard Disk Drives</h2>
+</div>
+<div id="outline-container-orgad3f8c4" class="outline-2">
+<h2 id="orgad3f8c4"><span class="todo TODO">TODO</span> Redundant Disk Arrays</h2>
+</div>
+<div id="outline-container-org61ba054" class="outline-2">
+<h2 id="org61ba054"><span class="todo TODO">TODO</span> Files And Directories</h2>
+</div>
+<div id="outline-container-org09a7b3e" class="outline-2">
+<h2 id="org09a7b3e"><span class="todo TODO">TODO</span> File System Implementation</h2>
+</div>
+<div id="outline-container-org19729ac" class="outline-2">
+<h2 id="org19729ac"><span class="todo TODO">TODO</span> Fast File System (FFS)</h2>
+</div>
+<div id="outline-container-org7e0b6fd" class="outline-2">
+<h2 id="org7e0b6fd"><span class="todo TODO">TODO</span> Fsck And Journaling</h2>
+</div>
+<div id="outline-container-orgd2e55a2" class="outline-2">
+<h2 id="orgd2e55a2"><span class="todo TODO">TODO</span> Log-Structured File System (LFS)</h2>
+</div>
+<div id="outline-container-org73c5726" class="outline-2">
+<h2 id="org73c5726"><span class="todo TODO">TODO</span> Flash-Based SSDs</h2>
+</div>
+<div id="outline-container-orgc033ce2" class="outline-2">
+<h2 id="orgc033ce2"><span class="todo TODO">TODO</span> Data Integrity And Protection</h2>
+</div>
+<div id="outline-container-org25c059b" class="outline-2">
+<h2 id="org25c059b"><span class="todo TODO">TODO</span> Summary Dialogue On Persistence</h2>
+</div>
+<div id="outline-container-org9d02e4a" class="outline-2">
+<h2 id="org9d02e4a"><span class="todo TODO">TODO</span> A Dialogue on Distribution</h2>
+</div>
+<div id="outline-container-org2a049a1" class="outline-2">
+<h2 id="org2a049a1"><span class="todo TODO">TODO</span> Distributed Systems</h2>
+</div>
+<div id="outline-container-orgfe0bf88" class="outline-2">
+<h2 id="orgfe0bf88"><span class="todo TODO">TODO</span> Network File System (NFS)</h2>
+</div>
+<div id="outline-container-org9d32705" class="outline-2">
+<h2 id="org9d32705"><span class="todo TODO">TODO</span> Andrew File System (AFS)</h2>
+</div>
+<div id="outline-container-org7d9dccd" class="outline-2">
+<h2 id="org7d9dccd"><span class="todo TODO">TODO</span> Summary Dialogue on Distribution</h2>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+An important note is that whenever an interrupt is generated, control is given for
+the kernel. The kernel is responsible for sending the request for the corresponding I/O
+device (from ISR table, so-called <i>interrupt-vector</i>).
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Implies the need of thinking of the resources available before implementing. ofc
+android devices will enjoy less battery usage, such a thing should be considered during
+designing the os.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Such needs might be ignored in some specifications, for example designing an os that
+would be used for embedded systems purpose.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Of course notice, that all of OSs IRL are hybrid.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+In such a design, if you are in the layer \(n\), you can only make calls for the \(n-1\)
+layer, so you cannot talk to the layer above it nor any of the layers under the \(n-1\) of
+course, it can be gathered recursively from \(n-1-k\), in which \(k\) is the number of the layer
+you are trying to reach, but here is a big performance issue since you have to stack many
+calls just to go though the layers under-hood, this is very expensive for an OS which is to
+be fast. Thus, the monolithic design wins in this comparison, however the layered one wins
+when it comes to software engineering.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+This is a design decision problem.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.7" class="footnum" href="#fnr.7" role="doc-backlink">7</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+This file is provided inside the Operating System Concepts book source code.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.8" class="footnum" href="#fnr.8" role="doc-backlink">8</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Why the processor need to know the register values? Well, it does not. However, the
+current processor might be stated to wait (paused for example), we need to store these
+values so we can resume using it again.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.9" class="footnum" href="#fnr.9" role="doc-backlink">9</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+It is not running, but it is loaded in memoery
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.10" class="footnum" href="#fnr.10" role="doc-backlink">10</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Defines by the CPU scheduler
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-04-30 Sun 00:44.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

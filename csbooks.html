@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Computer Science Books</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Computer Science Books</h1>
+</header><p>
+I do not like to talk about professional stuff here, but I was asked frequently about books
+on cretin topics related to the Computer Science field, so I decided to list the textbooks I
+used in my scholarly. Of course, lots of them I did not 'finish', the but they are favorable
+references to me.
+</p>
+
+
+<div id="outline-container-org2c6ada5" class="outline-2">
+<h2 id="org2c6ada5">Fundamental Books</h2>
+<div class="outline-text-2" id="text-org2c6ada5">
+<p>
+Those are mostly not books of 'recommendations', at least in my opinion. Those are the
+must-read books or, must known, references and books that any computer scientist should
+read (or crash with).
+</p>
+
+<ul class="org-ul">
+<li>Logic (Nicholas J. Smith)</li>
+<li><i><b>Structure and Interpretation of Computer Programs</b></i></li>
+<li>Discrete and Combinatorial Mathematics (Grimaldi)</li>
+<li>Calculus (Spivak)</li>
+<li>The Art of Unix Programming (Raymond)</li>
+<li>Operating Systems: Three Easy Pieces (Arpaci-Dusseau et. al)</li>
+<li>Computer Algebra and Polynomials (Guiterrez)</li>
+<li>Operating System Concepts (Silberschatz)</li>
+<li>The Art of Computer Programming</li>
+<li>Data Structures and Algorithm Analysis (Shaffer)</li>
+<li>An Introduction to Genetic Algorithms (Mitchell)</li>
+<li>Speech and Language Processing (Jurafsky et. al)</li>
+<li>Computer Organization and Design (Patterson et. al)</li>
+<li>Fundamentals of Computer Graphics Peter (Shirley)</li>
+<li>Digital Signal Processing (Proakis et. al)</li>
+<li>Signals and Systems (Ghosh)</li>
+<li>The Art of Concurrency (Breshears)</li>
+<li>Mathematical Theory of Communication (Claude Shannon)</li>
+<li>Introduction to Data Comparison (Sayood)</li>
+<li>Database System Concepts by Abraham Silberschatz</li>
+<li>Foundation of Cryptography (Goldreich)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgef09448" class="outline-2">
+<h2 id="orgef09448">Miscellaneous</h2>
+<div class="outline-text-2" id="text-orgef09448">
+<p>
+Those are very important writings, however they are more 'optional' if mentioned with the
+above list.
+</p>
+
+<ul class="org-ul">
+<li>Computational Geometry Algorithms and Applications (de Berg)</li>
+<li>Introduction into Data Comparison (Khalid)</li>
+<li>Coding Theory (Kuhn) ;; Very INTENSIVE book!</li>
+<li>Algorithms (Sedgewick)</li>
+<li>History of Programming Languages</li>
+<li>A Functional Pattern System for Object Oriented Programming</li>
+</ul>
+</div>
+<div id="outline-container-orge830f0b" class="outline-3">
+<h3 id="orge830f0b">Cryptography</h3>
+<div class="outline-text-3" id="text-orge830f0b">
+<ul class="org-ul">
+<li>Foundation of Cryptography (Goldreich)</li>
+<li>Cryptographical Mathematics (Lewand)</li>
+<li>A Course in Number Theory and Cryptography</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgbe581c1" class="outline-3">
+<h3 id="orgbe581c1">Databases</h3>
+<div class="outline-text-3" id="text-orgbe581c1">
+<ul class="org-ul">
+<li>Database Internal</li>
+<li>Querying Databases Privately (Asonov)</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org40d0eb0" class="outline-2">
+<h2 id="org40d0eb0">Books of Beauty</h2>
+<div class="outline-text-2" id="text-org40d0eb0">
+<p>
+The following are the books I most enjoyed, those that really <i>touched my souls inside</i>.
+</p>
+
+<ul class="org-ul">
+<li>Beauty is Our Business</li>
+<li>A Discipline of Programming</li>
+<li>Selected Writings on Computing: A Personal Perspective</li>
+<li>The Hacker's Dictionary</li>
+<li>A Functional Pattern System for Object-Oriented Design</li>
+<li>Hackers and Painters</li>
+<li>Core Techniques and Algorithms in Game Programming</li>
+</ul>
+
+
+<blockquote>
+<p>
+I hate games and I'm not into game programming, but it was very fun to read this book.
+</p>
+</blockquote>
+
+
+<ul class="org-ul">
+<li>Structured Computer Organization (Tanenbaum)</li>
+<li>UNIX: A History and a Memoir (Kernighan)</li>
+<li>The Mythical Man-Month (Brooks)</li>
+<li>Understanding Cryptography (Christof Paar)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgab3b092" class="outline-2">
+<h2 id="orgab3b092">Distrubuted Systems</h2>
+<div class="outline-text-2" id="text-orgab3b092">
+<ul class="org-ul">
+<li>Building Event-Driven Microservices</li>
+<li>Container Security</li>
+<li>Designing Distributed Systems (Burns)</li>
+<li>Distributed Services with Go</li>
+<li>Docker Deep Dive (Poulton)</li>
+<li>Distributed Source Coding</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orga8746a0" class="outline-2">
+<h2 id="orga8746a0">Unscientific</h2>
+<div class="outline-text-2" id="text-orga8746a0">
+<p>
+Books that focuses on applications rather than theory. They are just matters of my choice,
+please ignore them.
+</p>
+</div>
+<div id="outline-container-org17073f9" class="outline-3">
+<h3 id="org17073f9">Languages</h3>
+<div class="outline-text-3" id="text-org17073f9">
+<ul class="org-ul">
+<li>On Lisp</li>
+<li>Practical Common Lisp</li>
+<li>A Gentle Introduction to Symbolic Computation</li>
+<li>Let Over Lambda</li>
+<li>Learning Perl (Schwartz et. al)</li>
+<li>Pro Go (Freeman)</li>
+<li>Concurrency in Go (Cox-Buday)</li>
+<li>100 Go Mistakes (Harsanyi)</li>
+<li>Writing a Compiler In Go (Ba)</li>
+<li>Writing an Interpreter In Go (Ba)</li>
+<li>Concurrency in Go (Cox-Buday)</li>
+<li>C# (J. Price)</li>
+<li>System Analysis &amp; Design (Dennis)</li>
+<li>Object Thinking (West)</li>
+<li>Common Lisp (Touretzky)</li>
+<li>Bash (Vossen)</li>
+
+<li>Common Lisp Recipes</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org2a7aaa2" class="outline-3">
+<h3 id="org2a7aaa2">Bad Books</h3>
+<div class="outline-text-3" id="text-org2a7aaa2">
+<p>
+Do not read those.
+</p>
+<ul class="org-ul">
+<li>The Pragmatic Programmer (Thomas et. al)</li>
+</ul>
+
+
+<blockquote>
+<p>
+I found an Egyptian programmer once in YouTube treats this book (Book? I wrote more
+organized Facebook posts than that) like a Bible.
+</p>
+</blockquote>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-06-01 Thu 01:11.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

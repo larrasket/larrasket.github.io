@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Andy Tanenbaum hasn’t learned anything</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Andy Tanenbaum hasn’t learned anything</h1>
+</header><dl class="org-dl">
+<dt>tags</dt><dd>Org files</dd>
+</dl>
+
+<div class="PREVIEW" id="orgb9302fd">
+<p>
+I found this old email by Rob Pike, Dave Presotto, Ken Thompson and Phil Winterbottom titled
+"Andy Tanenbaum hasn’t learned anything". Now I can tell why they were named gang.
+</p>
+
+</div>
+
+
+<pre class="example" id="org11907f4">
+The implementers of Plan 9 are baffled by Andy Tanenbaum's recent posting.
+We suspect we are not representative of the mainline view, but we disagree
+at some level with most of the "GENERALLY ACCEPTED" truths Andy claims.
+Point by point:
+
+   - The client-server paradigm is a good one
+        Too vague to be a statement.  "Good" is undefined.
+   - Microkernels are the way to go
+        False unless your only goal is to get papers published.
+        Plan 9's kernel is a fraction of the size of any microkernel
+        we know and offers more functionality and comparable
+        or often better performance.
+   - UNIX can be successfully run as an application program
+        `Run' perhaps, `successfully' no.  Name a product that succeeds
+        by running UNIX as an application.
+   - RPC is a good idea to base your system on
+        Depends on what you mean by RPC.  If you predefine the complete
+        set of RPC's, then yes.  If you make RPC a paradigm and expect
+        every application to build its own (c.f. stub compilers), you
+        lose all the discipline you need to make the system comprehensive.
+   - Atomic group communication (broadcast) is highly useful
+        Perhaps.  We've never used it or felt the need for it.
+   - Caching at the file server is definitely worth doing
+        True, but caching anywhere is worthwhile.  This statement is
+        like saying 'good algorithms are worth using.'
+   - File server replication is an idea whose time has come
+        Perhaps.  Simple hardware solutions like disk mirroring solve a
+        lot of the reliability problems much more easily.  Also, at least
+        in a stable world, keeping your file server up is a better way to
+        solve the problem.
+   - Message passing is too primitive for application programmers to use
+        False.
+   - Synchronous (blocking) communication is easier to use than asynchronous
+        They solve different problems.  It's pointless to make the distinction
+        based on ease of use.  Make the distinction based on which you need.
+   - New languages are needed for writing distributed/parallel applications
+        `Needed', no.  `Helpful', perhaps.  The jury's still out.
+   - Distributed shared memory in one form or another is a convenient model
+        Convenient for whom?  This one baffles us: distributed shared memory
+        is a lousy model for building systems, yet everyone seems to be
+        doing it.  (Try to find a PhD this year on a different topic.)
+
+How about the "CONTROVERSIAL" points?  We should weigh in there, too:
+
+   - Client caching is a good idea in a system where there are many more
+        nodes than users, and users do not have a "home" machine (e.g., hypercubes)
+        What?
+   - Atomic transactions are worth the overhead
+        Worth the overhead to whom?
+   - Causal ordering for group communication is good enough
+        We don't use group communication, so we don't know.
+   - Threads should be managed by the kernel, not in user space
+        Better: have a decent process model and avoid this process/thread
+        dichotomy.
+</pre>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-06-01 Thu 01:17.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

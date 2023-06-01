@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Archive and Drafts</title>
+<meta name="author" content="Saleh" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Archive and Drafts</h1>
+</header>
+<div id="outline-container-org44402c6" class="outline-2">
+<h2 id="org44402c6">Archive</h2>
+<div class="outline-text-2" id="text-org44402c6">
+</div>
+<div id="outline-container-org59da804" class="outline-3">
+<h3 id="org59da804"><a href="csarchive/js.html">(2023-01-29) Quick JavaScript</a></h3>
+<div class="outline-text-3" id="text-org59da804">
+<p>
+Reading Matuszek's Quick Javascript
+</p>
+</div>
+</div>
+<div id="outline-container-org31bad3a" class="outline-3">
+<h3 id="org31bad3a"><a href="csarchive/8086.html">(2022-11-19) 8086 assembler</a></h3>
+<div class="outline-text-3" id="text-org31bad3a">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-orgf779d29" class="outline-3">
+<h3 id="orgf779d29"><a href="csarchive/cc.html">(2022-11-17) POV: You Just Read Clean Code</a></h3>
+<div class="outline-text-3" id="text-orgf779d29">
+<p>
+I recently subscribed to the daily WTF, and I'm really happy to see other people who
+experienced that feelings of reading ugly, too ugly code. I decided to devote this page to
+list the most remarkable daily WTFs I've seen since Nov 2022.
+</p>
+</div>
+</div>
+<div id="outline-container-orgef333b0" class="outline-3">
+<h3 id="orgef333b0"><a href="csarchive/grpc.html">(2022-11-11) gRPC Overview (Connection Between)</a></h3>
+<div class="outline-text-3" id="text-orgef333b0">
+<p>
+<i>(This document is collected from various resources)</i>
+</p>
+</div>
+</div>
+<div id="outline-container-orgb21a305" class="outline-3">
+<h3 id="orgb21a305"><a href="csarchive/os.html">(2022-08-01) Introduction into Operating Systems</a></h3>
+<div class="outline-text-3" id="text-orgb21a305">
+<p>
+Although there are many practitioners of computer science, only a small percentage of them
+will be involved in the creation or modification of an operating system. Why, then, study
+operating systems and how they work? Simply because, as almost all code runs on top of an
+operating system, knowledge of how operating systems work is crucial to proper, efficient,
+effective, and secure programming. Understanding the fundamentals of operating systems, how
+they drive computer hardware, and what they provide to applications is not only essential to
+those who program them but also highly useful to those who write programs on them and use
+them.
+</p>
+</div>
+</div>
+<div id="outline-container-orgebd8b55" class="outline-3">
+<h3 id="orgebd8b55"><a href="csarchive/fixing_the_coding_interview.html">(2022-06-23) Fixing The Coding Interview</a></h3>
+<div class="outline-text-3" id="text-orgebd8b55">
+<p>
+We've cracked more than enough.
+</p>
+</div>
+</div>
+<div id="outline-container-org0b46dd2" class="outline-3">
+<h3 id="org0b46dd2"><a href="csarchive/sql.html">(2022-04-22) Introduction to The Relational Language</a></h3>
+<div class="outline-text-3" id="text-org0b46dd2">
+<p>
+IBM developed the original version of SQL, originally called Sequel, as part of the
+System R project in the early 1970s. The Sequel language has evolved since then, and its
+name has changed to SQL (Structured Query Language). Many products now support
+the SQL language. SQL has clearly established itself as the standard relational database
+language.
+</p>
+</div>
+</div>
+<div id="outline-container-org54ac03d" class="outline-3">
+<h3 id="org54ac03d"><a href="csarchive/buildapi.html">(2022-04-02) Building a RESTful API</a></h3>
+<div class="outline-text-3" id="text-org54ac03d">
+<p>
+The Richardson Maturity Model is a model developed by Leonard Richardson. It grades, if you
+will, APIs by the their RESTful maturity. So it's interesting to look at it, as it shows us
+how we can go from a simple API that doesn't really care about protocol, nor standards. To
+an API, that can be considered RESTful.
+</p>
+</div>
+</div>
+<div id="outline-container-org88c6f08" class="outline-3">
+<h3 id="org88c6f08"><a href="csarchive/f.html">(2022-02-28) Working With Files and Streams in C#</a></h3>
+<div class="outline-text-3" id="text-org88c6f08">
+<p>
+I was thinking in the first place to make this file just a part of the major C# note file,
+but I believe that I might and will face a lot of filesystem topics, however I'm sure I will
+not ever solve such a problem using C# (don't shout, microsoft kid), but surely it will be
+useful to know. (Actually no, it probably will not but I Wall feel insecure if I didn't know
+it).
+</p>
+</div>
+</div>
+<div id="outline-container-orgbad1c08" class="outline-3">
+<h3 id="orgbad1c08"><a href="csarchive/json.html">(2022-02-14) JSON in C# Using Json.NET</a></h3>
+<div class="outline-text-3" id="text-orgbad1c08">
+<p>
+One of the most popular .NET libraries for working with the JSON serialization
+format is Newtonsoft.Json, known as Json.NET. It is mature and powerful.
+</p>
+</div>
+</div>
+<div id="outline-container-orgfdf36f7" class="outline-3">
+<h3 id="orgfdf36f7"><a href="csarchive/s.html">(2022-01-10) System Analysis &amp; Design</a></h3>
+<div class="outline-text-3" id="text-orgfdf36f7">
+<p>
+The systems development life cycle (SDLC), contains the fundamental four- phase model
+(planning, analysis, design, and implementation) common to all information  systems
+development projects. It describes the evolution of system development method- ologies and
+discusses the roles and skills required of a systems analyst. Th e chapter then  overviews
+the basic characteristics of object-oriented systems and the fundamentals of object-oriented
+systems analysis and design and closes with a description of the Unified Process and its
+extentions and Unified Modeling Language
+</p>
+</div>
+</div>
+<div id="outline-container-org0a2f2ed" class="outline-3">
+<h3 id="org0a2f2ed"><a href="csarchive/csharp.html">(2022-01-09) .NET Notes in C#</a></h3>
+<div class="outline-text-3" id="text-org0a2f2ed">
+<p>
+C# indicates the end of a statement with a semicolon. A statement can be composed of
+multiple variables and expressions. For example, in the following statement, <code>totalPrice</code> is a
+variable and <code>subtotal + salesTax</code> is an expression:
+</p>
+</div>
+</div>
+<div id="outline-container-orgebe4d93" class="outline-3">
+<h3 id="orgebe4d93"><a href="csarchive/psql.html">(2022-01-09) PostgreSQL Notes</a></h3>
+<div class="outline-text-3" id="text-orgebe4d93">
+<p>
+PostgreSQL mini-cookbook
+</p>
+</div>
+</div>
+<div id="outline-container-orge8cab6d" class="outline-3">
+<h3 id="orge8cab6d"><a href="csarchive/linq.html">(2022-01-09) LINQ Notes</a></h3>
+<div class="outline-text-3" id="text-orge8cab6d">
+<p>
+The original motivation behind LINQ was to address the conceptual and tech- nical
+difficulties encountered when using databases with .NET programming lan- guages. With LINQ,
+Microsoft’s intention was to provide a solution for the problem of object-relational
+mapping, as well as to simplify the interaction between objects and data sources. LINQ
+eventually evolved into a general-purpose language-integrated querying toolset. This toolset
+can be used to access data com- ing from in-memory objects (LINQ to Objects), databases
+(LINQ to SQL), XML documents (LINQ to XML), a file-system, or any other source.
+</p>
+</div>
+</div>
+<div id="outline-container-org8006371" class="outline-3">
+<h3 id="org8006371"><a href="csarchive/api.html">(2021-03-22) Designing RESTful APIs</a></h3>
+<div class="outline-text-3" id="text-org8006371">
+<p>
+I'm not going to talk about how to implement these web APIs, but talk about the design
+aspects of how to design them so that they're easier to use and easier to maintain. The goal
+here is for you to understand REST's role in creation of this API, not to simply adhere to
+the dogma that surrounds REST. I want to introduce you to a way of designing APIs that's
+pragmatic and simple.
+</p>
+</div>
+</div>
+<div id="outline-container-org215bdf0" class="outline-3">
+<h3 id="org215bdf0"><a href="csarchive/db.html">(2021-03-05) Relational Database Design &amp; Modeling</a></h3>
+<div class="outline-text-3" id="text-org215bdf0">
+<p>
+Nowadays, when people talk about a database, they usually refer to a Relational database,
+but that has not always been the case. In fact, the term database is defined, by the Merriam
+Webster English dictionary as, a "usually large collection of data organized especially for
+rapid search and retrieval (as by a computer)". The Relational model is one way to organize
+a large collection of data, but not the only one.
+</p>
+</div>
+</div>
+<div id="outline-container-orgebd49af" class="outline-3">
+<h3 id="orgebd49af"><a href="csarchive/solid.html">(2020-04-04) SOLID Design Principles</a></h3>
+<div class="outline-text-3" id="text-orgebd49af">
+<p>
+The SOLID design principles are guidelines for building software that is easier to
+understand and maintain while also being more flexible.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgdf21a3b" class="outline-2">
+<h2 id="orgdf21a3b">Drafts</h2>
+<div class="outline-text-2" id="text-orgdf21a3b">
+</div>
+<div id="outline-container-org6eef5b8" class="outline-3">
+<h3 id="org6eef5b8"><a href="csdraft/tsql.html">(2022-08-03) T/SQL Cookbook</a></h3>
+<div class="outline-text-3" id="text-org6eef5b8">
+<p>
+T/SQL mini-cookbook, with SQL Server exclusive notes
+</p>
+</div>
+</div>
+<div id="outline-container-orgfa17498" class="outline-3">
+<h3 id="orgfa17498"><a href="csdraft/ef.html">(2022-03-21) Entity Framework</a></h3>
+<div class="outline-text-3" id="text-orgfa17498">
+<p>
+Entity Framework Core, or EF Core, is a library that software developers can use to
+access databases. There are many ways to build such a library, but EF Core is
+designed as an object-relational mapper (O/RM). O/RMs work by mapping between
+two worlds: the relational database, with its own API, and the object-oriented soft-
+ware world of classes and software code. EF Core’s main strength is allowing software
+developers to write database access code quickly in a language that you may know
+better than SQL.
+</p>
+</div>
+</div>
+<div id="outline-container-orgfae2524" class="outline-3">
+<h3 id="orgfae2524"><a href="csdraft/con.html">(2022-01-09) Concurrency</a></h3>
+<div class="outline-text-3" id="text-orgfae2524">
+<p>
+The following text is based on <i>Concurrency in C# Cookbook: Asynchronous, Parallel, and
+Multithreaded Programming</i> by Stephen Cleary
+</p>
+</div>
+</div>
+<div id="outline-container-orgc4409b0" class="outline-3">
+<h3 id="orgc4409b0"><a href="csdraft/mvc.html">(2022-01-08) Introduction Into ASP.NET Core</a></h3>
+<div class="outline-text-3" id="text-orgc4409b0">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-org0211aa2" class="outline-3">
+<h3 id="org0211aa2"><a href="csdraft/prlsm.html">(2021-11-16) Concurrency: OS Approach</a></h3>
+<div class="outline-text-3" id="text-org0211aa2">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-org7f1751c" class="outline-3">
+<h3 id="org7f1751c"><a href="csdraft/arch.html">(2021-03-27) Introduction to Computer architecture</a></h3>
+<div class="outline-text-3" id="text-org7f1751c">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Saleh. Last build date: 2023-04-30 Sun 00:44.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

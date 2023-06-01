@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Case Study: Implementing a "towards" Error-free Arabic Stemming Algorithm</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link href="https://fonts.cdnfonts.com/css/times-new-roman" rel="stylesheet">
+<script async src="//static.getclicky.com/101390423.js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+
+        <style>
+        /* From: https://endlessparentheses.com/public/css/endless.css */
+        /* See also: https://meta.superuser.com/questions/4788/css-for-the-new-kbd-style */
+        kbd
+        {
+          -moz-border-radius: 6px;
+          -moz-box-shadow: 0 1px 0 rgba(0,0,0,0.2),0 0 0 2px #fff inset;
+          -webkit-border-radius: 6px;
+          -webkit-box-shadow: 0 1px 0 rgba(0,0,0,0.2),0 0 0 2px #fff inset;
+          background-color: #f7f7f7;
+          border: 1px solid #ccc;
+          border-radius: 6px;
+          box-shadow: 0 1px 0 rgba(0,0,0,0.2),0 0 0 2px #fff inset;
+          color: #333;
+          display: inline-block;
+          font-family: 'Droid Sans Mono', monospace;
+          font-size: 80%;
+          font-weight: normal;
+          line-height: inherit;
+          margin: 0 .1em;
+          padding: .08em .4em;
+          text-shadow: 0 1px 0 #fff;
+          word-spacing: -4px;
+        
+          box-shadow: 2px 2px 2px #222; /* MA: An extra I've added. */
+        }
+        </style>
+        <link rel="stylesheet" type="text/css" href="https://alhassy.github.io/org-special-block-extras/tooltipster/dist/css/tooltipster.bundle.min.css"/>
+        
+        <link rel="stylesheet" type="text/css" href="https://alhassy.github.io/org-special-block-extras/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-punk.min.css" />
+        
+        <script type="text/javascript">
+            if (typeof jQuery == 'undefined') {
+                document.write(unescape('%3Cscript src="https://code.jquery.com/jquery-1.10.0.min.js"%3E%3C/script%3E'));
+            }
+        </script>
+        
+         <script type="text/javascript"            src="https://alhassy.github.io/org-special-block-extras/tooltipster/dist/js/tooltipster.bundle.min.js"></script>
+        
+          <script>
+                 $(document).ready(function() {
+                     $('.tooltip').tooltipster({
+                         theme: 'tooltipster-punk',
+                         contentAsHTML: true,
+                         animation: 'grow',
+                         delay: [100,500],
+                         // trigger: 'click'
+                         trigger: 'custom',
+                         triggerOpen: {
+                             mouseenter: true
+                         },
+                         triggerClose: {
+                             originClick: true,
+                             scroll: true
+                         }
+         });
+                 });
+             </script>
+        
+        <style>
+           abbr {color: red;}
+        
+           .tooltip { border-bottom: 1px dotted #000;
+                      color:red;
+                      text-decoration: none;}
+        </style>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+    <a style="text-decoration:none" accesskey="h" href="/index.html"> Home </a> /
+    <a style="text-decoration:none" href="https://luggages.github.io/dynk/index.html">Gallery</a> /
+    <a style="text-decoration:none" accesskey="H" href="/stack.html">Stack</a> 
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Case Study: Implementing a "towards" Error-free Arabic Stemming Algorithm</h1>
+</header><p>
+Recently, I've planned to start working on a project that is supposed to help
+improving the current distasteful state of Arabic language toolchaining
+generally and online Arabic dictionaries specifically (not specifically yet but
+at least it is our main project). Building a software dictionary generally needs
+a decent capability of doing words stemming.
+</p>
+
+<div id="outline-container-org66bde40" class="outline-2">
+<h2 id="org66bde40">Languages Stemming</h2>
+<div class="outline-text-2" id="text-org66bde40">
+<p>
+Solving this problem is being a little bit easy in the case of latin languages,
+especially English and there is adequate amount of already-working programs and
+algorithms that works fast and efficiently. A ubiquitous one is the <a href="https://snowballstem.org/">Snowball
+Stemming Algorithms</a> Which supports a longish list of languages<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>, obviously
+Arabic is not one of them.
+</p>
+
+<pre class="example" id="org64d62bd">
+connection
+connections
+connective          ---&gt;   connect
+connected
+connecting
+</pre>
+
+
+<p>
+The principles for doing stemming are also well designed to deal with latin
+words, for example see the following rules for removing endings from words:
+</p>
+
+<pre class="example" id="orge2d292d">
+  -IC (adj) -+-&gt;  -ATION (noun)
+             +-&gt;  -ITY (noun)
+             +-&gt;  -MENT (adv)
+             \-&gt;  -AT (verb)     -+-&gt;   -IV (adj)    -+-&gt;   -ITY (noun)
+                                  |                   \-&gt;   -MENT (adv)
+                                  \-&gt;   -OR (noun)
+
+-ABLE (adj) -+-&gt;  -ITY (noun)
+             \-&gt;  -MENT (adv)
+
+ -OUS (adj) ---&gt;  -MENT (adv)
+</pre>
+
+<p>
+When it comes to doing Arabic stemming, however, the job is a little bit harder
+and we will have to do more work as just removing endings (and even appendage in
+the start, in some languages) will never work in Arabic, because word
+forms are not being structured by extensions/removals. Take التاريخ which being
+fully stemmed to أرخ, another example is الاتصال -&gt; وصل, you can never find a
+static rules as it with English algorithms.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org219223b" class="outline-2">
+<h2 id="org219223b">Current Techniques of Arabic Stemming,</h2>
+<div class="outline-text-2" id="text-org219223b">
+<p>
+Let's start by going through a brief example of current used techniques of
+Arabic stemming.
+</p>
+</div>
+
+
+<div id="outline-container-org5cfc1c4" class="outline-3">
+<h3 id="org5cfc1c4">Khoja S, 1999<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup></h3>
+<div class="outline-text-3" id="text-org5cfc1c4">
+<p>
+Dr. <a href="http://zeus.cs.pacificu.edu/shereen/research.htm#research">Shreen Khoja</a> developed one of the earliest stemming algorithms, for some
+reason she developed the main implementation in a Java GUI which was a little
+painful to both understand the algorithm code in Java and to get it to work as
+well. Khoja algorithm does
+</p>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Armenian, Basque, Catalan, Danish, Dutch, English, Finnish, French, German,
+Hungarian, Italian, Norwegian, Portuguese, Romanian, Russian, Spanish, Swedish,
+and Turkish
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Khoja S., Garside R., "Stemming Arabic text", Computer Science Department,
+Lancaster University, Lancaster, UK, 1999.
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="date">Date: 2023-03-09 Thu 23:06</p>
+<p class="author">Author: Salih Muhammed</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

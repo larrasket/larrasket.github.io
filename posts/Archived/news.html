@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Where to get news?</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Where to get news?</h1>
+</header><div class="PREVIEW" id="org5f695d4">
+<p>
+And why this blog does not provide RSS/Atom feeds or notification updates?
+</p>
+
+</div>
+
+
+<div id="outline-container-orgc5caee9" class="outline-2">
+<h2 id="orgc5caee9">Why this site does not provide RSS/Atom feeds or notification updates?</h2>
+<div class="outline-text-2" id="text-orgc5caee9">
+<p>
+Because it should not, and if you care about such a thing like 'being notified' about each
+new entry so you can make sure that you will never miss a beat to consume the wisdom, fun,
+tech stuff or whatever you believe this blog to provide you with, that you want to make the
+best of each entry here, then those entries aren't probably written for you.
+</p>
+
+<p>
+There are two main reasons for that, the first one is that I wrote this blog with intention,
+as Nietzsche describes: (and I quote this a lot, it's one of my favorite preachings of his):
+</p>
+
+<blockquote>
+<p>
+A DIGRESSION.—[..] This is not intended to be read through at once, or to be read aloud. It
+is intended more particularly for reference, especially on our walks and travels: we must
+take it up and put it down again after a short reading, and, more especially, we ought not
+to be amongst our usual surroundings.<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>
+</p>
+
+<p>
+توقفٌ- هذا لم يكتب ليقرأ من البداية للنهاية بسرعة، ولا أن يقرأ بصوتٍ مسموع؛ على القارئ أن يفتحه
+أغلب الوقت، خاصة وهو يتفسح أو وهو مسافر؛ يجب أن يستطيع الغوص إلى أعماقه، ثم ينظر حوله فلا يرى
+شيئًا مألوفًا.
+</p>
+</blockquote>
+
+<p>
+Most importantly; I do see an issue in looking forward for the consumption of content, such
+willingness is not regular for poise and self-realization. This place should never be a
+place of interest for anyone.
+</p>
+</div>
+</div>
+<div id="outline-container-orge00afba" class="outline-2">
+<h2 id="orge00afba">Where to read news?</h2>
+<div class="outline-text-2" id="text-orge00afba">
+<p>
+For the digitally youngers of you who weren't there in the era of google reader and the
+assumptive dependency of RSS XML feed readers; you can check <a href="https://www.d.umn.edu/itss/training/online/webdesign/rss.html">this page</a> to learn more about
+it. Basically it was none-bullshit way to get feed updates: instead of reloading the BBC
+homepage every 10 minutes to check for news, you simply follow the XML feeds that they provide.
+</p>
+
+<p>
+Why people stopped doing this? It is not clear to be frank. But I anticipate that this is
+related to Google killing Google Reader; obviously many stupid people (i.e. the majority of
+who live with us in the planet) assumed that it means that there is no RSS anymore.
+Nonetheless, I think that it has to do much with social media platforms, since you can just
+follow the BBC page by hitting a button, and get the news feed mixed with your friends edgy
+internet posts.
+</p>
+
+<p>
+However, this led to a bigger problem. Bigger than what? Well, there is a main problem, you
+see; the BBC is just a mean of propaganda, if you would depend on such a resource, you
+already committed your first blunder<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>; although back then people used to have multiple
+RSS provider (let's say AP and BBC).
+</p>
+
+<p>
+The thing with RSS/Atom feeds, is that it can't be centralized, controlled, filtered because
+it's a very basic and minimal technology, it's up to your feed reader to do all of this (if
+it would, and even in the case of Google Reader, a corporate-based reader, it wouldn't). The
+reader is the only centralized piece in this pipeline and it's not probably controlled<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup>.
+</p>
+
+<p>
+What people went to, on the other hand, is using not just a centralized; but a
+mind-washing-based, correctness-oriented mind-engineering platforms to sort, choose,
+recommend the news feeds for them.
+</p>
+
+
+
+<figure id="orgada133d">
+<a href="#" onclick="toggleImage(this, '&quot;https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public//news/2023-01-19_06-17-18_screenshot.png&quot;')">Click here to show the image</a><div class="image-container" style="display:none"><img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public//news/2023-01-19_06-17-18_screenshot.png" alt=""></div>
+
+</figure>
+
+
+<p>
+Using this method establish a new set of means of mind controlling (beyond that one that
+excited before). I'm taking an advantage of the fact that most readers of this blog know
+already about the incident that exposed how social media platforms are used to manipulate
+the public's mind.
+</p>
+
+<p>
+In fine, even if you are satisfied with propagandized content from top publishers like the
+BBC and F*ance24, do not fetch them through another mind controlling set.
+</p>
+
+<p>
+So, what to do about that? Thankfully 99% of websites and news providers still have XML
+entries (even if they don't use/know about it, for instance, all wordpress sites generate
+rss routes automatically), you can just pick a proper RSS/Atom reader and use it.
+</p>
+
+<p>
+Remember, whoever controls the media controls your minds;
+</p>
+
+<blockquote>
+<p>
+<i>"Propaganda is major component in all power systems, both secular and
+religious; false propaganda is a major component of unprincipled power systems.
+All power systems endeavor to convince their subjects that the system is good,
+just, beneficent and noble, as well as worthy of perpetuation and defense. The
+more jingoistic propaganda issued, the more suspicious one should be of its truth."</i>
+</p>
+</blockquote>
+
+<p>
+Of course, the way that social media choose you feeds (and sort them) is not always about
+what the juice lobby paid them to do for them, the but most of the time it is
+profit-oriented, which can be either unhealthy (in some hows) or unuseful as expected (like
+not getting the educative feeds that you are waiting for from some video creator, instead
+you get consumable content of trendy/sexualized content<sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup>). For most people, getting
+weaned from social media addiction and basically removing these malware from your life can
+be more effective.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org26a20dc" class="outline-2">
+<h2 id="org26a20dc">Highly recommended further reading</h2>
+<div class="outline-text-2" id="text-org26a20dc">
+<ul class="org-ul">
+<li>Crystallizing Public Opinion</li>
+<li>Manufacturing Consent (Chomsky)</li>
+<li>Understanding Power (Chomsky)</li>
+<li>Selling Apartheid (Nixon)</li>
+</ul>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Nietzsche, Friedrich. The Dawn of Day, Translated by John McFarland Kennedy, The Macmillan Company. , p. 288.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Learn more. Read: Media Control (Chomsky), The Propaganda Model Today, Propaganda and the Public Mind (Chomsky)
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Of course the feed providers could be controlled instead.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Here we can feel the advantage of a neutral feed reader.
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html") {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.4). Author: Salih Muhammed. Last build date: 2023-04-30 Sun 00:44.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

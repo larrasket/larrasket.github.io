@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TOR with FoxyProxy (RelyBridges Enabled)</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">TOR with FoxyProxy (RelyBridges Enabled)</h1>
+</header><dl class="org-dl">
+<dt>tags</dt><dd>Org files</dd>
+</dl>
+
+
+<div class="PREVIEW" id="org6e4e79f">
+<p>
+This post was written ~3 months ago, however, for some reason TOR couldn't work anymore with
+my ISP in Cairo, so I had to use bride with some g custom configuration.
+</p>
+
+</div>
+
+
+<p>
+كذب الي قال إن الحظر مش بيُجدي وإن الناس هتجري على الممنوع المرغوب وتفتح VPN؛ ويكأن الـVPN هو
+أمر سلس، بسيط، سريع، إيفيشنت والذي منه، يقدر يعمله عم سعد وهو قاعد على المصطبه بعد ما فتح
+لينك الجزيرة الوثائقية بتاع عالم الحيوان ومشتغلش معاه.. حتى لو هو أعلم بتيكنولوجي الفيرشوال
+بريايفت نيتورك، مثلي، محدش هيروح يعمل مشوار الاتصال بالبروكسي علشان يتفرج على مشهد من عالم
+الحيوان أو يقرا سطرين لمعارضة فارغة.
+</p>
+
+<p>
+وفي الواقع مشكلة الحظر في مصر تتخطى المشاكل السياسية، هي عملية غير منضبطة تمامًا راح فيها
+مواقع كتير بشكل غير مفهوم، إضاءات ظل محظور لفترة طويلة في مصر (وعلى ما أعتقد فُك الحظر) بدون
+سبب واضح (على الأغلب أحد العاملين بأجهزة الحظر شاف مقال معجبهوش) وفي إحدى المرات موقع bit.ly
+فضل محظور لفترة, تقريبًا عشان موقع معارض كان بيستخدمه كshortening service؛ فلما اتحظر الموقع
+اتحظر bit.ly معاه.
+</p>
+
+<p>
+ما علينا من كل هذا، المشكلة الي كنت بعاني منها هي إني لو في يوم ما احتجت إني أفتح إضاءات أو
+القدس العربي وهما محظورين، كنت بروح مشاور كبير لحد ما الاقي vpn شغال يقدر يفتحهم ويconnect
+معايا. وكان فيه طريق تاني وهو إني استخدم tor browser عشان افتحهم بس كنت بكسل أستنى الtor
+connection لحد ما يتم, فلقيت طريقة لطيفة من حوالي سنتين تسهل البروسيس دي, وهي foxy proxy.
+</p>
+
+<p>
+فوكسي بروكسي عندهم تول جميلة بتعمل VPN management, كل الي بيحصل إنك بتكتب wildcard أو regex
+إكسبرشن وبتديلهم البروكسي بتاعك (هيكون تور إن شاء الله). وبس. في أي مره هتدخل على URL
+بيmatch مع الإكسبرشن الي انت حطيته, هيستخدم تلقائيًا البروكسي بتاعك, وانت مش هتحس ان فيه اي
+حاجه حصلت. بس منين هنجيب البروكسي؟ صعب تلاقي static free proxy تستخدمه على طول ومتحتجش
+تغيره.. وكمان فري. فعشان كدا ممكن تستخدم Tor كproxy services.
+</p>
+
+<div id="outline-container-orga72207f" class="outline-2">
+<h2 id="orga72207f">Configuring Tor as Proxy Services on Unix</h2>
+<div class="outline-text-2" id="text-orga72207f">
+<p>
+هتحتاج تنزل tor و torsocks من الpackage manager بتاعك، بعدين هتفعل التور سيرفيس:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell">$ sudo systemctl enable --now tor.service
+</pre>
+</div>
+
+<p>
+اتأكد إنها اشتغلت:
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">$ systemctl status tor.service
+</pre>
+</div>
+
+<p>
+جرب تشوف الأي بي بتاعك حاليا من التيرمنال:
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">$ wget -qO - https://api.ipify.org; <span style="font-weight: bold;">echo</span>
+</pre>
+</div>
+
+<p>
+جرب دلوقتي تشوف نفس الأي بي لكن من خلال tor:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell">$ torsocks wget -qO - https://api.ipify.org; <span style="font-weight: bold;">echo</span>
+</pre>
+</div>
+<p>
+لازم يطلع أي بي مختلف.
+</p>
+
+<p>
+كدا كفاية هنا لو هنستخدم البورت 9050, لو عايز تعمل كونترول بورت تقدر تغيره من
+<code>/etc/tor/torrc</code>:
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">ControlPort 9051
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4cb677e" class="outline-2">
+<h2 id="org4cb677e">Configure Tor as a Proxy Services on Windows</h2>
+<div class="outline-text-2" id="text-org4cb677e">
+<p>
+هتدخل على موقع تور بروجكت وتنزل Expert Bundle exe, وتحطها في C:/Tor. بعدين أفتح PowerShell
+وأعمل:
+</p>
+<div class="org-src-container">
+<pre class="src src-powershell">C:\Tor\tor.exe --service install
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd130939" class="outline-2">
+<h2 id="orgd130939">Configure FoxyProxy To Use Tor</h2>
+<div class="outline-text-2" id="text-orgd130939">
+<p>
+أفتح الextension وأعمل add new proxy، حط في الHost: 127.0.0.1:9050 وأعمله socks 5؛ طبعًا لو
+غير ت البورت فهتكتب البورت المختلف بدل 9050، بعدين هتروح على الURL Patrerns وتحط الباترن الي
+عايز يطبق عليها الكلام الي قولناه. ممكن تنزل الملف ده
+<a href="https://raw.githubusercontent.com/salehmu/emacs-windows-config/main/local_storage_FoxyProxy%20Standard.json">https://raw.githubusercontent.com/salehmu/emacs-windows-config/main/local_storage_FoxyProxy%20Standard.json</a>
+وتستخدمه بدل ما تقعد تعمل كونفيج بنفسك, انا حاطط فيه أغلب المواقع الي مكانتش بتفتح معايا
+مباشرة. بس لازم عشان تستخدمه تبص بصه على التول دي <a href="https://chrome.google.com/webstore/detail/storage-area-explorer/ocfjjjjhkpapocigimmppepjgfdecjkb">https://chrome.google.com/webstore/detail/storage-area-explorer/ocfjjjjhkpapocigimmppepjgfdecjkb</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1dfd654" class="outline-2">
+<h2 id="org1dfd654">Sep, 2022 Update</h2>
+<div class="outline-text-2" id="text-org1dfd654">
+<p>
+Get a bridge from here <a href="https://bridges.torproject.org/">https://bridges.torproject.org/</a>, now open <code>/etc/tor/torrc/</code>, add the
+following lines
+</p>
+
+<div class="org-src-container">
+<pre class="src src-torrc">UseBridges 1
+ClientTransportPlugin obfs4 exec /usr/bin/obfs4proxy managed
+Bridge obfs4 &lt;BRIDGE_DATA_HERE&gt;
+Bridge obfs4 &lt;BRIDGE_DATA_HERE&gt;
+Bridge obfs4 &lt;BRIDGE_DATA_HERE&gt;
+</pre>
+</div>
+
+<p>
+I'm not sure if the following steps are necessary, but I had to do them: <code>sudo vim /etc/privoxy/config</code>
+</p>
+
+
+<ul class="org-ul">
+<li>Open <code>sudo vim /etc/privoxy/config</code></li>
+<li>Now, go to line 1455 which <code>1455</code> which has <code>forward-socks5t   /               127.0.0.1:9050 .</code></li>
+<li><p>
+Uncomment it. alternatively, append the following line:
+</p>
+<div class="org-src-container">
+<pre class="src src-txt">forward-socks5t   /               127.0.0.1:9050 .
+</pre>
+</div></li>
+</ul>
+
+
+<p>
+Now activate the services: <code>systemctl start privoxy.service</code>. And that's it. Enable the tor
+services and we are  done.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd2917cc" class="outline-2">
+<h2 id="orgd2917cc"><code>tor.services</code> Issue?</h2>
+<div class="outline-text-2" id="text-orgd2917cc">
+<p>
+For some reason you might have some problems with the default tor services, if so, use the
+following services:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-service">[Unit]
+Description=Anonymizing Overlay Network
+After=network.target
+
+[Service]
+User=tor
+Type=simple
+ExecStart=/usr/bin/tor -f /etc/tor/torrc
+KillSignal=SIGINT
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
+</pre>
+</div>
+
+<p>
+It's located at <code>/etc/systemd/system/multi-user.target.wants/tor.service</code>
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-06-01 Thu 01:20.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

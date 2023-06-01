@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Good Things on The Internet</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Good Things on The Internet</h1>
+</header><dl class="org-dl">
+<dt>tags</dt><dd>self</dd>
+</dl>
+
+	<a id="hide-link" href="#/" onclick="hideDates()">Click to hide dates</a>
+	<a id="show-link" href="#/" class="hide" onclick="showDates()">Click to display dates</a>
+    <script>
+window.onload = function() {
+  hideDates();
+};
+    </script>
+
+<p>
+Because why not? I will not contribute to an awesome-prototype github repo anyways. <i>side-note</i>
+I usually archive (on the WaybackMachine) anything that I might think I will read again, so
+if you encounter with any broken url, check it on the WaybackMachine. <i>Another side-note</i>
+I'm adding posts in an ascending order (first are newest).
+</p>
+
+
+
+
+<ul class="org-ul">
+<li><a href="https://www.washingtonpost.com/world/interactive/2023/israel-palestinians-raids-west-bank/">Israeli agents conducted targeted killings in West Bank, killing a child</a>. I've
+studied some propaganda modules years ago that explained me much of what I'm
+seeing in the mass media, yet it is never enough to make you see what is going
+behind the scene that would make the washingtonpost publish such a report. <i>(2023/05/30)</i></li>
+<li><a href="https://youtu.be/G2KFTd9NJTM">If Fight Club Was</a>. lmao. <a href="April2023.html">relate.</a> <i>(2023/05/30)</i></li>
+<li><a href="https://youtu.be/7KVY8zW2zXU?t=101">The Stack Overflow Survey</a>. "I did do crystalmeth but that's different than
+crystal" this actually hits hard if you know that theprimeagen is an
+ex-crystalmeth addict. <i>(2023/05/23)</i></li>
+<li><a href="https://www.youtube.com/@DirectorZ333/videos">DirectorZ333.</a> Found this fan youtube channel today, seems that they used to
+make nice music videos for their favorite songs a decade ago. It's sad how
+such things being buried forever. <i>(2023/05/20)</i></li>
+<li><a href="https://youtu.be/UKCW4nJmIwE">Episode 01: The Great Idea of Wisdom</a> <i>(2023/05/20)</i></li>
+<li><a href="https://old.reddit.com/r/golang/comments/13jvo70/go_job_interview_questions/">Go job interview questions</a>. Software industry is going always into worse and
+worse situation due to its dim hiring process. <i>(2023/05/19)</i></li>
+<li><a href="https://youtu.be/v53okHVQZuA">Vim vs Emacs | Prime Reacts</a>. "Those who run terminal emulator inside
+of their text editor have already screwed up" lmao. <i>(2023/05/19)</i></li>
+<li><a href="https://en.wikipedia.org/wiki/Hero%27s_journey">Hero's journey - Wikipedia</a>. I was much younger when I read Campell's "The hero with a thousand faces" for the first time. My thoughts now towards
+psychoanalyses are much developed compared to then, yet they are not decisive.
+I think I'm going to reread it to have more definitive view of psychoanalysis. <i>(2023/05/19)</i></li>
+<li><a href="https://old.reddit.com/r/cscareerquestions/comments/13iwhqm/why_cant_i_land_a_job/">Why can't I land a job : cscareerquestions</a>. "challenging challenges". Btw, let
+me put my opinion on language models here too. I don't think they are bad in
+general but in fact they solve only one problem; the bureaucratic writings.
+You can ask it to write you any useless load of "scalable", "ascendable" or
+whatever words the HR will be happy seeing while checking your resume. <i>(2023/05/16)</i></li>
+<li><a href="http://www.wouterspekkink.org/academia/writing/tool/doom-emacs/2021/02/27/writing-academic-papers-with-org-mode.html">Writing academic papers with org-mode</a>. A thorough explanation. I feel
+confidence when I see this kind of intuition of teleportation; the explained
+workflow is very similar to what I've been doing, however I thought that what
+I'm doing is special workflow of mine. <i>(2023/05/12)</i></li>
+<li><a href="https://theframeblog.com/2020/12/28/olympian-frames-frederic-lord-leighton/">Olympian frames: Frederic, Lord Leighton</a>. <i>(2023/05/06)</i></li>
+<li><a href="https://wiki2.org/en/Poetry_of_Catullus">Poetry of Catullus — Wikipedia Republished // WIKI 2</a>. <i>(2023/05/05)</i></li>
+<li><p>
+<a href="https://math.stackexchange.com/questions/697096/prove-that-any-palindrome-with-an-even-number-of-digits-is-divisible-by-11%5D">Prove that any palindrome with an even number of digits is divisible by 11</a> Was solving some euler problems today, found this interesting pattern in palindrome product:
+</p>
+
+<pre class="example" id="orga79bf25">
+ 3 digits:            913 x            993 =                       906609, 7ms
+ 4 digits:           9999 x           9901 =                     99000099, 0ms
+ 5 digits:          99681 x          99979 =                   9966006699, 11ms
+ 6 digits:         999999 x         999001 =                 999000000999, 0ms
+ 7 digits:        9997647 x        9998017 =               99956644665999, 812ms
+ 8 digits:       99999999 x       99990001 =             9999000000009999, 0ms
+ 9 digits:      999920317 x      999980347 =           999900665566009999, 508259ms
+10 digits:     9999999999 x     9999900001 =         99999000000000099999, 0ms
+11 digits:    99999943851 x    99999996349 =       9999994020000204999999, 420031ms
+12 digits:   999999999999 x   999999000001 =     999999000000000000999999, 0ms
+13 digits: ?
+14 digits: 99999999999999 x 99999990000001 = 9999999000000000000009999999, 0ms
+</pre>
+
+<p>
+<i>(2023/04/10)</i>
+</p></li>
+<li><a href="https://github.com/kmx-io/repo">kmx-io/repo: Source repository utilities in Common Lisp</a> Sometimes all what you are missing is one piece. <i>(2023/03/18)</i></li>
+<li><a href="https://old.reddit.com/r/lisp/comments/11szcrl/microsoft_excel_as_lisp_ide/">Microsoft Excel as Lisp IDE</a> Do people even hear themselves? <i>(2023/03/17)</i></li>
+<li><a href="https://youtu.be/q2A-MkGjvmI">Let’s try ChatGPT. Is it any good?</a>. A nice review. <i>(2023/01/30)</i></li>
+<li><a href="https://poweruser.blog/embedding-python-in-go-338c0399f3d5">Embedding Python in Go.</a> <i>(2022/12/22)</i></li>
+<li><a href="https://kristoff.it/blog/why-go-and-not-rust/">Why Go and not Rust?</a> <i>(2022/12/18)</i></li>
+<li><a href="https://www.draketo.de/software/decentralized-moderation.html">The path towards decentralized moderation</a> I wish if the web stayed like that, when
+everyone has its place that they really own and control. <i>(2022/12/13)</i></li>
+<li><a href="https://www.salkosuo.net/2015/10/22/elite-for-emacs.html">Elite for Emacs</a> <i>(2022/12/09)</i></li>
+<li><a href="http://www.catb.org/~esr/faqs/hacker-howto.html">How To Become A Hacker</a>
+Why this guide is not ubiquitous enough? I found it months ago when I was browsing Paul
+Geraham blog (he was arguing about an entry about Lisp <i><a href="http://www.paulgraham.com/avg.html?viewfullsite=1">here</a></i>). I think it's a very
+suitable guide for everyone who is involved into using computer, it's a sad fact that even
+modern 'computer scientests' need such a guide. <i>(2022/12/05)</i></li>
+<li><a href="https://www.iwriteiam.nl/index.html">I write, therefore I am</a>
+I respect this place. <i>(2022/12/01)</i></li>
+<li><a href="http://lists.warhead.org.uk/pipermail/iwe/2005-July/000130.html">Why Lisp macros are cool, a Perl perspective</a> <i>(2022/11/26)</i></li>
+<li><a href="https://github.com/ThreeDotsLabs/go-web-app-antipatterns">Go Web App Anti-Patterns</a> <i>(2022/11/22)</i></li>
+<li><p>
+<a href="https://appliedgo.net/limericks/?utm_source=reddit">Poetry time! Go proverbs as limericks</a>
+</p>
+
+<p class="verse">
+There once was a programmer named Joe<br>
+Who loved coding in Go, don't you know?<br>
+He found it quite neat<br>
+With concurrency sweet<br>
+And a syntax that was oh so low-key<br>
+<br>
+With goroutines running in parallel<br>
+His code ran faster than a serial<br>
+He could handle many tasks<br>
+With ease and with panache<br>
+Thanks to Go's ability to scale.<br>
+<br>
+So if you want your code to be lean<br>
+And run faster than you've ever seen<br>
+Give Go a try<br>
+And watch your code fly<br>
+And see what it can do for your machine<br>
+</p>
+
+<p>
+<i>(2022/12/18)</i>
+</p></li>
+</ul>
+
+
+<ul class="org-ul">
+<li><a href="https://inference-review.com/article/the-origins-of-python">The Origins of Python</a> <i>(2022/11/09)</i></li>
+<li><a href="https://harmful.cat-v.org/software/c++/I_did_it_for_you_all">Bjarne Stroustrup: "I Did It For You All&#x2026;"</a> lmao. <i>(2022/11/05)</i></li>
+<li><a href="https://hacks.mozilla.org/2022/11/improving-firefox-stability-with-this-one-weird-trick/">Improving Firefox stability with this one weird trick</a> This is funny.
+<i>(2022/11/01)</i></li>
+<li><a href="https://arxiv.org/abs/2004.02504">[2004.02504] Bringing GNU Emacs to Native Code</a> <i>(2022/10/27)</i></li>
+<li><a href="https://queue.acm.org/detail.cfm?id=3212479">C Is Not a Low-level Language</a> <i>(2022/10/23)</i></li>
+<li><a href="https://doc.cat-v.org/bell_labs/pikestyle">Rob Pike: Notes on Programming in C</a> <i>(2022/10/14)</i></li>
+<li><a href="https://thedailywtf.com/articles/the-parameters">The Parameters</a> hahahaha <i>(2022/10/10)</i></li>
+<li><a href="https://vorpus.org/blog/why-does-calloc-exist/">Why does calloc exist?</a> <i>(2022/10/05)</i></li>
+<li><a href="https://web.archive.org/web/20020131013943/http://www.linuxjournal.com/article.php?sid=3687">Dynamic Class Loading for C++ on Linux</a> <i>(2022/09/27)</i></li>
+<li><a href="https://renato.athaydes.com/posts/revisiting-prechelt-paper-comparing-languages.html">Revisiting Prechelt’s paper and follow-ups comparing Java, Lisp, C/C++ and scripting languages</a> <i>(2022/09/22)</i></li>
+<li><a href="https://paulgraham.com/avg.html">Beating the Averages</a> <i>(2023/02/12)</i></li>
+<li><a href="http://www.catb.org/~esr/faqs/hacker-howto.html">How to Become a Hacker</a> <i>(2023/02/08)</i></li>
+<li><a href="https://web.archive.org/web/20101215002521/http://notthesmartestguyintheroom.blogspot.com/2010/04/is-cyclomatic-complexity-brand-of-snake.html">Is Cyclomatic Complexity a Brand of Snake Oil?</a> <i>(2023/02/04)</i></li>
+<li><a href="https://wiki.c2.com/?DesignPatternsConsideredHarmful">Design Patterns Considered Harmful</a> <i>(2023/01/31)</i></li>
+<li><a href="https://engineering.skroutz.gr/blog/uncovering-a-24-year-old-bug-in-the-linux-kernel/">Uncovering a 24-year-old bug in the Linux Kernel</a> <i>(2023/01/26)</i></li>
+<li><a href="https://berk.es/2022/09/06/frameworks-harm-maintenance/">Using a Framework will harm the maintenance of your software</a> <i>(2023/01/22)</i></li>
+<li><a href="https://lethain.com/staff-engineer-archetypes/">Staff engineer archetypes.</a> <i>(2023/01/14)</i></li>
+<li><a href="https://www.deepmind.com/blog/discovering-novel-algorithms-with-alphatensor">Discovering novel algorithms with AlphaTensor</a> <i>(2023/01/10)</i></li>
+<li><a href="https://utdemir.com/posts/choosing-cloud-regions.html">Choosing cloud regions for lower latency: A data-driven approach</a> <i>(2023/01/02)</i></li>
+<li><a href="https://dave.cheney.net/2019/09/24/be-wary-of-functions-which-take-several-parameters-of-the-same-type">Be wary of functions which take several parameters of the same type</a> <i>(2022/12/29)</i></li>
+<li><a href="https://engineering.linkedin.com/blog/2022/how-our-content-abuse-defense-systems-work-to-keep-members-safe">How our content abuse defense systems work to keep members safe</a> <i>(2022/12/25)</i></li>
+<li><a href="https://engineering.linkedin.com/blog/2022/why-am-i-seeing-this-ad-">Why am I seeing this ad?</a> <i>(2022/12/21)</i></li>
+<li><a href="https://engineering.linkedin.com/blog/2022/near-real-time-features-for-near-real-time-personalization">Near real-time features for near real-time personalization</a> <i>(2022/12/16)</i></li>
+<li><a href="https://engineering.linkedin.com/blog/2022/open-sourcing-PASS">Performance-Adaptive Sampling Strategy (PASS) for GNNs: Open sourcing PASS</a> <i>(2022/12/12)</i></li>
+<li><a href="https://dave.cheney.net/2019/08/20/go-compiler-intrinsics">Go compiler intrinsics</a> <i>(2022/12/08)</i></li>
+
+<li><a href="https://youtu.be/Wy9WvF5gWYg">Org-roam-bibtex - Quick Presentation</a>. One of the best workflows I've ever seen. <i>(2022/11/29)</i></li>
+<li><a href="https://youtu.be/M6iZaOYPq60?list=TLPQMTExMjIwMjIEoACD7ER6ew">What are your thoughts on ChatGPT?</a> <i>(2022/11/25)</i></li>
+<li><a href="https://youtu.be/p2tdFE28Jdg">How do you maintain a large code base?</a> <i>(2022/11/21)</i></li>
+<li><a href="https://youtu.be/o9pEzgHorH0">Stop Writing Classes</a> <i>(2022/11/16)</i></li>
+<li><a href="https://youtu.be/d7KHAVaX_Rs">Just In Time (JIT) Compilers</a> <i>(2022/11/12)</i></li>
+<li><a href="https://youtu.be/3TBq__oKUzk">RubyConf 2017: 4 Programming Paradigms in 45 Minutes by Aja Hammerly</a> <i>(2022/11/08)</i></li>
+<li><a href="https://youtu.be/J2YdjpWJJHs">Embedding WebKit in Emacs: XWidgets+WebKit Feature Preview</a> Seems very
+interesting. I used to think it's a hopeless technological when I tried it
+with
+<code>M-x xwidget-webkit-browse-url</code>, damn it I don't want even to remember. However I recently
+tried <a href="https://github.com/akirakyle/emacs-webkit">akirakyle/emacs-webkit</a> and it rocks, I've been thinking of replacing chromium with
+it. Now, XWidgets seems very promising to me. I wish I had some free time to develop
+great things with it. <i>(2022/11/04)</i></li>
+</ul>
+
+
+
+<ul class="org-ul">
+<li><a href="http://www.paulgraham.com/getideas.html">How to Get New Ideas</a> <i>(2023/03/06)</i></li>
+<li><a href="https://www.quantamagazine.org/how-to-prove-you-know-a-secret-without-giving-it-away-20221011/">How Do You Prove a Secret?</a> <i>(2023/01/18)</i></li>
+<li><a href="https://hulry.com/medium-vs-own-blog/">Why Medium is Not the Home for Your Ideas</a> <i>(2022/11/14)</i></li>
+<li><a href="https://thequeerproject.wordpress.com/2016/01/25/obsession-reprise-the-dialectic-of-desire/">Obsession Reprise: The Dialectic of Desire</a> <i>(2022/10/31)</i></li>
+<li><a href="https://theimaginativeconservative.org/2022/11/suffered-past-glenn-arbery.html#">The Suffered Past</a> <i>(2022/10/26)</i></li>
+<li><a href="https://www.gutenberg.org/files/44932/44932-h/44932-h.htm">Free Thought and Official Propaganda, by Bertrand Russell</a> <i>(2022/10/22)</i></li>
+<li><a href="https://hackernoon.com/short-form-videos-are-bad-for-everyone-except-platforms?source=rss">Short-form Videos are Bad for Everyone (Except Platforms)</a> <i>(2022/10/18)</i></li>
+
+<li><a href="https://youtu.be/DWzprRWPI68">We have a problem.</a> <i>(2022/11/12)</i></li>
+<li><a href="https://youtu.be/nKDpXdwbVMo?list=TLPQMTIxMTIwMjI_OzF_dMz1pA">لماذا فشلت مظاهرات 11 نوفمبر في مصر؟</a>
+<i>(2022/12/19)</i></li>
+<li><a href="https://youtu.be/srfeHpQNEAI">Why The US Is Not A Democracy</a> <i>(2022/10/06)</i></li>
+<li><a href="https://youtu.be/HC7uldP9rQg">Noam Chomsky: The Ukraine War and Lessons from the Cuban Missile Crisis</a> <i>(2022/10/02)</i></li>
+<li><a href="https://youtu.be/VepKYknFYfg">Look at the Problem; Don’t Look for a Solution</a> <i>(2022/09/29)</i></li>
+<li><a href="https://www.youtube.com/watch?v=snhV1owGCSM">Yep. Imagination is Demonic. (Unironically)</a> <i>(2022/09/24)</i></li>
+<li><a href="https://www.youtube.com/shorts/wBIjv5g-loM">Three reasons YouTube loves #shorts</a> <i>(2022/09/20)</i></li>
+</ul>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-06-01 Thu 01:06.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

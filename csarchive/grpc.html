@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>gRPC Overview (Connection Between)</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">gRPC Overview (Connection Between)</h1>
+</header><dl class="org-dl">
+<dt>tags</dt><dd>Org files</dd>
+</dl>
+<div class="PREVIEW" id="org71a5c22">
+<p>
+<i>(This document is collected from various resources)</i>
+</p>
+
+</div>
+
+
+<div id="outline-container-orgfae38a7" class="outline-2">
+<h2 id="orgfae38a7">Introduction</h2>
+<div class="outline-text-2" id="text-orgfae38a7">
+<p>
+In gRPC, a client application can directly call a method on a server application on a
+different machine as if it were a local object, making it easier for you to create
+distributed applications and services. As in many RPC systems, gRPC is based around the idea
+of defining a service, specifying the methods that can be called remotely with their
+parameters and return types. On the server side, the server implements this interface and
+runs a gRPC server to handle client calls. On the client side, the client has a stub
+(referred to as just a client in some languages) that provides the same methods as the
+server.
+</p>
+
+
+
+<figure id="org3dab31c">
+<img src="https://user-images.githubusercontent.com/74098495/200164426-5e8094dc-6efe-4584-a465-8efd2f764074.png" alt="200164426-5e8094dc-6efe-4584-a465-8efd2f764074.png">
+
+</figure>
+
+<p>
+By default, gRPC uses Protocol Buffers, Google’s mature open source mechanism for
+serializing structured data (although it can be used with other data formats such as JSON).
+Here’s a quick intro to how it works.
+</p>
+
+
+<p>
+The first step when working with protocol buffers is to define the structure for the data
+you want to serialize in a proto file: this is an ordinary text file with a <code>.proto</code>
+extension. Protocol buffer data is structured as messages, where each message is a small
+logical record of information containing a series of name-value pairs called fields. Here’s
+a simple example:
+</p>
+
+<pre class="example" id="org173e4a9">
+message Person {
+  string name = 1;
+  int32 id = 2;
+  bool has_ponycopter = 3;
+}
+</pre>
+
+<p>
+Then, once you’ve specified your data structures, you use the protocol buffer compiler
+<code>protoc</code> to generate data access classes in your preferred languages from your <code>proto</code>
+definition. These provide simple accessor for each field, like <code>name()</code> and <code>set_name()</code>, as
+well as methods to serialize/parse the whole structure to/from raw bytes. So, for instance,
+if your chosen language is C++, running the compiler on the example above will generate a
+class called Person. You can then use this class in your application to populate, serialize,
+and retrieve Person protocol buffer messages.
+</p>
+
+<p>
+You define gRPC services in ordinary proto files, with RPC method parameters and return
+types specified as protocol buffer messages:
+</p>
+
+<pre class="example" id="orgf56347b">
+// The greeter service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}
+</pre>
+
+<p>
+gRPC uses <code>protoc</code> with a special gRPC plugin to generate code from your proto file: you get
+generated gRPC client and server code, as well as the regular protocol buffer code for
+populating, serializing, and retrieving your message types. You’ll see an example of this
+below.
+</p>
+</div>
+</div>
+<div id="outline-container-orgfbaa117" class="outline-2">
+<h2 id="orgfbaa117">Concepts and Terminology</h2>
+<div class="outline-text-2" id="text-orgfbaa117">
+<ul class="org-ul">
+<li><p>
+<b>Service</b>
+</p>
+
+<p>
+Like many RPC systems, gRPC is based around the idea of defining a service, specifying the
+methods that can be called remotely with their parameters and return types.
+</p>
+
+<pre class="example" id="org4a096c9">
+service HelloService {
+  rpc SayHello (HelloRequest) returns (HelloResponse);
+}
+
+message HelloRequest {
+  string greeting = 1;
+}
+
+message HelloResponse {
+  string reply = 1;
+}
+
+</pre>
+<p>
+gRPC lets you define four kinds of service method:
+</p>
+<ul class="org-ul">
+<li><p>
+Unary RPCs where the client sends a single request to the server and gets a single
+response back, just like a normal function call.
+</p>
+<pre class="example" id="org0a456db">
+rpc SayHello(HelloRequest) returns (HelloResponse);
+</pre></li>
+<li><p>
+Server streaming RPCs where the client sends a request to the server and gets a stream
+to read a sequence of messages back. The client reads from the returned stream until
+there are no more messages. gRPC guarantees message ordering within an individual RPC
+call.
+</p>
+<pre class="example" id="orgce5f9ca">
+rpc LotsOfReplies(HelloRequest) returns (stream HelloResponse);
+</pre></li>
+<li><p>
+Client streaming RPCs where the client writes a sequence of messages and sends them to
+the server, again using a provided stream. Once the client has finished writing the
+messages, it waits for the server to read them and return its response. Again gRPC
+guarantees message ordering within an individual RPC call.
+</p>
+<pre class="example" id="org39c5e45">
+rpc LotsOfGreetings(stream HelloRequest) returns (HelloResponse);
+</pre></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgf133e0f" class="outline-2">
+<h2 id="orgf133e0f"><span class="todo TODO">TODO</span> Example</h2>
+<div class="outline-text-2" id="text-orgf133e0f">
+<p>
+Server:
+</p>
+<div class="org-src-container">
+<pre class="src src-go">package main
+
+import (
+        "bufio"
+        "context"
+        "fmt"
+        "log"
+        "net"
+        "os"
+        "strconv"
+        "strings"
+
+        proto "github.com/CSC354/mamar/proto"
+        "google.golang.org/grpc"
+)
+
+var mp = map[string]string{}
+
+const MASTER = 8000
+
+type Mamar struct {
+        proto.UnimplementedMamarServer
+}
+
+func (*Mamar) GetPort(ctx context.Context, s *proto.Service) (*proto.Port, error) {
+        port := proto.Port{Address: fmt.Sprintf("%s:%s", s.Name, mp[s.Name])}
+        return &amp;port, nil
+}
+
+func main() {
+        read()
+        lis, err := net.Listen("tcp", ":8000")
+        if err != nil {
+                log.Fatalf("failed to listen: %v", err)
+        }
+        grpcServer := grpc.NewServer()
+        proto.RegisterMamarServer(grpcServer, &amp;Mamar{})
+        grpcServer.Serve(lis)
+}
+
+func read() {
+        if len(os.Args) &lt; 2 {
+                log.Fatal("No file was provided as argument")
+        }
+        name := os.Args[1]
+        file, err := os.Open(name)
+        if err != nil {
+                log.Fatal(err)
+        }
+        defer file.Close()
+        scanner := bufio.NewScanner(file)
+        err = scan(scanner)
+        if err != nil {
+                log.Fatal(err)
+        }
+}
+
+func scan(scanner *bufio.Scanner) error {
+        var c int
+        for scanner.Scan() {
+                c++
+                if scanner.Text()[0] == '#' {
+                        continue
+                }
+                columns := strings.Split(scanner.Text(), " ")
+                nlines := len(columns)
+                if nlines != 2 {
+                        return fmt.Errorf("line %d: Schema break", nlines)
+                }
+                i, err := strconv.Atoi(columns[1])
+                if err != nil &amp;&amp; columns[1] != "db" {
+                        return fmt.Errorf("line %d: %s is not a valid port numbering", c, columns[1])
+                } else if i == MASTER {
+                        return fmt.Errorf("line %d: can not map to master port", c)
+                }
+                if v, ok := mp[columns[0]]; ok {
+                        return fmt.Errorf("line %d Port %s occured more than once", c, v)
+                }
+
+                if columns[1] == "db" {
+                        mp[columns[0]] = fmt.Sprintf("server=qaida;user id=qaida;password=rBwiY3JgqmG26q@;port=1433;database=%s;", columns[0])
+                } else {
+                        mp[columns[0]] = columns[1]
+                }
+
+        }
+
+        if err := scanner.Err(); err != nil {
+                return err
+        }
+        return nil
+
+}
+</pre>
+</div>
+<p>
+Client:
+</p>
+<div class="org-src-container">
+<pre class="src src-go">func main() {
+        // var opts []grpc.DialOption
+
+        conn, err := grpc.Dial("172.21.0.2:8000", grpc.WithTransportCredentials(insecure.NewCredentials()))
+        if err != nil {
+                log.Fatal(err)
+        }
+        defer conn.Close()
+        ra := proto.NewMamarClient(conn)
+        sa := proto.Service{Name: "login_db"}
+        t, err := ra.GetPort(context.Background(), &amp;sa)
+
+        if err != nil {
+                log.Fatal(err)
+        }
+
+        fmt.Println(t)
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org157868f" class="outline-2">
+<h2 id="org157868f">Security</h2>
+<div class="outline-text-2" id="text-org157868f">
+<p>
+Grp-based applications communicate with each other remotely over the network.
+This requires each gRPC application to expose its entry point to others who need to
+communicate with it. From a security point of view, this is not a good thing. The
+more entry points we have, the broader the attack surface, and the higher the risk of
+being attacked. Therefore, securing communication and securing entry points is
+essential for any real-world use case. Every gRPC application must be able to handle
+encrypted messages, encrypt all internode communications, authenticate and
+sign all messages, etc.
+</p>
+</div>
+
+
+
+<div id="outline-container-org491ce06" class="outline-3">
+<h3 id="org491ce06"><span class="todo TODO">TODO</span> gRPC Channel with TLS</h3>
+<div class="outline-text-3" id="text-org491ce06">
+<p>
+Transport Level Security (TLS) aims to provide privacy and data integrity between two
+communicating applications. Here, it’s about providing a secure connection between gRPC
+client and server applications. According to the Transport Level Security Protocol
+Specification, when the connection between a client and a server is secure, it should have
+one or more of the following properties:
+</p>
+
+
+<ul class="org-ul">
+<li>The connection is <span class="underline">private</span>:
+<a href="https://en.wikipedia.org/wiki/Symmetric-key_algorithm">Symmetric cryptography</a> is used for data encryption. It is a type of encryption where only
+one key (a secret key) is used to both encrypt and decrypt. These keys are generated
+uniquely for each connection based on a shared secret that was negotiated at the start of
+the session.</li>
+<li>The connection is reliable:
+This occurs because each message includes a message integrity check to prevent undetected
+loss or alteration of the data during transmission.</li>
+</ul>
+
+<p>
+So it is important to send data through a secure connection. Securing gRPC connections with
+TLS is not a difficult task, because this authentication mechanism is built into the gRPC
+library. It also promotes the use of TLS to authenticate and encrypt exchanges.
+</p>
+
+<p>
+There are two ways to enable TLS authentication: 1. One-way secured authentication. 2.
+Two-Way authentication (also called mutual).
+</p>
+</div>
+
+<div id="outline-container-orgf368b2c" class="outline-4">
+<h4 id="orgf368b2c">Regular TLS (One-Way Secured Connection)</h4>
+<div class="outline-text-4" id="text-orgf368b2c">
+<p>
+In a one-way connection, only the client validates the server to ensure that it receives
+data from the intended server. When establishing the connection between the client and the
+server, the server shares its public certificate with the client, who then validates the
+received certificate. This is done through a certificate authority (CA), for CA-signed
+certificates. Once the certificate is validated, the client sends the data encrypted using
+the secret key.
+</p>
+
+<p>
+The CA is a trusted entity that manages and issues security certificates and public keys
+that are used for secure communication in a public network. Certificates signed or issued by
+this trusted entity are known as CA-signed certificates.
+</p>
+
+<p>
+To enable TLS, first, we need to create the following certificates and keys:
+</p>
+
+<ul class="org-ul">
+<li><code>server.key</code>
+A private RSA<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>  key is to sign and authenticate the public key.</li>
+<li><code>server.pem</code> / <code>server.crt</code>
+Self-signed X.509 public keys for distribution.</li>
+</ul>
+
+<p>
+To generate the keys, we can use the OpenSSL tool, which is an open-source toolkit for the
+TLS and Secure Socket Layer (SSL) protocols. It has support for generating private keys with
+different sizes and passphrases, public certificates, etc. There are other tools like <code>mkcert</code>
+and <code>certstrap</code>, which can also be used to generate the keys and certificates easily.
+</p>
+</div>
+
+<div id="outline-container-org907c97e" class="outline-5">
+<h5 id="org907c97e">Generating a Private Certificate</h5>
+<div class="outline-text-5" id="text-org907c97e">
+<p>
+To generate an RSA key using the <code>OpenSSL</code> tool, we need to use the <code>genrsa</code> command like below:
+</p>
+
+<pre class="example" id="org6eb0400">
+$ openssl genrsa&lt;1&gt; -out server.key&lt;2&gt; 2048&lt;3&gt;
+Generating RSA private key, 2048 bit long modulus
+....................................................+++
+.............................................+++
+e is 65537 (0x10001)
+</pre>
+
+<ol class="org-ol">
+<li>Specifies which algorithm to use to create the key. OpenSSL supports creating keys with
+different algorithms like RSA, DSA, and ECDSA. All types are practical for use in all
+scenarios. For example, web server keys commonly use RSA. In our case, we need to
+generate an RSA-type key.</li>
+
+<li>Specifies the name of the generated key. Can have any name with <code>.key</code> as an extension.</li>
+
+<li>Specifies the size of the key. The default size for RSA keys is only 512 bits, which is
+not secure because an intruder can use brute force to recover your private key. So we use
+a 2048-bit RSA key which is considered to be secure.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgfe1d839" class="outline-5">
+<h5 id="orgfe1d839">Generating a Public Certificate</h5>
+<div class="outline-text-5" id="text-orgfe1d839">
+<p>
+Once we have the private key, we need to create the certificate. In this example, we are
+going to create a self-signed certificate. In other words, there is no certificate
+authority(CA). Typically in a production deployment, either you will use a public
+certificate authority or an enterprise-level certificate authority to sign your public
+certificate. So any client who trusts the certificate authority can verify.
+</p>
+
+<p>
+Since in this example, our TLS server is for our own testing purposes, we probably don’t
+want to go to a certificate authority(CA) for a publicly trusted certificate.
+</p>
+
+<p>
+Let’s execute the following command to generate a self-signed public certificate.
+Certificate generation is an interactive process during which you’ll be asked to enter
+information that is going to be incorporated with the certificate.
+</p>
+
+<pre class="example">
+$ openssl req -new -x509&lt;1&gt; -sha256&lt;2&gt; -key server.key&lt;3&gt; \
+              -out server.crt&lt;4&gt; -days 3650&lt;5&gt;
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields, there will be a default value
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) []:US
+State or Province Name (full name) []:California
+Locality Name (eg, city) []:Mountain View
+Organization Name (eg, company) []:O’Reilly Media, Inc
+Organizational Unit Name (eg, section) []:Publishers
+Common Name (eg, fully qualified hostname[]:localhost
+Email Address []:webmaster@localhost
+
+</pre>
+</div>
+</div>
+<div id="outline-container-org4583cf4" class="outline-5">
+<h5 id="org4583cf4">Enable a One-Way Secured Connection in a gRPC Server</h5>
+<div class="outline-text-5" id="text-org4583cf4">
+<p>
+This is the simplest way to encrypt communication between the client and server. Here the server
+needs to be initialized with a public/private key pair. We are going to explain how it is
+done using our gRPC Go server.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org58ae430" class="outline-3">
+<h3 id="org58ae430">Authenticating gRPC Calls</h3>
+<div class="outline-text-3" id="text-org58ae430">
+<p>
+Most people who are developing Microservices Notes in Go would probably be more interested
+in building an authentication between the gRPC client and server communication later. There
+are 3 methods to develop such an authentication:
+</p>
+</div>
+<div id="outline-container-org38a4e74" class="outline-4">
+<h4 id="org38a4e74"><span class="todo TODO">TODO</span> Basic Authenticating</h4>
+</div>
+<div id="outline-container-org63dfb53" class="outline-4">
+<h4 id="org63dfb53"><span class="todo TODO">TODO</span> OAuth v2</h4>
+</div>
+<div id="outline-container-orgb9383d3" class="outline-4">
+<h4 id="orgb9383d3">JWT Authenticating</h4>
+<div class="outline-text-4" id="text-orgb9383d3">
+<p>
+JWT defines a container to transport identity information between the client and server. A
+signed JWT can be used as a self-contained access token, which means the resource server
+doesn’t need to talk to the authentication server to validate the client token. It can
+validate the token by validating the signature. The client requests access from the
+authentication server, which verifies the client’s credentials, creates a JWT, and sends it
+to the client. The client application with JWT allows access to resources.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgcc7c2cf" class="outline-2">
+<h2 id="orgcc7c2cf">Notes</h2>
+<div class="outline-text-2" id="text-orgcc7c2cf">
+<p>
+To generate Go proto files you can use:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell">protoc --go_out=. --go_opt=<span style="font-weight: bold; font-style: italic;">paths</span>=import    <span style="font-style: italic;">\</span>
+    --go-grpc_out=. --go-grpc_opt=<span style="font-weight: bold; font-style: italic;">paths</span>=import <span style="font-style: italic;">\</span>
+    protobufs/files/*
+</pre>
+</div>
+
+<p>
+Assuming that the protobuf files are in <code>protobufs/files</code> directory.
+</p>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+The acronym <a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)#Proof_using_Fermat's_little_theorem">RSA</a> stands for the names of three inventors: Rivest,
+Shamir, and Adleman. RSA is one of the most popular public-key
+cryptosystems, being widely used in secure data transmission. In
+RSA, a public key (that can be known by everyone) is used to
+encrypt data. A private key is then used to decrypt data. The idea is
+that messages encrypted with the public key can only be decrypted
+in a reasonable amount of time by using the private key.
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-06-01 Thu 01:25.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Introduction to Non-theoretical Computational Geometry</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="description" content="The ultimate computational geometry for computer science tutorial" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Introduction to Non-theoretical Computational Geometry</h1>
+</header><dl class="org-dl">
+<dt>tags</dt><dd>algorithms</dd>
+</dl>
+
+<div class="PREVIEW" id="org28aded8">
+<p>
+Based on TopCoder's thrive and <a href="https://www.ti.inf.ethz.ch/ew/courses/CG13/index.html">Computational Geometry (252-1425-00L) HS13</a> lecture notes.
+</p>
+
+</div>
+
+<p>
+(Problems mostly from <a href="https://leetcode.com/tag/geometry">LeetCode</a>)
+</p>
+<div id="outline-container-org4762792" class="outline-2">
+<h2 id="org4762792">Introduction</h2>
+<div class="outline-text-2" id="text-org4762792">
+<p>
+I'm not sure how to properly introduce this long plain text —or even how to put it—. You can
+easily consider it as a small handbook that contains some computational problems solutions,
+or like Nietzsche says in his Dawn of Day:
+</p>
+
+<blockquote>
+<p>
+
+</p>
+
+<p>
+"A DIGRESSION.—A book like this is not intended to be read through at once, or to be read
+aloud. It is intended more particularly for reference, especially on our walks and travels:
+we must take it up and put it down again after a short reading, and, more especially, we
+ought not to be amongst our usual surroundings."
+</p>
+</blockquote>
+
+<p>
+So, yeah. Read it when some problem tag is matched here (actually I wouldn't mind reading it
+aloud but I liked to put the quote😎).
+</p>
+</div>
+</div>
+<div id="outline-container-org62afdb6" class="outline-2">
+<h2 id="org62afdb6">Vectors</h2>
+<div class="outline-text-2" id="text-org62afdb6">
+<p>
+Basically, a vector is a geometric object with length and direction (direction and
+magnitude). In the case of two-dimension geometry, we represent vectors as a pair of numbers
+\((x, y)\), it's important to understand vectors arithmetically, for example, a line segment
+from \((1,3)\) to \((5,1)\) can be represented by the vector \((4,-2)\) (A line segment has two
+endpoints which contains all the points of the line between them) you should notice that in
+the second representation, a vector only defines the direction and the magnitude of the
+segment, but it can't define the starting and the ending locations.
+</p>
+</div>
+
+<div id="outline-container-org2aa253e" class="outline-3">
+<h3 id="org2aa253e">Operations on Vectors</h3>
+<div class="outline-text-3" id="text-org2aa253e">
+</div>
+<div id="outline-container-orgde90387" class="outline-4">
+<h4 id="orgde90387">Addition</h4>
+<div class="outline-text-4" id="text-orgde90387">
+<p>
+The most beloved operation in which authors wastes ~3 pages in their textbook to explain
+it. You can add two vector together and as a result you get a new vector, if you have two
+vectors \((x_1, y_1)\) and \((x_2, y_2)\) then the sum of them is the vector \((x_1 + x_2, y_1 +
+y_2)\)
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgda65360" class="outline-4">
+<h4 id="orgda65360">Dot Product</h4>
+<div class="outline-text-4" id="text-orgda65360">
+<p>
+The dot product is <b>the sum of the corresponding element</b>, notice that it is not a vector,
+but a number. For example, if we have the two vector \((x_1, y_1)\) and \((x_2, y_2)\) then
+their dot product is simply \((x_{1} \cdot x_{2}) + (y_1 \cdot y_2)\), we call the product
+number a <i>scalar</i>.
+</p>
+
+<p>
+The reason why <i>scalar</i> is a useful concept (at least more than addition and subtraction) is
+that, let \(A\) and \(B\) be two vectors, then \(A \cdot B = |A| \cdot |B| \cos(\theta)\) where
+\(\theta\) is the angle between \(A\) and \(B\), \(|A|\) is called the norm of vector which is
+computed from the formula \(\sqrt{ (x_{1})^2 + (y_{1})^2 }\) . Therefore, we can calculate any
+angle between two vectors simply using two steps:
+</p>
+
+<ol class="org-ol">
+<li>Calculate \(\cos(\theta) = \frac{a \cdot b}{|a| \cdot |b| }\)</li>
+<li>Use the \(acos\) function to calculate \(\theta\)</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org44b34ec" class="outline-4">
+<h4 id="org44b34ec">Cross Product</h4>
+<div class="outline-text-4" id="text-org44b34ec">
+<p>
+This is more like the regular product: the cross product of 2D vectors \((x_1, y_1)\) and
+\((x_2, y_2)\) is \(x_{1} \cdot y_{2} - y_{1} \cdot x_{2}\), and its formula \(A \cdot B = |A|
+\cdot |B| \cdot sin(\theta)\) as you see can see, this operation can be useful too in
+calculating \(\theta\) in some situations. However, \(\theta\) has a slightly different meaning
+here, in this case the absolute value of \(\theta\) is the angle between the two vectors but
+it is negative or positive based on the right-hand rule.
+</p>
+</div>
+</div>
+<div id="outline-container-org7ce52a8" class="outline-4">
+<h4 id="org7ce52a8">Line-Point Distance</h4>
+<div class="outline-text-4" id="text-org7ce52a8">
+<p>
+Lets say that you are given 3 points, \(A\), \(B\), and \(C\), and you want to find the distance
+from the point $C$to the line defined by \(A\) and \(B\).The first step is to find the two
+vectors from \(A\) to \(B\) \((AB)\) and from \(A\) to \(C\) $(AC).$
+</p>
+
+<p>
+Now, take the cross product \(AB \cdot AC\), and divide by \(|AB|\). This gives you the distance
+(denoted by the red line) as \(\frac{(AB \cdot AC)}{|AB|}\). And here you are done.
+</p>
+
+
+<figure id="orga327d9a">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Vectors/2022-01-19_04-58-41_screenshot.png" alt="2022-01-19_04-58-41_screenshot.png">
+
+</figure>
+
+
+<p>
+The reason this works comes from some basic high school level geometry. The area of a
+triangle is found as \(\frac{\text{base} \cdot \text{height}}{2}\). Now, the area of the triangle formed by \(A\), \(B\) and \(C\) is
+given by  \(\frac{AB \cdot AC}{2}\)  Since the base of the triangle is formed by \(AB\), and the height of the
+triangle is the distance from the line to \(C\). Therefore, what we have done is to find twice
+the area of the triangle using the cross product, and then divided by the length of the
+base. As always with cross products, the value may be negative, in which case the distance
+is the absolute value.
+</p>
+
+<p>
+Let's repeat in C(++):
+</p>
+<div class="org-src-container">
+<pre class="src src-c++"><span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Compute the dot product AB &#8901; BC</span>
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">dot</span>(<span style="font-weight: bold; text-decoration: underline;">int</span>[] A, <span style="font-weight: bold; text-decoration: underline;">int</span>[] B, <span style="font-weight: bold; text-decoration: underline;">int</span>[] C) {
+  AB = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">int</span>[2];
+  BC = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">int</span>[2];
+  AB[0] = B[0] - A[0];
+  AB[1] = B[1] - A[1];
+  BC[0] = C[0] - B[0];
+  BC[1] = C[1] - B[1];
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">dot</span> = AB[0] * BC[0] + AB[1] * BC[1];
+  <span style="font-weight: bold;">return</span> dot;
+}
+<span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Compute the cross product AB x AC</span>
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">cross</span>(<span style="font-weight: bold; text-decoration: underline;">int</span>[] A, <span style="font-weight: bold; text-decoration: underline;">int</span>[] B, <span style="font-weight: bold; text-decoration: underline;">int</span>[] C) {
+  AB = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">int</span>[2];
+  AC = <span style="font-weight: bold;">new</span> <span style="font-weight: bold; text-decoration: underline;">int</span>[2];
+  AB[0] = B[0] - A[0];
+  AB[1] = B[1] - A[1];
+  AC[0] = C[0] - A[0];
+  AC[1] = C[1] - A[1];
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">cross</span> = AB[0] * AC[1] - AB[1] * AC[0];
+  <span style="font-weight: bold;">return</span> cross;
+}
+<span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Compute the distance from A to B</span>
+<span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold;">distance</span>(<span style="font-weight: bold; text-decoration: underline;">int</span>[] A, <span style="font-weight: bold; text-decoration: underline;">int</span>[] B) {
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">d1</span> = A[0] - B[0];
+  <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">d2</span> = A[1] - B[1];
+  <span style="font-weight: bold;">return</span> sqrt(d1d1 + d2d2);
+}
+<span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Compute the distance from AB to C</span>
+<span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">if isSegment is true, AB is a segment, not a line.</span>
+<span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold;">linePointDist</span>(<span style="font-weight: bold; text-decoration: underline;">int</span>[] A, <span style="font-weight: bold; text-decoration: underline;">int</span>[] B, <span style="font-weight: bold; text-decoration: underline;">int</span>[] C, <span style="font-weight: bold; text-decoration: underline;">boolean</span> <span style="font-weight: bold; font-style: italic;">isSegment</span>) {
+  <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">dist</span> = cross(A, B, C) / distance(A, B);
+  <span style="font-weight: bold;">if</span> (isSegment) {
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">dot1</span> = dot(A, B, C);
+    <span style="font-weight: bold;">if</span> (dot1 &gt; 0) <span style="font-weight: bold;">return</span> distance(B, C);
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">dot2</span> = dot(B, A, C);
+    <span style="font-weight: bold;">if</span> (dot2 &gt; 0) <span style="font-weight: bold;">return</span> distance(A, C);
+  }
+  <span style="font-weight: bold;">return</span> abs(dist);
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org85d7cdd" class="outline-3">
+<h3 id="org85d7cdd">Polygon Area</h3>
+<div class="outline-text-3" id="text-org85d7cdd">
+<p>
+Consider this non-convex:
+</p>
+
+
+<figure id="orgde6750a">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Vectors/2022-01-19_04-59-01_screenshot.png" alt="2022-01-19_04-59-01_screenshot.png">
+
+</figure>
+
+
+<p>
+To find its area we are going to start by triangulating it. That is, we are going to divide
+it up into a number of triangles. In this polygon, the triangles are ABC, ACD, and ADE. But
+not all of those triangles are part of the polygon! We are going to take advantage of the
+signed area given by the cross product, which will make everything work out
+nicely.
+</p>
+
+<p>
+First, we’ll take the cross product of \(AB \cdot AC\) to find the area of \(ABC\). This will
+give us a negative value, because of the way in which \(A\), \(B\) and \(C\) are oriented. However,
+we’re still going to add this to our sum, as a negative number. Similarly, we will take the
+cross product \(AC \cdot AD\) to find the area of triangle \(ACD\), and we will again get a negative
+number. Finally, we will take the cross product \(AD \cdot AE\) and since these three points are
+oriented in the opposite direction, we will get a positive number. Adding these three
+numbers (two negatives and a positive) we will end up with a negative number, so will take
+the absolute value, and that will be area of the polygon.
+</p>
+
+
+<p>
+The reason this works is that the positive and negative number cancel each other out by
+exactly the right amount. The area of \(ABC\) and \(ACD\) ended up contributing positively to the
+final area, while the area of \(ADE\) contributed negatively. Looking at the original polygon,
+it is obvious that the area of the polygon is the area of \(ABCD\) (which is the same as \(ABC\) +
+\(ABD\)) minus the area of \(ADE\).
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-c++"><span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">(X[i], Y[i]) are coordinates of i'th point.</span>
+<span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold;">polygonArea</span>(<span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">X</span>[], <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">Y</span>[], <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">n</span>)
+{
+    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Initialize area</span>
+    <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">area</span> = 0.0;
+
+    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Calculate value of shoelace formula</span>
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">j</span> = n - 1;
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">i</span> = 0; i &lt; n; i++)
+    {
+        area += (X[j] + X[i]) * (Y[j] - Y[i]);
+        j = i;  <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">j is previous vertex to i</span>
+    }
+
+    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">Return absolute value</span>
+    <span style="font-weight: bold;">return</span> abs(area / 2.0);
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd5555c5" class="outline-2">
+<h2 id="orgd5555c5">Intersection</h2>
+<div class="outline-text-2" id="text-orgd5555c5">
+<p>
+The first thing to think about in line-line intersection problem is what form we given our
+lines in, and what form would we like them in? In the best cases, each line will be in such
+a form: \(A_{x} + B_{y} = C\) where \(A\), \(B\), and \(C\), are the numbers which define the line.
+We can generate any equation between two points easily. Say we are given two different
+points \((x_{1}, y{1})\) and \((x_{2}, y{2})\) and we what to find \(A\), \(B\) and \(C\) for the
+equation above, we can easily say:
+</p>
+
+\begin{equation*}
+a= y_2 - y_1
+\end{equation*}
+
+\begin{equation*}
+b= x_1 - x_2
+\end{equation*}
+
+\begin{equation*}
+c= ax_1+by_1
+\end{equation*}
+
+<p>
+Since this is one of the most problems I noticed people have trouble with, let's try to
+simplify more than that, consider the following equation:
+</p>
+
+\begin{equation}
+y= \underbrace{m}_{slope} \times \overbrace{x}^{x \ coordinate} + \underbrace{y}_{y \
+intercept} \end{equation}
+
+<p>
+This basic formula is called <i>slope-intercept form</i>:
+</p>
+
+
+<figure id="org10534f1">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Intersection/2022-01-19_04-59-48_screenshot.png" alt="2022-01-19_04-59-48_screenshot.png">
+
+</figure>
+
+<p>
+From the figure you can notice that the line crosses the \(y\) axis at \(y = 1\), so in formula,
+\(b\) (the \(y\) intercept) is 1. The slope, is the ratio of the change in the way axis for a
+given change in the \(x\) axis, in this figure it's \(\frac{1}{2} = 0.5\), so we can tell that
+the slope-intercept form for this line is \(y=.5x+1\). That's nice, but in code, we can't and
+we shouldn't solve this visually at all.
+</p>
+
+<p>
+So, we have got to, first, calculate the swap form the formula \(\frac{y_{2} - y_{1}}{x_2 -
+x_1}\), here we can take
+\(\frac{4-2}{6-2} = \frac{2}{4} = 0.5\), this gives us \(y = .5x + b\) now we can use each of the given point
+[ \((2,2)\) or \((6,4)\) ] in this equation, let's take \((2,2)\), this give us: \(2=0.5 \times 2 + b\), \(2 = 1 + b\), \(b = 1\),
+and we have the final
+formula again: \[y = 0.5x + 1\]
+</p>
+
+<p>
+Anther way to define a line is called <i>the standard form</i>: \(A_x + B_y = C\) and both \(A_x\)
+and \(B_y\) should be integers, and \(A_x\) can't be negative. We can rearrange our final
+formula to fit the standard form by reformatting it to \(-0.5x + y = 1\), you can observe that
+\(A_x\) is neither positive nor integer, we can fix it by multiplying by -2: we should get:
+\(x - 2y = -2\) and of course you can test it with replacing \(x\) and \(y\) by any of the given
+points, the result should be equal to \(-2\).
+</p>
+
+<p>
+Another nice way to get this form is that we can calculate \(A\) by this subtraction:
+\(A_x =
+y_2 - y_1\), and \(B_y\) is \(x_{1} - x_{2}\) and \(C\) is just \(A_x + B_y\), lets' take the points
+we have and try to apply this, we get:
+</p>
+
+<p>
+\[A= 4-2 =2\]
+</p>
+
+<p>
+\[B= 2-6 =-4\]
+</p>
+
+<p>
+Now all what you have to do is putting these numbers in the standard form equation, and you
+get:
+</p>
+
+\begin{equation*}
+2x-4y=C \end{equation*}
+
+<p>
+And by replacing \(x\) and \(y\) by any of the given points, say \((2,2)\), we can solve this
+equation for \(C\), it is \(-4\) so the final equation is:
+</p>
+
+\begin{equation*}
+2x - 4y = -4 \end{equation*}
+
+
+<p>
+Now, let's define what we mean by intersection, let's say we have the following points
+\(P_1,
+\ P_2, \ P_3, \ P_4\) showing in the following figure:
+</p>
+
+
+
+<figure id="org2f80c7a">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Intersection/2022-01-19_05-00-07_screenshot.png" alt="2022-01-19_05-00-07_screenshot.png">
+
+</figure>
+
+
+<p>
+As these are two lines, we should have two equations for each line:
+</p>
+\begin{equation*}
+A_{1}x + B_{1}y = C_{1} \ \ \ (P_1,P_2)
+\tag{1}
+\end{equation*}
+
+\begin{equation*}
+A_{2}x + B_{2}y = C_{2} \ \ \ (P_2,P_4)
+\tag{2}
+\end{equation*}
+
+<p>
+Now, you can notice that these line intersect in the figure, so they share an intersection
+point (the red point), so we can say that there is a single value in \(x\) and \(y\) that will
+exist in both of these lines and will satisfy both of their equations, so we need to solve
+for \(x\) and then for \(y\). But here is a point, you can't solve a single equation with
+multiple variables for just one of those variables, but if you have two equations that both
+contain the same two variables, you can combine them in the order to solve for one of those
+variable using simple algebra, let's combine the two equations, first let's
+multiple both sides of the first equation by  \(B_2\)
+</p>
+\begin{equation*}
+A_{1}B{2}x + B_{1} B_{2}y = C_{1} B_{2}
+\tag{1}
+\end{equation*}
+
+<p>
+And do the same with the second one but by \(B_{1}\)
+</p>
+
+\begin{equation*}
+A_{2}B_{1}x + B_{1} B_{2}y = C_{2} B_{1}
+\tag{2}
+\end{equation*}
+
+<p>
+If we subtract the first equation from the second one, we will cancel out the second term
+\(B_{1} B_{2}y\) and we are end with
+</p>
+
+\begin{equation*}
+A_{1}B_{2}x - A_{2}B_{1}x  = C_{1} B_{2} - C_{2} B_{1}
+\tag{3}
+\end{equation*}
+
+<p>
+Here we can extract x
+</p>
+
+ \begin{equation*}
+x(A_{1}B_{2} - A_{2}B_{1})  = C_{1} B_{2} - C_{2} B_{1}
+\tag{4}
+\end{equation*}
+
+<p>
+And now simply you are ready to solve for \(x\): \[ x = \frac{ C_1  B_2 - C_2 B_1 }{ A_1 B_2 -
+A_2 B_1}\]
+We can do the same thing for the \(y\) by multiplying by \(A_{1}\) and \(A_{2}\), but I'll save my
+time and here is the final formula: \[y = \frac{A_{1} C_{2} - A_{2} C_{1}}{A_1 B_2 - A_2
+B_1}\].
+</p>
+
+<p>
+Now, all what we need to do is taking \(x\) and \(y\) from the original 4 points and use them to
+get the \(A\), \(B\), and \(C\) for each line, and once we get this, we can calculate the
+intersection point using the mentioned formulas.
+</p>
+
+<p>
+Now, we can repeat easily in C:
+</p>
+<div class="org-src-container">
+<pre class="src src-c"><span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">det</span> = A1 * B2 - A2 * B1
+<span style="font-weight: bold;">if</span> (det == 0) {
+  <span style="font-weight: bold; font-style: italic;">//</span><span style="font-weight: bold; font-style: italic;">Lines are parallel</span>
+} <span style="font-weight: bold;">else</span> {
+  <span style="font-weight: bold; text-decoration: underline;">double</span> <span style="font-weight: bold; font-style: italic;">x</span> = (B2 * C1 - B1 * C2) / det
+  <span style="font-weight: bold; text-decoration: underline;">double</span> y = (A1 * C2 - A2 * C1) / det
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd3cdac2" class="outline-2">
+<h2 id="orgd3cdac2">Finding The Equation of a Line for a Segment</h2>
+<div class="outline-text-2" id="text-orgd3cdac2">
+<p>
+Let the given segment be \(PQ\)  i.e. the known coordinates of its ends \(P_x, P_y, Q_x, Q_y\)
+</p>
+
+<p>
+It is necessary to construct the equation of a line in the plane passing through this
+segment, i.e. find the coefficients  \(A_x + B_y + C = 0\)  in the equation of a line:
+</p>
+
+
+<p>
+Note that for the required triples  there are infinitely many solutions which describe the
+given segment: you can multiply all three coefficients by an arbitrary non-zero number and
+get the same straight line. Therefore, our task is to find one of these triples.
+</p>
+
+<p>
+It is easy to verify (by substitution of these expressions and the coordinates of the points
+and  into the equation of a straight line) that the following set of coefficients fits:
+</p>
+
+\begin{align}
+A &= P_y - Q_y, \\
+B &= Q_x - P_x, \\
+C &= - A P_x - B P_y.
+\end{align}
+</div>
+
+
+<div id="outline-container-org49fbffe" class="outline-3">
+<h3 id="org49fbffe"><span class="todo TODO">TODO</span> Real Case vs. Integer Case</h3>
+</div>
+</div>
+<div id="outline-container-orgb7be321" class="outline-2">
+<h2 id="orgb7be321">Orientation of 3 Points</h2>
+<div class="outline-text-2" id="text-orgb7be321">
+<p>
+To get the intuition of what is left and what is right turn, consider an example shown below.
+</p>
+
+
+<figure id="orged8285d">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Orientation_of_3_Points/2022-02-10_21-33-40_screenshot.png" alt="2022-02-10_21-33-40_screenshot.png">
+
+</figure>
+
+<p>
+Given two points \(p_1(x1,y1)\) and \(p_2(x2,y2)\), we need to first determine whether point
+\(p_1\) is clockwise or is anti-clockwise from point \(p2\) with respect to origin. One way of
+solving this problem is by calculating the angle made by both \(\overline{p_1}\) and
+\(\overline{p_2}\) with x-axis and the difference in the angle can tell whether one point is
+clockwise or anti-clockwise from other. There is an easier and efficient solution to this
+than finding the angle which is calculating the cross product of the vector \(\overline{p_1}\)
+and \(\overline{p_2}\) Mathematically the cross product of two vectors \(\overline{p_1}\) and
+\(\overline{p_2}\) is given by
+</p>
+
+<p>
+\(p_1 \times p_2 = x_1 y_2 - x_2 y_1\)
+</p>
+
+<p>
+If the value of \(p_1 \times p_2\) is positive then \(p_1\) is clockwise from \(p_2\) with respect
+to origin.
+</p>
+
+<p>
+Similarly, if \(p_1 \times p_2\) is negative then p1 is anti-clockwise from \(p_2\) with respect to origin and
+if the value is 0 then points \(p_1, p_2\) and origin are collinear.
+</p>
+
+<p>
+respectively. In order to calculate the cross product of two segments, we need to convert
+them into the vectors. This can be done in the following way.
+</p>
+
+<p>
+\(\overline{p_1p_2} = (x_2 - x_1 , y_2 - y_1)\)
+</p>
+</div>
+</div>
+<div id="outline-container-org9122f78" class="outline-2">
+<h2 id="org9122f78">Finding a Circle From 3 Points</h2>
+<div class="outline-text-2" id="text-org9122f78">
+<p>
+Given 3 points which are not colinear (all on the same line) those three points uniquely
+define a circle. But, how do you find the center and radius of that circle? This task turns
+out to be a simple application of line intersection. We want to find the perpendicular
+bisectors of \(XY\) and \(YZ\), and then find the intersection of those two bisectors. This gives us
+the center of the circle.
+</p>
+
+
+<figure id="org541833d">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Finding_a_Circle_From_3_Points/2022-01-19_05-00-24_screenshot.png" alt="2022-01-19_05-00-24_screenshot.png">
+
+</figure>
+
+
+<p>
+To find the perpendicular bisector of \(XY\), find the line from \(X\) to \(Y\), in the form \(A_x+B_y=C\). A
+line perpendicular to this line will be given by the equation \(-B_x+A_y=D\), for some \(D\). To find
+\(D\) for the particular line we are interested in, find the midpoint between \(X\) and \(Y\) by taking
+the midpoint of the x and y components independently (midpoint, \((x_m,y_m) = (\frac{x_1 +
+x_2}{2}, \frac{y_1+y_2}{2})\)). Then, substitute those values into the
+equation to find \(D\). If we do the same thing for Y and Z, we end up with two equations for
+two lines, and we can find their intersections as described above. Also, keep in mind that
+the equation of circle in general form is x² + y² + 2gx + 2fy + c = 0 and in radius form is
+(x – h)² + (y -k)² = r², where (h, k) is the center of the circle and r is the radius.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++"><span style="font-weight: bold; text-decoration: underline;">void</span> <span style="font-weight: bold;">findCircle</span>(<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">x1</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">y1</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">x2</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">y2</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">x3</span>, <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">y3</span>)
+{
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">x12</span> = x1 - x2;
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">x13</span> = x1 - x3;
+
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">y12</span> = y1 - y2;
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">y13</span> = y1 - y3;
+
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">y31</span> = y3 - y1;
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">y21</span> = y2 - y1;
+
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">x31</span> = x3 - x1;
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">x21</span> = x2 - x1;
+
+    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">x1^2 - x3^2</span>
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">sx13</span> = pow(x1, 2) - pow(x3, 2);
+
+    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">y1^2 - y3^2</span>
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">sy13</span> = pow(y1, 2) - pow(y3, 2);
+
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">sx21</span> = pow(x2, 2) - pow(x1, 2);
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">sy21</span> = pow(y2, 2) - pow(y1, 2);
+
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">f</span> = ((sx13) * (x12)
+             + (sy13) * (x12)
+             + (sx21) * (x13)
+             + (sy21) * (x13))
+            / (2 * ((y31) * (x12) - (y21) * (x13)));
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">g</span> = ((sx13) * (y12)
+             + (sy13) * (y12)
+             + (sx21) * (y13)
+             + (sy21) * (y13))
+            / (2 * ((x31) * (y12) - (x21) * (y13)));
+
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">c</span> = -pow(x1, 2) - pow(y1, 2) - 2 * g * x1 - 2 * f * y1;
+
+    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">eqn of circle be x^2 + y^2 + 2*g*x + 2*f*y + c = 0</span>
+    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">where centre is (h = -g, k = -f) and radius r</span>
+    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">as r^2 = h^2 + k^2 - c</span>
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">h</span> = -g;
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">k</span> = -f;
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">sqr_of_r</span> = h * h + k * k - c;
+
+    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">r is the radius</span>
+    <span style="font-weight: bold; text-decoration: underline;">float</span> <span style="font-weight: bold; font-style: italic;">r</span> = sqrt(sqr_of_r);
+
+    cout &lt;&lt; <span style="font-style: italic;">"Centre = ("</span> &lt;&lt; h &lt;&lt; <span style="font-style: italic;">", "</span> &lt;&lt; k &lt;&lt; <span style="font-style: italic;">")"</span> &lt;&lt; endl;
+    cout &lt;&lt; <span style="font-style: italic;">"Radius = "</span> &lt;&lt; r;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org2256f2e" class="outline-2">
+<h2 id="org2256f2e">Convex Hull</h2>
+<div class="outline-text-2" id="text-org2256f2e">
+<p>
+A convex hull of a set of points is the smallest convex polygon that contains every one of
+the points. It is defined by a subset of all the points in the original set. One way to
+think about a convex hull is to imagine that each of the points is a peg sticking up out of
+a board. Take a rubber band and stretch it around all of the points. The polygon formed by
+the rubber band is a convex hull.
+</p>
+</div>
+
+<div id="outline-container-org4d553d5" class="outline-3">
+<h3 id="org4d553d5">Jarvi's algorithm</h3>
+<div class="outline-text-3" id="text-org4d553d5">
+<p>
+\(O(n^2)\)
+\(O(n \cdot h)\)
+</p>
+
+<p>
+There is two approaches to solve this problem, <i>Jarvi's algorithm</i> and <i>Graham Scan</i>, in
+this article I'm going to use Jarvi's algorithm here, if you are autistic enough you can
+check <a href="http://www.dcs.gla.ac.uk/~pat/52233/slides/Hull1x1.pdf">Grahm Scan</a>.
+</p>
+
+<p>
+he core of Jarvi's algorithm is described in the following points:
+</p>
+
+<ol class="org-ol">
+<li>Initialize \(p\) as leftmost point</li>
+<li>Do the following as long as we don't come back to the leftmost point again:
+<ol class="org-ol">
+<li><p>
+The next point \(q\) is the point such that the triple \((p,\ r,\ q)\) is counterclockwise for any other point \(r\).
+</p>
+
+<p>
+To find this we simply initialize \(q\) as the next point, then we traverse through the
+all points. For any point \(i\), if \(i\) is more counterclockwise, then we update \(q =
+      i\).
+How to check if point is more counterclockwise? We can use orientation checker:
+</p>
+
+
+<figure id="orga842612">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Convex_Hull/2022-01-19_05-00-40_screenshot.png" alt="2022-01-19_05-00-40_screenshot.png">
+
+</figure>
+
+<p>
+(in this figure, clockwise triplet \(ABC\): cross product of \(AB\) and \(AC\) vectors is \(> 0\) anticlockwise triplet \(ACD\): cross product of \(AC\) and \(AD\) is negative.)
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++"><span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">orientation</span>(<span style="font-weight: bold; text-decoration: underline;">Point</span> <span style="font-weight: bold; font-style: italic;">p</span>, <span style="font-weight: bold; text-decoration: underline;">Point</span> <span style="font-weight: bold; font-style: italic;">q</span>, <span style="font-weight: bold; text-decoration: underline;">Point</span> <span style="font-weight: bold; font-style: italic;">r</span>)
+{
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">val</span> = (q.y - p.y) * (r.x - q.x) -
+              (q.x - p.x) * (r.y - q.y);
+
+    <span style="font-weight: bold;">if</span> (val == 0) <span style="font-weight: bold;">return</span> 0;  <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">collinear</span>
+    <span style="font-weight: bold;">return</span> (val &gt; 0)? 1: 2; <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">clock or counterclock wise</span>
+}
+</pre>
+</div>
+
+<p>
+If we found that the points are collinear, we should consider taking the points with
+more distance, using a distance utility
+</p>
+
+<div class="org-src-container">
+<pre class="src src-c++"><span style="font-weight: bold; text-decoration: underline;">float</span> <span style="font-weight: bold;">dis</span>(<span style="font-weight: bold; text-decoration: underline;">point</span> <span style="font-weight: bold; font-style: italic;">p</span>, <span style="font-weight: bold; text-decoration: underline;">point</span> <span style="font-weight: bold; font-style: italic;">q</span>) {
+    <span style="font-weight: bold;">return</span> sqrt(   pow(p[x] - q[x], 2) +
+                    pow(p[y] - q[y] , 2) * 1.0 );
+}
+</pre>
+</div></li>
+
+<li>next[p] = q (store \(q\) as next of \(p\) in the output convex hull)</li>
+<li>\(p = q\) (Set p as q for the next iteration)</li>
+</ol></li>
+</ol>
+
+
+<p>
+Now, let's repeat in C(++):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C++"><span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;vector&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;iostream&gt;</span>
+<span style="font-weight: bold;">#include</span> <span style="font-style: italic;">&lt;cmath&gt;</span>
+<span style="font-weight: bold;">#define</span> <span style="font-weight: bold; font-style: italic;">x</span> 0
+<span style="font-weight: bold;">#define</span> <span style="font-weight: bold; font-style: italic;">y</span> 1
+<span style="font-weight: bold;">#define</span> <span style="font-weight: bold; font-style: italic;">point</span> <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; text-decoration: underline;">std</span>;
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">orinetation</span>(<span style="font-weight: bold; text-decoration: underline;">point</span> <span style="font-weight: bold; font-style: italic;">p</span>, <span style="font-weight: bold; text-decoration: underline;">point</span> <span style="font-weight: bold; font-style: italic;">q</span>, <span style="font-weight: bold; text-decoration: underline;">point</span> <span style="font-weight: bold; font-style: italic;">r</span>) {
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">val</span> = (q[y] - p[y] ) * (r[x] - q[x]) -
+        (q[x] - p [x] ) * (r[y] - q[y]);
+    <span style="font-weight: bold;">if</span> (val ==0 ) <span style="font-weight: bold;">return</span> 0; <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">collinear</span>
+    <span style="font-weight: bold;">return</span> (val &gt; 0) ? 1 : 2;
+
+}
+
+<span style="font-weight: bold; text-decoration: underline;">float</span> <span style="font-weight: bold;">dis</span>(<span style="font-weight: bold; text-decoration: underline;">point</span> <span style="font-weight: bold; font-style: italic;">p</span>, <span style="font-weight: bold; text-decoration: underline;">point</span> <span style="font-weight: bold; font-style: italic;">q</span>) {
+    <span style="font-weight: bold;">return</span> sqrt(pow(p[x] - q[x], 2) +
+                    pow(p[y] - q[y] , 2) * 1.0 );
+}
+
+<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt; <span style="font-weight: bold;">jarvis_march</span>(<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt; <span style="font-weight: bold; font-style: italic;">points</span>) {
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">n</span> = points.size();
+    <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;<span style="font-weight: bold; font-style: italic;">hull</span>;
+    <span style="font-weight: bold;">if</span> (n &lt; 3) <span style="font-weight: bold;">return</span> hull;
+    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">find list most</span>
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">l</span> = 0;
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">i</span> = 1; i &lt; n; i++) {
+        <span style="font-weight: bold;">if</span> (points[i][x] &lt; points[l][x])
+            l = i;
+    }
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">q</span>, <span style="font-weight: bold; font-style: italic;">left</span> = l;
+    <span style="font-weight: bold;">do</span> {
+    hull.push_back(points[l]);
+    q = (l+1) % n;
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">i</span> = 0; i &lt; n; i++) {
+        <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">direction</span> = orinetation(points[l], points[i], points[q]);
+        <span style="font-weight: bold;">if</span>(direction == 2 || ( direction == 0 &amp;&amp; dis(points[i], points[l]) &gt; dis(points[q],points[l]))  )
+            q = i;
+    }
+    l=q;
+
+    } <span style="font-weight: bold;">while</span> (l != left );
+    <span style="font-weight: bold;">return</span> hull;
+}
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>() {
+    <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt; <span style="font-weight: bold; font-style: italic;">po</span> { {1,4}, {3,3} , {5,5} , {9,6} , {5,2}, {0,0} , {3,1} , {7,0} };
+    <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;<span style="font-weight: bold; font-style: italic;">l</span> = jarvis_march(po);
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold;">auto</span> <span style="font-weight: bold; font-style: italic;">i</span> : l)
+        {
+        <span style="font-weight: bold;">for</span> (<span style="font-weight: bold;">auto</span> <span style="font-weight: bold; font-style: italic;">k</span> : i)
+            cout &lt;&lt; k &lt;&lt; <span style="font-style: italic;">" "</span>;
+
+                cout &lt;&lt; endl;
+        }
+
+}
+</pre>
+</div>
+
+
+<p>
+Python implementation:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="font-weight: bold;">def</span> <span style="font-weight: bold;">jarvis_march</span>(points):
+    <span style="font-weight: bold; font-style: italic;"># </span><span style="font-weight: bold; font-style: italic;">find the leftmost point</span>
+    <span style="font-weight: bold; font-style: italic;">a</span> =  <span style="font-weight: bold;">min</span>(points, key = <span style="font-weight: bold;">lambda</span> point: point.x)
+    <span style="font-weight: bold; font-style: italic;">index</span> = points.index(a)
+
+    <span style="font-weight: bold; font-style: italic;"># </span><span style="font-weight: bold; font-style: italic;">selection sort</span>
+    <span style="font-weight: bold; font-style: italic;">l</span> = index
+    <span style="font-weight: bold; font-style: italic;">result</span> = []
+    result.append(a)
+    <span style="font-weight: bold;">while</span> (<span style="font-weight: bold; text-decoration: underline;">True</span>):
+        <span style="font-weight: bold; font-style: italic;">q</span> = (l + 1) % <span style="font-weight: bold;">len</span>(points)
+        <span style="font-weight: bold;">for</span> i <span style="font-weight: bold;">in</span> <span style="font-weight: bold;">range</span>(<span style="font-weight: bold;">len</span>(points)):
+            <span style="font-weight: bold;">if</span> i == l:
+                <span style="font-weight: bold;">continue</span>
+            <span style="font-weight: bold; font-style: italic;"># </span><span style="font-weight: bold; font-style: italic;">find the greatest left turn</span>
+            <span style="font-weight: bold; font-style: italic;"># </span><span style="font-weight: bold; font-style: italic;">in case of collinearity, consider the farthest point</span>
+            <span style="font-weight: bold; font-style: italic;">d</span> = direction(points[l], points[i], points[q])
+            <span style="font-weight: bold;">if</span> d &gt; 0 <span style="font-weight: bold;">or</span> (d == 0 <span style="font-weight: bold;">and</span> distance_sq(points[i], points[l]) &gt; distance_sq(points[q], points[l])):
+                <span style="font-weight: bold; font-style: italic;">q</span> = i
+        <span style="font-weight: bold; font-style: italic;">l</span> = q
+        <span style="font-weight: bold;">if</span> l == index:
+            <span style="font-weight: bold;">break</span>
+        result.append(points[q])
+
+    <span style="font-weight: bold;">return</span> result
+</pre>
+</div>
+<p>
+A visualization:
+</p>
+
+
+<figure id="org8642a06">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Convex_Hull/2022-01-19_05-01-38_Animation_depicting_the_gift_wrapping_algorithm.gif" alt="2022-01-19_05-01-38_Animation_depicting_the_gift_wrapping_algorithm.gif">
+
+</figure>
+</div>
+
+<div id="outline-container-orgcaf6ac2" class="outline-4">
+<h4 id="orgcaf6ac2">Trace</h4>
+<div class="outline-text-4" id="text-orgcaf6ac2">
+<p>
+Let's try to trace the C(++) program above with the very same given points in the program:
+</p>
+
+
+
+<figure id="org895993a">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Convex_Hull/2022-01-19_05-01-56_screenshot.png" alt="2022-01-19_05-01-56_screenshot.png">
+
+</figure>
+
+<p>
+The program first finds the leftmost point by sorting the points on x-coordinates. The
+leftmost point for the above set of points is \(l=(0,0)\). We insert the point \((0,0)\) into the
+convex hull vertices as shown by the green circle in the figure below.
+</p>
+
+
+<figure id="orgff9091f">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Convex_Hull/2022-01-19_05-02-14_screenshot.png" alt="2022-01-19_05-02-14_screenshot.png">
+
+</figure>
+
+
+<p>
+Next we find the left most point from point \(l=(0,0)\). The step by step process of finding the
+left most point from \(l=(0,0)\) is given below.
+</p>
+
+<ol class="org-ol">
+<li>We pick a point following \(l\) and call it \(q\). Let \(q\) be the point \((3,3)\) (You can pick any point, generally we pick next of \(l\) in array of points).</li>
+
+<li>Let all other points except \(l\) and \(q\) be \(i\). Now we check whether the sequence of points (\(l,i,q)\) turns right. If it turns right, we replace \(q\) by \(i\) and repeat the same process for remaining points.</li>
+
+<li>Let \(i=(7,0)\). The sequence \(((0, 0), (7, 0), (3, 3))\) turns left. Since we only care about right turn, we don’t do anything in this case and simply move on.</li>
+
+<li>Let next \(i=(3,1)\). The sequence \(((0, 0), (3, 1), (3, 3))\) turns left and we move on without doing anything.</li>
+
+<li>Let next \(i=(5,2)\). The sequence \(((0, 0), (5, 2), (3, 3))\) again turns left and we move on.</li>
+
+<li>Next \(i=(5,5)\). The sequence \(((0, 0), (5, 2), (3, 3))\) is collinear. In the case of collinear, we replace \(q\) with \(i\) only if distance between \(l\) and \(i\) is greater than distance between \(q\) and \(l\). In this case the distance between \((0,0)\) and \((5,5)\) is greater than the distance between \((0,0)\) and \((3,3)\) we replace q with point \((5,5)\).</li>
+
+<li>Let next \(i=(1,4)\). The sequence \(((0, 0), (1, 4), (5, 5))\) turns right. We replace \(q\) by point \((1,4)\).</li>
+
+<li>Finally the only choice for \(i\) is \((9,6)\). The sequence \(((0, 0), (9, 6), (1, 4))\) turns left. So we do nothing. We went through all the points and now \(q=(1,4)\) is the left most point.</li>
+</ol>
+
+<p>
+We add point \((1,4)\) to the convex hull.
+</p>
+
+
+<figure id="org324cd4f">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Convex_Hull/2022-01-19_05-02-31_screenshot.png" alt="2022-01-19_05-02-31_screenshot.png">
+
+</figure>
+
+<p>
+Next, we find the leftmost point from the point \((1,4)\) following the steps 1 - 8 mentioned
+above. If we follow all the steps, the leftmost point will be \((9,6)\).
+</p>
+
+
+
+<figure id="orgd7d4db0">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Convex_Hull/2022-01-19_05-02-42_screenshot.png" alt="2022-01-19_05-02-42_screenshot.png">
+
+</figure>
+
+
+
+<p>
+Using the same process, the leftmost point from \((9,6)\) will be the point \((7,0)\).
+</p>
+
+
+<figure id="org62b207e">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Convex_Hull/2022-01-19_05-02-53_screenshot.png" alt="2022-01-19_05-02-53_screenshot.png">
+
+</figure>
+
+
+<p>
+Finally from \((7,0)\) we compute the leftmost point. The leftmost point from \((7,0)\) will be the point \((0, 0)\). Since \((0,0)\) is already in the convex hull, the algorithm stops.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org331d5af" class="outline-4">
+<h4 id="org331d5af">Complexity</h4>
+<div class="outline-text-4" id="text-org331d5af">
+<p>
+The algorithm spends \(O(n)\) time on each convex hull vertex. If there are h convex hull
+vertices, the total time complexity of the algorithm would be \(O(nh)\). Since h is the number
+of output of the algorithm, this algorithm is also called output sensitive algorithm since
+the complexity also depends on the number of output.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgfe0a67b" class="outline-4">
+<h4 id="orgfe0a67b">Further Reading</h4>
+<div class="outline-text-4" id="text-orgfe0a67b">
+<ul class="org-ul">
+<li>Briquet, C. (n.d.). Introduction to Convex Hull Applications. Lecture. Retrieved August 23, 2018, from <a href="http://www.montefiore.ulg.ac.be/~briquet/algo3-chull-20070206.pdf">http://www.montefiore.ulg.ac.be/~briquet/algo3-chull-20070206.pdf</a></li>
+<li>Erickson, J. (n.d.). Convex Hulls. Lecture. Retrieved August 23, 2018, from <a href="http://jeffe.cs.illinois.edu/teaching/373/notes/x05-convexhull.pdf">http://jeffe.cs.illinois.edu/teaching/373/notes/x05-convexhull.pdf</a></li>
+<li>Mount, D. M. (n.d.). CMSC 754 Computational Geometry. Lecture. Retrieved August 23, 2018, from <a href="https://www.cs.umd.edu/class/spring2012/cmsc754/Lects/cmsc754-lects.pdf">https://www.cs.umd.edu/class/spring2012/cmsc754/Lects/cmsc754-lects.pdf</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6bbb45b" class="outline-3">
+<h3 id="org6bbb45b">Grahm Scan</h3>
+<div class="outline-text-3" id="text-org6bbb45b">
+<p>
+\(O(n \cdot log(n))\)
+</p>
+
+<p>
+Graham scan is an algorithm to compute a convex hull of a given set of points in \(O(n\log n)\)
+time. This algorithm first sorts the set of points according to their polar angle and scans
+the points to find the convex hull vertices.
+</p>
+
+<p>
+The step by step working of a Graham Scan Algorithms on the point set \(P\) is given below.
+</p>
+
+<ol class="org-ol">
+<li>Find the point \(P_0\) with the smallest \(y\) -coordinate. In some cases of tie, choose the point with smallest \(x\) coordinate.</li>
+
+<li><p>
+Sort the points based on the polar angle i.e. the angle made by the line with the \(x\) -axis. While implementing, we don’t calculate the angle, instead, we calculate the relative orientation of two points to find out which point makes the larger angle. This can be explained with the help of a figure shown below.
+</p>
+
+
+<figure id="org0714648">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Convex_Hull/2022-01-19_05-03-08_screenshot.png" alt="2022-01-19_05-03-08_screenshot.png">
+
+</figure></li>
+</ol>
+
+
+<p>
+To find out whether the line \(P_0 P_1\) or the line \(P_0 P_3\) makes the larger angle with the
+\(x\) -axis, we calculate the cross-product of vector \(P_1 P_0\) and vector
+\(P_1 P_3\) If the cross-product is positive, that means vector \(P_1 P_0\) is
+clockwise from vector \(P_1 P_3\) with respect to the \(x\) -axis. This indicates that the
+angle made by the vector \(P_1 P_3\) is larger. We can use any sorting algorithm that
+has complexity \(O(n \log n)\).
+</p>
+
+
+<figure id="org8832e87">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Convex_Hull/2022-01-19_05-03-21_screenshot.png" alt="2022-01-19_05-03-21_screenshot.png">
+
+</figure>
+
+
+<p>
+Remainder, to convert a point into a vector we use \[\overline{p_1p_2} = (x_2 - x_1,
+   y_2 - y_1), \overline{p_1p_3} = (x_3 - x_1, y_3 - y_1)\]
+</p>
+
+<p>
+It looks like this:
+</p>
+
+
+<figure id="org381f835">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Convex_Hull/2022-01-19_05-03-40_screenshot.png" alt="2022-01-19_05-03-40_screenshot.png">
+
+</figure>
+
+<ol class="org-ol">
+<li>After sorting, we check for the collinear points. If we find any collinear points, we keep the furthest point from \(P0\) and remove all other points. This step takes \(O(n)\) time.</li>
+<li>First two points in the sorted list are always in the convex hull. In the above figure, points \(P_0\) and \(P_1\) are the vertices of the convex hull. We maintain a stack data structure to keep track of the convex hull vertices. We push these two points and the next point in the list (points \(P_0\),\(P_1\) and \(P_3\) in the figure above) to the stack.</li>
+<li>Now we check if the next point in the list turns left or right from the two points on the top of the stack. If it turns left, we push this item on the stack. If it turns right, we remove the item on the top of the stack and repeat this process for remaining items. This step takes \(O(n)\) times.</li>
+</ol>
+
+<p>
+If we perform these steps on a set of points, we should get correct convex hull.
+</p>
+
+<p>
+Let's repeat in C(++):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C++"><span style="font-weight: bold;">#define</span> <span style="font-weight: bold; font-style: italic;">x</span> 0
+<span style="font-weight: bold;">#define</span> <span style="font-weight: bold; font-style: italic;">y</span> 1
+<span style="font-weight: bold;">#define</span> <span style="font-weight: bold; font-style: italic;">point</span> <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold;">namespace</span> <span style="font-weight: bold; text-decoration: underline;">std</span>;
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">orinetation</span>(<span style="font-weight: bold; text-decoration: underline;">point</span> <span style="font-weight: bold; font-style: italic;">p</span>, <span style="font-weight: bold; text-decoration: underline;">point</span> <span style="font-weight: bold; font-style: italic;">q</span>, <span style="font-weight: bold; text-decoration: underline;">point</span> <span style="font-weight: bold; font-style: italic;">r</span>) {
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">val</span> = (q[y] - p[y] ) * (r[x] - q[x]) -
+        (q[x] - p [x] ) * (r[y] - q[y]);
+    <span style="font-weight: bold;">if</span> (val ==0 ) <span style="font-weight: bold;">return</span> 0; <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">collinear</span>
+    <span style="font-weight: bold;">return</span> (val &gt; 0) ? 1 : 2; <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">clockwise : counterclockwise</span>
+}
+
+<span style="font-weight: bold; text-decoration: underline;">float</span> <span style="font-weight: bold;">dis</span>(<span style="font-weight: bold; text-decoration: underline;">point</span> <span style="font-weight: bold; font-style: italic;">p</span>, <span style="font-weight: bold; text-decoration: underline;">point</span> <span style="font-weight: bold; font-style: italic;">q</span>) {
+    <span style="font-weight: bold;">return</span> sqrt(   pow(p[x] - q[x], 2) +
+                    pow(p[y] - q[y] , 2) * 1.0 );
+}
+
+<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt; <span style="font-weight: bold;">jarvis_march</span>(<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt; <span style="font-weight: bold; font-style: italic;">points</span>) {
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">n</span> = points.size();
+    <span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt;<span style="font-weight: bold; font-style: italic;">hull</span>;
+    <span style="font-weight: bold;">if</span> (n &lt; 3) <span style="font-weight: bold;">return</span> hull;
+    <span style="font-weight: bold; font-style: italic;">// </span><span style="font-weight: bold; font-style: italic;">find left most</span>
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">l</span> = 0;
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">i</span> = 1; i &lt; n; i++) {
+        <span style="font-weight: bold;">if</span> (points[i][x] &lt; points[l][x])
+            l = i;
+    }
+    <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">q</span>, <span style="font-weight: bold; font-style: italic;">left</span> = l;
+    <span style="font-weight: bold;">do</span> {
+    hull.push_back(points[l]);
+    q = (l+1) % n;
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">i</span> = 0; i &lt; n; i++) {
+        <span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold; font-style: italic;">direction</span> = orinetation(points[l], points[i], points[q]);
+        <span style="font-weight: bold;">if</span>(direction == 2 || ( direction == 0 &amp;&amp; dis(points[i], points[l]) &gt; dis(points[q],points[l]))  )
+            q = i;
+    }
+    l=q;
+    } <span style="font-weight: bold;">while</span> (l != left );
+    <span style="font-weight: bold;">return</span> hull;
+}
+
+<span style="font-weight: bold; text-decoration: underline;">int</span> <span style="font-weight: bold;">main</span>() {
+<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt; <span style="font-weight: bold; font-style: italic;">pointts</span> = {{0, 3}, {2, 2}, {1, 1}, {2, 1}, {3, 0}, {0, 0}, {3, 3}};
+<span style="font-weight: bold; text-decoration: underline;">vector</span> &lt;<span style="font-weight: bold; text-decoration: underline;">vector</span>&lt;<span style="font-weight: bold; text-decoration: underline;">int</span>&gt;&gt; <span style="font-weight: bold; font-style: italic;">hull</span> = jarvis_march(pointts);
+<span style="font-weight: bold;">for</span> (<span style="font-weight: bold;">auto</span> <span style="font-weight: bold; font-style: italic;">i</span> : hull ) {
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold;">auto</span> <span style="font-weight: bold; font-style: italic;">j</span> : i ) {
+        cout &lt;&lt; j &lt;&lt; endl;
+    }
+    cout &lt;&lt; endl;
+}
+
+}
+</pre>
+</div>
+
+<p>
+Python implementation:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="font-weight: bold;">def</span> <span style="font-weight: bold;">find_min_y</span>(points):
+    <span style="font-weight: bold; font-style: italic;">miny</span> = 999999
+    <span style="font-weight: bold; font-style: italic;">mini</span> = 0
+    <span style="font-weight: bold;">for</span> i, point <span style="font-weight: bold;">in</span> <span style="font-weight: bold;">enumerate</span>(points):
+        <span style="font-weight: bold;">if</span> point.y &lt; miny:
+            <span style="font-weight: bold; font-style: italic;">miny</span> = point.y
+            <span style="font-weight: bold; font-style: italic;">mini</span> = i
+        <span style="font-weight: bold;">if</span> point.y == miny:
+            <span style="font-weight: bold;">if</span> point.x &lt; points[mini].x:
+                <span style="font-weight: bold; font-style: italic;">mini</span> = i
+    <span style="font-weight: bold;">return</span> points[mini], mini
+
+<span style="font-weight: bold;">def</span> <span style="font-weight: bold;">polar_comparator</span>(p1, p2, p0):
+    <span style="font-weight: bold; font-style: italic;">d</span> = direction(p0, p1, p2)
+    <span style="font-weight: bold;">if</span> d &lt; 0:
+        <span style="font-weight: bold;">return</span> -1
+    <span style="font-weight: bold;">if</span> d &gt; 0:
+        <span style="font-weight: bold;">return</span> 1
+    <span style="font-weight: bold;">if</span> d == 0:
+        <span style="font-weight: bold;">if</span> distance_sq(p1, p0) &lt; distance_sq(p2, p0):
+            <span style="font-weight: bold;">return</span> -1
+        <span style="font-weight: bold;">else</span>:
+            <span style="font-weight: bold;">return</span> 1
+
+<span style="font-weight: bold;">def</span> <span style="font-weight: bold;">graham_scan</span>(points):
+    <span style="font-weight: bold; font-style: italic;">p0</span>, <span style="font-weight: bold; font-style: italic;">index</span> = find_min_y(points)
+    <span style="font-weight: bold; font-style: italic;">points</span>[0], <span style="font-weight: bold; font-style: italic;">points</span>[index] = points[index], points[0]
+    <span style="font-weight: bold; font-style: italic;">sorted_polar</span> = <span style="font-weight: bold;">sorted</span>(points[1:], <span style="font-weight: bold;">cmp</span> = <span style="font-weight: bold;">lambda</span> p1, p2: polar_comparator(p1, p2, p0))
+    <span style="font-weight: bold; font-style: italic;">to_remove</span> = []
+    <span style="font-weight: bold;">for</span> i <span style="font-weight: bold;">in</span> <span style="font-weight: bold;">range</span>(<span style="font-weight: bold;">len</span>(sorted_polar) - 1):
+        <span style="font-weight: bold; font-style: italic;">d</span> = direction(sorted_polar[i], sorted_polar[i + 1], p0)
+        <span style="font-weight: bold;">if</span> d == 0:
+            to_remove.append(i)
+    <span style="font-weight: bold; font-style: italic;">sorted_polar</span> = [i <span style="font-weight: bold;">for</span> j, i <span style="font-weight: bold;">in</span> <span style="font-weight: bold;">enumerate</span>(sorted_polar) <span style="font-weight: bold;">if</span> j <span style="font-weight: bold;">not</span> <span style="font-weight: bold;">in</span> to_remove]
+    <span style="font-weight: bold; font-style: italic;">m</span> = <span style="font-weight: bold;">len</span>(sorted_polar)
+    <span style="font-weight: bold;">if</span> m &lt; 2:
+        <span style="font-weight: bold;">print</span> <span style="font-style: italic;">'Convex hull is empty'</span>
+
+    <span style="font-weight: bold;">else</span>:
+        <span style="font-weight: bold; font-style: italic;">stack</span> = []
+        <span style="font-weight: bold; font-style: italic;">stack_size</span> = 0
+        stack.append(points[0])
+        stack.append(sorted_polar[0])
+        stack.append(sorted_polar[1])
+        <span style="font-weight: bold; font-style: italic;">stack_size</span> = 3
+
+        <span style="font-weight: bold;">for</span> i <span style="font-weight: bold;">in</span> <span style="font-weight: bold;">range</span>(2, m):
+            <span style="font-weight: bold;">while</span> (<span style="font-weight: bold; text-decoration: underline;">True</span>):
+                <span style="font-weight: bold; font-style: italic;">d</span> = direction(stack[stack_size - 2], stack[stack_size - 1], sorted_polar[i])
+                <span style="font-weight: bold;">if</span> d &lt; 0: <span style="font-weight: bold; font-style: italic;"># </span><span style="font-weight: bold; font-style: italic;">if it makes left turn</span>
+                    <span style="font-weight: bold;">break</span>
+                <span style="font-weight: bold;">else</span>: <span style="font-weight: bold; font-style: italic;"># </span><span style="font-weight: bold; font-style: italic;">if it makes non left turn</span>
+                    stack.pop()
+                    <span style="font-weight: bold; font-style: italic;">stack_size</span> -= 1
+            stack.append(sorted_polar[i])
+            <span style="font-weight: bold; font-style: italic;">stack_size</span> += 1
+    <span style="font-weight: bold;">return</span> stack
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1901a9e" class="outline-3">
+<h3 id="org1901a9e"><span class="todo TODO">TODO</span> Monotone chain Algorithm</h3>
+<div class="outline-text-3" id="text-org1901a9e">
+<p>
+\(O(n \cdot log(n))\)
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-06-01 Thu 01:32.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

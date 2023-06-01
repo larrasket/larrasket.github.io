@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Reading List</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Reading List</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#history">History</a>
+<ul>
+<li><a href="#orgd479469">Middle East/ Ummah</a></li>
+<li><a href="#orgc212d7d">Ancient World</a></li>
+<li><a href="#org7364bea">Crusades</a></li>
+<li><a href="#org84a8bc6">Rome and Ancient Europe</a></li>
+<li><a href="#org8fcbf81">The West</a></li>
+<li><a href="#org8f4c8d7">Story of a History</a></li>
+<li><a href="#org8c89676">The United States</a></li>
+<li><a href="#org9f6d0e3">Asian Warfare</a></li>
+<li><a href="#orgd1078ed">Europe</a></li>
+</ul>
+</li>
+<li><a href="#org5a969f7">Economics/ Capitalism</a></li>
+<li><a href="#orga44a33b">Marxism</a>
+<ul>
+<li><a href="#orgffc7e32">Struggle</a></li>
+<li><a href="#orgf7d0264">Hardcore Capitalism</a>
+<ul>
+<li><a href="#org5dc3b3d">Authors</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org1e1be56">ʿAqīdah</a></li>
+<li><a href="#org8a71159">Democracy</a></li>
+<li><a href="#org6b81228">History of Mathematics</a></li>
+<li><a href="#orgf0fadf0">Mathematics</a></li>
+<li><a href="#org20eb0cb">Greek</a></li>
+<li><a href="#orge31a2b2">Humanities &amp; Anthropology</a></li>
+<li><a href="#org116dcbf">Fitness</a></li>
+<li><a href="#orge7d40e9">Social Nationalism</a></li>
+<li><a href="#org3e68588">Middle East Struggle Related</a>
+<ul>
+<li><a href="#orgc91016f">On The Zionism Movement and The Israeli Occupation in Palestine</a></li>
+<li><a href="#org06c034a">Authors</a></li>
+</ul>
+</li>
+<li><a href="#orgf7ae6f3">Misc Authors</a></li>
+<li><a href="#org87b829f">Poetry</a></li>
+<li><a href="#org4b417b9">Politics</a></li>
+<li><a href="#org4970bdc">Science-related</a></li>
+<li><a href="#org4d7fd48">Chess</a></li>
+<li><a href="#orgdfe4385">Heritage</a></li>
+<li><a href="#org4b3dd90">Aesthetics</a></li>
+<li><a href="#org8e6eccd">Literature</a></li>
+</ul>
+</div>
+</nav>
+<dl class="org-dl">
+<dt>tags</dt><dd>selfshblanja2] [Sources</dd>
+</dl>
+
+<p>
+Please note: These are neither the books I recommend nor the ones I agree with
+their ideologies; the but a list of the documents/textbooks that I own, with
+some notes of (as a review) that could be helpful to anyone in the future, thus,
+this list proudly contains horribly written books.
+</p>
+
+
+<p>
+<b>See for computer science books, see <a href="csbooks.html">csbooks</a>.</b> <br>
+<b>The other list <a href="fullbooks.html">here</a>.</b> <br>
+</p>
+
+<p>
+<b>IMPORTANT: categories are totally messed up here</b>.
+</p>
+
+
+<div id="outline-container-history" class="outline-2">
+<h2 id="history">History</h2>
+<div class="outline-text-2" id="text-history">
+</div>
+
+<div id="outline-container-orgd479469" class="outline-3">
+<h3 id="orgd479469">Middle East/ Ummah</h3>
+<div class="outline-text-3" id="text-orgd479469">
+<ul class="org-ul">
+<li><span class="underline">Egypt (Springborg, R)</span></li>
+<li><span class="underline">Infidels (Wheatcroft, A)</span><sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup></li>
+<li>تاريخ تونس (الهادي، م)</li>
+<li>الحرب العراقية-الإيرانية (القصاب، ع)</li>
+<li>المقاومة (مروة، ك)</li>
+<li>الحرب القذرة (سويدية، ح)</li>
+<li>الجزائر إلى أين (مجموعة باحثين)</li>
+<li><p>
+إيران: الثورة الخفية (كوفيل، ت)
+</p>
+
+<p>
+I think I need a better set of book on Iran history.
+</p></li>
+<li>موسوعة تاريخ أوروبا (الزيدي، م)</li>
+<li>تاريخ أوروبا في العصور الوسطى (بيشوب، م)</li>
+<li>تاريخ مصر القومي، (الرفاعي، ع)</li>
+<li>المشروع الصهيوني وبداية الوعي العربي لمخاطره (الشلبي، س)</li>
+<li>استعمار مصر (ميشيل، ت)</li>
+<li><span class="underline">الفكر المصري في القرن الثامن عشر بين الجمود والتجديد (العزباوي، ع</span>)</li>
+<li>الإسلاميون والقضية الفلسطينية (موسى، ب)</li>
+<li>ليبيا (بازامه، م)</li>
+<li>قصة الثورة الإيرانية (ذبيح، س)</li>
+<li>تشكيل الأجنحة السياسية في إيران (برزين، س)</li>
+<li>A History of Modern Iran (Abrahamian, E)</li>
+<li>الانتقال من الثورة إلى الدولة<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup></li>
+<li>لماذا لا يثور المصريين</li>
+<li>نقد الثورة المصرية</li>
+<li>الثورة المستمرة</li>
+<li>حول العرب والعروبة</li>
+<li>قصة تونس من البداية</li>
+<li>عن الحرية (زكي نجيب محمود)</li>
+<li>How the West Stole Democracy from the Arabs<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup></li>
+<li>تاريخ إيران السياسي بين ثورتين</li>
+<li>إفريقيا جنوب الصحراء (زبادية)</li>
+<li>التراث الشعبي والشعر الملحون بالجزائر</li>
+<li>دور استراتيجة المقاومة الإسلامية<sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup></li>
+<li>Mecca of Revolution<sup><a id="fnr.5" class="footref" href="#fn.5" role="doc-backlink">5</a></sup></li>
+<li>Berber Government<sup><a id="fnr.6" class="footref" href="#fn.6" role="doc-backlink">6</a></sup></li>
+<li>Markets of Civilization <sup><a id="fnr.7" class="footref" href="#fn.7" role="doc-backlink">7</a></sup></li>
+<li>الصراع على الخليج العربي<sup><a id="fnr.8" class="footref" href="#fn.8" role="doc-backlink">8</a></sup></li>
+<li>محاضرات في تاريخ الجزائر<sup><a id="fnr.9" class="footref" href="#fn.9" role="doc-backlink">9</a></sup></li>
+<li>قضايا ودراسات في تاريخ الجزائر<sup><a id="fnr.10" class="footref" href="#fn.10" role="doc-backlink">10</a></sup></li>
+<li>تاريخ الثقافة في ليبيا<sup><a id="fnr.11" class="footref" href="#fn.11" role="doc-backlink">11</a></sup></li>
+<li>الدولة والمسألة الثقافية في الجزائر</li>
+<li><span class="underline">الدولة والمسألة الثقافية في تونس</span></li>
+<li><span class="underline">الدولة والمسألة الثقافية في المغرب</span></li>
+<li>البعث السوري (تاريخ موجز)</li>
+<li>موقف الاقباط من الحكم الاسلامي</li>
+<li>مُوجز لتاريخ الشيوعية</li>
+<li>Anarchism (Ward)</li>
+<li>Ancient Warfare (Sidebottom)</li>
+<li>The Birth of The Clinic (Foucault)</li>
+<li>لبنان (بيضون)</li>
+<li>لبنان بين الطوائف (عساف)</li>
+<li>لبنان تاريخه وتراثه</li>
+<li>مسارات مفكر عربي (محمد الشيخ)</li>
+<li>تاريخ الشيوعية في الشرق الأوسط</li>
+<li>تسلف الأخوان</li>
+<li>Inheriting Syria</li>
+<li>All the Shah's Men</li>
+<li>George Lincoln Rockwell</li>
+<li>معجم ما ألف في فضائل وتاريخ المسجد الأقصى والقدس وفلسطين ومدنها</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgc212d7d" class="outline-3">
+<h3 id="orgc212d7d">Ancient World</h3>
+<div class="outline-text-3" id="text-orgc212d7d">
+<ul class="org-ul">
+<li>Poems of Heaven and Hell (Sandars)</li>
+<li>The Pyramids Texts (Faulkner)</li>
+<li>الثورة الإجتماعية الأولى<sup><a id="fnr.12" class="footref" href="#fn.12" role="doc-backlink">12</a></sup></li>
+<li>المدن الفينيقية (مهران)</li>
+<li>المدن الكبرى (مهران)</li>
+<li>بنو إسرائيل(مهران)</li>
+<li>تاريخ العراق القديم (مهران)</li>
+<li>دراسات في تاريخ العرب (مهران)</li>
+<li>دليل مصطلحات ثورة التحرير الجزائرية (مرتاض، ع)</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org7364bea" class="outline-3">
+<h3 id="org7364bea">Crusades</h3>
+<div class="outline-text-3" id="text-org7364bea">
+<ul class="org-ul">
+<li>What were the Crusades? (Riley-Smith)</li>
+<li>Crusades (Jonathan Riley-Smith)</li>
+<li>الأيام الحاسمة في الحروب الصليبية</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org84a8bc6" class="outline-3">
+<h3 id="org84a8bc6">Rome and Ancient Europe</h3>
+<div class="outline-text-3" id="text-org84a8bc6">
+<ul class="org-ul">
+<li>الإمبراطورية الرومانية (لورو)</li>
+<li>Europe: A History (Norman Davies)</li>
+<li>A Brief History of the Romans (Oxford)</li>
+<li>The Early History of Rome (Livy)</li>
+<li>The Twelve Caesars (Suctonius)</li>
+<li>Metamorphose (Ovid)</li>
+<li>The Aeneid (Virgil)</li>
+<li>The Jewish Wars (Josephus)</li>
+<li>Rubicon: The Last Years of the Roman Republic</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org8fcbf81" class="outline-3">
+<h3 id="org8fcbf81">The West</h3>
+<div class="outline-text-3" id="text-org8fcbf81">
+<ul class="org-ul">
+<li>Colonialism and Neocolonialism (Sartre)</li>
+<li>How the Scots Invented the Modern World</li>
+<li>Pirate Hunter of the Caribbean</li>
+<li>Postwar (Judt)</li>
+<li>A Commonwealth of Thieves (Keneally)</li>
+<li>Neptune's Inferno (Hornfischer)</li>
+<li>Hot Time in the Old Town (Kohn)</li>
+<li>Pox<sup><a id="fnr.13" class="footref" href="#fn.13" role="doc-backlink">13</a></sup> (Willrich)</li>
+<li>Slavery by Another Name (Blackmon)</li>
+<li>Been in the Storm So Long (Litwack)</li>
+<li>London<sup><a id="fnr.14" class="footref" href="#fn.14" role="doc-backlink">14</a></sup> (Ackroyd)</li>
+<li>Empire<sup><a id="fnr.15" class="footref" href="#fn.15" role="doc-backlink">15</a></sup>  (Stewart)</li>
+<li>Lost to the West (Brownworth)<sup><a id="fnr.16" class="footref" href="#fn.16" role="doc-backlink">16</a></sup></li>
+<li>1492 (Blaut)<sup><a id="fnr.17" class="footref" href="#fn.17" role="doc-backlink">17</a></sup></li>
+<li>Birth of Britain (Barnes)</li>
+<li>The Tudors (Meyer)<sup><a id="fnr.18" class="footref" href="#fn.18" role="doc-backlink">18</a></sup></li>
+<li>Founding Brothers (Ellis)</li>
+<li>Freedom Summer (Watson)<sup><a id="fnr.19" class="footref" href="#fn.19" role="doc-backlink">19</a></sup></li>
+<li>Marco Polo (Bergreen)</li>
+<li>The First Battle (Lehrack)<sup><a id="fnr.20" class="footref" href="#fn.20" role="doc-backlink">20</a></sup></li>
+<li>Affection and Trust (Acheson)<sup><a id="fnr.21" class="footref" href="#fn.21" role="doc-backlink">21</a></sup></li>
+<li>The Empire Project (Darwin)</li>
+<li>Crimes of Paris (Hoobler)</li>
+<li>Crucible of War (Anderson)<sup><a id="fnr.22" class="footref" href="#fn.22" role="doc-backlink">22</a></sup></li>
+<li>Lords of the Sea (Hale)<sup><a id="fnr.23" class="footref" href="#fn.23" role="doc-backlink">23</a></sup></li>
+<li>Freethinkers (Jacoby)<sup><a id="fnr.24" class="footref" href="#fn.24" role="doc-backlink">24</a></sup></li>
+<li>Going Dutch (Jardine)<sup><a id="fnr.25" class="footref" href="#fn.25" role="doc-backlink">25</a></sup></li>
+<li>The Decline and Fall of the British Empire 1781-1997</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org8f4c8d7" class="outline-3">
+<h3 id="org8f4c8d7">Story of a History</h3>
+<div class="outline-text-3" id="text-org8f4c8d7">
+<ul class="org-ul">
+<li>مختصر تاريخ العالم (غومبريتش)</li>
+<li>Unfamiliar Fishes (Vowell)</li>
+<li>Uncommon Grounds (Pendergrast)</li>
+<li>In the Garden of Beasts (Coll)</li>
+<li>Devil at My Heels (Zamperini)</li>
+<li>In Pharaoh's Army (Wolff)</li>
+<li>Living Our Language (Treuer)</li>
+<li>The Classical World (Filkins)</li>
+<li>Practicing History (Tuchman)</li>
+<li>The Indian Ocean (Pearson)</li>
+<li>The Missing Pages (Watenpaugh)</li>
+<li>تاريخ الدبلوماسية (بلاك)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org8c89676" class="outline-3">
+<h3 id="org8c89676">The United States</h3>
+<div class="outline-text-3" id="text-org8c89676">
+<ul class="org-ul">
+<li>Operation Paperclip<sup><a id="fnr.26" class="footref" href="#fn.26" role="doc-backlink">26</a></sup></li>
+<li>Killing for Coal<sup><a id="fnr.27" class="footref" href="#fn.27" role="doc-backlink">27</a></sup></li>
+<li>The Image<sup><a id="fnr.28" class="footref" href="#fn.28" role="doc-backlink">28</a></sup> (Boorstin)</li>
+<li>The Fourth Star (Jaffe)</li>
+<li>The Idea of America (Wood)</li>
+<li>Americans in Paris (Glass)</li>
+<li>The Ascent of Money (Ferguson)</li>
+<li>The American Revolution (Wood)</li>
+<li>The Warmth of Other Suns (Wilkerson)</li>
+<li>The Atlantic and Its Enemies (Stone)</li>
+<li>Open Veins of Latin America (Galeano)</li>
+<li>The Fabulous History of the Dismal Swamp Company (Royster)</li>
+<li>The Culture of Critique</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org9f6d0e3" class="outline-3">
+<h3 id="org9f6d0e3">Asian Warfare</h3>
+<div class="outline-text-3" id="text-org9f6d0e3">
+<ul class="org-ul">
+<li>Red Capitalism (Howie)<sup><a id="fnr.29" class="footref" href="#fn.29" role="doc-backlink">29</a></sup></li>
+<li>Great Soul (Lelyveld)<sup><a id="fnr.30" class="footref" href="#fn.30" role="doc-backlink">30</a></sup></li>
+<li>China Witness (Xinran)</li>
+<li>Forgotten Wars (Harper)<sup><a id="fnr.31" class="footref" href="#fn.31" role="doc-backlink">31</a></sup></li>
+<li>Ancient Chinese Warfare (Sawyer)</li>
+<li>Pakistan<sup><a id="fnr.32" class="footref" href="#fn.32" role="doc-backlink">32</a></sup>  (Lieven)</li>
+<li>Genghis Khan and the Making of the Modern World (Weatherford)</li>
+<li>White Mughals<sup><a id="fnr.33" class="footref" href="#fn.33" role="doc-backlink">33</a></sup></li>
+<li>صعود الصين</li>
+<li>China in War and Revolution</li>
+<li>The Cambridge History of China <sup><a id="fnr.34" class="footref" href="#fn.34" role="doc-backlink">34</a></sup></li>
+<li>Inventing the Nation</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgd1078ed" class="outline-3">
+<h3 id="orgd1078ed">Europe</h3>
+<div class="outline-text-3" id="text-orgd1078ed">
+<ul class="org-ul">
+<li>النظام القديم والثورة الفرنسية</li>
+<li>Nazi Germany and the Jews (Friedländer)</li>
+<li>Trotsky (Volkogonov)</li>
+<li>The Wars Against Napoleon (Franceschi)</li>
+<li>Napoleon's Wars (Esdaile)</li>
+<li>Russia Against Napoleon (Lieven)</li>
+<li>Europe's Tragedy (Wilson)</li>
+<li>Black Lamb and Grey Falcon<sup><a id="fnr.35" class="footref" href="#fn.35" role="doc-backlink">35</a></sup> (West)</li>
+<li>Yugoslavia (Chomsky)</li>
+<li>Lucrezia Borgia (Bradford)</li>
+<li>Stalingrad (Beevor)</li>
+<li>A Chosen Few (Kurlansky)<sup><a id="fnr.36" class="footref" href="#fn.36" role="doc-backlink">36</a></sup></li>
+<li>عصر القومية</li>
+<li>المسألة الألمانية</li>
+<li>تاريخ الحركات القومية (نور الدين حاطوم)</li>
+<li>فرق الشيعة ( النوبختي)</li>
+<li>الصراع بين البرجوازية والإقطاع (شكري، م)</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5a969f7" class="outline-2">
+<h2 id="org5a969f7">Economics/ Capitalism</h2>
+<div class="outline-text-2" id="text-org5a969f7">
+<ul class="org-ul">
+<li>The Company<sup><a id="fnr.37" class="footref" href="#fn.37" role="doc-backlink">37</a></sup></li>
+<li>Basic Economics<sup><a id="fnr.38" class="footref" href="#fn.38" role="doc-backlink">38</a></sup></li>
+<li>The Culture of the New Capitalism</li>
+<li>Studies in Mutualist Political Economy</li>
+<li>Capitalism and Modern Social Theory</li>
+<li>Capital in the Twenty-First Century</li>
+<li>Capital et Idéologie (Piketty)</li>
+<li>Does Capitalism Has a Future?</li>
+<li>Socialism Betrayed (Keeran)</li>
+<li>A Brief History of Neoliberalism</li>
+<li>Capitalist Nursery Fables</li>
+<li>How to Change the World</li>
+<li>Beyond Capitalism (Dowbor)</li>
+<li>Why Marx Was Right</li>
+<li>الإشتراكية واقتصاد السوق<sup><a id="fnr.39" class="footref" href="#fn.39" role="doc-backlink">39</a></sup></li>
+<li>سيكولوجية المال</li>
+<li>صندوق النقط الدولي (فولف)</li>
+<li>Austerity<sup><a id="fnr.40" class="footref" href="#fn.40" role="doc-backlink">40</a></sup></li>
+<li>Circular Economy (Jessica)</li>
+<li>ملف جوجل (نوفاك)</li>
+<li>What Money Can't Buy (Sandel)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orga44a33b" class="outline-2">
+<h2 id="orga44a33b">Marxism</h2>
+<div class="outline-text-2" id="text-orga44a33b">
+<ul class="org-ul">
+<li>The Society of the Spectacle (Debord)</li>
+<li>كارل ماركس (برلين)</li>
+<li>مختارات لينين</li>
+<li>مدخل إلى علم السياسية (لاسكي)</li>
+<li>ماركس ضد نيتشه</li>
+<li>History and Class Consciousness</li>
+<li>The Theory of the Novel</li>
+<li>الماركسية اللينينية ونظرية الحزب</li>
+<li>الدين والصراع الطبقي (كارل كاوتسكي)</li>
+<li>Islam and Capitalism</li>
+<li>النشاط الجنسي وصراع الطبقات</li>
+<li>متى يطلع الفجر؟ (جان بول أوليفييه)</li>
+<li>ثورة الزنج</li>
+<li>الماركسيون والدين (فيريه)</li>
+<li>النشاط الجنسي وصراع الطبقات</li>
+<li>نظام العمل المأجور (أنجلس)</li>
+<li>عرض موجز للماركسية</li>
+<li>الصراع الأمريكي السوفياتي في الشرق الأوسط</li>
+<li>اطروحات الماركسية حول العولمة</li>
+<li>في تمرحل التاريخ</li>
+<li>مقدمات نظرية: لدراسة أثر الفكر الاشتراكي في حركة التحرر الوطني</li>
+<li>الاستعمار الجديد (غوامي نكروما)</li>
+<li>Marxism and Nationalism (Vanaik)</li>
+<li>ثورة مصر والصراع الطبقي المفتوح</li>
+<li>دفاعًا عن الماركسية (كورنفورث)</li>
+<li>حول مسائل مرحلة الإنتقال من الرأسمالية الى الأشتراكية و دكتاتورية البروليتاريا</li>
+<li>Dialectical and Historical Materialism (Stalin)</li>
+<li>ألف باء شيوعية</li>
+<li>الماركسية الصحيحة (لوكاش)</li>
+<li>التاريخ والوعي الطبقي (لوكاش)</li>
+<li>State and Revolution (Lenin)</li>
+<li>The Ego and his Own (Stirner)</li>
+<li>الفكر الحقوقي البرجوازي (تومانوف، ف)</li>
+</ul>
+</div>
+<div id="outline-container-orgffc7e32" class="outline-3">
+<h3 id="orgffc7e32">Struggle</h3>
+<div class="outline-text-3" id="text-orgffc7e32">
+<ul class="org-ul">
+<li>دور العنف (إنجلز)</li>
+<li>النبي المسلح</li>
+<li>الماركسية وحرب العصابات</li>
+<li>كيف تصنع ete ناجحًا</li>
+<li>تجارب ست ثورات عالمية</li>
+<li>الماركسية وحرب العصابات</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgf7d0264" class="outline-3">
+<h3 id="orgf7d0264">Hardcore Capitalism</h3>
+<div class="outline-text-3" id="text-orgf7d0264">
+<ul class="org-ul">
+<li>الكتاب الأسود للرأسمالية</li>
+<li>الطب الإمبريالي</li>
+<li>أوروبا والتخلف في أفريقيا</li>
+<li>أمبراطورية الإرهاب <sup><a id="fnr.41" class="footref" href="#fn.41" role="doc-backlink">41</a></sup></li>
+<li>المثقفون المزيفون (باسكال بونيفاس)</li>
+<li>ما بعد الرأسمالية المتهالكة</li>
+<li>الاستعمار الجديد (جاك وودس)</li>
+<li>Canada in Africa (Engler)</li>
+<li>الإرهاب المعولم</li>
+<li>The Protestant Ethic and the Spirit of Capitalism</li>
+<li>Canada in Africa 300 Years of Aid and Exploitation</li>
+<li>Why Liberalism Failed (Daneen)</li>
+<li>American War Machine (Scott)</li>
+<li>Provincialization and Class Struggle in Africa</li>
+<li><span class="underline">الرأسمالية والفصام</span></li>
+</ul>
+</div>
+<div id="outline-container-org5dc3b3d" class="outline-4">
+<h4 id="org5dc3b3d">Authors</h4>
+<div class="outline-text-4" id="text-org5dc3b3d">
+<ul class="org-ul">
+<li>Immanuel Wallerstein</li>
+<li>Galal Amin</li>
+<li>Samir Amin</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org1e1be56" class="outline-2">
+<h2 id="org1e1be56">ʿAqīdah</h2>
+<div class="outline-text-2" id="text-org1e1be56">
+<ul class="org-ul">
+<li>قراءة جديدة لحروب الردة</li>
+<li>كتب العلوين المقدسة</li>
+<li>مجموعة الأحاديث العلوية</li>
+<li>المهدية في الاسلام (محمد حسن)</li>
+<li>اخوان الصفا (عمر الدسوقي)</li>
+<li>المناظرات والردود العلوية</li>
+<li>ملخص تاريخ الخوارج (محمد شريف سليم)</li>
+<li>العقل في المجتمع العراقي (شاكر شاهين)</li>
+<li>رسائل الحكمة العلوية</li>
+<li>فرق الشيعة المتطرفين (جابر عبدالعال)</li>
+<li>الميثولوجيا عند العرب قبل الإسلام (سليم الحوت)</li>
+<li>الهداية الكبرى (الحسين بن حمدان الخصيبي)</li>
+<li>الحجة والدليل في نصر الدين الذليل</li>
+<li>الحكمة السومرية في العراق القديم (قاشا)</li>
+<li>المعتزلة (قاشا)</li>
+<li>اليزيدية (الديوه جي)</li>
+<li>اليزيدية (سعيد سمو)</li>
+<li>اليزيدية (صديق الدملوجي)</li>
+<li>وحدة الوجود العقلية (الوائلي)</li>
+<li>عقائد الباطنية (الهادي الطاهري)</li>
+<li>المذاهب في العراق (الخيون)</li>
+<li>الدرزية (نسيب مكارم)</li>
+<li>عقائد الشيعة الاثني عشرية (جنوف)</li>
+<li>شعر الأسماعيلية (عامر البصري)</li>
+<li>المُخلص (الناصر صديقي<sup><a id="fnr.42" class="footref" href="#fn.42" role="doc-backlink">42</a></sup>)</li>
+<li>المعتزلة والثورة (عمارة)</li>
+<li>نقد الخطاب السلفي (السمهوري)</li>
+<li>المعتزلة ثورة الفكر الاسلامي الحر</li>
+<li>The Monks of War (Desmond Seward)</li>
+<li>God's Philosophers (Hannam)</li>
+<li>Doubt (Hecht)</li>
+<li>Life After Death (Segal)</li>
+<li>Rome's Gothic Wars (Kulikowski)</li>
+<li>Rubicon (Holland)</li>
+<li>Life in a Medieval City (Gies)</li>
+<li>Life in a Medieval Village (Gies)</li>
+<li>Cathedral, Forge, and Waterwheel (Gies)</li>
+<li>Evicted From Eternity (Herzfeld)</li>
+<li>أضواء على السنة المحمدية (أبو زهرة)</li>
+<li>فتح المضيرة (أبو زهرة)</li>
+<li>العدالة الاجتماعية في الإسلام (قطب)</li>
+<li>شروط النهضة (مالك بن نبي)</li>
+<li>مشكلة الأفكار في العالم الإسلامي (مالك بن نبي)</li>
+<li>معاوية (العقاد)</li>
+<li>الإسلام والاستبداد السياسي (محمد الغزالي)</li>
+<li>ماذا خسر العالم بانحطاط المسلمين (الندوي)</li>
+<li>المذاهب التفسيرية عند الشيعة والسنة</li>
+<li>براءة الأشعريين من عقائد المخالفين</li>
+<li>الصواعق الإلهية</li>
+<li>كشف الارتياب في أتباع محمد بن عبد الوهاب</li>
+<li>كتاب الأشاعرة في ميزان أهل السنة</li>
+<li>الفكر الشيعي المبكر</li>
+<li>كلمات قصر لعلي بن أبي طالب</li>
+<li>الرد على المتعصب العنيد المانع من ذم يزيد</li>
+<li>الأباضية عقيدة ومذهبة</li>
+<li>الدروز (أوبنهايم)</li>
+<li>السيرة النبوية (مهران)</li>
+<li>الإمام علي (مهران)</li>
+<li>الإمامة (مهران)</li>
+<li>العروة الوثقى (محمد عبده)</li>
+<li>معجم المؤلفات الاسلامية<sup><a id="fnr.43" class="footref" href="#fn.43" role="doc-backlink">43</a></sup></li>
+<li>الفرق الصوفية في الإسلام<sup><a id="fnr.44" class="footref" href="#fn.44" role="doc-backlink">44</a></sup></li>
+<li>الإباضية بين الفرق الإسلامية</li>
+<li>الخوارج (عبد الكريم عقل)</li>
+<li>عصر الخلافة الراشدة<sup><a id="fnr.45" class="footref" href="#fn.45" role="doc-backlink">45</a></sup></li>
+<li>تطهير الجنان واللسان<sup><a id="fnr.46" class="footref" href="#fn.46" role="doc-backlink">46</a></sup></li>
+<li>الإجابة<sup><a id="fnr.47" class="footref" href="#fn.47" role="doc-backlink">47</a></sup></li>
+<li>وحدة الوجود العقلية</li>
+<li>نحو انقاذ التاريخ الإسلامي</li>
+<li>ملخص تاريخ الخوارج</li>
+<li>ملحم شكر<sup><a id="fnr.48" class="footref" href="#fn.48" role="doc-backlink">48</a></sup></li>
+<li>كيف تسللت الليبرالية</li>
+<li>ماذا خسر العالم بانحطاط المسلمين</li>
+<li>الغلو في مصطلح الملل والنحل والرجال</li>
+<li>تيارات الفكر الإسلامي (محمد عمارة)</li>
+<li>القول الواجبب (الهندي)</li>
+<li>أزمة أفريقية الاقتصادية في الإسلام</li>
+<li>Christianity/Islam (Schoun)</li>
+<li>النصوص (الآقادادي)</li>
+<li>مناهج علماء المسلمين في البحث العلمي</li>
+<li>الإسلام على مفترق الطرق</li>
+<li>الإسلام (عبد القادر عودة)</li>
+<li>الإسلام يتحدى (وحيد الدين)</li>
+<li>التجديد والتحريم والتأويل</li>
+<li>الخطاب والتأويل</li>
+<li>النص، السلطة، الحقيقة</li>
+<li>نقد الخطاب الديني</li>
+<li>الديمقراطية في الإسلام</li>
+<li>المسألة اليهودية (حسين)</li>
+<li>محنة الإسلام الكبرى (طه بدر)</li>
+<li>السلطة في الإسلام (عبدالجواد ياسين)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org8a71159" class="outline-2">
+<h2 id="org8a71159">Democracy</h2>
+<div class="outline-text-2" id="text-org8a71159">
+<ul class="org-ul">
+<li><span class="underline">ديموقراطيات في خطر (ألفريد ستبيان)</span></li>
+<li>الديموقراطية ونقادها (دال)</li>
+<li><span class="underline">الديموقراطية: أبحاث مختارة (لاري دايموند)</span></li>
+<li><span class="underline">عالم بلا قانون (فيليب ساندز)</span></li>
+<li><span class="underline">موت الديموقراطية (هث)</span></li>
+<li>الديموقراطية الإله الذي فشل (هوبا)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org6b81228" class="outline-2">
+<h2 id="org6b81228">History of Mathematics</h2>
+<div class="outline-text-2" id="text-org6b81228">
+<ul class="org-ul">
+<li>Journey through Genius</li>
+<li>Men of Mathematics</li>
+<li>Mathematics and its history</li>
+<li>Mathematics: Its Content, Methods and Meaning</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgf0fadf0" class="outline-2">
+<h2 id="orgf0fadf0">Mathematics</h2>
+<div class="outline-text-2" id="text-orgf0fadf0">
+<ul class="org-ul">
+<li>Book of Proof (Hammack)</li>
+<li>How to Prove It (Velleman)</li>
+<li>Elements of Set Theory (Enderton)</li>
+<li>Foundation of Analysis (Landau)</li>
+<li>Basic Mathematics (Lang)</li>
+<li>Principle of Mathematics (Oakley)</li>
+<li>Transition to Advanced Mathematics</li>
+<li>Calclus (Spivak)</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org20eb0cb" class="outline-2">
+<h2 id="org20eb0cb">Greek</h2>
+<div class="outline-text-2" id="text-org20eb0cb">
+<ul class="org-ul">
+<li>Ancient Greece<sup><a id="fnr.49" class="footref" href="#fn.49" role="doc-backlink">49</a></sup></li>
+<li>Bibliotheca (Apollodorus)</li>
+<li>The Iliad, The Odyssy (Alexander Pope's Translation)</li>
+<li>Works and Days (Theogony)</li>
+<li>The Histories (Herodotus)</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orge31a2b2" class="outline-2">
+<h2 id="orge31a2b2">Humanities &amp; Anthropology</h2>
+<div class="outline-text-2" id="text-orge31a2b2">
+<ul class="org-ul">
+<li>قصة الفن (جومبرتش)</li>
+<li>النفس والجنس والجريمة</li>
+<li>علم الفراسة (زيدان)</li>
+<li>تأملات في الفلسفة الأولى (ديكارت)</li>
+<li>الفلسفة (موضوعات مفتاحية)</li>
+<li>المثقفون العرب والتراث<sup><a id="fnr.50" class="footref" href="#fn.50" role="doc-backlink">50</a></sup></li>
+<li>تاريخ التأريخ (كوثراني)</li>
+<li>Engaging Political Philosophy</li>
+<li>Black Skin, White Masks</li>
+<li>الهوبيت والفلسفة</li>
+<li>تَفَكَر (بلاكبرن)</li>
+<li>جون لوك (دن)</li>
+<li>الموسوعة النفسية الجنسية</li>
+<li>مدرسة فرانكفورت</li>
+<li>Political Psychology<sup><a id="fnr.51" class="footref" href="#fn.51" role="doc-backlink">51</a></sup></li>
+<li>Reflections from Damaged Life (Moralia)</li>
+<li>Hegel's Dialectic of Desire and Recognition-State</li>
+<li>The Big Question (Higgins)</li>
+<li>Mutanabii (Larkin)</li>
+<li>The Alternative (Mosley)</li>
+<li>The Revolt of the Masses</li>
+<li>Popular Government (Maine)</li>
+<li>Heretics (Chesterton)</li>
+<li>Imperium (Varange)</li>
+<li>For My Legionaries (Codreanu)</li>
+<li>Into the Darkness (Stoddard)</li>
+<li>Short History of Decay (Cioran)</li>
+<li>The Bow of Ulysses (Froude)</li>
+<li>Essay on Catholicism (Cortes)</li>
+<li>The Constitution of Liberty (Hayek)</li>
+<li>Men Among The Runis (Evola)</li>
+<li>A Defense of Aristocracy</li>
+<li>The Death of the West</li>
+<li>Industrial Society and Its Future</li>
+<li>The Biocentric Worldview (Klages)</li>
+<li>The Dicline of the West (Splengler)</li>
+<li>Reflections on the Revolution in France</li>
+<li>Origins and Doctrine of Fascism</li>
+<li>The Culture of Critique (MacDonald)</li>
+<li>Understanding Human History (Hart)</li>
+<li>Hitler's Revolution (Tedor)</li>
+<li>Race and the Third Reich (Hutton)</li>
+<li>Hellstorm (Goodrich)</li>
+<li>Hilter (Stolfi)</li>
+<li>Understanding the Jewish Influence (MacDonald)</li>
+<li>Revolt Against Modern World (Evola)</li>
+<li>The Way of Men (Donovan)</li>
+<li>Why The West is Best (Ibn Warraq)</li>
+<li>Why I'm not M (Ibn Warraq)</li>
+<li>A Handbook of Traditional Living (Raido)</li>
+<li>The Essential Difference (Baron-Cohen)</li>
+<li>Blood and Soil (Bramwell)</li>
+<li>Madison Grant</li>
+<li>Man Swarm (Foremen)</li>
+<li>Ecology (Arne Naess)</li>
+<li>A Fresh Look at Empiricism</li>
+<li>Between Two Ages  (Brzezinski)</li>
+<li>Brave New World (Huxley)</li>
+<li>The Scientific Outlook</li>
+<li>War Against The Weak (Black)</li>
+<li>The Grand Chessboard (Brzezinski)</li>
+<li>Mysteries of the Grail<sup><a id="fnr.52" class="footref" href="#fn.52" role="doc-backlink">52</a></sup></li>
+<li>Metaphysics of War<sup><a id="fnr.53" class="footref" href="#fn.53" role="doc-backlink">53</a></sup></li>
+<li>Meditation on the Peaks<sup><a id="fnr.54" class="footref" href="#fn.54" role="doc-backlink">54</a></sup></li>
+<li>The Metaphysics of Sex<sup><a id="fnr.55" class="footref" href="#fn.55" role="doc-backlink">55</a></sup></li>
+<li>The Hermetic Tradition<sup><a id="fnr.56" class="footref" href="#fn.56" role="doc-backlink">56</a></sup></li>
+<li>Introduction to Magic</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org116dcbf" class="outline-2">
+<h2 id="org116dcbf">Fitness</h2>
+<div class="outline-text-2" id="text-org116dcbf">
+<ul class="org-ul">
+<li>Science and Practice of Strength Training</li>
+<li>Starting Strength (Rippetoe)</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orge7d40e9" class="outline-2">
+<h2 id="orge7d40e9">Social Nationalism</h2>
+<div class="outline-text-2" id="text-orge7d40e9">
+<ul class="org-ul">
+<li>Facing Total War: German Sucicty, 1914-1918</li>
+<li>Germany after the First World War</li>
+<li>The Coming of the Third Reich</li>
+<li>Weimar: Why did German Democracy Fail?</li>
+<li>The Nazi Voter: The Social Foundations of Fascism in Germuny</li>
+<li>Nazism, 1919-1945. A Documentary Reader, Vol I: The Rise to Power</li>
+<li>The Idealogical Origins of Nazi Imperialism</li>
+<li>The Crisis of German Ideology: Intellcctusl Origins of the Third Reich</li>
+<li>Nictzsche, Godfather of Fascism?: On the Uses and Abuses of a Philosophy</li>
+<li>The Nietzsche Legacy in Germany: 15901990</li>
+<li>Who Voted for Hitler? (Hamilton)</li>
+<li>Jews and the German State: The Political History of a Minority</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org3e68588" class="outline-2">
+<h2 id="org3e68588">Middle East Struggle Related</h2>
+<div class="outline-text-2" id="text-org3e68588">
+<ul class="org-ul">
+<li>Apocalypse in Islam</li>
+<li>From Deep State to Islamic State</li>
+<li>Gaza: A History</li>
+<li>The Arab Revolution</li>
+<li>التنظيمات اليسارية في الخليج والجزيرة</li>
+<li>Terrorism<sup><a id="fnr.57" class="footref" href="#fn.57" role="doc-backlink">57</a></sup>  (Eqbal)</li>
+<li>الطاغية (إمام<sup><a id="fnr.58" class="footref" href="#fn.58" role="doc-backlink">58</a></sup>)</li>
+<li>The Unmaking of Arab Socialism (Kadri)</li>
+<li>Egypt<sup><a id="fnr.59" class="footref" href="#fn.59" role="doc-backlink">59</a></sup></li>
+<li>Middle East Illusions</li>
+<li>Can Non-Europeans Think? (Dabashi)</li>
+<li>The Invention of the Jewish People</li>
+<li>العربية السعودية<sup><a id="fnr.60" class="footref" href="#fn.60" role="doc-backlink">60</a></sup></li>
+<li>في المسألة العربية</li>
+<li>المحنة العربية<sup><a id="fnr.61" class="footref" href="#fn.61" role="doc-backlink">61</a></sup></li>
+<li>أن تكون عربيا في أيامنا</li>
+<li>أزمة الحضارة العربية أم أزمة البرجوازيات العربية؟</li>
+<li>مدخل إلى نقض الفكر الطائفي (مهدي عامل)</li>
+<li>عروبة مِصر (غالي شكري)</li>
+<li>في نقد الخطاب العربي الراهن</li>
+<li>تكوين العقل العربي</li>
+<li>سقوط إسرائيل (باري شميش)</li>
+<li>سورية<sup><a id="fnr.62" class="footref" href="#fn.62" role="doc-backlink">62</a></sup></li>
+<li><span class="underline">العرب</span><sup><a id="fnr.63" class="footref" href="#fn.63" role="doc-backlink">63</a></sup></li>
+<li>بحوث في التاريخ الاجتماعي والثقافي للجزائر إبان الاحتلال الفرنسي</li>
+</ul>
+</div>
+<div id="outline-container-orgc91016f" class="outline-3">
+<h3 id="orgc91016f">On The Zionism Movement and The Israeli Occupation in Palestine</h3>
+<div class="outline-text-3" id="text-orgc91016f">
+<ul class="org-ul">
+<li>Ethnocracy (Yifachel)</li>
+<li>Language They Understand (Thrall)</li>
+<li>Invention of Ancient Israel</li>
+<li>Gaza in Crisis (Chomsky)</li>
+<li>اتفاق أوسلو وتداعياته</li>
+<li>الفكر السياسي الفلسطيني 1964-1974</li>
+<li>حول التناقض والممارسة في الثورة الفلسطينية]]</li>
+<li>ما بعد الصهيونية ومستقبل المجتمع الإسرائيلي</li>
+<li>الاقتصاد السياسي لصناعة التقنية العالية في اسرائيل</li>
+<li>استراتيجية التحرير الكامل واستراتيجية الحل السياسي</li>
+<li>الهيكل التنظيمي للانتفاضة وأساليب العمل ربعي المهدون</li>
+<li>شبهات حول الثورة الفلسطينية</li>
+<li>الصهيونية غير اليهودية</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org06c034a" class="outline-3">
+<h3 id="org06c034a">Authors</h3>
+<div class="outline-text-3" id="text-org06c034a">
+<ul class="org-ul">
+<li>Jean-Pierre Filiu</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf7ae6f3" class="outline-2">
+<h2 id="orgf7ae6f3">Misc Authors</h2>
+<div class="outline-text-2" id="text-orgf7ae6f3">
+<ul class="org-ul">
+<li>Antony C. Sutton</li>
+<li>Immanuel Wallerstein</li>
+<li>Gustave Doré</li>
+<li>Dante Alighieri</li>
+<li>Walter Rodney</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org87b829f" class="outline-2">
+<h2 id="org87b829f">Poetry</h2>
+<div class="outline-text-2" id="text-org87b829f">
+<ul class="org-ul">
+<li><del>The Canteos (Pound)</del></li>
+<li>Collected Poems (Kipling)</li>
+<li>Collected Poems (T.S. Eliot)</li>
+<li>Complete Poetry (William Bake)</li>
+<li>The Unfortunates (Bear)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org4b417b9" class="outline-2">
+<h2 id="org4b417b9">Politics</h2>
+<div class="outline-text-2" id="text-org4b417b9">
+<ul class="org-ul">
+<li><span class="underline">Propaganda and the Public Mind (Chomsky)</span></li>
+<li>The Protestant Ethic (Weber)</li>
+<li>The New Age of Empire (Andrews)</li>
+<li>Anarchism (Guerin)</li>
+<li>Postcapitalist Desire (Fisher)</li>
+<li>The Myth of Religious Violence</li>
+<li>The Great Delusion (John Mearsheimer)</li>
+<li>The Fourth Political Theory</li>
+<li>Biology as ideology (Lewontin)</li>
+<li>Political Psychology (Houghton)</li>
+<li>How Democracies Die (Levitsky)</li>
+<li>The Year 501</li>
+<li>Soft Power (Nye)</li>
+<li>How Fascism Works (Stanley)</li>
+<li>Desert (Anonymous)</li>
+<li>العلمانية الجزئية والعلمانية الشاملة</li>
+<li>الدين والعلمانية في سياق تاريخي</li>
+<li>أميركا والإبادات الجماعية</li>
+<li>فخ النيوليبرالية في دول الخليج</li>
+<li>الطريق إلى التطرف</li>
+<li>المثقفون العرب والتراث</li>
+<li>المدينة الإسلامية والأصولية والإرهاب</li>
+<li>Occupy (Chomsky)</li>
+<li>Perilous Power<sup><a id="fnr.64" class="footref" href="#fn.64" role="doc-backlink">64</a></sup> (Chomsky)</li>
+<li>Hegemony or Survival (Chomsky)</li>
+<li>Imperial Ambitions (Chomsky)</li>
+<li>Pirates and Emperors (Chomsky)</li>
+<li>The Leaderless Revolution (Ross)</li>
+<li>The China Model<sup><a id="fnr.65" class="footref" href="#fn.65" role="doc-backlink">65</a></sup></li>
+<li>The Impossible State<sup><a id="fnr.66" class="footref" href="#fn.66" role="doc-backlink">66</a></sup></li>
+<li>تفكيك الإشتراكية العربية</li>
+<li>جذور العنصرية العربية</li>
+<li>لماذا نكره الإسلام السياسي</li>
+<li>Global Culture (Featherstone)</li>
+<li>Rogue States (Chomsky)</li>
+<li>النبوءة والسياسة</li>
+<li>طريق الحرير (فرانكوبان، ب)</li>
+<li>Nervous States: Democracy and the Decline of Reason (Davies, W)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org4970bdc" class="outline-2">
+<h2 id="org4970bdc">Science-related</h2>
+<div class="outline-text-2" id="text-org4970bdc">
+<ul class="org-ul">
+<li>Fossils (Thomson)</li>
+<li>The Behaviour of the Domestic Cat</li>
+<li>In Defence of Dogs (Bradshaw)</li>
+<li>The Domestic Cat (Bateson)</li>
+<li>كيف ينتشر السلوك؟</li>
+<li>The Mismeasure of Man<sup><a id="fnr.67" class="footref" href="#fn.67" role="doc-backlink">67</a></sup></li>
+<li>علم النفس مذهبًا (فيتز، ب)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org4d7fd48" class="outline-2">
+<h2 id="org4d7fd48">Chess</h2>
+<div class="outline-text-2" id="text-org4d7fd48">
+<ul class="org-ul">
+<li>Amateur to IM (Hawkins)</li>
+<li>Chess for Zebras (Rowson)</li>
+<li>Chess Fundamentals (Capablanca)</li>
+<li>Judgement and Planning in Chess (Euwe)</li>
+<li>Winning with Chess Psychology</li>
+<li>Think Like a Grandmaster (Kotov)</li>
+<li>Understanding Chess Endgames</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgdfe4385" class="outline-2">
+<h2 id="orgdfe4385">Heritage</h2>
+<div class="outline-text-2" id="text-orgdfe4385">
+<ul class="org-ul">
+<li>تاريخ الحسين</li>
+<li>حديقة الحقيقة</li>
+<li>طبقات المعتزلة</li>
+</ul>
+
+<ul class="org-ul">
+<li>تاريخ الزركلي</li>
+<li>وفيات الأعيان</li>
+<li>تاريخ الرسول والملوك</li>
+<li>تاريخ الإسلام</li>
+<li>الكامل في التريخ</li>
+<li>الطبقات الكبير</li>
+<li>سير أعلام النبلاء</li>
+<li>مرآة الزمان في تاريخ الأعيان</li>
+<li>البستان الجامع</li>
+<li>التاريخ المعتبر</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org4b3dd90" class="outline-2">
+<h2 id="org4b3dd90">Aesthetics</h2>
+<div class="outline-text-2" id="text-org4b3dd90">
+<ul class="org-ul">
+<li><span class="underline">Culture and Value (Wittgenstein)</span></li>
+<li><span class="underline">Esoterism as Principle and as Way</span></li>
+<li>شرح نهج البلاغة</li>
+<li>الدر الفريد</li>
+<li>The Flinch (Smith)</li>
+<li>Wisdom for the Soul</li>
+<li>التذكرة</li>
+<li>قصص العرب</li>
+<li>نفح الطيب من غصن الأندلس الرطيب</li>
+<li>مقامات الحريري</li>
+<li>قول على قول</li>
+<li>حلية الأولياء</li>
+<li>Thoughts of Marcus Aurelius Antoninus</li>
+<li>Joseph de Maistre</li>
+<li>Alberto Moravia</li>
+<li>Ismail Kadare</li>
+<li>Ivan Turgenev</li>
+<li>Jonathan Swift</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org8e6eccd" class="outline-2">
+<h2 id="org8e6eccd">Literature</h2>
+<div class="outline-text-2" id="text-org8e6eccd">
+<ul class="org-ul">
+<li>The Illuminatus! Trilogy (Wilson, R. and Shea, R.)</li>
+<li>Confession (Gorky, M.)</li>
+<li>Death with Interruptions (Saramago, J.)</li>
+<li>Perfume: The Story of a Murderer (Suskind, P.)</li>
+<li>Prljave ruke (Kazantzakis, N.)</li>
+<li>Christ Recrucified (Kazantzakis, N.)</li>
+<li>Nausea (Sartre, J.-P.)</li>
+<li>Growth of the Soil (Hamsun)</li>
+<li>جناح السرطان (سولجينيتسين، أ.)</li>
+<li>Confessions of a Mask (Mishima, Y.)</li>
+<li>A Hero of Our Time (Lermontov)</li>
+<li>Storm of Steel (Junger)</li>
+<li>The Glass Bees (Junger)</li>
+<li>The Bostonians (James)</li>
+<li>Tarr (Lewis)</li>
+<li>The Chosen (Potock)</li>
+<li>Buddenbrooks (Mann)</li>
+<li>The Magic Mountain (Mann)</li>
+</ul>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+A History of the Conflict Between Christendom and Islam
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+الخبرة الإيرانية
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+The Syrian Congress of 1920 and the Destruction of its Historic
+Liberal-Islamic Alliance
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+رسالة دكتوراة عز الدين سامي كساب
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Algeria, Decolonization, and the Third World Order
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+The Kabyle Polity in Pre-Colonial Algeria
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.7" class="footnum" href="#fnr.7" role="doc-backlink">7</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Islam and Racial Capitalism in Algeria
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.8" class="footnum" href="#fnr.8" role="doc-backlink">8</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+طه التكريتي
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.9" class="footnum" href="#fnr.9" role="doc-backlink">9</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+قاسم سعد الله
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.10" class="footnum" href="#fnr.10" role="doc-backlink">10</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+جمال فنان
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.11" class="footnum" href="#fnr.11" role="doc-backlink">11</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+مهدي بن يونس
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.12" class="footnum" href="#fnr.12" role="doc-backlink">12</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+ثورة مصر الفرعونية لمحمد بيومي مهران
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.13" class="footnum" href="#fnr.13" role="doc-backlink">13</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+An American History
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.14" class="footnum" href="#fnr.14" role="doc-backlink">14</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+A Biography
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.15" class="footnum" href="#fnr.15" role="doc-backlink">15</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Lost Britain
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.16" class="footnum" href="#fnr.16" role="doc-backlink">16</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+The Forgotten Byzantine Empire That Rescued Western Civilization
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.17" class="footnum" href="#fnr.17" role="doc-backlink">17</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+The Debate on Colonialism, Eurocentrism, and History
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.18" class="footnum" href="#fnr.18" role="doc-backlink">18</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+The Complete Story of England's Most Notorious Dynasty
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.19" class="footnum" href="#fnr.19" role="doc-backlink">19</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+The Savage Season of 1964 That Made Mississippi Burn and Made
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.20" class="footnum" href="#fnr.20" role="doc-backlink">20</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Operation Starlite and the Beginning of the Blood Debt in Vietnam
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.21" class="footnum" href="#fnr.21" role="doc-backlink">21</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+The Personal Correspondence of Harry S. Truman and Dean Acheson, 1953-1971
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.22" class="footnum" href="#fnr.22" role="doc-backlink">22</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+The Seven Years' War and the Fate of Empire in British North America,
+1754-1766
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.23" class="footnum" href="#fnr.23" role="doc-backlink">23</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+The Epic Story of the Athenian Navy and the Birth of Democracy
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.24" class="footnum" href="#fnr.24" role="doc-backlink">24</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+A history of American secularism
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.25" class="footnum" href="#fnr.25" role="doc-backlink">25</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+How England Plundered Holland's Glory by William Appleman Williams. See
+Also A People's History of American Empire (Zinn)
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.26" class="footnum" href="#fnr.26" role="doc-backlink">26</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+The Secret Intelligence Program that Brought Nazi Scientists to America
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.27" class="footnum" href="#fnr.27" role="doc-backlink">27</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+America's Deadliest Labor War
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.28" class="footnum" href="#fnr.28" role="doc-backlink">28</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+A Guide to Pseudo-Events in America
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.29" class="footnum" href="#fnr.29" role="doc-backlink">29</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+The Fragile Financial Foundation of China's Extraordinary Rise
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.30" class="footnum" href="#fnr.30" role="doc-backlink">30</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Mahatma Gandhi and His Struggle with India
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.31" class="footnum" href="#fnr.31" role="doc-backlink">31</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Freedom and Revolution in Southeast Asia
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.32" class="footnum" href="#fnr.32" role="doc-backlink">32</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+A Hard Country
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.33" class="footnum" href="#fnr.33" role="doc-backlink">33</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Love and Betrayal in Eighteenth-Century India
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.34" class="footnum" href="#fnr.34" role="doc-backlink">34</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Vol. 12
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.35" class="footnum" href="#fnr.35" role="doc-backlink">35</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+A Journey Through Yugoslavia.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.36" class="footnum" href="#fnr.36" role="doc-backlink">36</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Jewish Survival in Europe.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.37" class="footnum" href="#fnr.37" role="doc-backlink">37</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+A Short History of a Revolutionary Idea
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.38" class="footnum" href="#fnr.38" role="doc-backlink">38</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+A Citizen's Guide to the Economy
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.39" class="footnum" href="#fnr.39" role="doc-backlink">39</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+تجارب الصين - فيتنام - كوبا
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.40" class="footnum" href="#fnr.40" role="doc-backlink">40</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+The History of a Dangerous Idea
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.41" class="footnum" href="#fnr.41" role="doc-backlink">41</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+السياسة الأميركية العابرة للقارات في الأمن والاقتصاد ومكافحة الإرهاب
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.42" class="footnum" href="#fnr.42" role="doc-backlink">42</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+بحث في الفكر المهدوي
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.43" class="footnum" href="#fnr.43" role="doc-backlink">43</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+في الرد على الفرق الوهابية
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.44" class="footnum" href="#fnr.44" role="doc-backlink">44</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+ترمنجهام
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.45" class="footnum" href="#fnr.45" role="doc-backlink">45</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+أكرم ضياء العمري
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.46" class="footnum" href="#fnr.46" role="doc-backlink">46</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+ابن حجر الهيثمي
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.47" class="footnum" href="#fnr.47" role="doc-backlink">47</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+فيما استدركته عائشة على الصحابة
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.48" class="footnum" href="#fnr.48" role="doc-backlink">48</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+أضواء على الصابئين
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.49" class="footnum" href="#fnr.49" role="doc-backlink">49</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+A political, social, and cultural history
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.50" class="footnum" href="#fnr.50" role="doc-backlink">50</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+طرابيشي
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.51" class="footnum" href="#fnr.51" role="doc-backlink">51</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Situations, Individuals, and Cases
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.52" class="footnum" href="#fnr.52" role="doc-backlink">52</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+In this important study of the meaning of the Grail, one of Europe's
+greatest esoteric philosophers discloses the pre-Christian and initiatic sources
+of this symbolic motif that is so central to Western mythology and culture. He
+demonstrates how the main features of the legend are from an older tradition
+analogous to the great heroic sagas and cycles of the North, and that the Grail
+itself is a symbol of initiation. Evola uncovers the hidden meaning in the often
+surreal adventures of the knights who searched for the Grail, interpreting them
+as inner experiences and tests for the seeker. He also explores the history of
+the myth in the Middle Ages, its use by the Knights Templar and the Cathars, its
+legacy during the decline of the Holy Roman Empire, and its links with
+Rosicrucianism, alchemy, and Masonry.
+</p>
+
+<p class="footpara">
+This excursion into the realm of the Grail throws new light on an endlessly
+fascinating subject.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.53" class="footnum" href="#fnr.53" role="doc-backlink">53</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+These essays, originally written by Evola during the 1930s and '40s, deal
+with war from a spiritual and heroic perspective. Evola selects specific
+examples from the Nordic, Vedic, Roman, Persian, Islamic and other traditions to
+demonstrate how traditionalists can prepare themselves to experience war in a
+way that will allow them to overcome the limited possibilities offered by our
+materialistic and degraded age, thereby transcending the Age of Kali and
+entering the world of heroism by achieving a higher state of consciousness,
+which Evola depicts as an effective realisation of the ultimate purpose of life.
+</p>
+
+<p class="footpara">
+His call to action, however, is not that of today's armies, which ask nothing
+more of their soldiers than to become mercenaries in the temporary employ of a
+decadent class. Still less is it a call to misdirected or nihilistic violence.
+Rather, Evola presents the warrior as one who lives an integrated and purposeful
+way of life - one who adopts a specifically Aryan view of the world in which the
+political aims of a war are not its ultimate justification, but rather war is
+seen as merely a means through which the warrior finds his calling to a higher
+and more complete form of existence beyond the political, and in accordance with
+the teachings of the great spiritual texts. More importantly, he shows how the
+ideal of the warrior extends beyond the battlefield into other aspects of
+traditional living, even in times of peace.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.54" class="footnum" href="#fnr.54" role="doc-backlink">54</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Evola articulates the close relationship between the physical rigors of
+mountain climbing and the ascent of the initiate toward self-transcendence.
+</p>
+
+<p class="footpara">
+Julius Evola, a leading exponent of esoteric thought, was also an ardent
+mountain climber who personally scaled the peaks of the Tyrols, Alps, and
+Dolomites. For Evola the physical conquest of a mountain, with all the courage,
+selftranscendence and mental lucidity that it entails, becomes an inseparable
+and complementary part of spiritual awakening. It is no coincidence that many
+ancient cultures chose mountains as the abodes of their gods and considered the
+rigorous ascent of peaks as the task of heroes and initiates. In modern times,
+which tend to suffocate the heroic with naked self interest, the mountain still
+forms part of the profound dimension of spirit where the soul finds within
+itself more than what it thought itself to be. In Meditations on the Peaks,
+Evola combines recollections of his own experiences with reflections on other
+inspirational men and women who shared his view of the transcendent greatness of
+mountains.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.55" class="footnum" href="#fnr.55" role="doc-backlink">55</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+A comprehensive work on the metaphysical aspects of sexuality. Julius Evola
+sheds new light on the mystical and spiritual expression of sexual love. This
+in-depth study explores the sexual rites of sacred traditions, and shows how
+religion, mysticism, folklore, and mythology all contain erotic forms in which
+the deep potentialities of human beings are recognized.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.56" class="footnum" href="#fnr.56" role="doc-backlink">56</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+This important survey of alchemical symbols and doctrines sets.  forth the
+mysterious worldview and_teachings of the pracitioners of the "royal art" One of
+the leading exponents of the Hermetic tradition, Julius Evola_demonstrates _the
+singularity of subject matter tha lies behind the words of all adepts in al
+ages, showing how alchemy-often misunderstood as primitive,chemistry or a mere
+template for the Jungian process of ‘individuation’is nothing less than a
+universal Secret science of human and natural transformation.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.57" class="footnum" href="#fnr.57" role="doc-backlink">57</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Theirs &amp; Ours
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.58" class="footnum" href="#fnr.58" role="doc-backlink">58</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+دراسة فلسفثية لصور من الاستبداد السياسي
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.59" class="footnum" href="#fnr.59" role="doc-backlink">59</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Revolution, Failed Transition and Counter-Revolution
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.60" class="footnum" href="#fnr.60" role="doc-backlink">60</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+مملكة في مواجهة المخاطر
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.61" class="footnum" href="#fnr.61" role="doc-backlink">61</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+الدولة ضد الأمة
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.62" class="footnum" href="#fnr.62" role="doc-backlink">62</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+درب الآلام نحو الحرية
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.63" class="footnum" href="#fnr.63" role="doc-backlink">63</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+من مرج دابق إلى سايكس – بيكو
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.64" class="footnum" href="#fnr.64" role="doc-backlink">64</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+The Middle East and US Foreign Policy. Dialogues on Terror, Democracy, War,
+and Justice
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.65" class="footnum" href="#fnr.65" role="doc-backlink">65</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Political Meritocracy and the Limits of Democracy
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.66" class="footnum" href="#fnr.66" role="doc-backlink">66</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Islam, Politics, and Modernity's Moral Predicament
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.67" class="footnum" href="#fnr.67" role="doc-backlink">67</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Jay Gould
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-06-01 Thu 01:07.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

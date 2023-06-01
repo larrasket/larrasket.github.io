@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Web Extensions That Rocks</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Web Extensions That Rocks</h1>
+</header><dl class="org-dl">
+<dt>tags</dt><dd>Sources</dd>
+</dl>
+
+<div class="PREVIEW" id="org8077b38">
+<p>
+Web is one of the biggest thing that was done wrong in the software industry, in my opinion.
+For now, there is no and there is not going to be a web browser that is capable of being
+'proper'. I'm using ungoolged-chromium. This page contains some of the extensions that makes
+the web less painful to me.
+</p>
+
+</div>
+
+
+<p>
+I'm currently migrating (again) to ungoogled-chromium, saying goodbye to Brave's nonsense.
+Ans as usual I've to move all my web extensions; <i>my luggage</i>. I told myself why not to do
+while writing them down here, I might not be able to remember all of them once anyway.
+</p>
+
+<p>
+It'd be sad if most of those extensions would be purged due to Google deduction on <a href="https://developer.chrome.com/docs/extensions/mv3/mv2-sunset/">Manifest V2.</a>
+</p>
+
+<ul class="org-ul">
+<li><a href="https://chrome.google.com/webstore/detail/no-history/ljamgkbcojbnmcaonjokopmcblmmpfch">No History</a>; There is no need to this fucking annoying feature. I do not want to store
+history, If I want to remember something I'd bookmark it.</li>
+<li><a href="https://chrome.google.com/webstore/detail/wayback-machine/fpnmgdkabkmnadcjpehmlllkndpkmiak">Wayback Machine</a>; <i>Because I never trust the state of web</i>.</li>
+<li><a href="https://chrome.google.com/webstore/detail/4chan-x/ohnjgmpcibpbafdlkimncjhflgedgpam">4chanX</a>; <i><i>g</i></i>-kun?</li>
+<li><a href="https://chrome.google.com/webstore/detail/bitwarden-free-password-m/nngceckbapebfimnlniiiahkandclblb">Bitwarden</a>; I basically use <code>pass</code>, but I keep useless accounts in a useless password manager.</li>
+<li><a href="https://chrome.google.com/webstore/detail/disable-extensions-tempor/lcfdefmogcogicollfebhgjiiakbjdje">Disable Extensions Temporarily</a>; To make sure non of your luggage is the reason that some
+fucking webpage does not work.</li>
+<li><a href="https://chrome.google.com/webstore/detail/feedbro/mefgmmbdailogpfhfblcnnjfmnpnmdfa">Feedbro</a>; RSS reader, with <i><a href="https://github.com/salehmu/extentions/tree/main/Feedbro">private config</a></i>.</li>
+<li><a href="https://chrome.google.com/webstore/detail/storage-area-explorer/ocfjjjjhkpapocigimmppepjgfdecjkb">Storage Area Explorer</a>; To export <a href="tor.html">foxyproxy</a>.</li>
+<li><a href="https://chrome.google.com/webstore/detail/foxyproxy-standard/gcknhkkoolaabfmlnjonogaaifnjlfnp">FoxyProxy Standard</a>; No enough time to open tor nor to change proxy. With <i><a href="https://github.com/salehmu/extentions/tree/main/FoxyProxy">private config</a></i>.</li>
+<li><a href="https://chrome.google.com/webstore/detail/georgify/ofjfdfaleomlfanfehgblppafkijjhmi">Georgify</a>; Readable HN.</li>
+<li><a href="https://chrome.google.com/webstore/detail/gofullpage-full-page-scre/fdpohaocaechififmbbbbbknoalclacl">GoFullPage</a>; Page capture.</li>
+<li><a href="https://chrome.google.com/webstore/detail/image-search-for-yandex/mpcooeefegelfehalmefdeojlkinjjho">Image search for Yandex</a>; Russians have better image search functionalities.</li>
+<li><a href="https://chrome.google.com/webstore/detail/linux-scroll-speed-fix/mlboohjioameadaedfjcpemcaangkkbp">Linux Scroll Speed Fix</a>; Scroll sucks on Linux.</li>
+<li><a href="https://chrome.google.com/webstore/detail/reddit-enhancement-suite/kbmfpngjjgdllneeigpgjifpgocmfgmb">RES</a>; Handy when you are having conversation with Americans.</li>
+<li><a href="https://chrome.google.com/webstore/detail/return-youtube-dislike/gebbhagfogifgggkldgodflihgfeippi">Return YouTube Dislike</a>; Hell yeah.</li>
+<li><a href="https://chrome.google.com/webstore/detail/simple-translate/ibplnjkanclpjokhdolnendpplpjiace">Simple Translate</a>; Pocket Google translate. With <i><a href="https://github.com/salehmu/extentions/tree/main/Simple%20Translate">private config</a></i>.</li>
+<li><a href="https://chrome.google.com/webstore/detail/stylus/clngdbkpkpeebahjckkjfobafhncgmne">Stylus</a>; Make all the web use Georgia fonts. With <i><a href="https://github.com/salehmu/extentions/tree/main/stylus">private config</a></i>.</li>
+<li><a href="https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo">Tampermonkey</a>; The web is bloated; let's bloat it even more! With <i><a href="https://github.com/salehmu/extentions/tree/main/Tampermonkey">private config</a></i>.</li>
+<li><a href="https://chrome.google.com/webstore/detail/ublacklist/pncfbmialoiaghdehhbnbhkkgmjanfhe">uBlacklist</a>; To block Quora from search results. <i><a href="https://github.com/salehmu/extentions/tree/main/ublacklist">private config</a></i>.</li>
+<li><a href="https://chrome.google.com/webstore/detail/vimium/dbepggeogbaibhgnhhndojpepiihcmeb">Vimium</a>; Should come preinstalled. <i><a href="https://github.com/salehmu/extentions/tree/main/vim">private config</a></i></li>
+<li><a href="https://chrome.google.com/webstore/detail/prettier-lichess/epgnobcgnmchnhgkgpedebbmhbblfcob?hl=en">Prettier Lichess</a>; Lichess is ugly. <i><a href="https://github.com/salehmu/extentions/tree/main/pretty-lichess">private config</a></i></li>
+</ul>
+<div id="outline-container-orgbb4a75f" class="outline-2">
+<h2 id="orgbb4a75f">Other</h2>
+<div class="outline-text-2" id="text-orgbb4a75f">
+<ul class="org-ul">
+<li><a href="https://github.com/ungoogled-software/ungoogled-chromium/discussions/1488">Add Google search</a></li>
+<li><a href="https://chrome.google.com/webstore/detail/modern-for-wikipedia/emdkdnnopdnajipoapepbeeiemahbjcn">Modern for Wikipedia</a></li>
+<li><a href="https://chrome.google.com/webstore/detail/modern-scrollbar/bgfofngpplpmpijncjegfdgilpgamhdk">Modern scrollbar</a></li>
+<li><a href="https://chrome.google.com/webstore/detail/stackoverflow-focus/gaeipjkcdkpbfdfmakonllgiboaonopp">StackOverflow focus</a></li>
+</ul>
+</div>
+
+<div id="outline-container-org3a4d837" class="outline-3">
+<h3 id="org3a4d837">Needed Sometimes</h3>
+<div class="outline-text-3" id="text-org3a4d837">
+<ul class="org-ul">
+<li><a href="https://chrome.google.com/webstore/detail/bitchute-video-source/bdnaoieafaddgjiecbhnodhbalhblmhl">BitChute Video Source</a>; No one knows when you would want to download Na*i documentaries.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-06-01 Thu 01:21.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

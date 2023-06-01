@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>8086 assembler</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">8086 assembler</h1>
+</header><p>
+This tutorial is intended for those who are not familiar with assembler at all, or have a
+very distant idea about it. of course if you have knowledge of some high level programming
+language (java, basic, c/c++, pascal&#x2026;) that may help you a lot.
+</p>
+
+<p>
+assembly language is a low level programming language. you need to get some knowledge about
+computer structure in order to understand anything. the simple computer model as i see it:
+</p>
+
+
+
+
+
+<figure id="orgdeb91c6">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/2023-01-07_08-31-11_screenshot.png" alt="2023-01-07_08-31-11_screenshot.png">
+
+</figure>
+
+
+<div id="outline-container-orgf961343" class="outline-2">
+<h2 id="orgf961343">CPU Registers</h2>
+<div class="outline-text-2" id="text-orgf961343">
+<p>
+This is how a CPU from inside would look like
+</p>
+
+
+
+
+<figure id="orge47473a">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/2023-01-07_08-38-38_screenshot.png" alt="2023-01-07_08-38-38_screenshot.png">
+
+</figure>
+
+
+<p>
+8086 CPU has 8 general purpose registers, each register has its own name:
+</p>
+
+<ul class="org-ul">
+<li>AX - the accumulator nregister (divided into AH / AL).</li>
+<li>BX - the base address register (divided into BH / BL).</li>
+<li>CX - the count register (divided into CH / CL).</li>
+<li>DX - the data register (divided into DH / DL).</li>
+<li>SI - source index register.</li>
+<li>DI - destination index register.</li>
+<li>BP - base pointer.</li>
+<li>SP - stack pointer.</li>
+</ul>
+
+
+<p>
+despite the name of a register, it's the programmer who determines the usage for each
+general purpose register. the main purpose of a register is to keep a number (variable). the
+size of the above registers is 16 bit, it's something like: 0011000000111001b (in binary
+form), or 12345 in decimal (human) form.
+</p>
+
+
+<p>
+4 general purpose registers (AX, BX, CX, DX) are made of two separate 8 bit registers, for
+example if AX= 0011000000111001b, then AH=00110000b and AL=00111001b. therefore, when you
+modify any of the 8 bit registers 16 bit register is also updated, and vice-versa. the same
+is for other 3 registers, "H" is for high and "L" is for low part.
+</p>
+
+
+<p>
+because registers are located inside the cpu, they are much faster than memory. accessing a
+memory location requires the use of a system bus, so it takes much longer. accessing data in
+a register usually takes no time. therefore, you should try to keep variables in the
+registers. register sets are very small and most registers have special purposes which limit
+their use as variables, but they are still an excellent place to store temporary data of
+calculations.
+</p>
+
+
+<ul class="org-ul">
+<li>CS - points at the segment containing the current program.</li>
+<li>DS - generally points at segment where variables are defined.</li>
+<li>ES - extra segment register, it's up to a coder to define its usage.</li>
+<li>SS - points at the segment containing the stack.</li>
+</ul>
+
+
+<p>
+although it is possible to store any data in the segment registers, this is never a good
+idea. the segment registers have a very special purpose - pointing at accessible blocks of
+memory.
+</p>
+
+<p>
+segment registers work together with general purpose register to access any memory value.
+For example if we would like to access memory at the physical address <code>12345h</code> (hexadecimal),
+we should set the <code>DS = 1230h</code> and <code>SI = 0045h</code>. This is good, since this way we can access much
+more memory than with a single register that is limited to 16 bit values.
+</p>
+
+
+<p>
+CPU makes a calculation of physical address by multiplying the segment register by 10h and
+adding general purpose register to it (1230h * 10h + 45h = 12345h):
+</p>
+
+<p>
+The address formed with 2 registers is called an <i>effective address</i>.
+by default BX, SI and DI registers work with DS segment register;
+BP and SP work with SS segment register.
+</p>
+
+<p>
+Other general purpose registers cannot form an effective address!
+also, although BX can form an effective address, BH and BL cannot.
+</p>
+
+
+<ul class="org-ul">
+<li>IP - the instruction pointer.
+IP register always works together with CS segment register and it points to currently
+executing instruction.</li>
+
+<li>flags register - determines the current state of the microprocessor.
+flags register is modified automatically by CPU after mathematical operations, this allows
+to determine the type of the result, and to determine conditions to transfer control to
+other parts of the program.</li>
+</ul>
+
+
+<p>
+generally you cannot access these registers directly, the way you can access AX and other
+general registers.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1346fa4" class="outline-2">
+<h2 id="org1346fa4">Memory Access</h2>
+<div class="outline-text-2" id="text-org1346fa4">
+</div>
+<div id="outline-container-orga797513" class="outline-3">
+<h3 id="orga797513"><span class="todo TODO">TODO</span> Access Memory</h3>
+</div>
+<div id="outline-container-orga70cb46" class="outline-3">
+<h3 id="orga70cb46">DS Register</h3>
+<div class="outline-text-3" id="text-orga70cb46">
+<p>
+Remember that the DS (data segment) register is set to point to the beginning of a 64K
+segment. THE CS (code segment) denotes the beginning of the code segment. In simple EMU
+programs, these are often the same.
+</p>
+</div>
+</div>
+<div id="outline-container-org642134e" class="outline-3">
+<h3 id="org642134e"><code>MOV</code> Instruction</h3>
+<div class="outline-text-3" id="text-org642134e">
+<ul class="org-ul">
+<li>copies the second operand (source) to the first operand (destination).</li>
+<li>the source operand can be an immediate value, general-purpose register or memory location.</li>
+<li>the destination register can be a general-purpose register, or memory location.</li>
+<li>both operands must be the same size, which can be a byte or a word.</li>
+</ul>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+<pre class="src src-asm"><span style="font-weight: bold;">MOV</span> <span style="font-weight: bold;">REG</span>, memory
+<span style="font-weight: bold;">MOV</span> <span style="font-weight: bold;">memory</span>, REG
+<span style="font-weight: bold;">MOV</span> <span style="font-weight: bold;">REG</span>, REG
+<span style="font-weight: bold;">MOV</span> <span style="font-weight: bold;">memory</span>, immediate
+<span style="font-weight: bold;">MOV</span> <span style="font-weight: bold;">REG</span>, immediate
+</pre>
+</div>
+
+
+<ul class="org-ul">
+<li>REG: AX, BX, CX, DX, AH, AL, BL, BH, CH, CL, DH, DL, DI, SI, BP, SP.</li>
+<li>memory: [BX], [BX+SI+7], variable, etc&#x2026;</li>
+<li>immediate: 5, -24, 3Fh, 10001101b, etc&#x2026;</li>
+</ul>
+
+
+<p>
+Here an example usage of <code>MOV</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-asm"><span style="font-weight: bold;">ORG</span> <span style="font-weight: bold;">100h</span>           <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">this directive required for a simple 1 segment .com program.</span>
+<span style="font-weight: bold;">MOV</span> <span style="font-weight: bold;">AX</span>, 0B800h     <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">set AX to hexadecimal value of B800h.</span>
+<span style="font-weight: bold;">MOV</span> <span style="font-weight: bold;">DS</span>, AX         <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">copy value of AX to DS.</span>
+<span style="font-weight: bold;">MOV</span> <span style="font-weight: bold;">CL</span>, 'A'        <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">set CL to ASCII code of 'A', it is 41h.</span>
+<span style="font-weight: bold;">MOV</span> <span style="font-weight: bold;">CH</span>, 1101_1111b <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">set CH to binary value.</span>
+<span style="font-weight: bold;">MOV</span> <span style="font-weight: bold;">BX</span>, 15Eh       <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">set BX to 15Eh.</span>
+<span style="font-weight: bold;">MOV</span> [BX], CX       <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">copy contents of CX to memory at B800:015E</span>
+<span style="font-weight: bold;">RET</span>                <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">returns to operating system.</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org7a931a2" class="outline-2">
+<h2 id="org7a931a2">Basic Programming</h2>
+<div class="outline-text-2" id="text-org7a931a2">
+</div>
+<div id="outline-container-orge630cb5" class="outline-3">
+<h3 id="orge630cb5">Variables</h3>
+<div class="outline-text-3" id="text-orge630cb5">
+<p>
+Variable is a memory location. For a programmer it is much easier to have some value be kept
+in a variable named "var1" then at the address <code>5A73:235B</code>, especially when you have 10 or
+more variables.
+</p>
+
+
+<p>
+Syntax for a variable declaration:
+</p>
+
+<p>
+<code>name DB value</code>
+</p>
+
+<p>
+<code>name DW value</code>
+</p>
+
+<p>
+<code>DB</code> - stays for Define Byte.
+<code>DW</code> - stays for Define Word.
+</p>
+
+<p>
+name - can be any letter or digit combination, though it should start with a letter. It's
+possible to declare unnamed variables by not specifying the name (this variable will have an
+address but no name).
+</p>
+
+<p>
+value - can be any numeric value in any supported numbering system (hexadecimal, binary, or
+decimal), or "?" symbol for variables that are not initialized.
+</p>
+
+<p>
+Let's see another example with MOV instruction:
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-asm"><span style="font-weight: bold;">ORG</span> <span style="font-weight: bold;">100h</span>
+
+<span style="font-weight: bold;">MOV</span> <span style="font-weight: bold;">AL</span>, var1
+<span style="font-weight: bold;">MOV</span> <span style="font-weight: bold;">BX</span>, var2
+
+<span style="font-weight: bold;">RET</span>    <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">stops the program.</span>
+
+<span style="font-weight: bold;">VAR1</span> <span style="font-weight: bold;">DB</span> 7
+<span style="font-weight: bold;">var2</span> <span style="font-weight: bold;">DW</span> 1234h
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf51b213" class="outline-3">
+<h3 id="orgf51b213">Arrays</h3>
+<div class="outline-text-3" id="text-orgf51b213">
+<p>
+Arrays can be seen as chains of variables. A text string is an example of a byte array, each
+character is presented as an ASCII code value (0..255).
+</p>
+
+<p>
+Here are some array definition examples:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-asm"><span style="font-weight: bold;">a</span> <span style="font-weight: bold;">DB</span> 48h, 65h, 6Ch, 6Ch, 6Fh, 00h
+
+<span style="font-weight: bold;">b</span> <span style="font-weight: bold;">DB</span> 'Hello', 0
+</pre>
+</div>
+
+
+<p>
+b is an exact copy of the a array, when compiler sees a string inside quotes it
+automatically converts it to set of bytes.
+</p>
+
+
+<p>
+You can access the value of any element in array using square brackets, for example:
+</p>
+
+<pre class="example" id="org47c46be">
+MOV AL, a[3]
+</pre>
+</div>
+</div>
+<div id="outline-container-orge26e97e" class="outline-3">
+<h3 id="orge26e97e">Getting the Value of a Variable</h3>
+<div class="outline-text-3" id="text-orge26e97e">
+<p>
+There is <code>LEA</code> (Load Effective Address) instruction and alternative <code>OFFSET</code> operator. Both
+<code>OFFSET</code> and <code>LEA</code> can be used to get the offset address of the variable.
+</p>
+
+<p>
+LEA is more powerful because it also allows you to get the address of an indexed variables.
+Getting the address of the variable can be very useful in some situations, for example when
+you need to pass parameters to a procedure.
+</p>
+<div class="org-src-container">
+<pre class="src src-asm"><span style="font-weight: bold;">ORG</span> <span style="font-weight: bold;">100h</span>
+<span style="font-weight: bold;">MOV</span>    <span style="font-weight: bold;">AL</span>, VAR1              <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">check value of VAR1 by moving it to AL.</span>
+<span style="font-weight: bold;">LEA</span>    <span style="font-weight: bold;">BX</span>, VAR1              <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">get address of VAR1 in BX.</span>
+<span style="font-weight: bold;">MOV</span>    <span style="font-weight: bold;">BYTE</span> PTR [BX], 44h    <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">modify the contents of VAR1.</span>
+<span style="font-weight: bold;">MOV</span>    <span style="font-weight: bold;">AL</span>, VAR1              <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">check value of VAR1 by moving it to AL.</span>
+<span style="font-weight: bold;">RET</span>
+<span style="font-weight: bold;">VAR1</span>   <span style="font-weight: bold;">DB</span>  22h
+<span style="font-weight: bold;">END</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org3f4a360" class="outline-3">
+<h3 id="org3f4a360">Constants</h3>
+<div class="outline-text-3" id="text-org3f4a360">
+<p>
+Constants are just like variables, but they exist only until your program is compiled
+(assembled). After definition of a constant its value cannot be changed. To define constants
+EQU directive is used:
+</p>
+
+
+<p>
+To make a software interrupt there is an INT instruction, it has very simple syntax:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-asm"><span style="font-weight: bold;">INT</span> <span style="font-weight: bold;">value</span>
+</pre>
+</div>
+
+<p>
+Where value can be a number between 0 to 255 (or 0 to 0FFh), generally we will use
+hexadecimal numbers.
+</p>
+
+<p>
+You may think that there are only 256 functions, but that is not correct. Each interrupt may
+have sub-functions.
+</p>
+
+
+<p>
+The following example uses INT 10h sub-function 0Eh to type a "Hello!" message. This
+functions displays a character on the screen, advancing the cursor and scrolling the screen
+as necessary.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-asm"><span style="font-weight: bold;">ORG</span>    <span style="font-weight: bold;">100h</span>     <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">instruct compiler to make simple single segment .com file.</span>
+
+<span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">The sub-function that we are using does not modify the AH register on</span>
+<span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">return, so we may set it only once.</span>
+
+<span style="font-weight: bold;">MOV</span>    <span style="font-weight: bold;">AH</span>, 0Eh    <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">select sub-function.</span>
+
+<span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">INT 10h / 0Eh sub-function receives an ASCII code of the</span>
+<span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">character that will be printed in AL register.</span>
+
+<span style="font-weight: bold;">MOV</span>    <span style="font-weight: bold;">AL</span>, 'H'    <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">ASCII code: 72</span>
+<span style="font-weight: bold;">INT</span>    <span style="font-weight: bold;">10h</span>        <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">print it!</span>
+
+<span style="font-weight: bold;">MOV</span>    <span style="font-weight: bold;">AL</span>, 'e'    <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">ASCII code: 101</span>
+<span style="font-weight: bold;">INT</span>    <span style="font-weight: bold;">10h</span>        <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">print it!</span>
+
+<span style="font-weight: bold;">MOV</span>    <span style="font-weight: bold;">AL</span>, 'l'    <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">ASCII code: 108</span>
+<span style="font-weight: bold;">INT</span>    <span style="font-weight: bold;">10h</span>        <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">print it!</span>
+
+<span style="font-weight: bold;">MOV</span>    <span style="font-weight: bold;">AL</span>, 'l'    <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">ASCII code: 108</span>
+<span style="font-weight: bold;">INT</span>    <span style="font-weight: bold;">10h</span>        <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">print it!</span>
+
+<span style="font-weight: bold;">MOV</span>    <span style="font-weight: bold;">AL</span>, 'o'    <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">ASCII code: 111</span>
+<span style="font-weight: bold;">INT</span>    <span style="font-weight: bold;">10h</span>        <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">print it!</span>
+
+<span style="font-weight: bold;">MOV</span>    <span style="font-weight: bold;">AL</span>, '!'    <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">ASCII code: 33</span>
+<span style="font-weight: bold;">INT</span>    <span style="font-weight: bold;">10h</span>        <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">print it!</span>
+
+<span style="font-weight: bold;">RET</span>               <span style="font-weight: bold; font-style: italic;">; </span><span style="font-weight: bold; font-style: italic;">returns to operating system.</span>
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-04-30 Sun 00:44.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

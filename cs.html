@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Computer Science</title>
+<meta name="author" content="Saleh" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Computer Science</h1>
+</header>
+
+<div id="outline-container-orgee8995c" class="outline-2">
+<h2 id="orgee8995c"><a href="computer-science/lisp.html">(2023-02-16) Lisp Programming Language</a></h2>
+<div class="outline-text-2" id="text-orgee8995c">
+<p>
+The Lisp programming language s a family of programming languages with a long
+history and a distinctive, fully parenthesized prefix notation. Originally
+specified in 1958, Lisp is the second-oldest high-level programming language
+still in common use. Only Fortran is older, by one year. Lisp has changed since
+its early days, and many dialects have existed over its history. Today, the
+best-known general-purpose Lisp dialects are Common Lisp, Scheme, Racket and
+Clojure.
+</p>
+</div>
+</div>
+<div id="outline-container-org047f75b" class="outline-2">
+<h2 id="org047f75b"><a href="computer-science/deep_concurrency_in_go.html">(2022-09-30) Concurrency and Parallelism: The Go Programming Language</a></h2>
+<div class="outline-text-2" id="text-org047f75b">
+<p>
+When most people use the word “concurrent,” they’re usually referring to a process that
+occurs simultaneously with one or more processes. It is also usually implied that all of
+these processes are making progress at about the same time. Under this definition, an easy
+way to think about this is people. You are currently reading this sentence while others in
+the world are simultaneously living their lives. They are existing <i>concurrently</i> to you.
+</p>
+</div>
+</div>
+<div id="outline-container-org678ee89" class="outline-2">
+<h2 id="org678ee89"><a href="computer-science/effective_golang_a_conclusion.html">(2022-09-20) Effective Go: A Conclusion</a></h2>
+<div class="outline-text-2" id="text-org678ee89">
+<p>
+Years ago when I was learning C, I remember reading something similar, it was by google as
+well. And I think they used to name it 'effective' too. It was hosted on github pages by
+Google and was advocated as the "google-style guidelines". Moreover, it had the same problem
+that I'm facing with effective-go right now: there are many things that have nothing to do
+with the go programming language itself, but a general guidelines that you should probably
+have learned during the design principles class. I decided to filter out those irrelevant
+tips and dissert a consultations, a recapitulation. So it might help someone.
+</p>
+</div>
+</div>
+<div id="outline-container-org706835b" class="outline-2">
+<h2 id="org706835b"><a href="computer-science/go.html">(2022-01-09) Go Incomplete Guide</a></h2>
+<div class="outline-text-2" id="text-org706835b">
+<p>
+Go programming language notes. Based on Adam Freeman's Pro Go, some <a href="https://go.dev/blog/">https://go.dev/blog/</a>
+articles, and other online resources.
+</p>
+</div>
+</div>
+<div id="outline-container-org54b5895" class="outline-2">
+<h2 id="org54b5895"><a href="computer-science/gmtry.html">(2021-12-18) Introduction to Non-theoretical Computational Geometry</a></h2>
+<div class="outline-text-2" id="text-org54b5895">
+<p>
+Based on TopCoder's thrive and <a href="https://www.ti.inf.ethz.ch/ew/courses/CG13/index.html">Computational Geometry (252-1425-00L) HS13</a> lecture notes.
+</p>
+</div>
+</div>
+<div id="outline-container-orgabd2b54" class="outline-2">
+<h2 id="orgabd2b54"><a href="computer-science/std.html">(2020-03-16) Language Built-in Feature Preview</a></h2>
+<div class="outline-text-2" id="text-orgabd2b54">
+<p>
+Trying built-in feature in some programming languages and frameworks (i.e. STDs)
+</p>
+</div>
+</div>
+<div id="outline-container-org2dd8ae7" class="outline-2">
+<h2 id="org2dd8ae7"><a href="computer-science/graph.html">(2020-01-04) Representations, Implementations and Algorithms of Graphs (and Trees)</a></h2>
+<div class="outline-text-2" id="text-org2dd8ae7">
+<p>
+A graph \(G = (V, E)\) consists of a set of vertices \(V\) and a set of edges \(E\), such that each edge
+in \(E\) is a connection between a pair of vertices in \(V\)  The number of vertices is
+written \(|V|\), and the number of edges is written \(|E|\). \(|E|\) can range from zero to a maximum
+of \(|V|^{2} - |V|\). A graph with relatively few edges is called sparse, while a graph with many
+edges is called dense. A graph containing all possible edges is said to be complete.
+</p>
+
+<p>
+<a href="arch.html">Archive and Drafts</a>
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Saleh. Last build date: 2023-04-30 Sun 00:44.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

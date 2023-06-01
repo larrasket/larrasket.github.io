@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>October 2022</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">October 2022</h1>
+</header><dl class="org-dl">
+<dt>tags</dt><dd>TL;DRs</dd>
+</dl>
+
+<div class="abstract" id="orgb2dd967">
+<p>
+Clear moments are short.<br>
+There is much more darkness. More<br>
+ocean than firm land. More<br>
+shadow than form.<br>
+</p>
+
+<p>
+From an old poem by Gorczynski, translated by someone on the internet
+</p>
+
+</div>
+
+<div id="outline-container-org19a2e9c" class="outline-2">
+<h2 id="org19a2e9c">Posts</h2>
+<div class="outline-text-2" id="text-org19a2e9c">
+</div>
+<div id="outline-container-orgca8c37e" class="outline-3">
+<h3 id="orgca8c37e">Friday, 28 October 2022</h3>
+<div class="outline-text-3" id="text-orgca8c37e">
+<p>
+وأنَّى لمثلي أن يتجنَّب مثل هذه الساعة الضاحكة التي تهتف قائلة:
+</p>
+
+<p>
+إنك تسير على طريق المجد فعليك أن تتذرع بالحزم الأوفى؛ لتقطع بنفسك خط الرجوع على نفسك. <br>
+إنك تسير على طريق المجد، فأنت منفرد عليها لا يزحمك أحد من ورائك، وقد محت أقدامك آثار خطاك على ما وراءك من المسالك، ولاحت كلمة المستحيل مخطوطة على آفاق هذه الطريق.
+</p>
+
+<p>
+هكذا تكلم زرادشت.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org112dfe6" class="outline-3">
+<h3 id="org112dfe6">Monday, 24 October 2022</h3>
+<div class="outline-text-3" id="text-org112dfe6">
+<p>
+I was reading this fine article by Paul Graham <a href="http://paulgraham.com/avg.html">http://paulgraham.com/avg.html</a> when he said:
+</p>
+
+<blockquote>
+<p>
+Robert and I both knew Lisp well, and we couldn't see any reason not to trust our instincts
+and go with Lisp. We knew that everyone else was writing their software in C++ or Perl. But
+we also knew that that didn't mean anything. If you chose technology that way, you'd be
+running Windows. When you choose technology, you have to ignore what other people are doing,
+and consider only what will work the best.
+</p>
+</blockquote>
+
+<p>
+Wisdom of soul. But I laughed a lot of how Windows was notorious back then.
+</p>
+
+
+<p>
+Edit: I'm still browsing his old essaies and just found another one:
+</p>
+
+<blockquote>
+<p>
+People frightened by Lisp make up other reasons for not using it. The standard excuse, back
+when C was the default language, was that Lisp was too slow. Now that Lisp dialects are
+among the faster languages available, that excuse has gone away. Now the standard excuse is
+openly circular: that other languages are more popular.
+</p>
+
+<p>
+(Beware of such reasoning. It gets you Windows.)
+</p>
+</blockquote>
+<p>
+<a href="http://www.paulgraham.com/iflisp.html">http://www.paulgraham.com/iflisp.html</a>
+</p>
+
+<p>
+Hilarious.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8b69336" class="outline-3">
+<h3 id="org8b69336">Friday, 21 October 2022</h3>
+<div class="outline-text-3" id="text-org8b69336">
+<p>
+"I will not add, I will diminish; I will train myself down to the standard of what is
+unchangeably true. Day by day I drop off my redundancies; ere long I shall have stripped my
+ribs; when I die, they will but bury my spine."  —Mardi
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4b00348" class="outline-3">
+<h3 id="org4b00348">Sunday, 16 October 2022</h3>
+<div class="outline-text-3" id="text-org4b00348">
+<p>
+<a href="https://vimeo.com/760812105">mut5lfa.mp4</a>
+</p>
+</div>
+</div>
+<div id="outline-container-org40e60df" class="outline-3">
+<h3 id="org40e60df">Saturday, 15 October 2022</h3>
+<div class="outline-text-3" id="text-org40e60df">
+<p>
+وَلَكِنَّها الأَيّامُ تَجري بِما جَرَت<br>
+فَيَسفُلُ أَعلاها وَيَعلو الأَسافِلُ
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7a84505" class="outline-3">
+<h3 id="org7a84505">Thursday, 13 October 2022</h3>
+<div class="outline-text-3" id="text-org7a84505">
+<p>
+ليست الأعالي ما يخيف بل الأعماق، فعلى الجرف تحدق العين في الهاوية وتمتد اليد نحو الذرى فيقبض
+الدوار بالإرادتين على القلب. أفتعلمون أيها الصحاب ما هي إرادة قلبي المزدوجة؟ إنما الخطر
+المحدق بي على منحدري هو نظري إلى الأعالي بينما تلتمس يدي مستندًا لا تعثر عليه. وما أعلق
+إرادتي إلَّا على الإنسان فتشدني إليه مرهقات القيود؛ إنما أنا أحيا بين الناس كالضرير لا يعرف من
+حوله، كيلا تفقد يدي ثقتها من الوقوع على مستند مكين.
+</p>
+
+<p>
+إنما هي عناية تسهر عليَّ لإيصالي إلى ما هو مقدور.  إذا أنت امتنعت عن الشرب من كل كأس فإنك هالك
+ظمأ، فإذا أردت أن تبقى طاهرًا بين الناس فعليك أن تتعود الاغتسال بالماء القذر.  لكَم ناجيت قلبي
+لأعزيه، فقلت له: صبرًا أيها القلب الهرم، إنك لم تفلح بهذه النقمة فتنعَّم بها كأنها نعمة.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5cb4869" class="outline-3">
+<h3 id="org5cb4869">Wednesday, 12 October 2022</h3>
+<div class="outline-text-3" id="text-org5cb4869">
+<p>
+How much hard it's to write  up a symbolic story? Not just the symbols have to fit, but it
+also has got to be such a good story. Fun. I was trying to write a personal entry about my
+fear of not desiring the right thing, (but I was totally sure that some psychotic idiot
+would think I'm gay) <i><a href="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Posts/2022-10-12_02-44-08_screenshot.png">what a horrible feeling.</a></i> The more one intends and purposes goodness,
+the more they understand, appreciate and enamor it. For example, what I've <a href="#cats">mentioned</a> here
+about Felidae and dogs, how much it would be noble to accept the challenge of taming a big
+cat like a rebellious tiger, how would it be a very well exercise for living. I desire such
+a thing (although I love dogs, and really hate cats) because I know the essence of its
+goodness. What I am afraid of is very related to these concepts: to be unable to find the
+goodness in your diners. That Plato was precise in his example: this ignites a fuse of doubt
+of me.
+</p>
+</div>
+</div>
+<div id="outline-container-orgab27232" class="outline-3">
+<h3 id="orgab27232">Friday, 07 October 2022</h3>
+<div class="outline-text-3" id="text-orgab27232">
+<p>
+<a href="https://xkcd.com/2681/">https://xkcd.com/2681/</a>
+</p>
+</div>
+</div>
+<div id="outline-container-cats" class="outline-3">
+<h3 id="cats">Thursday, 06 October 2022</h3>
+<div class="outline-text-3" id="text-cats">
+<p>
+There are two types of people that might look slightly different, but I really cannot think
+of them but the same type, that is; the first type is to tell you: Oh, you can not be
+perfect, it's just impossible, and they proceed to read John 7:53–8:11 in the New Revised
+Standard Version: <i>"Let anyone among you who is without sin be the first to throw a stone at
+her." And once again he bent down and wrote on the ground. When they heard it, they went
+away, one by one, beginning with the elders; and Jesus was left alone with the woman
+standing before him. Jesus straightened up and said to her, "Woman, where are they? Has no
+one condemned you?" She said, "No one, sir." And Jesus said, "Neither do I condemn you. Go
+your way, and from now on do not sin again."</i> <b>Thus was the disbeliever abashed! (Quran
+2:258)</b>. The other type is more simple; they are (warning: you are about to read too fancy
+word) perfectionists. The commotion things between those two types is that they will never
+have the chastity of being decent or aiming to be perfect and all the other high values. The
+first type just cannot be perfect: they admit it, it's obviously ineffectual to keep with
+them. The second type are perfectionists, so they <i>can't</i> be "below level" they must be
+perfect, so they will accept being "not perfect" other than being "incomplete perfect" which
+basically means defective, that being perfect must being through many fails and states of
+being imperfect. Same mobs, different forms.
+</p>
+</div>
+</div>
+<div id="outline-container-org9a2a14c" class="outline-3">
+<h3 id="org9a2a14c">Wednesday, 05 October 2022</h3>
+<div class="outline-text-3" id="text-org9a2a14c">
+
+<figure id="org8fe3f7a">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Wednesday,_05_October_2022/2022-10-05_03-34-06_screenshot.png" alt="2022-10-05_03-34-06_screenshot.png">
+
+</figure>
+</div>
+</div>
+
+<div id="outline-container-pleasure" class="outline-3">
+<h3 id="pleasure">Monday, 03 October 2022</h3>
+<div class="outline-text-3" id="text-pleasure">
+<p>
+<b>Nobility versus pleasure—.</b> I believe that the possession of a kitten instead of a dog is
+very moronic act, although it occurs via humanistic polarizers; Cats look very cute, smell
+like babies, they even have eyes as wide as children's. Which all are convincing reasons for
+us —human beings— to adore that kind. However, cats are felidae, individual creatures that
+never live in communities, thus they cannot provide any emotional feelings toward its owner.
+That's why I find YouTube videos about cat reaction to \(x\) very idiotic, the cat mostly
+doesn't know that the so-called partner exists. In the other hand, dogs were domesticated,
+and before they always lived in communities henceforth they are very emotional creatures.
+They can be sad, they can feel love, etc. However, I think that the comparison of cats vs.
+dogs is vastly interesting because cats are tremendously hard to tame, dogs may not need to.
+It'd be such a patrician act to approve to that challenge in my opinion.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-06-01 Thu 01:07.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

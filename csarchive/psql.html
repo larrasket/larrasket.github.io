@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PostgreSQL Notes</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">PostgreSQL Notes</h1>
+</header><div class="PREVIEW" id="orgc46054c">
+<p>
+PostgreSQL mini-cookbook
+</p>
+
+</div>
+
+
+<div id="outline-container-org97c0bb8" class="outline-2">
+<h2 id="org97c0bb8">Introduction into PostgreSQL</h2>
+<div class="outline-text-2" id="text-org97c0bb8">
+<p>
+Notes:
+</p>
+<ul class="org-ul">
+<li>SQL commands is not case sensitive, therefore <code>SELECT</code> = <code>select</code> = <code>SeLeCt</code></li>
+</ul>
+</div>
+<div id="outline-container-orga96711f" class="outline-3">
+<h3 id="orga96711f">Selecting</h3>
+<div class="outline-text-3" id="text-orga96711f">
+</div>
+<div id="outline-container-regular_selecting" class="outline-4">
+<h4 id="regular_selecting">Regular Selection</h4>
+<div class="outline-text-4" id="text-regular_selecting">
+<p>
+Select syntax is being like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span>
+  * <span style="font-weight: bold; font-style: italic;">-- </span><span style="font-weight: bold; font-style: italic;">Everything</span>
+<span style="font-weight: bold;">FROM</span>
+   real_person <span style="font-weight: bold; font-style: italic;">-- </span><span style="font-weight: bold; font-style: italic;">Table Name</span>
+<span style="font-weight: bold;">LIMIT</span>
+        10;  <span style="font-weight: bold; font-style: italic;">-- </span><span style="font-weight: bold; font-style: italic;">Getting only they very first 5 IDs.</span>
+</pre>
+</div>
+
+
+<p>
+This will print all <code>email</code> (s) from the <code>customer</code> table.
+</p>
+</div>
+</div>
+<div id="outline-container-distinct" class="outline-4">
+<h4 id="distinct">Select distinct rows using <code>distinct</code> operator</h4>
+<div class="outline-text-4" id="text-distinct">
+<p>
+<code>DISTINCT</code> clause is used to remove duplicates rows from the result output, it keeps only
+one row for each group if duplicated. Consider the following example:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span>
+  * <span style="font-weight: bold; font-style: italic;">-- </span><span style="font-weight: bold; font-style: italic;">Everything</span>
+<span style="font-weight: bold;">FROM</span>
+   real_person <span style="font-weight: bold; font-style: italic;">-- </span><span style="font-weight: bold; font-style: italic;">Table Name</span>
+<span style="font-weight: bold;">LIMIT</span>
+        10;  <span style="font-weight: bold; font-style: italic;">-- </span><span style="font-weight: bold; font-style: italic;">Getting only they very first 5 IDs.</span>
+</pre>
+</div>
+
+
+<p>
+If we evaluate this we get:
+</p>
+<pre class="example" id="org9b1f316">
+| id | first_name  | last_name  | email                      | gender      | country |
+|----+-------------+------------+----------------------------+-------------+---------|
+| 1  | Ernestine   | Dobrowolny | edobrowolny0@google.com.hk | Male        | CN      |
+| 2  | Evy         | Kornousek  |                            | Genderfluid | CR      |
+| 3  | Jacquenette | Cleave     | jcleave2@phpbb.com         | Polygender  | CN      |
+| 4  | Tobin       | Paule      |                            | Bigender    | CN      |
+| 5  | Minta       | Ramos      | mramos4@sciencedaily.com   | Non-binary  | SE      |
+| 6  | Alaster     | Loomis     |                            | Genderfluid | PH      |
+| 7  | Nap         | Algie      | nalgie6@wunderground.com   | Non-binary  | PT      |
+| 8  | Agnes       | Geck       |                            | Genderfluid | RU      |
+| 9  | Hartwell    | Tetley     |                            | Male        | JP      |
+| 10 | Scotti      | Abreheart  |                            | Female      | ID      |
+</pre>
+<p>
+You can see we have 4 out of 10 rows are from China (CN), suppose if we only want to observe
+which countries are in our database system, it would be a waste of rows to have those 4
+duplicated. We can use the <code>distinct</code> clause to get rid of this, for example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span>
+   <span style="font-weight: bold;">DISTINCT</span>  * <span style="font-weight: bold; font-style: italic;">-- </span><span style="font-weight: bold; font-style: italic;">Everything, change it to `country` to get distinct results by countries.</span>
+<span style="font-weight: bold;">FROM</span>
+   real_person <span style="font-weight: bold; font-style: italic;">-- </span><span style="font-weight: bold; font-style: italic;">Table Name</span>
+<span style="font-weight: bold;">LIMIT</span>
+        10;  <span style="font-weight: bold; font-style: italic;">-- </span><span style="font-weight: bold; font-style: italic;">Getting only they very first 5 IDs.</span>
+</pre>
+</div>
+</div>
+<div id="outline-container-org454f373" class="outline-5">
+<h5 id="org454f373">Distinct on</h5>
+<div class="outline-text-5" id="text-org454f373">
+<p>
+Consider the following example:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span>
+   <span style="font-weight: bold;">DISTINCT</span> gender, country
+<span style="font-weight: bold;">FROM</span>
+   real_person <span style="font-weight: bold; font-style: italic;">-- </span><span style="font-weight: bold; font-style: italic;">Table Name</span>
+<span style="font-weight: bold;">LIMIT</span>
+        10;  <span style="font-weight: bold; font-style: italic;">-- </span><span style="font-weight: bold; font-style: italic;">Getting only they very first 5 IDs.</span>
+</pre>
+</div>
+<p>
+The meaning of <code>DISTINCT gender, country</code> is to make sure that there will not ever two rows
+(or more) that have the same values in gender and country, therefore you can't find two
+males from China in this output. But let's suppose we want to have distinct genders and
+non-distinct countries, PostgreSQL provides the <code>DISTINCT ON</code> function to do so, for
+example:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span>
+        <span style="font-weight: bold;">DISTINCT</span> <span style="font-weight: bold;">ON</span> (gender) gender,  country
+<span style="font-weight: bold;">FROM</span>
+        real_person
+<span style="font-weight: bold;">LIMIT</span> 100;
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga07f896" class="outline-4">
+<h4 id="orga07f896">Sort rows using <code>order by</code></h4>
+<div class="outline-text-4" id="text-orga07f896">
+<p>
+We use the clause <code>order by</code> to order selection output. Example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span>
+    id, first_name, last_name
+<span style="font-weight: bold;">FROM</span>
+    real_person
+<span style="font-weight: bold;">ORDER</span> <span style="font-weight: bold;">BY</span>
+    first_name <span style="font-weight: bold;">ASC</span> <span style="font-weight: bold; font-style: italic;">-- </span><span style="font-weight: bold; font-style: italic;">If you leave it empty it will use ASC by default</span>
+                      <span style="font-weight: bold; font-style: italic;">-- </span><span style="font-weight: bold; font-style: italic;">Use DESC to get descending sorting.</span>
+<span style="font-weight: bold;">LIMIT</span>
+    10;
+</pre>
+</div>
+
+<pre class="example" id="org5b8f07c">
+| id  | first_name | last_name |
+|-----+------------+-----------|
+| 596 | Ab         | McCaghan  |
+| 962 | Abdul      | Gingedale |
+| 86  | Abelard    | Gumm      |
+| 957 | Abelard    | Gartin    |
+| 422 | Abrahan    | Pedro     |
+| 234 | Abram      | Atcherley |
+| 807 | Abramo     | Bristoe   |
+| 88  | Ade        | Verrill   |
+| 209 | Ade        | Brandsen  |
+| 851 | Adriana    | Ogan      |
+</pre>
+</div>
+
+<div id="outline-container-orgd5d821f" class="outline-5">
+<h5 id="orgd5d821f">Order by String Length</h5>
+<div class="outline-text-5" id="text-orgd5d821f">
+<p>
+You can use the <code>Length()</code> function with the <code>order by</code> clause to sort by the
+string length:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span>
+    first_name, last_name, <span style="font-weight: bold;">length</span>(first_name || last_name) len
+<span style="font-weight: bold;">FROM</span>
+    real_person
+<span style="font-weight: bold;">ORDER</span> <span style="font-weight: bold;">BY</span>
+        LEN <span style="font-weight: bold;">desc</span>
+<span style="font-weight: bold;">LIMIT</span>
+    10;
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-where" class="outline-4">
+<h4 id="where">Filter rows using <code>where</code></h4>
+<div class="outline-text-4" id="text-where">
+<p>
+You can get output from a column by checking a condition that you specify, for instance, if
+you need to get full names of people from China in your database, you can use the <code>where</code>
+using the following syntax:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> first_name, country
+        <span style="font-weight: bold;">FROM</span> real_person
+             <span style="font-weight: bold;">Where</span> country = <span style="font-style: italic;">'CN'</span>
+                   <span style="font-weight: bold;">LIMIT</span> 10;
+</pre>
+</div>
+
+<p>
+Note that the condition that comes after  where, should return only true or false like basic
+arithmetic operators: &gt;, =, &lt; etc. Let's manipulate it and try to get only the people with
+first name that is less than 9 letters.
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span>
+    first_name || <span style="font-style: italic;">' '</span> || last_name Full_Name
+<span style="font-weight: bold;">FROM</span> real_person
+<span style="font-weight: bold;">WHERE</span> <span style="font-weight: bold;">LENGTH</span>(first_name ||<span style="font-style: italic;">''</span>|| last_name) &lt; 9;
+</pre>
+</div>
+
+<p>
+You can use any of the following operators:
+</p>
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Operator</th>
+<th scope="col" class="org-left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">=</td>
+<td class="org-left">Equal to</td>
+</tr>
+
+<tr>
+<td class="org-left">&gt;</td>
+<td class="org-left">Greater than</td>
+</tr>
+
+<tr>
+<td class="org-left">&lt;</td>
+<td class="org-left">Less than</td>
+</tr>
+
+<tr>
+<td class="org-left">&gt;=</td>
+<td class="org-left">Greater than or equal</td>
+</tr>
+
+<tr>
+<td class="org-left">&lt;=</td>
+<td class="org-left">Less than or equal</td>
+</tr>
+
+<tr>
+<td class="org-left">!=</td>
+<td class="org-left">Not equal</td>
+</tr>
+
+<tr>
+<td class="org-left">AND</td>
+<td class="org-left">Logical AND</td>
+</tr>
+
+<tr>
+<td class="org-left">OR</td>
+<td class="org-left">Logical OR</td>
+</tr>
+
+<tr>
+<td class="org-left">LIKE</td>
+<td class="org-left">Return true if a value matches a pattern</td>
+</tr>
+
+<tr>
+<td class="org-left">IS NULL</td>
+<td class="org-left">Return true if a value is NULL</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org6314c0a" class="outline-4">
+<h4 id="org6314c0a">IN</h4>
+<div class="outline-text-4" id="text-org6314c0a">
+<p>
+You use <code>IN</code> operator in the WHERE clause to check if a value matches any value in a list of values.
+</p>
+
+<p>
+Suppose you want to know the rental information of customer id 1 and 2, you can use the IN
+operator in the WHERE clause as follows:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> customer_id,
+       rental_id,
+       return_date
+<span style="font-weight: bold;">FROM</span> rental
+     <span style="font-weight: bold;">WHERE</span>
+        customer_id <span style="font-weight: bold;">IN</span> (1,2)
+        <span style="font-weight: bold;">order</span> <span style="font-weight: bold;">by</span> customer_id <span style="font-weight: bold;">desc</span>
+<span style="font-weight: bold;">LIMIT</span> 40;
+</pre>
+</div>
+
+<p>
+Notice that you can also use <code>=</code> and <code>OR</code> operators instead, like this:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span>
+        rental_id,
+        customer_id,
+        return_date
+<span style="font-weight: bold;">FROM</span>
+        rental
+<span style="font-weight: bold;">WHERE</span>
+        customer_id = 1 <span style="font-weight: bold;">OR</span> customer_id = 2
+<span style="font-weight: bold;">ORDER</span> <span style="font-weight: bold;">BY</span>
+        return_date <span style="font-weight: bold;">DESC</span>;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org84ced4f" class="outline-4">
+<h4 id="org84ced4f">Group using <code>group by</code></h4>
+<div class="outline-text-4" id="text-org84ced4f">
+<p>
+:CUSTOM_ID: group_by
+</p>
+<p>
+This statements illustrate the usage of <code>group by</code> clause:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"> <span style="font-weight: bold;">SELECT</span>
+         country, <span style="font-weight: bold;">count</span>(country)
+ <span style="font-weight: bold;">FROM</span>
+         real_person
+<span style="font-weight: bold;">GROUP</span> <span style="font-weight: bold;">BY</span> country
+<span style="font-weight: bold;">ORDER</span> <span style="font-weight: bold;">BY</span> <span style="font-weight: bold;">count</span>(country) <span style="font-weight: bold;">desc</span>
+<span style="font-weight: bold;">LIMIT</span> 10;
+</pre>
+</div>
+
+<p>
+This statement divide the rows by its <code>count</code> values and then group it by calculating the sum
+of the total occurrence for each country, the result should be like:
+</p>
+
+<pre class="example" id="org602368c">
+| country | count |
+|---------+-------|
+| CN      | 173   |
+| ID      | 114   |
+| RU      | 60    |
+| PH      | 48    |
+| BR      | 41    |
+| PL      | 38    |
+| FR      | 37    |
+| SE      | 35    |
+| PT      | 27    |
+| CZ      | 22    |
+</pre>
+</div>
+</div>
+
+<div id="outline-container-having" class="outline-4">
+<h4 id="having">Filter group using <code>having</code></h4>
+<div class="outline-text-4" id="text-having">
+<p>
+The <code>having</code> clause specifies a search condition for a group or an aggregate. Its syntax
+using is like the following:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span>
+        column1,
+        aggregate_function (column2)
+<span style="font-weight: bold;">FROM</span>
+        <span style="font-weight: bold;">table_name</span>
+<span style="font-weight: bold;">GROUP</span> <span style="font-weight: bold;">BY</span>
+        column1
+<span style="font-weight: bold;">HAVING</span>
+        condition;
+</pre>
+</div>
+
+<p>
+You might have noticed that it is to close to the clause <code>WHERE</code>, that's almost right but:
+PostgreSQL evaluates the <code>having</code> clause after <code>from</code>, <code>where</code> and <code>group by</code>. <code>WHERE</code>
+allows you to filter groups of rows according to a specified condition (see <a href="#where">where</a>), <code>HAVING</code>
+allows you to apply the condition to a group of rows instead. Thus, it's used more
+frequently with the clause <code>GROUP BY</code>.
+</p>
+
+<p>
+Consider the following example using group by to get the count numbers of each country:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"> <span style="font-weight: bold;">SELECT</span>
+         country, <span style="font-weight: bold;">count</span>(country)
+ <span style="font-weight: bold;">FROM</span>
+         real_person
+<span style="font-weight: bold;">GROUP</span> <span style="font-weight: bold;">BY</span> country
+<span style="font-weight: bold;">ORDER</span> <span style="font-weight: bold;">BY</span> <span style="font-weight: bold;">count</span>(country) <span style="font-weight: bold;">desc</span>
+<span style="font-weight: bold;">LIMIT</span> 10;
+</pre>
+</div>
+
+<p>
+Using <code>HAVING</code> we can specify a condition in that group, let's say we only need to get the
+countries with more than 100 count:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"> <span style="font-weight: bold;">SELECT</span>
+         country, <span style="font-weight: bold;">count</span>(country)
+ <span style="font-weight: bold;">FROM</span>
+         real_person
+<span style="font-weight: bold;">GROUP</span> <span style="font-weight: bold;">BY</span> country
+<span style="font-weight: bold;">HAVING</span> <span style="font-weight: bold;">count</span>(country) &gt; 100
+<span style="font-weight: bold;">ORDER</span> <span style="font-weight: bold;">BY</span> <span style="font-weight: bold;">count</span>(country) <span style="font-weight: bold;">desc</span>
+<span style="font-weight: bold;">LIMIT</span> 10;
+</pre>
+</div>
+
+<pre class="example">
+| country | count |
+|---------+-------|
+| CN      | 173   |
+| ID      | 114   |
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgb01d8c2" class="outline-4">
+<h4 id="orgb01d8c2">Perform set operations using <code>UNION</code>, <code>intersect</code> and <code>except</code></h4>
+<div class="outline-text-4" id="text-orgb01d8c2">
+</div>
+<div id="outline-container-org1406a3c" class="outline-5">
+<h5 id="org1406a3c"><code>UNION</code></h5>
+<div class="outline-text-5" id="text-org1406a3c">
+<p>
+Consider the following two tables:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> * <span style="font-weight: bold;">FROM</span>
+         top_rated_movies;
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> * <span style="font-weight: bold;">FROM</span>
+         most_popular_films;
+</pre>
+</div>
+
+<p>
+The <code>UNION</code> operator combines result sets of two or more <code>SELECT</code> statements into a single
+result set. It uses the following syntax:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> select_list_1
+<span style="font-weight: bold;">FROM</span> table_expresssion_1
+<span style="font-weight: bold;">UNION</span>
+<span style="font-weight: bold;">SELECT</span> select_list_2
+<span style="font-weight: bold;">FROM</span> table_expression_2
+</pre>
+</div>
+<p>
+Let's test it in <code>top_rated_movies</code> and <code>most_popular_films</code>:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> * <span style="font-weight: bold;">from</span> top_rated_movies
+         <span style="font-weight: bold;">UNION</span>
+<span style="font-weight: bold;">SELECT</span> * <span style="font-weight: bold;">from</span> most_popular_films;
+</pre>
+</div>
+
+<p>
+You may have noticed that Godfather occurs only once, this is because the <code>UNION</code> operator
+removes all the duplicated rows, and by 'duplicated' we mean that they are the same in every
+column (in this case, they should be equal in title, release_year, and id), to get rid of
+that and get all the duplicated rows togother, use <code>UNION ALL</code> instead:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> * <span style="font-weight: bold;">from</span> top_rated_movies
+         <span style="font-weight: bold;">UNION</span> <span style="font-weight: bold;">ALL</span>
+<span style="font-weight: bold;">SELECT</span> * <span style="font-weight: bold;">from</span> most_popular_films;
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org02bf8c7" class="outline-5">
+<h5 id="org02bf8c7"><code>INTERSENCT</code></h5>
+<div class="outline-text-5" id="text-org02bf8c7">
+<p>
+The <code>INTERSECT</code> operator returns any rows that are available in both result sets:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> * <span style="font-weight: bold;">from</span> top_rated_movies
+         <span style="font-weight: bold;">INTERSECT</span>
+<span style="font-weight: bold;">SELECT</span> * <span style="font-weight: bold;">from</span> most_popular_films;
+</pre>
+</div>
+<p>
+We got "The Godfather" as it is the only value that is available in both results.
+</p>
+</div>
+</div>
+<div id="outline-container-org96b1162" class="outline-5">
+<h5 id="org96b1162"><code>EXCEPT</code></h5>
+<div class="outline-text-5" id="text-org96b1162">
+<p>
+The <code>EXCEPT</code> operator returns distinct rows from the first (left) query that are not in the
+output of the second (right) query.
+</p>
+
+<p>
+The following statement uses the <code>EXCEPT</code> operator to find the top-rated films that are not popular:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> * <span style="font-weight: bold;">FROM</span> top_rated_movies
+<span style="font-weight: bold;">EXCEPT</span>
+<span style="font-weight: bold;">SELECT</span> * <span style="font-weight: bold;">FROM</span> most_popular_films;
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org317476c" class="outline-4">
+<h4 id="org317476c">Grouping Sets</h4>
+<div class="outline-text-4" id="text-org317476c">
+<p>
+Consider the following table:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> * <span style="font-weight: bold;">FROM</span> sales;
+</pre>
+</div>
+
+<p>
+Suppose that we need to get the sum of quantity for each brand, we can implement this using
+the following simple statement:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> brand, <span style="font-weight: bold;">sum</span>(quantity)
+       <span style="font-weight: bold;">FROM</span> sales
+            <span style="font-weight: bold;">GROUP</span> <span style="font-weight: bold;">by</span> brand;
+</pre>
+</div>
+
+<p>
+And if we need to know the quantity by its segment:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> segment, <span style="font-weight: bold;">sum</span>(quantity)
+       <span style="font-weight: bold;">FROM</span> sales
+            <span style="font-weight: bold;">GROUP</span> <span style="font-weight: bold;">by</span> segment;
+</pre>
+</div>
+
+<p>
+And, to get the total sum quantity we can do:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> <span style="font-weight: bold;">sum</span>(quantity) total_sum
+       <span style="font-weight: bold;">FROM</span> sales;
+</pre>
+</div>
+
+
+<p>
+Suppose we need to get all of those tables in the same query, we can use the <code>union</code> or
+<code>union all</code> clause like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span>
+    brand,
+    segment,
+    <span style="font-weight: bold;">SUM</span> (quantity)
+<span style="font-weight: bold;">FROM</span>
+    sales
+<span style="font-weight: bold;">GROUP</span> <span style="font-weight: bold;">BY</span>
+    brand,
+    segment
+
+<span style="font-weight: bold;">UNION</span> <span style="font-weight: bold;">ALL</span>
+
+<span style="font-weight: bold;">SELECT</span>
+    brand,
+    <span style="font-weight: bold;">NULL</span>,
+    <span style="font-weight: bold;">SUM</span> (quantity)
+<span style="font-weight: bold;">FROM</span>
+    sales
+<span style="font-weight: bold;">GROUP</span> <span style="font-weight: bold;">BY</span>
+    brand
+
+<span style="font-weight: bold;">UNION</span> <span style="font-weight: bold;">ALL</span>
+
+<span style="font-weight: bold;">SELECT</span>
+    <span style="font-weight: bold;">NULL</span>,
+    segment,
+    <span style="font-weight: bold;">SUM</span> (quantity)
+<span style="font-weight: bold;">FROM</span>
+    sales
+<span style="font-weight: bold;">GROUP</span> <span style="font-weight: bold;">BY</span>
+    segment
+
+<span style="font-weight: bold;">UNION</span> <span style="font-weight: bold;">ALL</span>
+
+<span style="font-weight: bold;">SELECT</span>
+    <span style="font-weight: bold;">NULL</span>,
+    <span style="font-weight: bold;">NULL</span>,
+    <span style="font-weight: bold;">SUM</span> (quantity)
+<span style="font-weight: bold;">FROM</span>
+    sales;
+</pre>
+</div>
+
+
+<p>
+Notice that we added <code>NULL</code> twice in the last selection statement since all columns should
+be equal as we use the <code>union all</code> clause.
+</p>
+
+<p>
+Even though the above query works as you expected, it has two main problems:
+</p>
+<ul class="org-ul">
+<li>It's lengthy and can be implemented in shorter way.</li>
+<li>It has a performance issue because PostgreSQL has to scan the <code>sales</code> table separately for
+each query.</li>
+</ul>
+<p>
+The <code>GROUPING SETS</code> allows you to define multiple grouping sets in the same query.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span>
+    brand,
+    segment,
+    <span style="font-weight: bold;">SUM</span> (quantity)
+<span style="font-weight: bold;">FROM</span>
+    sales
+<span style="font-weight: bold;">GROUP</span> <span style="font-weight: bold;">BY</span>
+<span style="font-weight: bold;">GROUPING</span> <span style="font-weight: bold;">SETS</span>(
+(brand, segment),
+(brand),
+(segment),
+()
+     );
+</pre>
+</div>
+</div>
+<div id="outline-container-org422d956" class="outline-5">
+<h5 id="org422d956">The <code>GROUPING()</code> Function</h5>
+<div class="outline-text-5" id="text-org422d956">
+<p>
+The GROUPING() function accepts an argument which can be a column name or an expression:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">GROUPING</span>( <span style="font-weight: bold;">column_name</span> | expression)
+</pre>
+</div>
+
+<p>
+It returns bit 0 if the argument is a member of the current grouping set and 1 otherwise,
+consider the following example:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> <span style="font-weight: bold;">grouping</span>(brand) is_brand_grouped,
+       <span style="font-weight: bold;">grouping</span>(segment) is_segment_grouped,
+       brand,
+       segment,
+       <span style="font-weight: bold;">sum</span>(quantity)
+<span style="font-weight: bold;">FROM</span> SALES
+<span style="font-weight: bold;">GROUP</span> <span style="font-weight: bold;">by</span>
+        <span style="font-weight: bold;">grouping</span> <span style="font-weight: bold;">sets</span>(
+                (brand),
+                    (segment),
+                        ()
+        );
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb2b1c8e" class="outline-5">
+<h5 id="orgb2b1c8e"><code>ROLLUP</code> and <code>CUBE</code></h5>
+<div class="outline-text-5" id="text-orgb2b1c8e">
+<p>
+However we have saved some times using the <code>grouping sets</code> clause, it could be even better
+if we didn't need to write all these argument to get the <code>grouping by</code> result for each
+column. Thankfully PostgreSQL has two clauses, <code>CUBE</code> and <code>ROLLUP</code> which save us some time.
+</p>
+
+<p>
+When you call the <code>ROLLUP</code> clause with the following argument like this: <code>ROLLUP(c1,c2,c3)</code>
+it generate the following 4 grouping sets:
+</p>
+<pre class="example">
+(c1, c2, c3)
+(c1, c2)
+(c1)
+()
+</pre>
+
+<p>
+Example:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> brand, segment, <span style="font-weight: bold;">sum</span>(quantity) <span style="font-weight: bold;">FROM</span> sales <span style="font-weight: bold;">GROUP</span> <span style="font-weight: bold;">BY</span> <span style="font-weight: bold;">ROLLUP</span> (brand,segment) <span style="font-weight: bold;">order</span> <span style="font-weight: bold;">by</span> <span style="font-weight: bold;">sum</span> <span style="font-weight: bold;">desc</span>;
+
+</pre>
+</div>
+
+<p>
+The same thing is wise <code>CUBE</code> but instead of generating 4 tables for <code>(c1,c2,c3)</code>, <code>CUBE</code>
+generate all possible grouping sets:
+</p>
+<pre class="example">
+(c1,c2,c3),
+(c1,c2),
+(c1,c3),
+(c2,c3),
+(c1),
+(c2),
+(c3),
+()
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgcaeefee" class="outline-4">
+<h4 id="orgcaeefee">Joins</h4>
+<div class="outline-text-4" id="text-orgcaeefee">
+<p>
+PostgreSQL join is used to combine columns from one (self-join) or more tables based on the
+values of the common columns between related tables. The common columns are typically the
+primary key columns of the first table and foreign key columns of the second table.
+</p>
+
+<p>
+Consider those tables:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> * <span style="font-weight: bold;">FROM</span> basket_a;
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> * <span style="font-weight: bold;">FROM</span> basket_b;
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org61046c1" class="outline-5">
+<h5 id="org61046c1">Inner Join</h5>
+<div class="outline-text-5" id="text-org61046c1">
+<p>
+The following statement joins the first table (<code>basket_a</code>) with the second table (<code>basket_b</code>) by
+matching the values in the <code>fruit_a</code> and <code>fruit_b</code> columns:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span>
+      *
+<span style="font-weight: bold;">FROM</span>
+      basket_a
+<span style="font-weight: bold;">INNER</span> <span style="font-weight: bold;">JOIN</span> basket_b
+     <span style="font-weight: bold;">ON</span> fruit_a = fruit_b;
+</pre>
+</div>
+
+<p>
+The inner join examines each row in the first table (<code>basket_a</code>). It compares the value in the
+<code>fruit_a</code> column with the value in the <code>fruit_b</code> column of each row in the second table
+(<code>basket_b</code>). If these values are equal, the inner join creates a new row that contains
+columns from both tables and adds this new row the result set.
+</p>
+
+
+<p>
+<b>Notice</b> that If you reference columns with the same name from different tables in a query,
+you will get an error. To avoid the error, you need to qualify these columns fully using the
+following syntax:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">table_name</span>.<span style="font-weight: bold;">column_name</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgdcfc129" class="outline-5">
+<h5 id="orgdcfc129">Left Join</h5>
+<div class="outline-text-5" id="text-orgdcfc129">
+<p>
+The following statement uses the left join clause to join the <code>basket_a</code> table with the
+<code>basket_b</code> table. In the left join context, the first table is called the left table and the
+second table is called the right table.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span>
+    a,
+    fruit_a,
+    b,
+    fruit_b
+<span style="font-weight: bold;">FROM</span>
+    basket_a
+<span style="font-weight: bold;">LEFT</span> <span style="font-weight: bold;">JOIN</span> basket_b
+   <span style="font-weight: bold;">ON</span> fruit_a = fruit_b;
+</pre>
+</div>
+
+<p>
+The left join starts selecting data from the left table. It compares values in the fruit_a
+column with the values in the fruit_b column in the basket_b table.
+</p>
+
+<p>
+If these values are equal, the left join creates a new row that contains columns of both
+tables and adds this new row to the result set.
+</p>
+
+<p>
+In case the values do not equal, the left join also creates a new row that contains columns
+from both tables and adds it to the result set. However, it fills the columns of the right
+table (<code>basket_b</code>) with null.
+</p>
+
+<p>
+The following Venn diagram illustrates the left join:
+{{&lt; figure src="<img src="https://salehmu.github.io/images/PostgreSQL-Join-Left-Join.png" alt="PostgreSQL-Join-Left-Join.png">" alt="" &gt;}}
+</p>
+</div>
+</div>
+
+<div id="outline-container-org384a22f" class="outline-5">
+<h5 id="org384a22f">Right Join</h5>
+<div class="outline-text-5" id="text-org384a22f">
+<p>
+Just like above, but right.
+</p>
+</div>
+</div>
+<div id="outline-container-org630808e" class="outline-5">
+<h5 id="org630808e">Full Outer Join</h5>
+<div class="outline-text-5" id="text-org630808e">
+<p>
+Consider the following two tables:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> * <span style="font-weight: bold;">FROM</span> departments;
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> * <span style="font-weight: bold;">FROM</span> employees;
+</pre>
+</div>
+
+
+<p>
+We use the <code>FULL OTHER JOINT</code> if we want to query data from both <code>employee</code> and
+<code>departments</code> tables, here is the syntax:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> * <span style="font-weight: bold;">FROM</span> A
+<span style="font-weight: bold;">FULL</span> [<span style="font-weight: bold;">OUTER</span>] <span style="font-weight: bold;">JOIN</span> B <span style="font-weight: bold;">on</span> A.id = B.id;
+</pre>
+</div>
+
+<p>
+For example, to get every employee who belongs to a department and every department which have an
+employee:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> employees.employee_name, departments.department_name
+        <span style="font-weight: bold;">FROM</span> employees
+<span style="font-weight: bold;">FULL</span> <span style="font-weight: bold;">OUTER</span> <span style="font-weight: bold;">JOIN</span> departments <span style="font-weight: bold;">on</span> departments.department_id = employees.department_id;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org04bc35c" class="outline-5">
+<h5 id="org04bc35c">Cross Join</h5>
+</div>
+</div>
+
+<div id="outline-container-orgb494527" class="outline-4">
+<h4 id="orgb494527">Sub-queries</h4>
+<div class="outline-text-4" id="text-orgb494527">
+<p>
+Suppose we want to find the films whose rental rate is higher than the average rental rate.
+We can do it in two steps:
+</p>
+
+<ul class="org-ul">
+<li><p>
+Find the average rental rate by using the SELECT statement and average function <code>AVG</code>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span>
+        <span style="font-weight: bold;">AVG</span> (rental_rate)
+<span style="font-weight: bold;">FROM</span>
+        film;
+</pre>
+</div></li>
+
+<li>Use the result of the first query in the second SELECT statement to find the films that we want.</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span>
+        film_id,
+        title,
+        rental_rate
+<span style="font-weight: bold;">FROM</span>
+        film
+<span style="font-weight: bold;">WHERE</span>
+        rental_rate &gt; 2.98
+    <span style="font-weight: bold;">LIMIT</span> 10;
+</pre>
+</div>
+
+<pre class="example" id="orgb5f3362">
+| film_id | title             | rental_rate |
+|---------+-------------------+-------------|
+| 133     | Chamber Italian   | 4.99        |
+| 384     | Grosse Wonderful  | 4.99        |
+| 8       | Airport Pollock   | 4.99        |
+| 98      | Bright Encounters | 4.99        |
+| 2       | Ace Goldfinger    | 4.99        |
+| 3       | Adaptation Holes  | 2.99        |
+| 4       | Affair Prejudice  | 2.99        |
+| 5       | African Egg       | 2.99        |
+| 6       | Agent Truman      | 2.99        |
+| 7       | Airplane Sierra   | 4.99        |
+</pre>
+
+
+<p>
+This two steps can be shortened to one step using a subquery. A subquery is a query nested
+inside another query such as <code>SELECT</code>, <code>INSERT</code>, <code>DELETE</code> and <code>UPDATE</code>. In this tutorial, we are
+focusing on the SELECT statement only.
+</p>
+
+<p>
+To construct a subquery, we put the second query in brackets and use it in the WHERE clause
+as an expression:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span>
+    film_id,
+        title,
+            rental_rate
+<span style="font-weight: bold;">FROM</span>
+    film
+<span style="font-weight: bold;">WHERE</span>
+    rental_rate &gt; (
+    <span style="font-weight: bold;">SELECT</span> <span style="font-weight: bold;">AVG</span>(rental_rate) <span style="font-weight: bold;">from</span> film
+                ) <span style="font-weight: bold;">limit</span> 10;
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org298f559" class="outline-5">
+<h5 id="org298f559">Subquery using <code>IN</code></h5>
+<div class="outline-text-5" id="text-org298f559">
+<p>
+We as a subquery can return a table as well, we can use the table output in another query,
+for example, consider the following query to get the movies that returned date better
+<code>2005-05-29</code> and <code>2005-05-30</code>:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span>
+        inventory.film_id
+<span style="font-weight: bold;">FROM</span>
+        rental
+<span style="font-weight: bold;">INNER</span> <span style="font-weight: bold;">JOIN</span> inventory <span style="font-weight: bold;">ON</span> inventory.inventory_id = rental.inventory_id
+<span style="font-weight: bold;">WHERE</span>
+        return_date <span style="font-weight: bold;">BETWEEN</span> <span style="font-style: italic;">'2005-05-29'</span>
+<span style="font-weight: bold;">AND</span> <span style="font-style: italic;">'2005-05-30'</span> <span style="font-weight: bold;">LIMIT</span> 10;
+</pre>
+</div>
+
+<p>
+Now we can use this output table in another query, say we want to get the full data about
+those fimls:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span>
+        film_id,
+        title
+<span style="font-weight: bold;">FROM</span>
+        film
+<span style="font-weight: bold;">WHERE</span>
+        film_id <span style="font-weight: bold;">IN</span> (
+                <span style="font-weight: bold;">SELECT</span>
+                        inventory.film_id
+                <span style="font-weight: bold;">FROM</span>
+                        rental
+                <span style="font-weight: bold;">INNER</span> <span style="font-weight: bold;">JOIN</span> inventory <span style="font-weight: bold;">ON</span> inventory.inventory_id = rental.inventory_id
+                <span style="font-weight: bold;">WHERE</span>
+                        return_date <span style="font-weight: bold;">BETWEEN</span> <span style="font-style: italic;">'2005-05-29'</span>
+                <span style="font-weight: bold;">AND</span> <span style="font-style: italic;">'2005-05-30'</span>
+        ) <span style="font-weight: bold;">limit</span> 10;
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org47ab4bc" class="outline-4">
+<h4 id="org47ab4bc">Exist</h4>
+<div class="outline-text-4" id="text-org47ab4bc">
+<p>
+The <code>EXIST</code> operator is a boolean operator that returns the existence or rows in a subquery,
+its syntax looks like the following:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">EXISTS</span> (subquery)
+</pre>
+</div>
+<p>
+If the subquery returns at least one row, the result of <code>EXISTS</code> is true. In case the subquery
+returns no row, the result is of <code>EXISTS</code> is false.
+</p>
+
+<p>
+<b>Note</b> that if the subquery returns NULL, the result of <code>EXISTS</code> is true.
+</p>
+
+<p>
+Suppose we want to find the customers who have at least one payment whose amount is greater
+than 11:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> first_name,
+       last_name
+<span style="font-weight: bold;">FROM</span> customer c
+<span style="font-weight: bold;">WHERE</span> <span style="font-weight: bold;">EXISTS</span>
+    (<span style="font-weight: bold;">SELECT</span> 1
+     <span style="font-weight: bold;">FROM</span> payment p
+     <span style="font-weight: bold;">WHERE</span> p.customer_id = c.customer_id
+       <span style="font-weight: bold;">AND</span> amount &gt; 11 )
+<span style="font-weight: bold;">ORDER</span> <span style="font-weight: bold;">BY</span> last_name;
+</pre>
+</div>
+
+<p>
+Of course we can implement it using <code>inner join</code>:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> first_name,
+       last_name
+<span style="font-weight: bold;">FROM</span> customer c
+         <span style="font-weight: bold;">INNER</span> <span style="font-weight: bold;">JOIN</span> payment p <span style="font-weight: bold;">on</span> c.customer_id = p.customer_id <span style="font-weight: bold;">and</span> p.amount &gt; 11
+<span style="font-weight: bold;">order</span> <span style="font-weight: bold;">by</span> last_name;
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgdfe3584" class="outline-3">
+<h3 id="orgdfe3584">Tables Management</h3>
+<div class="outline-text-3" id="text-orgdfe3584">
+</div>
+<div id="outline-container-orgeeb4267" class="outline-4">
+<h4 id="orgeeb4267">Upsert</h4>
+<div class="outline-text-4" id="text-orgeeb4267">
+<p>
+The idea of Upsert in PostgreSQL is that when you insert a new row into a table, PostgreSQL
+will update the row if it already exists, otherwise it will insert the new row.
+</p>
+
+<p>
+To use the upsert in PostgreSQL, we use the <code>INSER ON CONFLICT</code> statement as follows:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">INSERT</span> <span style="font-weight: bold;">INTO</span> <span style="font-weight: bold;">table_name</span>(column_list)
+<span style="font-weight: bold;">VALUES</span>(value_list)
+<span style="font-weight: bold;">ON</span> CONFLICT target <span style="font-weight: bold;">action</span>;
+</pre>
+</div>
+
+<p>
+Consider the following table:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">select</span> * <span style="font-weight: bold;">from</span> customers;
+</pre>
+</div>
+
+<p>
+Suppose that there is a new customer, for instance let's say it's google, and we have
+Microsoft changed their email address, instead of inserting google and update Microsoft, why
+not insert both of them in one operating?
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">INSERT</span> <span style="font-weight: bold;">INTO</span> customers (<span style="font-weight: bold;">name</span>, email)
+<span style="font-weight: bold;">Values</span>
+        (<span style="font-style: italic;">'Google'</span>, <span style="font-style: italic;">'fuckgoogle@ihategoogle.com'</span>)
+        (<span style="font-style: italic;">'Misrosoft'</span>, <span style="font-style: italic;">'microsoft@virtualmachine.com'</span>)
+<span style="font-weight: bold;">ON</span> CONFLICT (<span style="font-weight: bold;">name</span>)
+DO <span style="font-weight: bold;">UPDATE</span> <span style="font-weight: bold;">SET</span> email = excluded.email
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">SELECT</span> * <span style="font-weight: bold;">FROM</span> customers;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge49a168" class="outline-4">
+<h4 id="orge49a168">Alert</h4>
+<div class="outline-text-4" id="text-orge49a168">
+<p>
+To change the structure of an existing table, you use PostgreSQL <code>ALTER TABLE</code> statement
+with the following
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">ALTER</span> <span style="font-weight: bold;">TABLE</span> <span style="font-weight: bold;">table_name</span> <span style="font-weight: bold;">action</span>;
+</pre>
+</div>
+<p>
+Using <code>ALERT</code> we can do many actions:
+</p>
+</div>
+<div id="outline-container-org52a419b" class="outline-5">
+<h5 id="org52a419b">Add a column</h5>
+<div class="outline-text-5" id="text-org52a419b">
+<p>
+To add a new column to an existing table, you use the <code>ALTER TABLE ADD COLUMN</code> statement as
+follows:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">ALTER</span> <span style="font-weight: bold;">TABLE</span> <span style="font-weight: bold;">table_name</span>
+<span style="font-weight: bold;">ADD</span> <span style="font-weight: bold;">COLUMN</span> new_column_name data_type <span style="font-weight: bold;">constraint</span>;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org79f647d" class="outline-5">
+<h5 id="org79f647d">Drop a Column</h5>
+<div class="outline-text-5" id="text-org79f647d">
+<p>
+To drop a column from a table, you use <code>ALTER TABLE DROP COLUMN</code> statement:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">ALTER</span> <span style="font-weight: bold;">TABLE</span> <span style="font-weight: bold;">table_name</span>
+<span style="font-weight: bold;">DROP</span> <span style="font-weight: bold;">COLUMN</span> <span style="font-weight: bold;">column_name</span>;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1f3bd50" class="outline-5">
+<h5 id="org1f3bd50">Rename a Column</h5>
+<div class="outline-text-5" id="text-org1f3bd50">
+<p>
+To rename a column, you use the <code>ALTER TABLE RENAME COLUMN TO</code> statement:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">ALTER</span> <span style="font-weight: bold;">TABLE</span> <span style="font-weight: bold;">table_name</span>
+RENAME <span style="font-weight: bold;">COLUMN</span> <span style="font-weight: bold;">column_name</span>
+<span style="font-weight: bold;">TO</span> new_column_name;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf11c8b6" class="outline-5">
+<h5 id="orgf11c8b6">Rename a Table</h5>
+<div class="outline-text-5" id="text-orgf11c8b6">
+<p>
+ALTER TABLE table_name
+RENAME TO new_table_name;
+</p>
+</div>
+</div>
+<div id="outline-container-orgfd6b6fc" class="outline-5">
+<h5 id="orgfd6b6fc">Change The Type of a Column</h5>
+<div class="outline-text-5" id="text-orgfd6b6fc">
+<p>
+To change the data type of a column, you use the <code>ALTER TABLE</code> statement as follows:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">ALTER</span> <span style="font-weight: bold;">TABLE</span> <span style="font-weight: bold;">table_name</span>
+<span style="font-weight: bold;">ALTER</span> <span style="font-weight: bold;">COLUMN</span> <span style="font-weight: bold;">column_name</span> [<span style="font-weight: bold;">SET</span> <span style="font-weight: bold;">DATA</span>] <span style="font-weight: bold;">TYPE</span> new_data_type;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org85f670d" class="outline-5">
+<h5 id="org85f670d">Change The Default Value of a Column</h5>
+<div class="outline-text-5" id="text-org85f670d">
+<p>
+To change a default value of the column, you use ALTER TABLE ALTER COLUMN SET DEFAULT or
+DROP DEFAULT:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">ALTER</span> <span style="font-weight: bold;">TABLE</span> <span style="font-weight: bold;">table_name</span>
+<span style="font-weight: bold;">ALTER</span> <span style="font-weight: bold;">COLUMN</span> <span style="font-weight: bold;">column_name</span>
+[<span style="font-weight: bold;">SET</span> <span style="font-weight: bold;">DEFAULT</span> <span style="font-weight: bold;">value</span> | <span style="font-weight: bold;">DROP</span> <span style="font-weight: bold;">DEFAULT</span>];
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org17182ab" class="outline-5">
+<h5 id="org17182ab">Change <code>NOT NULL</code> Constrain</h5>
+<div class="outline-text-5" id="text-org17182ab">
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">ALTER</span> <span style="font-weight: bold;">TABLE</span> <span style="font-weight: bold;">table_name</span>
+<span style="font-weight: bold;">ALTER</span> <span style="font-weight: bold;">COLUMN</span> <span style="font-weight: bold;">column_name</span>
+[<span style="font-weight: bold;">SET</span> <span style="font-weight: bold;">NOT</span> <span style="font-weight: bold;">NULL</span>| <span style="font-weight: bold;">DROP</span> <span style="font-weight: bold;">NOT</span> <span style="font-weight: bold;">NULL</span>];
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgefeaea3" class="outline-5">
+<h5 id="orgefeaea3">Add Constrain</h5>
+<div class="outline-text-5" id="text-orgefeaea3">
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">ALTER</span> <span style="font-weight: bold;">TABLE</span> <span style="font-weight: bold;">table_name</span>
+<span style="font-weight: bold;">ADD</span> <span style="font-weight: bold;">CONSTRAINT</span> <span style="font-weight: bold;">constraint_name</span> constraint_definition;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org31254aa" class="outline-5">
+<h5 id="org31254aa">Importing</h5>
+<div class="outline-text-5" id="text-org31254aa">
+<p>
+To import <code>CVS</code>
+<a href="https://www.postgresqltutorial.com/export-postgresql-table-to-csv-file/">https://www.postgresqltutorial.com/export-postgresql-table-to-csv-file/</a>
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org41acd75" class="outline-4">
+<h4 id="org41acd75">Truncate</h4>
+<div class="outline-text-4" id="text-org41acd75">
+<p>
+<a href="https://www.postgresqltutorial.com/postgresql-truncate-table/">https://www.postgresqltutorial.com/postgresql-truncate-table/</a>
+</p>
+</div>
+</div>
+<div id="outline-container-org5c60c35" class="outline-4">
+<h4 id="org5c60c35">Temporary Tables</h4>
+<div class="outline-text-4" id="text-org5c60c35">
+<p>
+<a href="https://www.postgresqltutorial.com/postgresql-temporary-table/">https://www.postgresqltutorial.com/postgresql-temporary-table/</a>
+To remove all data from a table, you use the DELETE statement. However, when you use the
+DELETE statement to delete all data from a table that has a lot of data, it is not
+efficient. In this case, you need to use the TRUNCATE TABLE statement:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql">TRUNCATE <span style="font-weight: bold;">TABLE</span> <span style="font-weight: bold;">table_name</span>;
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgbeb252d" class="outline-4">
+<h4 id="orgbeb252d">Other Utilities</h4>
+<div class="outline-text-4" id="text-orgbeb252d">
+</div>
+<div id="outline-container-org64e996d" class="outline-5">
+<h5 id="org64e996d">Delete</h5>
+<div class="outline-text-5" id="text-org64e996d">
+<p>
+The PostgreSQL DELETE statement allows you to delete one or more rows from a table with the
+following syntax:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">DELETE</span> <span style="font-weight: bold;">FROM</span> <span style="font-weight: bold;">table_name</span>
+<span style="font-weight: bold;">WHERE</span> condition;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb8fa373" class="outline-5">
+<h5 id="orgb8fa373">Update</h5>
+<div class="outline-text-5" id="text-orgb8fa373">
+<p>
+We use the <code>UPDATE</code> statement to modify data in a table with the following syntax:
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">UPDATE</span> <span style="font-weight: bold;">table_name</span>
+<span style="font-weight: bold;">SET</span> column1 = value1,
+    column2 = value2,
+    ...
+<span style="font-weight: bold;">WHERE</span> condition;
+</pre>
+</div>
+<p>
+The <code>WHERE</code> clause is optional. If you omit the <code>WHERE</code> clause, the UPDATE statement will update
+all rows in the table.
+The <code>UPDATE</code> statement has an optional <code>RETURNING</code> clause that returns the updated rows:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">UPDATE</span> <span style="font-weight: bold;">table_name</span>
+<span style="font-weight: bold;">SET</span> column1 = value1,
+    column2 = value2,
+    ...
+<span style="font-weight: bold;">WHERE</span> condition
+RETURNING * | output_expression <span style="font-weight: bold;">AS</span> output_name;
+</pre>
+</div>
+</div>
+<ul class="org-ul">
+<li><a id="org27d996a"></a><span class="todo TODO">TODO</span> Update Join<br></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org04c7c5f" class="outline-3">
+<h3 id="org04c7c5f">Logging</h3>
+<div class="outline-text-3" id="text-org04c7c5f">
+<p>
+PostgreSQL log_statement parameter is basically related to error and reporting to log error,
+warning and database queries, we can log_statement in PostgreSQL as per options we
+configured in configuration file. Default log_statement option in PostgreSQL configuration
+file is none means nothing log anything into the error file. There are four options of
+log_statement of error and SQL query reporting i.e. none, ddl, mod and all, DDL specifies
+that log all ddl query into error log. All options of log_statement is defined as log all
+queries of database server. Log_statement is important parameter in PostgreSQL.
+</p>
+
+<p>
+<b>Example. 1</b>
+</p>
+<div class="org-src-container">
+<pre class="src src-sql">show log_statement;
+<span style="font-weight: bold;">select</span> * <span style="font-weight: bold;">from</span> student;
+<span style="font-weight: bold;">insert</span> <span style="font-weight: bold;">into</span> student <span style="font-weight: bold;">values</span> (12, <span style="font-style: italic;">'PQR'</span>, 1234567890);
+</pre>
+</div>
+
+<p>
+(BROKEN)
+</p>
+
+
+
+<p>
+<b>Example. 2</b>
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="font-weight: bold;">alter</span> <span style="font-weight: bold;">system</span> <span style="font-weight: bold;">set</span> log_statement = <span style="font-style: italic;">'DDL'</span>;
+show log_statement;
+<span style="font-weight: bold;">insert</span> <span style="font-weight: bold;">into</span> student <span style="font-weight: bold;">values</span> (14, <span style="font-style: italic;">'PQR'</span>, 1234567890);id = 13;
+<span style="font-weight: bold;">delete</span> <span style="font-weight: bold;">from</span> student <span style="font-weight: bold;">where</span> stud_id = 13;
+<span style="font-weight: bold;">select</span> * <span style="font-weight: bold;">from</span> student;
+</pre>
+</div>
+
+
+<p>
+(BROKEN)
+</p>
+</div>
+</div>
+<div id="outline-container-org02afc69" class="outline-3">
+<h3 id="org02afc69">Check</h3>
+<div class="outline-text-3" id="text-org02afc69">
+<ul class="org-ul">
+<li><a href="https://www.postgresql.org/docs/current/datatype.html">Data Types</a></li>
+<li><a href="https://www.postgresql.org/docs/9.5/sql-createsequence.html">Sequence</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-04-30 Sun 00:44.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

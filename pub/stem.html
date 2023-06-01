@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Report on the Current Available Open Source Arabic Language Stemming Algorithms and Services</title>
+<meta name="author" content="S. Muhammed, M. Samy and M. Rady" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Report on the Current Available Open Source Arabic Language Stemming Algorithms and Services</h1>
+</header><div class="PREVIEW" id="org8e5db30">
+<p>
+This article presents a comprehensive report on the current landscape of
+open-source Arabic language stemming algorithms and services. Stemming, a
+fundamental task in natural language processing, involves reducing Arabic words
+to their root forms, thereby enabling efficient information retrieval, text
+analysis, and machine learning applications. The study evaluates five different
+stemming algorithms, each developed by independent researchers and communities.
+The aim of this research is to compare and analyze the performance of these
+stemmers in terms of accuracy, computational efficiency, and language coverage.
+The evaluation includes a diverse set of Arabic texts, encompassing various
+domains and genres. The results highlight the strengths and weaknesses of each
+algorithm, shedding light on their applicability to different scenarios. The
+findings contribute to the Arabic NLP community by offering an in-depth analysis
+of open-source stemming tools and facilitating informed decision-making for
+researchers, developers, and practitioners.
+</p>
+
+</div>
+
+
+
+<div id="outline-container-org93e6e03" class="outline-2">
+<h2 id="org93e6e03">Introduction</h2>
+<div class="outline-text-2" id="text-org93e6e03">
+<p>
+Arabic, with its rich linguistic heritage and diverse dialects, poses unique
+challenges for natural language processing (NLP) tasks, including stemming.
+Stemming plays a vital role in various NLP applications, such as information
+retrieval, text analysis, and machine learning. By reducing Arabic words to
+their root forms, stemming enables efficient indexing, search, and analysis of
+textual data. As the demand for Arabic language processing continues to grow,
+the availability of accurate and reliable open-source stemming algorithms
+becomes crucial.
+</p>
+
+<p>
+This article aims to address the specific needs of a dictionary project by
+conducting a comprehensive study on the current available open-source Arabic
+language stemming algorithms and services. The dictionary project, focused on
+Arabic language, necessitates a stemmer that can accurately identify the root
+forms of words, while considering the intricacies of the Arabic language's
+morphology and orthography.
+</p>
+
+<p>
+To fulfill this objective, we evaluate five distinct Arabic stemming algorithms,
+the study considers the language coverage of each algorithm to determine their
+applicability to various domains and genres typically encountered in a
+dictionary project.
+</p>
+
+<p>
+Integration of a stemmer into a dictionary project requires ease of use,
+scalability, and well-documented resources. Assessing the suitability of these
+services is an essential aspect of our analysis, as it provides insights into
+their practicality and usability within the context of a dictionary project.
+</p>
+
+<p>
+By presenting a detailed report on the strengths and weaknesses of each stemmer,
+along with an examination of available services, this article aims to assist
+researchers, developers, and practitioners in making informed decisions
+regarding the selection of a suitable Arabic language stemming algorithm for
+their dictionary projects. The findings of this study contribute to the growing
+body of knowledge in Arabic NLP and serve as a valuable resource for those
+working on Arabic language processing and related applications.
+</p>
+
+<p>
+The studied algorithms/implementations are (Boudlal, A. and Lakhouaja, Abdelhak, 2010), (Eldesouki, Mohamed, 2017),
+(Assem Chelli, 2018), (Taghva, K. and Elkhoury, R. and Coombs, Jeffrey, 2005). We also made a use of an older report of
+(Sawalha, Majdi and Atwell, Eric, 2008) which studied the performance of other majors stemmers,
+including (Khoja, Shereen, 1999), (Al-Shalabi, R. and Kanaan, G. and Al-Serhan, H., 2003) and other
+analyzers, however, only the final results of these are used for the purpose of
+consolidating the argument about the status of modern Arabic stemmers.
+</p>
+</div>
+</div>
+<div id="outline-container-org6be07b7" class="outline-2">
+<h2 id="org6be07b7">Methodology</h2>
+<div class="outline-text-2" id="text-org6be07b7">
+<p>
+Rather than investing time in deeply testing each algorithm weak points; the
+test make use of a randomly chosen set of verbs and known morphological balance,
+this way we can easily have an insight of the falls of each algorithm and its
+overall accuracy. (<a href="https://github.com/lugha/balaa">github</a>)
+</p>
+
+<p>
+All the algorithms are tested as vendored by their main developers, wrapped in a
+generic Common Lisp solution (<a href="https://github.com/lugha/balaa/blob/900fae98ea660ca3accc432fa6839386c5d8ea8a/balaa.l">code on github</a>) which gather the
+required data about the elapsed running time, accuracy and return values.
+</p>
+
+<p>
+On the track of that; the results are plotted using a simple GnuPlot script  to
+demonstrate them. The test program separates each morphological root test set.
+</p>
+</div>
+</div>
+<div id="outline-container-org02eaa1f" class="outline-2">
+<h2 id="org02eaa1f">Testing</h2>
+<div class="outline-text-2" id="text-org02eaa1f">
+<p>
+This section presents the findings and analysis of the evaluation conducted on
+the algorithms and services. The results provide insights into the performance,
+accuracy, computational efficiency, and language coverage of each stemmer,
+shedding light on their suitability for integration into a dictionary project.
+</p>
+</div>
+
+<div id="outline-container-org05b4e7c" class="outline-3">
+<h3 id="org05b4e7c">(Eldesouki, Mohamed, 2017)</h3>
+<div class="outline-text-3" id="text-org05b4e7c">
+<p>
+The first tested was developed in 2017, it uses a simple trivial approach of
+eliminating articles from words and normalize them to their root.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="font-weight: bold;">for</span> article <span style="font-weight: bold;">in</span> Light10stemmer.larkey_defarticles:
+    <span style="font-weight: bold; font-style: italic;">length</span> = <span style="font-weight: bold;">len</span>(article)
+    <span style="font-weight: bold;">if</span> (wordlen &gt; length + 1) <span style="font-weight: bold;">and</span> (token[:length] == article):
+        <span style="font-weight: bold; font-style: italic;">token</span> = token[length:]
+        <span style="font-weight: bold;">break</span>
+
+<span style="font-weight: bold;">if</span> <span style="font-weight: bold;">len</span>(token) &gt; 2:
+    <span style="font-weight: bold; font-style: italic;">wordlen</span> = <span style="font-weight: bold;">len</span>(token)
+    <span style="font-weight: bold;">for</span> suffix <span style="font-weight: bold;">in</span> Light10stemmer.larkey_suffixes:
+        <span style="font-weight: bold; font-style: italic;">suflen</span> = <span style="font-weight: bold;">len</span>(suffix)
+        <span style="font-weight: bold;">if</span> (wordlen &gt; <span style="font-weight: bold;">len</span>(suffix) + 1) <span style="font-weight: bold;">and</span> token.endswith(suffix):
+            <span style="font-weight: bold; font-style: italic;">token</span> = token[:wordlen - suflen]
+            <span style="font-weight: bold; font-style: italic;">wordlen</span> = <span style="font-weight: bold;">len</span>(token)
+</pre>
+</div>
+
+<p>
+Which is very intuitive approach, however it performs the worst between the
+other stemmers we got, it was only able to pass 1 test case.
+</p>
+
+
+<figure id="org6c2b030">
+<img src="https://link.storjshare.io/raw/jvwbmfzqhytdfeypgomta67eca6q/blog/Figure_1.png" alt="Figure_1.png">
+
+</figure>
+</div>
+</div>
+
+<div id="outline-container-orge1fa28a" class="outline-3">
+<h3 id="orge1fa28a">(Taghva, K. and Elkhoury, R. and Coombs, Jeffrey, 2005)</h3>
+<div class="outline-text-3" id="text-orge1fa28a">
+<p>
+The ISRI Arabic Stemmer is a Natural Language Toolkit (NLTK) algorithm that was
+developed at University of Nevada by a set of researchers. The algorithm works
+much better (compared to most of its other non-root dictionary implementations)
+in rooting words and it works using a pattern recognition to morphological
+patterns. It implements 25 balances. It was able to pass 17 out of 35 testcases.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="font-weight: bold;">def</span> <span style="font-weight: bold;">pro_w53</span>(<span style="font-weight: bold;">self</span>, word):
+    <span style="font-style: italic;">"""process length five patterns and extract length three roots"""</span>
+    <span style="font-weight: bold;">if</span> word[2] <span style="font-weight: bold;">in</span> <span style="font-weight: bold;">self</span>.pr53[0] <span style="font-weight: bold;">and</span> word[0] == <span style="font-style: italic;">"</span><span style="font-weight: bold; text-decoration: underline;">\u0627</span><span style="font-style: italic;">"</span>:
+        <span style="font-weight: bold; font-style: italic;">word</span> = word[1] + word[3:]
+    <span style="font-weight: bold;">elif</span> word[4] == <span style="font-style: italic;">"</span><span style="font-weight: bold; text-decoration: underline;">\u0629</span><span style="font-style: italic;">"</span> <span style="font-weight: bold;">and</span> word[1] == <span style="font-style: italic;">"</span><span style="font-weight: bold; text-decoration: underline;">\u0627</span><span style="font-style: italic;">"</span>:
+        <span style="font-weight: bold; font-style: italic;">word</span> = word[0] + word[2:4]
+            .............................
+            .............................
+    <span style="font-weight: bold;">elif</span> word[4] == <span style="font-style: italic;">"</span><span style="font-weight: bold; text-decoration: underline;">\u064a</span><span style="font-style: italic;">"</span> <span style="font-weight: bold;">and</span> word[2] == <span style="font-style: italic;">"</span><span style="font-weight: bold; text-decoration: underline;">\u0627</span><span style="font-style: italic;">"</span>:
+        <span style="font-weight: bold; font-style: italic;">word</span> = word[:2] + word[3]
+</pre>
+</div>
+
+
+<figure id="org67c1e97">
+<img src="https://link.storjshare.io/raw/ju4uzwnlphqumg4vffktkfsu7sia/blog/Figure_2.png" alt="Figure_2.png">
+
+</figure>
+</div>
+</div>
+
+<div id="outline-container-org2554dea" class="outline-3">
+<h3 id="org2554dea">(Assem Chelli, 2018)</h3>
+<div class="outline-text-3" id="text-org2554dea">
+<p>
+Assem's Arabic Light Stemmer authored by Assem Chelli is a stemmer that makes
+use of Snowball stemming framework, it implements the renowned algorithm for the
+Arabic script, trained by set of data. It performs just as the ISRI's; however
+it is about 200% faster than it. It was able to pass 17 out of 35 testcases.
+</p>
+
+
+<figure id="org7aab2db">
+<img src="https://link.storjshare.io/raw/jumrz37pko4aw43jzneuot2noh3q/blog/Figure_3.png" alt="Figure_3.png">
+
+</figure>
+</div>
+</div>
+
+<div id="outline-container-orgf8ff9ec" class="outline-3">
+<h3 id="orgf8ff9ec">(Boudlal, A. and Lakhouaja, Abdelhak, 2010)</h3>
+<div class="outline-text-3" id="text-orgf8ff9ec">
+<p>
+The Natural Language Processing Team in Computer Science Laboratory developed
+one of the most accurate 'systems' so far for stemming in Arabic; they are using
+a brute-force-like approach solving the problem, or as they describe in their
+publication:
+</p>
+<blockquote>
+<p>
+"Our approach is based on modelling a very large set of Arabic
+morphological rules, and also on integrating linguistic resources, such as the
+root database, vocalized patterns associated with roots, and proclitic and
+enclitic tables".
+</p>
+</blockquote>
+
+<p>
+Which leads to the main issue with the stemmer, not only it's far from being
+lightweight (compared to other known Latin stemmers) since it depends on a large
+database system, but 1. it's profoundly unintelligent in searching the word
+dictionary it owns, for example if the diacritic differs it will not give any
+results. 2. it does not contain any results for words that were not recorded it
+its database, which leaves it with only solution which is to have each word in
+the language recorded.
+</p>
+</div>
+</div>
+<div id="outline-container-org791e00e" class="outline-3">
+<h3 id="org791e00e">(Khoja, Shereen, 1999) and (Al-Shalabi, R. and Kanaan, G. and Al-Serhan, H., 2003)</h3>
+<div class="outline-text-3" id="text-org791e00e">
+<p>
+Both of (Khoja, Shereen, 1999) and (Al-Shalabi, R. and Kanaan, G. and Al-Serhan, H., 2003) was not tested in
+this study, however, a comparative study (Sawalha, Majdi and Atwell, Eric, 2008) concluded the
+following results using the Qur'an Gold Standards:
+</p>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-right">
+
+<col  class="org-right">
+
+<col  class="org-right">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Stemming Algorithm</th>
+<th scope="col" class="org-right">Errors</th>
+<th scope="col" class="org-right">Fault Rate</th>
+<th scope="col" class="org-right">Accuracy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Khoja Stemmer</td>
+<td class="org-right">224</td>
+<td class="org-right">36.36%</td>
+<td class="org-right">63.64%</td>
+</tr>
+
+<tr>
+<td class="org-left">Tri-literal root algorithm</td>
+<td class="org-right">267</td>
+<td class="org-right">43.34%</td>
+<td class="org-right">56.66%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga2d618a" class="outline-2">
+<h2 id="orga2d618a">Conclusion</h2>
+<div class="outline-text-2" id="text-orga2d618a">
+<p>
+In conclusion, this article conducted a comprehensive analysis of open-source
+Arabic language stemming algorithms and services. Stemming is a vital task in
+natural language processing, enabling efficient information retrieval, text
+analysis, and machine learning applications. The evaluation of five different
+stemming algorithms revealed their respective strengths and weaknesses.
+</p>
+
+<p>
+Among the tested stemmers, the "Eldesouki 2017" algorithm performed poorly,
+while the "Taghva, Elkhoury, and Coombs 2005" and "Chelli 2018" stemmers showed
+better results, passing a significant number of test cases. However, it is
+important to note that even the most accurate stemmer achieved only around 60%
+accuracy, indicating room for improvement in the field. Further research and
+development are needed to enhance the accuracy and effectiveness of Arabic
+stemming algorithms.
+</p>
+</div>
+</div>
+
+
+
+<div id="outline-container-org1bb8347" class="outline-2">
+<h2 id="org1bb8347">References</h2>
+<div class="outline-text-2" id="text-org1bb8347">
+<p>
+Al-Shalabi, R. and Kanaan, G. and Al-Serhan, H. (2003). <i>New approach for extracting Arabic roots</i>.</p>
+
+<p>
+Assem Chelli (2018). <i>{Assem's Arabic Stemmer}</i>.</p>
+
+<p>
+Boudlal, A. and Lakhouaja, Abdelhak (2010). <i>Alkhalil morpho sys1: A morphosyntactic analysis system for Arabic texts</i>, Int. Arab Conf. Inf. Technol.</p>
+
+<p>
+Eldesouki, Mohamed (2017). <i>ArabicProcessingCog</i>, GitHub.</p>
+
+<p>
+Khoja, Shereen (1999). <i>Stemming Arabic Text</i>.</p>
+
+<p>
+Sawalha, Majdi and Atwell, Eric (2008). <i>Comparative Evaluation of Arabic Language Morphological Analysers and Stemmers.</i>.</p>
+
+<p>
+Taghva, K. and Elkhoury, R. and Coombs, Jeffrey (2005). <i>Arabic stemming without a root dictionary</i>.</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: S. Muhammed, M. Samy and M. Rady. Last build date: 2023-05-23 Tue 09:07.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

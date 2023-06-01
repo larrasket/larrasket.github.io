@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<div id="outline-container-org548f533" class="outline-2">
+<h2 id="org548f533"><a href="index.html">(2023-06-01) The Mourner’s Bench</a></h2>
+<div class="outline-text-2" id="text-org548f533">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-orgd3562a7" class="outline-2">
+<h2 id="orgd3562a7"><a href="Sept2022.html">(2023-06-01) September 2022</a></h2>
+<div class="outline-text-2" id="text-orgd3562a7">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-org2de26f5" class="outline-2">
+<h2 id="org2de26f5"><a href="csbooks.html">(2023-06-01) Computer Science Books</a></h2>
+<div class="outline-text-2" id="text-org2de26f5">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-org11984eb" class="outline-2">
+<h2 id="org11984eb"><a href="youtube.html">(2023-06-01) YouTube Channels</a></h2>
+<div class="outline-text-2" id="text-org11984eb">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-orga8de577" class="outline-2">
+<h2 id="orga8de577"><a href="rbooks.html">(2023-06-01) Reading List</a></h2>
+<div class="outline-text-2" id="text-orga8de577">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-org097bb10" class="outline-2">
+<h2 id="org097bb10"><a href="Oct2022.html">(2023-06-01) October 2022</a></h2>
+<div class="outline-text-2" id="text-org097bb10">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-orgbe3e96c" class="outline-2">
+<h2 id="orgbe3e96c"><a href="Nov2022.html">(2023-06-01) November 2022</a></h2>
+<div class="outline-text-2" id="text-orgbe3e96c">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-org2f2f5a5" class="outline-2">
+<h2 id="org2f2f5a5"><a href="Jan2023.html">(2023-06-01) January 2023</a></h2>
+<div class="outline-text-2" id="text-org2f2f5a5">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-orge4449b0" class="outline-2">
+<h2 id="orge4449b0"><a href="nice.html">(2023-06-01) Good Things on The Internet</a></h2>
+<div class="outline-text-2" id="text-orge4449b0">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-org683aa2d" class="outline-2">
+<h2 id="org683aa2d"><a href="Feb2023.html">(2023-06-01) February 2023</a></h2>
+<div class="outline-text-2" id="text-org683aa2d">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-orgc74938e" class="outline-2">
+<h2 id="orgc74938e"><a href="Dec2022.html">(2023-06-01) December 2022</a></h2>
+<div class="outline-text-2" id="text-orgc74938e">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-org17b6a12" class="outline-2">
+<h2 id="org17b6a12"><a href="fullbooks.html">(2023-06-01) Books</a></h2>
+<div class="outline-text-2" id="text-org17b6a12">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-orgacc859f" class="outline-2">
+<h2 id="orgacc859f"><a href="fcinema.html">(2023-06-01) Cinema (Only Ones that Will Leave a Value)</a></h2>
+<div class="outline-text-2" id="text-orgacc859f">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-orgaf40f6f" class="outline-2">
+<h2 id="orgaf40f6f"><a href="stack.html">(2023-05-31) TL;DRs</a></h2>
+<div class="outline-text-2" id="text-orgaf40f6f">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-orgf61ba04" class="outline-2">
+<h2 id="orgf61ba04"><a href="pubarchive.html">(2023-05-23) Publications Archive</a></h2>
+<div class="outline-text-2" id="text-orgf61ba04">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-org2389f9e" class="outline-2">
+<h2 id="org2389f9e"><a href="archive.html">(2023-05-23) Posts Archive</a></h2>
+<div class="outline-text-2" id="text-org2389f9e">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-org2418897" class="outline-2">
+<h2 id="org2418897"><a href="p.html">(2023-05-22) Public PGP Key</a></h2>
+<div class="outline-text-2" id="text-org2418897">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-org0bef1bb" class="outline-2">
+<h2 id="org0bef1bb"><a href="theindex.html">(2023-05-21) Index</a></h2>
+<div class="outline-text-2" id="text-org0bef1bb">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-orgdd14a7f" class="outline-2">
+<h2 id="orgdd14a7f"><a href="April2023.html">(2023-05-01) April 2023</a></h2>
+<div class="outline-text-2" id="text-orgdd14a7f">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-org4d314df" class="outline-2">
+<h2 id="org4d314df"><a href="poetry.html">(2023-04-30) ~/poetry</a></h2>
+<div class="outline-text-2" id="text-org4d314df">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-orgbdd5a9e" class="outline-2">
+<h2 id="orgbdd5a9e"><a href="csshitsays.html">(2023-04-30) CS Shitposting (AKA Blogposts)</a></h2>
+<div class="outline-text-2" id="text-orgbdd5a9e">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-orgb97a701" class="outline-2">
+<h2 id="orgb97a701"><a href="cs.html">(2023-04-30) Computer Science</a></h2>
+<div class="outline-text-2" id="text-orgb97a701">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-org8c56b0f" class="outline-2">
+<h2 id="org8c56b0f"><a href="changelog.html">(2023-04-30) changelog</a></h2>
+<div class="outline-text-2" id="text-org8c56b0f">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-orgff8632c" class="outline-2">
+<h2 id="orgff8632c"><a href="arch.html">(2023-04-30) Archive and Drafts</a></h2>
+<div class="outline-text-2" id="text-orgff8632c">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-orge0c21bc" class="outline-2">
+<h2 id="orge0c21bc"><a href="ar.html">(2023-04-30) ar</a></h2>
+<div class="outline-text-2" id="text-orge0c21bc">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-orgbe1495d" class="outline-2">
+<h2 id="orgbe1495d"><a href="Mar2023.html">(2023-04-30) March 2024</a></h2>
+<div class="outline-text-2" id="text-orgbe1495d">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-orgbe051c6" class="outline-2">
+<h2 id="orgbe051c6">posts</h2>
+<div class="outline-text-2" id="text-orgbe051c6">
+</div>
+<div id="outline-container-orgb0274cd" class="outline-3">
+<h3 id="orgb0274cd"><a href="posts/comfort.html">(2023-05-07) "Where you fear, there is your mission"</a></h3>
+<div class="outline-text-3" id="text-orgb0274cd">
+<p>
+On the culture of comfort.
+</p>
+</div>
+</div>
+<div id="outline-container-org1af9cb4" class="outline-3">
+<h3 id="org1af9cb4"><a href="posts/email.html">(2023-04-07) Emails and Privacy</a></h3>
+<div class="outline-text-3" id="text-org1af9cb4">
+<p>
+My opinion on the obsoleteness of private email services.
+</p>
+</div>
+</div>
+<div id="outline-container-org279c11b" class="outline-3">
+<h3 id="org279c11b"><a href="posts/prelude.html">(2023-03-24) A Prelude Over Mathematics</a></h3>
+<div class="outline-text-3" id="text-org279c11b">
+<p>
+The following is an inverted part from a long note I've been working on recently
+named "Notes on Mathematics", however not ready yet to be published (can't be
+sure if it will ever be), but I felt the need to publish this part however.
+</p>
+</div>
+</div>
+<div id="outline-container-org3d3f87a" class="outline-3">
+<h3 id="org3d3f87a"><a href="posts/anthology_of_les_passions_de_l_ame.html">(2023-03-11) Anthology of Les Passions de l'âme</a></h3>
+<div class="outline-text-3" id="text-org3d3f87a">
+<p>
+René Descartes contributes to a long tradition of philosophical inquiry into the
+nature of "the passions", I find inspiration in many of Descartes writings,
+however I hesitate to share them because I don't find reading them separately
+will add actually any value; however I fonund this work "Les Passions de l'âme"
+has many useful independent points. Following is an anthology for this great
+work. (Arabic translations are provided!)
+</p>
+</div>
+</div>
+<div id="outline-container-orgb01529b" class="outline-3">
+<h3 id="orgb01529b"><a href="posts/pity.html">(2023-02-14) Nietzsche on The Desire to Excite Pity</a></h3>
+<div class="outline-text-3" id="text-orgb01529b">
+<p>
+A life principle that I always try to live by is: "reasons not feelings", humans
+are not cleaver in accepting that naturally, that nature needs taming to accept
+such a principle, and I believe that chess is a powerful tool to do that.
+</p>
+</div>
+</div>
+<div id="outline-container-orgbc58200" class="outline-3">
+<h3 id="orgbc58200"><a href="posts/notes.html">(2023-02-02) Extemporaneously Three Notes</a></h3>
+<div class="outline-text-3" id="text-orgbc58200">
+<p>
+On stupidity, chess, and rejection.
+</p>
+</div>
+</div>
+<div id="outline-container-org7fb5fcc" class="outline-3">
+<h3 id="org7fb5fcc"><a href="posts/me.html">(2023-01-28) "Literally me"</a></h3>
+<div class="outline-text-3" id="text-org7fb5fcc">
+<p>
+"He is literally me." Says someone who is stuck in an internet bandwagon.
+</p>
+</div>
+</div>
+<div id="outline-container-org5fabcca" class="outline-3">
+<h3 id="org5fabcca"><a href="posts/monitor.html">(2023-01-23) A Cursed Journey of Getting a Third Monitor to Work</a></h3>
+<div class="outline-text-3" id="text-org5fabcca">
+<p>
+Isn't a shame that this place of the internet is supposed to be a blog yet doesn't contain
+blogs but obscure philosophies?
+</p>
+</div>
+</div>
+<div id="outline-container-orgbf66ab1" class="outline-3">
+<h3 id="orgbf66ab1"><a href="posts/eulogy.html">(2022-12-24) Nietzsche on Eulogy</a></h3>
+<div class="outline-text-3" id="text-orgbf66ab1">
+<p>
+I have mentioned before my perspectives on the social media dilemma <a href="conditioning.html">here</a> (I don't recommend
+reading it if you did not, I wrote it fanatically 3 years ago), my clue was correlated to the
+<a href="https://www.urbandictionary.com/define.php?term=Upcummie">upcummie</a> pleasure that comes from someone's else applause on us, which translates to
+something like upvotes or likes on the internet, and how we're being conditioned to it just
+like a dumb Pavlov's Dog.
+</p>
+</div>
+</div>
+<div id="outline-container-orgcde4266" class="outline-3">
+<h3 id="orgcde4266"><a href="posts/lonecomming.html">(2022-11-19) Thuiskomst—A Return</a></h3>
+<div class="outline-text-3" id="text-orgcde4266">
+<p>
+The following poem by Fredrick Nietzsche, from Thus, Spoke Zarathustra made me sense some very
+melodious feelings; that one that teleportation yields sometimes which, by the way, an
+ingrained humanistic thing; it gentles us the feel of an affable existence. This is an
+adapted Arabic translation (I feel more poetic in Arabic). <i>Followed by the English version</i>.
+</p>
+</div>
+</div>
+<div id="outline-container-orgae351cd" class="outline-3">
+<h3 id="orgae351cd"><a href="posts/ohne.html">(2022-11-10) "Ohne Heimat" (Without a Homeland)</a></h3>
+<div class="outline-text-3" id="text-orgae351cd">
+<p>
+"Yesterday, during thoughts about my homeland, I wrote a little poem in which I mused how it
+might be for one who didn't have a homeland"
+</p>
+</div>
+</div>
+<div id="outline-container-orgf0f0bf2" class="outline-3">
+<h3 id="orgf0f0bf2"><a href="posts/Nietzsche.html">(2022-08-31) Nietzsche's epitaph–. A Requiem for Everyone &amp; Nobody</a></h3>
+<div class="outline-text-3" id="text-orgf0f0bf2">
+<p>
+It was a thunderbolt reading Nietzsche's collected poems for the first time, felt like
+discovering a revelation of his, also over the time and over grasping Nietzsche's
+'philosophy' more and more, it turns to make any verselet standing along with, let's say, a
+piece from Ecce Homo, as a very atypical thing.
+</p>
+</div>
+</div>
+<div id="outline-container-orgcad6186" class="outline-3">
+<h3 id="orgcad6186"><a href="posts/Pilgrimage.html">(2022-03-22) Childe Harold's Pilgrimage</a></h3>
+<div class="outline-text-3" id="text-orgcad6186">
+<p>
+Perhaps Daingerfield couldn't show the same 'proclamation of opprobrium' for those who will
+never sense the toils nor the summits, as Byron did. However, I could discern every iota of
+pride and glory in the painting very well, just as in Byron's words.
+</p>
+</div>
+</div>
+<div id="outline-container-org6e0ee64" class="outline-3">
+<h3 id="org6e0ee64"><a href="posts/kalam.html">(2021-09-29) Beyond Decliamists and Intellectuals</a></h3>
+<div class="outline-text-3" id="text-org6e0ee64">
+<p>
+There is a common ground between the meaning of a 'declaimist' and a
+non-intellectual that you see on daily basis especially in average
+social media site, I don't want to single out a live example but let's
+take \(x\) and \(let\) \(x\) be right-wing social media intellectual who
+has more than 100k loyal follower of his medieval instructions about
+miscarriage or the sexual orientations, if one day \(x\) figured out, or
+even less revolutionary, let's say he'd found that some of his beliefs
+are either wrong or obsolete, what would he do? I can tell the answer is
+cognitive dissonance tends to be ended by denial of facts, trying to
+stick to what he already believes (just like Chatelier's principle
+object), he is not only required to comprehend whatever he believes in,
+but his loyal fellows also are waiting for his directive, he won't let
+them down. It's getting worse in cases in which x has already a lot of
+bestselling publications which in he insures his points. Of course,
+within time numerous intellectuals are getting a cognitive flexibility
+enables them to change their thoughts smoothly, however, the majority
+won't.
+</p>
+</div>
+</div>
+<div id="outline-container-org6b03a3a" class="outline-3">
+<h3 id="org6b03a3a"><a href="posts/conection.html">(2021-05-22) “Connection” and “Meant-To-Be”</a></h3>
+<div class="outline-text-3" id="text-org6b03a3a">
+<p>
+2 concepts that seem really nice and agreeable, but I find are psychically terrible, are
+“connection” and “meant-to-be”.
+</p>
+</div>
+</div>
+<div id="outline-container-org5a97e21" class="outline-3">
+<h3 id="org5a97e21"><a href="posts/desto.html">(2020-12-11) Humiliated and Insulted by Fyodor Dostoevsky</a></h3>
+<div class="outline-text-3" id="text-org5a97e21">
+<p>
+This is my re-reading of "The Insulted and Injured" as part of my
+attempt to complete the complete work of Feydor Dostoyevsky. I had read
+the novel for a very long time, when I began reading Dostoevsky, and at
+that time I did not have the literary interest that makes me search
+about this novel, and I get enough for saying: It is a good novel.
+</p>
+</div>
+</div>
+<div id="outline-container-orgec8c7cd" class="outline-3">
+<h3 id="orgec8c7cd"><a href="posts/aisha.html">(1980-10-03) Shia Views of Aisha</a></h3>
+<div class="outline-text-3" id="text-orgec8c7cd">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orge568af2" class="outline-2">
+<h2 id="orge568af2">pub</h2>
+<div class="outline-text-2" id="text-orge568af2">
+</div>
+<div id="outline-container-org9fe2f57" class="outline-3">
+<h3 id="org9fe2f57"><a href="pub/stem.html">(2023-05-23) Report on the Current Available Open Source Arabic Language Stemming Algorithms and Services</a></h3>
+<div class="outline-text-3" id="text-org9fe2f57">
+<p>
+This article presents a comprehensive report on the current landscape of
+open-source Arabic language stemming algorithms and services. Stemming, a
+fundamental task in natural language processing, involves reducing Arabic words
+to their root forms, thereby enabling efficient information retrieval, text
+analysis, and machine learning applications. The study evaluates five different
+stemming algorithms, each developed by independent researchers and communities.
+The aim of this research is to compare and analyze the performance of these
+stemmers in terms of accuracy, computational efficiency, and language coverage.
+The evaluation includes a diverse set of Arabic texts, encompassing various
+domains and genres. The results highlight the strengths and weaknesses of each
+algorithm, shedding light on their applicability to different scenarios. The
+findings contribute to the Arabic NLP community by offering an in-depth analysis
+of open-source stemming tools and facilitating informed decision-making for
+researchers, developers, and practitioners.
+</p>
+</div>
+</div>
+<div id="outline-container-org4c74ee5" class="outline-3">
+<h3 id="org4c74ee5"><a href="pub/islam.html">(2021-11-07) Pervez Hoodbhoy's Islam and Science: How Not to Read History</a></h3>
+<div class="outline-text-3" id="text-org4c74ee5">
+<p>
+There are a lot of examples of this, American creationists exert a lot of efforts based on
+false beliefs, they even created a fully so called 'scientific journal' called
+<i><a href="https://bio-complexity.org/ojs/index.php/main">biocomplexity</a></i> which tries to prove that bio-objects are too complicated to be created by a
+blind watch maker. This is led by the misunderstanding to every evolutionary fact, all of
+the creationists claims however in how many pages it is descried, it is probably can be
+refuted in a few paragraphs which might sounds insanity to someone who watching this happens
+from afar.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org5b6461e" class="outline-2">
+<h2 id="org5b6461e">drafts</h2>
+<div class="outline-text-2" id="text-org5b6461e">
+</div>
+<div id="outline-container-org90dfeb8" class="outline-3">
+<h3 id="org90dfeb8"><a href="drafts/news.html">(2023-01-19) Where to get news?</a></h3>
+<div class="outline-text-3" id="text-org90dfeb8">
+<p>
+And why this blog does not provide RSS/Atom feeds or notification updates?
+</p>
+</div>
+</div>
+<div id="outline-container-orgd26a1b2" class="outline-3">
+<h3 id="orgd26a1b2"><a href="drafts/chess.html">(2022-12-06) Chess and Brains</a></h3>
+<div class="outline-text-3" id="text-orgd26a1b2">
+<p>
+Several enthusiastic historical practitioners of chess have espoused their beliefs that the
+skills associated with chess can be extrapolated to external scenarios. One of the first
+documented cases of an intellectual asserting that connections exist between chess
+proficiency and other skills is Benjamin Franklin’s 1750 essay The Morales of Chess. In this
+essay, Franklin hypothesized that “The game of Chess is not merely an idle amusement.
+Several very valuable qualities of the mind, useful in the course of human life, are to be
+acquired or strengthened by it, so as to become habits, ready on all occasions.” He then
+enumerated these specific qualities, listing them as “1. Foresight… 2. Circumspection… 3.
+Caution… [and] lastly… the habit of not being discouraged by present bad appearances in the
+state of our affairs.”
+</p>
+</div>
+</div>
+<div id="outline-container-org1d6bf10" class="outline-3">
+<h3 id="org1d6bf10"><a href="drafts/crisis.html">(2022-11-26) A Guide to Existential Crisis, v1</a></h3>
+<div class="outline-text-3" id="text-org1d6bf10">
+<p>
+<i>I found the following text file in some obscure online corner. I'm posting it here that it
+might help someone and for archiving purpose.</i>
+</p>
+</div>
+</div>
+<div id="outline-container-org23f99ef" class="outline-3">
+<h3 id="org23f99ef"><a href="drafts/mediacontrol.html">(2021-08-15) Regarding the 'Neo-Democracy', Media, and the Public Opinion in the United States</a></h3>
+<div class="outline-text-3" id="text-org23f99ef">
+<p>
+The role of the media in contemporary politics forces us to ask what
+kind of a world and what kind of a society we want to live in, and in
+particular in what sense of democracy do we want this to be a democratic
+society? Let me begin by counter-posing two different conceptions of
+democracy. One conception of democracy has it that a democratic society
+is one in which the public has the means to participate in some
+meaningful way in the management of their own affairs and the means of
+information are open and free. If you look up democracy in the
+dictionary you'll get a definition something like that.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgea48ece" class="outline-2">
+<h2 id="orgea48ece">csdraft</h2>
+<div class="outline-text-2" id="text-orgea48ece">
+</div>
+<div id="outline-container-org030ecec" class="outline-3">
+<h3 id="org030ecec"><a href="csdraft/tsql.html">(2022-08-03) T/SQL Cookbook</a></h3>
+<div class="outline-text-3" id="text-org030ecec">
+<p>
+T/SQL mini-cookbook, with SQL Server exclusive notes
+</p>
+</div>
+</div>
+<div id="outline-container-org53bc57a" class="outline-3">
+<h3 id="org53bc57a"><a href="csdraft/ef.html">(2022-03-21) Entity Framework</a></h3>
+<div class="outline-text-3" id="text-org53bc57a">
+<p>
+Entity Framework Core, or EF Core, is a library that software developers can use to
+access databases. There are many ways to build such a library, but EF Core is
+designed as an object-relational mapper (O/RM). O/RMs work by mapping between
+two worlds: the relational database, with its own API, and the object-oriented soft-
+ware world of classes and software code. EF Core’s main strength is allowing software
+developers to write database access code quickly in a language that you may know
+better than SQL.
+</p>
+</div>
+</div>
+<div id="outline-container-org12838c3" class="outline-3">
+<h3 id="org12838c3"><a href="csdraft/con.html">(2022-01-09) Concurrency</a></h3>
+<div class="outline-text-3" id="text-org12838c3">
+<p>
+The following text is based on <i>Concurrency in C# Cookbook: Asynchronous, Parallel, and
+Multithreaded Programming</i> by Stephen Cleary
+</p>
+</div>
+</div>
+<div id="outline-container-org7378b65" class="outline-3">
+<h3 id="org7378b65"><a href="csdraft/mvc.html">(2022-01-08) Introduction Into ASP.NET Core</a></h3>
+<div class="outline-text-3" id="text-org7378b65">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-orgb0f5228" class="outline-3">
+<h3 id="orgb0f5228"><a href="csdraft/prlsm.html">(2021-11-16) Concurrency: OS Approach</a></h3>
+<div class="outline-text-3" id="text-orgb0f5228">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-org94bb068" class="outline-3">
+<h3 id="org94bb068"><a href="csdraft/arch.html">(2021-03-27) Introduction to Computer architecture</a></h3>
+<div class="outline-text-3" id="text-org94bb068">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgec4f75b" class="outline-2">
+<h2 id="orgec4f75b">csblog</h2>
+<div class="outline-text-2" id="text-orgec4f75b">
+</div>
+<div id="outline-container-orgcf08cab" class="outline-3">
+<h3 id="orgcf08cab"><a href="csblog/andy_tanenbaum.html">(2022-11-30) Andy Tanenbaum hasn’t learned anything</a></h3>
+<div class="outline-text-3" id="text-orgcf08cab">
+<p>
+I found this old email by Rob Pike, Dave Presotto, Ken Thompson and Phil Winterbottom titled
+"Andy Tanenbaum hasn’t learned anything". Now I can tell why they were named gang.
+</p>
+</div>
+</div>
+<div id="outline-container-org4c8c87c" class="outline-3">
+<h3 id="org4c8c87c"><a href="csblog/egrub.html">(2022-11-30) grub.el</a></h3>
+<div class="outline-text-3" id="text-org4c8c87c">
+<p>
+GRUB3 will be elisp serialized as xml jited to jvm running as eclipse plugin on a mac running in a virtual pc in a xen instance on a 286er.
+</p>
+</div>
+</div>
+<div id="outline-container-org709bd85" class="outline-3">
+<h3 id="org709bd85"><a href="csblog/rocks.html">(2022-11-24) Web Extensions That Rocks</a></h3>
+<div class="outline-text-3" id="text-org709bd85">
+<p>
+Web is one of the biggest thing that was done wrong in the software industry, in my opinion.
+For now, there is no and there is not going to be a web browser that is capable of being
+'proper'. I'm using ungoolged-chromium. This page contains some of the extensions that makes
+the web less painful to me.
+</p>
+</div>
+</div>
+<div id="outline-container-org788a663" class="outline-3">
+<h3 id="org788a663"><a href="csblog/grub.html">(2022-10-30) I Fixed grub without grub</a></h3>
+<div class="outline-text-3" id="text-org788a663">
+<p>
+It wasn't a big deal but I felt great that I could do it without reinstalling grub.
+</p>
+</div>
+</div>
+<div id="outline-container-org21a796c" class="outline-3">
+<h3 id="org21a796c"><a href="csblog/tor.html">(2022-09-11) TOR with FoxyProxy (RelyBridges Enabled)</a></h3>
+<div class="outline-text-3" id="text-org21a796c">
+<p>
+This post was written ~3 months ago, however, for some reason TOR couldn't work anymore with
+my ISP in Cairo, so I had to use bride with some g custom configuration.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org0df91dc" class="outline-2">
+<h2 id="org0df91dc">csarchive</h2>
+<div class="outline-text-2" id="text-org0df91dc">
+</div>
+<div id="outline-container-org0189eb6" class="outline-3">
+<h3 id="org0189eb6"><a href="csarchive/js.html">(2023-01-29) Quick JavaScript</a></h3>
+<div class="outline-text-3" id="text-org0189eb6">
+<p>
+Reading Matuszek's Quick Javascript
+</p>
+</div>
+</div>
+<div id="outline-container-org8c940d9" class="outline-3">
+<h3 id="org8c940d9"><a href="csarchive/8086.html">(2022-11-19) 8086 assembler</a></h3>
+<div class="outline-text-3" id="text-org8c940d9">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-org57feeb7" class="outline-3">
+<h3 id="org57feeb7"><a href="csarchive/cc.html">(2022-11-17) POV: You Just Read Clean Code</a></h3>
+<div class="outline-text-3" id="text-org57feeb7">
+<p>
+I recently subscribed to the daily WTF, and I'm really happy to see other people who
+experienced that feelings of reading ugly, too ugly code. I decided to devote this page to
+list the most remarkable daily WTFs I've seen since Nov 2022.
+</p>
+</div>
+</div>
+<div id="outline-container-org8931c0c" class="outline-3">
+<h3 id="org8931c0c"><a href="csarchive/grpc.html">(2022-11-11) gRPC Overview (Connection Between)</a></h3>
+<div class="outline-text-3" id="text-org8931c0c">
+<p>
+<i>(This document is collected from various resources)</i>
+</p>
+</div>
+</div>
+<div id="outline-container-orgf05a886" class="outline-3">
+<h3 id="orgf05a886"><a href="csarchive/os.html">(2022-08-01) Introduction into Operating Systems</a></h3>
+<div class="outline-text-3" id="text-orgf05a886">
+<p>
+Although there are many practitioners of computer science, only a small percentage of them
+will be involved in the creation or modification of an operating system. Why, then, study
+operating systems and how they work? Simply because, as almost all code runs on top of an
+operating system, knowledge of how operating systems work is crucial to proper, efficient,
+effective, and secure programming. Understanding the fundamentals of operating systems, how
+they drive computer hardware, and what they provide to applications is not only essential to
+those who program them but also highly useful to those who write programs on them and use
+them.
+</p>
+</div>
+</div>
+<div id="outline-container-org9fc8bc7" class="outline-3">
+<h3 id="org9fc8bc7"><a href="csarchive/fixing_the_coding_interview.html">(2022-06-23) Fixing The Coding Interview</a></h3>
+<div class="outline-text-3" id="text-org9fc8bc7">
+<p>
+We've cracked more than enough.
+</p>
+</div>
+</div>
+<div id="outline-container-org9138fcf" class="outline-3">
+<h3 id="org9138fcf"><a href="csarchive/sql.html">(2022-04-22) Introduction to The Relational Language</a></h3>
+<div class="outline-text-3" id="text-org9138fcf">
+<p>
+IBM developed the original version of SQL, originally called Sequel, as part of the
+System R project in the early 1970s. The Sequel language has evolved since then, and its
+name has changed to SQL (Structured Query Language). Many products now support
+the SQL language. SQL has clearly established itself as the standard relational database
+language.
+</p>
+</div>
+</div>
+<div id="outline-container-org1c53c68" class="outline-3">
+<h3 id="org1c53c68"><a href="csarchive/buildapi.html">(2022-04-02) Building a RESTful API</a></h3>
+<div class="outline-text-3" id="text-org1c53c68">
+<p>
+The Richardson Maturity Model is a model developed by Leonard Richardson. It grades, if you
+will, APIs by the their RESTful maturity. So it's interesting to look at it, as it shows us
+how we can go from a simple API that doesn't really care about protocol, nor standards. To
+an API, that can be considered RESTful.
+</p>
+</div>
+</div>
+<div id="outline-container-orgb31604e" class="outline-3">
+<h3 id="orgb31604e"><a href="csarchive/f.html">(2022-02-28) Working With Files and Streams in C#</a></h3>
+<div class="outline-text-3" id="text-orgb31604e">
+<p>
+I was thinking in the first place to make this file just a part of the major C# note file,
+but I believe that I might and will face a lot of filesystem topics, however I'm sure I will
+not ever solve such a problem using C# (don't shout, microsoft kid), but surely it will be
+useful to know. (Actually no, it probably will not but I Wall feel insecure if I didn't know
+it).
+</p>
+</div>
+</div>
+<div id="outline-container-org004aab5" class="outline-3">
+<h3 id="org004aab5"><a href="csarchive/json.html">(2022-02-14) JSON in C# Using Json.NET</a></h3>
+<div class="outline-text-3" id="text-org004aab5">
+<p>
+One of the most popular .NET libraries for working with the JSON serialization
+format is Newtonsoft.Json, known as Json.NET. It is mature and powerful.
+</p>
+</div>
+</div>
+<div id="outline-container-orgc4e024d" class="outline-3">
+<h3 id="orgc4e024d"><a href="csarchive/s.html">(2022-01-10) System Analysis &amp; Design</a></h3>
+<div class="outline-text-3" id="text-orgc4e024d">
+<p>
+The systems development life cycle (SDLC), contains the fundamental four- phase model
+(planning, analysis, design, and implementation) common to all information  systems
+development projects. It describes the evolution of system development method- ologies and
+discusses the roles and skills required of a systems analyst. Th e chapter then  overviews
+the basic characteristics of object-oriented systems and the fundamentals of object-oriented
+systems analysis and design and closes with a description of the Unified Process and its
+extentions and Unified Modeling Language
+</p>
+</div>
+</div>
+<div id="outline-container-org3edc2bb" class="outline-3">
+<h3 id="org3edc2bb"><a href="csarchive/csharp.html">(2022-01-09) .NET Notes in C#</a></h3>
+<div class="outline-text-3" id="text-org3edc2bb">
+<p>
+C# indicates the end of a statement with a semicolon. A statement can be composed of
+multiple variables and expressions. For example, in the following statement, <code>totalPrice</code> is a
+variable and <code>subtotal + salesTax</code> is an expression:
+</p>
+</div>
+</div>
+<div id="outline-container-org54ab13b" class="outline-3">
+<h3 id="org54ab13b"><a href="csarchive/psql.html">(2022-01-09) PostgreSQL Notes</a></h3>
+<div class="outline-text-3" id="text-org54ab13b">
+<p>
+PostgreSQL mini-cookbook
+</p>
+</div>
+</div>
+<div id="outline-container-org145c8c3" class="outline-3">
+<h3 id="org145c8c3"><a href="csarchive/linq.html">(2022-01-09) LINQ Notes</a></h3>
+<div class="outline-text-3" id="text-org145c8c3">
+<p>
+The original motivation behind LINQ was to address the conceptual and tech- nical
+difficulties encountered when using databases with .NET programming lan- guages. With LINQ,
+Microsoft’s intention was to provide a solution for the problem of object-relational
+mapping, as well as to simplify the interaction between objects and data sources. LINQ
+eventually evolved into a general-purpose language-integrated querying toolset. This toolset
+can be used to access data com- ing from in-memory objects (LINQ to Objects), databases
+(LINQ to SQL), XML documents (LINQ to XML), a file-system, or any other source.
+</p>
+</div>
+</div>
+<div id="outline-container-org520a40f" class="outline-3">
+<h3 id="org520a40f"><a href="csarchive/api.html">(2021-03-22) Designing RESTful APIs</a></h3>
+<div class="outline-text-3" id="text-org520a40f">
+<p>
+I'm not going to talk about how to implement these web APIs, but talk about the design
+aspects of how to design them so that they're easier to use and easier to maintain. The goal
+here is for you to understand REST's role in creation of this API, not to simply adhere to
+the dogma that surrounds REST. I want to introduce you to a way of designing APIs that's
+pragmatic and simple.
+</p>
+</div>
+</div>
+<div id="outline-container-org868fb22" class="outline-3">
+<h3 id="org868fb22"><a href="csarchive/db.html">(2021-03-05) Relational Database Design &amp; Modeling</a></h3>
+<div class="outline-text-3" id="text-org868fb22">
+<p>
+Nowadays, when people talk about a database, they usually refer to a Relational database,
+but that has not always been the case. In fact, the term database is defined, by the Merriam
+Webster English dictionary as, a "usually large collection of data organized especially for
+rapid search and retrieval (as by a computer)". The Relational model is one way to organize
+a large collection of data, but not the only one.
+</p>
+</div>
+</div>
+<div id="outline-container-org5b31fc8" class="outline-3">
+<h3 id="org5b31fc8"><a href="csarchive/solid.html">(2020-04-04) SOLID Design Principles</a></h3>
+<div class="outline-text-3" id="text-org5b31fc8">
+<p>
+The SOLID design principles are guidelines for building software that is easier to
+understand and maintain while also being more flexible.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org4a113ce" class="outline-2">
+<h2 id="org4a113ce">computer-science</h2>
+<div class="outline-text-2" id="text-org4a113ce">
+</div>
+<div id="outline-container-org90b73a4" class="outline-3">
+<h3 id="org90b73a4"><a href="computer-science/lisp.html">(2023-02-16) Lisp Programming Language</a></h3>
+<div class="outline-text-3" id="text-org90b73a4">
+<p>
+The Lisp programming language s a family of programming languages with a long
+history and a distinctive, fully parenthesized prefix notation. Originally
+specified in 1958, Lisp is the second-oldest high-level programming language
+still in common use. Only Fortran is older, by one year. Lisp has changed since
+its early days, and many dialects have existed over its history. Today, the
+best-known general-purpose Lisp dialects are Common Lisp, Scheme, Racket and
+Clojure.
+</p>
+</div>
+</div>
+<div id="outline-container-org000183c" class="outline-3">
+<h3 id="org000183c"><a href="computer-science/deep_concurrency_in_go.html">(2022-09-30) Concurrency and Parallelism: The Go Programming Language</a></h3>
+<div class="outline-text-3" id="text-org000183c">
+<p>
+When most people use the word “concurrent,” they’re usually referring to a process that
+occurs simultaneously with one or more processes. It is also usually implied that all of
+these processes are making progress at about the same time. Under this definition, an easy
+way to think about this is people. You are currently reading this sentence while others in
+the world are simultaneously living their lives. They are existing <i>concurrently</i> to you.
+</p>
+</div>
+</div>
+<div id="outline-container-org0b0772d" class="outline-3">
+<h3 id="org0b0772d"><a href="computer-science/effective_golang_a_conclusion.html">(2022-09-20) Effective Go: A Conclusion</a></h3>
+<div class="outline-text-3" id="text-org0b0772d">
+<p>
+Years ago when I was learning C, I remember reading something similar, it was by google as
+well. And I think they used to name it 'effective' too. It was hosted on github pages by
+Google and was advocated as the "google-style guidelines". Moreover, it had the same problem
+that I'm facing with effective-go right now: there are many things that have nothing to do
+with the go programming language itself, but a general guidelines that you should probably
+have learned during the design principles class. I decided to filter out those irrelevant
+tips and dissert a consultations, a recapitulation. So it might help someone.
+</p>
+</div>
+</div>
+<div id="outline-container-org610424f" class="outline-3">
+<h3 id="org610424f"><a href="computer-science/go.html">(2022-01-09) Go Incomplete Guide</a></h3>
+<div class="outline-text-3" id="text-org610424f">
+<p>
+Go programming language notes. Based on Adam Freeman's Pro Go, some <a href="https://go.dev/blog/">https://go.dev/blog/</a>
+articles, and other online resources.
+</p>
+</div>
+</div>
+<div id="outline-container-orgef6c272" class="outline-3">
+<h3 id="orgef6c272"><a href="computer-science/gmtry.html">(2021-12-18) Introduction to Non-theoretical Computational Geometry</a></h3>
+<div class="outline-text-3" id="text-orgef6c272">
+<p>
+Based on TopCoder's thrive and <a href="https://www.ti.inf.ethz.ch/ew/courses/CG13/index.html">Computational Geometry (252-1425-00L) HS13</a> lecture notes.
+</p>
+</div>
+</div>
+<div id="outline-container-orgedb5de7" class="outline-3">
+<h3 id="orgedb5de7"><a href="computer-science/std.html">(2020-03-16) Language Built-in Feature Preview</a></h3>
+<div class="outline-text-3" id="text-orgedb5de7">
+<p>
+Trying built-in feature in some programming languages and frameworks (i.e. STDs)
+</p>
+</div>
+</div>
+<div id="outline-container-org55f0878" class="outline-3">
+<h3 id="org55f0878"><a href="computer-science/graph.html">(2020-01-04) Representations, Implementations and Algorithms of Graphs (and Trees)</a></h3>
+<div class="outline-text-3" id="text-org55f0878">
+<p>
+A graph \(G = (V, E)\) consists of a set of vertices \(V\) and a set of edges \(E\), such that each edge
+in \(E\) is a connection between a pair of vertices in \(V\)  The number of vertices is
+written \(|V|\), and the number of edges is written \(|E|\). \(|E|\) can range from zero to a maximum
+of \(|V|^{2} - |V|\). A graph with relatively few edges is called sparse, while a graph with many
+edges is called dense. A graph containing all possible edges is said to be complete.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-06-01 Thu 02:07.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

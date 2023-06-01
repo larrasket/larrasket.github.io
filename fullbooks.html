@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Books</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Books</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#humanities-anthropology">Humanities</a>
+<ul>
+<li><a href="#sucks-1">Inexpedient</a></li>
+</ul>
+</li>
+<li><a href="#org97904ef">Science</a>
+<ul>
+<li><a href="#org9d66be3">Psychology</a></li>
+<li><a href="#org9bd4702">Inexpedient</a></li>
+</ul>
+</li>
+<li><a href="#org4015c50">Politics</a></li>
+<li><a href="#orgdd822d6">Middle East Struggle Related</a>
+<ul>
+<li><a href="#orgbaef47c">Inexpedient</a></li>
+<li><a href="#orgb514751">On Zionism Movement and The Israeli Occupation in Palestine</a></li>
+</ul>
+</li>
+<li><a href="#orgdbcaa8f">Economics/ Capitalism</a></li>
+<li><a href="#org96b0c95">ʿaqīdah</a>
+<ul>
+<li><a href="#org02cdd31">Issues</a></li>
+<li><a href="#org31b411b">Inexpedient</a></li>
+</ul>
+</li>
+<li><a href="#history">History</a>
+<ul>
+<li><a href="#orged8435c">Ancient World</a></li>
+<li><a href="#org1b1afb0">Middle East/ Ummah</a></li>
+<li><a href="#org5e9f636">The United States</a></li>
+<li><a href="#org148f530">Europe</a></li>
+</ul>
+</li>
+<li><a href="#org7c66086">Aesthetics</a>
+<ul>
+<li><a href="#orgec96a6a">Literature</a></li>
+<li><a href="#org33415d3">Heritage</a></li>
+<li><a href="#org1e43300">Poetry</a></li>
+</ul>
+</li>
+<li><a href="#orgcc661fa">Chess</a></li>
+</ul>
+</div>
+</nav>
+<dl class="org-dl">
+<dt>tags</dt><dd>selfshblanja2] [Sources</dd>
+</dl>
+
+<p>
+<b>Bold</b> is currently reading <br>
+<b><i>Italics bold</i></b> is an outstanding one. <br>
+<span class="underline">underline</span> is not available. <br>
+<del>crossed out</del> is not planned to read.
+</p>
+
+<p>
+<b>See for computer science books, see <a href="csbooks.html">csbooks</a>.</b> <br>
+<b>See reading list, <a href="rbooks.html">here</a>.</b> <br>
+</p>
+
+<p>
+Please note: These are neither the books I recommend nor the ones I agree with
+their ideologies; the but a list of the documents/textbooks that I own, with
+some notes of (as a review) that could be helpful to anyone in the future, thus,
+this list proudly contains horribly written books.
+</p>
+
+<p>
+06, May 2023; I added some papers here too, I think this makes the 'books' title
+a little bit misleading. Also I moved the books I regret reading, or the ones I
+wouldn't definitely reread to the "inexpedient" sections.
+</p>
+
+<div id="outline-container-humanities-anthropology" class="outline-2">
+<h2 id="humanities-anthropology">Humanities</h2>
+<div class="outline-text-2" id="text-humanities-anthropology">
+<p>
+An inequilateral note about reading <i>philosophy</i>; the vast majority of
+philosophy books is not worth reading, in fact it's painful to read it, which is
+a thing I realized too late (~1 year ago, thanks to a friend of mine allowed me
+to read his dissertation in <i>Obscurantism</i> of philosophers), a lot of philosophy
+books I've read in my life was useful but not really that 'useful', this is not
+the best place to explain why, but I'll talk about this in the future Inshaa'
+Allah. Also, read <a href="https://sophy.ca/blog/2013/03/how-not-to-write-in-philosophy/">How not to write in philosophy &#x2013; Against obscurantism</a>.
+</p>
+
+<ul class="org-ul">
+<li>Analytic Philosophy of Religion (Harris, J. F.)</li>
+<li>The Hero With a Thousand Faces (Campbell, J.)</li>
+<li>Liquid Modernity (Bauman, Z.)</li>
+<li>The Poetics of Iblis (Bodman, W. S.)</li>
+<li>Beyond Good and Evil (Nietzsche, F.)</li>
+<li>A Theologico-Political Treatise (Spinoza, B.)</li>
+<li><p>
+In Praise of Idleness and Other Essays (Russell, B.)
+</p>
+
+<p>
+A prelude of the human history from the 'civilization' perspective, a
+deep-rooted academic corresponding would be Will Durant's first chapter of
+"The Full Story of Civilization", Our Oriental Heritage. Russel's book is good
+for having a good time with a book “The time
+</p></li>
+<li>History of Western Philosophy and Theology (Frame, J. M.)</li>
+<li>The Happiness Industry (Davies, W.)</li>
+<li>Thinking Sociologically (Bauman, Z.)</li>
+<li>Liquid Times: Living in an Age of Uncertainty (Bauman, Z.)</li>
+<li>Modernity and the Holocaust (Bauman, Z.)</li>
+<li>Consuming Life (Bauman, Z.)</li>
+<li>Liquid Love (Bauman, Z.)</li>
+<li>Liquid Life (Bauman, Z.)</li>
+<li>Liquid Fear (Bauman, Z.)</li>
+<li>Born Liquid (Bauman, Z.)</li>
+<li>Discipline and Punish (Foucault, M.)</li>
+<li>The Fragility of Consciousness (Lawrence, F. G.)</li>
+<li>The Conquest of Happiness (Russell, B.)</li>
+<li>The Interpretation of Cultures (Geertz, C.)</li>
+<li>Community: Seeking Safety in an Insecure World (Bauman, Z.)</li>
+<li>Kleine Schriften (Ess, C.)</li>
+<li>The Open Society and its Enemies (Popper, K. R.)</li>
+<li>The Myth of the Framework (Popper, K. R.)</li>
+<li>All Life is Problem Solving (Popper, K. R.)</li>
+<li>After The Open Society (Popper, K. R.)</li>
+<li>Culture in a Liquid Modern World (Bauman, Z.)</li>
+<li>Thinking, Fast and Slow (Kahneman, D.)</li>
+<li>Anatomy of an Epidemic (Whitaker, R.)</li>
+<li>Sources of the Self (Taylor, C.)</li>
+<li>Against Method (Feyerabend, P.)</li>
+<li>Straight and Crooked Thinking (Thouless, R. H.)</li>
+<li>Meditations on First Philosophy (Descartes, R.)</li>
+<li><p>
+ما وراء الحجاب (المرسيني، ف.)
+</p>
+
+<p>
+Mernissi forces herself to act like an orientalist, however she ain't. Since I
+can't write a lot in this small box, I'd like to point 3 important issues in
+this dissertation; 1. Usage of past-criticized Takhrij of some Hadiths, which
+was claimed by her in <i>Political Harem: The Prophet and Women</i> that it cannot
+be noted after the prophet, but was 'made up' for interests. 2. Which is sorta
+correlated with 1, is the inference from history book like Tabaqat al-Kubra.
+We can not tell what is 'Islamic' based on such late area of the Islamic
+History. However, if Mernissi surfs what is told to be 'Islamic', not what is
+'Islamic', those 2 points are not valid. 3. Al-Ghazali used to address his
+students that were always men, which clarify why he gives advices about
+treating women, I couldn't interpret it like Mernissi did, that he meant
+'Women are tools for men to help them pass through the hurdles of life'. This
+is meaningless.
+</p></li>
+<li>الحريم السياسي (المرسيني، ف.)</li>
+<li>The Cambridge Dictionary of Philosophy (Audi, R.)</li>
+<li>The History of Sexuality (Foucault, M.)</li>
+<li>A Culture of Ambiguity: A History of Islam (Ahmed, L.)</li>
+<li>Wahhabism and the World (Mandaville, P.)</li>
+<li>Intellectual Life in the Ḥijāz before Wahhabism (Al-Abduljabbar, N. A.)</li>
+<li>Islam and Science (Hoodbhoy, P.)</li>
+<li>The Philosophical Question of Christ (Gilson, É.)</li>
+<li>Women in the Medieval Islamic World (Hambly, G. R. G.)</li>
+<li>The World (Descartes, R.)</li>
+<li>التفكير النقدي، دليل مختصر (بويل، ت)</li>
+<li>لعنة الألفية، لماذا يفشل النشاط التغييري؟ (صغبيني، ط)</li>
+<li>التخلف الاجتماعي، مدخل إلى سيكولوجية الإنسان المقهور (حجازي، م)</li>
+<li>Desire and Love in Descartes's Late Philosophy (Beavers, A)</li>
+<li>History of Religion (Tokarev, S.)</li>
+</ul>
+</div>
+<div id="outline-container-sucks-1" class="outline-3">
+<h3 id="sucks-1">Inexpedient</h3>
+<div class="outline-text-3" id="text-sucks-1">
+<ul class="org-ul">
+<li><p>
+Wahhabism (Subhani, J. A.)
+</p>
+
+<p>
+It's sad that non-scientific (in the academic means) Islamic scholars can not
+write a readable argument without bloat it with x10 hate and swearing.
+</p></li>
+<li><p>
+Fifth Gospel of Nietzsche (Sloterdijk, P)
+</p>
+
+<p>
+I think this book could make a use for me in the future in giving instances of
+how most of philosophy authors &amp; books are either pointless or obscure.
+</p></li>
+<li>هشام شرابي ونقد النظام الأبوي في المجتمع العربي (معزوز، ع)</li>
+<li>المأزق في الفكر الديني بين النص والواقع (الصالح، ن)</li>
+<li>المدينة الإسلامية والأصولية والإرهاب (الديالمي، ع)</li>
+<li>عنف اللغة (لوسركل، ج)</li>
+<li>مغامرة العقل الأولى (السواح، ف)</li>
+<li>قضايا (دراغمة، ج)</li>
+<li><p>
+دكتاتورية المستنيرين: روح الإنسانوية العابرة وأهدافها
+</p>
+
+<p>
+Pretty much up-to-date version of "The Protocols of the Elders of Zion".
+</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org97904ef" class="outline-2">
+<h2 id="org97904ef">Science</h2>
+<div class="outline-text-2" id="text-org97904ef">
+<ul class="org-ul">
+<li><p>
+<b><i>The Human Web (McNeill, J. R.)</i></b>
+</p>
+
+<p>
+I used to read it in my high school, I still remember that I enjoyed it more
+than any other history book I've ever read.
+</p></li>
+<li>Life Ascending: The Ten Great Inventions of Evolution (Lane, N)</li>
+<li>The Greatest Show on Earth: The Evidence for Evolution (Dawkins, R.)</li>
+<li>Evolution and the Myth of Creationism (Berra, T. M.)</li>
+<li>Shadows of Forgotten Ancestors: A Search for Who We Are (Sagan, C., &amp; Druyan, A.)</li>
+<li>The Reluctant Mr. Darwin (Quammen, D.)</li>
+<li>Fossils: A Very Short Introduction (Briggs, D. E. G.)</li>
+<li>Your Inner Fish (Shubin, N.)</li>
+<li>Why We Get Sick (Nesse, R. M., &amp; Williams, G. C.)</li>
+<li>The Selfish Gene (Dawkins, R.)</li>
+<li>The Mismeasure of Man (Gould, S. J.)</li>
+<li>Why Evolution Is True (Coyne, J. A.)</li>
+<li><p>
+The Naked Ape: A Zoologist's Study of the Human Animal (Morris, D.)
+</p>
+
+<p>
+One of the most books I've ever enjoyed when I was a kid, it might be not very
+accurate in many scientific aspects that it ties to approach, however it's
+nice to unlock those roads of thinking, I generally recommend it if you are
+new to thinking about evolution.
+</p></li>
+<li>Being Mortal: Medicine and What Matters in the End (Gawande, A.)</li>
+</ul>
+</div>
+
+<div id="outline-container-org9d66be3" class="outline-3">
+<h3 id="org9d66be3">Psychology</h3>
+<div class="outline-text-3" id="text-org9d66be3">
+<ul class="org-ul">
+<li>The Social Animal (Aronson, E.)</li>
+<li>The Crowd (Le Bon, G.)</li>
+<li><p>
+Group Psychology (Freud, S.)
+</p>
+
+<p>
+The reason I put LeBon's book first is that Frued text is very correlated to
+it, actually it responds to it, and I much agree with Frued regarding the fact
+that Le Bon is just describing Crowds but not analyzing them at all. Of
+course, Frued's analysis is considered to be pure obsolete by common tropes
+today, however, I still find it an interesting method to understand crowds'
+behavior.
+</p></li>
+<li>Totem and Taboo (Freud, S.)</li>
+<li>The Ego and the Id (Freud, S.)</li>
+<li>Evolutionary Forensic Psychology (Duntley, J. D.)</li>
+<li>Evolutionary Psychology: The New Science of the Mind (Buss, D. M.)</li>
+<li>The Lucifer Effect (Zimbardo, P. G.)</li>
+<li>Faces of the Enemy (Keen, S.)</li>
+<li>الجنس والنفس (كمال، ع.)</li>
+<li>Psychology of Sex Relations (Kinsey, A. C.)</li>
+<li>Is Psychoanalysis Still Relevant to Psychiatry? (Paris, Joel)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org9bd4702" class="outline-3">
+<h3 id="org9bd4702">Inexpedient</h3>
+<div class="outline-text-3" id="text-org9bd4702">
+<ul class="org-ul">
+<li>الرياضات في حياتنا (زلاتكا، ش)</li>
+<li><p>
+إمبراطور المآسي، سيرة للسرطان (موكرجي، س)
+</p>
+
+<p>
+Not a study at all, more like a novel. A sad one.
+</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org4015c50" class="outline-2">
+<h2 id="org4015c50">Politics</h2>
+<div class="outline-text-2" id="text-org4015c50">
+<ul class="org-ul">
+<li><p>
+The Communist Manifesto (Marx, K. &amp; Engels, F.)
+</p>
+
+<p>
+I won't usually recommend reading this, but I want to make sure that everyone
+will read it, even if you are not going to study Marxism, reading the
+Manifesto at least is أضعف الإيمان to prevent yourself from the odds and the
+ends of the anti-bolshevism propaganda (which usually includes "Marxism"). A
+better alternative would be Nikoalai Bukharin's "ABC of Communism", or even
+better, read Marx carefully.
+</p></li>
+<li>The Dark Side of Democracy (Mann, J.)</li>
+<li>Global Culture, Globalization and Modernity (Robertson, R.)</li>
+<li>The Road to Unfreedom (Snyder, T.)</li>
+<li><p>
+Discourse on Voluntary Servitude (Boétie, E. de)
+</p>
+
+<p>
+I consider this as a very nice literary message, actually it reminds me of how
+the intellectual treated "crowds" in the early 19 and 20 centuries, read about
+this here [DELETED]. Simply, like Le Bon and Frizer did in there psychology
+and anthropology papers, Étienne de La Boétie is cursing the scum peoples who
+let tyrant governors control and torture them. Of course without giving any
+explanation on why they do so. It's very obsolete to take it as an
+'intellectual' or 'anthropological' approach.
+</p></li>
+<li>The Great Revolt (Zito, S.)</li>
+<li>Who Rules the World? (Chomsky, N.)</li>
+<li><p>
+Who is Charlie, Xenophobia and New Middle Class
+</p>
+
+<p>
+Fuck France. This books is about the laïcité (the f*ricnh secularism) and how
+the xenophobia works as very good engine for moving the French people towards
+more and more so-called 'free speech' movements. A very important and related
+book is Jean Baubérot's La laïcité Française et ses Mutations.
+</p></li>
+<li><p>
+Media Control: The Spectacular Achievements of Propaganda (Chomsky, N.)
+</p>
+
+<p>
+This is an oversimplified Manufacturing Consent, however the last is about to
+be an out-of-date model, see The Propaganda Model Today by Joan Pedro-Carañana
+et al.
+</p></li>
+<li>The Myth of Development (De, Oswaldo)</li>
+<li>The Propaganda Model Today (Broudy, D)</li>
+<li><b><i>بناء الذات الثورية (شريعتي، ع)</i></b></li>
+<li>في الثورة والقابلية للثورة (بشارة، ع)</li>
+<li>عن المثقف والثورة (بشارة، ع)</li>
+<li>أشياء لن تسمع بها أبدًا (تشومسكي، ن)</li>
+<li>معضلة التنمية الإستعمارية: نظرات في دعاوي إيجابيات الاستعمار (صوان، م)</li>
+<li>مقالة في الحرية (بشارة، ع)</li>
+<li><p>
+<b><i>غزو غير مسلح</i></b>
+</p>
+
+<p>
+I don't know who authored this book/article; however it is not available for
+some reason on the internet and I can't even remember where did I download it
+from, anyway I've reuploaded it; you can get it from <a href="https://link.storjshare.io/raw/ju5f7dkiq63ptkcdkmv2vkcwbksa/blog/public/pdfs/%D8%BA%D8%B2%D9%88%20%D8%BA%D9%8A%D8%B1%20%D9%85%D8%B3%D9%84%D8%AD.pdf">here</a>
+</p></li>
+<li>مدخل إلى الأيدولوجيات السياسية (هيود، أ)</li>
+<li><p>
+قواعد في الممارسة السياسية (سلطان، ج)
+</p>
+
+<p>
+Both of these books are good reads for kids.
+</p></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgdd822d6" class="outline-2">
+<h2 id="orgdd822d6">Middle East Struggle Related</h2>
+<div class="outline-text-2" id="text-orgdd822d6">
+<ul class="org-ul">
+<li><p>
+Engineers of Jihad (Gambetta, Diego)
+</p>
+
+<p>
+An important research to understand the uprising of Jihad movements between
+pan-Arabists, ex pan-Arabists in general, and between engineers and the middle
+class in particular. I think it's even a good introduction to answer the
+question of why Muslims might bomb themselves. It's one of the greatest books
+I've ever read about the armed Jihad.
+</p></li>
+<li>من داخل الجهادية، فهم الحركات الجهادية (خاور، ف)</li>
+<li>All the Shah's Men (Kinzer, S.)</li>
+<li>From Beirut to Jerusalem (Friedman, L.)</li>
+<li>Confronting an Empire, Constructing a Nation (Zeine, N.)</li>
+<li>The Unmaking of the Middle East (Salt, J.)</li>
+<li>Islamic Response to Imperialism (Keddie, R.)</li>
+<li>Mapping the Middle East (Antrim, Z.)</li>
+<li><p>
+Faisal I of Iraq (Allawi, A.)
+</p>
+
+<p>
+If there is only one book that is neutral in the history of The Middle East,
+it would be this book. I recommend it for everyone needs to understand how we
+winded up with the 2000s pitiful middle east. Note that the books is
+oversimplified in the post-caliphate era.
+</p></li>
+<li>نحو إعادة بناء قضايا الفكر العربي المعاصر (الجابري، م.)</li>
+<li>المجتمع والدولة في الوطن العربي (سعدالدين، إ.)</li>
+<li>الخروج من زقاق التاريخ (سعد الدين، إ.)</li>
+<li>النظام الاجتماعي العربي الجديد (سعد الدين، إ.)</li>
+<li>تأملات في مسألة الأقليات (سعد الدين، إ.)</li>
+<li>نحن والتراث، قراءة معاصرة في تراثنا الفلسفي (الجابري، إ.)</li>
+<li>تكوين العقل العربي (الجابري، إ.)</li>
+<li>لمذا انتقل الآخرون للديموقراطية وتأخر العرب؟</li>
+</ul>
+</div>
+
+<div id="outline-container-orgbaef47c" class="outline-3">
+<h3 id="orgbaef47c">Inexpedient</h3>
+<div class="outline-text-3" id="text-orgbaef47c">
+<ul class="org-ul">
+<li>الحداثة والإمبريالية: الغزو الفرنسي وإشكالية نهضة مصر (الشلق، أ)</li>
+<li>نجد قبل الوهابية (الجهني، ع)</li>
+<li>حقائق حول أزمة الخليج (الحوالي، س)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgb514751" class="outline-3">
+<h3 id="orgb514751">On Zionism Movement and The Israeli Occupation in Palestine</h3>
+<div class="outline-text-3" id="text-orgb514751">
+<ul class="org-ul">
+<li>The Israel Lobby (Walt, S. &amp; Mearsheimer, J.)</li>
+<li>State of Terror (Suarez, Y.)</li>
+<li>Out of the Frame (Pappe, I.)</li>
+<li>The General's Son (Peled, M.)</li>
+<li>On Palestine (Pappe, I. &amp; Chomsky, N.)</li>
+<li>اليد الخفية، دراسة في الحركات اليهودية الهدامة والسرية (المسيري، ع.)</li>
+<li>من هو اليهودي؟ (المسيري، ع.)</li>
+<li>الصراع العربي الإسرائيلي (بريجر، ب)</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgdbcaa8f" class="outline-2">
+<h2 id="orgdbcaa8f">Economics/ Capitalism</h2>
+<div class="outline-text-2" id="text-orgdbcaa8f">
+<ul class="org-ul">
+<li>Capitalism, Socialism and Democracy (Schumpeter, J. A.)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org96b0c95" class="outline-2">
+<h2 id="org96b0c95">ʿaqīdah</h2>
+<div class="outline-text-2" id="text-org96b0c95">
+<ul class="org-ul">
+<li>مذاهب الإسلاميين (البدوي، ع.)</li>
+<li>الفتنة الكبرى (حسين، ط.)</li>
+<li>ابن رشد (الجابري، م. ع.)</li>
+<li>الخلافة والملك (المودودي، أ)</li>
+<li>أصول التشيع الإسلامي (جيفري)</li>
+<li>محي الدين بن عربي، حياته ومذهبه (بلاتيوس، أ.)</li>
+<li>الوحدة الإسلامية (أبو زهرة، م)</li>
+<li>الأحوال الشخصية (أبو زهرة، م)</li>
+<li>من قاموس التراث (العلوي، هـ)</li>
+<li>الإمام زيد (أبو زهرة، م)</li>
+<li>أبو حنيفة (أبو زهرة، م)</li>
+<li>ابن حنبل (أبو زهرة، م)</li>
+<li>الشافعي (أبو زهرة، م)</li>
+<li>مالك (أبو زهرة، م)</li>
+<li>ابن حزم (أبو زهرة، م)</li>
+</ul>
+</div>
+
+<div id="outline-container-org02cdd31" class="outline-3">
+<h3 id="org02cdd31">Issues</h3>
+<div class="outline-text-3" id="text-org02cdd31">
+<ul class="org-ul">
+<li>قضايا إسلامية معاصرة ع1</li>
+<li>قضايا إسلامية معاصرة ع2</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org31b411b" class="outline-3">
+<h3 id="org31b411b">Inexpedient</h3>
+<div class="outline-text-3" id="text-org31b411b">
+<ul class="org-ul">
+<li><p>
+مثالب معاوية (المالكي، ف.)
+</p>
+
+<p>
+Poorly written book, nothing new or special in the study, the author tends to have an evident ignorance on Takhrij al-hadith.
+</p></li>
+
+<li>مثالب معاوية 2 (المالكي، ف.)</li>
+<li>نقد رأي ابن تيمية في إسلام معاوية (المالكي، ف.)</li>
+<li>الإغتيال السياسي في الإسلام (العلوي، ط.)</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-history" class="outline-2">
+<h2 id="history">History</h2>
+<div class="outline-text-2" id="text-history">
+
+<p style="text-align: center; font-size: 110% "><strong><span style="color: #0000ff; --darkreader-inline-color: #337dff;" data-darkreader-inline-color="">"There's a good reason why nobody studies history, it just teaches you too much".<br /></span></strong><strong><span style="color: #0000ff; --darkreader-inline-color: #337dff;" data-darkreader-inline-color=""> <span style="color: #ff0000;" data-darkreader-inline-color="">- Noam Chomsky.</span> <br /></span></strong></p>
+
+<p style="text-align: center; font-size: 110%;"><strong><span data-darkreader-inline-color="" style="color: #0000ff;">&laquo;إنّ التَارْيخَ فيْ ظَاهِرهِ لا يّزْيدُ عَنِ الإِخْبَار، ولَكِنْ فْي بَاطِنهِ نَظَرٌ وتَحْقيق&raquo;.</span> <br><span data-darkreader-inline-color="" style="color: #ff0000; --darkreader-inline-color: #337dff;">- إبن خَلْدُون.</span></strong></p>
+
+<p style="text-align: center;"><span data-darkreader-inline-color="" style="color: #0000ff;"><strong>&laquo;وَتِلْكَ الْأَمْثَالُ نَضْرِبُهَا لِلنَّاسِ وَمَا يَعْقِلُهَا إِلَّا الْعَالِمُونَ&raquo;.</strong></span></p>
+
+
+<hr>
+</div>
+
+<div id="outline-container-orged8435c" class="outline-3">
+<h3 id="orged8435c">Ancient World</h3>
+<div class="outline-text-3" id="text-orged8435c">
+<ul class="org-ul">
+<li>الثورة الاجتماعية الأولى (مهران، م. ب.)</li>
+<li>Poems of Heaven and Hell (Sandars, N. K.)</li>
+<li>The Pyramids Texts (Faulkner, R. O.)</li>
+<li>A History of the Ancient Near East (Mieroop, M. van de)</li>
+<li>تاريخ روسيا (غوميليوف، م.)</li>
+<li>The Epic of Gilgamesh (George, A.)</li>
+<li>المدن الفينيقية (مهران، م. ب.)</li>
+<li>بنو إسرائيل (مهران، م. ب.)</li>
+<li>المدن الكبرى (مهران، م. ب.)</li>
+<li>تاريخ العراق القديم (مهران، م. ب.)</li>
+<li>دراسات في تاريخ العرب (مهران، م. ب.)</li>
+<li>Our Oriental Heritage (Durant, W.)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org1b1afb0" class="outline-3">
+<h3 id="org1b1afb0">Middle East/ Ummah</h3>
+<div class="outline-text-3" id="text-org1b1afb0">
+<ul class="org-ul">
+<li>The Ottoman Age of Exploration (Casale, G. E.)</li>
+<li>Before Taliban: Genealogies of the Afghan Jihad (Monsutti, A.)</li>
+<li>Prelude to Israel: Zionist Diplomacy (Schulze, K. E.)</li>
+<li>The Balfour Declaration (Schneer, J.)</li>
+<li>Destiny Disrupted (Ansary, T.)</li>
+<li>After the Prophet (Hazleton, L.)</li>
+<li>Blood and Rage (Burleigh, M.)</li>
+<li>America's Kingdom (Vitalis, R.)</li>
+<li><p>
+تاريخ إيران بعد الإسلام (إقبال، ع.)
+</p>
+
+<p>
+Too much informative, in the sense that it doesn't really provide a historical
+context rather than historical information. I will consider searching for
+another book on the early history of Iran soon.
+</p></li>
+<li>إيران من الداخل (هويدي، ف.)</li>
+<li>الثورة الجزائرية (الزبيري، م)</li>
+<li>كيف دخل الفرنسيون الجزائر (الجزائري، ا)</li>
+<li>فرانز فنون والثورة الجزائرية (الميلي، م)</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org5e9f636" class="outline-3">
+<h3 id="org5e9f636">The United States</h3>
+<div class="outline-text-3" id="text-org5e9f636">
+<ul class="org-ul">
+<li>A People's History of the United States (Zinn, H.)</li>
+<li>Killing Hope (Blum, W.)</li>
+<li>Tories: Fighting for the King in America's First Civil War (B. Allen, T)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org148f530" class="outline-3">
+<h3 id="org148f530">Europe</h3>
+<div class="outline-text-3" id="text-org148f530">
+<ul class="org-ul">
+<li>History of The French Revolution (Soboul, A.)</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org7c66086" class="outline-2">
+<h2 id="org7c66086">Aesthetics</h2>
+<div class="outline-text-2" id="text-org7c66086">
+<p>
+All ancient books which have once been called sacred by man, will have their
+lasting place in the history of mankind, and those who possess the courage, the
+perseverance, and the self-denial of the true miner, and of the true scholar,
+will find even in the darkest and dustiest shafts what they are seeking
+for,—real nuggets of thought, and precious jewels of faith and hope.
+— Max Müller, Introduction to the Upanishads Vol. II.
+</p>
+
+
+
+
+<ul class="org-ul">
+<li>Les Passions de l'âme (Descartes, R.)</li>
+<li>The peacock and the buffalo (Nietzsche, F.)</li>
+<li>Human, All-Too-Human (Nietzsche, F)</li>
+<li><p>
+The Coiled Serpent (Vanvliet, C.)
+</p>
+
+<p>
+This was very beautiful, I need to reread it multiple times in the future.
+</p></li>
+<li><b><i>The Dawn of Day (Nietzsche, F.)</i></b></li>
+<li><b><i>The Memoirs of Dmitri Shostakovich (Shostakovich, D)</i></b></li>
+<li><b>No Apologies (Esolen, A)</b></li>
+<li><b><i>Fear of Life (Lowen, A)</i></b></li>
+<li>Letters From a Stoic (Seneca, A)</li>
+<li>ربيع الأبرار في نصوص الأخبار (الزمخشري، ج)</li>
+<li>ديوان ترجمان الأشواق (ابن عربي، م)</li>
+<li>يتيمة الدهر في محاسن أهل العصر (النيسابوري، ع)</li>
+<li>قلائد الجمان في فرائد شعراء هذا الزمان (الموصلي، ك)</li>
+<li>المستجاد من فعلات الأجواد (التنوخي، ا)</li>
+<li>نسمة السحر بذكر من تشيع وشعر (اليمني، ا)</li>
+<li>ريحاينة الألبا وزاهرة الحياة الدنيا (شهاب الدين، أ)</li>
+<li>رسائل ابن أبي الدنيا (الدنيا، ا)</li>
+<li>الموازنة بين أبي تمام والبحتري (الأمدي، أ)</li>
+<li>فوائد الظمئان لدروس الزمان (السلمان، ع)</li>
+<li>كفاية الطالب في مناقب علي بن أبي طالب (كنجي، م)</li>
+<li>التذكرة (الحسيني، ص)</li>
+<li>قول على قول (الكرمي، ح)</li>
+<li>Confucian Analects (Legge, J.)</li>
+<li><p>
+الأخلاق (شريعتي، ع)
+</p>
+
+<p>
+If I were to raise someone one day, I'd definitely use this book.
+</p></li>
+<li>The Executioner (de Maistre, J)</li>
+<li><p>
+88 Precepts (Lane, D)
+</p>
+
+<p>
+Not a bad book after all, it sounds like neo-Nazis are one of the rare
+denomination that preserved some فِطرة and genuine values<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup> .
+</p></li>
+<li>Letters To a Young Poet (Rilke, A)</li>
+<li>Gardens of Renaissance Europe and the Islamic Empires (Reggles, D)</li>
+
+<li>طبائع الاستبداد ومصارع الاستعباد (الكواكبي، ع)</li>
+<li><del>Love Letters of Nathaniel Hawthorne</del></li>
+<li><del>Culture and Value (Wittgenstein)</del></li>
+</ul>
+</div>
+
+<div id="outline-container-orgec96a6a" class="outline-3">
+<h3 id="orgec96a6a">Literature</h3>
+<div class="outline-text-3" id="text-orgec96a6a">
+<blockquote>
+<p>
+This section will not be updated anymore.
+</p>
+</blockquote>
+
+
+<ul class="org-ul">
+<li>Manfred (Byron, L)</li>
+<li>A Streetcar Named Desire (Williams, T)</li>
+<li>The Kite Runner (Khalid, H)</li>
+<li>Lolita (Nabokob, V)</li>
+<li>Suddenly Last Summer (Williams, T)</li>
+<li>The Brothers Karamazov (Dostoevsky, F)</li>
+<li>Umm Sa'd (Ghassan, K)</li>
+<li>Children of the Alley (Mahfouz, N)</li>
+<li>Cat on a Hot Tin Roof (Williams, T)</li>
+<li>Crime and Punishment (Dostoevsky, F)</li>
+<li>The Idiot (Dostoevsky, F)</li>
+<li>Orpheus Descending (Williams, T)</li>
+<li>Marx in Soho (Zinn, H)</li>
+<li>One Arm and Other Stories (Williams, T)</li>
+<li>The Misunderstanding (Camus)</li>
+<li>Notes from Underground (Dostoevsky, F)</li>
+<li>Crime and Punishment (Dostoevsky, F)</li>
+<li>القميص المسروق (كنفاني، غ)</li>
+<li>الزيتون لا يموت (نصر، ع)</li>
+<li>The Dream of a Ridiculous Man (Dostoevsky, F)</li>
+<li>Chronicle of a Death Foretold (Márquez, G)</li>
+<li>The Unbearable Lightness of Being (Kundera, M)</li>
+<li>Poor Folk (Dostoevsky, F)</li>
+<li>In the Penal Colony (Kafka, F)</li>
+<li>Men in the Sun (Kanafani, G)</li>
+<li>Animal Farm (Orwell, G)</li>
+<li>Karnak Kafe (Mahfouz, N)</li>
+<li>The Insulted and Humiliated (Dostoevsky, F)</li>
+<li>Love in the Time of Cholera (Márquez, G)</li>
+<li>One Hundred Years of Solitude (Márquez, G)</li>
+<li>Adrift on the Nile (Mahfouz, N)</li>
+<li>The Overcoat (Gogol, N)</li>
+<li>The Land of Sad Oranges (Kanafani, G)</li>
+<li>The Bet and Other Stories (Chekhov, A)</li>
+<li>The Death of Ivan Ilych (Tolostoy, L)</li>
+<li>The Picture of Dorian Gray (Wilde, O)</li>
+<li>1984 (Orwell, G)</li>
+<li>The Festival of Insignificance (Kundera, M)</li>
+<li>When Nietzsche Wept (Yalom, I)</li>
+<li>The Death of a Government Clerk (Gogol, N)</li>
+<li>The Silent Patient (Michaelides, A)</li>
+<li>Season of Migration to the North (Salih, A)</li>
+<li>The Inspector General (Gogol, N)</li>
+<li>Oscar And The Lady In Pink (Schmitt, E)</li>
+<li>No One Sleeps in Alexandria (AbdelMeguid, I)</li>
+<li>يوم غائم في البر الغربي (قنديل، م)</li>
+<li>Alexander Pope: Selected Works (Pope, A)</li>
+<li>Agamemnon (Aeschylus, A)</li>
+</ul>
+
+<p>
+Ones I didn't enjoy reading:
+</p>
+
+<ul class="org-ul">
+<li>The Metamorphosis</li>
+<li>Hidden Figures</li>
+<li>War and Peace</li>
+<li>Wind, Sand and Stars</li>
+<li>Testaments Betrayed, An Essay in Nine Parts</li>
+<li>A Tale of Two Cities</li>
+<li>The Hunchback of Notre-Dame</li>
+<li>Sundays in August</li>
+<li>الحكايات الشعبية من آسيا</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org33415d3" class="outline-3">
+<h3 id="org33415d3">Heritage</h3>
+<div class="outline-text-3" id="text-org33415d3">
+<p>
+<b>Note</b>: the author names in this list are to be fixed, there is a small bug in
+the script I use to generate them, and I'm too lazy to check for them by hand.
+</p>
+
+<ul class="org-ul">
+<li>المقامات (الزمخشري، ج)</li>
+<li>كتاب الأمالي (القالي، أ)</li>
+<li>فقه القلوب (التويجري، م)</li>
+<li>فضائل الأعمال (المقدسي، ض)</li>
+<li>لباب الأداب (منقذ، أ)</li>
+<li>كتاب المِحن (التميمي، أ)</li>
+<li>روضة العقلاء (حبان، ا)</li>
+<li>تصفية القلوب (الذماري، ي)</li>
+<li>البيان والتبيان (الحاحظ، أ)</li>
+<li>شرح كتاب الشهاب (القضياعي، أ)</li>
+<li>الوابل الطيب (الجوزية، أ)</li>
+<li>العزلة (البستي، م)</li>
+<li>المنازل والديار (منقذ، أ)</li>
+<li>العزلة والانفراد (الدنيا، أ)</li>
+<li>الزهد الكبير (البيهقي)</li>
+<li>الإعتبار (أسامه بن منقذ)</li>
+<li>أحسن ما سمعت (الثعالبي)</li>
+<li>أدب الدين والدنيا (الماوردي، أ)</li>
+<li>الفوائد (الجوزية، ا)</li>
+<li>الفرج بعد الشدة (التنوخي، ع)</li>
+<li>أخبار الظراف ومتماجنين (ابن الجوزي، أ)</li>
+<li>نسمة السحر (الحريري، ب)</li>
+<li>جواهر الحكم (ابن يعلى، ع)</li>
+<li>أنيس المسافر وجليس الخاطر (البحراني، ع)</li>
+<li>روائع الكلم في شرح قصار الحكم (العجلوني، ج)</li>
+<li>تحف العقول عن آل الرسول (التستري، ع)</li>
+<li>مِصباحُ المُتَهجِّد وسلاحُ المُتَعَبّد (الزركشي، م)</li>
+<li>عيون الأخبار (ابن قتيبة، ع)</li>
+<li>سمط الآلي (العقاد، ع)</li>
+<li>زهرة الأكم (الحريري، ب)</li>
+<li>بهجة المجالس (ابن حجر، أ)</li>
+<li>الموازنة بين أبي تمام والبحترى (السمرقندي، ع)</li>
+<li>بين الثقافة والسياسة (العتيبي، ط)</li>
+<li>العقد الفريد (الأصفهاني، ع)</li>
+<li>التذكرة الحمدونية (القرطبي، ا)</li>
+<li>المستطرف في كل فن مستظرف (الغزالي، ا)</li>
+<li>إحياء علوم الدين (الغزالي، ا)</li>
+<li>مدارج السالكين (ابن القيم، ا)</li>
+<li>الإمتاع والمؤانسة (التوحيدي، م)</li>
+<li>النساء في لوحات المستشرقين (الباز، ل)</li>
+<li>اتحاف النبلاء بأخبار الثقلاء (الحراني، ع)</li>
+<li>ألف باء في أنواع الآداب (الجاحظ، ع)</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org1e43300" class="outline-3">
+<h3 id="org1e43300">Poetry</h3>
+<div class="outline-text-3" id="text-org1e43300">
+<ul class="org-ul">
+<li>تأبط شرًا</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgcc661fa" class="outline-2">
+<h2 id="orgcc661fa">Chess</h2>
+<div class="outline-text-2" id="text-orgcc661fa">
+<ul class="org-ul">
+<li>A First Book of Morphy (Lawson, D)</li>
+<li>Chess Openings for Dummies (Eade, J)</li>
+<li>7 Deadly Chess Sins (Rowson, J)</li>
+<li>Improve Your Chess Pattern Recognition (Oudeweetering, A)</li>
+<li>The Soviet Chess Primer (Maizelis, I)</li>
+<li>Logical Chess: Move by Move (Chernev, I)</li>
+</ul>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Some of the quotes I liked:
+</p>
+
+<blockquote>
+<p>
+Unfounded belief is pitfall. A People who do not check the validity and effect of their beliefs with reason will suffer or perish.
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+In a democracy those who control the media, and thus the minds of the electorate, have power undreamed by kings or dictators.
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+Propaganda is major component in all power systems, both secular and religious; false propaganda is a major component of unprincipled power systems. All power systems endeavor to convince their subjects that the system is good, just, beneficent and noble, as well as worthy of perpetuation and defense. The more jingoistic propaganda issued, the more suspicious one should be of its truth.
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+There exists no such thing as rights or privileges under the Laws of Nature. The deer being stalked by a hungry lion has no right to life. However, he may purchase life by obedience to nature ordained instincts for vigilance and flight. Similarly, men have no rights to life, liberty or happiness. These circumstances may be purchased by oneself, by ones family, by ones tribe or by ones ancestors, but they are nonetheless purchases and are not rights. Furthermore, the value of these purchases can only be maintained through vigilance and obedience to Natural Law.
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+Tyrannies teach what to think; free men learn how to think.
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+Sexual pornography degrades the Nature of all who are involved. A beautiful nude woman is art; a camera between her knees to explore her private parts is pornography. [I think he meant by pornography at the end as pornography in its root Grecian meaning (dirt)]
+</p>
+</blockquote></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-06-01 Thu 01:04.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

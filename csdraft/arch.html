@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Introduction to Computer architecture</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Introduction to Computer architecture</h1>
+</header>
+
+<div id="outline-container-org78fd2ea" class="outline-2">
+<h2 id="org78fd2ea">Digital Circuits</h2>
+<div class="outline-text-2" id="text-org78fd2ea">
+<p>
+The digital computer is a digital system that performs various computational tasks.  The
+word digital implies that the information in the computer is represented by variables that
+take a limited number of discrete values. These values are processed internally by
+components that can maintain a limited number of discrete states.  The decimal digits 0, 1,
+2, . . . , 9, for example, provide 10 discrete values. The first electronic digital
+computers, developed in the late 1940s, were used primarily for numerical computations. In
+this case the discrete elements are the digits. From this application the term digital
+computer has emerged. In practice, digital computers function more reliably if only two
+states are used. Because of the physical restriction of components, and because human logic
+tends to be binary (i.e., true-or-false, yes-or-no statements), digital components that are
+constrained to take discrete values are further constrained to take only two values and are
+said to be binary.
+</p>
+
+<p>
+Digital computers use the binary number system, which has two digits: 0 and
+1 A binary digit is called a bit. Information is represented in digital computers in
+groups of bits. By using various coding techniques, groups of bits can be made to represent
+not only binary numbers but also other discrete symbols, such as decimal digits or letters
+of the alphabet. By judicious use of binary arrangements and by using various coding
+techniques, the groups of bits are used to develop complete sets of instructions for
+performing various types of computations.
+</p>
+
+
+<p>
+In contrast to the common decimal numbers that employ the base 10 system, binary numbers use
+a base 2 system with two digits: 0 and 1. The decimal equivalent of a binary number can be
+found by expanding it into a power series with a base of 2. For example, the binary number
+1001011 represents a quantity that can be converted to a decimal number by multiplying each
+bit by the base 2 raised to an integer power as follows:
+</p>
+
+<p>
+\(1 \times 26 \times 0 \times 25 \times 0 \times 24 \times 1 \times 23 \times 0 \times 22
+\times 1 \times 21 \times 1 \times 20 = 75\)
+</p>
+
+<p>
+Two basic types of computer architectures are von Neumann architecture and Harvard
+architecture. von Neumann architecture describes a general framework, or structure, that a
+computer’s hardware, programming, and data should follow. Although other structures for
+computing have been devised and implemented, the vast majority of computers in use today
+operate according to the von
+</p>
+
+<p>
+Neumann architecture. Von Neumann envisioned the structure of a computer system as being
+composed of the following components:
+</p>
+
+
+<ol class="org-ol">
+<li>the central arithmetic unit, which today is called the arithmetic-logic unit (ALU). This
+unit performs the computer’s computational and logical functions;</li>
+<li>memory; more specifically, the computer’s main, or fast, memory, such as random access
+memory (RAM);</li>
+<li>a control unit that directs other components of the computer to perform certain actions,
+such as directing the fetching of data or instructions from memory to be processed by the
+ALU; and</li>
+<li>man-machine interfaces; i.e., input and output devices, such as a keyboard for input and
+display monitor for output,</li>
+</ol>
+
+<p>
+Two methods of simplifying Boolean algebraic expressions are the map method and the tabular
+method. The map method is used for functions upto six variables. To manipulate functions of
+a large number of variables, the tabular method also known as the Quine-McCluskey method, is
+used. If a function to be minimized is not in a canonical form, it must first be converted
+into canonical form before applying Quine-McCluskey tabular procedure. Another tabular
+method, known as the iterative consensus method, begins the simplification process even if
+the function is not in a canonical form. The map method provides a simple, straightforward
+procedure for simplifying Boolean expressions. This method may be regarded as a pictorial
+arrangement of the truth table which allows an easy interpretation for choosing the minimum
+number of terms needed to express the function algebraically. The map method is also known
+as the Karnaugh map or K-map.
+</p>
+</div>
+
+
+<div id="outline-container-orgb27fe17" class="outline-3">
+<h3 id="orgb27fe17">Logic Gates</h3>
+<div class="outline-text-3" id="text-orgb27fe17">
+<p>
+Binary information is represented in digital computers by physical quantities called
+signals. Electrical signals such as voltages exist throughout the computer in either one of
+two recognizable states. The two states represent a binary variable that can be equal to 1
+or 0. For example, a particular digital computer may employ a signal of 3 volts to represent
+binary 1 and 0.5 volt to represent binary 0. The input terminals of digital circuits accept
+binary signals of 3 and 0.5 volts and the circuits respond at the output terminals with
+signals of 3 and 0.5 volts to represent binary input and output corresponding to 1 and 0,
+respectively.
+</p>
+
+<p>
+The basic logic gates are AND and inclusive OR with multiple inputs and NOT with a single
+input. Each gate with more than one input is sensitive to either logic 0 or logic 1 input at
+any one of its inputs, generating the output according to its function. For example, a
+multi-input AND gate is sensitive to logic 0 on any one of its inputs, irrespective of any
+values at other inputs.
+</p>
+
+
+<figure id="org67ba992">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Digital_Circuits/2022-11-27_02-02-43_screenshot.png" alt="2022-11-27_02-02-43_screenshot.png">
+
+</figure>
+</div>
+</div>
+<div id="outline-container-orgd1782ba" class="outline-3">
+<h3 id="orgd1782ba">Boolean Algebra</h3>
+<div class="outline-text-3" id="text-orgd1782ba">
+<p>
+The two-element Boolean algebra \(B_2\) among all other \(B_i\) , where \(i \ge 2\), defined as
+switching algebra, is the most useful. Switching algebra consists of two elements
+represented by 1 and 0 as the largest number and the smallest number respectively.
+</p>
+
+
+<p>
+*Boolean algebra is a switching algebra that deals with binary variables and
+logic operations. The variables are designated by letters such as \(A\), \(B\), \(x\), and \(y\). The
+three basic logic operations are AND, OR, and complement. A Boolean function
+can be expressed algebraically with binary variables, the logic operation symbols,
+parentheses, and equal sign. For a given value of the variables, the Boolean function can be either 1 or 0. Consider, for example, the Boolean function
+</p>
+
+
+<p>
+\(F = x \times y`z\)
+</p>
+
+<p>
+The function \(F\) is equal to 1 if \(x\) is 1 or if both \(y`\) and z are equal to 1; \(F\) is equal to
+0 otherwise. But saying that \(y`\) 1 is equivalent to saying that \(y=0\) since \(y`\) is the
+complement of \(y\). Therefore, we may say that \(F\) is equal to 1 if \(x =  1\) or if \(yz =01\).
+The relationship between a function and its binary variables can be represented
+in a truth table.
+</p>
+
+
+
+<figure id="org9f9592c">
+<img src="https://link.storjshare.io/raw/jxvyz6l6swnngzdfg4i7fipsln3q/blog/public/org-media/Digital_Circuits/2022-11-27_02-20-42_screenshot.png" alt="2022-11-27_02-20-42_screenshot.png">
+
+</figure>
+</div>
+<div id="outline-container-orgc21058a" class="outline-4">
+<h4 id="orgc21058a">DeMorgan's Theorm</h4>
+<div class="outline-text-4" id="text-orgc21058a">
+<p>
+DeMorgan’s theorem is very important in dealing with NOR and NAND
+gates. It states that a NOR gate that performs the \((x \times y)`\) function is equivalent to
+the function xy. Similarly, a NAND function can be expressed by either \((xy)`\) or
+\((x` \times y`)\). For this reason the NOR and NAND gates have two distinct graphic
+symbols.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org6b19445" class="outline-3">
+<h3 id="org6b19445">Map Simplification</h3>
+<div class="outline-text-3" id="text-org6b19445">
+<p>
+The complexity of the logic diagram that implements a Boolean function is related directly
+to the complexity of the algebraic expression from which the function is implemented. The
+truth table representation of a function is unique, but the function can appear in many
+different forms when expressed algebraically. The expression may be simplified using the
+basic relations of Boolean algebra. However, this procedure is sometimes difficult because
+it lacks specific rules for predicting each succeeding step in the manipulative process. Two
+methods of simplifying Boolean algebraic expressions are the map method and the tabular
+method. The map method is used for functions upto six variables. To manipulate functions of
+a large number of variables, the tabular method also known as the Quine-McCluskey method, is
+used. If a function to be minimized is not in a canonical form, it must first be converted
+into canonical form before applying Quine-McCluskey tabular
+</p>
+
+<p>
+procedure. Another tabular method, known as the iterative consensus method, begins the
+simplification process even if the function is not in a canonical form. The map method
+provides a simple, straightforward procedure for simplifying Boolean expressions. This
+method may be regarded as a pictorial arrangement of the truth table which allows an easy
+interpretation for choosing the minimum number of terms needed to express the function
+algebraically. The map method is also known as the Karnaugh map or K-map.
+</p>
+</div>
+<div id="outline-container-orgda8420c" class="outline-4">
+<h4 id="orgda8420c">K-Map</h4>
+<div class="outline-text-4" id="text-orgda8420c">
+<p>
+Watch <a href="https://youtu.be/Q8MULkpPFTo">here</a>.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb6b949e" class="outline-3">
+<h3 id="orgb6b949e"><span class="todo TODO">TODO</span> Combinational Circuits</h3>
+<div class="outline-text-3" id="text-orgb6b949e">
+<p>
+Digital logic circuits are basically categorized into two types:
+</p>
+<ol class="org-ol">
+<li>Combinational circuits in which there are no feedback paths from outputs to inputs and there is no memory.</li>
+<li>Sequential circuits in which feedback paths exist from outputs to inputs, and they have memory.</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgb1e992d" class="outline-3">
+<h3 id="orgb1e992d">Digital Components</h3>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-04-30 Sun 00:44.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

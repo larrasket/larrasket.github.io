@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>I Fixed grub without grub</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">I Fixed grub without grub</h1>
+</header><dl class="org-dl">
+<dt>tags</dt><dd>Org files</dd>
+</dl>
+
+<p>
+<b>Hackerman vibes (Windows NT)—.</b> I booted this morning to Windows 10, which I had to install
+ for a scientific purpose (testing malware), and after I finished work and restart (to boot
+ to my main OS) I found out that there was a 'Windows update' that fucked up my grub
+ configurations. GRUB couldn't be found anymore in the boot entries, however I was able to
+ locate it at <code>/EFI/</code> just right to Windows. I don't know much about grub but I think this
+ was only resolvable by a <code>grub-install</code> process. Which is possible using a live USB
+ running a grub instance. However, I didn't have any of my memory drivers since I wasn't
+ home, I was completely desperate that I will have to wait until I find a USB and burn it.
+ Felt terrible. Occasionally I remembered the <code>bcdedit</code>, Windows' sucky editor boot configuration
+ data, and I found that you can do something like:
+</p>
+
+<pre class="example" id="orge5e3a2a">
+bcdedit /set "{X}" path "\EFI\path\to\app.efi"
+</pre>
+
+<p>
+is possible to be executed, so I said: why not change the windows boot manager path and
+link it to grub instead? So, we make windows entry point to grub instead! Sounded like a
+crazy idea, but why not?
+</p>
+
+<p>
+I had to know the path for my grub, (I could anticipate it, but when dealing with boot
+configurations, mistakes are expenses). Windows doesn't let you to open <code>/EFI</code>, however
+there is a trick:
+</p>
+
+<pre class="example" id="org7b1910b">
+mountvol U: /S
+U:
+</pre>
+<p>
+Now, browse the EFI partition and find the grub EFI location. Replace it in the antecedent
+command. And done!
+</p>
+
+
+<div class="PREVIEW" id="org6e53082">
+<p>
+It wasn't a big deal but I felt great that I could do it without reinstalling grub.
+</p>
+
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Salih Muhammed. Last build date: 2023-06-01 Thu 01:20.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

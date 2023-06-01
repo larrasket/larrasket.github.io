@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Posts Archive</title>
+<meta name="author" content="Saleh" />
+<meta name="generator" content="Org Mode" />
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+<meta charset="utf-8">
+<link rel="stylesheet" href="/style/main.css"/>
+
+
+<script async data-id="101390423" src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101390423ns.gif" /></p></noscript>
+
+<script>
+  window.onload = function() {
+    // get the current URL path
+    var path = window.location.pathname;
+
+    // select all navigation links
+    var links = document.querySelectorAll('#preamble .center li a');
+
+    // iterate through each link and replace the link with a span if it matches the current path
+    links.forEach(function(link) {
+      // compare the link's href attribute with the current path
+      if (link.getAttribute('href') === path) {
+        var span = document.createElement('span');
+        span.innerHTML = link.innerHTML;
+        span.classList.add('current');
+        link.parentNode.replaceChild(span, link);
+      }
+    });
+  };
+</script>
+
+<script>
+function toggleImage(link, src) {
+  var container = link.nextElementSibling;
+  if (container.style.display === "none") {
+    container.style.display = "block";
+    link.textContent = "Click here again to hide";
+  } else {
+    container.style.display = "none";
+    link.textContent = "Click here again to display it";
+  }
+  event.preventDefault();
+}
+</script>
+
+	<style>
+		.hide {
+			display: none;
+		}
+	</style>
+	<script>
+		function hideDates() {
+			var dates = document.querySelectorAll('p, i');
+			for (var i = 0; i < dates.length; i++) {
+				var dateRegex = /\(\d{4}\/\d{2}\/\d{2}\)/g;
+				if (dateRegex.test(dates[i].innerHTML)) {
+					dates[i].innerHTML = dates[i].innerHTML.replace(dateRegex, '<span class="hide">$&</span>');
+				}
+			}
+			document.getElementById("show-link").style.display = "inline";
+			document.getElementById("hide-link").style.display = "none";
+		}
+
+		function showDates() {
+			var dates = document.getElementsByClassName("hide");
+			for (var i = 0; i < dates.length; i++) {
+				dates[i].style.display = "inline";
+			}
+			document.getElementById("hide-link").style.display = "inline";
+			document.getElementById("show-link").style.display = "none";
+		}
+	</script>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<header>
+
+</header>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Posts Archive</h1>
+</header>
+
+<div id="outline-container-org2b56dc6" class="outline-2">
+<h2 id="org2b56dc6"><a href="posts/comfort.html">(2023-05-07) "Where you fear, there is your mission"</a></h2>
+<div class="outline-text-2" id="text-org2b56dc6">
+<p>
+On the culture of comfort.
+</p>
+</div>
+</div>
+<div id="outline-container-orgc598a83" class="outline-2">
+<h2 id="orgc598a83"><a href="posts/email.html">(2023-04-07) Emails and Privacy</a></h2>
+<div class="outline-text-2" id="text-orgc598a83">
+<p>
+My opinion on the obsoleteness of private email services.
+</p>
+</div>
+</div>
+<div id="outline-container-org992d228" class="outline-2">
+<h2 id="org992d228"><a href="posts/prelude.html">(2023-03-24) A Prelude Over Mathematics</a></h2>
+<div class="outline-text-2" id="text-org992d228">
+<p>
+The following is an inverted part from a long note I've been working on recently
+named "Notes on Mathematics", however not ready yet to be published (can't be
+sure if it will ever be), but I felt the need to publish this part however.
+</p>
+</div>
+</div>
+<div id="outline-container-orgf2f0963" class="outline-2">
+<h2 id="orgf2f0963"><a href="posts/anthology_of_les_passions_de_l_ame.html">(2023-03-11) Anthology of Les Passions de l'âme</a></h2>
+<div class="outline-text-2" id="text-orgf2f0963">
+<p>
+René Descartes contributes to a long tradition of philosophical inquiry into the
+nature of "the passions", I find inspiration in many of Descartes writings,
+however I hesitate to share them because I don't find reading them separately
+will add actually any value; however I fonund this work "Les Passions de l'âme"
+has many useful independent points. Following is an anthology for this great
+work. (Arabic translations are provided!)
+</p>
+</div>
+</div>
+<div id="outline-container-orgdaf27f5" class="outline-2">
+<h2 id="orgdaf27f5"><a href="posts/pity.html">(2023-02-14) Nietzsche on The Desire to Excite Pity</a></h2>
+<div class="outline-text-2" id="text-orgdaf27f5">
+<p>
+A life principle that I always try to live by is: "reasons not feelings", humans
+are not cleaver in accepting that naturally, that nature needs taming to accept
+such a principle, and I believe that chess is a powerful tool to do that.
+</p>
+</div>
+</div>
+<div id="outline-container-org75f03f6" class="outline-2">
+<h2 id="org75f03f6"><a href="posts/notes.html">(2023-02-02) Extemporaneously Three Notes</a></h2>
+<div class="outline-text-2" id="text-org75f03f6">
+<p>
+On stupidity, chess, and rejection.
+</p>
+</div>
+</div>
+<div id="outline-container-org76903aa" class="outline-2">
+<h2 id="org76903aa"><a href="posts/me.html">(2023-01-28) "Literally me"</a></h2>
+<div class="outline-text-2" id="text-org76903aa">
+<p>
+"He is literally me." Says someone who is stuck in an internet bandwagon.
+</p>
+</div>
+</div>
+<div id="outline-container-orge66b083" class="outline-2">
+<h2 id="orge66b083"><a href="posts/monitor.html">(2023-01-23) A Cursed Journey of Getting a Third Monitor to Work</a></h2>
+<div class="outline-text-2" id="text-orge66b083">
+<p>
+Isn't a shame that this place of the internet is supposed to be a blog yet doesn't contain
+blogs but obscure philosophies?
+</p>
+</div>
+</div>
+<div id="outline-container-org2d04176" class="outline-2">
+<h2 id="org2d04176"><a href="posts/eulogy.html">(2022-12-24) Nietzsche on Eulogy</a></h2>
+<div class="outline-text-2" id="text-org2d04176">
+<p>
+I have mentioned before my perspectives on the social media dilemma <a href="conditioning.html">here</a> (I don't recommend
+reading it if you did not, I wrote it fanatically 3 years ago), my clue was correlated to the
+<a href="https://www.urbandictionary.com/define.php?term=Upcummie">upcummie</a> pleasure that comes from someone's else applause on us, which translates to
+something like upvotes or likes on the internet, and how we're being conditioned to it just
+like a dumb Pavlov's Dog.
+</p>
+</div>
+</div>
+<div id="outline-container-org4111606" class="outline-2">
+<h2 id="org4111606"><a href="posts/lonecomming.html">(2022-11-19) Thuiskomst—A Return</a></h2>
+<div class="outline-text-2" id="text-org4111606">
+<p>
+The following poem by Fredrick Nietzsche, from Thus, Spoke Zarathustra made me sense some very
+melodious feelings; that one that teleportation yields sometimes which, by the way, an
+ingrained humanistic thing; it gentles us the feel of an affable existence. This is an
+adapted Arabic translation (I feel more poetic in Arabic). <i>Followed by the English version</i>.
+</p>
+</div>
+</div>
+<div id="outline-container-orgb827fd6" class="outline-2">
+<h2 id="orgb827fd6"><a href="posts/ohne.html">(2022-11-10) "Ohne Heimat" (Without a Homeland)</a></h2>
+<div class="outline-text-2" id="text-orgb827fd6">
+<p>
+"Yesterday, during thoughts about my homeland, I wrote a little poem in which I mused how it
+might be for one who didn't have a homeland"
+</p>
+</div>
+</div>
+<div id="outline-container-org305ed76" class="outline-2">
+<h2 id="org305ed76"><a href="posts/Nietzsche.html">(2022-08-31) Nietzsche's epitaph–. A Requiem for Everyone &amp; Nobody</a></h2>
+<div class="outline-text-2" id="text-org305ed76">
+<p>
+It was a thunderbolt reading Nietzsche's collected poems for the first time, felt like
+discovering a revelation of his, also over the time and over grasping Nietzsche's
+'philosophy' more and more, it turns to make any verselet standing along with, let's say, a
+piece from Ecce Homo, as a very atypical thing.
+</p>
+</div>
+</div>
+<div id="outline-container-orge9a6123" class="outline-2">
+<h2 id="orge9a6123"><a href="posts/Pilgrimage.html">(2022-03-22) Childe Harold's Pilgrimage</a></h2>
+<div class="outline-text-2" id="text-orge9a6123">
+<p>
+Perhaps Daingerfield couldn't show the same 'proclamation of opprobrium' for those who will
+never sense the toils nor the summits, as Byron did. However, I could discern every iota of
+pride and glory in the painting very well, just as in Byron's words.
+</p>
+</div>
+</div>
+<div id="outline-container-org2eafd05" class="outline-2">
+<h2 id="org2eafd05"><a href="posts/kalam.html">(2021-09-29) Beyond Decliamists and Intellectuals</a></h2>
+<div class="outline-text-2" id="text-org2eafd05">
+<p>
+There is a common ground between the meaning of a 'declaimist' and a
+non-intellectual that you see on daily basis especially in average
+social media site, I don't want to single out a live example but let's
+take \(x\) and \(let\) \(x\) be right-wing social media intellectual who
+has more than 100k loyal follower of his medieval instructions about
+miscarriage or the sexual orientations, if one day \(x\) figured out, or
+even less revolutionary, let's say he'd found that some of his beliefs
+are either wrong or obsolete, what would he do? I can tell the answer is
+cognitive dissonance tends to be ended by denial of facts, trying to
+stick to what he already believes (just like Chatelier's principle
+object), he is not only required to comprehend whatever he believes in,
+but his loyal fellows also are waiting for his directive, he won't let
+them down. It's getting worse in cases in which x has already a lot of
+bestselling publications which in he insures his points. Of course,
+within time numerous intellectuals are getting a cognitive flexibility
+enables them to change their thoughts smoothly, however, the majority
+won't.
+</p>
+</div>
+</div>
+<div id="outline-container-org972a58d" class="outline-2">
+<h2 id="org972a58d"><a href="posts/conection.html">(2021-05-22) “Connection” and “Meant-To-Be”</a></h2>
+<div class="outline-text-2" id="text-org972a58d">
+<p>
+2 concepts that seem really nice and agreeable, but I find are psychically terrible, are
+“connection” and “meant-to-be”.
+</p>
+</div>
+</div>
+<div id="outline-container-orgc3e5692" class="outline-2">
+<h2 id="orgc3e5692"><a href="posts/desto.html">(2020-12-11) Humiliated and Insulted by Fyodor Dostoevsky</a></h2>
+<div class="outline-text-2" id="text-orgc3e5692">
+<p>
+This is my re-reading of "The Insulted and Injured" as part of my
+attempt to complete the complete work of Feydor Dostoyevsky. I had read
+the novel for a very long time, when I began reading Dostoevsky, and at
+that time I did not have the literary interest that makes me search
+about this novel, and I get enough for saying: It is a good novel.
+</p>
+</div>
+</div>
+<div id="outline-container-orgcee9b5f" class="outline-2">
+<h2 id="orgcee9b5f"><a href="posts/aisha.html">(1980-10-03) Shia Views of Aisha</a></h2>
+<div class="outline-text-2" id="text-orgcee9b5f">
+<p>
+(No preview)
+</p>
+</div>
+</div>
+<div id="outline-container-org48c2d91" class="outline-2">
+<h2 id="org48c2d91">Drafts</h2>
+<div class="outline-text-2" id="text-org48c2d91">
+</div>
+<div id="outline-container-org45425e7" class="outline-3">
+<h3 id="org45425e7"><a href="drafts/news.html">(2023-01-19) Where to get news?</a></h3>
+<div class="outline-text-3" id="text-org45425e7">
+<p>
+And why this blog does not provide RSS/Atom feeds or notification updates?
+</p>
+</div>
+</div>
+<div id="outline-container-org8230bf3" class="outline-3">
+<h3 id="org8230bf3"><a href="drafts/chess.html">(2022-12-06) Chess and Brains</a></h3>
+<div class="outline-text-3" id="text-org8230bf3">
+<p>
+Several enthusiastic historical practitioners of chess have espoused their beliefs that the
+skills associated with chess can be extrapolated to external scenarios. One of the first
+documented cases of an intellectual asserting that connections exist between chess
+proficiency and other skills is Benjamin Franklin’s 1750 essay The Morales of Chess. In this
+essay, Franklin hypothesized that “The game of Chess is not merely an idle amusement.
+Several very valuable qualities of the mind, useful in the course of human life, are to be
+acquired or strengthened by it, so as to become habits, ready on all occasions.” He then
+enumerated these specific qualities, listing them as “1. Foresight… 2. Circumspection… 3.
+Caution… [and] lastly… the habit of not being discouraged by present bad appearances in the
+state of our affairs.”
+</p>
+</div>
+</div>
+<div id="outline-container-org39b6df4" class="outline-3">
+<h3 id="org39b6df4"><a href="drafts/crisis.html">(2022-11-26) A Guide to Existential Crisis, v1</a></h3>
+<div class="outline-text-3" id="text-org39b6df4">
+<p>
+<i>I found the following text file in some obscure online corner. I'm posting it here that it
+might help someone and for archiving purpose.</i>
+</p>
+</div>
+</div>
+<div id="outline-container-org27f6d80" class="outline-3">
+<h3 id="org27f6d80"><a href="drafts/mediacontrol.html">(2021-08-15) Regarding the 'Neo-Democracy', Media, and the Public Opinion in the United States</a></h3>
+<div class="outline-text-3" id="text-org27f6d80">
+<p>
+The role of the media in contemporary politics forces us to ask what
+kind of a world and what kind of a society we want to live in, and in
+particular in what sense of democracy do we want this to be a democratic
+society? Let me begin by counter-posing two different conceptions of
+democracy. One conception of democracy has it that a democratic society
+is one in which the public has the means to participate in some
+meaningful way in the management of their own affairs and the means of
+information are open and free. If you look up democracy in the
+dictionary you'll get a definition something like that.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr>
+<a id="homeLink" style="text-decoration: none;" accesskey="h" href="/index.html">Navigate to home</a>
+<script>
+    var currentPage = window.location.href;
+
+    var lastSlashIndex = currentPage.lastIndexOf('/');
+    var currentPath = currentPage.substring(lastSlashIndex + 1);
+
+    if (currentPath === "index.html" || currentPath === '') {
+      var homeLink = document.getElementById("homeLink");
+      homeLink.style.display = "none";
+    }
+</script>
+
+<p> Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6). Author: Saleh. Last build date: 2023-05-23 Tue 09:02.</p>
+</div>
+</div>
+</div>
+</body>
+</html>
