@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>What is anthologies?</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#ffffff">
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="viewport" content= "width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style/toc.css">
+  <link rel="stylesheet" href="/style/tufte.css">
+  <link rel="stylesheet" href="/style/main.css">
+
+
+
+
+  <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
+  <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+</head>
+<body>
+</body>
+</html>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="preamble" class="status">
+  <div class="header" style="
+    display: block !important;!i;!;
+">
+<a href="/">
+<h1 class="title" style="
+margin-block-start: auto;
+    color: black;
+">Flectere si nequeo superos,<br><span class="subtitle" style="font-size: smaller; color: gray; font-style: italic;">acheronta movebo</span></h1>
+
+      </a>
+
+<hr class="header-divider" style="margin-block-end: -1em;">
+
+  </div>
+</div>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">What is anthologies?</h1>
+</header><p>
+What&rsquo;s this? This page —like many of other programmatically created pages on this
+website— is the reaper of doing a zettelkasten-like methodology while reading
+inside GNU/Emacs. I like to take notes of my favorite excerpt/quotes while
+reading, I used to share those back in the day when I used social media,
+currently I do not publish them. From time to time I append them on the top of
+<a href="stack.html#x3cceno02wj0">TL;DRs</a> entities, not very often though. After adopting Emacs as my main reading
+platform, I started to build the habit of tagging things that I might like to
+keep as a nice excerpt with &ldquo;@anthology&rdquo; tag. Today I thought why not gather
+those notes together? And here we go:
+</p>
+
+<pre class="code"><code><span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">defun</span> <span style="color: #80bcb6;">salih/print-text-nodes-anth</span> <span style="color: #ab98b5;">()</span>
+  <span style="color: #ab98b5;">(</span><span style="color: #4d9391; font-weight: bold;">let*</span> <span style="color: #5D8272;">(</span><span style="color: #807f96;">(</span>nodes <span style="color: #6bd9db;">(</span><span style="color: #ab98b5; font-weight: bold;">sort</span> <span style="color: #ab98b5;">(</span><span style="color: #80bcb6;">salih/get-back-nodes</span> <span style="color: #6fb593;">"3xedczc0i2k0"</span><span style="color: #ab98b5;">)</span>
+                      <span style="color: #80bcb6;">#'</span><span style="color: #4d9391; font-weight: bold;">salih/compare-org-id</span><span style="color: #6bd9db;">)</span><span style="color: #807f96;">)</span>
+         <span style="color: #807f96;">(</span>strings <span style="color: #80bcb6;">'</span><span style="color: #6bd9db;">()</span><span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span>
+    <span style="color: #5D8272;">(</span><span style="color: #4d9391; font-weight: bold;">while</span> nodes <span style="color: #807f96;">(</span><span style="color: #4d9391; font-weight: bold;">push</span> <span style="color: #6bd9db;">(</span><span style="color: #80bcb6;">salih/mkinclude</span> <span style="color: #ab98b5;">(</span><span style="color: #ab98b5; font-weight: bold;">car</span> nodes<span style="color: #ab98b5;">)</span> t<span style="color: #6bd9db;">)</span>
+                       strings<span style="color: #807f96;">)</span>
+           <span style="color: #807f96;">(</span><span style="color: #4d9391; font-weight: bold;">setq</span> nodes <span style="color: #6bd9db;">(</span><span style="color: #ab98b5; font-weight: bold;">cdr</span> nodes<span style="color: #6bd9db;">)</span><span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span>
+    <span style="color: #5D8272;">(</span><span style="color: #ab98b5; font-weight: bold;">mapconcat</span> <span style="color: #80bcb6;">'</span><span style="color: #4d9391; font-weight: bold;">identity</span> strings <span style="color: #6fb593;">""</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+</code></pre>
+
+<pre class="code"><code><span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">defun</span> <span style="color: #80bcb6;">salih/mkinclude</span> <span style="color: #ab98b5;">(</span>node remove-title <span style="color: #cd9575;">&amp;optional</span> astr<span style="color: #ab98b5;">)</span>
+  <span style="color: #ab98b5;">(</span><span style="color: #4d9391; font-weight: bold;">unless</span> astr
+    <span style="color: #5D8272;">(</span><span style="color: #4d9391; font-weight: bold;">setq</span> astr <span style="color: #6fb593;">"**"</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span>
+  <span style="color: #ab98b5;">(</span><span style="color: #4d9391; font-weight: bold;">let*</span> <span style="color: #5D8272;">(</span><span style="color: #807f96;">(</span>id <span style="color: #6bd9db;">(</span><span style="color: #ab98b5; font-weight: bold;">org-roam-node-id</span> node<span style="color: #6bd9db;">)</span><span style="color: #807f96;">)</span>
+         <span style="color: #807f96;">(</span>entry <span style="color: #6bd9db;">(</span><span style="color: #ab98b5; font-weight: bold;">org-roam-node-file</span> <span style="color: #ab98b5;">(</span><span style="color: #ab98b5; font-weight: bold;">org-roam-node-from-id</span> id<span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span><span style="color: #807f96;">)</span>
+         <span style="color: #807f96;">(</span>cite <span style="color: #6bd9db;">(</span><span style="color: #ab98b5; font-weight: bold;">file-name-sans-extension</span> <span style="color: #ab98b5;">(</span><span style="color: #ab98b5; font-weight: bold;">file-name-nondirectory</span> entry<span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span><span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span>
+    <span style="color: #5D8272;">(</span><span style="color: #4d9391; font-weight: bold;">if</span> remove-title
+        <span style="color: #807f96;">(</span><span style="color: #ab98b5; font-weight: bold;">format</span> <span style="color: #6fb593;">"#+INCLUDE: \"%s::#%s\" :only-contents t\n\n\n \n/Derived from/ [cite:@%s], p. %d. Appeared: %s\n-----\n"</span>
+                entry
+                id
+                cite
+                <span style="color: #6bd9db;">(</span>first <span style="color: #ab98b5;">(</span><span style="color: #ab98b5; font-weight: bold;">read</span> <span style="color: #5D8272;">(</span><span style="color: #ab98b5; font-weight: bold;">cdr</span> <span style="color: #807f96;">(</span><span style="color: #ab98b5; font-weight: bold;">assoc</span> <span style="color: #6fb593;">"NOTER_PAGE"</span> <span style="color: #6bd9db;">(</span><span style="color: #ab98b5; font-weight: bold;">org-roam-node-properties</span> node<span style="color: #6bd9db;">)</span><span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+                <span style="color: #6bd9db;">(</span><span style="color: #ab98b5; font-weight: bold;">format-time-string</span> <span style="color: #6fb593;">"%Y-%m-%d (%H:%M)"</span> <span style="color: #ab98b5;">(</span><span style="color: #ab98b5; font-weight: bold;">cdr</span> <span style="color: #5D8272;">(</span><span style="color: #ab98b5; font-weight: bold;">org-id-decode</span>  <span style="color: #807f96;">(</span><span style="color: #ab98b5; font-weight: bold;">org-roam-node-id</span> node<span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span><span style="color: #807f96;">)</span>
+
+        <span style="color: #807f96;">(</span><span style="color: #ab98b5; font-weight: bold;">format</span> <span style="color: #6fb593;">"#+INCLUDE: \"%s::#%s\" :only-contents nil\n"</span>
+            entry
+            id<span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+</code></pre>
+
+<p>
+It&rsquo;s a part of my <a href="https://sr.ht/~lr0/tadwin.el/">tadwin.el: Emacs publishing blog system</a>. Some of those notes
+are not OCR&rsquo;d rather written by hand, please inform me of any typos (find my
+email at the footer of the home page). After Each note you should find a
+bibliographical reference to the source, check the corresponding source in the
+bibliography at the end of the page.
+</p>
+
+<p>
+Each citation contains a number, notated with no. (for page/section
+number) This is taken from a Lisp value that&rsquo;s recorded in my notes.  Here is a
+raw note example <code>:NOTER_PAGE: (53 . 0.5005149330587024)</code>.  It&rsquo;s important to
+note that this Lisp value is taken from the document numbering not the print,
+more importantly, it does not refer to a reference number. For example I&rsquo;d
+usually quote poetry with piece number rather than the page (as it&rsquo;s easier to
+trace in different prints), but here it&rsquo;s denoted by the pageg.
+</p>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr style="
+    clear: both;
+">
+
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 31.0.50 (<a href="https://orgmode.org">Org</a> mode 9.7.11). Written by: Salih Muhammed, by the date of: 2024-04-26 Fri 12:25. Last build date: 2024-07-04 Thu 21:55.</p>
+
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,1895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Introduction to The Relational Language</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#ffffff">
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="viewport" content= "width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style/toc.css">
+  <link rel="stylesheet" href="/style/tufte.css">
+  <link rel="stylesheet" href="/style/main.css">
+
+
+
+
+  <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
+  <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+</head>
+<body>
+</body>
+</html>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://fastly.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="preamble" class="status">
+  <div class="header" style="
+    display: block !important;!i;!;
+">
+<a href="/">
+<h1 class="title" style="
+margin-block-start: auto;
+    color: black;
+">Flectere si nequeo superos,<br><span class="subtitle" style="font-size: smaller; color: gray; font-style: italic;">acheronta movebo</span></h1>
+
+      </a>
+
+<hr class="header-divider" style="margin-block-end: -1em;">
+
+  </div>
+</div>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Introduction to The Relational Language</h1>
+</header><div class="tag" id="orgb72ca5e">
+<p>
+This section was labeled under, or is related to <a href="../t/programming.html#4u5664n02wj0">programming</a>.
+</p>
+
+</div>
+<div id="outline-container-orgd729ee6" class="outline-2">
+<h2 id="orgd729ee6">Sequel, The Structured Query Language</h2>
+<div class="outline-text-2" id="text-orgd729ee6">
+<div class="PREVIEW" id="org54ae360">
+<p>
+IBM developed the original version of SQL, originally called Sequel, as part of the
+System R project in the early 1970s. The Sequel language has evolved since then, and its
+name has changed to SQL (Structured Query Language). Many products now support
+the SQL language. SQL has clearly established itself as the standard relational database
+language.
+</p>
+
+</div>
+
+
+<p>
+The SQL language has several parts:
+</p>
+
+<ul class="org-ul">
+<li><b>Data-definition language (DDL)</b>. The SQL DDL provides commands for defining relation
+schemas, deleting relations, and modifying relation schemas.</li>
+<li><b>Data-manipulation language (DML)</b>. The SQL DML provides the ability to query information
+from the database and to insert tuples into, delete tuples from, and modify tuples in the
+database.</li>
+<li><b>Integrity</b>. The SQL DDL includes commands for specifying integrity constraints that the
+data stored in the database must satisfy. Updates that violate integrity constraints are
+disallowed.</li>
+<li><b>View definition.</b> The SQL DDL includes commands for destining views.</li>
+<li><b>Transaction control.</b> SQL includes commands for specifying the beginning and end points of
+transactions.</li>
+<li><b>Embedded SQL and dynamic SQL.</b> Embedded and dynamic SQL define how SQL statements can be
+embedded within general-purpose programming languages, such as C, C++, and Java.</li>
+<li><b>Authorization.</b> The SQL DDL includes commands for specifying access rights to relations and views.</li>
+</ul>
+
+
+<p>
+The set of relations in a database are specified using a data-definition language (DDL). The
+SQL DDL allows specification of not only a set of relations, but also information about each
+relation, including:
+</p>
+
+<ul class="org-ul">
+<li>The schema for each relation.</li>
+<li>The types of values associated with each attribute.</li>
+<li>The integrity constraints.</li>
+<li>The set of indices to be maintained for each relation.</li>
+<li>The security and authorization information for each relation.</li>
+<li>The physical storage structure of each relation on disk.</li>
+</ul>
+</div>
+<div id="outline-container-org16e82af" class="outline-3">
+<h3 id="org16e82af">Pre-theory</h3>
+<div class="outline-text-3" id="text-org16e82af">
+<p>
+Before going through any SQL flavor, let us take a look at the thoery prerequisites.
+</p>
+</div>
+<div id="outline-container-org8d2c421" class="outline-4">
+<h4 id="org8d2c421">Set Theory</h4>
+<div class="outline-text-4" id="text-org8d2c421">
+<p>
+Set theory, which originated with the mathematician Georg Cantor, is one of the mathematical
+branches on which the relational model is based. Cantor’s definition of a set follows:
+</p>
+
+<div class="epigraph"><blockquote>
+<p>
+By a “set” we mean any collection M into a whole of definite, distinct objects m
+(which are called the “elements” of M) of our perception or of our thought.
+</p>
+
+<p>
+— <i>Joseph W. Dauben and Georg Cantor (Princeton University Press, 1990)</i>
+</p>
+
+</blockquote></div>
+
+<p>
+Every word in the definition has a deep and crucial meaning. The definitions of a set and
+set membership are axioms that are not supported by proofs. Each element belongs to a
+universe, and either is or is not a member of the set.
+</p>
+
+<p>
+Let’s start with the word whole in Cantor’s definition. A set should be considered a single
+entity.  Your focus should be on the collection of objects as opposed to the individual
+objects that make up the collection. Later on, when you write T-SQL queries against tables
+in a database (such as a table of employees), you should think of the set of employees as a
+whole rather than the individual employees. This might sound trivial and simple enough, but
+apparently many programmers have difficulty adopting this way of thinking.
+</p>
+
+
+<p>
+The word distinct means that every element of a set must be unique. Jumping ahead to tables
+in a database, you can enforce the uniqueness of rows in a table by defining key
+constraints. Without a key, you won’t be able to uniquely identify rows, and therefore the
+table won’t qualify as a set. Rather, the table would be a multiset or a bag.
+</p>
+</div>
+</div>
+<div id="outline-container-orgea47323" class="outline-4">
+<h4 id="orgea47323">Predicate Logic</h4>
+<div class="outline-text-4" id="text-orgea47323">
+<p>
+Predicate logic, is another branch of mathematics on which the relational model is based.
+Dr. Edgar F. Codd, in creating the relational model, had the insight to connect predicate
+logic to both management and querying of data. Loosely speaking, a predicate is a property
+or an expression that either holds or doesn’t hold—in other words, is either true or false.
+The relational model relies on predicates to maintain the logical integrity of the data and
+define its structure. One example of a predicate used to enforce integrity is a constraint
+defined in a table called Employees that allows only employees with a salary greater than
+zero to be stored in the table. The predicate is “salary greater than zero” (T-SQL
+expression: \(salary > 0\)).
+</p>
+
+<p>
+In set theory, you can use predicates to define sets. This is helpful because you can’t
+always define a set by listing all its elements (for example, infinite sets), and sometimes
+for brevity it’s more convenient to define a set based on a property. As an example of an
+infinite set defined with a predicate, the set of all prime numbers can be defined with the
+following predicate: “x is a positive integer greater than 1 that is divisible only by 1 and
+itself.” For any specified value, the predicate is either true or not true. The set of all
+prime numbers is the set of all elements for which the predicate is true. As an example of a
+finite set defined with a predicate, the set {0, 1, 2, 3, 4, 5, 6, 7, 8, 9} can be defined
+as the set of all elements for which the following predicate holds true: “x is an integer
+greater than or equal to 0 and smaller than or equal to 9.”
+</p>
+</div>
+</div>
+<div id="outline-container-org605fc30" class="outline-4">
+<h4 id="org605fc30">Propositions, Predicates, and Relations</h4>
+<div class="outline-text-4" id="text-org605fc30">
+<p>
+The common belief that the term relational stems from relationships between tables is
+incorrect. “Relational” actually pertains to the mathematical term relation. In set theory,
+a relation is a representation of a set. In the relational model, a relation is a set of
+related information, with the counterpart in SQL being a table—albeit not an exact
+counterpart. A key point in the relational model is that a single relation should represent
+a single set (for example, Customers). It is interesting to note that operations on
+relations (based on relational algebra) result in a relation (for example, a join between
+two relations).
+</p>
+
+<p>
+When you design a data model for a database, you represent all data with relations (tables).
+You start by identifying propositions that you will need to represent in your database. A
+proposition is an assertion or a statement that must be true or false. For example, the
+statement, “Employee Itzik BenGan was born on February 12, 1971, and works in the IT
+department” is a proposition. If this proposition is true, it will manifest itself as a row
+in a table of Employees. A false proposition simply won’t manifest itself. This presumption
+is known as the close world assumption (CWA).
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orge115862" class="outline-3">
+<h3 id="orge115862">Basic Types</h3>
+<div class="outline-text-3" id="text-orge115862">
+<p>
+The SQL standard supports a variety of built-in types, including:
+</p>
+
+<ul class="org-ul">
+<li><code>char</code> \((n)\): A fixed-length character string with user-specified length <code>n</code>. The full form,
+character, can be used instead.<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle"/><span class="sidenote">
+SQL also provides the <code>nvarchar</code> type to store multilingual data using the Unicode
+representation. However, many databases allow Unicode (in the UTF-8 representation) to be
+stored even in varchar types.
+</span></li>
+<li><code>varchar</code> \((n)\): A variable-length character string with user-specified maximum length <code>n</code>. The
+full form, character varying, is equivalent</li>
+<li><code>int</code>: An integer (a finite subset of the integers that is machine dependent). The full
+form, integer, is equivalent.</li>
+<li><code>smallint</code>: A small integer (a machine-dependent subset of the integer type).</li>
+<li><code>numeric</code> \((p, d)\): A fixed-point number with user-specified precision. The number consists of \(p\)
+digits (plus a sign), and \(d\) of the \(p\) digits are to the right of the decimal point. Thus,
+<code>numeric(3,1)</code> allows 44.5 to be stored exactly, but neither 444.5 nor 0.32 can be stored
+exactly in a field of this type.</li>
+<li><code>float(n)</code>: A floating-point number with precision of at least <code>n</code> digits.</li>
+</ul>
+
+<p>
+Each type may include a special value called the <code>null</code> value. A null value indicates an
+absent value that may exist but be unknown or that may not exist at all. In certain cases,
+we may wish to prohibit null values from being entered, as we shall see shortly.
+</p>
+
+<p>
+You can understand the difference between <code>char</code> and <code>varchar</code> this way:
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">Create</span> <span style="color: #4d9391; font-weight: bold;">table</span> <span style="color: #80bcb6;">temp</span>
+(City <span style="color: #cd9575;">CHAR</span>(<span style="color: #cd5c60;">10</span>),
+Street <span style="color: #cd9575;">VARCHAR</span>(<span style="color: #cd5c60;">10</span>));
+
+<span style="color: #4d9391; font-weight: bold;">Insert</span> <span style="color: #4d9391; font-weight: bold;">into</span> temp
+<span style="color: #4d9391; font-weight: bold;">values</span>(<span style="color: #6fb593;">'Pune'</span>,<span style="color: #6fb593;">'Oxford'</span>);
+
+<span style="color: #4d9391; font-weight: bold;">select</span> <span style="color: #4d9391; font-weight: bold;">length</span>(city), <span style="color: #4d9391; font-weight: bold;">length</span>(street) <span style="color: #4d9391; font-weight: bold;">from</span> temp;
+</code></pre>
+
+<p>
+output will be:
+</p>
+<pre class="example" id="org4399698">
+length(City)          Length(street)
+10                    6
+</pre>
+<p>
+It&rsquo;s obvious. Very similar to hard disk storage methods.
+</p>
+
+<p>
+Each type may include a special value called the <code>null</code> value. A <code>null</code> value indicates an
+absent value that may exist but be unknown or that may not exist at all. In certain cases,
+we may wish to prohibit null values from being entered, as we shall see shortly.
+</p>
+</div>
+</div>
+<div id="outline-container-org38d8d70" class="outline-3">
+<h3 id="org38d8d70">Schema Definition</h3>
+<div class="outline-text-3" id="text-org38d8d70">
+<p>
+We define an SQL elation by using the create table command. The following command creates a
+relation <i>department</i> in the database:
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">create</span> <span style="color: #4d9391; font-weight: bold;">table</span> <span style="color: #80bcb6;">department</span>
+(
+    dept_name <span style="color: #cd9575;">varchar</span> (<span style="color: #cd5c60;">20</span>),
+    building <span style="color: #cd9575;">varchar</span> (<span style="color: #cd5c60;">15</span>),
+    budget <span style="color: #cd9575;">numeric</span> (<span style="color: #cd5c60;">12</span>,<span style="color: #cd5c60;">2</span>),
+    <span style="color: #4d9391; font-weight: bold;">primary</span> <span style="color: #4d9391; font-weight: bold;">key</span> (dept_name)
+);
+</code></pre>
+
+<p>
+The relation created above has three attributes, <i>dept_name</i>, which is a character string of
+maximum length 20, building, which is a character string of maximum length 15, and budget,
+which is a number with 12 digits in total, two of which are after the decimal point. The
+<b>create table</b> command also specifies that the dept name attribute is the primary key of the
+department relation.
+</p>
+
+<p>
+The general form of writing this kind of schemas looks like this:
+</p>
+
+<pre class="example" id="orgae65bf4">
+create table r
+    (A1 D1 ,
+    A2 D2 ,
+    ...,
+    An Dn ,
+    ⟨integrity-constraint1 ⟩,
+    …,
+    ⟨integrity-constraintk ⟩);
+</pre>
+
+<p>
+where \(r\) is the name of the relation, each \(A_{i}\) is the name of an attribute in the schema of
+relation \(r\), and \(D_{i}\) is the domain of attribute \(A_{i}\) ; that is, \(D_{i}\) specifies the type of attribute
+\(A_{i}\) along with optional constraints that restrict the set of allowed values for \(A_{i}\).
+</p>
+
+<p>
+The semicolon shown at the end of the create table statements, as well as at the
+end of other SQL statements later in this chapter, is optional in many SQL
+implementations. In Microsoft&rsquo;s &rsquo;s implementation, it&rsquo;s replaced with <code>GO</code>
+command.
+</p>
+
+<p>
+SQL supports a number of different integrity constraints. In this section, we discuss
+only a few of them:
+</p>
+
+<ul class="org-ul">
+<li><b>primary key</b> \((A_{j_1} , A_{j_2} , … , A_{ j_{ m } } )\): The primary-key specification
+says that attributes \((A_{j_1} , A_{j_2} , … , A_{ j_{ m } } )\) <i>form</i> the primary key for
+the relation. The primary-key attributes. are required to be <i>nonnull</i> and <i>unique</i>; that
+is, <b>no tuple can have a null value for a primary-key attribute</b>, and <b>no two tuples in the
+relation can be equal on all the primary-key attributes</b>. Although the primary-key
+specification is optional, it is generally a good idea to specify a primary key for each
+relation.</li>
+
+<li><b>foreign key</b> \((A_{k_1} , A_{k_2} , … , A_{ k_{ m } } )\): references <i>s</i>: The foreign key
+specification says that \((A_{k_1} , A_{k_2} , … , A_{ k_{ m } } )\) for any tuple in the
+relation must correspond to values of the primary key attributes of some tuple in
+relation <i>s</i>.</li>
+
+<li><b>not null</b>: The not null constraint on an attribute specifies that the null value is not
+allowed for that attribute; in other words, the constraint excludes the null value from
+the domain of that attribute.</li>
+
+<li><b>Check Constraints</b>: A check constraint allows you to define a predicate that a row must
+meet to be entered into the table or to be modified. For example, the following check
+constraint ensures that the salary column in the Employees table will support only
+positive values.</li>
+
+<li><p>
+<b>Default Constraints</b>: A default constraint is associated with a particular attribute. It
+is an expression that is used as the default value when an explicit value is not specified
+for the attribute when you insert a row. For example, the following code defines a default
+constraint for the orderts attribute (representing the order’s time stamp):
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">ALTER</span> <span style="color: #4d9391; font-weight: bold;">TABLE</span> <span style="color: #80bcb6;">dbo.Orders</span>
+      <span style="color: #4d9391; font-weight: bold;">ADD</span> <span style="color: #4d9391; font-weight: bold;">CONSTRAINT</span> DFT_Orders_orderts
+      <span style="color: #4d9391; font-weight: bold;">DEFAULT</span>(SYSDATETIME()) <span style="color: #4d9391; font-weight: bold;">FOR</span> orderts;
+</code></pre></li>
+</ul>
+
+<p>
+SQL prevents any update to the database that violates an integrity constraint. For example,
+if a newly inserted or modified tuple in a relation has null values for any primary-key
+attribute, or if the tuple has the same value on the primary-key attributes as does another
+tuple in the relation, SQL flags an error and prevents the update. Similarly, an insertion
+of a course tuple with a dept name value that does not appear in the department relation
+would violate the foreign-key constraint on course, and SQL prevents such an insertion from
+taking place.
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">ALTER</span> <span style="color: #4d9391; font-weight: bold;">TABLE</span> <span style="color: #80bcb6;">dbo.Employees</span>
+      <span style="color: #4d9391; font-weight: bold;">ADD</span> <span style="color: #4d9391; font-weight: bold;">CONSTRAINT</span> CHK_Employees_salary
+    <span style="color: #4d9391; font-weight: bold;">CHECK</span>(salary &gt; <span style="color: #cd5c60;">0.00</span>);
+</code></pre>
+
+
+<p>
+An attempt to insert or update a row with a non-positive salary value will be rejected by the
+RDBMS.  Note that a check constraint rejects an attempt to insert or update a row when the
+predicate evaluates to FALSE. The modification will be accepted when the predicate evaluates
+to either TRUE or UNKNOWN. For example, salary –1000 will be rejected, whereas salaries
+50000 and NULL will both be accepted.
+</p>
+</div>
+</div>
+<div id="outline-container-orge2c7645" class="outline-3">
+<h3 id="orge2c7645">Structure of SQL Queries</h3>
+<div class="outline-text-3" id="text-orge2c7645">
+<p>
+The basic structure of an SQL query consists of three clauses: select, from, and where.  A
+query takes as its input the relations listed in the from clause, operates on them as
+specified in the where and select clauses, and then produces a relation as the result. We
+introduce the SQL syntax through examples, and we describe the general structure of SQL
+queries later.
+</p>
+</div>
+<div id="outline-container-org8549a6f" class="outline-4">
+<h4 id="org8549a6f"><i>Select</i></h4>
+<div class="outline-text-4" id="text-org8549a6f">
+<p>
+Database tables are objects that store all the data in a database. In a table, data is
+logically organized in a row-and-column format which is similar to a spreadsheet.
+</p>
+
+<p>
+To query data from a table, you use the <code>SELECT</code> statement. The following illustrates the most
+basic form of the <code>SELECT</code> statement:
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">SELECT</span>
+    select_list
+<span style="color: #4d9391; font-weight: bold;">FROM</span>
+    <span style="color: #4d9391; font-weight: bold;">schema_name</span>.<span style="color: #4d9391; font-weight: bold;">table_name</span>;
+
+</code></pre>
+</div>
+<div id="outline-container-org29926bd" class="outline-5">
+<h5 id="org29926bd">Order by</h5>
+<div class="outline-text-5" id="text-org29926bd">
+<p>
+When you use the <code>SELECT</code> statement to query data from a table, the order of rows in the
+result set is not guaranteed. It means that SQL can return a result set with an
+unspecified order of rows.
+</p>
+
+<p>
+The only way for you to guarantee that the rows in the result set are sorted is to use the
+<code>ORDER BY</code> clause. The following illustrates the ORDER BY clause syntax:
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">SELECT</span>
+    select_list
+<span style="color: #4d9391; font-weight: bold;">FROM</span>
+    <span style="color: #4d9391; font-weight: bold;">table_name</span>
+<span style="color: #4d9391; font-weight: bold;">ORDER</span> <span style="color: #4d9391; font-weight: bold;">BY</span>
+    <span style="color: #4d9391; font-weight: bold;">column_name</span> | expression [<span style="color: #4d9391; font-weight: bold;">ASC</span> | <span style="color: #4d9391; font-weight: bold;">DESC</span> ];
+</code></pre>
+</div>
+<div id="outline-container-org546df6d" class="outline-6">
+<h6 id="org546df6d">Offset Fetch</h6>
+<div class="outline-text-6" id="text-org546df6d">
+<p>
+The <code>OFFSET</code> and <code>FETCH</code> clauses are the options of the ORDER BY clause. They allow you to limit
+the number of rows to be returned by a query.
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">ORDER</span> <span style="color: #4d9391; font-weight: bold;">BY</span> column_list [<span style="color: #4d9391; font-weight: bold;">ASC</span> |<span style="color: #4d9391; font-weight: bold;">DESC</span>]
+OFFSET offset_row_count {<span style="color: #cd9575;">ROW</span> | <span style="color: #4d9391; font-weight: bold;">ROWS</span>}
+<span style="color: #4d9391; font-weight: bold;">FETCH</span> {<span style="color: #4d9391; font-weight: bold;">FIRST</span> | <span style="color: #4d9391; font-weight: bold;">NEXT</span>} fetch_row_count {<span style="color: #cd9575;">ROW</span> | <span style="color: #4d9391; font-weight: bold;">ROWS</span>} <span style="color: #4d9391; font-weight: bold;">ONLY</span>
+</code></pre>
+
+<p>
+In this syntax:
+</p>
+
+<ul class="org-ul">
+<li>The <code>OFFSET</code> clause specifies the number of rows to skip before starting to return rows from
+the query. The <code>offset_row_count</code> can be a constant, variable, or parameter that is greater
+or equal to zero.</li>
+
+<li>The <code>FETCH</code> clause specifies the number of rows to return after the OFFSET clause has been
+processed. The offset_row_count can a constant, variable or scalar that is greater or
+equal to one.</li>
+
+<li>The <code>OFFSET</code> clause is mandatory while the <code>FETCH</code> clause is optional. Also, the <code>FIRST</code> and
+<code>NEXT</code> are synonyms respectively so you can use them interchangeably. Similarly, you can use
+the <code>FIRST</code> and <code>NEXT</code> interchangeably.</li>
+</ul>
+
+
+<p>
+Note that you must use the OFFSET and FETCH clauses with the ORDER BY clause. Otherwise, you
+will get an error.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org3bfddb2" class="outline-4">
+<h4 id="org3bfddb2">Top</h4>
+<div class="outline-text-4" id="text-org3bfddb2">
+<p>
+The SELECT TOP clause allows you to limit the number of rows or percentage of rows returned
+in a query result set.
+</p>
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">SELECT</span> TOP (expression) [PERCENT]
+    [<span style="color: #4d9391; font-weight: bold;">WITH</span> TIES]
+<span style="color: #4d9391; font-weight: bold;">FROM</span>
+    <span style="color: #4d9391; font-weight: bold;">table_name</span>
+<span style="color: #4d9391; font-weight: bold;">ORDER</span> <span style="color: #4d9391; font-weight: bold;">BY</span>
+    <span style="color: #4d9391; font-weight: bold;">column_name</span>;
+</code></pre>
+</div>
+<div id="outline-container-orgbcdea7e" class="outline-6">
+<h6 id="orgbcdea7e">Percent</h6>
+<div class="outline-text-6" id="text-orgbcdea7e">
+<p>
+The <code>PERCENT</code> keyword indicates that the query returns the first <code>N</code> percentage of rows,
+where <code>N</code> is the result of the expression.
+</p>
+</div>
+</div>
+<div id="outline-container-orgf1f17dc" class="outline-6">
+<h6 id="orgf1f17dc">With Ties</h6>
+<div class="outline-text-6" id="text-orgf1f17dc">
+<p>
+The WITH TIES allows you to return more rows with values that match the last row in the
+limited result set. Note that WITH TIES may cause more rows to be returned than you specify
+in the expression.
+</p>
+</div>
+</div>
+<div id="outline-container-orgb2c2779" class="outline-5">
+<h5 id="orgb2c2779">Distinct</h5>
+<div class="outline-text-5" id="text-orgb2c2779">
+<p>
+Sometimes, you may want to get only distinct values in a specified column of a table. To do
+this, you use the SELECT DISTINCT clause as follows:
+</p>
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">SELECT</span> <span style="color: #4d9391; font-weight: bold;">DISTINCT</span>
+    <span style="color: #4d9391; font-weight: bold;">column_name</span>
+<span style="color: #4d9391; font-weight: bold;">FROM</span>
+    <span style="color: #4d9391; font-weight: bold;">table_name</span>;
+</code></pre>
+</div>
+</div>
+<div id="outline-container-orgef3a737" class="outline-5">
+<h5 id="orgef3a737">Where</h5>
+<div class="outline-text-5" id="text-orgef3a737">
+<p>
+When you use the SELECT statement to query data against a table, you get all the rows of
+that table, which is unnecessary because the application may only process a set of rows at
+the time.
+</p>
+
+<p>
+To get the rows from the table that satisfy one or more conditions, you use the WHERE clause
+as follows:
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">SELECT</span>
+    select_list
+<span style="color: #4d9391; font-weight: bold;">FROM</span>
+    <span style="color: #4d9391; font-weight: bold;">table_name</span>
+<span style="color: #4d9391; font-weight: bold;">WHERE</span>
+    search_condition;
+</code></pre>
+</div>
+<div id="outline-container-org9d21680" class="outline-6">
+<h6 id="org9d21680">And</h6>
+<div class="outline-text-6" id="text-org9d21680">
+<p>
+The AND is a logical operator that allows you to combine two Boolean expressions. It returns
+TRUE only when both expressions evaluate to TRUE.
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">SELECT</span>
+    product_id,
+    product_name,
+    category_id,
+    model_year,
+    list_price
+<span style="color: #4d9391; font-weight: bold;">FROM</span>
+    production.products
+<span style="color: #4d9391; font-weight: bold;">WHERE</span>
+    category_id = <span style="color: #cd5c60;">1</span> <span style="color: #4d9391; font-weight: bold;">AND</span> model_year = <span style="color: #cd5c60;">2018</span>
+<span style="color: #4d9391; font-weight: bold;">ORDER</span> <span style="color: #4d9391; font-weight: bold;">BY</span>
+    list_price <span style="color: #4d9391; font-weight: bold;">DESC</span>;
+</code></pre>
+</div>
+</div>
+<div id="outline-container-orga2b8113" class="outline-6">
+<h6 id="orga2b8113">Or</h6>
+<div class="outline-text-6" id="text-orga2b8113">
+<p>
+The OR is a logical operator that allows you to combine two Boolean expressions.  It returns
+TRUE when either of the conditions evaluates to TRUE.
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">SELECT</span>
+    product_id,
+    product_name,
+    category_id,
+    model_year,
+    list_price
+<span style="color: #4d9391; font-weight: bold;">FROM</span>
+    production.products
+<span style="color: #4d9391; font-weight: bold;">WHERE</span>
+    list_price &gt; <span style="color: #cd5c60;">3000</span> <span style="color: #4d9391; font-weight: bold;">OR</span> model_year = <span style="color: #cd5c60;">2018</span>
+<span style="color: #4d9391; font-weight: bold;">ORDER</span> <span style="color: #4d9391; font-weight: bold;">BY</span>
+    list_price <span style="color: #4d9391; font-weight: bold;">DESC</span>;
+</code></pre>
+</div>
+</div>
+<div id="outline-container-org80ed1ab" class="outline-6">
+<h6 id="org80ed1ab">Between</h6>
+<div class="outline-text-6" id="text-org80ed1ab">
+<p>
+The BETWEEN operator is a logical operator that allows you to specify a range to test.
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">SELECT</span>
+    product_id,
+    product_name,
+    category_id,
+    model_year,
+    list_price
+<span style="color: #4d9391; font-weight: bold;">FROM</span>
+    production.products
+<span style="color: #4d9391; font-weight: bold;">WHERE</span>
+    list_price <span style="color: #4d9391; font-weight: bold;">BETWEEN</span> <span style="color: #cd5c60;">1899.00</span> <span style="color: #4d9391; font-weight: bold;">AND</span> <span style="color: #cd5c60;">1999.99</span>
+<span style="color: #4d9391; font-weight: bold;">ORDER</span> <span style="color: #4d9391; font-weight: bold;">BY</span>
+    list_price <span style="color: #4d9391; font-weight: bold;">DESC</span>;
+</code></pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgcdaa721" class="outline-5">
+<h5 id="orgcdaa721">Null</h5>
+<div class="outline-text-5" id="text-orgcdaa721">
+<p>
+In the database world, NULL is used to indicate the absence of any data value. For example,
+when recording the customer information, the email may be unknown, so you record it as NULL
+in the database.
+</p>
+</div>
+<div id="outline-container-org1cd2100" class="outline-6">
+<h6 id="org1cd2100">Is Null</h6>
+<div class="outline-text-6" id="text-org1cd2100">
+<p>
+See the following customers table from the sample database.
+</p>
+
+<pre class="example" id="org4ebc10a">
+customer_id(PK, int, not null),
+first_name(varchar, not null),
+last_name(varchar, not null),
+phone(varchar, null),
+email(varchar, not null),
+street(varchar, null),
+city(varchar, null),
+state(varchar, null),
+zip_code(varchar, null)
+</pre>
+
+<p>
+The following statement finds the customers who do not have phone numbers recorded in the
+customers table:
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">SELECT</span>
+    customer_id,
+    first_name,
+    last_name,
+    phone
+<span style="color: #4d9391; font-weight: bold;">FROM</span>
+    sales.customers
+<span style="color: #4d9391; font-weight: bold;">WHERE</span>
+    phone = <span style="color: #4d9391; font-weight: bold;">NULL</span>
+<span style="color: #4d9391; font-weight: bold;">ORDER</span> <span style="color: #4d9391; font-weight: bold;">BY</span>
+    first_name,
+    last_name;
+</code></pre>
+
+<p>
+The query returned an empty result set.
+</p>
+
+<p>
+The <code>WHERE</code> clause returns rows that cause its predicate evaluates to TRUE. However, the
+following expression evaluates to <code>UNKNOWN</code>.
+</p>
+
+<pre class="example" id="org321cca2">
+phone = NULL;
+</pre>
+
+<p>
+The right way to do it is to use the following instead:
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">SELECT</span>
+    customer_id,
+    first_name,
+    last_name,
+    phone
+<span style="color: #4d9391; font-weight: bold;">FROM</span>
+    sales.customers
+<span style="color: #4d9391; font-weight: bold;">WHERE</span>
+    phone <span style="color: #4d9391; font-weight: bold;">IS</span> <span style="color: #4d9391; font-weight: bold;">NULL</span>
+<span style="color: #4d9391; font-weight: bold;">ORDER</span> <span style="color: #4d9391; font-weight: bold;">BY</span>
+    first_name,
+    last_name;
+
+</code></pre>
+
+<p>
+Which evaluates to:
+</p>
+<pre class="example" id="orga0487ab">
+| customer_id | first_name | last_name | phone |
+|-------------+------------+-----------+-------|
+|         338 | Abbey      | Pugh      | NULL  |
+|          75 | Abby       | Gamble    | NULL  |
+|        1224 | Abram      | Copeland  | NULL  |
+|         673 | Adam       | Henderson | NULL  |
+|        1085 | Adam       | Thornton  | NULL  |
+|         195 | Addie      | Hahn      | NULL  |
+|        1261 | Adelaida   | Hancock   | NULL  |
+|          22 | Adelle     | Larsen    | NULL  |
+|        1023 | Adena      | Blake     | NULL  |
+|        1412 | Adrien     | Hunter    | NULL  |
+Load 10 more... (10/1267)
+</pre>
+
+<p>
+As you may guess, to check if a value is not NULL, you can use the IS NOT NULL operator.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org8f1c1b0" class="outline-4">
+<h4 id="org8f1c1b0">Joins</h4>
+<div class="outline-text-4" id="text-org8f1c1b0">
+<p>
+The FROM clause of a query is the first clause to be logically processed, and within the
+FROM clause, table operators operate on input tables. Microsoft SQL Server supports four
+table opera- tors—JOIN, APPLY, PIVOT, and UNPIVOT. The JOIN table operator is standard,
+whereas APPLY, PIVOT, and UNPIVOT are T-SQL extensions to the standard. Each table operator
+acts on tables provided to it as input, applies a set of logical query processing phases,
+and returns a table result.
+</p>
+
+<p>
+A JOIN table operator operates on two input tables. The three fundamental types of joins are
+<i>cross joins, inner joins,</i> and <i>outer joins</i>. These three types of joins differ in how they
+apply their logical query processing phases; each type applies a different set of phases. A
+cross join applies only one phase—Cartesian Product. An inner join applies two
+phases—Cartesian Product and Filter. An outer join applies three phases—Cartesian Product,
+Filter, and Add Outer Rows.
+</p>
+
+<p>
+Logical query processing describes a generic series of logical steps that for any specified
+query produces the correct result, whereas physical query processing is the way the query is
+processed by the RDBMS engine in practice. Some phases of logical query processing of joins
+might sound inefficient, but the inefficient phases will be optimized by the physical
+implementation. It’s important to stress the term logical in logical query processing. The
+steps in the process apply operations to the input tables based on relational algebra. The
+database engine does not have to follow logical query processing phases literally, as long
+as it can guarantee that the result that it produces is the same as that dictated by logical
+query processing. The SQL Server relational engine often applies many shortcuts for
+optimization purposes when it knows that it can still produce the correct result.
+</p>
+</div>
+<div id="outline-container-org118d315" class="outline-5">
+<h5 id="org118d315">Cross Joins</h5>
+<div class="outline-text-5" id="text-org118d315">
+<p>
+Logically, a cross join is the simplest type of join. A cross join implements only one
+logical query processing phase—a Cartesian Product. This phase operates on the two tables
+provided as inputs to the join and produces a Cartesian product of the two. That is, each
+row from one input is matched with all rows from the other. So if you have \(m\) rows in one
+table and \(n\) rows in the other, you get \(m \cdot n\) rows in the result.
+</p>
+</div>
+<div id="outline-container-orga15a9f8" class="outline-6">
+<h6 id="orga15a9f8">ANSI Syntax</h6>
+<div class="outline-text-6" id="text-orga15a9f8">
+<p>
+T-SQL supports two standard syntaxes for cross joins—the ANSI SQL-92 and ANSI SQL-89
+syntaxes. I recommend that you use the ANSI-SQL 92 syntax for reasons that I’ll describe
+shortly.
+</p>
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">SELECT</span> C.custid, E.empid
+<span style="color: #4d9391; font-weight: bold;">FROM</span> Sales.Customers <span style="color: #4d9391; font-weight: bold;">AS</span> C
+<span style="color: #4d9391; font-weight: bold;">CROSS</span> <span style="color: #4d9391; font-weight: bold;">JOIN</span> HR.Employees <span style="color: #4d9391; font-weight: bold;">AS</span> E;
+</code></pre>
+
+<p>
+Because there are 91 rows in the Customers table and 9 rows in the Employees table, this
+query produces a result set with 819 rows, as shown here in abbreviated form.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org2586960" class="outline-5">
+<h5 id="org2586960">Inner Joins</h5>
+<div class="outline-text-5" id="text-org2586960">
+<p>
+An inner join applies two logical query processing phases—it applies a Cartesian product
+between the two input tables as in a cross join, and then it filters rows based on a
+predicate that you specify.
+</p>
+
+<p>
+Using the ANSI SQL-92 syntax, you specify the INNER JOIN keywords between the table names.
+The INNER keyword is optional, because an inner join is the default, so you can specify the
+JOIN keyword alone. You specify the predicate that is used to filter rows in a designated
+clause called ON. This predicate is also known as the join condition.
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">SELECT</span> E.empid, E.firstname, E.lastname, O.orderid
+<span style="color: #4d9391; font-weight: bold;">FROM</span> HR.Employees <span style="color: #4d9391; font-weight: bold;">AS</span> E
+<span style="color: #4d9391; font-weight: bold;">JOIN</span> Sales.Orders <span style="color: #4d9391; font-weight: bold;">AS</span> O
+<span style="color: #4d9391; font-weight: bold;">ON</span> E.empid = O.empid;
+</code></pre>
+
+
+<p>
+This was the SQL-92 syntax, here is 89&rsquo;s:
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">SELECT</span> E.empid, E.firstname, E.lastname, O.orderid
+<span style="color: #4d9391; font-weight: bold;">FROM</span> HR.Employees <span style="color: #4d9391; font-weight: bold;">AS</span> E, Sa
+</code></pre>
+
+<p>
+I strongly recommend that you stick to the ANSI SQL-92 join syntax because it is safer in
+several ways.  Suppose you intend to write an inner join query, and by mistake you forget to
+specify the join condition. With the ANSI SQL-92 syntax, the query becomes invalid, and the
+parser generates an error. For example, try to run the following code.
+</p>
+
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">SELECT</span> E.empid, E.firstname, E.lastname, O.orderid
+<span style="color: #4d9391; font-weight: bold;">FROM</span> HR.Employees <span style="color: #4d9391; font-weight: bold;">AS</span> E
+<span style="color: #4d9391; font-weight: bold;">JOIN</span> Sales.Orders <span style="color: #4d9391; font-weight: bold;">AS</span> O;
+</code></pre>
+
+<pre class="example" id="org04056f4">
+Msg 102, Level 15, State 1, Line 3
+Incorrect syntax near ';'.
+</pre>
+</div>
+<div id="outline-container-org44e7686" class="outline-6">
+<h6 id="org44e7686">Composite Joins</h6>
+<div class="outline-text-6" id="text-org44e7686">
+<p>
+A composite join is simply a join based on a predicate that involves more than one attribute
+from each side. A composite join is commonly required when you need to join two tables based
+on a primary key–foreign key relationship and the relationship is composite; that is, based
+on more than one attribute. For example, suppose you have a foreign key defined on
+dbo.Table2, columns col1, col2, referencing dbo.Table1, columns col1, col2, and you need to
+write a query that joins the two based on a primary key–foreign key relationship. The FROM
+clause of the query would look like this.
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">FROM</span> dbo.Table1 <span style="color: #4d9391; font-weight: bold;">AS</span> T1
+<span style="color: #4d9391; font-weight: bold;">JOIN</span> dbo.Table2 <span style="color: #4d9391; font-weight: bold;">AS</span> T2
+<span style="color: #4d9391; font-weight: bold;">ON</span> T1.col1 = T2.col1
+<span style="color: #4d9391; font-weight: bold;">AND</span> T1.col2 = T2.col2
+</code></pre>
+
+<p>
+For a more tangible example, suppose that you need to audit updates to column values
+against the OrderDetails table in the TSQL2012 database. You create a custom auditing table
+called OrderDetailsAudit.
+</p>
+</div>
+</div>
+<div id="outline-container-org3d02ab3" class="outline-6">
+<h6 id="org3d02ab3">Multi-Joins</h6>
+<div class="outline-text-6" id="text-org3d02ab3">
+<p>
+A join table operator operates only on two tables, but a single query can have multiple
+joins. In general, when more than one table operator appears in the FROM clause, the table
+operators are logically processed from left to right. That is, the result table of the first
+table operator is treated as the left input to the second table operator; the result of the
+second table operator is treated as the left input to the third table operator; and so on.
+So if there are multiple joins in the FROM clause, the first join operates on two base
+tables, but all other joins get the result of the preceding join as their left input.  With
+cross joins and inner joins, the database engine can (and often does) internally rearrange
+join ordering for optimization purposes because it won’t have an impact on the correctness
+of the result of the query.
+</p>
+
+<p>
+As an example, the following query joins the Customers and Orders tables to match customers
+with their orders, and then it joins the result of the first join with the OrderDetails
+table to match orders with their order lines.
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">SELECT</span>
+C.custid, C.companyname, O.orderid,
+OD.productid, OD.qty
+<span style="color: #4d9391; font-weight: bold;">FROM</span> Sales.Customers <span style="color: #4d9391; font-weight: bold;">AS</span> C
+<span style="color: #4d9391; font-weight: bold;">JOIN</span> Sales.Orders <span style="color: #4d9391; font-weight: bold;">AS</span> O
+<span style="color: #4d9391; font-weight: bold;">ON</span> C.custid = O.custid
+<span style="color: #4d9391; font-weight: bold;">JOIN</span> Sales.OrderDetails <span style="color: #4d9391; font-weight: bold;">AS</span> OD
+<span style="color: #4d9391; font-weight: bold;">ON</span> O.orderid = OD.orderid;
+</code></pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb3bb4eb" class="outline-5">
+<h5 id="orgb3bb4eb">Outer Joins</h5>
+<div class="outline-text-5" id="text-orgb3bb4eb">
+<p>
+Outer joins were introduced in ANSI SQL-92 and, unlike inner joins and cross joins, have
+only one standard syntax—the one in which the JOIN keyword is specified between the table
+names, and the join condition is specified in the ON clause. Outer joins apply the two
+logical processing phases that inner joins apply (Cartesian product and the ON filter), plus
+a third phase called Adding Outer Rows that is unique to this type of join.
+</p>
+
+<p>
+In an outer join, you mark a table as a “preserved” table by using the keywords LEFT OUTER
+JOIN, RIGHT OUTER JOIN, or FULL OUTER JOIN between the table names. The OUTER keyword is
+optional.  The LEFT keyword means that the rows of the left table are preserved; the RIGHT
+keyword means that the rows in the right table are preserved; and the FULL keyword means
+that the rows in both the left and right tables are preserved. The third logical query
+processing phase of an outer join identifies the rows from the preserved table that did not
+find matches in the other table based on the ON predicate. This phase adds those rows to the
+result table produced by the first two phases of the join, and uses NULL marks as
+placeholders for the attributes from the nonpreserved side of the join in those
+outer rows.
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">SELECT</span>
+    <span style="color: #4d9391; font-weight: bold;">m</span>.<span style="color: #4d9391; font-weight: bold;">name</span> member,
+    p.title project
+<span style="color: #4d9391; font-weight: bold;">FROM</span>
+    pm.members <span style="color: #4d9391; font-weight: bold;">m</span>
+    <span style="color: #4d9391; font-weight: bold;">RIGHT</span> <span style="color: #4d9391; font-weight: bold;">OUTER</span> <span style="color: #4d9391; font-weight: bold;">JOIN</span> pm.projects p
+    <span style="color: #4d9391; font-weight: bold;">ON</span> p.id = <span style="color: #4d9391; font-weight: bold;">m</span>.project_id
+</code></pre>
+
+<p>
+A common question about outer joins that is the source of a lot of confusion is whether to specify
+a predicate in the ON or WHERE clause of a query. You can see that with respect to rows from the
+preserved side of an outer join, the filter based on the ON predicate is not final. In other words, the
+ON predicate does not determine whether a row will show up in the output, only whether it will be
+matched with rows from the other side. So when you need to express a predicate that is not final—
+meaning a predicate that determines which rows to match from the nonpreserved side—specify
+the predicate in the ON clause. When you need a filter to be applied after outer rows are produced,
+and you want the filter to be final, specify the predicate in the WHERE clause. The WHERE clause is
+processed after the FROM clause—specifically, after all table operators have been processed and (in
+the case of outer joins) after all outer rows have been produced. Also, the WHERE clause is final with
+respect to rows that it filters out, unlike the ON clause.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org880389c" class="outline-4">
+<h4 id="org880389c">Aggregation with Grouping</h4>
+<div class="outline-text-4" id="text-org880389c">
+<p>
+There are circumstances where we would like to apply the aggregate function not only to a
+single set of tuples, but also to a group of sets of tuples; we specify this in SQL using
+the group by clause. The attribute or attributes given in the group by clause are used to
+form groups. Tuples with the same value on all attributes in the group by clause are placed
+in one group.
+</p>
+
+<p>
+As an illustration, consider the query “Find the average salary in each department.”  We
+write this query as follows
+</p>
+
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">select</span> dept <span style="color: #4d9391; font-weight: bold;">name</span>, <span style="color: #80bcb6;">avg</span> (salary) <span style="color: #4d9391; font-weight: bold;">as</span> <span style="color: #80bcb6;">avg</span> salary
+<span style="color: #4d9391; font-weight: bold;">from</span> instructor
+<span style="color: #4d9391; font-weight: bold;">group</span> <span style="color: #4d9391; font-weight: bold;">by</span> dept <span style="color: #4d9391; font-weight: bold;">name</span>;
+</code></pre>
+</div>
+</div>
+<div id="outline-container-org7a0de35" class="outline-4">
+<h4 id="org7a0de35">Nested Subqueries</h4>
+<div class="outline-text-4" id="text-org7a0de35">
+<p>
+SQL provides a mechanism for nesting subqueries. A subquery is a select-from-where
+expression that is nested within another query. A common use of subqueries is to perform
+tests for set membership, make set comparisons, and determine set cardinality by nesting
+subqueries in the where clause.
+</p>
+</div>
+<div id="outline-container-orgf890b8d" class="outline-5">
+<h5 id="orgf890b8d">Set Membership</h5>
+<div class="outline-text-5" id="text-orgf890b8d">
+<p>
+SQL allows testing tuples for membership in a relation. The in connective tests for set
+membership, where the set is a collection of values produced by a select clause. The
+not in connective tests for the absence of set membership.
+</p>
+
+<p>
+As an illustration, reconsider the query “Find all the courses taught in the both the
+Fall 2017 and Spring 2018 semesters.” Earlier, we wrote such a query by intersecting
+two sets: the set of courses taught in Fall 2017 and the set of courses taught in Spring
+</p>
+<ol class="org-ol">
+<li>We can take the alternative approach of ﬁnding all courses that were taught in</li>
+</ol>
+<p>
+Fall 2017 and that are also members of the set of courses taught in Spring 2018. This
+formulation generates the same results as the previous one did, but it leads us to write
+our query using the in connective of SQL. We begin by ﬁnding all courses taught in
+Spring 2018, and we write the subquery:
+</p>
+
+<pre class="code"><code>(<span style="color: #4d9391; font-weight: bold;">select</span> course id
+<span style="color: #4d9391; font-weight: bold;">from</span> <span style="color: #4d9391; font-weight: bold;">section</span>
+<span style="color: #4d9391; font-weight: bold;">where</span> semester = <span style="color: #6fb593;">'Spring'</span> <span style="color: #4d9391; font-weight: bold;">and</span> <span style="color: #4d9391; font-weight: bold;">year</span>= <span style="color: #cd5c60;">2018</span>)
+</code></pre>
+
+<p>
+We then need to find those courses that were taught in the Fall 2017 and that appear
+in the set of courses obtained in the subquery. We do so by nesting the subquery in the
+where clause of an outer query. The resulting query is:
+</p>
+
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">select</span> <span style="color: #4d9391; font-weight: bold;">distinct</span> course id
+<span style="color: #4d9391; font-weight: bold;">from</span> <span style="color: #4d9391; font-weight: bold;">section</span>
+<span style="color: #4d9391; font-weight: bold;">where</span> semester = <span style="color: #6fb593;">'Fall'</span> <span style="color: #4d9391; font-weight: bold;">and</span> <span style="color: #4d9391; font-weight: bold;">year</span>= <span style="color: #cd5c60;">2017</span> <span style="color: #4d9391; font-weight: bold;">and</span>
+course id <span style="color: #4d9391; font-weight: bold;">in</span> (<span style="color: #4d9391; font-weight: bold;">select</span> course id
+<span style="color: #4d9391; font-weight: bold;">from</span> <span style="color: #4d9391; font-weight: bold;">section</span>
+<span style="color: #4d9391; font-weight: bold;">where</span> semester = <span style="color: #6fb593;">'Spring'</span> <span style="color: #4d9391; font-weight: bold;">and</span> <span style="color: #4d9391; font-weight: bold;">year</span>= <span style="color: #cd5c60;">2018</span>);
+</code></pre>
+</div>
+</div>
+<div id="outline-container-org331370d" class="outline-5">
+<h5 id="org331370d">Set Comparison</h5>
+<div class="outline-text-5" id="text-org331370d">
+<p>
+Check the MSDOCS; <a href="https://learn.microsoft.com/en-us/sql/t-sql/language-elements/some-any-transact-sql?view=sql-server-ver16">here</a>, <a href="https://learn.microsoft.com/en-us/sql/t-sql/language-elements/all-transact-sql?view=sql-server-ver16">here</a>.
+</p>
+</div>
+</div>
+<div id="outline-container-org5809fa6" class="outline-5">
+<h5 id="org5809fa6">Test for Empty Relations</h5>
+<div class="outline-text-5" id="text-org5809fa6">
+<p>
+SQL includes a feature for testing whether a subquery has any tuples in its result. The
+exists construct returns the value true if the argument subquery is nonempty. Using the
+exists construct, we can write the query “Find all courses taught in both the Fall 2017
+semester and in the Spring 2018 semester” in still another way:
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">select</span> course id
+<span style="color: #4d9391; font-weight: bold;">from</span> <span style="color: #4d9391; font-weight: bold;">section</span> <span style="color: #4d9391; font-weight: bold;">as</span> S
+<span style="color: #4d9391; font-weight: bold;">where</span> semester = <span style="color: #6fb593;">'Fall'</span> <span style="color: #4d9391; font-weight: bold;">and</span> <span style="color: #4d9391; font-weight: bold;">year</span>= <span style="color: #cd5c60;">2017</span> <span style="color: #4d9391; font-weight: bold;">and</span>
+<span style="color: #4d9391; font-weight: bold;">exists</span> (<span style="color: #4d9391; font-weight: bold;">select</span> *
+<span style="color: #4d9391; font-weight: bold;">from</span> <span style="color: #4d9391; font-weight: bold;">section</span> <span style="color: #4d9391; font-weight: bold;">as</span> T
+<span style="color: #4d9391; font-weight: bold;">where</span> semester = <span style="color: #6fb593;">'Spring'</span> <span style="color: #4d9391; font-weight: bold;">and</span> <span style="color: #4d9391; font-weight: bold;">year</span>= <span style="color: #cd5c60;">2018</span> <span style="color: #4d9391; font-weight: bold;">and</span>
+S.course id= T .course id);
+</code></pre>
+
+
+<p>
+SQL includes a Boolean function for testing whether a subquery has duplicate tuples
+in its result. The unique construct11 returns the value true if the argument subquery
+contains no duplicate tuples. Using the unique construct, we can write the query “Find
+all courses that were offered at most once in 2017” as follows:
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">select</span> T .course id
+<span style="color: #4d9391; font-weight: bold;">from</span> course <span style="color: #4d9391; font-weight: bold;">as</span> T
+<span style="color: #4d9391; font-weight: bold;">where</span> <span style="color: #4d9391; font-weight: bold;">unique</span> (<span style="color: #4d9391; font-weight: bold;">select</span> R.course id
+<span style="color: #4d9391; font-weight: bold;">from</span> <span style="color: #4d9391; font-weight: bold;">section</span> <span style="color: #4d9391; font-weight: bold;">as</span> R
+<span style="color: #4d9391; font-weight: bold;">where</span> T .course id= R.course id <span style="color: #4d9391; font-weight: bold;">and</span>
+R.<span style="color: #4d9391; font-weight: bold;">year</span> = <span style="color: #cd5c60;">2017</span>);
+</code></pre>
+
+<p>
+Note that if a course were not oﬀered in 2017, the subquery would return an empty
+result, and the unique predicate would evaluate to true on the empty set.
+An equivalent version of this query not using the unique construct is:
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">select</span> T .course id
+<span style="color: #4d9391; font-weight: bold;">from</span> course <span style="color: #4d9391; font-weight: bold;">as</span> T
+<span style="color: #4d9391; font-weight: bold;">where</span> <span style="color: #cd5c60;">1</span> &gt;= (<span style="color: #4d9391; font-weight: bold;">select</span> <span style="color: #80bcb6;">count</span>(R.course id)
+<span style="color: #4d9391; font-weight: bold;">from</span> <span style="color: #4d9391; font-weight: bold;">section</span> <span style="color: #4d9391; font-weight: bold;">as</span> R
+<span style="color: #4d9391; font-weight: bold;">where</span> T .course id= R.course id <span style="color: #4d9391; font-weight: bold;">and</span>
+R.<span style="color: #4d9391; font-weight: bold;">year</span> = <span style="color: #cd5c60;">2017</span>);
+</code></pre>
+</div>
+</div>
+<div id="outline-container-org4b841d1" class="outline-5">
+<h5 id="org4b841d1"><i>From</i> Subqueries</h5>
+<div class="outline-text-5" id="text-org4b841d1">
+<p>
+SQL allows a subquery expression to be used in the from clause. The key concept ap- plied
+here is that any select-from-where expression returns a relation as a result and, therefore,
+can be inserted into another select-from-where anywhere that a relation can appear.
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">select</span> dept <span style="color: #4d9391; font-weight: bold;">name</span>, <span style="color: #80bcb6;">avg</span> salary
+<span style="color: #4d9391; font-weight: bold;">from</span> (<span style="color: #4d9391; font-weight: bold;">select</span> dept <span style="color: #4d9391; font-weight: bold;">name</span>, <span style="color: #80bcb6;">avg</span> (salary) <span style="color: #4d9391; font-weight: bold;">as</span> <span style="color: #80bcb6;">avg</span> salary
+<span style="color: #4d9391; font-weight: bold;">from</span> instructor
+<span style="color: #4d9391; font-weight: bold;">group</span> <span style="color: #4d9391; font-weight: bold;">by</span> dept <span style="color: #4d9391; font-weight: bold;">name</span>)
+<span style="color: #4d9391; font-weight: bold;">where</span> <span style="color: #80bcb6;">avg</span> salary &gt; <span style="color: #cd5c60;">42000</span>;
+</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgbfb7207" class="outline-3">
+<h3 id="orgbfb7207">Gotchas</h3>
+<div class="outline-text-3" id="text-orgbfb7207">
+<p>
+This section contains several exercise and tricks for various topics.
+</p>
+</div>
+<div id="outline-container-org02de567" class="outline-4">
+<h4 id="org02de567">Generating Five Copies from Each Row&#xa0;&#xa0;&#xa0;<span class="tag"><span class="cross_joins">cross_joins</span></span></h4>
+<div class="outline-text-4" id="text-org02de567">
+<p>
+Producing multiple copies of rows can be achieved with a fundamental technique that utilizes
+a cross  join. If you need to produce five copies of each employee row, you need to perform
+a cross join be- tween the Employees table and a table that has five rows; alternatively,
+you can perform a cross join  between Employees and a table that has more than five rows,
+but filter only five from that table in the  WHERE clause. The Nums table is very convenient
+for this purpose. Simply cross Employees and Nums,  and filter from Nums as many rows as the
+number of requested copies (five, in this case).
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">create</span> <span style="color: #4d9391; font-weight: bold;">table</span> <span style="color: #80bcb6;">temptable</span>
+(
+    id <span style="color: #cd9575;">int</span>
+);
+<span style="color: #4d9391; font-weight: bold;">insert</span> <span style="color: #4d9391; font-weight: bold;">into</span> temptable
+<span style="color: #4d9391; font-weight: bold;">values</span>
+    (<span style="color: #cd5c60;">1</span>),
+    (<span style="color: #cd5c60;">2</span>),
+    (<span style="color: #cd5c60;">3</span>),
+    (<span style="color: #cd5c60;">4</span>),
+    (<span style="color: #cd5c60;">5</span>);
+
+<span style="color: #4d9391; font-weight: bold;">select</span> stf.staff_id empid, stf.first_name firstname, last_name lastname, tmp.id n
+<span style="color: #4d9391; font-weight: bold;">from</span> sales.staffs <span style="color: #4d9391; font-weight: bold;">as</span> stf <span style="color: #4d9391; font-weight: bold;">cross</span> <span style="color: #4d9391; font-weight: bold;">join</span> temptable <span style="color: #4d9391; font-weight: bold;">as</span> tmp
+<span style="color: #4d9391; font-weight: bold;">order</span> <span style="color: #4d9391; font-weight: bold;">by</span> firstname, n;
+
+<span style="color: #4d9391; font-weight: bold;">drop</span> <span style="color: #4d9391; font-weight: bold;">table</span> <span style="color: #80bcb6;">temptable</span>;
+</code></pre>
+
+<pre class="example" id="orgbe10c8d">
+| empid | firstname  | lastname | n |
+|-------+------------+----------+---|
+|    10 | Bernardine | Houston  | 1 |
+|    10 | Bernardine | Houston  | 2 |
+|    10 | Bernardine | Houston  | 3 |
+|    10 | Bernardine | Houston  | 4 |
+|    10 | Bernardine | Houston  | 5 |
+|     1 | Fabiola    | Jackson  | 1 |
+|     1 | Fabiola    | Jackson  | 2 |
+|     1 | Fabiola    | Jackson  | 3 |
+|     1 | Fabiola    | Jackson  | 4 |
+|     1 | Fabiola    | Jackson  | 5 |
+Load 10 more... (10/50)
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf93f750" class="outline-3">
+<h3 id="orgf93f750">General Notes</h3>
+<div class="outline-text-3" id="text-orgf93f750">
+<ul class="org-ul">
+<li>When you use the NOT IN predicate against a subquery that returns at least one NULL, the
+outer query always returns an empty set. Values from the outer table that are known to
+appear in the set are not returned because the outer query is supposed to return values
+that do not appear in the set. Values that do not appear in the set of known values are
+not returned because you can never tell</li>
+<li><p>
+Suppose that you need to query the Orders table in the TSQL2012 database and return
+information about the order that has the maximum order ID in the table. You could
+accomplish the task by using a variable. The code could retrieve the maximum order ID from
+the Orders table and store the result in a variable. Then the code could query the Orders
+table and filter the order where the order ID is equal to the value stored in the
+variable. The following code demonstrates this technique.
+</p>
+
+<pre class="code"><code>USE TSQL2012;
+<span style="color: #4d9391; font-weight: bold;">DECLARE</span> @maxid <span style="color: #4d9391; font-weight: bold;">AS</span> <span style="color: #cd9575;">INT</span> = (<span style="color: #4d9391; font-weight: bold;">SELECT</span> <span style="color: #80bcb6;">MAX</span>(orderid)
+<span style="color: #4d9391; font-weight: bold;">FROM</span> Sales.Orders);
+<span style="color: #4d9391; font-weight: bold;">SELECT</span> orderid, orderdate, empid, custid
+<span style="color: #4d9391; font-weight: bold;">FROM</span> Sales.Orders
+<span style="color: #4d9391; font-weight: bold;">WHERE</span> orderid = @maxid;
+</code></pre></li>
+<li><p>
+Suppose that you need to query the Orders table in the TSQL2012 database and return, for
+each order, information about the current order and also the previous order ID. The
+concept of “previous” implies logical ordering, but because you know that the rows in a
+table have no order, you need to come up with a logical equivalent to the concept of
+“previous” that can be phrased with a T-SQL expression. One example of such a logical
+equivalent is “the maximum value that is smaller than the current value.” This phrase can
+be expressed in T-SQL with a correlated subquery like this.
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">SELECT</span> orderid, orderdate, empid, custid,
+       (<span style="color: #4d9391; font-weight: bold;">SELECT</span> <span style="color: #80bcb6;">MAX</span>(O2.orderid)
+        <span style="color: #4d9391; font-weight: bold;">FROM</span> Sales.Orders <span style="color: #4d9391; font-weight: bold;">AS</span> O2
+        <span style="color: #4d9391; font-weight: bold;">WHERE</span> O2.orderid &lt; O1.orderid) <span style="color: #4d9391; font-weight: bold;">AS</span> prevorderid
+<span style="color: #4d9391; font-weight: bold;">FROM</span> Sales.Orders <span style="color: #4d9391; font-weight: bold;">AS</span> O1;
+</code></pre></li>
+</ul>
+</div>
+<div id="outline-container-org89c9d39" class="outline-4">
+<h4 id="org89c9d39">Confusions</h4>
+<div class="outline-text-4" id="text-org89c9d39">
+<ul class="org-ul">
+<li>The different between <code>UNION</code> and <code>UNION ALL</code> is that, <code>UNION</code> will remove duplicates from
+your query, <code>UNION ALL</code> will not.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org315a5ba" class="outline-3">
+<h3 id="org315a5ba">Table Expressions</h3>
+<div class="outline-text-3" id="text-org315a5ba">
+<p>
+A table expression is a named query expression that represents a valid relational table. You
+can use table expressions in data manipulation statements much like you use other tables.
+</p>
+
+<p>
+Table expressions are not physically materialized anywhere—they are virtual. When you query
+a table expression, the inner query gets un-nested. In other words, the outer query and the
+inner query are merged into one query directly against the underlying objects. <span class="underline">The benefits
+of using table expressions are typically related to logical aspects of your code and not to
+performance</span>. For example, table expressions help you simplify your solutions by using a
+modular approach. Table expressions also help you circumvent certain restrictions in the
+language, such as the inability to refer to column aliases assigned in the SELECT clause in
+query clauses that are logically processed before the <code>SELECT</code> clause.
+</p>
+</div>
+<div id="outline-container-org6527f3f" class="outline-4">
+<h4 id="org6527f3f">Derived Tables</h4>
+<div class="outline-text-4" id="text-org6527f3f">
+<p>
+Derived tables (also known as table subqueries) are defined in the FROM clause of an outer
+query. Their scope of existence is the outer query. As soon as the outer query is finished,
+the derived table is gone.
+</p>
+
+<p>
+You specify the query that defines the derived table within parentheses, followed by the AS
+clause and the derived table name. For example, the following code defines a derived table
+called <code>USACusts</code> based on a query that returns all customers from the United States, and the
+outer query selects all rows from the derived table.
+</p>
+
+<pre class="code"><code>USE TSQL2012;
+<span style="color: #4d9391; font-weight: bold;">SELECT</span> *
+<span style="color: #4d9391; font-weight: bold;">FROM</span> (<span style="color: #4d9391; font-weight: bold;">SELECT</span> custid, companyname
+<span style="color: #4d9391; font-weight: bold;">FROM</span> Sales.Customers
+<span style="color: #4d9391; font-weight: bold;">WHERE</span> country = N<span style="color: #6fb593;">'USA'</span>) <span style="color: #4d9391; font-weight: bold;">AS</span> USACusts;
+</code></pre>
+
+<p>
+A query must meet 2 requirements to be valid to define a table expression of any kind:
+</p>
+
+<ol class="org-ol">
+<li><b>Order is not guaranteed</b>. A table expression is supposed to represent a relational
+table, and the rows in a relational table have no guaranteed order. Recall that this
+aspect of a relation stems from set theory. For this reason, standard SQL <b>disallows an
+ORDER BY clause in queries</b> that are used to define table expressions, unless the <b>ORDER
+BY</b> serves another purpose besides presentation. An example for such an exception is when
+the query uses the <b>OFFSET-FETCH filter</b>. T-SQL enforces similar restrictions, with
+similar exceptions—when TOP or OFFSET-FETCH is also specified. In the context of a query
+with the TOP or OFFSET-FETCH filter, the ORDER BY clause serves as part of the
+specification of the filter. If you use a query with TOP or OFFSET-FETCH and ORDER BY to
+define a table expression, ORDER BY is only guaranteed to serve the filtering-related
+purpose and not the usual presentation purpose. If the outer query against the table
+expression does not have a presentation ORDER BY, the output is not guaranteed to be
+returned in any particular order. See the “Views and the ORDER BY Clause” section later
+in this chapter for more detail on this item.</li>
+
+<li><b>All columns must have names</b>. All columns in a table must have names; therefore, you</li>
+</ol>
+<p>
+must assign column aliases to all expressions in the SELECT list of the query that is used
+to define a table expression.
+</p>
+</div>
+</div>
+<div id="outline-container-org3d66ef5" class="outline-4">
+<h4 id="org3d66ef5">Common Table Expressions</h4>
+<div class="outline-text-4" id="text-org3d66ef5">
+<p>
+Common table expressions (CTEs) are another standard form of table expression very similar to derived tables, yet with a couple of important advantages.
+CTEs are defined by using a WITH statement and have the following general form.
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">WITH</span> &lt;CTE_Name&gt;[(&lt;target_column_list&gt;)]
+<span style="color: #4d9391; font-weight: bold;">AS</span>
+(
+&lt;inner_query_defining_CTE&gt;
+)
+&lt;outer_query_against_CTE&gt;;
+</code></pre>
+
+<p>
+The inner query defining the CTE must follow all requirements mentioned earlier to be valid
+to define a table expression. As a simple example, the following code defines a CTE called
+USACusts based on a query that returns all customers from the United States, and the outer
+query selects all rows from the CTE.
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">WITH</span> USACusts <span style="color: #4d9391; font-weight: bold;">AS</span>
+(
+    <span style="color: #4d9391; font-weight: bold;">SELECT</span> custid, companyname
+    <span style="color: #4d9391; font-weight: bold;">FROM</span> Sales.Customers
+    <span style="color: #4d9391; font-weight: bold;">WHERE</span> country = N<span style="color: #6fb593;">'USA'</span>
+)
+<span style="color: #4d9391; font-weight: bold;">SELECT</span> * <span style="color: #4d9391; font-weight: bold;">FROM</span> USACusts;
+</code></pre>
+
+<p>
+With CTE, there are two ways of assigning aliases:
+</p>
+
+<ul class="org-ul">
+<li><p>
+The inline form:
+</p>
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">WITH</span> C <span style="color: #4d9391; font-weight: bold;">AS</span>
+(
+<span style="color: #4d9391; font-weight: bold;">SELECT</span> <span style="color: #4d9391; font-weight: bold;">YEAR</span>(orderdate) <span style="color: #4d9391; font-weight: bold;">AS</span> orderyear, custid
+<span style="color: #4d9391; font-weight: bold;">FROM</span> Sales.Orders
+)
+<span style="color: #4d9391; font-weight: bold;">SELECT</span> orderyear, <span style="color: #80bcb6;">COUNT</span>(<span style="color: #4d9391; font-weight: bold;">DISTINCT</span> custid) <span style="color: #4d9391; font-weight: bold;">AS</span> numcusts
+<span style="color: #4d9391; font-weight: bold;">FROM</span> C
+<span style="color: #4d9391; font-weight: bold;">GROUP</span> <span style="color: #4d9391; font-weight: bold;">BY</span> orderyear;
+</code></pre></li>
+<li><p>
+The external form:
+</p>
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">WITH</span> C(orderyear, custid) <span style="color: #4d9391; font-weight: bold;">AS</span>
+(
+<span style="color: #4d9391; font-weight: bold;">SELECT</span> <span style="color: #4d9391; font-weight: bold;">YEAR</span>(orderdate), custid
+<span style="color: #4d9391; font-weight: bold;">FROM</span> Sales.Orders
+)
+<span style="color: #4d9391; font-weight: bold;">SELECT</span> orderyear, <span style="color: #80bcb6;">COUNT</span>(<span style="color: #4d9391; font-weight: bold;">DISTINCT</span> custid) <span style="color: #4d9391; font-weight: bold;">AS</span> numcusts
+<span style="color: #4d9391; font-weight: bold;">FROM</span> C
+<span style="color: #4d9391; font-weight: bold;">GROUP</span> <span style="color: #4d9391; font-weight: bold;">BY</span> orderyear;
+</code></pre></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orga40948e" class="outline-4">
+<h4 id="orga40948e">Recursive Common Table Expressions</h4>
+<div class="outline-text-4" id="text-orga40948e">
+<p>
+CTEs are unique among table expressions because they have recursive capabilities. A recursive
+CTE is defined by at least two queries (more are possible)—at least one query known as the anchor
+member and at least one query known as the recursive member. The general form of a basic recursive
+CTE looks like the following.
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">WITH</span> &lt;CTE_Name&gt;[(&lt;target_column_list&gt;)]
+<span style="color: #4d9391; font-weight: bold;">AS</span>
+(
+&lt;anchor_member&gt;
+<span style="color: #4d9391; font-weight: bold;">UNION</span> <span style="color: #4d9391; font-weight: bold;">ALL</span>
+&lt;recursive_member&gt;
+)
+&lt;outer_query_against_CTE&gt;;
+</code></pre>
+
+<p>
+The anchor member is a query that returns a valid relational result table—like a query that is used
+to define a nonrecursive table expression. The anchor member query is invoked only once.
+</p>
+
+
+<p>
+The recursive member is a query that has a reference to the CTE name. The reference to the
+CTE name represents what is logically the previous result set in a sequence of executions.
+The first time that the recursive member is invoked, the previous result set represents
+whatever the anchor member returned. In each subsequent invocation of the recursive member,
+the reference to the CTE name represents the result set returned by the previous invocation
+of the recursive member. The recursive member has no explicit recursion termination
+check—the termination check is implicit. The recursive member is invoked repeatedly until it
+returns an empty set or exceeds some limit.
+</p>
+
+<p>
+Both queries must be compatible in terms of the number of columns they return and the data
+types of the corresponding columns.
+</p>
+
+<p>
+The reference to the CTE name in the outer query represents the unified result sets of the
+invocation of the anchor member and all invocations of the recursive member.
+</p>
+
+<p>
+The following code demonstrates how to use a recursive CTE to return information about an
+employee (Don Funk, employee ID 2) and all of the employee’s subordinates in all levels
+(direct or indirect).
+</p>
+
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">WITH</span> EmpsCTE <span style="color: #4d9391; font-weight: bold;">AS</span>
+(
+    <span style="color: #4d9391; font-weight: bold;">SELECT</span> empid, mgrid, firstname, lastname
+    <span style="color: #4d9391; font-weight: bold;">FROM</span> HR.Employees
+     <span style="color: #4d9391; font-weight: bold;">WHERE</span> empid = <span style="color: #cd5c60;">2</span>
+     <span style="color: #4d9391; font-weight: bold;">UNION</span> <span style="color: #4d9391; font-weight: bold;">ALL</span>
+    <span style="color: #4d9391; font-weight: bold;">SELECT</span> C.empid, C.mgrid, C.firstname, C.lastname
+     <span style="color: #4d9391; font-weight: bold;">FROM</span> EmpsCTE <span style="color: #4d9391; font-weight: bold;">AS</span> P
+    <span style="color: #4d9391; font-weight: bold;">JOIN</span> HR.Employees <span style="color: #4d9391; font-weight: bold;">AS</span> C
+     <span style="color: #4d9391; font-weight: bold;">ON</span> C.mgrid = P.empid
+)
+<span style="color: #4d9391; font-weight: bold;">SELECT</span> empid, mgrid, firstname, lastname
+<span style="color: #4d9391; font-weight: bold;">FROM</span> EmpsCTE;
+</code></pre>
+</div>
+</div>
+<div id="outline-container-org1df62c3" class="outline-4">
+<h4 id="org1df62c3">Views</h4>
+<div class="outline-text-4" id="text-org1df62c3">
+<p>
+The two types of table expressions discussed so far—derived tables and CTEs—have a very
+limited scope, which is the single-statement scope. As soon as the outer query against those
+table expressions is finished, they are gone. This means that derived tables and CTEs <b>are
+not reusable.</b>
+</p>
+
+
+<p>
+Views and inline table-valued functions (inline TVFs) are two reusable types of table
+expressions; their definitions are stored as database objects. After they have been created,
+those objects are permanent parts of the database and are only removed from the database if
+they are explicitly dropped.
+</p>
+
+<pre class="code"><code>IF OBJECT_ID (<span style="color: #6fb593;">'Sales.USACusts'</span>) <span style="color: #4d9391; font-weight: bold;">IS</span> <span style="color: #4d9391; font-weight: bold;">NOT</span> <span style="color: #4d9391; font-weight: bold;">NULL</span> <span style="color: #4d9391; font-weight: bold;">DROP</span> <span style="color: #4d9391; font-weight: bold;">VIEW</span> Sales.USACusts;
+
+<span style="color: #4d9391; font-weight: bold;">GO</span>
+<span style="color: #4d9391; font-weight: bold;">CREATE</span> <span style="color: #4d9391; font-weight: bold;">VIEW</span> <span style="color: #80bcb6;">Sales.USACusts</span>
+<span style="color: #4d9391; font-weight: bold;">AS</span>
+    <span style="color: #4d9391; font-weight: bold;">SELECT</span>
+        custid,
+        companyname,
+        contactname,
+        contacttitle,
+        address,
+        city,
+        region,
+        postalcode,
+        country,
+        phone,
+        fax
+    <span style="color: #4d9391; font-weight: bold;">FROM</span>
+        Sales.Customers
+    <span style="color: #4d9391; font-weight: bold;">WHERE</span>
+  country = N<span style="color: #6fb593;">'USA'</span>;
+
+<span style="color: #4d9391; font-weight: bold;">GO</span>
+</code></pre>
+
+<p>
+Note that the general recommendation to avoid using <code>SELECT *</code> has specific relevance in the
+context of views. The columns are enumerated in the compiled form of the view, and <b>new table
+columns will not be automatically added to the view</b>. For example, suppose you define a view
+based on the query <code>SELECT * FROM dbo.T1</code>, and at the view creation time the table T1 has the
+columns col1 and col2. SQL Server stores information only on those two columns in the view’s
+metadata. If you alter the definition of the table to add new columns, those new columns
+will not be added to the view. You can refresh the view’s metadata by using the stored
+procedure <code>sp_refreshview</code> or <code>sp_refreshsqlmodule</code>, but to avoid confusion, the best practice
+is to explicitly list the column names that you need in the definition of the view. If
+columns are added to the underlying tables and you need them in the view, use the ALTER VIEW
+statement to revise the view definition accordingly.
+</p>
+</div>
+<div id="outline-container-org047101a" class="outline-5">
+<h5 id="org047101a">Order</h5>
+<div class="outline-text-5" id="text-org047101a">
+<p>
+The query that you use to define a view must meet all requirements mentioned earlier with
+respect to table expressions in the context of derived tables. The view should not guarantee
+any order to the rows, all view columns must have names, and all column names must be
+unique. In this section, I elaborate a bit about the ordering issue, which is a fundamental
+point that is crucial to understand.
+</p>
+
+<p>
+Remember that a presentation ORDER BY clause is not allowed in the query defining a table
+expression because there’s no order among the rows of a relational table. An attempt to
+create an ordered view is absurd because it violates fundamental properties of a relation as
+defined by the relational model. If you need to return rows from a view sorted for
+presentation purposes, you shouldn’t try to make the view something it shouldn’t be.
+Instead, you should specify a presentation <code>ORDER BY</code> clause in the outer query against the
+view.
+</p>
+
+
+<p>
+Because T-SQL allows an ORDER BY clause in a view when TOP or OFFSET-FETCH is also specified,
+some people think that they can create “ordered views.” One of the ways to try to achieve this is by
+using <code>TOP (100) PERCENT</code>, like the following.
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">ALTER</span> <span style="color: #4d9391; font-weight: bold;">VIEW</span> <span style="color: #80bcb6;">Sales.USACusts</span>
+<span style="color: #4d9391; font-weight: bold;">AS</span>
+<span style="color: #4d9391; font-weight: bold;">SELECT</span> TOP (<span style="color: #cd5c60;">100</span>) PERCENT
+custid, companyname, contactname, contacttitle, address,
+city, region, postalcode, country, phone, fax
+<span style="color: #4d9391; font-weight: bold;">FROM</span> Sales.Customers
+<span style="color: #4d9391; font-weight: bold;">WHERE</span> country = N<span style="color: #6fb593;">'USA'</span>
+<span style="color: #4d9391; font-weight: bold;">ORDER</span> <span style="color: #4d9391; font-weight: bold;">BY</span> region;
+<span style="color: #4d9391; font-weight: bold;">GO</span>
+</code></pre>
+
+<p>
+Even though the code is technically valid and the view is created, you should be aware that
+because the query is used to define a table expression, the ORDER BY clause here is only
+guaranteed to serve the logical filtering purpose for the TOP option. If you query the view
+and don’t specify an ORDER BY clause in the outer query, presentation order is not
+guaranteed.
+</p>
+</div>
+</div>
+<div id="outline-container-orga977cc4" class="outline-5">
+<h5 id="orga977cc4">Options</h5>
+<div class="outline-text-5" id="text-orga977cc4">
+<p>
+When you create or alter a view, you can specify view attributes and options as part of the view
+definition. In the header of the view, under the <code>WITH</code> clause, you can specify attributes such as
+<code>ENCRYPTION</code> and <code>SCHEMABINDING</code>, and at the end of the query you can specify <code>WITH CHECK
+OPTION</code>.
+</p>
+</div>
+<div id="outline-container-org589f266" class="outline-6">
+<h6 id="org589f266">Encryption</h6>
+<div class="outline-text-6" id="text-org589f266">
+<p>
+The ENCRYPTION option is available when you create or alter views, stored procedures, triggers, and
+user-defined functions (UDFs). The ENCRYPTION option indicates that SQL Server will internally store
+the text with the definition of the object in an obfuscated format. The obfuscated text is not directly
+visible to users through any of the catalog objects—only to privileged users through special means.
+</p>
+
+<p>
+Consider the following definition:
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">ALTER</span> <span style="color: #4d9391; font-weight: bold;">VIEW</span> <span style="color: #80bcb6;">Sales.USACusts</span>
+<span style="color: #4d9391; font-weight: bold;">AS</span>
+    <span style="color: #4d9391; font-weight: bold;">SELECT</span>
+        custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax
+    <span style="color: #4d9391; font-weight: bold;">FROM</span> Sales.Customers
+    <span style="color: #4d9391; font-weight: bold;">WHERE</span>
+  country = N<span style="color: #6fb593;">'USA'</span>;
+
+<span style="color: #4d9391; font-weight: bold;">GO</span>
+</code></pre>
+
+<p>
+To get the definition of the view, invoke the <code>OBJECT_DEFINITION</code> function like this.
+</p>
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">SELECT</span> OBJECT_DEFINITION(OBJECT_ID(<span style="color: #6fb593;">'Sales.USACusts'</span>));
+</code></pre>
+
+<pre class="example" id="orgbb274c0">
+| (No column name)           |
+|----------------------------|
+| CREATE VIEW Sales.USACusts |
+AS
+    SELECT
+        custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax
+    FROM Sales.Customers
+    WHERE
+  country = N'USA';
+</pre>
+
+<p>
+The text with the definition of the view is available because the view was created without the
+<code>ENCRYPTION</code> option.
+</p>
+
+
+<p>
+Next, alter the view definition—only this time, include the ENCRYPTION option.
+</p>
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">ALTER</span> <span style="color: #4d9391; font-weight: bold;">VIEW</span> <span style="color: #80bcb6;">Sales.USACusts</span>
+<span style="color: #4d9391; font-weight: bold;">WITH</span>
+  ENCRYPTION
+<span style="color: #4d9391; font-weight: bold;">AS</span>
+  <span style="color: #4d9391; font-weight: bold;">SELECT</span>
+    custid,
+    companyname,
+    contactname,
+    contacttitle,
+    address,
+    city,
+    region,
+    postalcode,
+    country,
+    phone,
+    fax
+  <span style="color: #4d9391; font-weight: bold;">FROM</span> Sales.Customers
+  <span style="color: #4d9391; font-weight: bold;">WHERE</span>
+  country = N<span style="color: #6fb593;">'USA'</span>;
+
+<span style="color: #4d9391; font-weight: bold;">GO</span>
+</code></pre>
+
+<p>
+You will get:
+</p>
+<pre class="example" id="org4cf4077">
+| (No column name) |
+|------------------|
+| NULL             |
+</pre>
+
+<p>
+<b>This type of encryption can be easily decrypted using a <i>plaintext attack</i></b>.
+</p>
+</div>
+</div>
+<div id="outline-container-org75dd571" class="outline-6">
+<h6 id="org75dd571">Check</h6>
+<div class="outline-text-6" id="text-org75dd571">
+<p>
+The purpose of CHECK OPTION is to prevent modifications through the view that conflict with
+the view’s filter—assuming that one exists in the query defining the view.
+</p>
+
+<p>
+The view is currently defined without CHECK OPTION. This means that you can currently insert
+rows through the view with customers from countries other than the United States, and you
+can update existing customers through the view, changing their country to one other than the
+United States. For example, the following code successfully inserts a customer with company
+name Customer ABCDE from the United Kingdom through the view.
+</p>
+
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">INSERT</span> <span style="color: #4d9391; font-weight: bold;">INTO</span> Sales.USACusts(
+companyname, contactname, contacttitle, address,
+city, region, postalcode, country, phone, fax)
+<span style="color: #4d9391; font-weight: bold;">VALUES</span>(
+N<span style="color: #6fb593;">'Customer ABCDE'</span>, N<span style="color: #6fb593;">'Contact ABCDE'</span>, N<span style="color: #6fb593;">'Title ABCDE'</span>, N<span style="color: #6fb593;">'Address ABCDE'</span>,
+N<span style="color: #6fb593;">'London'</span>, <span style="color: #4d9391; font-weight: bold;">NULL</span>, N<span style="color: #6fb593;">'12345'</span>, N<span style="color: #6fb593;">'UK'</span>, N<span style="color: #6fb593;">'012-3456789'</span>, N<span style="color: #6fb593;">'012-3456789'</span>);
+</code></pre>
+
+
+
+<p>
+Similarly, if you update a customer row through the view, changing the country attribute to a
+country other than the United States, the update makes it to the table. But that customer information
+doesn’t show up anymore in the view because it doesn’t satisfy the view’s query filter.
+</p>
+
+<p>
+If you want to prevent modifications that conflict with the view’s filter, add WITH CHECK OPTION
+at the end of the query defining the view.
+</p>
+
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">SELECT</span>
+custid, companyname, contactname, contacttitle, address,
+city, region, postalcode, country, phone, fax
+<span style="color: #4d9391; font-weight: bold;">FROM</span> Sales.Customers
+<span style="color: #4d9391; font-weight: bold;">WHERE</span> country = N<span style="color: #6fb593;">'USA'</span>
+<span style="color: #4d9391; font-weight: bold;">WITH</span> <span style="color: #4d9391; font-weight: bold;">CHECK</span> <span style="color: #4d9391; font-weight: bold;">OPTION</span>;
+<span style="color: #4d9391; font-weight: bold;">GO</span>
+</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgee7c468" class="outline-4">
+<h4 id="orgee7c468">Inline Table-Valued Function</h4>
+<div class="outline-text-4" id="text-orgee7c468">
+<p>
+Inline TVFs are reusable table expressions that support input parameters. In all respects except for the
+support for input parameters, inline TVFs are similar to views. For this reason, I like to think of inline
+TVFs as parameterized views, even though they are not called this formally.
+</p>
+
+<pre class="code"><code>USE TSQL2012;
+
+IF OBJECT_ID (<span style="color: #6fb593;">'dbo.GetCustOrders'</span>) <span style="color: #4d9391; font-weight: bold;">IS</span> <span style="color: #4d9391; font-weight: bold;">NOT</span> <span style="color: #4d9391; font-weight: bold;">NULL</span> <span style="color: #4d9391; font-weight: bold;">DROP</span> <span style="color: #4d9391; font-weight: bold;">FUNCTION</span> dbo.GetCustOrders;
+
+<span style="color: #4d9391; font-weight: bold;">GO</span>
+<span style="color: #4d9391; font-weight: bold;">CREATE</span> <span style="color: #4d9391; font-weight: bold;">FUNCTION</span> <span style="color: #80bcb6;">dbo.GetCustOrders</span> (@cid <span style="color: #4d9391; font-weight: bold;">AS</span> <span style="color: #cd9575;">int</span>)
+  <span style="color: #4d9391; font-weight: bold;">RETURNS</span> <span style="color: #4d9391; font-weight: bold;">TABLE</span>
+  <span style="color: #4d9391; font-weight: bold;">AS</span> <span style="color: #4d9391; font-weight: bold;">RETURN</span>
+  <span style="color: #4d9391; font-weight: bold;">SELECT</span>
+    orderid,
+    custid,
+    empid,
+    orderdate,
+    requireddate,
+    shippeddate,
+    shipperid,
+    freight,
+    shipname,
+    shipaddress,
+    shipcity,
+    shipregion,
+    shippostalcode,
+    shipcountry
+<span style="color: #4d9391; font-weight: bold;">FROM</span>
+    Sales.Orders
+<span style="color: #4d9391; font-weight: bold;">WHERE</span>
+    custid = @cid;
+
+<span style="color: #4d9391; font-weight: bold;">GO</span>
+</code></pre>
+</div>
+</div>
+<div id="outline-container-org168b6fe" class="outline-4">
+<h4 id="org168b6fe"><span class="done KILL">KILL</span> Apply</h4>
+<div class="outline-text-4" id="text-org168b6fe">
+<p>
+The APPLY operator is a very powerful table operator. Like all table operators, this operator is used
+in the FROM clause of a query. The two supported types of APPLY operator are CROSS APPLY and
+OUTER APPLY. CROSS APPLY implements only one logical query processing phase, whereas OUTER
+APPLY implements two.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgfb3a69c" class="outline-3">
+<h3 id="orgfb3a69c">Sets</h3>
+<div class="outline-text-3" id="text-orgfb3a69c">
+<p>
+Set operators are operators that are applied between two input sets—or, to use the more
+accurate SQL term, multisets—that result from two input queries. Remember, <b>a multiset is not
+a true set</b>, because it can contain duplicates. When I use the term multiset
+I’m referring to the intermediate results from two input queries that might contain
+duplicates. Although there are two multisets as inputs to an operator, depending on the
+flavor of the operator, the result is either a set or a multiset. If the operator is a true
+set operator (a DISTINCT flavor), the result is a set with no duplicates. If the operator is
+a multiset operator (an ALL flavor), the result is a multiset with possible duplicates.
+</p>
+</div>
+<div id="outline-container-org8ea2edb" class="outline-4">
+<h4 id="org8ea2edb">Precedence</h4>
+<div class="outline-text-4" id="text-org8ea2edb">
+<p>
+SQL defines precedence among set operators. The INTERSECT operator precedes UNION and EXCEPT,
+and UNION and EXCEPT are considered equal. In a query that contains multiple set operators, first
+INTERSECT operators are evaluated, and then operators with the same precedence are evaluated
+based on order of appearance.
+</p>
+
+<p>
+Consider the following query, which shows how INTERSECT precedes EXCEPT.
+</p>
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">SELECT</span> country, region, city <span style="color: #4d9391; font-weight: bold;">FROM</span> Production.Suppliers
+<span style="color: #4d9391; font-weight: bold;">EXCEPT</span>
+<span style="color: #4d9391; font-weight: bold;">SELECT</span> country, region, city <span style="color: #4d9391; font-weight: bold;">FROM</span> HR.Employees
+<span style="color: #4d9391; font-weight: bold;">INTERSECT</span>
+<span style="color: #4d9391; font-weight: bold;">SELECT</span> country, region, city <span style="color: #4d9391; font-weight: bold;">FROM</span> Sales.Customers;
+</code></pre>
+<p>
+Because INTERSECT precedes EXCEPT, the INTERSECT operator is evaluated first, even though it
+appears second. Therefore, the meaning of this query is, “locations that are supplier
+locations but not (locations that are both employee and customer locations).”
+</p>
+
+<p>
+Write a query that returns customer and employee pairs that had order activity in January
+2008 but not in February 2008.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf45e06d" class="outline-2">
+<h2 id="orgf45e06d">Terminology</h2>
+<div class="outline-text-2" id="text-orgf45e06d">
+<p>
+Subqueries terminology might sound a little bit confusing, this section provides some basic
+glossary that might help you.
+</p>
+
+<ul class="org-ul">
+<li><b>Self-contained subqueries</b>.
+Every subquery has an outer query that it belongs to. Self-contained subqueries are
+subqueries that are independent of the outer query that they belong to. Self-contained
+subqueries are very convenient to debug, because you can always highlight the subquery
+code, run it, and ensure that it does what it’s supposed to do. Logically, it’s as if the
+subquery code is evaluated only once before the outer query is evaluated, and then the
+outer query uses the result of the subquery. The following sections take a look at some
+concrete examples of self-contained subqueries.
+
+<ul class="org-ul">
+<li><p>
+With Scalar
+</p>
+<pre class="code"><code>USE TSQL2012;
+<span style="color: #4d9391; font-weight: bold;">DECLARE</span> @maxid <span style="color: #4d9391; font-weight: bold;">AS</span> <span style="color: #cd9575;">INT</span> = (<span style="color: #4d9391; font-weight: bold;">SELECT</span> <span style="color: #80bcb6;">MAX</span>(orderid)
+                        <span style="color: #4d9391; font-weight: bold;">FROM</span> Sales.Orders);
+
+<span style="color: #4d9391; font-weight: bold;">SELECT</span> orderid, orderdate, empid, custid
+<span style="color: #4d9391; font-weight: bold;">FROM</span> Sales.Orders
+<span style="color: #4d9391; font-weight: bold;">WHERE</span> orderid = @maxid;
+</code></pre></li>
+</ul></li>
+<li><b>Self-Contained Multivalued Subquery</b>.
+A multivalued subquery is a subquery that returns multiple values as a single column,
+regardless of whether the subquery is self-contained. Some predicates, such as the IN
+predicate, operate on a multivalued subquery.</li>
+<li><b>Correlated Subqueries</b>.
+Correlated subqueries are subqueries that refer to attributes from the table that appears
+in the outer query. This means that the subquery is dependent on the outer query and
+cannot be invoked independently. Logically, it’s as if the subquery is evaluated
+separately for each outer row.</li>
+<li><b>Derived Tables</b>.
+ Derived tables (also known as table subqueries) <b>are defined in the FROM clause</b> of an
+outer query. Their scope of existence is the outer query. As soon as the outer query is
+finished, the derived table is gone.</li>
+<li><b>Common table expressions</b>.
+ (CTEs) are another standard form of table expression very similar
+to derived tables, yet with a couple of important advantages. CTEs are defined by using a
+WITH statement and have the following general form.</li>
+</ul>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+SQL also provides the <code>nvarchar</code> type to store multilingual data using the Unicode
+representation. However, many databases allow Unicode (in the UTF-8 representation) to be
+stored even in varchar types.
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr style="
+    clear: both;
+">
+
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 31.0.50 (<a href="https://orgmode.org">Org</a> mode 9.7.11). Written by: Salih Muhammed, by the date of: 2022-04-22 Fri 03:00. Last build date: 2024-12-14 Sat 21:43.</p>
+
+</div>
+</div>
+</div>
+</body>
+</html>

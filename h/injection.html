@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Proof Mapping is Injection iff Direct Image Mapping is Injection</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#ffffff">
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="viewport" content= "width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style/toc.css">
+  <link rel="stylesheet" href="/style/tufte.css">
+  <link rel="stylesheet" href="/style/main.css">
+
+
+
+
+  <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
+  <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+</head>
+<body>
+</body>
+</html>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://fastly.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="preamble" class="status">
+  <div class="header" style="
+    display: block !important;!i;!;
+">
+<a href="/">
+<h1 class="title" style="
+margin-block-start: auto;
+    color: black;
+">Flectere si nequeo superos,<br><span class="subtitle" style="font-size: smaller; color: gray; font-style: italic;">acheronta movebo</span></h1>
+
+      </a>
+
+<hr class="header-divider" style="margin-block-end: -1em;">
+
+  </div>
+</div>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Proof Mapping is Injection iff Direct Image Mapping is Injection</h1>
+</header><p>
+Let \( f: S \to T \) be a mapping.
+</p>
+
+<p>
+Let \( f^\to: \mathcal{P}(S) \to \mathcal{P}(T) \) be the direct image mapping of \( f \).
+</p>
+
+<p>
+Then:
+</p>
+
+<p>
+\( f^\to \) is an injection {{iff}} \( f: S \to T \) is also an injection.
+</p>
+
+
+<p>
+<b>Proof:</b>
+</p>
+
+<p>
+Suppose \( f: S \to T \) is a mapping, but not injective.
+</p>
+
+<p>
+Then:
+\[ \exists x_1 \ne x_2 \in S: f(x_1) = f(x_2) = y \]
+</p>
+
+<p>
+Let:
+\[ X_1 = \{ x_1 \} \]
+\[ X_2 = \{ x_2 \} \]
+\[ Y = \{ y \} \]
+</p>
+
+<p>
+Then it follows that:
+\[ f^\to(X_1) = f^\to(X_2) = Y \]
+</p>
+
+<p>
+Thus \( f^\to: \mathcal{P}(S) \to \mathcal{P}(T) \) is not injective.
+</p>
+
+<p>
+So by the Rule of Transposition, the result follows.
+</p>
+<div class="epigraph"><blockquote>
+<p>
+lemma
+</p>
+
+</blockquote></div>
+
+<p>
+Suppose \( f^\to: \mathcal{P}(S) \to \mathcal{P}(T) \) is not an injection.
+</p>
+
+<p>
+Then:
+</p>
+
+<p>
+\[ \exists Y \in \mathcal{P}(T): \exists X_1, X_2 \in \mathcal{P}(S): X_1 \ne X_2 \land f^\to(X_1) = f^\to(X_2) = Y \]
+</p>
+
+<p>
+There are two cases to consider:
+</p>
+
+<ol class="org-ol">
+<li>Either \( X_1 \) or \( X_2 \) is the empty set.</li>
+<li>Neither \( X_1 \) nor \( X_2 \) is the empty set.</li>
+</ol>
+
+<p>
+WLOG assume that \( X_1 = \emptyset \).
+</p>
+
+<p>
+Then, from Image of Empty Set is Empty Set:
+\[ Y = f^\to(X_1) = \emptyset \]
+</p>
+
+<p>
+But that means:
+\[ f^\to(X_2) = \emptyset \]
+</p>
+
+<p>
+Now \( X_1 \ne X_2 \), so \( X_2 \ne \emptyset \).
+</p>
+
+<p>
+Thus:
+\[ \exists x_2 \in X_2: \neg \exists y \in T: f(x_2) = y \]
+which means that \( f \) is not even a mapping, let alone an injection.
+</p>
+
+<p>
+The same argument applies if \( X_2 \) is empty.
+</p>
+<div class="epigraph"><blockquote>
+<p>
+lemma
+</p>
+
+</blockquote></div>
+
+<p>
+Now, assume that neither \( X_1 \) nor \( X_2 \) is the empty set.
+</p>
+
+<p>
+As \( X_1 \ne X_2 \), there must be at least one element in either one which is not in the other.
+</p>
+
+<p>
+WLOG assume that \( \exists x_1 \in X_1: x_1 \notin X_2 \).
+</p>
+
+<p>
+Now suppose \( f(x_1) = y \in Y \).
+</p>
+
+<p>
+However, as \( f^\to(X_2) = Y \), there must be some \( x_2 \in X_2 \) such that \( f(x_2) = y \in Y \).
+</p>
+
+<p>
+So:
+\[ \exists x_1 \ne x_2 \in S: f(x_1) = f(x_2) \]
+which means, by definition, that \( f \) is not injective.
+</p>
+
+<p>
+Thus, if \( f^\to: \mathcal{P}(S) \to \mathcal{P}(T) \) is not an injection then neither is \( f: S \to T \).
+</p>
+
+<p>
+Thus, by the Rule of Transposition, the result follows.
+</p>
+<div class="epigraph"><blockquote>
+<p>
+qed
+</p>
+
+</blockquote></div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr style="
+    clear: both;
+">
+
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 31.0.50 (<a href="https://orgmode.org">Org</a> mode 9.7.11). Written by: Salih Muhammed, by the date of: 2024-07-01 Mon 00:00. Last build date: 2024-07-04 Thu 21:55.</p>
+
+</div>
+</div>
+</div>
+</body>
+</html>

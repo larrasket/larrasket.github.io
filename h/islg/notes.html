@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Notes from ISLP</title>
+<meta name="generator" content="Org Mode" />
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#ffffff">
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="viewport" content= "width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style/toc.css">
+  <link rel="stylesheet" href="/style/tufte.css">
+  <link rel="stylesheet" href="/style/main.css">
+
+
+
+
+  <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
+  <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+</head>
+<body>
+</body>
+</html>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://fastly.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="preamble" class="status">
+  <div class="header" style="
+    display: block !important;!i;!;
+">
+<a href="/">
+<h1 class="title" style="
+margin-block-start: auto;
+    color: black;
+">Flectere si nequeo superos,<br><span class="subtitle" style="font-size: smaller; color: gray; font-style: italic;">acheronta movebo</span></h1>
+
+      </a>
+
+<hr class="header-divider" style="margin-block-end: -1em;">
+
+  </div>
+</div>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Notes from ISLP</h1>
+</header><p>
+Notes from (<a href="#citeproc_bib_item_1">James et al., 2023</a>). For more context: <a href="../../d/islg.html#edrhrl61kyj0">An Introduction to Statistical Learning with Applications in Go (and Julia)</a>
+</p>
+<div id="outline-container-orgc8fe55d" class="outline-2">
+<h2 id="orgc8fe55d">Some Terms</h2>
+<div class="outline-text-2" id="text-orgc8fe55d">
+<p>
+<i>But what even is X?</i>
+</p>
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Term</td>
+<td class="org-left">Description</td>
+</tr>
+
+<tr>
+<td class="org-left">Predictor</td>
+<td class="org-left">The inputs variable go by different names, such as predictors, independent variables, features, or sometimes just variables.</td>
+</tr>
+
+<tr>
+<td class="org-left">Quantitative Variables</td>
+<td class="org-left">Numerical values (one&rsquo;s age, price of stock, etc..).</td>
+</tr>
+
+<tr>
+<td class="org-left">Qualitative Variables</td>
+<td class="org-left">values in one of K different classes, or categories (brand A, B, or C).</td>
+</tr>
+
+<tr>
+<td class="org-left">Variance</td>
+<td class="org-left">Variance refers to the amount by which \(\hat{f}\) would change if we estimated it using a different training data set.</td>
+</tr>
+
+<tr>
+<td class="org-left">Bias</td>
+<td class="org-left">Bias is one type of error that occurs due to wrong assumptions about data such as assuming data is linear when in reality, data follows a complex function.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orgf5a4b1e" class="outline-2">
+<h2 id="orgf5a4b1e">Prediction and Inference</h2>
+<div class="outline-text-2" id="text-orgf5a4b1e">
+<p>
+With \(\hat{Y} = \hat{f}(x)\) we would be interested in <i>predicting</i> the value of
+\(\hat{Y}\) (an example of this would be predicting a disease (\(\hat{y}\)) from a
+blood analysis of patient (\(\hat{f}(x)\))).
+</p>
+
+<p>
+Find this answer to learn more about reducible and irreducible errors:
+<a href="https://stats.stackexchange.com/a/259834/396831">https://stats.stackexchange.com/a/259834/396831</a>.
+</p>
+
+<p>
+Some other times we are more interested in understanding the relationships
+between \(Y\) and \(X_1, \dots, X_p\), after \(\hat{Y}\) is estimated, we might be
+more interested in one of the following instead of predicating its value for
+\(x\):
+</p>
+
+<ul class="org-ul">
+<li>Which predictors are associated with the response?</li>
+<li>What is the relationship between the response and each predictor?</li>
+<li>Can the relationship between Y and each predictor be adequately summarized
+using a linear equation, or is the relationship more complicated?</li>
+</ul>
+
+<p>
+It&rsquo;s important to understand what exactly is our ultimate goal after the
+estimation, is it prediction or inference:
+</p>
+
+<div class="epigraph"><blockquote>
+<p>
+For example, linear models allow for relatively simple and interpretable
+inference, but may not yield as accurate predictions as some other approaches.
+In contrast, some of the highly non-linear approaches that we discuss  later can
+potentially provide quite accurate predictions for \(Y\) , but this comes at the
+expense of a less interpretable model for which inference is more challenging.
+</p>
+
+</blockquote></div>
+</div>
+</div>
+<div id="outline-container-org491781c" class="outline-2">
+<h2 id="org491781c">Supervised Versus Unsupervised Learning</h2>
+<div class="outline-text-2" id="text-org491781c">
+<p>
+In supervised learning for each observation of the predictor measurement(s)
+\(x_i, i = 1, \dots , n\) there is an associated response measurement \(y_i\), we
+will be most dedicated to learn about this type. by contrast unsupervised
+learning describes the somewhat more challenging situation in which for every
+observation we observe a vector of measurements \(x_i\) but no
+associated response \(y_i\).
+</p>
+</div>
+</div>
+<div id="outline-container-org59994b0" class="outline-2">
+<h2 id="org59994b0">Regression Versus Classification Problems</h2>
+<div class="outline-text-2" id="text-org59994b0">
+<p>
+We tend to refer to problems with a quantitative response as regression
+problems, while those involving a qualitative response are often referred to as
+classification problems.
+</p>
+
+<p>
+To learn more how a regression function is found, watch: <a href="https://youtu.be/ox0cKk7h4o0?list=PLoROMvodv4rOzrYsAxzQyHb8n_RWNuS1e&amp;t=363">Statistical Learning:
+2.1 Introduction to Regression Models</a>
+</p>
+</div>
+</div>
+<div id="outline-container-org46fe2e3" class="outline-2">
+<h2 id="org46fe2e3">Measuring the Quality of Fit</h2>
+<div class="outline-text-2" id="text-org46fe2e3">
+<p>
+After reaching to a fit we typically wish to see how performant is it, one othe
+commonly used methods is calculating the MSE (watch: <a href="https://youtu.be/Mhw_-xHVmaE">Mean Squared Error (MSE)</a>)
+\[MSE= \frac{1}{n}\sum^n_{i=1} (y_i-\hat{f}(x_i))^2\]
+</p>
+
+
+<p>
+here we use the training data (comparing what the model predicted and what is
+actual real) to measure the quality, however, we are not always interested in
+how good the model was with the prediction data:
+</p>
+
+<div class="epigraph"><blockquote>
+<p>
+we are interested in the accuracy of the predictions that we obtain when we
+apply our method to previously unseen test data.
+</p>
+
+</blockquote></div>
+
+<p>
+How can we go about trying to select a method that minimizes the test MSE?:
+</p>
+<div class="epigraph"><blockquote>
+<p>
+In some settings, we may have a test data set available—that is, we may have
+access to a set of observations that were not used to train the statistical
+learning method. We can then simply evaluate the average squared prediction
+errors on the test observations, and select the learning method for which the
+test MSE is smallest. But what if no test observations are available? In that
+case, one might imagine simply selecting a statistical learning method that
+minimizes the training MSE. This seems like it might be a sensible approach,
+since the training MSE and the test MSE appear to be closely related.
+Unfortunately, there is a fundamental problem with this strategy: there is no
+guarantee that the method with the lowest training MSE will also have the lowest
+test MSE.  Roughly speaking, the problem is that many statistical methods
+specifically estimate coefficients so as to minimize the training set MSE. For
+these methods, the training set MSE can be quite small, but the test MSE is
+often much larger.
+</p>
+
+</blockquote></div>
+</div>
+</div>
+<div id="outline-container-org66c90d5" class="outline-2">
+<h2 id="org66c90d5">Overfitting Data</h2>
+<div class="outline-text-2" id="text-org66c90d5">
+<div class="epigraph"><blockquote>
+<p>
+When a given method yields a small training MSE but a large test MSE, we are
+said to be overfitting the data. This happens because our statistical learning
+procedure is working too hard to find patterns in the training data, and may be
+picking up some patterns that are just caused by random chance rather than by
+true properties of the unknown function \(f\).
+</p>
+
+</blockquote></div>
+</div>
+</div>
+<div id="outline-container-org3972226" class="outline-2">
+<h2 id="org3972226">A general rule to bias and variance</h2>
+<div class="outline-text-2" id="text-org3972226">
+<div class="epigraph"><blockquote>
+<p>
+As a general rule, as we use more flexible methods, the variance will
+increase and the bias will decrease.
+</p>
+
+</blockquote></div>
+</div>
+</div>
+<div id="outline-container-orgaf16b42" class="outline-2">
+<h2 id="orgaf16b42">K growth effect on the KKN</h2>
+<div class="outline-text-2" id="text-orgaf16b42">
+<div class="epigraph"><blockquote>
+<p>
+The choice of K has a drastic effect on the KNN classifier obtained.  As K
+grows, the method becomes less flexible and produces a decision boundary that is
+close to linear. This corresponds to a low-variance but high-bias classifier.
+</p>
+
+</blockquote></div>
+</div>
+</div>
+<div id="outline-container-org7eb277c" class="outline-2">
+<h2 id="org7eb277c">References</h2>
+<div class="outline-text-2" id="text-org7eb277c">
+<style>.csl-entry{text-indent: -1.5em; margin-left: 1.5em;}</style><div class="csl-bib-body">
+  <div class="csl-entry"><a id="citeproc_bib_item_1"></a>James, G., Witten, D., Hastie, T., Tibshirani, R., Taylor, J., 2023. <a href="https://libgen.li/file.php?md5=2da57b70be7a957abb9f7364ccbced40">An introduction to statistical learning: with applications in python (springer texts in statistics)</a>, 1st ed. 2023. ed. Springer.</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr style="
+    clear: both;
+">
+
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 31.0.50 (<a href="https://orgmode.org">Org</a> mode 9.7.11). Written by: Salih Muhammed, by the date of: . Last build date: 2024-07-04 Thu 21:55.</p>
+
+</div>
+</div>
+</div>
+</body>
+</html>

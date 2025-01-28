@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Distributed Systems Assessment</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#ffffff">
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="viewport" content= "width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style/toc.css">
+  <link rel="stylesheet" href="/style/tufte.css">
+  <link rel="stylesheet" href="/style/main.css">
+
+
+
+
+  <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
+  <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+</head>
+<body>
+</body>
+</html>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="dynamic-header" style="display: block">
+  <div class="header">
+    <h1
+      style="
+        font-size: medium;
+        color: black;
+        margin-block-start: 0em;
+        font-weight: normal !important;
+        margin-block-end: -0.5em;
+      "
+    >
+      <a href="/">
+        <small style="font-size: x-small; font-style: italic"
+          >(tap for home)</small
+        >
+        <small style="font-size: x-small; font-style: italic"></small>
+      </a>
+      <small style="font-size: x-small; font-style: italic"
+        >also see; <a href="/p/">posts archive</a>,
+        <a href="/stack.html">top of my stack</a></small
+      >
+    </h1>
+  </div>
+</div>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Distributed Systems Assessment</h1>
+</header><p>
+I&rsquo;ve recently received an interesting assessment for developing a system &ldquo;a
+small part of an ERP system with a  focus on the purchasing process&rdquo;. However,
+the interesting part that I found was in the long list of implementation
+requirements I found in that assessment, which I find pretty handful for
+engineers to test their understanding (as well as for HMs of course) of topics
+like CQRS, Publish-Subscribe Systems, DDD, Onion Architecture and many other
+interesting topics. The assignment PDF is available for download <a href="../i/dsa.pdf">here</a>.
+</p>
+
+<p>
+I will document in this post my progress with the development and the
+requirements.
+</p>
+
+<p>
+I will start with the first 3 requirements:
+</p>
+
+<div class="epigraph"><blockquote>
+<ol class="org-ol">
+<li>Apply the solution for the above problem statement using DDD considering the
+different  bounded contexts different</li>
+<li>Each context should be in a separate repo, and each repo should have a single
+branch  only for all work even for incomplete work, without that single
+branch getting damaged,  or impacted by the incomplete work</li>
+<li>Each context should be a standalone process</li>
+</ol>
+
+</blockquote></div>
+<div id="outline-container-org6025a78" class="outline-2">
+<h2 id="org6025a78">Domain-Driven Design (req. #1, #2, and #3)</h2>
+<div class="outline-text-2" id="text-org6025a78">
+<p>
+Domain-Driven Design (DDD) is one of the most common paradigms in dealing with
+systems of big scale, and pretty common in large scale systems. Of course what
+we are dealing with here is not a large scale system, the business rules are
+pretty straightforward and could be modeled into a simple monolithic app and
+scaled easily, however, for the sake of the test we can neglect this fact.
+</p>
+
+<p>
+One of the most used architectural designs in this case is Onion
+Architecture<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle"/><span class="sidenote">
+A lot of time I see the misusing of &ldquo;Clean Architecture&rdquo; to describe Onion
+Architecture. The former was just how Robert C. Martin described Onion
+Architecture: a clean one. But it is not its name.
+</span>.
+</p>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+A lot of time I see the misusing of &ldquo;Clean Architecture&rdquo; to describe Onion
+Architecture. The former was just how Robert C. Martin described Onion
+Architecture: a clean one. But it is not its name.
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr style="
+    clear: both;
+">
+
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 31.0.50 (<a href="https://orgmode.org">Org</a> mode 9.7.11). Written by: Salih Muhammed, by the date of: . Last build date: 2024-12-30 Mon 07:54.</p>
+
+</div>
+</div>
+</div>
+</body>
+</html>

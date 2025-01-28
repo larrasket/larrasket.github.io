@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cursed Journey of Getting a Monitor to Work</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#ffffff">
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="viewport" content= "width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style/toc.css">
+  <link rel="stylesheet" href="/style/tufte.css">
+  <link rel="stylesheet" href="/style/main.css">
+
+
+
+
+  <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
+  <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+</head>
+<body>
+</body>
+</html>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="preamble" class="status">
+  <div class="header" style="
+    display: block !important;!i;!;
+">
+<a href="/">
+<h1 class="title" style="
+margin-block-start: auto;
+    color: black;
+">Flectere si nequeo superos,<br><span class="subtitle" style="font-size: smaller; color: gray; font-style: italic;">acheronta movebo</span></h1>
+
+      </a>
+
+<hr class="header-divider" style="margin-block-end: -1em;">
+
+  </div>
+</div>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Cursed Journey of Getting a Monitor to Work</h1>
+</header><div class="PREVIEW" id="org2d007d8">
+<p>
+Isn&rsquo;t it a shame that this place of the internet is supposed to be a blog yet doesn&rsquo;t contain
+blogs but obscure philosophies?
+</p>
+
+</div>
+
+<p>
+Reallocated in my family home again, a colleague told me that he knows somebody that is able
+to provide me a nice frameless-touchscreen 23.80 inches monitor for a very low price,
+comparable to the average prices here due to customs, it&rsquo;s pretty low; so he just exports it
+for personal use and sell it for profit. Fair enough, I said. So I went there, tested the
+monitor, everything looks great.
+</p>
+
+<p>
+I already have a secondary as mentioned, it&rsquo;s plugged through the only HDMI port into my
+laptop, &ldquo;Where will I plug the new one?&rdquo; I asked, &ldquo;Hmmm I don&rsquo;t know, but since it&rsquo;s just
+about data transfer through an external port like USB-C or something&rdquo; my internal voice
+responded.  (No need to mention that I didn&rsquo;t know that I can use dock and solve this whole
+issue, I&rsquo;m a relatively uncivilized third-world human and I never knew such a thing
+existed), I was left was the following thoughts;
+</p>
+
+<ul class="org-ul">
+<li>HDMI Splitter (Suggested by the seller)</li>
+<li>USB-C Adapter</li>
+<li>USB-A Adapter</li>
+</ul>
+<div id="outline-container-org83f1653" class="outline-2">
+<h2 id="org83f1653">First Try; HDMI Splitter</h2>
+<div class="outline-text-2" id="text-org83f1653">
+<p>
+Worked fine but there is one main issue, it doesn&rsquo;t plug a second monitor to your machine
+the but it plugs a new monitor to the monitor plugged in your machine. I.e. it will send the
+signal for both of them, just like an old fashion DSL splitter.
+</p>
+
+
+<figure id="orgcd9db2d">
+<img src="../i/old/2023-01-23_06-47-11_screenshot.png" alt="2023-01-23_06-47-11_screenshot.png">
+
+</figure>
+</div>
+</div>
+<div id="outline-container-org6093259" class="outline-2">
+<h2 id="org6093259">Second Try; USB-C</h2>
+<div class="outline-text-2" id="text-org6093259">
+<p>
+Like my head voice suggested the first thing that came out to my mind is using Type-C USB
+converter, it&rsquo;s pretty fast and Apple already did that before with Mac books, and the
+monitor is modern enough to be compatible with this setup. I ordered &ldquo;USB31_C_HDMI_ADP&rdquo;,
+three days later it was delivered. Never worked, not even given a single sign that it&rsquo;s
+going to work, after some investigation found out that my machine USB-C specification said
+&ldquo;that&rsquo;s simply not possible&rdquo;.
+</p>
+
+<div class="epigraph"><blockquote>
+<p>
+Connect to an external storage, or data devices.  Note: An appropriate adapter may be needed
+for connecting external devices. This connector cannot be used to connect external display
+devices
+</p>
+
+</blockquote></div>
+</div>
+</div>
+<div id="outline-container-org5cb886c" class="outline-2">
+<h2 id="org5cb886c">Third Try; USB-A</h2>
+<div class="outline-text-2" id="text-org5cb886c">
+<p>
+After while I learned that using DisplayLink is possible, yet I couldn&rsquo;t find a way to
+purchase a one without paying +$100 for customs. So I had to use a USB-A converter that uses
+the manufacturers&rsquo; firmware (which implies, of course, my machine have to be compatible with
+those firmware). Again, I purchased a USB-A converter &ldquo;MACROSILICON Display Adapter&rdquo;.
+</p>
+
+
+<p>
+After I plugged it into my machine, reading <code>dmesg</code> I noticed that it&rsquo;s being linked to
+<code>/sys/bus/usb/drivers/snd-usb-audio/</code>, which means that it&rsquo;s being treated as a USB audio
+device. So I had to force it to <code>unbind</code> this, using this <code>udevadm</code> role:
+</p>
+
+<pre class="example" id="org3bdfbec">
+# For HDMI-to-USB adaptor:
+SUBSYSTEM=="usb", DRIVER=="snd-usb-audio", ATTRS{idProduct}=="2109", ATTRS{idVendor}=="534d", \
+    RUN+="/bin/sh -c 'echo -n $kernel &gt; /sys/bus/usb/drivers/snd-usb-audio/unbind'"
+</pre>
+
+<p>
+After this amount of work I found out that this piece should be used for USB video device
+class like webcams, digital camcorders, transcoders, analog video converters and still-image
+cameras, etc..
+</p>
+
+<p>
+So, getting this to work was in vain.
+</p>
+</div>
+</div>
+<div id="outline-container-org80d4774" class="outline-2">
+<h2 id="org80d4774">Fourth Try; USB-A (Right Piece)</h2>
+<div class="outline-text-2" id="text-org80d4774">
+<p>
+I found an abscure company called Fresco Logic that develops this kind of solution with
+claimed Linux/Android driver support, and that&rsquo;s the other story.
+</p>
+</div>
+<div id="outline-container-org24acb6e" class="outline-3">
+<h3 id="org24acb6e">Linux Driver</h3>
+<div class="outline-text-3" id="text-org24acb6e">
+<p>
+It sounds like the so-called driver that fresco logic developed was disconnected since 2021,
+I use the latest 6.1.7 kernel which means this will never compile, note that you have to
+build it yourself since it uses your linux-headers toolchain to build, so at least you need
+to use a build that matches your current kernel, otherwise you will get invalid object
+message.
+</p>
+
+<p>
+Another is story is me trying to downgrade the Kernel to 5.6 to get this to work, but we
+shall not proceed into this for now, a plot-twist is even after swapping to 5.6 it didn&rsquo;t
+compile. &ldquo;So why not go through the code, update the APIs and get it to work for you?&rdquo;, I&rsquo;d
+have you to look at the code first my dear;
+</p>
+
+
+<figure id="orgaa0ad19">
+<img src="../i/old/2023-01-23_07-06-11_screenshot.png" alt="2023-01-23_07-06-11_screenshot.png">
+
+</figure>
+
+<p>
+Anyway, I tried 5.7, 5.5, 5.8, 5.15, and eventually 5.10 worked (no idea of how). So now it
+compiled, how to use it? Plot-twist 2: it is not a driver, it&rsquo;s a prototype proof of
+concept that this piece can be used in linux, but no DRM available.
+</p>
+
+<p>
+Meanwhile.. Windows A ubiquitous advantage for Windows that is commonly mentioned in these
+situations that it &rsquo;just works&rsquo;. So I installed Windows to give it a try, sadly it was right.
+</p>
+
+
+<figure id="org0145aeb">
+<img src="../i/old/2023-01-23_07-10-32_screenshot.png" alt="2023-01-23_07-10-32_screenshot.png">
+
+</figure>
+
+<p>
+After working 12 hours on it I was able to get a basic DRM to work for it, it&rsquo;s a little
+buggy but at least it does the job.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgbade411" class="outline-2">
+<h2 id="orgbade411">Final Results</h2>
+<div class="outline-text-2" id="text-orgbade411">
+<p>
+The DRM I coded was very insecure unfortunately and I couldn&rsquo;t risk depending on it, when I
+was completely desperate an idea came to my mind reminding me that I had an old unused
+laptop with Windows installed, I could use it connected to the monitor and connect it with
+barrier to my main laptop, so it feels like it is just another monitor (with restricted
+filesystem access lol). Unexpectedly it worked:
+</p>
+
+
+<figure id="orgf4cb550">
+<img src="../i/old/2023-01-23_07-33-42_screenshot.png" alt="2023-01-23_07-33-42_screenshot.png">
+
+</figure>
+
+
+<p>
+This experience raised some questions to my head about the reliability of LKMs, the Windows
+driver efficiently works in like all Windows versions (each has many different build
+versions), and due to kernel APIs change in linux-headers it can not work after any related
+kernel patches, could that be the reason that the NVIDIA drivers have too frequent updates
+in Linux compared to Windows? To make sure it will work? I don&rsquo;t know I&rsquo;m not a kernel
+engineer, but really this experience could be much pleasant than that easily.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr style="
+    clear: both;
+">
+
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 31.0.50 (<a href="https://orgmode.org">Org</a> mode 9.7.11). Written by: Salih Muhammed, by the date of: 2023-01-23 Mon 17:14. Last build date: 2024-12-14 Sat 21:43.</p>
+
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Issue of Identifying and New Linux Users</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#ffffff">
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="viewport" content= "width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style/toc.css">
+  <link rel="stylesheet" href="/style/tufte.css">
+  <link rel="stylesheet" href="/style/main.css">
+
+
+
+
+  <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
+  <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+</head>
+<body>
+</body>
+</html>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="preamble" class="status">
+  <div class="header" style="
+    display: block !important;!i;!;
+">
+<a href="/">
+<h1 class="title" style="
+margin-block-start: auto;
+    color: black;
+">Flectere si nequeo superos,<br><span class="subtitle" style="font-size: smaller; color: gray; font-style: italic;">acheronta movebo</span></h1>
+
+      </a>
+
+<hr class="header-divider" style="margin-block-end: -1em;">
+
+  </div>
+</div>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">The Issue of Identifying and New Linux Users</h1>
+</header><div class="tag" id="org28018d8">
+<p>
+This section was labeled under, or is related to <a href="../t/programming.html#4u5664n02wj0">Programming</a>
+</p>
+
+</div>
+
+<div class="PREVIEW" id="org3ac95f0">
+<p>
+How I do X on Linux?
+</p>
+
+</div>
+
+
+
+<p>
+I thought I wa not not going to use this short posts page to write anything
+technical, but I think being a &ldquo;<a href="https://en.wikipedia.org/wiki/Power_user">power user</a>&rdquo; does not have anything with writing
+about shit software engineering topics. Anyway, I think I know a fundamental
+issue new Linux users face, that&rsquo;s not really focused on, it is the
+understanding of different layers/level of their operating system. This issue is
+almost unidentifiable in the other operating systems&rsquo; communities, although it&rsquo;s
+there. An example that I&rsquo;ve personally seen was asking this question, &ldquo;I&rsquo;ve a
+DELL laptop, how can I fix this issue with X software?&rdquo;. The question has an
+unrelated detail that reflects an uncomprehending state of whatever they are
+using, they should probably ask how do I fix that on Windows 7 or whatever. Most
+of the time people who try to help deduce whatever OS or platform they are
+talking about (mostly from the X), so it is not really a problem on these
+platforms. However, with Linux, it does really matter especially that the
+situation on Linux scarce when it comes to packaging everything. Ubuntu is
+probably the only Linux distribution that gets the best out of that, for example
+let&rsquo;s assume that question: how to fix the ugly terminal font in my Ubuntu
+laptop? well just open gnome settings and change it from there. Once you knew
+that whoever is asking is an Ubuntu user you know for sure that they are using
+gnome terminal.
+</p>
+
+<p>
+Now let&rsquo;s assume that there&rsquo;s a new Linux user who is looking on how to install
+Java or Python, they might find an official step from Oracle or Python websites
+to do something like this:
+</p>
+
+<pre class="example" id="orgd21335b">
+ tar xvf Python-3.2.8.tgz
+ cd Python-3.2.8
+ ./configure --prefix=/opt/python
+ make
+ sudo make install
+</pre>
+
+<p>
+Which is perfectly fine for a Linux power user, sometimes, but for a newbie it
+might cause a lot of troubles especially when they download another package
+from their package manager that might depend on Python (inb4 the package manager
+finds some files occupying the python installation location and refuses to
+proceed). Or they actually might just break their system while trying to resolve
+some issues in the <code>make install</code> error message. A friend of mine was about to
+go in this loop while trying to install yt-dlp a while ago, while following a
+tutorial of how to do that on Linux.
+</p>
+
+<p>
+[an important side note here, the importance of asking the question the right
+way is not about of us, the people who might help, get their job done quicker,
+but for the users to understand what they are looking for, so they might not
+even have to ask]
+</p>
+
+<p>
+Now there&rsquo;s no really a straightforward way to make newbies learn how to ask the
+question in the correct way since appending what distribution they are using is
+not really helpful always: how can I fix the terrible font on Manjaro? because
+this barely gives enough information, yet it&rsquo;s better than &ldquo;how I fix it on
+Linux&rdquo; because there are many possible variables on that, like the desktop
+environment, the window manager, the composer, etc.. unlike Ubuntu, you can not
+deduce all of that at once.
+</p>
+
+
+<figure id="org5ced53f">
+<img src="../i/layers.png" alt="layers.png">
+
+</figure>
+
+<p>
+I believe that the easier way to resolve this issue on Linux is that for
+distribution maintainers to provide a simple way to educate users about not only
+the layers of their operating system but what is each layer responsible for. This
+way not only they can learn what to ask about, but how to customize everything
+as they want.
+</p>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr style="
+    clear: both;
+">
+
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 31.0.50 (<a href="https://orgmode.org">Org</a> mode 9.7.11). Written by: Salih Muhammed, by the date of: 2024-01-06 Sat 09:58. Last build date: 2024-07-04 Thu 21:55.</p>
+
+</div>
+</div>
+</div>
+</body>
+</html>

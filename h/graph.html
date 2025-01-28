@@ -1,0 +1,2020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Representations and Implementations of Graphs</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#ffffff">
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="viewport" content= "width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style/toc.css">
+  <link rel="stylesheet" href="/style/tufte.css">
+  <link rel="stylesheet" href="/style/main.css">
+
+
+
+
+  <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
+  <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+</head>
+<body>
+</body>
+</html>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://fastly.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="preamble" class="status">
+  <div class="header" style="
+    display: block !important;!i;!;
+">
+<a href="/">
+<h1 class="title" style="
+margin-block-start: auto;
+    color: black;
+">Flectere si nequeo superos,<br><span class="subtitle" style="font-size: smaller; color: gray; font-style: italic;">acheronta movebo</span></h1>
+
+      </a>
+
+<hr class="header-divider" style="margin-block-end: -1em;">
+
+  </div>
+</div>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Representations and Implementations of Graphs</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org5000276">Terminology</a></li>
+<li><a href="#directed">Direction Relationships</a></li>
+<li><a href="#adjacency">Adjacency Matrix vs. Adjacency List</a></li>
+<li><a href="#org3235d79">Multigraph (Multi-edges graph)</a></li>
+<li><a href="#orgb65c344">Weighted Graph</a></li>
+<li><a href="#transpose">Transpose Graph</a></li>
+<li><a href="#sheet">Definition Sheet</a></li>
+<li><a href="#orgb669824">Graph Traversal</a></li>
+<li><a href="#orga83d73e">Detecting Cycles</a></li>
+<li><a href="#biconnected">Biconnected Components</a></li>
+<li><a href="#org5bb3f35">Union-Find (Disjoint Set)</a></li>
+<li><a href="#orgab95a3c">Reach The Mother Vertex</a></li>
+<li><a href="#org75cd081"><span class="done KILL">KILL</span> Bellman-Ford&rsquo;s Shortest Path&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></a></li>
+<li><a href="#org2b35d46">Balanced Trees</a></li>
+<li><a href="#orgbf66a6e">Binary Tree Traversal</a></li>
+<li><a href="#orgb6ee984">Counting</a></li>
+<li><a href="#orgdd30533">Height of a Binary Tree</a></li>
+</ul>
+</div>
+</nav>
+<div class="propert" id="org11acce3">
+<p>
+Part of a series on <a href="../cs/g.html#13122uo02wj0">Exploring Computational Geometry</a>
+</p>
+
+</div>
+<div id="outline-container-org5000276" class="outline-2">
+<h2 id="org5000276">Terminology</h2>
+<div class="outline-text-2" id="text-org5000276">
+<p>
+A graph \(G = (V, E)\) consists of a set of vertices \(V\) and a set of edges \(E\), such that each edge
+in \(E\) is a connection between a pair of vertices in \(V\)  The number of vertices is
+written \(|V|\), and the number of edges is written \(|E|\). \(|E|\) can range from zero to a maximum
+of \(|V|^{2} - |V|\). A graph with relatively few edges is called sparse, while a graph with many
+edges is called dense. A graph containing all possible edges is said to be complete.
+</p>
+
+
+
+<figure id="orgfad2def">
+<img src="../i/old/2022-01-03_18-06-48_screenshot.png" alt="2022-01-03_18-06-48_screenshot.png">
+
+</figure>
+
+<div class="PREVIEW" id="org8bb1454">
+<p>
+A graph with edges directed from one vertex to another is called a directed graph or
+digraph. A graph whose edges are not directed is called an undirected graph.
+</p>
+
+</div>
+
+
+<p>
+A graph with labels
+associated with its vertices (as in Figure 11.1(c)) is called a labeled graph. Two
+vertices are adjacent if they are joined by an edge. Such vertices are also called
+neighbors. An edge connecting Vertices \(U\) and \(V\) is written \((U, V)\). Such an edge
+is said to be incident on Vertices \(U\) and \(V\). Associated with each edge may be a
+cost or weight. Graphs whose edges have weights (as in Figure 11.1(c)) are said to
+be weighted.
+</p>
+
+<p>
+A sequence of vertices \(v_1 , v_2 , ..., v_n\) forms a path of length \(n − 1\) if there exist
+edges from \(v_i\) to \(v_{i}+1\) for \(1 \leq i < n\). A path is simple if all vertices on the path are
+distinct. The length of a path is the number of edges it contains. A cycle is a path
+of length three or more that connects some vertex v1 to itself. A cycle is simple if
+the path is simple, except for the first and last vertices being the same.
+</p>
+
+
+
+<figure id="org33b253d">
+<img src="../i/old/2022-01-03_18-10-42_screenshot.png" alt="2022-01-03_18-10-42_screenshot.png">
+
+</figure>
+
+<p>
+A subgraph \(S\) is formed from graph \(G\) by selecting a subset \(V_s\) of \(G\) ’s vertices
+and a subset \(E_s\) of \(G\) ’s edges such that for every edge \(E\) in \(E_s\) , both of \(E\) ’s vertices
+are in \(V_s\) .
+</p>
+
+<p>
+An undirected graph is connected if there is at least one path from any vertex
+to any other. The maximally connected subgraphs of an undirected graph are called
+connected components. For example, Figure 11.2 shows an undirected graph with
+three connected components.
+</p>
+
+<p>
+A graph without cycles is called acyclic. Thus, a directed graph without cycles
+is called a directed acyclic graph or DAG.
+</p>
+
+
+<p>
+A free tree is a connected, undirected graph with no simple cycles. An equiv- alent definition
+is that a free tree is connected and has \(|V| - 1\) edges.
+</p>
+
+
+<p>
+There are two commonly used methods for representing graphs. The adjacency matrix is
+illustrated by Figure 11.3(b). The adjacency matrix for a graph is a \(|V| \cdot |V|\) array.
+Assume that \(|V| = n\) and that the vertices are labeled from \(V_0\) through \(V_{n - 1}\) . Row
+i of the adjacency matrix contains entries for Vertex \(v_i\).  Column \(j\) in row \(i\) is
+marked if there is an edge from \(v_i\) to \(v_j\) and is not marked otherwise. Thus, the
+adjacency matrix requires one bit at each position. Alternatively, if we wish to associate a
+number with each edge, such as the weight or distance between two vertices, then each matrix
+position must store that number. In either case, the space requirements for the adjacency
+matrix are \(O (|V|^2)\).
+</p>
+
+
+<figure id="orgb64e965">
+<img src="../i/old/2022-01-03_18-30-11_screenshot.png" alt="2022-01-03_18-30-11_screenshot.png">
+
+</figure>
+
+<p>
+The second common representation for graphs is the adjacency list, illustrated
+by Figure 11.3(c). The adjacency list is an array of linked lists. The array is
+\(|V|\) items long, with position i storing a pointer to the linked list of edges for Ver-
+tex \(v_i\) . This linked list represents the edges by the vertices that are adjacent to
+Vertex \(v_i\) .
+</p>
+</div>
+</div>
+<div id="outline-container-directed" class="outline-2">
+<h2 id="directed">Direction Relationships</h2>
+<div class="outline-text-2" id="text-directed">
+<p>
+In direction relationships, we relays on the edges between the graph points to tell if it is
+either directed or un-directed graph representation, you can imagine edges like a bridge
+between two places or a road, in social relations (i.e. social media) it&rsquo;s the relation
+between two nodes, for instance, following a twitter account is a process of linking your
+node with this account, here we can distinguish two types of edges based on our needed
+implementation, if we are implementing something like, let&rsquo;s say twitter clone, we should
+consider that each node that will be linked to the other one, should be linked only one
+time.
+</p>
+
+<p>
+For example, let&rsquo;s say we have 3 persons, 0, 1 and 2. person 0 follows 1, 2, meanwhile 1
+follows 2 and 2 does not follow anybody, the appropriate representation should be something
+like:
+</p>
+
+
+<figure id="org53bd879">
+<img src="../i/old/2022-01-03_19-11-01_screenshot.png" alt="2022-01-03_19-11-01_screenshot.png">
+
+</figure>
+
+<p>
+In the other hand, suppose that the same 3 person are dealing with Facebook friendship, in
+Facebook when you add someone, both of you are &rsquo;friends&rsquo; and both of you appear in each
+other&rsquo;s friend list, therefore we had to make it undirected relation and have each node
+linked to the other one:
+</p>
+
+
+<figure id="org07e58aa">
+<img src="../i/old/2022-01-03_19-16-44_screenshot.png" alt="2022-01-03_19-16-44_screenshot.png">
+
+</figure>
+
+
+<p>
+An un-directed graph in C(++), using array as an adjacency matrix, looks like the following:
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">class</span> <span style="color: #cd9575;">Graph</span> <span style="color: #6bd9db;">{</span>
+
+<span style="color: #4d9391; font-weight: bold;">private</span>:
+     
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #cd9575;">bool</span>** <span style="color: #968cc7;">adjacencyMatrix</span>;
+     
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">vertexCount</span>;
+     
+<span style="color: #4d9391; font-weight: bold;">public</span>:
+     
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #80bcb6;">Graph</span><span style="color: #ab98b5;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">vertexCount</span><span style="color: #ab98b5;">)</span> <span style="color: #ab98b5;">{</span>
+         
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">this</span>-&gt;vertexCount = vertexCount;
+         
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   adjacencyMatrix = <span style="color: #4d9391; font-weight: bold;">new</span> <span style="color: #cd9575;">bool</span>*<span style="color: #5D8272;">[</span><span style="color: #ab98b5; font-weight: bold;">vertexCount</span><span style="color: #5D8272;">]</span>;
+         
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #5D8272;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">i</span> = <span style="color: #cd5c60;">0</span>; i &lt; vertexCount; i++<span style="color: #5D8272;">)</span> <span style="color: #5D8272;">{</span>
+                 
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> adjacencyMatrix<span style="color: #807f96;">[</span>i<span style="color: #807f96;">]</span> = <span style="color: #4d9391; font-weight: bold;">new</span> <span style="color: #cd9575;">bool</span><span style="color: #807f96;">[</span>vertexCount<span style="color: #807f96;">]</span>;
+                 
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #807f96;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">j</span> = <span style="color: #cd5c60;">0</span>; j &lt; vertexCount; j++<span style="color: #807f96;">)</span>
+                     
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   adjacencyMatrix<span style="color: #807f96;">[</span>i<span style="color: #807f96;">][</span>j<span style="color: #807f96;">]</span> = <span style="color: #ab98b5; font-weight: bold;">false</span>;
+                     
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #5D8272;">}</span>
+         
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">}</span>
+     
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #cd9575;">void</span> <span style="color: #80bcb6;">addEdge</span><span style="color: #ab98b5;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">i</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">j</span><span style="color: #ab98b5;">)</span> <span style="color: #ab98b5;">{</span>
+         
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #5D8272;">(</span>i &gt;= <span style="color: #cd5c60;">0</span> &amp;&amp; <span style="color: #cd9575;">i</span> <span style="color: #807f96;">&lt;</span> <span style="color: #cd9575;">vertexCount</span> &amp;&amp; <span style="color: #968cc7;">j</span> <span style="color: #807f96;">&gt;</span> <span style="color: #cd5c60;">0</span> &amp;&amp; j &lt; vertexCount<span style="color: #5D8272;">)</span> <span style="color: #5D8272;">{</span>
+                 
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> adjacencyMatrix<span style="color: #807f96;">[</span>i<span style="color: #807f96;">][</span>j<span style="color: #807f96;">]</span> = <span style="color: #ab98b5; font-weight: bold;">true</span>;
+                 
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> adjacencyMatrix<span style="color: #807f96;">[</span>j<span style="color: #807f96;">][</span>i<span style="color: #807f96;">]</span> = <span style="color: #ab98b5; font-weight: bold;">true</span>;
+                 
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #5D8272;">}</span>
+         
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">}</span>
+     
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #cd9575;">void</span> <span style="color: #80bcb6;">removeEdge</span><span style="color: #ab98b5;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">i</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">j</span><span style="color: #ab98b5;">)</span> <span style="color: #ab98b5;">{</span>
+         
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #5D8272;">(</span>i &gt;= <span style="color: #cd5c60;">0</span> &amp;&amp; <span style="color: #cd9575;">i</span> <span style="color: #807f96;">&lt;</span> <span style="color: #cd9575;">vertexCount</span> &amp;&amp; <span style="color: #968cc7;">j</span> <span style="color: #807f96;">&gt;</span> <span style="color: #cd5c60;">0</span> &amp;&amp; j &lt; vertexCount<span style="color: #5D8272;">)</span> <span style="color: #5D8272;">{</span>
+                 
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> adjacencyMatrix<span style="color: #807f96;">[</span>i<span style="color: #807f96;">][</span>j<span style="color: #807f96;">]</span> = <span style="color: #ab98b5; font-weight: bold;">false</span>;
+                 
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> adjacencyMatrix<span style="color: #807f96;">[</span>j<span style="color: #807f96;">][</span>i<span style="color: #807f96;">]</span> = <span style="color: #ab98b5; font-weight: bold;">false</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #5D8272;">}</span>
+         
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">}</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #cd9575;">bool</span> <span style="color: #80bcb6;">isEdge</span><span style="color: #ab98b5;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">i</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">j</span><span style="color: #ab98b5;">)</span> <span style="color: #ab98b5;">{</span>
+         
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #5D8272;">(</span>i &gt;= <span style="color: #cd5c60;">0</span> &amp;&amp; <span style="color: #cd9575;">i</span> <span style="color: #807f96;">&lt;</span> <span style="color: #cd9575;">vertexCount</span> &amp;&amp; <span style="color: #968cc7;">j</span> <span style="color: #807f96;">&gt;</span> <span style="color: #cd5c60;">0</span> &amp;&amp; j &lt; vertexCount<span style="color: #5D8272;">)</span>
+                 
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #4d9391; font-weight: bold;">return</span> adjacencyMatrix<span style="color: #5D8272;">[</span>i<span style="color: #5D8272;">][</span>j<span style="color: #5D8272;">]</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">else</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #4d9391; font-weight: bold;">return</span> <span style="color: #ab98b5; font-weight: bold;">false</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">}</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> ~<span style="color: #80bcb6;">Graph</span><span style="color: #ab98b5;">()</span> <span style="color: #ab98b5;">{</span>
+         
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #5D8272;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">i</span> = <span style="color: #cd5c60;">0</span>; i &lt; vertexCount; i++<span style="color: #5D8272;">)</span>
+                 
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #4d9391; font-weight: bold;">delete</span><span style="color: #5D8272;">[]</span> adjacencyMatrix<span style="color: #5D8272;">[</span>i<span style="color: #5D8272;">]</span>;
+                 
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">delete</span><span style="color: #5D8272;">[]</span> adjacencyMatrix;
+         
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">}</span>
+<span style="color: #6bd9db;">}</span>;
+</code></pre>
+<p>
+More minimal representation, using vectors as an adjacency list:
+</p>
+
+<pre class="code"><code><span style="color: #9d81ba;">#include</span><span style="color: #6fb593;">&lt;bits/stdc++.h&gt;</span>
+<span style="color: #4d9391; font-weight: bold;">using</span> <span style="color: #4d9391; font-weight: bold;">namespace</span> <span style="color: #ab98b5; font-weight: bold;">std</span>;
+<span style="color: #cd9575;">void</span> <span style="color: #80bcb6;">addEdge</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">vector</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #ab98b5;">&gt;</span> <span style="color: #968cc7;">adj</span><span style="color: #ab98b5;">[]</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">u</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">v</span><span style="color: #6bd9db;">)</span>
+<span style="color: #6bd9db;">{</span>
+    adj<span style="color: #ab98b5;">[</span>u<span style="color: #ab98b5;">]</span>.push_back<span style="color: #ab98b5;">(</span>v<span style="color: #ab98b5;">)</span>;
+    adj<span style="color: #ab98b5;">[</span>v<span style="color: #ab98b5;">]</span>.push_back<span style="color: #ab98b5;">(</span>u<span style="color: #ab98b5;">)</span>;
+<span style="color: #6bd9db;">}</span>
+<span style="color: #cd9575;">void</span> <span style="color: #80bcb6;">printGraph</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">vector</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #ab98b5;">&gt;</span> <span style="color: #968cc7;">adj</span><span style="color: #ab98b5;">[]</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">V</span><span style="color: #6bd9db;">)</span> <span style="color: #6bd9db;">{</span>
+    <span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #ab98b5;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">v</span> = <span style="color: #cd5c60;">0</span>; v &lt; V; ++v<span style="color: #ab98b5;">)</span>
+    <span style="color: #ab98b5;">{</span>
+        cout &lt;&lt; <span style="color: #6fb593;">"\n Adjacency list of vertex "</span>
+            &lt;&lt; v &lt;&lt; <span style="color: #6fb593;">"\n head "</span>;
+        <span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #5D8272;">(</span><span style="color: #4d9391; font-weight: bold;">auto</span> <span style="color: #968cc7;">x</span> : adj<span style="color: #807f96;">[</span>v<span style="color: #807f96;">]</span><span style="color: #5D8272;">)</span>
+        cout &lt;&lt; <span style="color: #6fb593;">"-&gt; "</span> &lt;&lt; x;
+        printf<span style="color: #5D8272;">(</span><span style="color: #6fb593;">"\n"</span><span style="color: #5D8272;">)</span>;
+    <span style="color: #ab98b5;">}</span>
+<span style="color: #6bd9db;">}</span>
+
+<span style="color: #cd9575;">int</span> <span style="color: #80bcb6;">main</span><span style="color: #6bd9db;">()</span> <span style="color: #6bd9db;">{</span>
+    <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">V</span> = <span style="color: #cd5c60;">5</span>;
+    <span style="color: #cd9575;">vector</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #ab98b5;">&gt;</span> <span style="color: #968cc7;">adj</span><span style="color: #ab98b5;">[</span>V<span style="color: #ab98b5;">]</span>;
+    addEdge<span style="color: #ab98b5;">(</span>adj, <span style="color: #cd5c60;">0</span>, <span style="color: #cd5c60;">1</span><span style="color: #ab98b5;">)</span>;
+    addEdge<span style="color: #ab98b5;">(</span>adj, <span style="color: #cd5c60;">0</span>, <span style="color: #cd5c60;">4</span><span style="color: #ab98b5;">)</span>;
+    addEdge<span style="color: #ab98b5;">(</span>adj, <span style="color: #cd5c60;">1</span>, <span style="color: #cd5c60;">2</span><span style="color: #ab98b5;">)</span>;
+    addEdge<span style="color: #ab98b5;">(</span>adj, <span style="color: #cd5c60;">1</span>, <span style="color: #cd5c60;">3</span><span style="color: #ab98b5;">)</span>;
+    addEdge<span style="color: #ab98b5;">(</span>adj, <span style="color: #cd5c60;">1</span>, <span style="color: #cd5c60;">4</span><span style="color: #ab98b5;">)</span>;
+    addEdge<span style="color: #ab98b5;">(</span>adj, <span style="color: #cd5c60;">2</span>, <span style="color: #cd5c60;">3</span><span style="color: #ab98b5;">)</span>;
+    addEdge<span style="color: #ab98b5;">(</span>adj, <span style="color: #cd5c60;">3</span>, <span style="color: #cd5c60;">4</span><span style="color: #ab98b5;">)</span>;
+    printGraph<span style="color: #ab98b5;">(</span>adj, V<span style="color: #ab98b5;">)</span>;
+    <span style="color: #4d9391; font-weight: bold;">return</span> <span style="color: #cd5c60;">0</span>;
+<span style="color: #6bd9db;">}</span>
+</code></pre>
+
+<p>
+If we want to make any of those implementations use directed graph instead, we just have to
+comment the corresponding edge adding, i.e. we have to comment this  <code>adjacencyMatrix[j][i]
+= false;</code>  in the first representation, and <code>adj[v].push_back(u);</code> in the other one.
+</p>
+</div>
+</div>
+<div id="outline-container-adjacency" class="outline-2">
+<h2 id="adjacency">Adjacency Matrix vs. Adjacency List</h2>
+<div class="outline-text-2" id="text-adjacency">
+<p>
+In the last example I used an adjacency list, like a vector or an array, to represent
+the relationships between nodes. In adjacency list the first node of the linked list
+represents the vertex and the remaining lists connected to this node represents the vertices
+to which this node is connected. This representation can also be used to represent a
+weighted graph. The linked list can slightly be changed to even store the weight of the
+edge, it looks like this in memory:
+</p>
+
+
+<figure id="org7732219">
+<img src="../i/old/2022-01-03_20-25-56_screenshot.png" alt="2022-01-03_20-25-56_screenshot.png">
+
+</figure>
+
+<p>
+<i>a is the adjacency List representation of the graph a</i>
+</p>
+
+<p>
+However, such a representation is not always efficient, at least from complexity
+perspective, if we need to know the relation between two nodes, we can&rsquo;t ever know that in
+constant time since we have to traverse the whole list to check if a node is included on it
+or node (so we can tell what is the relation between them), it&rsquo;s \(O(N)\) complexity.
+</p>
+
+<p>
+In the other hand, the adjacency matrix represent looks like this:
+</p>
+
+
+<figure id="orgaf812a7">
+<img src="../i/old/2022-01-03_20-31-26_screenshot.png" alt="2022-01-03_20-31-26_screenshot.png">
+
+</figure>
+
+<p>
+<i>b is the Adjacency Matrix representation of the graph a</i>
+</p>
+
+<p>
+Can we know the relation between any two nodes in a constant time? Yes. We just have to
+check which node in the other&rsquo;s list, i.e. if we want to know the relationship between W and
+T, we have to check \(W[T]\) and \(T[W]\), and we are done. It&rsquo;s very efficient from complexity
+perspective, however it&rsquo;s not the best for memory.
+</p>
+
+<p>
+Here&rsquo;s a comparison between each representation:
+</p>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Operation</th>
+<th scope="col" class="org-left">Adjacency Matrix</th>
+<th scope="col" class="org-left">Adjacency List</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Storage Space</td>
+<td class="org-left">Required \(O(V^2)\) to represent \(V \cdot V\) matrix</td>
+<td class="org-left">We store only the linked nodes, in the worst case that a node is connected with all other nodes, we have \(O(V)\) required space</td>
+</tr>
+
+<tr>
+<td class="org-left">Adding Vertex</td>
+<td class="org-left">Adding vertex require adding new dimensional to matrix, by copying this will require \(O(V^2)\)</td>
+<td class="org-left">We just need to push a new element in list, it takes \(O(1)\)</td>
+</tr>
+
+<tr>
+<td class="org-left">Adding an edge</td>
+<td class="org-left">To add a new edge we only need to change the boolean value from zero to one, so it&rsquo;s \(O(1)\)</td>
+<td class="org-left">We need to make some insertion, takes \(O(1)\)</td>
+</tr>
+
+<tr>
+<td class="org-left">Querying</td>
+<td class="org-left">\(O(1)\)  to find the existing edge for some node</td>
+<td class="org-left">\(O(V)\) to find all relation for node.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-org3235d79" class="outline-2">
+<h2 id="org3235d79">Multigraph (Multi-edges graph)</h2>
+<div class="outline-text-2" id="text-org3235d79">
+<p>
+Multigraph is an obscure data structure, since it can be represented in some other ways
+using complex forms of regular undirected graph, however it is not hard to implement. In
+implementing something like roads between points, there are many cases that we have more
+than one roads therefore we have to have this roads recorded within an adjacency list:
+</p>
+
+
+<figure id="org4074317">
+<img src="../i/old/2022-01-03_20-14-47_screenshot.png" alt="2022-01-03_20-14-47_screenshot.png">
+
+</figure>
+
+
+<p>
+An appropriate node to represent this:
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">struct</span> <span style="color: #cd9575;">Link</span>;
+
+<span style="color: #4d9391; font-weight: bold;">struct</span> <span style="color: #cd9575;">Node</span> <span style="color: #6bd9db;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">Link</span> *<span style="color: #968cc7;">firstIn</span>, *<span style="color: #968cc7;">lastIn</span>, *<span style="color: #968cc7;">firstOut</span>, *<span style="color: #968cc7;">lastOut</span>;
+<span style="color: #31b1351b37b1;"> </span>   ... node data ...
+<span style="color: #6bd9db;">}</span>;
+
+<span style="color: #4d9391; font-weight: bold;">struct</span> <span style="color: #cd9575;">Link</span>
+<span style="color: #6bd9db;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">Node</span> *<span style="color: #968cc7;">from</span>, *<span style="color: #968cc7;">to</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">Link</span> *<span style="color: #968cc7;">prevInFrom</span>, *<span style="color: #968cc7;">nextInFrom</span>, *<span style="color: #968cc7;">prevInTo</span>, *<span style="color: #968cc7;">nextInTo</span>;
+<span style="color: #31b1351b37b1;"> </span>   ... link data ...
+<span style="color: #6bd9db;">}</span>;
+</code></pre>
+
+<p>
+For each Node there are two double-linked lists, one for incoming links and one for outgoing
+links. Each Link knows the starting and ending Node and also has the prev and next pointers
+for the two lists that contain it (the outgoing list in the &ldquo;from&rdquo; node and the incoming
+list in the &ldquo;to&rdquo; node).
+</p>
+</div>
+</div>
+<div id="outline-container-orgb65c344" class="outline-2">
+<h2 id="orgb65c344">Weighted Graph</h2>
+<div class="outline-text-2" id="text-orgb65c344">
+<p>
+We can consider all of the last implementations as an unweghted graph representations, we
+don&rsquo;t really care about the specifications of an edge between two nodes. However, in a lot
+of applications we need so. For instance, we need to calculate the distance or the time that
+each road (edge) costs, as well we may lose some sorta of &rsquo;points&rsquo; or win additional poitns
+when we use some way rather than the other, to implement such a model we use a weighted
+graph i.e. a graph with a value within edges.
+</p>
+
+<p>
+Something like that shouldn&rsquo;t be hard to implement, we just need to map each edge to some
+value:
+</p>
+
+<pre class="code"><code><span style="color: #9d81ba;">#include</span> <span style="color: #6fb593;">&lt;bits/stdc++.h&gt;</span>
+<span style="color: #4d9391; font-weight: bold;">using</span> <span style="color: #4d9391; font-weight: bold;">namespace</span> <span style="color: #ab98b5; font-weight: bold;">std</span>;
+<span style="color: #cd9575;">void</span> <span style="color: #80bcb6;">addEdge</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">vector</span> <span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">pair</span><span style="color: #5D8272;">&lt;</span><span style="color: #cd9575;">int</span>, <span style="color: #cd9575;">int</span><span style="color: #5D8272;">&gt;</span> <span style="color: #ab98b5;">&gt;</span> <span style="color: #968cc7;">adj</span><span style="color: #ab98b5;">[]</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">u</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">v</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">wt</span><span style="color: #6bd9db;">)</span> <span style="color: #6bd9db;">{</span>
+    adj<span style="color: #ab98b5;">[</span>u<span style="color: #ab98b5;">]</span>.push_back<span style="color: #ab98b5;">(</span>make_pair<span style="color: #5D8272;">(</span>v, wt<span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span>;
+    adj<span style="color: #ab98b5;">[</span>v<span style="color: #ab98b5;">]</span>.push_back<span style="color: #ab98b5;">(</span>make_pair<span style="color: #5D8272;">(</span>u, wt<span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span>;
+<span style="color: #6bd9db;">}</span>
+<span style="color: #cd9575;">void</span> <span style="color: #80bcb6;">printGraph</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">vector</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">pair</span><span style="color: #5D8272;">&lt;</span><span style="color: #cd9575;">int</span>,<span style="color: #cd9575;">int</span><span style="color: #5D8272;">&gt;</span> <span style="color: #ab98b5;">&gt;</span> <span style="color: #968cc7;">adj</span><span style="color: #ab98b5;">[]</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">V</span><span style="color: #6bd9db;">)</span> <span style="color: #6bd9db;">{</span>
+    <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">v</span>, <span style="color: #968cc7;">w</span>;
+    <span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #ab98b5;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">u</span> = <span style="color: #cd5c60;">0</span>; u &lt; V; u++<span style="color: #ab98b5;">)</span>
+    <span style="color: #ab98b5;">{</span>
+        cout &lt;&lt; <span style="color: #6fb593;">"Node "</span> &lt;&lt; u &lt;&lt; <span style="color: #6fb593;">" makes an edge with \n"</span>;
+        <span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #5D8272;">(</span><span style="color: #4d9391; font-weight: bold;">auto</span> <span style="color: #968cc7;">it</span> = adj<span style="color: #807f96;">[</span>u<span style="color: #807f96;">]</span>.begin<span style="color: #807f96;">()</span>; it!=adj<span style="color: #807f96;">[</span>u<span style="color: #807f96;">]</span>.end<span style="color: #807f96;">()</span>; it++<span style="color: #5D8272;">)</span>
+        <span style="color: #5D8272;">{</span>
+            v = it-&gt;first;
+            w = it-&gt;second;
+            cout &lt;&lt; <span style="color: #6fb593;">"\tNode "</span> &lt;&lt; v &lt;&lt; <span style="color: #6fb593;">" with edge weight ="</span>
+                &lt;&lt; w &lt;&lt; <span style="color: #6fb593;">"\n"</span>;
+        <span style="color: #5D8272;">}</span>
+        cout &lt;&lt; <span style="color: #6fb593;">"\n"</span>;
+    <span style="color: #ab98b5;">}</span>
+<span style="color: #6bd9db;">}</span>
+
+<span style="color: #cd9575;">int</span> <span style="color: #80bcb6;">main</span><span style="color: #6bd9db;">()</span>
+<span style="color: #6bd9db;">{</span>
+    <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">V</span> = <span style="color: #cd5c60;">5</span>;
+    <span style="color: #cd9575;">vector</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">pair</span><span style="color: #5D8272;">&lt;</span><span style="color: #cd9575;">int</span>, <span style="color: #cd9575;">int</span><span style="color: #5D8272;">&gt;</span> <span style="color: #ab98b5;">&gt;</span> <span style="color: #968cc7;">adj</span><span style="color: #ab98b5;">[</span>V<span style="color: #ab98b5;">]</span>;
+    addEdge<span style="color: #ab98b5;">(</span>adj, <span style="color: #cd5c60;">0</span>, <span style="color: #cd5c60;">1</span>, <span style="color: #cd5c60;">10</span><span style="color: #ab98b5;">)</span>;
+    addEdge<span style="color: #ab98b5;">(</span>adj, <span style="color: #cd5c60;">0</span>, <span style="color: #cd5c60;">4</span>, <span style="color: #cd5c60;">20</span><span style="color: #ab98b5;">)</span>;
+    addEdge<span style="color: #ab98b5;">(</span>adj, <span style="color: #cd5c60;">1</span>, <span style="color: #cd5c60;">2</span>, <span style="color: #cd5c60;">30</span><span style="color: #ab98b5;">)</span>;
+    addEdge<span style="color: #ab98b5;">(</span>adj, <span style="color: #cd5c60;">1</span>, <span style="color: #cd5c60;">3</span>, <span style="color: #cd5c60;">40</span><span style="color: #ab98b5;">)</span>;
+    addEdge<span style="color: #ab98b5;">(</span>adj, <span style="color: #cd5c60;">1</span>, <span style="color: #cd5c60;">4</span>, <span style="color: #cd5c60;">50</span><span style="color: #ab98b5;">)</span>;
+    addEdge<span style="color: #ab98b5;">(</span>adj, <span style="color: #cd5c60;">2</span>, <span style="color: #cd5c60;">3</span>, <span style="color: #cd5c60;">60</span><span style="color: #ab98b5;">)</span>;
+    addEdge<span style="color: #ab98b5;">(</span>adj, <span style="color: #cd5c60;">3</span>, <span style="color: #cd5c60;">4</span>, <span style="color: #cd5c60;">70</span><span style="color: #ab98b5;">)</span>;
+    printGraph<span style="color: #ab98b5;">(</span>adj, V<span style="color: #ab98b5;">)</span>;
+    <span style="color: #4d9391; font-weight: bold;">return</span> <span style="color: #cd5c60;">0</span>;
+<span style="color: #6bd9db;">}</span>
+
+</code></pre>
+</div>
+</div>
+<div id="outline-container-transpose" class="outline-2">
+<h2 id="transpose">Transpose Graph</h2>
+<div class="outline-text-2" id="text-transpose">
+<p>
+The transpose of a graph is the converse, transpose or reverse of some directed graph.
+</p>
+
+<p>
+Consider the following figure:
+</p>
+
+
+<figure id="org94f41c6">
+<img src="../i/old/2022-01-06_14-45-44_screenshot.png" alt="2022-01-06_14-45-44_screenshot.png">
+
+</figure>
+
+<p>
+To find the transpose of some graph, we traverse the adjacency list and we find a vertex \(v\)
+in the adjacency list of vertex u which indicates an edge from \(u\) to \(v\) in main graph, we just
+add an edge from \(v\) to \(u\) in the transpose graph.
+</p>
+
+<pre class="code"><code><span style="color: #9d81ba;">#include</span> <span style="color: #6fb593;">&lt;bits/stdc++.h&gt;</span>
+<span style="color: #4d9391; font-weight: bold;">using</span> <span style="color: #4d9391; font-weight: bold;">namespace</span> <span style="color: #ab98b5; font-weight: bold;">std</span>;
+<span style="color: #cd9575;">void</span> <span style="color: #80bcb6;">addEdge</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">vector</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #ab98b5;">&gt;</span> <span style="color: #968cc7;">adj</span><span style="color: #ab98b5;">[]</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">src</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">dest</span><span style="color: #6bd9db;">)</span> <span style="color: #6bd9db;">{</span>
+    adj<span style="color: #ab98b5;">[</span>src<span style="color: #ab98b5;">]</span>.push_back<span style="color: #ab98b5;">(</span>dest<span style="color: #ab98b5;">)</span>;
+<span style="color: #6bd9db;">}</span>
+
+<span style="color: #cd9575;">void</span> <span style="color: #80bcb6;">displayGraph</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">vector</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #ab98b5;">&gt;</span> <span style="color: #968cc7;">adj</span><span style="color: #ab98b5;">[]</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">v</span><span style="color: #6bd9db;">)</span> <span style="color: #6bd9db;">{</span>
+    <span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #ab98b5;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">i</span> = <span style="color: #cd5c60;">0</span>; i &lt; v; i++<span style="color: #ab98b5;">)</span> <span style="color: #ab98b5;">{</span>
+        cout &lt;&lt; i &lt;&lt; <span style="color: #6fb593;">"--&gt; "</span>;
+        <span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #5D8272;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">j</span> = <span style="color: #cd5c60;">0</span>; j &lt; adj<span style="color: #807f96;">[</span>i<span style="color: #807f96;">]</span>.size<span style="color: #807f96;">()</span>; j++<span style="color: #5D8272;">)</span>
+            cout &lt;&lt; adj<span style="color: #5D8272;">[</span>i<span style="color: #5D8272;">][</span>j<span style="color: #5D8272;">]</span> &lt;&lt; <span style="color: #6fb593;">" "</span>;
+        cout &lt;&lt; <span style="color: #6fb593;">"\n"</span>;
+    <span style="color: #ab98b5;">}</span>
+<span style="color: #6bd9db;">}</span>
+
+<span style="color: #cd9575;">void</span> <span style="color: #80bcb6;">transposeGraph</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">vector</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #ab98b5;">&gt;</span> <span style="color: #968cc7;">adj</span><span style="color: #ab98b5;">[]</span>, <span style="color: #cd9575;">vector</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #ab98b5;">&gt;</span> <span style="color: #968cc7;">transpose</span><span style="color: #ab98b5;">[]</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">v</span><span style="color: #6bd9db;">)</span> <span style="color: #6bd9db;">{</span>
+    <span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #ab98b5;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">i</span> = <span style="color: #cd5c60;">0</span>; i &lt; v; i++<span style="color: #ab98b5;">)</span>
+        <span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #ab98b5;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">j</span> = <span style="color: #cd5c60;">0</span>; j &lt; adj<span style="color: #5D8272;">[</span>i<span style="color: #5D8272;">]</span>.size<span style="color: #5D8272;">()</span>; j++<span style="color: #ab98b5;">)</span>
+            addEdge<span style="color: #ab98b5;">(</span>transpose, adj<span style="color: #5D8272;">[</span>i<span style="color: #5D8272;">][</span>j<span style="color: #5D8272;">]</span>, i<span style="color: #ab98b5;">)</span>;
+<span style="color: #6bd9db;">}</span>
+
+<span style="color: #cd9575;">int</span> <span style="color: #80bcb6;">main</span><span style="color: #6bd9db;">()</span> <span style="color: #6bd9db;">{</span>
+    <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">v</span> = <span style="color: #cd5c60;">5</span>;
+    <span style="color: #cd9575;">vector</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #ab98b5;">&gt;</span> <span style="color: #968cc7;">adj</span><span style="color: #ab98b5;">[</span>v<span style="color: #ab98b5;">]</span>;
+    addEdge<span style="color: #ab98b5;">(</span>adj, <span style="color: #cd5c60;">0</span>, <span style="color: #cd5c60;">1</span><span style="color: #ab98b5;">)</span>;
+    addEdge<span style="color: #ab98b5;">(</span>adj, <span style="color: #cd5c60;">0</span>, <span style="color: #cd5c60;">4</span><span style="color: #ab98b5;">)</span>;
+    addEdge<span style="color: #ab98b5;">(</span>adj, <span style="color: #cd5c60;">0</span>, <span style="color: #cd5c60;">3</span><span style="color: #ab98b5;">)</span>;
+    addEdge<span style="color: #ab98b5;">(</span>adj, <span style="color: #cd5c60;">2</span>, <span style="color: #cd5c60;">0</span><span style="color: #ab98b5;">)</span>;
+    addEdge<span style="color: #ab98b5;">(</span>adj, <span style="color: #cd5c60;">3</span>, <span style="color: #cd5c60;">2</span><span style="color: #ab98b5;">)</span>;
+    addEdge<span style="color: #ab98b5;">(</span>adj, <span style="color: #cd5c60;">4</span>, <span style="color: #cd5c60;">1</span><span style="color: #ab98b5;">)</span>;
+    addEdge<span style="color: #ab98b5;">(</span>adj, <span style="color: #cd5c60;">4</span>, <span style="color: #cd5c60;">3</span><span style="color: #ab98b5;">)</span>;
+ 
+    <span style="color: #cd9575;">vector</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #ab98b5;">&gt;</span> <span style="color: #968cc7;">transpose</span><span style="color: #ab98b5;">[</span>v<span style="color: #ab98b5;">]</span>;
+    transposeGraph<span style="color: #ab98b5;">(</span>adj, transpose, v<span style="color: #ab98b5;">)</span>;
+    displayGraph<span style="color: #ab98b5;">(</span>transpose, v<span style="color: #ab98b5;">)</span>;
+    <span style="color: #4d9391; font-weight: bold;">return</span> <span style="color: #cd5c60;">0</span>;
+<span style="color: #6bd9db;">}</span>
+
+</code></pre>
+
+<p>
+In the case of dealing with adjacency matrix, we just have to reverse the matrix.
+</p>
+<pre class="code"><code><span style="color: #cd9575;">void</span> <span style="color: #80bcb6;">transpose</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">A</span><span style="color: #ab98b5;">[][</span>N<span style="color: #ab98b5;">]</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">B</span><span style="color: #ab98b5;">[][</span>N<span style="color: #ab98b5;">]</span><span style="color: #6bd9db;">)</span> <span style="color: #6bd9db;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">i</span>, <span style="color: #968cc7;">j</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #ab98b5;">(</span>i = <span style="color: #cd5c60;">0</span>; i &lt; N; i++<span style="color: #ab98b5;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #ab98b5;">(</span>j = <span style="color: #cd5c60;">0</span>; j &lt; N; j++<span style="color: #ab98b5;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   B<span style="color: #ab98b5;">[</span>i<span style="color: #ab98b5;">][</span>j<span style="color: #ab98b5;">]</span> = A<span style="color: #ab98b5;">[</span>j<span style="color: #ab98b5;">][</span>i<span style="color: #ab98b5;">]</span>;
+<span style="color: #6bd9db;">}</span>
+</code></pre>
+</div>
+</div>
+<div id="outline-container-sheet" class="outline-2">
+<h2 id="sheet">Definition Sheet</h2>
+<div class="outline-text-2" id="text-sheet">
+<p>
+Words are being kinda confusing in AD&rsquo;s, the following are the most needed definitions in
+graphs, in the case of ambiguity you can backtrack the definitions from here.
+</p>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Idiom</th>
+<th scope="col" class="org-left">Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Neighbors</td>
+<td class="org-left">A vertex \(u\) is a neighbor of (or equivalently adjacent to) a vertex \(v\) in a graph \(G = (V, E)\) if there is an edge \({u, v} \in E\). For a directed graph a vertex \(u\) is an in-neighbor of a vertex \(v\) if \((u, v) \in E\) and an out-neighbor if \((v, u) \in E\). We also say two edges or arcs are neighbors if they share a vertex.</td>
+</tr>
+
+<tr>
+<td class="org-left">Neighborhood</td>
+<td class="org-left">For an undirected graph \(G = (V, E)\), the neighborhood \(N_{G}(v)\) of a vertex \(v \in V\) is its set of all neighbors of \(v\), i.e., \(N_{G}(v) = {u {u, v} \in E}\). For a directed graph we use \(N_{G}(v)\) to indicate the set of out-neighbors and \(N_{G} (v)\) to indicate the set of in-neighbors of \(v\). If we use \(N_{G} (v)\) for a directed graph, we mean the out neighbors. The neighborhood of a set of vertices \(U \subseteq V\) is the union of their neighborhoods.</td>
+</tr>
+
+<tr>
+<td class="org-left">Incident</td>
+<td class="org-left">We say an edge is incident on a vertex if the vertex is one of its endpoints. Similarly we say a vertex is incident on an edge if it is one of the endpoints of the edge.</td>
+</tr>
+
+<tr>
+<td class="org-left">Reachability &amp; Connectivity</td>
+<td class="org-left">A vertex \(v\) is reachable from a vertex \(u\) in \(G\) if there is a path starting at \(v\) and ending at \(u\) in \(G\). We use \(R_{G}(v)\) to indicate the set of all vertices reachable from \(v\) in \(G\). An undirected graph is connected if all vertices are reachable from all other vertices. A directed graph is strongly connected if all vertices are reachable from all other vertices.</td>
+</tr>
+
+<tr>
+<td class="org-left">Cycle</td>
+<td class="org-left">In a directed graph a cycle is a path that starts and ends at the same vertex. A cycle can have length one (i.e. a self loop). A simple cycle is a cycle that has no repeated vertices other than the start and end vertices being the same. In an undirected graph a (simple) cycle is a path that starts and ends at the same vertex, has no repeated vertices other than the first and last, and has length at least three. In this course we will exclusively talk about simple cycles and hence, as with paths, we will often drop simple.</td>
+</tr>
+
+<tr>
+<td class="org-left">Trees and forests</td>
+<td class="org-left">An undirected graph with no cycles is a forest and if it is connected it is called a tree. A directed graph is a forest (or tree) if when all edges are converted to undirected edges it is undirected forest (or tree). A rooted tree is a tree with one vertex designated as the root. For a directed graph the edges are typically all directed toward the root or away from the root.</td>
+</tr>
+
+<tr>
+<td class="org-left">Directed acyclie graph</td>
+<td class="org-left">A directed graph with no cycles is a <i>directed acyclic graph</i> (DAG).</td>
+</tr>
+
+<tr>
+<td class="org-left">Distance</td>
+<td class="org-left">The distance \(\delta G(u, v)\) from a vertex \(u\) to a vertex \(v\) in a graph \(G\) is the shortest path (minimum number of edges) from \(u\) to \(v\). It is also referred to as the shortest path length from \(u\) to \(v\).</td>
+</tr>
+
+<tr>
+<td class="org-left">Diameter</td>
+<td class="org-left">The diameter of a graph is the maximum shortest path length over all pairs of vertices.</td>
+</tr>
+
+<tr>
+<td class="org-left">Multigraph</td>
+<td class="org-left">Sometimes graphs allow multiple edges between the same pair of vertices, called multi-edges. Graphs with multi-edges are called multi-graphs. We will allow multi-edges in a couple algorithms just for convenience</td>
+</tr>
+
+<tr>
+<td class="org-left">Directed Graph</td>
+<td class="org-left">See <a href="#directed">Directed Graph</a></td>
+</tr>
+
+<tr>
+<td class="org-left">Undirected Graph</td>
+<td class="org-left">See <a href="#directed">Unirected Graph</a></td>
+</tr>
+
+<tr>
+<td class="org-left">Mother Vertex</td>
+<td class="org-left">A mother vertex in a graph \(G = (V,E)\) is a vertex \(v\) such that all other vertices in \(G\) can be reached by a path from \(v\).</td>
+</tr>
+
+<tr>
+<td class="org-left">Strongly Connected Components</td>
+<td class="org-left">A directed graph is strongly connected if there is a path between all pairs of vertices.</td>
+</tr>
+
+<tr>
+<td class="org-left">Equivalence of nodes</td>
+<td class="org-left">For a directed graph \(G\) = \((V,E)\), \(\forall u, v \in V, u \equiv v\) if \(\exists a\) path from \(u\) to \(v\) and a path from \(v\) to \(u\)</td>
+</tr>
+
+<tr>
+<td class="org-left">Biconnected Components</td>
+<td class="org-left">See <a href="#biconnected">Biconnected Components</a></td>
+</tr>
+
+<tr>
+<td class="org-left">Negative Edge Weights</td>
+<td class="org-left">It is a weighted graph in which the total weight of an edge is negative.</td>
+</tr>
+
+<tr>
+<td class="org-left">Negative Cycle</td>
+<td class="org-left">Cycle whose edges sum to a negative value</td>
+</tr>
+
+<tr>
+<td class="org-left">Articulation Point</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orgb669824" class="outline-2">
+<h2 id="orgb669824">Graph Traversal</h2>
+<div class="outline-text-2" id="text-orgb669824">
+<p>
+Given any starting vertex, we can find all the reachable vertices from the start point,
+there are many algorithms that can do this, the simplest of which is depth-frist search.
+</p>
+</div>
+<div id="outline-container-orgb8d7706" class="outline-3">
+<h3 id="orgb8d7706">Depth First Search (DFS)</h3>
+<div class="outline-text-3" id="text-orgb8d7706">
+<p>
+As the name implies, DFS enumerate the deepest paths and only backtracking when it reaches a
+dead end or an already-visited section of the graph. We can simplify the process of the
+algorithm as follows:
+</p>
+
+<ul class="org-ul">
+<li>DFS keeps track of the attribute of each vertex, let it be color, unvisited vertices are white by default. Vertices that have been visited but still may be backtracked are colored gray. Vertices which are completely processed are colored black. It prevents loops by skipping non-white vertices.</li>
+
+<li>Instead of just marking visited vertices, the algorithm also keeps track of the tree generated by the depth-first traversal. It does so by marking the “parent” of each visited vertex, aka the vertex that DFS visited immediately prior to visiting the child.</li>
+</ul>
+
+
+<p>
+The algorithm takes an input a start vertex \(s\), be default it shouldn&rsquo;t really return
+anything, you can make it return the timestamp of finishing the traversing process.
+</p>
+
+<pre class="code"><code><span style="color: #cd9575;">void</span> <span style="color: #80bcb6;">DFS</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">v</span><span style="color: #6bd9db;">)</span> <span style="color: #6bd9db;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   visited<span style="color: #ab98b5;">[</span>v<span style="color: #ab98b5;">]</span> = <span style="color: #ab98b5; font-weight: bold;">true</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Do somtmeting here</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #ab98b5; font-weight: bold;">list</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #ab98b5;">&gt;</span>::<span style="color: #cd9575;">iterator</span> <span style="color: #968cc7;">i</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #ab98b5;">(</span>i = adj<span style="color: #5D8272;">[</span>v<span style="color: #5D8272;">]</span>.begin<span style="color: #5D8272;">()</span>; i != adj<span style="color: #5D8272;">[</span>v<span style="color: #5D8272;">]</span>.end<span style="color: #5D8272;">()</span>; ++i<span style="color: #ab98b5;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #ab98b5;">(</span><span style="color: #cd5c60;">!</span>visited<span style="color: #5D8272;">[</span>*i<span style="color: #5D8272;">]</span><span style="color: #ab98b5;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #ab98b5; font-weight: bold;">DFS</span><span style="color: #ab98b5;">(</span>*i<span style="color: #ab98b5;">)</span>;
+<span style="color: #6bd9db;">}</span>
+</code></pre>
+
+<p>
+There is also an iterative approach, which is just the same as the recursive one but in the
+iterative approach: You first insert all the elements into the stack - and then handle the
+head of the stack [which is the last node inserted] - thus the first node you handle is the
+last child.
+</p>
+
+<p>
+In the recursive approach: You handle each node when you see it. Thus the first node you
+handle is the first child:
+</p>
+
+<pre class="code"><code><span style="color: #cd9575;">void</span> <span style="color: #ab98b5; font-weight: bold;">Graph</span>::<span style="color: #80bcb6;">DFS</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">s</span><span style="color: #6bd9db;">)</span>
+<span style="color: #6bd9db;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">vector</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">bool</span><span style="color: #ab98b5;">&gt;</span> <span style="color: #968cc7;">visited</span><span style="color: #ab98b5;">(</span>V, <span style="color: #ab98b5; font-weight: bold;">false</span><span style="color: #ab98b5;">)</span>;
+ 
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">stack</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #ab98b5;">&gt;</span> <span style="color: #968cc7;">stack</span>;
+ 
+<span style="color: #31b1351b37b1;"> </span>   stack.push<span style="color: #ab98b5;">(</span>s<span style="color: #ab98b5;">)</span>;
+ 
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">while</span> <span style="color: #ab98b5;">(</span><span style="color: #cd5c60;">!</span>stack.empty<span style="color: #5D8272;">()</span><span style="color: #ab98b5;">)</span> <span style="color: #ab98b5;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">s</span> = stack.top<span style="color: #5D8272;">()</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   stack.pop<span style="color: #5D8272;">()</span>;
+     
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #5D8272;">(</span><span style="color: #cd5c60;">!</span>visited<span style="color: #807f96;">[</span>s<span style="color: #807f96;">]</span><span style="color: #5D8272;">)</span> <span style="color: #5D8272;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Do somthing here</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   visited<span style="color: #807f96;">[</span>s<span style="color: #807f96;">]</span> = <span style="color: #ab98b5; font-weight: bold;">true</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #5D8272;">}</span>
+     
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #5D8272;">(</span><span style="color: #4d9391; font-weight: bold;">auto</span> <span style="color: #968cc7;">i</span> = adj<span style="color: #807f96;">[</span>s<span style="color: #807f96;">]</span>.begin<span style="color: #807f96;">()</span>; i != adj<span style="color: #807f96;">[</span>s<span style="color: #807f96;">]</span>.end<span style="color: #807f96;">()</span>; ++i<span style="color: #5D8272;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #5D8272;">(</span><span style="color: #cd5c60;">!</span>visited<span style="color: #807f96;">[</span>*i<span style="color: #807f96;">]</span><span style="color: #5D8272;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   stack.push<span style="color: #5D8272;">(</span>*i<span style="color: #5D8272;">)</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #ab98b5;">}</span>
+<span style="color: #6bd9db;">}</span>
+</code></pre>
+
+<p>
+As the name implies, DFS enumerate the deepest paths and only backtracking when it reaches a
+dead end or an already-visited section of the graph. We can simplify the process of the
+algorithm as follows:
+</p>
+
+<ul class="org-ul">
+<li>DFS keeps track of the attribute of each vertex, let it be color, unvisited vertices are white by default. Vertices that have been visited but still may be backtracked are colored gray. Vertices which are completely processed are colored black. It prevents loops by skipping non-white vertices.</li>
+
+<li>Instead of just marking visited vertices, the algorithm also keeps track of the tree generated by the depth-first traversal. It does so by marking the “parent” of each visited vertex, aka the vertex that DFS visited immediately prior to visiting the child.</li>
+</ul>
+
+
+<p>
+The algorithm takes an input a start vertex \(s\), be default it shouldn&rsquo;t really return
+anything, you can make it return the timestamp of finishing the traversing process.
+</p>
+
+<pre class="code"><code><span style="color: #cd9575;">void</span> <span style="color: #80bcb6;">DFS</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">v</span><span style="color: #6bd9db;">)</span> <span style="color: #6bd9db;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   visited<span style="color: #ab98b5;">[</span>v<span style="color: #ab98b5;">]</span> = <span style="color: #ab98b5; font-weight: bold;">true</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Do somtmeting here</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #ab98b5; font-weight: bold;">list</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #ab98b5;">&gt;</span>::<span style="color: #cd9575;">iterator</span> <span style="color: #968cc7;">i</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #ab98b5;">(</span>i = adj<span style="color: #5D8272;">[</span>v<span style="color: #5D8272;">]</span>.begin<span style="color: #5D8272;">()</span>; i != adj<span style="color: #5D8272;">[</span>v<span style="color: #5D8272;">]</span>.end<span style="color: #5D8272;">()</span>; ++i<span style="color: #ab98b5;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #ab98b5;">(</span><span style="color: #cd5c60;">!</span>visited<span style="color: #5D8272;">[</span>*i<span style="color: #5D8272;">]</span><span style="color: #ab98b5;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #ab98b5; font-weight: bold;">DFS</span><span style="color: #ab98b5;">(</span>*i<span style="color: #ab98b5;">)</span>;
+<span style="color: #6bd9db;">}</span>
+</code></pre>
+
+<p>
+There is also an iterative approach, which is just the same as the recursive one but in the
+iterative approach: You first insert all the elements into the stack - and then handle the
+head of the stack [which is the last node inserted] - thus the first node you handle is the
+last child.
+</p>
+
+<p>
+In the recursive approach: You handle each node when you see it. Thus the first node you
+handle is the first child:
+</p>
+
+<pre class="code"><code><span style="color: #cd9575;">void</span> <span style="color: #ab98b5; font-weight: bold;">Graph</span>::<span style="color: #80bcb6;">DFS</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">s</span><span style="color: #6bd9db;">)</span>
+<span style="color: #6bd9db;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">vector</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">bool</span><span style="color: #ab98b5;">&gt;</span> <span style="color: #968cc7;">visited</span><span style="color: #ab98b5;">(</span>V, <span style="color: #ab98b5; font-weight: bold;">false</span><span style="color: #ab98b5;">)</span>;
+ 
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">stack</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #ab98b5;">&gt;</span> <span style="color: #968cc7;">stack</span>;
+ 
+<span style="color: #31b1351b37b1;"> </span>   stack.push<span style="color: #ab98b5;">(</span>s<span style="color: #ab98b5;">)</span>;
+ 
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">while</span> <span style="color: #ab98b5;">(</span><span style="color: #cd5c60;">!</span>stack.empty<span style="color: #5D8272;">()</span><span style="color: #ab98b5;">)</span> <span style="color: #ab98b5;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">s</span> = stack.top<span style="color: #5D8272;">()</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   stack.pop<span style="color: #5D8272;">()</span>;
+     
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #5D8272;">(</span><span style="color: #cd5c60;">!</span>visited<span style="color: #807f96;">[</span>s<span style="color: #807f96;">]</span><span style="color: #5D8272;">)</span> <span style="color: #5D8272;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Do somthing here</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   visited<span style="color: #807f96;">[</span>s<span style="color: #807f96;">]</span> = <span style="color: #ab98b5; font-weight: bold;">true</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #5D8272;">}</span>
+     
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #5D8272;">(</span><span style="color: #4d9391; font-weight: bold;">auto</span> <span style="color: #968cc7;">i</span> = adj<span style="color: #807f96;">[</span>s<span style="color: #807f96;">]</span>.begin<span style="color: #807f96;">()</span>; i != adj<span style="color: #807f96;">[</span>s<span style="color: #807f96;">]</span>.end<span style="color: #807f96;">()</span>; ++i<span style="color: #5D8272;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #5D8272;">(</span><span style="color: #cd5c60;">!</span>visited<span style="color: #807f96;">[</span>*i<span style="color: #807f96;">]</span><span style="color: #5D8272;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   stack.push<span style="color: #5D8272;">(</span>*i<span style="color: #5D8272;">)</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #ab98b5;">}</span>
+<span style="color: #6bd9db;">}</span>
+</code></pre>
+</div>
+</div>
+<div id="outline-container-org968acb7" class="outline-3">
+<h3 id="org968acb7">Strongly Connected Components (SCC)</h3>
+<div class="outline-text-3" id="text-org968acb7">
+<p>
+We will see that any graph \(G = (V, E)\) can be partitioned into strongly connected
+components. For a component to be strongly connected, every vertex in the component must be
+reachable from every other vertex in the same component. (See the definition of equivalence
+node in <a href="#sheet">the definition sheet</a>).
+</p>
+</div>
+<div id="outline-container-scc" class="outline-4">
+<h4 id="scc">Kosarju&rsquo;s Algorithm</h4>
+<div class="outline-text-4" id="text-scc">
+<p>
+Kosaraju-Sharir&rsquo;s algorithm (also known as Kosaraju&rsquo;s algorithm) is a linear time algorithm
+to find the strongly connected components of a directed graph. Aho, Hopcroft and Ullman
+credit it to S. Rao Kosaraju and Micha Sharir. Kosaraju suggested it in 1978 but did not
+publish it, while Sharir independently discovered it and published it in 1981.
+</p>
+
+<p>
+The algorithm is baiscally like following:
+</p>
+<ol class="org-ol">
+<li>Create an empty stack <code>s</code> and traverse the graph using DFS
+In DFS, avert each recursive calling for the adjacent vertices of a vertex, push the
+vertex to stack.</li>
+<li>Reverse directions of all arcs to obtain the transpose graph. See <a href="#transpose">transpose graph</a>.</li>
+
+<li>One by one pop a vertex from S while S is not empty. Let the popped vertex be \(v\). Take
+\(v\) as source and do DFS. The DFS starting from \(v\) prints strongly connected component
+of \(v\). In the above example, we process vertices in order 0, 3, 4, 2, 1 (One by one
+popped from stack).</li>
+</ol>
+
+<p>
+For proof, tracing and more info, See <a href="https://www.personal.kent.edu/~rmuhamma/Algorithms/MyAlgorithms/GraphAlgor/strongComponent.htm">Strongly Connected Components</a>.
+</p>
+
+<p>
+Implementations in C(++):
+</p>
+<pre class="code"><code><span style="color: #cd9575;">void</span> <span style="color: #80bcb6;">DFS</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">v</span>, <span style="color: #cd9575;">bool</span> <span style="color: #968cc7;">visited</span><span style="color: #ab98b5;">[]</span><span style="color: #6bd9db;">)</span>;
+
+<span style="color: #cd9575;">Graph</span> <span style="color: #80bcb6;">getTranspose</span><span style="color: #6bd9db;">()</span> <span style="color: #6bd9db;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">Graph</span> <span style="color: #968cc7;">g</span><span style="color: #ab98b5;">(</span>V<span style="color: #ab98b5;">)</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #ab98b5;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">v</span> = <span style="color: #cd5c60;">0</span>; v &lt; V; v++<span style="color: #ab98b5;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #ab98b5;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #ab98b5; font-weight: bold;">list</span><span style="color: #5D8272;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #5D8272;">&gt;</span>::<span style="color: #cd9575;">iterator</span> <span style="color: #968cc7;">i</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">for</span><span style="color: #5D8272;">(</span>i = adj<span style="color: #807f96;">[</span>v<span style="color: #807f96;">]</span>.begin<span style="color: #807f96;">()</span>; i != adj<span style="color: #807f96;">[</span>v<span style="color: #807f96;">]</span>.end<span style="color: #807f96;">()</span>; ++i<span style="color: #5D8272;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #5D8272;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   g.adj<span style="color: #807f96;">[</span>*i<span style="color: #807f96;">]</span>.push_back<span style="color: #807f96;">(</span>v<span style="color: #807f96;">)</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #5D8272;">}</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #ab98b5;">}</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">return</span> g;
+<span style="color: #6bd9db;">}</span>
+
+
+<span style="color: #cd9575;">void</span> <span style="color: #80bcb6;">fillOrder</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">v</span>, <span style="color: #cd9575;">bool</span> <span style="color: #968cc7;">visited</span><span style="color: #ab98b5;">[]</span>, <span style="color: #cd9575;">stack</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #ab98b5;">&gt;</span> &amp;<span style="color: #968cc7;">Stack</span><span style="color: #6bd9db;">)</span> <span style="color: #6bd9db;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   visited<span style="color: #ab98b5;">[</span>v<span style="color: #ab98b5;">]</span> = <span style="color: #ab98b5; font-weight: bold;">true</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #ab98b5; font-weight: bold;">list</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #ab98b5;">&gt;</span>::<span style="color: #cd9575;">iterator</span> <span style="color: #968cc7;">i</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">for</span><span style="color: #ab98b5;">(</span>i = adj<span style="color: #5D8272;">[</span>v<span style="color: #5D8272;">]</span>.begin<span style="color: #5D8272;">()</span>; i != adj<span style="color: #5D8272;">[</span>v<span style="color: #5D8272;">]</span>.end<span style="color: #5D8272;">()</span>; ++i<span style="color: #ab98b5;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">if</span><span style="color: #ab98b5;">(</span><span style="color: #cd5c60;">!</span>visited<span style="color: #5D8272;">[</span>*i<span style="color: #5D8272;">]</span><span style="color: #ab98b5;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   fillOrder<span style="color: #ab98b5;">(</span>*i, visited, Stack<span style="color: #ab98b5;">)</span>;
+<span style="color: #31b1351b37b1;"> </span>   Stack.push<span style="color: #ab98b5;">(</span>v<span style="color: #ab98b5;">)</span>;
+<span style="color: #6bd9db;">}</span>
+
+<span style="color: #cd9575;">void</span> <span style="color: #80bcb6;">printSCCs</span><span style="color: #6bd9db;">()</span> <span style="color: #6bd9db;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">stack</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #ab98b5;">&gt;</span> <span style="color: #968cc7;">Stack</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">bool</span> *<span style="color: #968cc7;">visited</span> = <span style="color: #4d9391; font-weight: bold;">new</span> <span style="color: #cd9575;">bool</span><span style="color: #ab98b5;">[</span>V<span style="color: #ab98b5;">]</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">for</span><span style="color: #ab98b5;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">i</span> = <span style="color: #cd5c60;">0</span>; i &lt; V; i++<span style="color: #ab98b5;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   visited<span style="color: #ab98b5;">[</span>i<span style="color: #ab98b5;">]</span> = <span style="color: #ab98b5; font-weight: bold;">false</span>;
+     
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">for</span><span style="color: #ab98b5;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">i</span> = <span style="color: #cd5c60;">0</span>; i &lt; V; i++<span style="color: #ab98b5;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">if</span><span style="color: #ab98b5;">(</span>visited<span style="color: #5D8272;">[</span>i<span style="color: #5D8272;">]</span> == <span style="color: #ab98b5; font-weight: bold;">false</span><span style="color: #ab98b5;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   fillOrder<span style="color: #ab98b5;">(</span>i, visited, Stack<span style="color: #ab98b5;">)</span>;
+         
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">Graph</span> <span style="color: #968cc7;">gr</span> = getTranspose<span style="color: #ab98b5;">()</span>;
+ 
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">for</span><span style="color: #ab98b5;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">i</span> = <span style="color: #cd5c60;">0</span>; i &lt; V; i++<span style="color: #ab98b5;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   visited<span style="color: #ab98b5;">[</span>i<span style="color: #ab98b5;">]</span> = <span style="color: #ab98b5; font-weight: bold;">false</span>;
+     
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">while</span> <span style="color: #ab98b5;">(</span>Stack.empty<span style="color: #5D8272;">()</span> == <span style="color: #ab98b5; font-weight: bold;">false</span><span style="color: #ab98b5;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #ab98b5;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">v</span> = Stack.top<span style="color: #5D8272;">()</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   Stack.pop<span style="color: #5D8272;">()</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #5D8272;">(</span>visited<span style="color: #807f96;">[</span>v<span style="color: #807f96;">]</span> == <span style="color: #ab98b5; font-weight: bold;">false</span><span style="color: #5D8272;">)</span> <span style="color: #5D8272;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #ab98b5; font-weight: bold;">DFS</span><span style="color: #807f96;">(</span>v, visited<span style="color: #807f96;">)</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   cout &lt;&lt; endl;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #5D8272;">}</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #ab98b5;">}</span>
+<span style="color: #6bd9db;">}</span>
+</code></pre>
+</div>
+</div>
+<div id="outline-container-orgba0cd8c" class="outline-4">
+<h4 id="orgba0cd8c"><span class="done KILL">KILL</span> Tarjan&rsquo;s Algorithm&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h4>
+</div>
+</div>
+</div>
+<div id="outline-container-orga83d73e" class="outline-2">
+<h2 id="orga83d73e">Detecting Cycles</h2>
+<div class="outline-text-2" id="text-orga83d73e">
+<p>
+<i>Hint: Review cycle definition in the <a href="#sheet">definition sheet</a> above</i>
+</p>
+</div>
+<div id="outline-container-org20c1905" class="outline-3">
+<h3 id="org20c1905">Using Depth First Search</h3>
+<div class="outline-text-3" id="text-org20c1905">
+<p>
+We can detect cycles in directed graphs using DFS. This is based on the fact that there is a
+cycle in a graph only if there is a back edge present in the graph. A back edge is an edge
+that is from a node to itself (self-loop) or one of its ancestors in the tree produced by
+DFS.
+</p>
+
+<p>
+To detect a back edge, keep track of vertices currently in the recursion stack of function
+for DFS traversal. If a vertex is reached that is already in the recursion stack, then there
+is a cycle in the tree. The edge that connects the current vertex to the vertex in the
+recursion stack is a back edge.
+</p>
+
+<p>
+The algorithm is the following:
+</p>
+
+<ol class="org-ol">
+<li>Initially we take the 3 Sets(White,Black and Grey) and stored all the nodes in white set.</li>
+<li>Then select a node from white set, then remove it from white set and put into the grey
+set and then perform DFS traversal.</li>
+<li>During traversal, for every neighbouring node which is present in white set, move it from
+white set to grey set.</li>
+<li>During DFS traversal if we find any neighbouring node which is present in a grey set,
+Hence cycle is present.</li>
+<li>During traversal, put a node into the black set if it has no more neighbouring nodes
+present in white</li>
+</ol>
+
+<pre class="code"><code><span style="color: #9d81ba;">#include</span><span style="color: #6fb593;">&lt;bits/stdc++.h&gt;</span>
+<span style="color: #4d9391; font-weight: bold;">using</span> <span style="color: #4d9391; font-weight: bold;">namespace</span> <span style="color: #ab98b5; font-weight: bold;">std</span>;
+<span style="color: #cd9575;">set</span><span style="color: #6bd9db;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #6bd9db;">&gt;</span><span style="color: #968cc7;">white</span>;
+<span style="color: #cd9575;">set</span><span style="color: #6bd9db;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #6bd9db;">&gt;</span><span style="color: #968cc7;">grey</span>;
+<span style="color: #cd9575;">set</span><span style="color: #6bd9db;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #6bd9db;">&gt;</span><span style="color: #968cc7;">black</span>;
+<span style="color: #cd9575;">int</span> <span style="color: #968cc7;">flag</span>=<span style="color: #cd5c60;">0</span>;
+
+<span style="color: #cd9575;">void</span> <span style="color: #80bcb6;">edge</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">vector</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #ab98b5;">&gt;</span><span style="color: #968cc7;">adj</span><span style="color: #ab98b5;">[]</span>,<span style="color: #cd9575;">int</span> <span style="color: #968cc7;">u</span>,<span style="color: #cd9575;">int</span> <span style="color: #968cc7;">v</span><span style="color: #6bd9db;">){</span>
+<span style="color: #31b1351b37b1;"> </span> adj<span style="color: #ab98b5;">[</span>u<span style="color: #ab98b5;">]</span>.push_back<span style="color: #ab98b5;">(</span>v<span style="color: #ab98b5;">)</span>;
+<span style="color: #6bd9db;">}</span>
+
+<span style="color: #cd9575;">void</span> <span style="color: #80bcb6;">CycleDetect</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">u</span>,<span style="color: #cd9575;">vector</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #ab98b5;">&gt;</span><span style="color: #968cc7;">adj</span><span style="color: #ab98b5;">[]</span><span style="color: #6bd9db;">){</span>
+<span style="color: #31b1351b37b1;"> </span>   white.erase<span style="color: #ab98b5;">(</span>u<span style="color: #ab98b5;">)</span>;
+<span style="color: #31b1351b37b1;"> </span>   grey.insert<span style="color: #ab98b5;">(</span>u<span style="color: #ab98b5;">)</span>;
+ 
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">for</span><span style="color: #ab98b5;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">i</span>=<span style="color: #cd5c60;">0</span>;i&lt;adj<span style="color: #5D8272;">[</span>u<span style="color: #5D8272;">]</span>.size<span style="color: #5D8272;">()</span>;i++<span style="color: #ab98b5;">){</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #4d9391; font-weight: bold;">if</span><span style="color: #5D8272;">(</span>white.find<span style="color: #807f96;">(</span>adj<span style="color: #6bd9db;">[</span>u<span style="color: #6bd9db;">][</span>i<span style="color: #6bd9db;">]</span><span style="color: #807f96;">)</span>!=white.end<span style="color: #807f96;">()</span><span style="color: #5D8272;">)</span> <span style="color: #5D8272;">{</span>
+     
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> CycleDetect<span style="color: #807f96;">(</span>adj<span style="color: #6bd9db;">[</span>u<span style="color: #6bd9db;">][</span>i<span style="color: #6bd9db;">]</span>,adj<span style="color: #807f96;">)</span>;
+     
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #5D8272;">}</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #4d9391; font-weight: bold;">if</span><span style="color: #5D8272;">(</span>grey.find<span style="color: #807f96;">(</span>adj<span style="color: #6bd9db;">[</span>u<span style="color: #6bd9db;">][</span>i<span style="color: #6bd9db;">]</span><span style="color: #807f96;">)</span>!=grey.end<span style="color: #807f96;">()</span><span style="color: #5D8272;">){</span> <span style="color: #545c5e;">//</span><span style="color: #545c5e;">check if its is present or not in grey set</span>
+     
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   flag=<span style="color: #cd5c60;">1</span>;
+     
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #5D8272;">}</span>
+     
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #ab98b5;">}</span>
+<span style="color: #31b1351b37b1;"> </span>   black.insert<span style="color: #ab98b5;">(</span>u<span style="color: #ab98b5;">)</span>;<span style="color: #545c5e;">//</span><span style="color: #545c5e;">put into the black set</span>
+ 
+<span style="color: #31b1351b37b1;"> </span>   grey.erase<span style="color: #ab98b5;">(</span>u<span style="color: #ab98b5;">)</span>;<span style="color: #545c5e;">//</span><span style="color: #545c5e;">remove from the grey set</span>
+<span style="color: #6bd9db;">}</span>
+
+<span style="color: #cd9575;">int</span> <span style="color: #80bcb6;">main</span><span style="color: #6bd9db;">(){</span>
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #cd9575;">vector</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #ab98b5;">&gt;</span><span style="color: #968cc7;">adj</span><span style="color: #ab98b5;">[</span><span style="color: #cd5c60;">5</span><span style="color: #ab98b5;">]</span>;<span style="color: #545c5e;">//</span><span style="color: #545c5e;">vector of array to store the graph</span>
+ 
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #545c5e;">//</span><span style="color: #545c5e;">input for edges</span>
+<span style="color: #31b1351b37b1;"> </span> edge<span style="color: #ab98b5;">(</span>adj,<span style="color: #cd5c60;">0</span>,<span style="color: #cd5c60;">2</span><span style="color: #ab98b5;">)</span>;
+<span style="color: #31b1351b37b1;"> </span> edge<span style="color: #ab98b5;">(</span>adj,<span style="color: #cd5c60;">0</span>,<span style="color: #cd5c60;">1</span><span style="color: #ab98b5;">)</span>;
+<span style="color: #31b1351b37b1;"> </span> edge<span style="color: #ab98b5;">(</span>adj,<span style="color: #cd5c60;">1</span>,<span style="color: #cd5c60;">3</span><span style="color: #ab98b5;">)</span>;
+<span style="color: #31b1351b37b1;"> </span> edge<span style="color: #ab98b5;">(</span>adj,<span style="color: #cd5c60;">2</span>,<span style="color: #cd5c60;">0</span><span style="color: #ab98b5;">)</span>;
+<span style="color: #31b1351b37b1;"> </span> edge<span style="color: #ab98b5;">(</span>adj,<span style="color: #cd5c60;">3</span>,<span style="color: #cd5c60;">3</span><span style="color: #ab98b5;">)</span>;
+<span style="color: #31b1351b37b1;"> </span> edge<span style="color: #ab98b5;">(</span>adj,<span style="color: #cd5c60;">2</span>,<span style="color: #cd5c60;">3</span><span style="color: #ab98b5;">)</span>;
+<span style="color: #31b1351b37b1;"> </span> edge<span style="color: #ab98b5;">(</span>adj,<span style="color: #cd5c60;">2</span>,<span style="color: #cd5c60;">4</span><span style="color: #ab98b5;">)</span>;
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #4d9391; font-weight: bold;">for</span><span style="color: #ab98b5;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">i</span>=<span style="color: #cd5c60;">0</span>;i&lt;<span style="color: #cd5c60;">5</span>;i++<span style="color: #ab98b5;">){</span>
+<span style="color: #31b1351b37b1;"> </span>   white.insert<span style="color: #5D8272;">(</span>i<span style="color: #5D8272;">)</span>;
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">}</span>
+<span style="color: #31b1351b37b1;"> </span> CycleDetect<span style="color: #ab98b5;">(</span><span style="color: #cd5c60;">0</span>,adj<span style="color: #ab98b5;">)</span>;
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #4d9391; font-weight: bold;">if</span><span style="color: #ab98b5;">(</span>flag==<span style="color: #cd5c60;">0</span><span style="color: #ab98b5;">)</span>cout&lt;&lt;<span style="color: #6fb593;">"Graph does not contain cycle"</span>&lt;&lt;endl;
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #4d9391; font-weight: bold;">else</span>
+<span style="color: #31b1351b37b1;"> </span> cout&lt;&lt;<span style="color: #6fb593;">"Graph contain cycle"</span>&lt;&lt;endl;
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #4d9391; font-weight: bold;">return</span> <span style="color: #cd5c60;">0</span>;
+<span style="color: #6bd9db;">}</span>
+</code></pre>
+</div>
+</div>
+</div>
+<div id="outline-container-biconnected" class="outline-2">
+<h2 id="biconnected">Biconnected Components</h2>
+<div class="outline-text-2" id="text-biconnected">
+<p>
+The operations that we have implemented thus far are simple extensions of depth first
+and breadth first search. The next operation we implement is more complex and requires
+the introduction of additional terminology. We begin by assuming that \(G\) is an
+undirected connected graph.
+</p>
+
+<p>
+An articulation point is a vertex \(v\) of \(G\) such that the deletion of \(v\), together with
+all edges incident on \(v\), produces a graph, \(G\), that has at least two connected com-
+ponents. For example, the connected graph of the following figure has four articulation
+points, vertices 1,3,5, and 7.
+</p>
+
+
+<figure id="orgdc7b858">
+<img src="../i/old/2022-04-08_07-58-38_screenshot.png" alt="2022-04-08_07-58-38_screenshot.png">
+
+</figure>
+
+<p>
+A <i>biconnected graph</i> is a connected graph that <b>has no articulation points</b>. The graph of
+the previous figure is not a biconnected graph. In many graph applications, articulation
+points are undesirable. For instance, suppose that the graph of the last figure represents a
+communication network.  In such graphs, the vertices represent communication stations and
+the edges represent communication links. Now suppose that one of the stations that is an
+articulation point fails. The result is a loss of communication not just to and from that
+single station, but also between certain other pairs of stations.
+</p>
+
+
+<p>
+A biconnected component of a connected undirected graph is a maximal bicon-
+nected subgraph, \(H\), of \(G\). By maximal, we mean that \(G\) contains no other subgraph that
+is both biconnected and properly contains \(H\). It is easy to verify that
+two biconnected components of the same graph have no more than one vertex in common. This
+means that no edge can be in two or more bicon- nected components of a graph. Hence, the
+biconnected components of G partition the edges of G.
+</p>
+
+
+
+<p>
+We can find the biconnected components of a connected undirected graph, G, by
+using any depth first spanning tree of G. For example, the function call <code>dfs (3)</code> applied to
+the graph of the last graph produces the spanning tree of the following figure:
+</p>
+
+
+<figure id="org2b1ce8f">
+<img src="../i/old/2022-04-08_08-06-21_screenshot.png" alt="2022-04-08_08-06-21_screenshot.png">
+
+</figure>
+
+<p>
+If redrawn the tree in the following figure:
+</p>
+
+
+<figure id="orgeea758e">
+<img src="../i/old/2022-04-08_08-07-57_screenshot.png" alt="2022-04-08_08-07-57_screenshot.png">
+
+</figure>
+
+
+<p>
+To better reveal its tree structure. The numbers outside the vertices in either figure give
+the sequence in which the vertices are visited during the depth first search. We call this
+number the depth first number, or \(dfn\), of the vertex. For example, \(dfn (3) =0\), \(dfn (0) =4\),
+and \(dfn (9) = 8\). Notice that vertex 3, which is an ancestor of both vertices 0 and 9, has
+a lower dfn than either of these vertices.  Generally, if \(u\) and \(v\) are two vertices, and u is
+an ancestor of v in the depth first spanning tree,· then \(dfn (u) < dfn (v)\).
+</p>
+
+
+<p>
+that we cannot reach an ancestor of u using a path that consists of only \(w\), descendants of
+These observations lead us to define a value, low, for each
+vertex of \(G\) such that low \((u)\) is the lowest depth first number that we can reach from \(u\)
+using a path of descendants followed by at most one back edge:
+</p>
+
+
+<figure id="org00bcbb6">
+<img src="../i/old/2022-04-08_08-23-12_screenshot.png" alt="2022-04-08_08-23-12_screenshot.png">
+
+</figure>
+
+<p>
+Therefore, <b>we can say that \(u\) is an articulation point if \(u\) is either the root of the
+spanning tree and has two or more children, or \(u\) is not the root and \(u\) has a child \(w\)
+such that \(low (w) \geq dfn (u)\).</b> The following table is the analysis for the last
+example:
+</p>
+
+
+<figure id="orga83f9a7">
+<img src="../i/old/2022-04-08_08-28-50_screenshot.png" alt="2022-04-08_08-28-50_screenshot.png">
+
+</figure>
+
+<p>
+Form that table we conclude that vertex 1 is an articulation point since it has a child 0
+such that low (0) = 4 ~ dfn (1) = 3. Vertex 7 is also an articulation point since low (8) =9
+~ dfn (7) =7, as is vertex 5 since low (6) =5 ~ dfn (5) = 5. Finally, we note that the root,
+vertex 3, is an articulation point because it has more than one child.
+</p>
+
+
+<pre class="code"><code>
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">A C++ program to find biconnected components in a given undirected graph</span>
+<span style="color: #9d81ba;">#include</span> <span style="color: #6fb593;">&lt;iostream&gt;</span>
+<span style="color: #9d81ba;">#include</span> <span style="color: #6fb593;">&lt;list&gt;</span>
+<span style="color: #9d81ba;">#include</span> <span style="color: #6fb593;">&lt;stack&gt;</span>
+<span style="color: #9d81ba;">#define</span> <span style="color: #968cc7;">NIL</span> -<span style="color: #cd5c60;">1</span>
+<span style="color: #4d9391; font-weight: bold;">using</span> <span style="color: #4d9391; font-weight: bold;">namespace</span> <span style="color: #ab98b5; font-weight: bold;">std</span>;
+<span style="color: #cd9575;">int</span> <span style="color: #968cc7;">count</span> = <span style="color: #cd5c60;">0</span>;
+<span style="color: #4d9391; font-weight: bold;">class</span> <span style="color: #cd9575;">Edge</span> <span style="color: #6bd9db;">{</span>
+<span style="color: #4d9391; font-weight: bold;">public</span>:
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">u</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">v</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #80bcb6;">Edge</span><span style="color: #ab98b5;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">u</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">v</span><span style="color: #ab98b5;">)</span>;
+<span style="color: #6bd9db;">}</span>;
+<span style="color: #ab98b5; font-weight: bold;">Edge</span>::<span style="color: #80bcb6;">Edge</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">u</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">v</span><span style="color: #6bd9db;">)</span>
+<span style="color: #6bd9db;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">this</span>-&gt;u = u;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">this</span>-&gt;v = v;
+<span style="color: #6bd9db;">}</span>
+
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">A class that represents an directed graph</span>
+<span style="color: #4d9391; font-weight: bold;">class</span> <span style="color: #cd9575;">Graph</span> <span style="color: #6bd9db;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">V</span>; <span style="color: #545c5e;">// </span><span style="color: #545c5e;">No. of vertices</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">E</span>; <span style="color: #545c5e;">// </span><span style="color: #545c5e;">No. of edges</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">list</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #ab98b5;">&gt;</span>* <span style="color: #968cc7;">adj</span>; <span style="color: #545c5e;">// </span><span style="color: #545c5e;">A dynamic array of adjacency lists</span>
+ 
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">A Recursive DFS based function used by BCC()</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">void</span> <span style="color: #80bcb6;">BCCUtil</span><span style="color: #ab98b5;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">u</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">disc</span><span style="color: #5D8272;">[]</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">low</span><span style="color: #5D8272;">[]</span>,
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span><span style="color: #cd9575;">list</span><span style="color: #5D8272;">&lt;</span><span style="color: #cd9575;">Edge</span><span style="color: #5D8272;">&gt;</span>* <span style="color: #968cc7;">st</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">parent</span><span style="color: #5D8272;">[]</span><span style="color: #ab98b5;">)</span>;
+                 
+<span style="color: #4d9391; font-weight: bold;">public</span>:
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #80bcb6;">Graph</span><span style="color: #ab98b5;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">V</span><span style="color: #ab98b5;">)</span>; <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Constructor</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">void</span> <span style="color: #80bcb6;">addEdge</span><span style="color: #ab98b5;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">v</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">w</span><span style="color: #ab98b5;">)</span>; <span style="color: #545c5e;">// </span><span style="color: #545c5e;">function to add an edge to graph</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">void</span> <span style="color: #80bcb6;">BCC</span><span style="color: #ab98b5;">()</span>; <span style="color: #545c5e;">// </span><span style="color: #545c5e;">prints strongly connected components</span>
+<span style="color: #6bd9db;">}</span>;
+
+<span style="color: #ab98b5; font-weight: bold;">Graph</span>::<span style="color: #80bcb6;">Graph</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">V</span><span style="color: #6bd9db;">)</span>
+<span style="color: #6bd9db;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">this</span>-&gt;V = V;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">this</span>-&gt;E = <span style="color: #cd5c60;">0</span>;
+<span style="color: #31b1351b37b1;"> </span>   adj = <span style="color: #4d9391; font-weight: bold;">new</span> <span style="color: #cd9575;">list</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #ab98b5;">&gt;[</span><span style="color: #ab98b5; font-weight: bold;">V</span><span style="color: #ab98b5;">]</span>;
+<span style="color: #6bd9db;">}</span>
+
+<span style="color: #cd9575;">void</span> <span style="color: #ab98b5; font-weight: bold;">Graph</span>::<span style="color: #80bcb6;">addEdge</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">v</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">w</span><span style="color: #6bd9db;">)</span>
+<span style="color: #6bd9db;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   adj<span style="color: #ab98b5;">[</span>v<span style="color: #ab98b5;">]</span>.push_back<span style="color: #ab98b5;">(</span>w<span style="color: #ab98b5;">)</span>;
+<span style="color: #31b1351b37b1;"> </span>   E++;
+<span style="color: #6bd9db;">}</span>
+
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">A recursive function that finds and prints strongly connected</span>
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">components using DFS traversal</span>
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">u --&gt; The vertex to be visited next</span>
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">disc[] --&gt; Stores discovery times of visited vertices</span>
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">low[] -- &gt;&gt; earliest visited vertex (the vertex with minimum</span>
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">discovery time) that can be reached from subtree</span>
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">rooted with current vertex</span>
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">*st -- &gt;&gt; To store visited edges</span>
+<span style="color: #cd9575;">void</span> <span style="color: #ab98b5; font-weight: bold;">Graph</span>::<span style="color: #80bcb6;">BCCUtil</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">u</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">disc</span><span style="color: #ab98b5;">[]</span>, <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">low</span><span style="color: #ab98b5;">[]</span>, <span style="color: #cd9575;">list</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">Edge</span><span style="color: #ab98b5;">&gt;</span>* <span style="color: #968cc7;">st</span>,
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">parent</span><span style="color: #ab98b5;">[]</span><span style="color: #6bd9db;">)</span>
+<span style="color: #6bd9db;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">A static variable is used for simplicity, we can avoid use</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">of static variable by passing a pointer.</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">static</span> <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">time</span> = <span style="color: #cd5c60;">0</span>;
+ 
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Initialize discovery time and low value</span>
+<span style="color: #31b1351b37b1;"> </span>   disc<span style="color: #ab98b5;">[</span>u<span style="color: #ab98b5;">]</span> = low<span style="color: #ab98b5;">[</span>u<span style="color: #ab98b5;">]</span> = ++time;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">children</span> = <span style="color: #cd5c60;">0</span>;
+ 
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Go through all vertices adjacent to this</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #ab98b5; font-weight: bold;">list</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">int</span><span style="color: #ab98b5;">&gt;</span>::<span style="color: #cd9575;">iterator</span> <span style="color: #968cc7;">i</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #ab98b5;">(</span>i = adj<span style="color: #5D8272;">[</span>u<span style="color: #5D8272;">]</span>.begin<span style="color: #5D8272;">()</span>; i != adj<span style="color: #5D8272;">[</span>u<span style="color: #5D8272;">]</span>.end<span style="color: #5D8272;">()</span>; ++i<span style="color: #ab98b5;">)</span> <span style="color: #ab98b5;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">v</span> = *i; <span style="color: #545c5e;">// </span><span style="color: #545c5e;">v is current adjacent of 'u'</span>
+     
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">If v is not visited yet, then recur for it</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #5D8272;">(</span>disc<span style="color: #807f96;">[</span>v<span style="color: #807f96;">]</span> == -<span style="color: #cd5c60;">1</span><span style="color: #5D8272;">)</span> <span style="color: #5D8272;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   children++;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   parent<span style="color: #807f96;">[</span>v<span style="color: #807f96;">]</span> = u;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">store the edge in stack</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   st-&gt;push_back<span style="color: #807f96;">(</span>Edge<span style="color: #6bd9db;">(</span>u, v<span style="color: #6bd9db;">)</span><span style="color: #807f96;">)</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   BCCUtil<span style="color: #807f96;">(</span>v, disc, low, st, parent<span style="color: #807f96;">)</span>;
+         
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Check if the subtree rooted with 'v' has a</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">connection to one of the ancestors of 'u'</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Case 1 -- per Strongly Connected Components Article</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   low<span style="color: #807f96;">[</span>u<span style="color: #807f96;">]</span> = min<span style="color: #807f96;">(</span>low<span style="color: #6bd9db;">[</span>u<span style="color: #6bd9db;">]</span>, low<span style="color: #6bd9db;">[</span>v<span style="color: #6bd9db;">]</span><span style="color: #807f96;">)</span>;
+         
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">If u is an articulation point,</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">pop all edges from stack till u -- v</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #807f96;">(</span><span style="color: #6bd9db;">(</span>disc<span style="color: #ab98b5;">[</span>u<span style="color: #ab98b5;">]</span> == <span style="color: #cd5c60;">1</span> &amp;&amp; children &gt; <span style="color: #cd5c60;">1</span><span style="color: #6bd9db;">)</span> || <span style="color: #6bd9db;">(</span>disc<span style="color: #ab98b5;">[</span>u<span style="color: #ab98b5;">]</span> &gt; <span style="color: #cd5c60;">1</span> &amp;&amp; low<span style="color: #ab98b5;">[</span>v<span style="color: #ab98b5;">]</span> &gt;= disc<span style="color: #ab98b5;">[</span>u<span style="color: #ab98b5;">]</span><span style="color: #6bd9db;">)</span><span style="color: #807f96;">)</span> <span style="color: #807f96;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">while</span> <span style="color: #6bd9db;">(</span>st-&gt;back<span style="color: #ab98b5;">()</span>.u != u || st-&gt;back<span style="color: #ab98b5;">()</span>.v != v<span style="color: #6bd9db;">)</span> <span style="color: #6bd9db;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   cout &lt;&lt; st-&gt;back<span style="color: #ab98b5;">()</span>.u &lt;&lt; <span style="color: #6fb593;">"--"</span> &lt;&lt; st-&gt;back<span style="color: #ab98b5;">()</span>.v &lt;&lt; <span style="color: #6fb593;">" "</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   st-&gt;pop_back<span style="color: #ab98b5;">()</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #6bd9db;">}</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   cout &lt;&lt; st-&gt;back<span style="color: #6bd9db;">()</span>.u &lt;&lt; <span style="color: #6fb593;">"--"</span> &lt;&lt; st-&gt;back<span style="color: #6bd9db;">()</span>.v;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   st-&gt;pop_back<span style="color: #6bd9db;">()</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   cout &lt;&lt; endl;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   count++;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #807f96;">}</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #5D8272;">}</span>
+     
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Update low value of 'u' only of 'v' is still in stack</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">(i.e. it's a back edge, not cross edge).</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Case 2 -- per Strongly Connected Components Article</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">else</span> <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #5D8272;">(</span>v != parent<span style="color: #807f96;">[</span>u<span style="color: #807f96;">]</span><span style="color: #5D8272;">)</span> <span style="color: #5D8272;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   low<span style="color: #807f96;">[</span>u<span style="color: #807f96;">]</span> = min<span style="color: #807f96;">(</span>low<span style="color: #6bd9db;">[</span>u<span style="color: #6bd9db;">]</span>, disc<span style="color: #6bd9db;">[</span>v<span style="color: #6bd9db;">]</span><span style="color: #807f96;">)</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #807f96;">(</span>disc<span style="color: #6bd9db;">[</span>v<span style="color: #6bd9db;">]</span> &lt; disc<span style="color: #6bd9db;">[</span>u<span style="color: #6bd9db;">]</span><span style="color: #807f96;">)</span> <span style="color: #807f96;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   st-&gt;push_back<span style="color: #6bd9db;">(</span>Edge<span style="color: #ab98b5;">(</span>u, v<span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #807f96;">}</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #5D8272;">}</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #ab98b5;">}</span>
+<span style="color: #6bd9db;">}</span>
+
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">The function to do DFS traversal. It uses BCCUtil()</span>
+<span style="color: #cd9575;">void</span> <span style="color: #ab98b5; font-weight: bold;">Graph</span>::<span style="color: #80bcb6;">BCC</span><span style="color: #6bd9db;">()</span>
+<span style="color: #6bd9db;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">int</span>* <span style="color: #968cc7;">disc</span> = <span style="color: #4d9391; font-weight: bold;">new</span> <span style="color: #cd9575;">int</span><span style="color: #ab98b5;">[</span>V<span style="color: #ab98b5;">]</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">int</span>* <span style="color: #968cc7;">low</span> = <span style="color: #4d9391; font-weight: bold;">new</span> <span style="color: #cd9575;">int</span><span style="color: #ab98b5;">[</span>V<span style="color: #ab98b5;">]</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">int</span>* <span style="color: #968cc7;">parent</span> = <span style="color: #4d9391; font-weight: bold;">new</span> <span style="color: #cd9575;">int</span><span style="color: #ab98b5;">[</span>V<span style="color: #ab98b5;">]</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">list</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">Edge</span><span style="color: #ab98b5;">&gt;</span>* <span style="color: #968cc7;">st</span> = <span style="color: #4d9391; font-weight: bold;">new</span> <span style="color: #cd9575;">list</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">Edge</span><span style="color: #ab98b5;">&gt;[</span><span style="color: #ab98b5; font-weight: bold;">E</span><span style="color: #ab98b5;">]</span>;
+ 
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Initialize disc and low, and parent arrays</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #ab98b5;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">i</span> = <span style="color: #cd5c60;">0</span>; i &lt; V; i++<span style="color: #ab98b5;">)</span> <span style="color: #ab98b5;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   disc<span style="color: #5D8272;">[</span>i<span style="color: #5D8272;">]</span> = <span style="color: #ab98b5; font-weight: bold;">NIL</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   low<span style="color: #5D8272;">[</span>i<span style="color: #5D8272;">]</span> = <span style="color: #ab98b5; font-weight: bold;">NIL</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   parent<span style="color: #5D8272;">[</span>i<span style="color: #5D8272;">]</span> = <span style="color: #ab98b5; font-weight: bold;">NIL</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #ab98b5;">}</span>
+ 
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #ab98b5;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">i</span> = <span style="color: #cd5c60;">0</span>; i &lt; V; i++<span style="color: #ab98b5;">)</span> <span style="color: #ab98b5;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #5D8272;">(</span>disc<span style="color: #807f96;">[</span>i<span style="color: #807f96;">]</span> == <span style="color: #ab98b5; font-weight: bold;">NIL</span><span style="color: #5D8272;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   BCCUtil<span style="color: #5D8272;">(</span>i, disc, low, st, parent<span style="color: #5D8272;">)</span>;
+         
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">j</span> = <span style="color: #cd5c60;">0</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">If stack is not empty, pop all edges from stack</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">while</span> <span style="color: #5D8272;">(</span>st-&gt;size<span style="color: #807f96;">()</span> &gt; <span style="color: #cd5c60;">0</span><span style="color: #5D8272;">)</span> <span style="color: #5D8272;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   j = <span style="color: #cd5c60;">1</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   cout &lt;&lt; st-&gt;back<span style="color: #807f96;">()</span>.u &lt;&lt; <span style="color: #6fb593;">"--"</span> &lt;&lt; st-&gt;back<span style="color: #807f96;">()</span>.v &lt;&lt; <span style="color: #6fb593;">" "</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   st-&gt;pop_back<span style="color: #807f96;">()</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #5D8272;">}</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #5D8272;">(</span>j == <span style="color: #cd5c60;">1</span><span style="color: #5D8272;">)</span> <span style="color: #5D8272;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   cout &lt;&lt; endl;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   count++;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #5D8272;">}</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #ab98b5;">}</span>
+<span style="color: #6bd9db;">}</span>
+
+</code></pre>
+</div>
+</div>
+<div id="outline-container-org5bb3f35" class="outline-2">
+<h2 id="org5bb3f35">Union-Find (Disjoint Set)</h2>
+<div class="outline-text-2" id="text-org5bb3f35">
+<p>
+A union-find algorithm is an algorithm that performs two useful operations on such a data
+structure:
+</p>
+
+<ul class="org-ul">
+<li>Find: Determine which subset a particular element is in. This can be used for determining
+if two elements are in the same subset.</li>
+
+<li>Union: Join two subsets into a single subset. Here first we have to check if the two
+subsets belong to same set. If no, then we cannot perform union.</li>
+</ul>
+
+<p>
+We already have discussed an algorithm to detect cycle in directed graph. Here Union-Find
+Algorithm can be used to check whether an undirected graph contains cycle or not. The idea
+is that,
+</p>
+
+<div class="epigraph"><blockquote>
+<p>
+Initially create subsets containing only a single node which are the parent of itself. Now
+while traversing through the edges, if the two end nodes of the edge belongs to the same set
+then they form a cycle. Otherwise, perform union to merge the subsets together.
+</p>
+
+</blockquote></div>
+</div>
+</div>
+<div id="outline-container-orgab95a3c" class="outline-2">
+<h2 id="orgab95a3c">Reach The Mother Vertex</h2>
+<div class="outline-text-2" id="text-orgab95a3c">
+<p>
+<i>Hint: Review the Mother Vertex in the <a href="#sheet">definition sheet</a> above</i>
+The mother vertex in the following graph is <code>[1, 3, 4]</code>:
+</p>
+
+<p>
+(sadly link image is broken..)
+</p>
+
+<p>
+Because using any of those points we can traverse the whole graph (all vertices). To find
+those points, we have to consider the 3 cases of graphs:
+</p>
+<ol class="org-ol">
+<li>Dealing with <b>undirected connected graph</b>: In any <b>undirected graph</b>, all the points are mother vertices since we can reach any point from wherever vertex.</li>
+<li>Dealing with <b>disconected graphs</b>: There is <b>not</b> a mother vertex in disconected graphs.</li>
+<li>Dealing with <b>directed connected graphs</b>: there can be more than 2 mother vertices.</li>
+</ol>
+
+<p>
+We can solve such a problem using DFS algorithm to traverse all vertices and find whether
+we can reach all the vertices from an \(x\) point (let \(x\) by any vertex), this tekes
+\(O(V(V+E))\) time, which is inefficient.
+</p>
+
+<p>
+Rather, we can make a use of the Kosaraju&rsquo;s SCC algorithm (See <a href="#scc">SCC</a>), In a graph of
+strongly connected components, mother vertices are always vertices of source component in
+component graph.
+</p>
+
+<pre class="code"><code><span style="color: #80bcb6;">findMother</span><span style="color: #6bd9db;">()</span> <span style="color: #6bd9db;">{</span>
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">visited[] is used for DFS. Initially all are</span>
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">initialized as not visited</span>
+<span style="color: #cd9575;">vector</span> <span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">bool</span><span style="color: #ab98b5;">&gt;</span> <span style="color: #968cc7;">visited</span><span style="color: #ab98b5;">(</span>V, <span style="color: #ab98b5; font-weight: bold;">false</span><span style="color: #ab98b5;">)</span>;
+
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">To store last finished vertex (or mother vertex)</span>
+<span style="color: #cd9575;">int</span> <span style="color: #968cc7;">v</span> = <span style="color: #cd5c60;">0</span>;
+
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">Do a DFS traversal and find the last finished</span>
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">vertex</span>
+<span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #ab98b5;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">i</span> = <span style="color: #cd5c60;">0</span>; i &lt; V; i++<span style="color: #ab98b5;">)</span> <span style="color: #ab98b5;">{</span>
+    <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #5D8272;">(</span>visited<span style="color: #807f96;">[</span>i<span style="color: #807f96;">]</span> == <span style="color: #ab98b5; font-weight: bold;">false</span><span style="color: #5D8272;">)</span>
+    <span style="color: #5D8272;">{</span>
+        DFSUtil<span style="color: #807f96;">(</span>i, visited<span style="color: #807f96;">)</span>;
+        v = i;
+    <span style="color: #5D8272;">}</span>
+<span style="color: #ab98b5;">}</span>
+
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">If there exist mother vertex (or vertices) in given</span>
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">graph, then v must be one (or one of them)</span>
+
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">Now check if v is actually a mother vertex (or graph</span>
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">has a mother vertex). We basically check if every vertex</span>
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">is reachable from v or not.</span>
+
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">Reset all values in visited[] as false and do</span>
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">DFS beginning from v to check if all vertices are</span>
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">reachable from it or not.</span>
+fill<span style="color: #ab98b5;">(</span>visited.begin<span style="color: #5D8272;">()</span>, visited.end<span style="color: #5D8272;">()</span>, <span style="color: #ab98b5; font-weight: bold;">false</span><span style="color: #ab98b5;">)</span>;
+DFSUtil<span style="color: #ab98b5;">(</span>v, visited<span style="color: #ab98b5;">)</span>;
+<span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #ab98b5;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">i</span>=<span style="color: #cd5c60;">0</span>; i&lt;V; i++<span style="color: #ab98b5;">)</span>
+    <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #ab98b5;">(</span>visited<span style="color: #5D8272;">[</span>i<span style="color: #5D8272;">]</span> == <span style="color: #ab98b5; font-weight: bold;">false</span><span style="color: #ab98b5;">)</span>
+        <span style="color: #4d9391; font-weight: bold;">return</span> -<span style="color: #cd5c60;">1</span>;
+<span style="color: #4d9391; font-weight: bold;">return</span> v;
+
+</code></pre>
+
+<p>
+There is many ways to resolve the same problem if we want to get more than 1 mother
+vertex, for example we can tack the last \(n\) visited points in the DFS process and check
+them.
+</p>
+</div>
+</div>
+<div id="outline-container-org75cd081" class="outline-2">
+<h2 id="org75cd081"><span class="done KILL">KILL</span> Bellman-Ford&rsquo;s Shortest Path&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h2>
+<div class="outline-text-2" id="text-org75cd081">
+<p>
+The Bellman-Ford algorithm is a way to find single source shortest paths in a graph ith
+negative edge weights (but no negative cycles). The second for loop in this algorithm also
+detects negative cycles.
+</p>
+
+<p>
+The first for loop relaxes each of the edges in the graph \(n − 1\) times. We claim that after
+\(n − 1\) iterations, the distances are guaranteed to be correct.
+</p>
+
+<p>
+Overall, the algorithm takes \(O(m \cdot n)\) time
+</p>
+
+<ul class="org-ul">
+<li><span class="timestamp-wrapper"><span class="timestamp">[2024-07-26 Fri 18:17]</span></span> Oh boy, that has been a TODO for years, I&rsquo;ve to KILL it now.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org2b35d46" class="outline-2">
+<h2 id="org2b35d46">Balanced Trees</h2>
+<div class="outline-text-2" id="text-org2b35d46">
+<p>
+We call a tree binary if each node in it has at most two children. A node’s left child with
+descendants forms the node’s left sub-tree. The definition of the right sub-tree is similar.
+</p>
+
+<p>
+Although suitable for storing hierarchical data, binary trees of this general form don’t
+guarantee a fast lookup. Let’s take as the example the search for number 9 in the following
+tree:
+</p>
+
+<p>
+(some links are broken, I&rsquo;m wokring on fixing that)
+</p>
+
+
+<figure id="orgf1041e4">
+<img src="../i/old/2022-07-29_09-50-33_screenshot.png" alt="2022-07-29_09-50-33_screenshot.png">
+
+</figure>
+
+
+
+
+<p>
+Whichever node we visit, we don’t know if we should traverse the left or the right sub-tree
+next. That’s because the tree hierarchy doesn’t follow the relation \(\leq\).
+</p>
+
+<p>
+So, in the worst case, a search takes \(\boldsymbol{O(n)}\) time, where \(\boldsymbol{n}\) is the
+number of nodes in the tree.
+</p>
+
+
+<p>
+We solve this problem by turning to a special type of binary tree called binary search tree
+(BST). For each node \(\boldsymbol{x}\) in a BST, all the nodes in the left sub-tree of
+\(\boldsymbol{x}\) contain the values that are strictly lower than \(\boldsymbol{x}\). Further, all
+the nodes in the \(\boldsymbol{x}\)‘s right sub-tree are \(\boldsymbol{\geq x}\). For instance:
+</p>
+
+
+
+<figure id="org323fb7c">
+<img src="../i/old/2022-07-29_09-52-24_screenshot.png" alt="2022-07-29_09-52-24_screenshot.png">
+
+</figure>
+
+
+<p>
+The order the tree maintains allows us to prune it during a lookup. Suppose we visit the
+node \(x < y\) while searching for y. We can disregard the \(x\)‘s left sub-tree and focus only on
+the right, which speeds up the search. This is how we find 9 in the above search tree:
+</p>
+
+
+
+
+<figure id="orge9e1110">
+<img src="../i/old/2022-07-29_09-53-07_screenshot.png" alt="2022-07-29_09-53-07_screenshot.png">
+
+</figure>
+
+<p>
+However, the worst-case complexity of the search is still \(\boldsymbol{O(n)}\). It occurs if we
+construct the tree from a sorted array, in which case the tree has height n and degenerates
+to a linked list. Since insertion and deletion include the search, all operations commonly
+performed on a BST are \(\boldsymbol{O(n)}\) in the worst case. So, it’s the height of the tree
+that determines the complexity. That’s where balanced trees come in. They’re a special type
+of binary search tree.
+</p>
+
+
+
+
+<p>
+<b>A balanced tree is a search tree that doesn’t just maintain the order between nodes. It also
+controls its height, making sure it stays \(\boldsymbol{O(\log n)}\) after insertion or
+deletion</b>.
+</p>
+
+<p>
+To do that, a balanced tree must re-balance itself after we add or delete a node. That
+causes a computational overhead and complicates the algorithms for insertion and deletion.
+However, that’s the price we’re ready to pay for a logarithmic-height search tree with fast
+search, insertion, and deletion operations. We won’t cover the re-balancing algorithms in
+this article.
+</p>
+
+<p>
+There are several types of such trees. They require all their nodes to be balanced, but the
+notion of balance differs from type to type.
+</p>
+</div>
+<div id="outline-container-org6fa2e66" class="outline-3">
+<h3 id="org6fa2e66">AVL Trees</h3>
+<div class="outline-text-3" id="text-org6fa2e66">
+<p>
+In an AVL tree, we call a node balanced if the heights of its left and right sub-trees
+differ at most by 1. So, a search tree with root x is an AVL tree if all its nodes are
+balanced in the AVL sense (empty search trees, with height 0, are trivially balanced):
+</p>
+
+\begin{equation*}
+AVL(x) \iff \left|height(x.left) - height(x.right)\right| \leq 1           \text{ and } AVL(x.left) \text{ and } AVL(x.right)
+\end{equation*}
+
+
+
+
+<figure id="org18a5d93">
+<img src="../i/old/2022-07-29_09-57-36_screenshot.png" alt="2022-07-29_09-57-36_screenshot.png">
+
+</figure>
+
+
+<p>
+The AVL tree (named for its inventors Adelson-Velskii and Landis) should be viewed as a BST
+with the following additional property: For every node, the heights of its left and right
+subtrees differ by at most 1. As long as the tree maintains this property, if the tree
+contains n nodes, then it has a depth of at most \(O(log n)\). As a result, search for any node
+will cost \(O(log n)\), and if the updates can be done in time proportional to the depth of the
+node inserted or deleted, then updates will also cost O(log n), even in the worst case.
+</p>
+
+<p>
+The key to making the AVL tree work is to alter the insert and delete routines so as to
+maintain the balance property. Of course, to be practical, we must be able to implement the
+revised update routines in \(Θ(log n)\) time.
+</p>
+
+
+<p>
+Consider what happens when we insert a node with key value 5, as shown. The tree on the left
+meets the AVL tree balance requirements. After the insertion, two nodes no longer meet the
+requirements. Because the original tree met the balance requirement, nodes in the new tree
+can only be unbalanced by a difference of at most 2 in the subtrees. For the bottommost
+unbalanced node, call it S, there are 4 cases:
+</p>
+
+
+<figure id="org17f5b74">
+<img src="../i/old/2022-07-29_10-35-29_screenshot.png" alt="2022-07-29_10-35-29_screenshot.png">
+
+</figure>
+
+<ol class="org-ol">
+<li>The extra node is in the left child of the left child of S.</li>
+<li>The extra node is in the right child of the left child of S.</li>
+<li>The extra node is in the left child of the right child of S.</li>
+<li>The extra node is in the right child of the right child of S.</li>
+</ol>
+
+
+<p>
+Cases 1 and 4 are symmetrical, as are cases 2 and 3. Note also that the unbalanced nodes
+must be on the path from the root to the newly inserted node.  Our problem now is how to
+balance the tree in O(log n) time. It turns out that we can do this using a series of local
+operations known as <b>rotations</b>.
+</p>
+
+
+
+<figure id="orgc213b13">
+<img src="../i/old/2022-07-29_10-49-03_screenshot.png" alt="2022-07-29_10-49-03_screenshot.png">
+
+<figcaption><span class="figure-number">Figure 1: </span>A single rotation in an AVL tree. This operation occurs when the excess node (in subtree A) is in the left child of the left child of the unbalanced node labeled S. By rearranging the nodes as shown, we preserve the BST property, as well as re-balance the tree to preserve the AVL tree balance property. The case where the excess node is in the right child of the right child of the unbalanced node is handled in the same way.</figcaption>
+</figure>
+
+
+
+<figure id="orgdd249dd">
+<img src="../i/old/2022-07-29_10-50-12_screenshot.png" alt="2022-07-29_10-50-12_screenshot.png">
+
+<figcaption><span class="figure-number">Figure 2: </span>A double rotation in an AVL tree. This operation occurs when the excess node (in subtree B) is in the right child of the left child of the unbalanced node labeled S. By rearranging the nodes as shown, we preserve the BST property, as well as re-balance the tree to preserve the AVL tree balance property. The case where the excess node is in the left child of the right child of S is handled in the same way</figcaption>
+</figure>
+
+<p>
+4 can be fixed using a single rotation, as shown in the first figure. Cases 2 and 3 can
+be fixed using a double rotation, as shown in last figure.
+</p>
+
+
+<pre class="code"><code><span style="color: #cd9575;">avl</span> *<span style="color: #ab98b5; font-weight: bold;">avl_tree</span>::<span style="color: #80bcb6;">rr_rotat</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">avl</span> *<span style="color: #968cc7;">parent</span><span style="color: #6bd9db;">)</span> <span style="color: #6bd9db;">{</span>
+<span style="color: #31b1351b37b1;"> </span>  <span style="color: #cd9575;">avl</span> *<span style="color: #968cc7;">t</span>;
+<span style="color: #31b1351b37b1;"> </span>  t = parent-&gt;r;
+<span style="color: #31b1351b37b1;"> </span>  parent-&gt;r = t-&gt;l;
+<span style="color: #31b1351b37b1;"> </span>  t-&gt;l = parent;
+<span style="color: #31b1351b37b1;"> </span>  cout&lt;&lt;<span style="color: #6fb593;">"Right-Right Rotation"</span>;
+<span style="color: #31b1351b37b1;"> </span>  <span style="color: #4d9391; font-weight: bold;">return</span> t;
+<span style="color: #6bd9db;">}</span>
+<span style="color: #cd9575;">avl</span> *<span style="color: #ab98b5; font-weight: bold;">avl_tree</span>::<span style="color: #80bcb6;">ll_rotat</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">avl</span> *<span style="color: #968cc7;">parent</span><span style="color: #6bd9db;">)</span> <span style="color: #6bd9db;">{</span>
+<span style="color: #31b1351b37b1;"> </span>  <span style="color: #cd9575;">avl</span> *<span style="color: #968cc7;">t</span>;
+<span style="color: #31b1351b37b1;"> </span>  t = parent-&gt;l;
+<span style="color: #31b1351b37b1;"> </span>  parent-&gt;l = t-&gt;r;
+<span style="color: #31b1351b37b1;"> </span>  t-&gt;r = parent;
+<span style="color: #31b1351b37b1;"> </span>  cout&lt;&lt;<span style="color: #6fb593;">"Left-Left Rotation"</span>;
+<span style="color: #31b1351b37b1;"> </span>  <span style="color: #4d9391; font-weight: bold;">return</span> t;
+<span style="color: #6bd9db;">}</span>
+<span style="color: #cd9575;">avl</span> *<span style="color: #ab98b5; font-weight: bold;">avl_tree</span>::<span style="color: #80bcb6;">lr_rotat</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">avl</span> *<span style="color: #968cc7;">parent</span><span style="color: #6bd9db;">)</span> <span style="color: #6bd9db;">{</span>
+<span style="color: #31b1351b37b1;"> </span>  <span style="color: #cd9575;">avl</span> *<span style="color: #968cc7;">t</span>;
+<span style="color: #31b1351b37b1;"> </span>  t = parent-&gt;l;
+<span style="color: #31b1351b37b1;"> </span>  parent-&gt;l = rr_rotat<span style="color: #ab98b5;">(</span>t<span style="color: #ab98b5;">)</span>;
+<span style="color: #31b1351b37b1;"> </span>  cout&lt;&lt;<span style="color: #6fb593;">"Left-Right Rotation"</span>;
+<span style="color: #31b1351b37b1;"> </span>  <span style="color: #4d9391; font-weight: bold;">return</span> ll_rotat<span style="color: #ab98b5;">(</span>parent<span style="color: #ab98b5;">)</span>;
+<span style="color: #6bd9db;">}</span>
+<span style="color: #cd9575;">avl</span> *<span style="color: #ab98b5; font-weight: bold;">avl_tree</span>::<span style="color: #80bcb6;">rl_rotat</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">avl</span> *<span style="color: #968cc7;">parent</span><span style="color: #6bd9db;">)</span> <span style="color: #6bd9db;">{</span>
+<span style="color: #31b1351b37b1;"> </span>  <span style="color: #cd9575;">avl</span> *<span style="color: #968cc7;">t</span>;
+<span style="color: #31b1351b37b1;"> </span>  t = parent-&gt;r;
+<span style="color: #31b1351b37b1;"> </span>  parent-&gt;r = ll_rotat<span style="color: #ab98b5;">(</span>t<span style="color: #ab98b5;">)</span>;
+<span style="color: #31b1351b37b1;"> </span>  cout&lt;&lt;<span style="color: #6fb593;">"Right-Left Rotation"</span>;
+<span style="color: #31b1351b37b1;"> </span>  <span style="color: #4d9391; font-weight: bold;">return</span> rr_rotat<span style="color: #ab98b5;">(</span>parent<span style="color: #ab98b5;">)</span>;
+<span style="color: #6bd9db;">}</span>
+<span style="color: #cd9575;">avl</span> *<span style="color: #ab98b5; font-weight: bold;">avl_tree</span>::<span style="color: #80bcb6;">balance</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">avl</span> *<span style="color: #968cc7;">t</span><span style="color: #6bd9db;">)</span> <span style="color: #6bd9db;">{</span>
+<span style="color: #31b1351b37b1;"> </span>  <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">bal_factor</span> = difference<span style="color: #ab98b5;">(</span>t<span style="color: #ab98b5;">)</span>;
+<span style="color: #31b1351b37b1;"> </span>  <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #ab98b5;">(</span>bal_factor &gt; <span style="color: #cd5c60;">1</span><span style="color: #ab98b5;">)</span> <span style="color: #ab98b5;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #5D8272;">(</span>difference<span style="color: #807f96;">(</span>t-&gt;l<span style="color: #807f96;">)</span> &gt; <span style="color: #cd5c60;">0</span><span style="color: #5D8272;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>t = ll_rotat<span style="color: #5D8272;">(</span>t<span style="color: #5D8272;">)</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #4d9391; font-weight: bold;">else</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>t = lr_rotat<span style="color: #5D8272;">(</span>t<span style="color: #5D8272;">)</span>;
+<span style="color: #31b1351b37b1;"> </span>  <span style="color: #ab98b5;">}</span> <span style="color: #4d9391; font-weight: bold;">else</span> <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #ab98b5;">(</span>bal_factor &lt; -<span style="color: #cd5c60;">1</span><span style="color: #ab98b5;">)</span> <span style="color: #ab98b5;">{</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #5D8272;">(</span>difference<span style="color: #807f96;">(</span>t-&gt;r<span style="color: #807f96;">)</span> &gt; <span style="color: #cd5c60;">0</span><span style="color: #5D8272;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>t = rl_rotat<span style="color: #5D8272;">(</span>t<span style="color: #5D8272;">)</span>;
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #4d9391; font-weight: bold;">else</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>t = rr_rotat<span style="color: #5D8272;">(</span>t<span style="color: #5D8272;">)</span>;
+<span style="color: #31b1351b37b1;"> </span>  <span style="color: #ab98b5;">}</span>
+<span style="color: #31b1351b37b1;"> </span>  <span style="color: #4d9391; font-weight: bold;">return</span> t;
+<span style="color: #6bd9db;">}</span>
+
+</code></pre>
+</div>
+</div>
+<div id="outline-container-orgf38b636" class="outline-3">
+<h3 id="orgf38b636">Day–Stout–Warren algorithm</h3>
+<div class="outline-text-3" id="text-orgf38b636">
+<p>
+The Day–Stout–Warren (DSW) algorithm is a method for efficiently balancing binary search
+trees – that is, decreasing their height to O(log n) nodes, where n is the total number of
+nodes. Unlike a self-balancing binary search tree, it does not do this incrementally during
+each operation, but periodically, so that its cost can be amortized over many operations.
+</p>
+
+<p>
+The algorithm requires linear (O(n)) time and is in-place. The original algorithm by Day
+generates as compact a tree as possible: all levels of the tree are completely full except
+possibly the bottom-most. It operates in two phases.
+</p>
+
+<p>
+First, <b>the tree is turned into a linked list</b> by means of an in-order traversal, reusing
+the pointers in the (threaded) tree&rsquo;s nodes.
+</p>
+
+<p>
+A series of left-rotations forms the second phase. The Stout–Warren modification generates a
+complete binary tree, namely one in which the bottom-most level is filled strictly from left
+to right. This is a useful transformation to perform if it is known that no more inserts
+will be done. It does not require the tree to be threaded, nor does it require more than
+constant space to operate.  Like the original algorithm, Day–Stout–Warren operates in two
+phases, the first entirely new, the second a modification of Day&rsquo;s rotation phase.
+</p>
+
+<p>
+The following is a presentation of the basic DSW algorithm in pseudocode, after the
+Stout–Warren paper. It consists of a main routine with three subroutines. The main routine
+is given by
+</p>
+
+<ol class="org-ol">
+<li>Allocate a node, the &ldquo;pseudo-root&rdquo;, and make the tree&rsquo;s actual root the right child of the pseudo-root.</li>
+<li><p>
+Call tree-to-vine with the pseudo-root as its argument.
+</p>
+<pre class="code"><code>routine tree-to-vine<span style="color: #6bd9db;">(</span>root<span style="color: #6bd9db;">)</span>
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> // Convert tree to a <span style="color: #6fb593;">"vine"</span>, i.e., a sorted linked list,
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> // using the right pointers to point to the next node in the list
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> tail &#8592; root
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> rest &#8592; tail.right
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> while rest &#8800; nil
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> if rest.left = nil
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> tail &#8592; rest
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> rest &#8592; rest.right
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> else
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> temp &#8592; rest.left
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> rest.left &#8592; temp.right
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> temp.right &#8592; rest
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> rest &#8592; temp
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> tail.right &#8592; temp
+</code></pre></li>
+<li><p>
+Call vine-to-tree on the pseudo-root and the size (number of elements) of the tree.
+</p>
+<pre class="code"><code>routine vine-to-tree<span style="color: #6bd9db;">(</span>root, size<span style="color: #6bd9db;">)</span>
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> leaves &#8592; size + <span style="color: #cd5c60;">1</span> &#8722; 2&#8970;log2<span style="color: #6bd9db;">(</span>size + <span style="color: #cd5c60;">1</span><span style="color: #6bd9db;">)</span><span style="color: #cd5c60; background-color: #832729;">)</span><span style="color: #dbac66;">&#8971;</span>
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> compress<span style="color: #cd5c60; background-color: #832729;">(</span>root, leaves<span style="color: #cd5c60; background-color: #832729;">)</span>
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> size &#8592; size &#8722; leaves
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> while size &gt; <span style="color: #cd5c60;">1</span>
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> compress<span style="color: #cd5c60; background-color: #832729;">(</span>root, &#8970;size / 2&#8971;<span style="color: #cd5c60; background-color: #832729;">)</span>
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> size &#8592; &#8970;size / 2&#8971;
+routine compress<span style="color: #cd5c60; background-color: #832729;">(</span>root, count<span style="color: #cd5c60; background-color: #832729;">)</span>
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> scanner &#8592; roo   t
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> for i &#8592; <span style="color: #cd5c60;">1</span> to count
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> child &#8592; scanner.right
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> scanner.right &#8592; child.right
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> scanner &#8592; scanner.right
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> child.right &#8592; scanner.left
+<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> scanner.left &#8592; child
+
+</code></pre></li>
+<li>Make the tree&rsquo;s actual root equal to the pseudo-root&rsquo;s right child.</li>
+<li>Dispose of the pseudo-root.</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgbf66a6e" class="outline-2">
+<h2 id="orgbf66a6e">Binary Tree Traversal</h2>
+<div class="outline-text-2" id="text-orgbf66a6e">
+</div>
+<div id="outline-container-org3096e94" class="outline-3">
+<h3 id="org3096e94">DFS</h3>
+<div class="outline-text-3" id="text-org3096e94">
+<p>
+Often we wish to process a binary tree by “visiting” each of its nodes, each time
+performing a specific action such as printing the contents of the node. Any process
+for visiting all of the nodes in some order is called a traversal. Any traversal that
+lists every node in the tree exactly once is called an enumeration of the tree’s
+nodes. Some applications do not require that the nodes be visited in any particular
+order as long as each node is visited precisely once. For other applications, nodes
+must be visited in an order that preserves some relationship. For example, we might
+wish to make sure that we visit any given node before we visit its children. This is
+called a preorder traversal.
+</p>
+
+<p>
+A traversal routine is naturally written as a recursive function. Its input pa-
+rameter is a pointer to a node which we will call root because each node can be
+viewed as the root of a some subtree. The initial call to the traversal function passes
+in a pointer to the root node of the tree. The traversal function visits root and
+its children (if any) in the desired order. For example, a preorder traversal speci-
+fies that root be visited before its children. This can easily be implemented as
+follows.
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">template</span> <span style="color: #6bd9db;">&lt;</span><span style="color: #4d9391; font-weight: bold;">typename</span> <span style="color: #cd9575;">E</span><span style="color: #6bd9db;">&gt;</span>
+<span style="color: #cd9575;">void</span> <span style="color: #80bcb6;">preorder</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">BinNode</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">E</span><span style="color: #ab98b5;">&gt;</span>* <span style="color: #968cc7;">root</span><span style="color: #6bd9db;">)</span> <span style="color: #6bd9db;">{</span>
+<span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #ab98b5;">(</span>root == <span style="color: #ab98b5; font-weight: bold;">NULL</span><span style="color: #ab98b5;">)</span> <span style="color: #4d9391; font-weight: bold;">return</span>; <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Empty subtree, do nothing</span>
+visit<span style="color: #ab98b5;">(</span>root<span style="color: #ab98b5;">)</span>;
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">Perform desired action</span>
+preorder<span style="color: #ab98b5;">(</span>root-&gt;left<span style="color: #5D8272;">()</span><span style="color: #ab98b5;">)</span>;
+preorder<span style="color: #ab98b5;">(</span>root-&gt;right<span style="color: #5D8272;">()</span><span style="color: #ab98b5;">)</span>;
+</code></pre>
+<p>
+Function preorder first checks that the tree is not empty (if it is, then the traversal
+is done and preorder simply returns). Otherwise, preorder makes a call to
+visit, which processes the root node (i.e., prints the value or performs whatever
+computation as required by the application). Function preorder is then called
+recursively on the left subtree, which will visit all nodes in that subtree. Finally,
+preorder is called on the right subtree, visiting all nodes in the right subtree.
+Postorder and inorder traversals are similar. They simply change the order in which
+the node and its children are visited, as appropriate.
+</p>
+
+<p>
+An important decision in the implementation of any recursive function on trees
+is when to check for an empty subtree. Function preorder first checks to see if
+the value for root is NULL. If not, it will recursively call itself on the left and right
+children of root. In other words, preorder makes no attempt to avoid calling itself on an
+empty child. Some programmers use an alternate design in which the
+left and right pointers of the current node are checked so that the recursive call is
+made only on non-empty children. Such a design typically looks as follows:
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">template</span> <span style="color: #6bd9db;">&lt;</span><span style="color: #4d9391; font-weight: bold;">typename</span> <span style="color: #cd9575;">E</span><span style="color: #6bd9db;">&gt;</span>
+<span style="color: #cd9575;">void</span> <span style="color: #80bcb6;">preorder2</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">BinNode</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">E</span><span style="color: #ab98b5;">&gt;</span>* <span style="color: #968cc7;">root</span><span style="color: #6bd9db;">)</span> <span style="color: #6bd9db;">{</span>
+visit<span style="color: #ab98b5;">(</span>root<span style="color: #ab98b5;">)</span>; <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Perform whatever action is desired</span>
+<span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #ab98b5;">(</span>root-&gt;left<span style="color: #5D8272;">()</span> != <span style="color: #ab98b5; font-weight: bold;">NULL</span><span style="color: #ab98b5;">)</span> preorder2<span style="color: #ab98b5;">(</span>root-&gt;left<span style="color: #5D8272;">()</span><span style="color: #ab98b5;">)</span>;
+<span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #ab98b5;">(</span>root-&gt;right<span style="color: #5D8272;">()</span> != <span style="color: #ab98b5; font-weight: bold;">NULL</span><span style="color: #ab98b5;">)</span> preorder2<span style="color: #ab98b5;">(</span>root-&gt;right<span style="color: #5D8272;">()</span><span style="color: #ab98b5;">)</span>;
+</code></pre>
+
+<p>
+At first it might appear that preorder2 is more efficient than preorder,
+because it makes only half as many recursive calls. (Why?) On the other hand,
+preorder2 must access the left and right child pointers twice as often. The net
+result is little or no performance improvement.
+</p>
+
+<p>
+In reality, the design of preorder2 is inferior to that of preorder for two
+reasons. First, while it is not apparent in this simple example, for more complex
+traversals it can become awkward to place the check for the NULL pointer in the
+calling code. Even here we had to write two tests for NULL, rather than the one
+needed by preorder. The more important concern with preorder2 is that it
+tends to be error prone. While preorder2 insures that no recursive calls will
+be made on empty subtrees, it will fail if the initial call passes in a NULL pointer.
+This would occur if the original tree is empty. To avoid the bug, either preorder2
+needs an additional test for a NULL pointer at the beginning (making the subsequent
+tests redundant after all), or the caller of preorder2 has a hidden obligation to
+pass in a non-empty tree, which is unreliable design. The net result is that many
+programmers forget to test for the possibility that the empty tree is being traversed.
+By using the first design, which explicitly supports processing of empty subtrees,
+the problem is avoided.
+</p>
+
+<p>
+Another issue to consider when designing a traversal is how to define the visitor
+function that is to be executed on every node. One approach is simply to write a
+new version of the traversal for each such visitor function as needed. The disad-
+vantage to this is that whatever function does the traversal must have access to the
+BinNode class. It is probably better design to permit only the tree class to have
+access to the BinNode class.
+</p>
+</div>
+</div>
+<div id="outline-container-org923e68c" class="outline-3">
+<h3 id="org923e68c">BFS</h3>
+<div class="outline-text-3" id="text-org923e68c">
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">while</span> <span style="color: #6bd9db;">(</span>q.empty<span style="color: #ab98b5;">()</span> == <span style="color: #ab98b5; font-weight: bold;">false</span><span style="color: #6bd9db;">)</span> <span style="color: #6bd9db;">{</span>
+<span style="color: #31b1351b37b1;"> </span>  <span style="color: #cd9575;">Node</span> *<span style="color: #968cc7;">node</span> = q.front<span style="color: #ab98b5;">()</span>;
+<span style="color: #31b1351b37b1;"> </span>  cout &lt;&lt; node-&gt;data &lt;&lt; <span style="color: #6fb593;">" "</span>; <span style="color: #545c5e;">//</span><span style="color: #545c5e;">whatever operation</span>
+<span style="color: #31b1351b37b1;"> </span>  q.pop<span style="color: #ab98b5;">()</span>;
+<span style="color: #31b1351b37b1;"> </span>  <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #ab98b5;">(</span>node-&gt;left != <span style="color: #ab98b5; font-weight: bold;">NULL</span><span style="color: #ab98b5;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> q.push<span style="color: #ab98b5;">(</span>node-&gt;left<span style="color: #ab98b5;">)</span>;
+<span style="color: #31b1351b37b1;"> </span>  <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #ab98b5;">(</span>node-&gt;right != <span style="color: #ab98b5; font-weight: bold;">NULL</span><span style="color: #ab98b5;">)</span>
+<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> q.push<span style="color: #ab98b5;">(</span>node-&gt;right<span style="color: #ab98b5;">)</span>;
+<span style="color: #6bd9db;">}</span>
+</code></pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb6ee984" class="outline-2">
+<h2 id="orgb6ee984">Counting</h2>
+<div class="outline-text-2" id="text-orgb6ee984">
+<p>
+If we wish to count the number of nodes in a binary tree. The
+key insight is that the total count for any (non-empty) subtree is one for the
+root plus the counts for the left and right subtrees. Where do left and right
+subtree counts come from? Calls to function count on the subtrees will
+compute this for us. Thus, we can implement count as follows.
+</p>
+
+<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">template</span> <span style="color: #6bd9db;">&lt;</span><span style="color: #4d9391; font-weight: bold;">typename</span> <span style="color: #cd9575;">E</span><span style="color: #6bd9db;">&gt;</span>
+<span style="color: #cd9575;">int</span> <span style="color: #80bcb6;">count</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">BinNode</span><span style="color: #ab98b5;">&lt;</span><span style="color: #cd9575;">E</span><span style="color: #ab98b5;">&gt;</span>* <span style="color: #968cc7;">root</span><span style="color: #6bd9db;">)</span> <span style="color: #6bd9db;">{</span>
+<span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #ab98b5;">(</span>root == <span style="color: #ab98b5; font-weight: bold;">NULL</span><span style="color: #ab98b5;">)</span> <span style="color: #4d9391; font-weight: bold;">return</span> <span style="color: #cd5c60;">0</span>; <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Nothing to count</span>
+<span style="color: #4d9391; font-weight: bold;">return</span> <span style="color: #cd5c60;">1</span> + count<span style="color: #ab98b5;">(</span>root-&gt;left<span style="color: #5D8272;">()</span><span style="color: #ab98b5;">)</span> + count<span style="color: #ab98b5;">(</span>root-&gt;right<span style="color: #5D8272;">()</span><span style="color: #ab98b5;">)</span>;
+<span style="color: #6bd9db;">}</span>
+</code></pre>
+</div>
+</div>
+<div id="outline-container-orgdd30533" class="outline-2">
+<h2 id="orgdd30533">Height of a Binary Tree</h2>
+<div class="outline-text-2" id="text-orgdd30533">
+<p>
+The height of a node in a binary tree is the largest number of edges in a path from a leaf
+node to a target node. If the target node doesn’t have any other nodes connected to it, the
+height of that node would be 0. <b>The height of a binary tree is the height of the
+root node in the whole binary tree</b>. In other words, the height of a binary tree is equal to
+the largest number of edges from the root to the most distant leaf node.
+</p>
+
+<p>
+A similar concept in a binary tree is the depth of the tree. The depth of a node in a binary
+tree is the total number of edges from the root node to the target node. Similarly, the
+depth of a binary tree is the total number of edges from the root node to the most distant
+leaf node.
+</p>
+
+<p>
+One important observation here is that when we calculate the depth of a whole binary tree,
+it’s equivalent to the height of the binary tree.
+</p>
+
+
+<p>
+First, we’ll calculate the height of node \(C\). So, according to the definition, the height of
+node \(C\) is the largest number of edges in a path from the leaf node to node \(C\). We can see
+that there are two paths for node \(C: C \rightarrow E \rightarrow G\), and \(C \rightarrow F\). The
+largest number of edges among these two paths would be \(\mathsf{2}\); hence, the height of node
+\(C\) is \(\mathsf{2}\).
+</p>
+
+<p>
+Now we’ll calculate the height of the binary tree. From the root, we can have three
+different paths leading to the leaf nodes: \(A \rightarrow C \rightarrow F\), \(A \rightarrow B \rightarrow D\), and \(A \rightarrow C \rightarrow E \rightarrow G\). Among these three paths, the
+path \(A \rightarrow C \rightarrow E \rightarrow G\) contains the largest number of edges, which
+is \(\mathsf{3}\). Therefore, the height of the tree is \(\mathbf{3}\).
+</p>
+
+<p>
+Next, we want to find the depth of node \(B\). We can see that from the root, there’s only one
+path to node \(B\), and it has one edge. Thus, the depth of node \(B\) is \(\mathsf{1}\).
+</p>
+
+<p>
+As we previously mentioned, the depth of a binary tree is equal to the height of the tree.
+Therefore, the depth of the binary tree is \(\mathbf{3}\).
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr style="
+    clear: both;
+">
+
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 31.0.50 (<a href="https://orgmode.org">Org</a> mode 9.7.11). Written by: Salih Muhammed, by the date of: 2020-01-04 Sat 00:00. Last build date: 2024-12-14 Sat 21:43.</p>
+
+</div>
+</div>
+</div>
+</body>
+</html>

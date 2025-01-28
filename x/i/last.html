@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Extracting Psuedotimeline of Sleep Cycle Using Last.fm APIs</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#ffffff">
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="viewport" content= "width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style/toc.css">
+  <link rel="stylesheet" href="/style/tufte.css">
+  <link rel="stylesheet" href="/style/main.css">
+
+
+
+
+  <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
+  <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+</head>
+<body>
+</body>
+</html>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="preamble" class="status">
+  <div class="header" style="
+    display: block !important;!i;!;
+">
+<a href="/">
+<h1 class="title" style="
+margin-block-start: auto;
+    color: black;
+">Flectere si nequeo superos,<br><span class="subtitle" style="font-size: smaller; color: gray; font-style: italic;">acheronta movebo</span></h1>
+
+      </a>
+
+<hr class="header-divider" style="margin-block-end: -1em;">
+
+  </div>
+</div>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Extracting Psuedotimeline of Sleep Cycle Using Last.fm APIs</h1>
+</header><div class="propert" style=" background-color: #ffc4c4a8; ">
+<p>
+You are reading a HIDDEN post. It was probably hidden in purpose, do
+not share it without my permission. If you reached this link by accident please
+let me know (email address on homepage footer).
+</p>
+
+</div>
+
+
+<p>
+About 6 years ago I used a Søren Louv-Jansen fb-sleep-stats, a small tool to
+track sleeping habits based on Facebook activity (online status and other
+interactions).
+</p>
+
+<p>
+It had some issues when I used it for the first time, but I truly found solving
+the problem of predicting the sleeping time from the inactivity reports to be an
+interesting problem.
+</p>
+
+<p>
+Here I will demonstrate an example of building psuedotimeline of sleep cycle
+for a lastfm user with the minimal math operations to speculate the sleeping
+time. It barely uses some algebraic operations. Optimally, building a
+statistical learning model will do much better in solving this issue, but as
+mentioned I wish only to demonstrate that even a naive algorithm would build
+sorta of useful data.
+</p>
+
+
+<p>
+First of all we need to extract the data, from a last.fm account. Thankfully
+someone already implemented a scraper that uses the official last.fm APIs, it&rsquo;s
+available on here: <a href="https://github.com/dbeley/lastfm-scraper">https://github.com/dbeley/lastfm-scraper</a>. Lastfm provides
+free API, so even if this package get deprecated at some point, it should be
+easy to patch it.
+</p>
+
+<p>
+The next step would be how to analysis the scrapped data, which is usually very
+big. Here&rsquo;s my simple algorithm (take records as the list of all user actions):
+</p>
+
+<pre class="code"><code>    <span style="color: #4d9391; font-weight: bold;">var</span> <span style="color: #968cc7;">uptime</span> <span style="color: #cd9575;">time.Duration</span>
+    <span style="color: #4d9391; font-weight: bold;">var</span> <span style="color: #968cc7;">res</span> []<span style="color: #cd9575;">Record</span>
+    <span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #968cc7;">i</span> := <span style="color: #cd5c60;">1</span>; i &lt; <span style="color: #80bcb6;">len</span>(records); i++ {
+        <span style="color: #968cc7;">between</span> := records[i].End.<span style="color: #80bcb6;">Sub</span>(records[i-<span style="color: #cd5c60;">1</span>].End)
+        <span style="color: #4d9391; font-weight: bold;">if</span> between &gt;= cfg.SleepDuration {
+         
+            <span style="color: #4d9391; font-weight: bold;">if</span> between &gt;= cfg.MaxSleepTime {
+                <span style="color: #968cc7;">r</span> := rand.<span style="color: #80bcb6;">Intn</span>(<span style="color: #cd5c60;">100</span>)
+             
+                res = <span style="color: #80bcb6;">append</span>(res, <span style="color: #cd9575;">Record</span>{<span style="color: #ab98b5; font-weight: bold;">Type</span>: RecordTypeSleep, <span style="color: #ab98b5; font-weight: bold;">ActionRecord</span>: <span style="color: #cd9575;">ActionRecord</span>{
+                    <span style="color: #ab98b5; font-weight: bold;">Start</span>: records[i-<span style="color: #cd5c60;">1</span>].End,
+                    <span style="color: #ab98b5; font-weight: bold;">End</span>:   records[i-<span style="color: #cd5c60;">1</span>].End.<span style="color: #80bcb6;">Add</span>(<span style="color: #cd5c60;">8</span> * time.Hour).<span style="color: #80bcb6;">Add</span>(time.<span style="color: #80bcb6;">Duration</span>(r) * time.Minute),
+                    <span style="color: #ab98b5; font-weight: bold;">Total</span>: records[i-<span style="color: #cd5c60;">1</span>].End.<span style="color: #80bcb6;">Add</span>(<span style="color: #cd5c60;">8</span> * time.Hour).<span style="color: #80bcb6;">Add</span>(time.<span style="color: #80bcb6;">Duration</span>(r) * time.Minute).<span style="color: #80bcb6;">Sub</span>(records[i-<span style="color: #cd5c60;">1</span>].End),
+                }})
+             
+                res = <span style="color: #80bcb6;">append</span>(res, <span style="color: #cd9575;">Record</span>{<span style="color: #ab98b5; font-weight: bold;">Type</span>: RecordTypeUnkown, <span style="color: #ab98b5; font-weight: bold;">ActionRecord</span>: <span style="color: #cd9575;">ActionRecord</span>{
+                    <span style="color: #ab98b5; font-weight: bold;">Start</span>: records[i-<span style="color: #cd5c60;">1</span>].End.<span style="color: #80bcb6;">Add</span>(<span style="color: #cd5c60;">8</span> * time.Hour).<span style="color: #80bcb6;">Add</span>(time.<span style="color: #80bcb6;">Duration</span>(r) * time.Minute),
+                    <span style="color: #ab98b5; font-weight: bold;">End</span>:   records[i].Start,
+                    <span style="color: #ab98b5; font-weight: bold;">Total</span>: records[i].Start.<span style="color: #80bcb6;">Sub</span>(records[i-<span style="color: #cd5c60;">1</span>].End.<span style="color: #80bcb6;">Add</span>(<span style="color: #cd5c60;">8</span> * time.Hour).<span style="color: #80bcb6;">Add</span>(time.<span style="color: #80bcb6;">Duration</span>(r) * time.Minute)),
+                }})
+             
+            } <span style="color: #4d9391; font-weight: bold;">else</span> {
+             
+                res = <span style="color: #80bcb6;">append</span>(res, *<span style="color: #80bcb6;">NewRecord</span>(records[i-<span style="color: #cd5c60;">1</span>], records[i], RecordTypeSleep))
+            }
+         
+            uptime = <span style="color: #cd5c60;">0</span>
+        } <span style="color: #4d9391; font-weight: bold;">else</span> {
+            res = <span style="color: #80bcb6;">append</span>(res, *<span style="color: #80bcb6;">NewRecord</span>(records[i-<span style="color: #cd5c60;">1</span>], records[i], RecordTypeAwake))
+            uptime += between
+        }
+    }
+</code></pre>
+
+<p>
+The Go program that executes the algorithm is available on this git repository:
+<a href="https://sr.ht/~lr0/sleepa/">https://sr.ht/~lr0/sleepa/</a>. It produces a JSON object as result.
+</p>
+
+
+<p>
+I&rsquo;m sorta of bad at visualization and I was historically diagnosed with my low
+abilities of using front-end tools in general but I needed to have a view.
+Fortunately I was able to find an 2012 JS library that helped me. I was too dumb for
+web3. <a href="http://almende.github.io/chap-links-library/">http://almende.github.io/chap-links-library/</a>.
+</p>
+
+<p>
+The visualization code is available <a href="ex.js">ex.js</a>.
+</p>
+
+<p>
+Following is a sample of the result, it uses only 1000 record values:
+</p>
+
+<html>
+<head>
+    <title>Timeline demo</title>
+
+    <script type="text/javascript" src="../timeline.js"></script>
+    <link rel="stylesheet" type="text/css" href="../timeline.css">
+
+    <style type="text/css">
+        body {font: 10pt arial;}
+
+        div.timeline-event {
+            border: none;
+            background: none;
+            border-radius: 0;
+        }
+        div.timeline-event-selected {
+            border: none;
+            background: none;
+        }
+        div.timeline-event-content {
+            margin: 0;
+        }
+        div.timeline-event-range {
+            border: none;
+            border-radius: 0;
+            height: 100px;
+            width: 100%;
+            position: relative;
+            overflow: visible;
+        }
+        div.bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            /* height and color is set for each individual bar */
+        }
+        div.requirement {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            border-top: 2px solid gray;
+            background: #e5e5e5;
+            opacity: 0.5;
+        }
+    </style>
+<script type="text/javascript" src="data.json"></script>
+<script type="text/javascript" src="exfew.js"></script>
+</head>
+
+<body onload="drawVisualization();">
+<div id="mytimeline"></div>
+
+</body>
+</html>
+
+<ul class="org-ul">
+<li>Green: speculated sleep time.</li>
+<li>Red: uncertain time (too long inactive period)</li>
+<li>Yellow: continuous uptime activity</li>
+</ul>
+
+<p>
+For a complete version, <a href="example19_bar_graph.html">click here</a>.
+</p>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr style="
+    clear: both;
+">
+
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 31.0.50 (<a href="https://orgmode.org">Org</a> mode 9.7.11). Written by: Salih Muhammed, by the date of: 2023-11-27 Mon 04:17. Last build date: 2024-07-04 Thu 21:55.</p>
+
+</div>
+</div>
+</div>
+</body>
+</html>
