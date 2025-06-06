@@ -40,19 +40,17 @@
 <h1 class="title" style="
 margin-block-start: auto;
     color: black;
-">Flectere si nequeo superos,<br><span class="subtitle" style="font-size: smaller; color: gray; font-style: italic;">acheronta movebo</span></h1>
+">لّermontov</h1>
 
       </a>
-
 <hr class="header-divider" style="margin-block-end: -1em;">
-
   </div>
 </div>
 </div>
 <div id="content" class="content">
 <header>
 <h1 class="title">Cursed Journey of Getting a Monitor to Work</h1>
-</header><div class="PREVIEW" id="org2d007d8">
+</header><div class="PREVIEW" id="org7f69151">
 <p>
 Isn&rsquo;t it a shame that this place of the internet is supposed to be a blog yet doesn&rsquo;t contain
 blogs but obscure philosophies?
@@ -82,9 +80,9 @@ existed), I was left was the following thoughts;
 <li>USB-C Adapter</li>
 <li>USB-A Adapter</li>
 </ul>
-<div id="outline-container-org83f1653" class="outline-2">
-<h2 id="org83f1653">First Try; HDMI Splitter</h2>
-<div class="outline-text-2" id="text-org83f1653">
+<div id="outline-container-orgd66e5e4" class="outline-2">
+<h2 id="orgd66e5e4">First Try; HDMI Splitter</h2>
+<div class="outline-text-2" id="text-orgd66e5e4">
 <p>
 Worked fine but there is one main issue, it doesn&rsquo;t plug a second monitor to your machine
 the but it plugs a new monitor to the monitor plugged in your machine. I.e. it will send the
@@ -92,15 +90,15 @@ signal for both of them, just like an old fashion DSL splitter.
 </p>
 
 
-<figure id="orgcd9db2d">
+<figure id="org75fe13c">
 <img src="../i/old/2023-01-23_06-47-11_screenshot.png" alt="2023-01-23_06-47-11_screenshot.png">
 
 </figure>
 </div>
 </div>
-<div id="outline-container-org6093259" class="outline-2">
-<h2 id="org6093259">Second Try; USB-C</h2>
-<div class="outline-text-2" id="text-org6093259">
+<div id="outline-container-org727505a" class="outline-2">
+<h2 id="org727505a">Second Try; USB-C</h2>
+<div class="outline-text-2" id="text-org727505a">
 <p>
 Like my head voice suggested the first thing that came out to my mind is using Type-C USB
 converter, it&rsquo;s pretty fast and Apple already did that before with Mac books, and the
@@ -120,9 +118,9 @@ devices
 </blockquote></div>
 </div>
 </div>
-<div id="outline-container-org5cb886c" class="outline-2">
-<h2 id="org5cb886c">Third Try; USB-A</h2>
-<div class="outline-text-2" id="text-org5cb886c">
+<div id="outline-container-org5428e91" class="outline-2">
+<h2 id="org5428e91">Third Try; USB-A</h2>
+<div class="outline-text-2" id="text-org5428e91">
 <p>
 After while I learned that using DisplayLink is possible, yet I couldn&rsquo;t find a way to
 purchase a one without paying +$100 for customs. So I had to use a USB-A converter that uses
@@ -137,7 +135,7 @@ After I plugged it into my machine, reading <code>dmesg</code> I noticed that it
 device. So I had to force it to <code>unbind</code> this, using this <code>udevadm</code> role:
 </p>
 
-<pre class="example" id="org3bdfbec">
+<pre class="example" id="orgd8e48d6">
 # For HDMI-to-USB adaptor:
 SUBSYSTEM=="usb", DRIVER=="snd-usb-audio", ATTRS{idProduct}=="2109", ATTRS{idVendor}=="534d", \
     RUN+="/bin/sh -c 'echo -n $kernel &gt; /sys/bus/usb/drivers/snd-usb-audio/unbind'"
@@ -154,17 +152,17 @@ So, getting this to work was in vain.
 </p>
 </div>
 </div>
-<div id="outline-container-org80d4774" class="outline-2">
-<h2 id="org80d4774">Fourth Try; USB-A (Right Piece)</h2>
-<div class="outline-text-2" id="text-org80d4774">
+<div id="outline-container-org7287bde" class="outline-2">
+<h2 id="org7287bde">Fourth Try; USB-A (Right Piece)</h2>
+<div class="outline-text-2" id="text-org7287bde">
 <p>
 I found an abscure company called Fresco Logic that develops this kind of solution with
 claimed Linux/Android driver support, and that&rsquo;s the other story.
 </p>
 </div>
-<div id="outline-container-org24acb6e" class="outline-3">
-<h3 id="org24acb6e">Linux Driver</h3>
-<div class="outline-text-3" id="text-org24acb6e">
+<div id="outline-container-orgd7bcfd7" class="outline-3">
+<h3 id="orgd7bcfd7">Linux Driver</h3>
+<div class="outline-text-3" id="text-orgd7bcfd7">
 <p>
 It sounds like the so-called driver that fresco logic developed was disconnected since 2021,
 I use the latest 6.1.7 kernel which means this will never compile, note that you have to
@@ -181,7 +179,7 @@ have you to look at the code first my dear;
 </p>
 
 
-<figure id="orgaa0ad19">
+<figure id="org1482e86">
 <img src="../i/old/2023-01-23_07-06-11_screenshot.png" alt="2023-01-23_07-06-11_screenshot.png">
 
 </figure>
@@ -198,7 +196,7 @@ situations that it &rsquo;just works&rsquo;. So I installed Windows to give it a
 </p>
 
 
-<figure id="org0145aeb">
+<figure id="org5521766">
 <img src="../i/old/2023-01-23_07-10-32_screenshot.png" alt="2023-01-23_07-10-32_screenshot.png">
 
 </figure>
@@ -210,9 +208,9 @@ buggy but at least it does the job.
 </div>
 </div>
 </div>
-<div id="outline-container-orgbade411" class="outline-2">
-<h2 id="orgbade411">Final Results</h2>
-<div class="outline-text-2" id="text-orgbade411">
+<div id="outline-container-orgd7b8c8d" class="outline-2">
+<h2 id="orgd7b8c8d">Final Results</h2>
+<div class="outline-text-2" id="text-orgd7b8c8d">
 <p>
 The DRM I coded was very insecure unfortunately and I couldn&rsquo;t risk depending on it, when I
 was completely desperate an idea came to my mind reminding me that I had an old unused
@@ -222,7 +220,7 @@ filesystem access lol). Unexpectedly it worked:
 </p>
 
 
-<figure id="orgf4cb550">
+<figure id="org00d536a">
 <img src="../i/old/2023-01-23_07-33-42_screenshot.png" alt="2023-01-23_07-33-42_screenshot.png">
 
 </figure>
@@ -245,7 +243,7 @@ engineer, but really this experience could be much pleasant than that easily.
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 31.0.50 (<a href="https://orgmode.org">Org</a> mode 9.7.11). Written by: Salih Muhammed, by the date of: 2023-01-23 Mon 17:14. Last build date: 2024-12-14 Sat 21:43.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.93 (<a href="https://orgmode.org">Org</a> mode 9.7.22). Written by: Salih Muhammed, by the date of: 2023-01-23 Mon 17:14. Last build date: 2025-01-07 Tue 16:37.</p>
 
 </div>
 </div>

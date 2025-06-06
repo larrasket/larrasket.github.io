@@ -1,14 +1,22 @@
-# fly.toml app configuration file generated for lr0 on 2023-06-01T14:51:17+03:00
+# fly.toml app configuration file generated for lr0 on 2025-02-08T04:39:27+02:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "lr0"
-primary_region = "cdg"
+app = 'lr0'
+primary_region = 'cdg'
+
+[build]
 
 [http_service]
   internal_port = 8080
   force_https = true
-  auto_stop_machines = true
+  auto_stop_machines = 'stop'
   auto_start_machines = true
   min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '512mb'
+  cpu_kind = 'shared'
+  cpus = 1

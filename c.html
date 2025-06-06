@@ -72,12 +72,10 @@
 <h1 class="title" style="
 margin-block-start: auto;
     color: black;
-">Flectere si nequeo superos,<br><span class="subtitle" style="font-size: smaller; color: gray; font-style: italic;">acheronta movebo</span></h1>
+">لّermontov</h1>
 
       </a>
-
 <hr class="header-divider" style="margin-block-end: -1em;">
-
   </div>
 </div>
 </div>
@@ -106,7 +104,7 @@ For old entries, see <a href="cl.html#hol77960fwj0">Legacy Commentary</a>. The <
 Just like <a href="#2o1dp580eyj0">K&amp;R: The C Programming Language</a>, I found this fantastic version.
 Download from <a href="https://archive.org/details/edward-s.-herman-noam-chomsky-manufacturing-consent-the-political-economy-of-the">the archive.</a>
 </p>
-<div class="UNEXPORTEDTAG" id="org8e33427">
+<div class="UNEXPORTEDTAG" id="org2bd9742">
 <p>
 <a href="c.html#sij8m381fwj0">Commentary</a>
 </p>
@@ -129,7 +127,7 @@ everywhere and I could not find it, I looked it up in the chat between me and my
 friend Antar and I found it there. It should be available now on the link above.
 </p>
 
-<div class="UNEXPORTEDTAG" id="org6887232">
+<div class="UNEXPORTEDTAG" id="org2f9f47f">
 <p>
 <a href="c.html#sij8m381fwj0">Commentary</a>
 </p>
@@ -217,7 +215,7 @@ explain it here. Enjoy.
 </p>
 
 
-<div class="UNEXPORTEDTAG" id="org9eb0e5b">
+<div class="UNEXPORTEDTAG" id="org7332902">
 <p>
 <a href="c.html#sij8m381fwj0">Commentary</a>
 </p>
@@ -255,7 +253,7 @@ since 2021 but only worse crisis, I anticipate that the rest of the indicator
 for the coming year will be in أسفل سافلين.
 </p>
 
-<div class="UNEXPORTEDTAG" id="org0db45c5">
+<div class="UNEXPORTEDTAG" id="org342e80e">
 <p>
 <a href="c.html#sij8m381fwj0">Commentary</a>
 </p>
@@ -290,7 +288,7 @@ what is ugly, nor can I be angry with my kinsman, nor hate him.
 </p>
 
 </blockquote></div>
-<div class="UNEXPORTEDTAG" id="orge56df5c">
+<div class="UNEXPORTEDTAG" id="orge0e4eb9">
 <p>
 <a href="c.html#sij8m381fwj0">Commentary</a>
 </p>
@@ -325,7 +323,7 @@ is the way  used to Marcus Aurelius (his prominent book &ldquo;thoughts&rdquo; o
 is to admonish and advice self.
 </p>
 
-<div class="UNEXPORTEDTAG" id="org17f1579">
+<div class="UNEXPORTEDTAG" id="org5d8ec6b">
 <p>
 <a href="c.html#sij8m381fwj0">Commentary</a>
 </p>
@@ -364,7 +362,7 @@ I think a quick way to solve the question above would be by implementing <a href
 Algorithm</a> to calculate all the divisors of a number.
 </p>
 
-<pre class="example" id="org27e2d3b">
+<pre class="example" id="org2334dc7">
 If n = p1^e1 * p2^e2 * ... * pk^ek, where each p is a prime number, then the
 number of factors of n is (e1 + 1)*(e2 + 1)* ... *(ek + 1)
 </pre>
@@ -378,47 +376,47 @@ His algorithm:
 </p>
 
 <pre class="code"><code>initial_n = n
-num_factors = <span style="color: #cd5c60;">1</span>;
-<span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #6bd9db;">(</span>i = <span style="color: #cd5c60;">2</span>; i * i &lt;= initial_n; ++i<span style="color: #6bd9db;">)</span> <span style="color: #545c5e;">// </span><span style="color: #545c5e;">for each number i up until the square root of the given number</span>
-<span style="color: #6bd9db;">{</span>
-<span style="color: #31b1351b37b1;"> </span>   power = <span style="color: #cd5c60;">0</span>; <span style="color: #545c5e;">// </span><span style="color: #545c5e;">suppose the power i appears at is 0</span>
-<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">while</span> <span style="color: #ab98b5;">(</span>n % i == <span style="color: #cd5c60;">0</span><span style="color: #ab98b5;">)</span> <span style="color: #545c5e;">// </span><span style="color: #545c5e;">while we can divide n by i</span>
-<span style="color: #31b1351b37b1;"> </span>   <span style="color: #ab98b5;">{</span>
-<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   n = n / i <span style="color: #545c5e;">// </span><span style="color: #545c5e;">divide it, thus ensuring we'll only check prime factors</span>
-<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   ++power <span style="color: #545c5e;">// </span><span style="color: #545c5e;">increase the power i appears at</span>
-<span style="color: #31b1351b37b1;"> </span>   <span style="color: #ab98b5;">}</span>
-<span style="color: #31b1351b37b1;"> </span>   num_factors = num_factors * <span style="color: #ab98b5;">(</span>power + <span style="color: #cd5c60;">1</span><span style="color: #ab98b5;">)</span> <span style="color: #545c5e;">// </span><span style="color: #545c5e;">apply the formula</span>
-<span style="color: #6bd9db;">}</span>
+num_factors = <span style="color: #DCDCDC; font-weight: bold;">1</span>;
+<span style="color: #F0DFAF; font-weight: bold;">for</span> <span style="color: #8CD0D3;">(</span>i = <span style="color: #DCDCDC; font-weight: bold;">2</span>; i * i &lt;= initial_n; ++i<span style="color: #8CD0D3;">)</span> <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">for each number i up until the square root of the given number</span>
+<span style="color: #8CD0D3;">{</span>
+&#9474;   power = <span style="color: #DCDCDC; font-weight: bold;">0</span>; <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">suppose the power i appears at is 0</span>
+&#9474;   <span style="color: #F0DFAF; font-weight: bold;">while</span> <span style="color: #DC8CC3;">(</span>n % i == <span style="color: #DCDCDC; font-weight: bold;">0</span><span style="color: #DC8CC3;">)</span> <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">while we can divide n by i</span>
+&#9474;   <span style="color: #DC8CC3;">{</span>
+&#9474;   &#9474;   n = n / i <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">divide it, thus ensuring we'll only check prime factors</span>
+&#9474;   &#9474;   ++power <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">increase the power i appears at</span>
+&#9474;   <span style="color: #DC8CC3;">}</span>
+&#9474;   num_factors = num_factors * <span style="color: #DC8CC3;">(</span>power + <span style="color: #DCDCDC; font-weight: bold;">1</span><span style="color: #DC8CC3;">)</span> <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">apply the formula</span>
+<span style="color: #8CD0D3;">}</span>
 
-<span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #6bd9db;">(</span>n &gt; <span style="color: #cd5c60;">1</span><span style="color: #6bd9db;">)</span> <span style="color: #545c5e;">// </span><span style="color: #545c5e;">will happen for example for 14 = 2 * 7</span>
-<span style="color: #6bd9db;">{</span>
-<span style="color: #31b1351b37b1;"> </span>   num_factors = num_factors * <span style="color: #cd5c60;">2</span> <span style="color: #545c5e;">// </span><span style="color: #545c5e;">n is prime, and its power can only be 1, so multiply the number of factors by 2</span>
-<span style="color: #6bd9db;">}</span>
+<span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #8CD0D3;">(</span>n &gt; <span style="color: #DCDCDC; font-weight: bold;">1</span><span style="color: #8CD0D3;">)</span> <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">will happen for example for 14 = 2 * 7</span>
+<span style="color: #8CD0D3;">{</span>
+&#9474;   num_factors = num_factors * <span style="color: #DCDCDC; font-weight: bold;">2</span> <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">n is prime, and its power can only be 1, so multiply the number of factors by 2</span>
+<span style="color: #8CD0D3;">}</span>
 </code></pre>
 </div>
-<div id="outline-container-org40a796a" class="outline-3">
-<h3 id="org40a796a">arch</h3>
-<div class="outline-text-3" id="text-org40a796a">
+<div id="outline-container-orgc19b516" class="outline-3">
+<h3 id="orgc19b516">arch</h3>
+<div class="outline-text-3" id="text-orgc19b516">
 <p>
 Let&rsquo;s first decide which algorithm can be used to solve such a problem (number
 of all factors); I didn&rsquo;t find any sophisticated algorithm to do so, but this
 solution seems promising:
 </p>
-<pre class="code"><code><span style="color: #6bd9db;">{</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">n</span>;
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">i</span> = <span style="color: #cd5c60;">2</span>;
-<span style="color: #31b1351b37b1;"> </span> scanf<span style="color: #ab98b5;">(</span><span style="color: #6fb593;">"%d"</span>, &amp;n<span style="color: #ab98b5;">)</span>;
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #4d9391; font-weight: bold;">while</span> <span style="color: #ab98b5;">(</span>i &lt;= sqrt<span style="color: #5D8272;">(</span>n<span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span> <span style="color: #ab98b5;">{</span>
-<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #5D8272;">(</span>n % i == <span style="color: #cd5c60;">0</span><span style="color: #5D8272;">)</span> <span style="color: #5D8272;">{</span>
-<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> printf<span style="color: #807f96;">(</span><span style="color: #6fb593;">"%d,"</span>, i<span style="color: #807f96;">)</span>;
-<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #807f96;">(</span>i != <span style="color: #6bd9db;">(</span>n / i<span style="color: #6bd9db;">)</span><span style="color: #807f96;">)</span> <span style="color: #807f96;">{</span>
-<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   printf<span style="color: #6bd9db;">(</span><span style="color: #6fb593;">"%d,"</span>, n / i<span style="color: #6bd9db;">)</span>;
-<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span> <span style="color: #807f96;">}</span>
-<span style="color: #31b1351b37b1;"> </span>   <span style="color: #5D8272;">}</span>
- 
-<span style="color: #31b1351b37b1;"> </span>   i++;
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">}</span>
-<span style="color: #6bd9db;">}</span>
+<pre class="code"><code><span style="color: #8CD0D3;">{</span>
+&#9474; <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">n</span>;
+&#9474; <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">i</span> = <span style="color: #DCDCDC; font-weight: bold;">2</span>;
+&#9474; scanf<span style="color: #DC8CC3;">(</span><span style="color: #CC9393;">"%d"</span>, &amp;n<span style="color: #DC8CC3;">)</span>;
+&#9474; <span style="color: #F0DFAF; font-weight: bold;">while</span> <span style="color: #DC8CC3;">(</span>i &lt;= sqrt<span style="color: #7F9F7F;">(</span>n<span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span> <span style="color: #DC8CC3;">{</span>
+&#9474;   <span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #7F9F7F;">(</span>n % i == <span style="color: #DCDCDC; font-weight: bold;">0</span><span style="color: #7F9F7F;">)</span> <span style="color: #7F9F7F;">{</span>
+&#9474;   &#9474; printf<span style="color: #a9a1e1;">(</span><span style="color: #CC9393;">"%d,"</span>, i<span style="color: #a9a1e1;">)</span>;
+&#9474;   &#9474; <span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #a9a1e1;">(</span>i != <span style="color: #8CD0D3;">(</span>n / i<span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span> <span style="color: #a9a1e1;">{</span>
+&#9474;   &#9474;   printf<span style="color: #8CD0D3;">(</span><span style="color: #CC9393;">"%d,"</span>, n / i<span style="color: #8CD0D3;">)</span>;
+&#9474;   &#9474; <span style="color: #a9a1e1;">}</span>
+&#9474;   <span style="color: #7F9F7F;">}</span>
+&#9474;
+&#9474;   i++;
+&#9474; <span style="color: #DC8CC3;">}</span>
+<span style="color: #8CD0D3;">}</span>
 </code></pre>
 
 <p>
@@ -426,17 +424,17 @@ I&rsquo;ve been thinking so far for an optimization. Seems like that the correct
 solution it a brute force-like:
 </p>
 
-<pre class="code"><code><span style="color: #4d9391; font-weight: bold;">from</span> math <span style="color: #4d9391; font-weight: bold;">import</span> sqrt
-<span style="color: #968cc7;">L</span> <span style="color: #80bcb6;">=</span> <span style="color: #cd5c60;">130000</span>; <span style="color: #968cc7;">ds</span> <span style="color: #80bcb6;">=</span> [<span style="color: #cd5c60;">1</span>]<span style="color: #80bcb6;">*</span>L
-<span style="color: #4d9391; font-weight: bold;">for</span> i <span style="color: #4d9391; font-weight: bold;">in</span> <span style="color: #80bcb6;">range</span>(<span style="color: #cd5c60;">2</span>, <span style="color: #80bcb6;">int</span>(sqrt(L))):
-<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">for</span> j <span style="color: #4d9391; font-weight: bold;">in</span> <span style="color: #80bcb6;">range</span>(i<span style="color: #80bcb6;">+</span><span style="color: #cd5c60;">1</span>, L<span style="color: #80bcb6;">//</span>i):
-<span style="color: #31b1351b37b1;"> </span>   <span style="color: #31b1351b37b1;"> </span>   <span style="color: #968cc7;">ds</span>[i<span style="color: #80bcb6;">*</span>j]<span style="color: #80bcb6;">+=</span> i<span style="color: #80bcb6;">+</span>j
-<span style="color: #968cc7;">an</span> <span style="color: #80bcb6;">=</span> []
-<span style="color: #4d9391; font-weight: bold;">for</span> i <span style="color: #4d9391; font-weight: bold;">in</span> <span style="color: #80bcb6;">range</span>(<span style="color: #cd5c60;">2</span>, L):
-<span style="color: #31b1351b37b1;"> </span>   <span style="color: #4d9391; font-weight: bold;">if</span> ds[i] <span style="color: #80bcb6;">&lt;</span> i <span style="color: #4d9391; font-weight: bold;">and</span> ds[ds[i]] <span style="color: #80bcb6;">==</span> <span style="color: #968cc7;">i</span>: <span style="color: #cd9575;">an</span><span style="color: #80bcb6;">+=</span> [ds[i], i]
- 
-<span style="color: #968cc7;">N</span> <span style="color: #80bcb6;">=</span> <span style="color: #80bcb6;">int</span>(<span style="color: #80bcb6;">input</span>(<span style="color: #6fb593;">"Limit? "</span>))
-<span style="color: #80bcb6;">print</span> (<span style="color: #6fb593;">"Amicable sum less than"</span>,N,<span style="color: #6fb593;">"="</span>, <span style="color: #80bcb6;">sum</span>(a <span style="color: #4d9391; font-weight: bold;">for</span> a <span style="color: #4d9391; font-weight: bold;">in</span> an <span style="color: #4d9391; font-weight: bold;">if</span> a<span style="color: #80bcb6;">&lt;</span>N))
+<pre class="code"><code><span style="color: #F0DFAF; font-weight: bold;">from</span> math <span style="color: #F0DFAF; font-weight: bold;">import</span> sqrt
+<span style="color: #DFAF8F;">L</span> = <span style="color: #DCDCDC; font-weight: bold;">130000</span>; <span style="color: #DFAF8F;">ds</span> = [<span style="color: #DCDCDC; font-weight: bold;">1</span>]*L
+<span style="color: #F0DFAF; font-weight: bold;">for</span> i <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCDC; font-weight: bold;">range</span>(<span style="color: #DCDCDC; font-weight: bold;">2</span>, <span style="color: #DCDCDC; font-weight: bold;">int</span>(sqrt(L))):
+&#9474;   <span style="color: #F0DFAF; font-weight: bold;">for</span> j <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCDC; font-weight: bold;">range</span>(i+<span style="color: #DCDCDC; font-weight: bold;">1</span>, L//i):
+&#9474;   &#9474;   <span style="color: #DFAF8F;">ds</span>[i*j]+= i+j
+<span style="color: #DFAF8F;">an</span> = []
+<span style="color: #F0DFAF; font-weight: bold;">for</span> i <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCDC; font-weight: bold;">range</span>(<span style="color: #DCDCDC; font-weight: bold;">2</span>, L):
+&#9474;   <span style="color: #F0DFAF; font-weight: bold;">if</span> ds[i] &lt; i <span style="color: #F0DFAF; font-weight: bold;">and</span> ds[ds[i]] == <span style="color: #DFAF8F;">i</span>: <span style="color: #7CB8BB;">an</span>+= [ds[i], i]
+&#9474;
+<span style="color: #DFAF8F;">N</span> = <span style="color: #DCDCDC; font-weight: bold;">int</span>(<span style="color: #DCDCDC; font-weight: bold;">input</span>(<span style="color: #CC9393;">"Limit? "</span>))
+<span style="color: #DCDCDC; font-weight: bold;">print</span> (<span style="color: #CC9393;">"Amicable sum less than"</span>,N,<span style="color: #CC9393;">"="</span>, <span style="color: #DCDCDC; font-weight: bold;">sum</span>(a <span style="color: #F0DFAF; font-weight: bold;">for</span> a <span style="color: #F0DFAF; font-weight: bold;">in</span> an <span style="color: #F0DFAF; font-weight: bold;">if</span> a&lt;N))
 
 </code></pre>
 
@@ -757,7 +755,7 @@ whether it exists or not, if it does then it&rsquo;s a valid word.
 My corpus implementation will be on <a href="https://github.com/larrasket/corpus">https://github.com/larrasket/corpus</a> (if it says not
 found that mean it is not public yet).
 </p>
-<div class="UNEXPORTEDTAG" id="org912f551">
+<div class="UNEXPORTEDTAG" id="org9a0fc1a">
 <p>
 <a href="c.html#sij8m381fwj0">Commentary</a>
 </p>
@@ -784,7 +782,7 @@ actually proposed in the original paper. I should write soon about how this
 relates to the propaganda model.
 </p>
 
-<div class="UNEXPORTEDTAG" id="orgef477ff">
+<div class="UNEXPORTEDTAG" id="org24efb9a">
 <p>
 <a href="c.html#sij8m381fwj0">Commentary</a>
 </p>
@@ -811,7 +809,7 @@ relates to the propaganda model.
 </span>
 </p>
  </div>
-<div class="tag" id="orge8fe2e7">
+<div class="tag" id="orgf7aebb0">
 <p>
 This section was labeled under, or is related to <a href="t/mathematics.html#ej076sp02wj0">Mathematics</a>
 </p>
@@ -846,7 +844,7 @@ try it with other values:
 end
 </code></pre>
 
-<pre class="example" id="orga5b2298">
+<pre class="example" id="orgcf2b306">
 Y (divisible by 4) = 1992, Output = 2490.0
 Y = 1993, Output = 2491.0
 Y = 1994, Output = 2492.0
@@ -941,7 +939,7 @@ snap to the answer we want.
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 31.0.50 (<a href="https://orgmode.org">Org</a> mode 9.7.11). Written by: Salih Muhammed, by the date of: . Last build date: 2024-07-04 Thu 21:55.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.93 (<a href="https://orgmode.org">Org</a> mode 9.7.22). Written by: Salih Muhammed, by the date of: . Last build date: 2025-01-07 Tue 16:37.</p>
 
 </div>
 </div>

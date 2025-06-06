@@ -40,26 +40,24 @@
 <h1 class="title" style="
 margin-block-start: auto;
     color: black;
-">Flectere si nequeo superos,<br><span class="subtitle" style="font-size: smaller; color: gray; font-style: italic;">acheronta movebo</span></h1>
+">لّermontov</h1>
 
       </a>
-
 <hr class="header-divider" style="margin-block-end: -1em;">
-
   </div>
 </div>
 </div>
 <div id="content" class="content">
 <header>
 <h1 class="title">Lisp Programming Language</h1>
-</header><div class="tag" id="orgab1ff6d">
+</header><div class="tag" id="org0b21d32">
 <p>
 This section was labeled under, or is related to <a href="../t/programming.html#4u5664n02wj0">programming</a>.
 </p>
 
 </div>
 
-<div class="PREVIEW" id="orgb2a99be">
+<div class="PREVIEW" id="orgb0aaac5">
 <p>
 Tutorial on Lisp.
 </p>
@@ -76,9 +74,9 @@ its early days, and many dialects have existed over its history. Today, the
 best-known general-purpose Lisp dialects are Common Lisp, Scheme, Racket and
 Clojure.
 </p>
-<div id="outline-container-orgd882e2a" class="outline-2">
-<h2 id="orgd882e2a">Choosing Implementation</h2>
-<div class="outline-text-2" id="text-orgd882e2a">
+<div id="outline-container-orgeb51b4d" class="outline-2">
+<h2 id="orgeb51b4d">Choosing Implementation</h2>
+<div class="outline-text-2" id="text-orgeb51b4d">
 <p>
 The first thing you have to do is to choose a Lisp implementation. This may seem
 like a strange thing to have to do for folks used to languages such as Perl,
@@ -98,9 +96,9 @@ can count on your program behaving the same in any conforming implementation.
 </p>
 </div>
 </div>
-<div id="outline-container-org48c6dff" class="outline-2">
-<h2 id="org48c6dff">Hello World</h2>
-<div class="outline-text-2" id="text-org48c6dff">
+<div id="outline-container-org4cbec75" class="outline-2">
+<h2 id="org4cbec75">Hello World</h2>
+<div class="outline-text-2" id="text-org4cbec75">
 <p>
 You can just pass &ldquo;Hello World&rdquo; (with quotes) to the Lisp REPEL and you will get
 your first Hello World in Lisp.
@@ -136,7 +134,7 @@ expression that will print “hello, world” looks like this:
 </p>
 
 
-<pre class="example" id="org4aa3046">
+<pre class="example" id="org3579b74">
 CL-USER&gt; (format t "hello, world")
 hello, world
 NIL
@@ -152,7 +150,7 @@ Functions are one of the basic program building blocks in Lisp and can be
 defined with a <code>DEFUN</code> expression such as this:
 </p>
 
-<pre class="code"><code>CL-USER&gt; <span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">defun</span> <span style="color: #80bcb6;">hello-world</span> <span style="color: #ab98b5;">()</span> <span style="color: #ab98b5;">(</span>format t <span style="color: #6fb593;">"hello, world"</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code>CL-USER&gt; <span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">hello-world</span> <span style="color: #DC8CC3;">()</span> <span style="color: #DC8CC3;">(</span>format t <span style="color: #CC9393;">"hello, world"</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 HELLO-WORLD
 </code></pre>
 
@@ -166,25 +164,25 @@ why was it uppercased.
 </div>
 <div id="outline-container-nse0owp02wj0" class="outline-2">
 <h2 id="nse0owp02wj0">Why Lisp?</h2>
-<div class="outline-text-2" id="text-org3a86cdd">
+<div class="outline-text-2" id="text-org27b74a7">
 <p>
 Why learn Lisp? Because it lets you do things that you can&rsquo;t do in other
 languages. If you just wanted to write a function to return the sum of the
 numbers less than n&gt; say, it would look much the same in Lisp and C:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">defun</span> <span style="color: #80bcb6;">sum</span> <span style="color: #ab98b5;">(</span>n<span style="color: #ab98b5;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span><span style="color: #ab98b5;">(</span><span style="color: #4d9391; font-weight: bold;">let</span> <span style="color: #5D8272;">(</span><span style="color: #807f96;">(</span>s <span style="color: #cd5c60;">0</span><span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span><span style="color: #5D8272;">(</span><span style="color: #4d9391; font-weight: bold;">dotimes</span> <span style="color: #807f96;">(</span>i n s<span style="color: #807f96;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #807f96;">(</span>incf s i<span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">sum</span> <span style="color: #DC8CC3;">(</span>n<span style="color: #DC8CC3;">)</span>
+&#9474; &#9474;<span style="color: #DC8CC3;">(</span><span style="color: #F0DFAF; font-weight: bold;">let</span> <span style="color: #7F9F7F;">(</span><span style="color: #a9a1e1;">(</span>s <span style="color: #DCDCDC; font-weight: bold;">0</span><span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span>
+&#9474; &#9474; &#9474; &#9474;<span style="color: #7F9F7F;">(</span><span style="color: #F0DFAF; font-weight: bold;">dotimes</span> <span style="color: #a9a1e1;">(</span>i n s<span style="color: #a9a1e1;">)</span>
+&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; <span style="color: #a9a1e1;">(</span>incf s i<span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
-<pre class="code"><code><span style="color: #cd9575;">int</span> <span style="color: #80bcb6;">aum</span><span style="color: #6bd9db;">(</span><span style="color: #cd9575;">int</span> <span style="color: #968cc7;">n</span><span style="color: #6bd9db;">){</span>
-    <span style="color: #cd9575;">int</span> <span style="color: #968cc7;">i</span> , <span style="color: #968cc7;">s</span> = <span style="color: #cd5c60;">0</span>;
-    <span style="color: #4d9391; font-weight: bold;">for</span> <span style="color: #ab98b5;">(</span> i = <span style="color: #cd5c60;">0</span>; i &lt; n; i++<span style="color: #ab98b5;">)</span>
+<pre class="code"><code><span style="color: #7CB8BB;">int</span> <span style="color: #93E0E3;">aum</span><span style="color: #8CD0D3;">(</span><span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">n</span><span style="color: #8CD0D3;">){</span>
+    <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">i</span> , <span style="color: #DFAF8F;">s</span> = <span style="color: #DCDCDC; font-weight: bold;">0</span>;
+    <span style="color: #F0DFAF; font-weight: bold;">for</span> <span style="color: #DC8CC3;">(</span> i = <span style="color: #DCDCDC; font-weight: bold;">0</span>; i &lt; n; i++<span style="color: #DC8CC3;">)</span>
         s += i ;
-    <span style="color: #4d9391; font-weight: bold;">return</span><span style="color: #ab98b5;">(</span>s<span style="color: #ab98b5;">)</span>;
-<span style="color: #6bd9db;">}</span>
+    <span style="color: #F0DFAF; font-weight: bold;">return</span><span style="color: #DC8CC3;">(</span>s<span style="color: #DC8CC3;">)</span>;
+<span style="color: #8CD0D3;">}</span>
 </code></pre>
 
 <p>
@@ -192,9 +190,9 @@ If you only need to do such simple things, it doesn&rsquo;t really matter which
 language you use. Suppose instead you want to write a function that takes a
 number n, and returns a function that adds n to its argument:
 </p>
-<pre class="code"><code><span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">defun</span> <span style="color: #80bcb6;">addn</span> <span style="color: #ab98b5;">(</span>n<span style="color: #ab98b5;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> #'<span style="color: #ab98b5;">(</span><span style="color: #4d9391; font-weight: bold;">lambda</span> <span style="color: #5D8272;">(</span>x<span style="color: #5D8272;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span><span style="color: #5D8272;">(</span>+ x n<span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">addn</span> <span style="color: #DC8CC3;">(</span>n<span style="color: #DC8CC3;">)</span>
+&#9474; &#9474; #'<span style="color: #DC8CC3;">(</span><span style="color: #F0DFAF; font-weight: bold;">lambda</span> <span style="color: #7F9F7F;">(</span>x<span style="color: #7F9F7F;">)</span>
+&#9474; &#9474; &#9474;<span style="color: #7F9F7F;">(</span>+ x n<span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -269,16 +267,16 @@ compiling, and testing.
 </p>
 </div>
 </div>
-<div id="outline-container-org5188045" class="outline-2">
-<h2 id="org5188045">Lisp Specifications</h2>
-<div class="outline-text-2" id="text-org5188045">
+<div id="outline-container-org7fd0cbc" class="outline-2">
+<h2 id="org7fd0cbc">Lisp Specifications</h2>
+<div class="outline-text-2" id="text-org7fd0cbc">
 <p>
 &ldquo;Okay I&rsquo;m convinced&rdquo;
 </p>
 </div>
-<div id="outline-container-org465f678" class="outline-3">
-<h3 id="org465f678">Evaluation</h3>
-<div class="outline-text-3" id="text-org465f678">
+<div id="outline-container-org8b128e5" class="outline-3">
+<h3 id="org8b128e5">Evaluation</h3>
+<div class="outline-text-3" id="text-org8b128e5">
 <p>
 In Lisp, + is a function, and an expression like (+ 2 3) is a function call.
 When Lisp evaluates a function call, it does so in two steps:
@@ -309,7 +307,7 @@ distinct evaluation rule of its own. And the rule is: do nothing. The quote
 operator takes a single argument, and just returns it verbatim:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">quote</span> <span style="color: #ab98b5;">(</span><span style="color: #ab98b5; font-weight: bold;">+</span> <span style="color: #cd5c60;">4</span> <span style="color: #cd5c60;">5</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">quote</span> <span style="color: #DC8CC3;">(</span><span style="color: #BFEBBF;">+</span> <span style="color: #DCDCDC; font-weight: bold;">4</span> <span style="color: #DCDCDC; font-weight: bold;">5</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -318,7 +316,7 @@ get the effect of calling quote by affixing a &rsquo; to the front of any expres
 </p>
 
 
-<pre class="code"><code>`<span style="color: #6bd9db;">(</span>+ <span style="color: #cd5c60;">4</span> <span style="color: #cd5c60;">5</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code>`<span style="color: #8CD0D3;">(</span>+ <span style="color: #DCDCDC; font-weight: bold;">4</span> <span style="color: #DCDCDC; font-weight: bold;">5</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -344,9 +342,9 @@ would take them for function calls:
 </p>
 </div>
 </div>
-<div id="outline-container-org5736606" class="outline-3">
-<h3 id="org5736606">Data</h3>
-<div class="outline-text-3" id="text-org5736606">
+<div id="outline-container-org3495c53" class="outline-3">
+<h3 id="org3495c53">Data</h3>
+<div class="outline-text-3" id="text-org3495c53">
 <p>
 Lisp offers all the data types we find in most other languages, along with
 several others that we don&rsquo;t. One data type we have used already is the
@@ -363,7 +361,7 @@ Lisp would take them for function calls:
 </p>
 
 
-<pre class="code"><code>`<span style="color: #6bd9db;">(</span>pray sunrise<span style="color: #6bd9db;">)</span>
+<pre class="code"><code>`<span style="color: #8CD0D3;">(</span>pray sunrise<span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -372,7 +370,7 @@ it.  You can build lists by calling list. Since list is a function, its
 arguments are evaluated. Here we see a call to + within a call to list:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>list `my `<span style="color: #ab98b5;">(</span>+ <span style="color: #cd5c60;">2</span> <span style="color: #cd5c60;">3</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>list `my `<span style="color: #DC8CC3;">(</span>+ <span style="color: #DCDCDC; font-weight: bold;">2</span> <span style="color: #DCDCDC; font-weight: bold;">3</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -385,15 +383,15 @@ them.
 </p>
 </div>
 </div>
-<div id="outline-container-org6c16451" class="outline-3">
-<h3 id="org6c16451">List Operations</h3>
-<div class="outline-text-3" id="text-org6c16451">
+<div id="outline-container-org97564b4" class="outline-3">
+<h3 id="org97564b4">List Operations</h3>
+<div class="outline-text-3" id="text-org97564b4">
 <p>
 The function cons builds lists. If its second argument is a list, it returns a
 new list with the first argument added to the front:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>cons ' a ' <span style="color: #ab98b5;">(</span>b c d<span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>cons ' a ' <span style="color: #DC8CC3;">(</span>b c d<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -408,10 +406,10 @@ The car of a list is the first element, and the cdr is everything after the
 first element:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>car `<span style="color: #ab98b5;">(</span>ab c<span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>car `<span style="color: #DC8CC3;">(</span>ab c<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>cdr `<span style="color: #ab98b5;">(</span>ab c<span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>cdr `<span style="color: #DC8CC3;">(</span>ab c<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 
@@ -426,14 +424,14 @@ You can use combinations of car and cdr to reach any element of a list.
 If you want to get the third element, you could say:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>car <span style="color: #ab98b5;">(</span>cdr <span style="color: #5D8272;">(</span>cdr ' <span style="color: #807f96;">(</span> a b c d <span style="color: #807f96;">)</span> <span style="color: #5D8272;">)</span> <span style="color: #ab98b5;">)</span> <span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>car <span style="color: #DC8CC3;">(</span>cdr <span style="color: #7F9F7F;">(</span>cdr ' <span style="color: #a9a1e1;">(</span> a b c d <span style="color: #a9a1e1;">)</span> <span style="color: #7F9F7F;">)</span> <span style="color: #DC8CC3;">)</span> <span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
 However, you can do the same thing more easily by calling third :
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span> second '<span style="color: #ab98b5;">(</span> a b c d<span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span> second '<span style="color: #DC8CC3;">(</span> a b c d<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -441,9 +439,9 @@ There are also <code>first</code> and <code>second</code>, you can guess what is
 </p>
 </div>
 </div>
-<div id="outline-container-org2fbc106" class="outline-3">
-<h3 id="org2fbc106">Truth</h3>
-<div class="outline-text-3" id="text-org2fbc106">
+<div id="outline-container-org47a8344" class="outline-3">
+<h3 id="org47a8344">Truth</h3>
+<div class="outline-text-3" id="text-org47a8344">
 <p>
 In Common Lisp, the symbol t is the default representation for truth. Like
 nil, t evaluates to itself. The function <code>listp</code> returns true if its argument is
@@ -451,7 +449,7 @@ a list:
 </p>
 
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>listp `<span style="color: #ab98b5;">(</span>a b c<span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>listp `<span style="color: #DC8CC3;">(</span>a b c<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -467,9 +465,9 @@ and its value is returned. If the test expression returns false, the else
 expression is evaluated and its value is returned:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #ab98b5;">(</span>listp '<span style="color: #5D8272;">(</span>abc<span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">(</span>+ <span style="color: #cd5c60;">1</span> <span style="color: #cd5c60;">2</span><span style="color: #ab98b5;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">(</span>+ <span style="color: #cd5c60;">5</span> <span style="color: #cd5c60;">6</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #DC8CC3;">(</span>listp '<span style="color: #7F9F7F;">(</span>abc<span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span>
+&#9474; &#9474; <span style="color: #DC8CC3;">(</span>+ <span style="color: #DCDCDC; font-weight: bold;">1</span> <span style="color: #DCDCDC; font-weight: bold;">2</span><span style="color: #DC8CC3;">)</span>
+&#9474; &#9474; <span style="color: #DC8CC3;">(</span>+ <span style="color: #DCDCDC; font-weight: bold;">5</span> <span style="color: #DCDCDC; font-weight: bold;">6</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -484,17 +482,17 @@ There are <code>and</code> and <code>or</code> functions, you probably can tell 
 </p>
 </div>
 </div>
-<div id="outline-container-org5e48145" class="outline-3">
-<h3 id="org5e48145">Basic Functions</h3>
-<div class="outline-text-3" id="text-org5e48145">
+<div id="outline-container-orgee995ec" class="outline-3">
+<h3 id="orgee995ec">Basic Functions</h3>
+<div class="outline-text-3" id="text-orgee995ec">
 <p>
 You can define new functions with defun. It usually takes three or more
 arguments: a name, a list of parameters, and one or more expressions that
 will make up the body of the function. Here is how we might define third:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">defun</span> <span style="color: #80bcb6;">our-third</span> <span style="color: #ab98b5;">(</span>x<span style="color: #ab98b5;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">(</span>car <span style="color: #5D8272;">(</span>cdr <span style="color: #807f96;">(</span>cdr x <span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">our-third</span> <span style="color: #DC8CC3;">(</span>x<span style="color: #DC8CC3;">)</span>
+&#9474; &#9474; <span style="color: #DC8CC3;">(</span>car <span style="color: #7F9F7F;">(</span>cdr <span style="color: #a9a1e1;">(</span>cdr x <span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -502,10 +500,10 @@ Let&rsquo;s try to defun <code>member</code> which tells you if whether an eleme
 function:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">defun</span> <span style="color: #80bcb6;">somemeeber</span> <span style="color: #ab98b5;">(</span>obj lst<span style="color: #ab98b5;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">(</span><span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #5D8272;">(</span>null lst<span style="color: #5D8272;">)</span> nil
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #5D8272;">(</span><span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #807f96;">(</span>eql <span style="color: #6bd9db;">(</span>car lst<span style="color: #6bd9db;">)</span> obj<span style="color: #807f96;">)</span> t
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #807f96;">(</span>somemeeber obj <span style="color: #6bd9db;">(</span>cdr lst<span style="color: #6bd9db;">)</span><span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">somemeeber</span> <span style="color: #DC8CC3;">(</span>obj lst<span style="color: #DC8CC3;">)</span>
+&#9474; <span style="color: #DC8CC3;">(</span><span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #7F9F7F;">(</span>null lst<span style="color: #7F9F7F;">)</span> nil
+&#9474; &#9474; &#9474; <span style="color: #7F9F7F;">(</span><span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #a9a1e1;">(</span>eql <span style="color: #8CD0D3;">(</span>car lst<span style="color: #8CD0D3;">)</span> obj<span style="color: #a9a1e1;">)</span> t
+&#9474; &#9474; &#9474; &#9474; &#9474; <span style="color: #a9a1e1;">(</span>somemeeber obj <span style="color: #8CD0D3;">(</span>cdr lst<span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 
@@ -515,20 +513,20 @@ internal implementation) is that instead of evaluating the rest of the list the
 that member does it, I evaluate the truth value t.
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>somemeeber <span style="color: #cd5c60;">3</span> '<span style="color: #ab98b5;">(</span><span style="color: #cd5c60;">1</span> <span style="color: #cd5c60;">2</span> <span style="color: #cd5c60;">3</span> <span style="color: #cd5c60;">4</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>somemeeber <span style="color: #DCDCDC; font-weight: bold;">3</span> '<span style="color: #DC8CC3;">(</span><span style="color: #DCDCDC; font-weight: bold;">1</span> <span style="color: #DCDCDC; font-weight: bold;">2</span> <span style="color: #DCDCDC; font-weight: bold;">3</span> <span style="color: #DCDCDC; font-weight: bold;">4</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgf38f748" class="outline-3">
-<h3 id="orgf38f748">I/O</h3>
-<div class="outline-text-3" id="text-orgf38f748">
+<div id="outline-container-org88d8443" class="outline-3">
+<h3 id="org88d8443">I/O</h3>
+<div class="outline-text-3" id="text-org88d8443">
 <p>
 The most general output function in Common Lisp is f ormat. It takes two or more
 arguments: the first indicates where the output is to be printed, the second is
 a string template, and the remaining arguments are usually objects whose printed
 representations are to be inserted into the template. Here is a typical example:
 </p>
-<pre class="code"><code><span style="color: #6bd9db;">(</span>format t <span style="color: #6fb593;">"~A plus ~A equals ~A. ~%"</span> <span style="color: #cd5c60;">2</span> <span style="color: #cd5c60;">3</span> <span style="color: #ab98b5;">(</span> + <span style="color: #cd5c60;">2</span> <span style="color: #cd5c60;">3</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>format t <span style="color: #CC9393;">"~A plus ~A equals ~A. ~%"</span> <span style="color: #DCDCDC; font-weight: bold;">2</span> <span style="color: #DCDCDC; font-weight: bold;">3</span> <span style="color: #DC8CC3;">(</span> + <span style="color: #DCDCDC; font-weight: bold;">2</span> <span style="color: #DCDCDC; font-weight: bold;">3</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -555,15 +553,15 @@ reads from the default place, which will usually be the toplevel. Here is a
 function that prompts the user for input, and returns whatever is entered:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">defun</span> <span style="color: #80bcb6;">askem</span> <span style="color: #ab98b5;">(</span>string<span style="color: #ab98b5;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">(</span>format t <span style="color: #6fb593;">""</span>A<span style="color: #6fb593;">" string)</span>
-<span style="color: #31b1351b37b1;"> </span><span style="color: #6fb593;"> </span><span style="color: #31b1351b37b1;"> </span><span style="color: #6fb593;"> (read))</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">askem</span> <span style="color: #DC8CC3;">(</span>string<span style="color: #DC8CC3;">)</span>
+&#9474; <span style="color: #DC8CC3;">(</span>format t <span style="color: #CC9393;">""</span>A<span style="color: #CC9393;">" string)</span>
+&#9474;<span style="color: #CC9393;"> &#9474; (read))</span>
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org76ac748" class="outline-3">
-<h3 id="org76ac748">Variables</h3>
-<div class="outline-text-3" id="text-org76ac748">
+<div id="outline-container-orgac5303e" class="outline-3">
+<h3 id="orgac5303e">Variables</h3>
+<div class="outline-text-3" id="text-orgac5303e">
 <p>
 One of the most frequently used operators in Common Lisp is <code>let</code> , which
 allows you to introduce new local variables.
@@ -576,12 +574,12 @@ creating variables, each of the form (variable expression). Each variable will
 initially be set to the value of the corresponding expression.
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">defun</span> <span style="color: #80bcb6;">ask-for-number</span> <span style="color: #ab98b5;">()</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">(</span>format t <span style="color: #6fb593;">"Enter a number"</span><span style="color: #ab98b5;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">(</span><span style="color: #4d9391; font-weight: bold;">let</span> <span style="color: #5D8272;">(</span><span style="color: #807f96;">(</span>n <span style="color: #6bd9db;">(</span>read<span style="color: #6bd9db;">)</span><span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #5D8272;">(</span><span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #807f96;">(</span>numberp n<span style="color: #807f96;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> n
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #807f96;">(</span>ask-for-number<span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">ask-for-number</span> <span style="color: #DC8CC3;">()</span>
+&#9474; <span style="color: #DC8CC3;">(</span>format t <span style="color: #CC9393;">"Enter a number"</span><span style="color: #DC8CC3;">)</span>
+&#9474; <span style="color: #DC8CC3;">(</span><span style="color: #F0DFAF; font-weight: bold;">let</span> <span style="color: #7F9F7F;">(</span><span style="color: #a9a1e1;">(</span>n <span style="color: #8CD0D3;">(</span>read<span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span>
+&#9474; &#9474; <span style="color: #7F9F7F;">(</span><span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #a9a1e1;">(</span>numberp n<span style="color: #a9a1e1;">)</span>
+&#9474; &#9474; &#9474; &#9474; n
+&#9474; &#9474; &#9474; &#9474; <span style="color: #a9a1e1;">(</span>ask-for-number<span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -601,7 +599,7 @@ would be pronounced &ldquo;star-glob-star&rdquo;.
 You can also define global constants, by calling def constant:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">defconstant</span> <span style="color: #968cc7;">limit</span> <span style="color: #ab98b5;">(</span>+ *glob* <span style="color: #cd5c60;">1</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defconstant</span> <span style="color: #DFAF8F;">limit</span> <span style="color: #DC8CC3;">(</span>+ *glob* <span style="color: #DCDCDC; font-weight: bold;">1</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 
@@ -611,43 +609,43 @@ an error if anyone uses the same name for a variable. If you want to check
 whether some symbol is the name of a global variable or constant, use boundp:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">defconstant</span> <span style="color: #968cc7;">*glob*</span> <span style="color: #cd5c60;">43</span><span style="color: #6bd9db;">)</span>
-<span style="color: #6bd9db;">(</span>boundp '*glob*<span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defconstant</span> <span style="color: #DFAF8F;">*glob*</span> <span style="color: #DCDCDC; font-weight: bold;">43</span><span style="color: #8CD0D3;">)</span>
+<span style="color: #8CD0D3;">(</span>boundp '*glob*<span style="color: #8CD0D3;">)</span>
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org2952f2c" class="outline-3">
-<h3 id="org2952f2c">Assignment</h3>
-<div class="outline-text-3" id="text-org2952f2c">
+<div id="outline-container-orgcb3cdac" class="outline-3">
+<h3 id="orgcb3cdac">Assignment</h3>
+<div class="outline-text-3" id="text-orgcb3cdac">
 <p>
 In Common Lisp the most general assignment operator is setf. We can use
 it to do assignments to either kind of variable:
 </p>
-<pre class="code"><code><span style="color: #6bd9db;">(</span>setf *glob* <span style="color: #cd5c60;">90</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>setf *glob* <span style="color: #DCDCDC; font-weight: bold;">90</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">defun</span> <span style="color: #80bcb6;">read-number-and-prefix-with-message</span> <span style="color: #ab98b5;">()</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">(</span><span style="color: #4d9391; font-weight: bold;">let</span> <span style="color: #5D8272;">(</span><span style="color: #807f96;">(</span>n <span style="color: #6bd9db;">(</span>ask-for-number<span style="color: #6bd9db;">)</span><span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #5D8272;">(</span>setf n <span style="color: #807f96;">(</span>+ n <span style="color: #cd5c60;">1</span><span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #5D8272;">(</span>format t <span style="color: #6fb593;">"The new number is ~A"</span> n<span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">read-number-and-prefix-with-message</span> <span style="color: #DC8CC3;">()</span>
+&#9474; <span style="color: #DC8CC3;">(</span><span style="color: #F0DFAF; font-weight: bold;">let</span> <span style="color: #7F9F7F;">(</span><span style="color: #a9a1e1;">(</span>n <span style="color: #8CD0D3;">(</span>ask-for-number<span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span>
+&#9474; &#9474; <span style="color: #7F9F7F;">(</span>setf n <span style="color: #a9a1e1;">(</span>+ n <span style="color: #DCDCDC; font-weight: bold;">1</span><span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span>
+&#9474; &#9474; <span style="color: #7F9F7F;">(</span>format t <span style="color: #CC9393;">"The new number is ~A"</span> n<span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org96fa524" class="outline-3">
-<h3 id="org96fa524">Iteration</h3>
-<div class="outline-text-3" id="text-org96fa524">
+<div id="outline-container-org9c94449" class="outline-3">
+<h3 id="org9c94449">Iteration</h3>
+<div class="outline-text-3" id="text-org9c94449">
 <p>
 When we want to do something repeatedly, it is sometimes more natural to
 use iteration than recursion. A typical case for iteration is to generate some
 sort of table. This function
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">defun</span> <span style="color: #80bcb6;">show-squares</span> <span style="color: #ab98b5;">(</span>start end<span style="color: #ab98b5;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">(</span><span style="color: #4d9391; font-weight: bold;">do</span> <span style="color: #5D8272;">(</span><span style="color: #807f96;">(</span>i start <span style="color: #6bd9db;">(</span>+ i <span style="color: #cd5c60;">1</span><span style="color: #6bd9db;">)</span><span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #5D8272;">(</span><span style="color: #807f96;">(</span>&gt; i end<span style="color: #807f96;">)</span> 'done<span style="color: #5D8272;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #5D8272;">(</span>format t <span style="color: #6fb593;">"~A ~A~%"</span> i <span style="color: #807f96;">(</span>* i i<span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
-<span style="color: #6bd9db;">(</span>show-squares <span style="color: #cd5c60;">2</span> <span style="color: #cd5c60;">4</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">show-squares</span> <span style="color: #DC8CC3;">(</span>start end<span style="color: #DC8CC3;">)</span>
+&#9474; <span style="color: #DC8CC3;">(</span><span style="color: #F0DFAF; font-weight: bold;">do</span> <span style="color: #7F9F7F;">(</span><span style="color: #a9a1e1;">(</span>i start <span style="color: #8CD0D3;">(</span>+ i <span style="color: #DCDCDC; font-weight: bold;">1</span><span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span>
+&#9474; &#9474; &#9474; <span style="color: #7F9F7F;">(</span><span style="color: #a9a1e1;">(</span>&gt; i end<span style="color: #a9a1e1;">)</span> 'done<span style="color: #7F9F7F;">)</span>
+&#9474; &#9474; <span style="color: #7F9F7F;">(</span>format t <span style="color: #CC9393;">"~A ~A~%"</span> i <span style="color: #a9a1e1;">(</span>* i i<span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
+<span style="color: #8CD0D3;">(</span>show-squares <span style="color: #DCDCDC; font-weight: bold;">2</span> <span style="color: #DCDCDC; font-weight: bold;">4</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -656,7 +654,7 @@ do can create variables, and the first argument is a list of variable
 specifications. Each element of this list can be of the form
 </p>
 
-<pre class="example" id="org9a77234">
+<pre class="example" id="orgdf8838d">
 {variable initial update)
 </pre>
 
@@ -679,12 +677,12 @@ the body is evaluated.
 
 
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">defun</span> <span style="color: #80bcb6;">show-squares</span> <span style="color: #ab98b5;">(</span>i end<span style="color: #ab98b5;">)</span>
-<span style="color: #31b1351b37b1;"> </span><span style="color: #ab98b5;">(</span><span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #5D8272;">(</span>&gt; i end<span style="color: #5D8272;">)</span>
-<span style="color: #31b1351b37b1;"> </span> 'done
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #5D8272;">(</span><span style="color: #4d9391; font-weight: bold;">progn</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span><span style="color: #807f96;">(</span>format t M~A ~A~&#176;/,n i <span style="color: #6bd9db;">(</span>* i i <span style="color: #6bd9db;">)</span> <span style="color: #807f96;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span><span style="color: #807f96;">(</span>show-squares <span style="color: #6bd9db;">(</span>+ i <span style="color: #cd5c60;">1</span><span style="color: #6bd9db;">)</span> e n d<span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">show-squares</span> <span style="color: #DC8CC3;">(</span>i end<span style="color: #DC8CC3;">)</span>
+&#9474;<span style="color: #DC8CC3;">(</span><span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #7F9F7F;">(</span>&gt; i end<span style="color: #7F9F7F;">)</span>
+&#9474; 'done
+&#9474; <span style="color: #7F9F7F;">(</span><span style="color: #F0DFAF; font-weight: bold;">progn</span>
+&#9474; &#9474; &#9474;<span style="color: #a9a1e1;">(</span>format t M~A ~A~&#176;/,n i <span style="color: #8CD0D3;">(</span>* i i <span style="color: #8CD0D3;">)</span> <span style="color: #a9a1e1;">)</span>
+&#9474; &#9474;<span style="color: #a9a1e1;">(</span>show-squares <span style="color: #8CD0D3;">(</span>+ i <span style="color: #DCDCDC; font-weight: bold;">1</span><span style="color: #8CD0D3;">)</span> e n d<span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 
@@ -694,16 +692,16 @@ through the elements of a list, for example, you would be more likely to use
 <code>dolist</code> . Observe the following functions:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">defun</span> <span style="color: #80bcb6;">our-length-without-do</span> <span style="color: #ab98b5;">(</span>lst<span style="color: #ab98b5;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">(</span><span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #5D8272;">(</span>null lst<span style="color: #5D8272;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #cd5c60;">0</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #5D8272;">(</span>+ <span style="color: #807f96;">(</span>our-length-without-do <span style="color: #6bd9db;">(</span>cdr lst<span style="color: #6bd9db;">)</span><span style="color: #807f96;">)</span> <span style="color: #cd5c60;">1</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">our-length-without-do</span> <span style="color: #DC8CC3;">(</span>lst<span style="color: #DC8CC3;">)</span>
+&#9474; <span style="color: #DC8CC3;">(</span><span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #7F9F7F;">(</span>null lst<span style="color: #7F9F7F;">)</span>
+&#9474; &#9474; &#9474; <span style="color: #DCDCDC; font-weight: bold;">0</span>
+&#9474; &#9474; &#9474; <span style="color: #7F9F7F;">(</span>+ <span style="color: #a9a1e1;">(</span>our-length-without-do <span style="color: #8CD0D3;">(</span>cdr lst<span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span> <span style="color: #DCDCDC; font-weight: bold;">1</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgcc12c25" class="outline-3">
-<h3 id="orgcc12c25">Functions as Objects</h3>
-<div class="outline-text-3" id="text-orgcc12c25">
+<div id="outline-container-orgac92195" class="outline-3">
+<h3 id="orgac92195">Functions as Objects</h3>
+<div class="outline-text-3" id="text-orgac92195">
 <p>
 In Lisp, functions are regular objects, like symbols or strings or lists. If we
 give the name of a function to function, it will return the associated object.
@@ -711,7 +709,7 @@ Like quote, function is a special operator, so we don&rsquo;t have to quote the
 argument:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>function +<span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>function +<span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -736,7 +734,7 @@ Just as we can use <code>'</code> as an abbreviation for quote, we can use <code
 abbreviation for function:
 </p>
 
-<pre class="example" id="orgb13dcc3">
+<pre class="example" id="org1b96b1d">
 (apply #'+ l) ==  (apply (function +) l)
 </pre>
 
@@ -761,7 +759,7 @@ function <code>f</code>, because <code>'f</code> will still refer to the global 
 whichever function might be stored in its symbol-function slot). E.g.
 </p>
 
-<pre class="example" id="orgaffa8d8">
+<pre class="example" id="org4db5e98">
 (cl-flet ((car (x y) (+ x y)))
   (list #'car 'car))
 =&gt;
@@ -780,7 +778,7 @@ arguments for it, and returns the result of applying the function to the
 arguments:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>apply #'+ ' <span style="color: #ab98b5;">(</span> <span style="color: #cd5c60;">1</span> <span style="color: #cd5c60;">2</span> <span style="color: #cd5c60;">3</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>apply #'+ ' <span style="color: #DC8CC3;">(</span> <span style="color: #DCDCDC; font-weight: bold;">1</span> <span style="color: #DCDCDC; font-weight: bold;">2</span> <span style="color: #DCDCDC; font-weight: bold;">3</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 
@@ -789,7 +787,7 @@ The function f u n c a l l does the same thing but does not need the arguments
 to be packaged in a list:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>funcall #'+ <span style="color: #cd5c60;">1</span> <span style="color: #cd5c60;">2</span> <span style="color: #cd5c60;">3</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>funcall #'+ <span style="color: #DCDCDC; font-weight: bold;">1</span> <span style="color: #DCDCDC; font-weight: bold;">2</span> <span style="color: #DCDCDC; font-weight: bold;">3</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -811,8 +809,8 @@ Here is a lambda expression representing a function that takes two numbers and
 returns their sum:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">lambda</span> <span style="color: #ab98b5;">(</span>x y<span style="color: #ab98b5;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">(</span>+ x y<span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">lambda</span> <span style="color: #DC8CC3;">(</span>x y<span style="color: #DC8CC3;">)</span>
+&#9474; <span style="color: #DC8CC3;">(</span>+ x y<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -821,13 +819,13 @@ ordinary function name, a lambda expression can be the first element of a
 function call, for example:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span><span style="color: #ab98b5;">(</span><span style="color: #4d9391; font-weight: bold;">lambda</span> <span style="color: #5D8272;">(</span>x<span style="color: #5D8272;">)</span> <span style="color: #5D8272;">(</span>+ x <span style="color: #cd5c60;">100</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span> <span style="color: #cd5c60;">2</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #DC8CC3;">(</span><span style="color: #F0DFAF; font-weight: bold;">lambda</span> <span style="color: #7F9F7F;">(</span>x<span style="color: #7F9F7F;">)</span> <span style="color: #7F9F7F;">(</span>+ x <span style="color: #DCDCDC; font-weight: bold;">100</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span> <span style="color: #DCDCDC; font-weight: bold;">2</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgd1e1257" class="outline-3">
-<h3 id="orgd1e1257">Types</h3>
-<div class="outline-text-3" id="text-orgd1e1257">
+<div id="outline-container-org32c92fc" class="outline-3">
+<h3 id="org32c92fc">Types</h3>
+<div class="outline-text-3" id="text-org32c92fc">
 <p>
 Lisp has an unusually flexible approach to types. In many languages, variables
 are what have types, and you can&rsquo;t use a variable without specifying its type.
@@ -847,9 +845,9 @@ We will study types in details later.
 </div>
 </div>
 </div>
-<div id="outline-container-orgbdaad62" class="outline-2">
-<h2 id="orgbdaad62">Lists</h2>
-<div class="outline-text-2" id="text-orgbdaad62">
+<div id="outline-container-org387e63e" class="outline-2">
+<h2 id="org387e63e">Lists</h2>
+<div class="outline-text-2" id="text-org387e63e">
 <p>
 In Lisp, lists are one of the fundamental data structures in Lisp. In the
 earliest dialects they were the only data structure: the name &ldquo;Lisp&rdquo; originally
@@ -858,9 +856,9 @@ Common Lisp is a general-purpose programming language with a wide variety of
 data structures.
 </p>
 </div>
-<div id="outline-container-org0ea5e04" class="outline-3">
-<h3 id="org0ea5e04">Conses</h3>
-<div class="outline-text-3" id="text-org0ea5e04">
+<div id="outline-container-orgd39f9bf" class="outline-3">
+<h3 id="orgd39f9bf">Conses</h3>
+<div class="outline-text-3" id="text-orgd39f9bf">
 <p>
 We previously introduced <code>cons</code>, <code>car</code>, and <code>cdr</code>, the primitive list
 manipulation functions, what cons really does is combine two objects into a
@@ -900,8 +898,8 @@ The function <code>consp</code> returns true if its argument is a cons. So l i s
 be defined:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">defun</span> <span style="color: #80bcb6;">our-listp</span> <span style="color: #ab98b5;">(</span>x<span style="color: #ab98b5;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span><span style="color: #ab98b5;">(</span>or <span style="color: #5D8272;">(</span>null x<span style="color: #5D8272;">)</span> <span style="color: #5D8272;">(</span>consp x<span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">our-listp</span> <span style="color: #DC8CC3;">(</span>x<span style="color: #DC8CC3;">)</span>
+&#9474; &#9474;<span style="color: #DC8CC3;">(</span>or <span style="color: #7F9F7F;">(</span>null x<span style="color: #7F9F7F;">)</span> <span style="color: #7F9F7F;">(</span>consp x<span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 
@@ -910,32 +908,32 @@ Since everything that is not a cons is an atom, the predicate atom could be
 defined:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">defun</span> <span style="color: #80bcb6;">our-atom</span> <span style="color: #ab98b5;">(</span>x<span style="color: #ab98b5;">)</span> <span style="color: #ab98b5;">(</span>not <span style="color: #5D8272;">(</span>consp x <span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">our-atom</span> <span style="color: #DC8CC3;">(</span>x<span style="color: #DC8CC3;">)</span> <span style="color: #DC8CC3;">(</span>not <span style="color: #7F9F7F;">(</span>consp x <span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 </div>
-<div id="outline-container-orgf486437" class="outline-4">
-<h4 id="orgf486437">Equality</h4>
-<div class="outline-text-4" id="text-orgf486437">
+<div id="outline-container-org3f14680" class="outline-4">
+<h4 id="org3f14680">Equality</h4>
+<div class="outline-text-4" id="text-org3f14680">
 <p>
 Each time you call cons, Lisp allocates a new piece of memory with room
 for two pointers. So if we call cons twice with the same arguments, we get
 back two values that look the same, but are in fact distinct objects:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>eql <span style="color: #ab98b5;">(</span>cons 'a nil<span style="color: #ab98b5;">)</span> <span style="color: #ab98b5;">(</span>cons 'a nil<span style="color: #ab98b5;">)</span> <span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>eql <span style="color: #DC8CC3;">(</span>cons 'a nil<span style="color: #DC8CC3;">)</span> <span style="color: #DC8CC3;">(</span>cons 'a nil<span style="color: #DC8CC3;">)</span> <span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
 <code>equal</code>, essentially, returns true if its arguments would print the same:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>equal <span style="color: #ab98b5;">(</span>cons 'a nil<span style="color: #ab98b5;">)</span> <span style="color: #ab98b5;">(</span>cons 'a nil<span style="color: #ab98b5;">)</span> <span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>equal <span style="color: #DC8CC3;">(</span>cons 'a nil<span style="color: #DC8CC3;">)</span> <span style="color: #DC8CC3;">(</span>cons 'a nil<span style="color: #DC8CC3;">)</span> <span style="color: #8CD0D3;">)</span>
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org66b21be" class="outline-4">
-<h4 id="org66b21be">Pointers</h4>
-<div class="outline-text-4" id="text-org66b21be">
+<div id="outline-container-orgbd80cf5" class="outline-4">
+<h4 id="orgbd80cf5">Pointers</h4>
+<div class="outline-text-4" id="text-orgbd80cf5">
 <p>
 One of the secrets to understanding Lisp is to realize that variables have
 values in the same way that lists have elements. As conses have pointers to
@@ -953,8 +951,8 @@ similar happens with variables. Suppose, for example, we set two variables to
 the same list:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>setf y <span style="color: #ab98b5;">(</span>list 'a 'b 'c<span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
-<span style="color: #6bd9db;">(</span>setf x '<span style="color: #ab98b5;">(</span> a b c<span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>setf y <span style="color: #DC8CC3;">(</span>list 'a 'b 'c<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
+<span style="color: #8CD0D3;">(</span>setf x '<span style="color: #DC8CC3;">(</span> a b c<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -965,43 +963,43 @@ the list. So whenever you assign
 one variable the value of another, the two variables will have e q l values:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>setf y <span style="color: #ab98b5;">(</span>list 'a 'b 'c<span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
-<span style="color: #6bd9db;">(</span>setf x '<span style="color: #ab98b5;">(</span> a b c<span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
-<span style="color: #6bd9db;">(</span>setf y x<span style="color: #6bd9db;">)</span>
-<span style="color: #6bd9db;">(</span>eql x y<span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>setf y <span style="color: #DC8CC3;">(</span>list 'a 'b 'c<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
+<span style="color: #8CD0D3;">(</span>setf x '<span style="color: #DC8CC3;">(</span> a b c<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
+<span style="color: #8CD0D3;">(</span>setf y x<span style="color: #8CD0D3;">)</span>
+<span style="color: #8CD0D3;">(</span>eql x y<span style="color: #8CD0D3;">)</span>
 </code></pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org7d21b15" class="outline-3">
-<h3 id="org7d21b15">Example: Compression</h3>
-<div class="outline-text-3" id="text-org7d21b15">
+<div id="outline-container-org07e910f" class="outline-3">
+<h3 id="org07e910f">Example: Compression</h3>
+<div class="outline-text-3" id="text-org07e910f">
 <p>
 As an example, this section shows how to perform a simple form of compression on
 lists. This algorithm goes by the impressive name of <code>run-length</code>, it should
 work as follows:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>comprs '<span style="color: #ab98b5;">(</span>a a a c<span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>comprs '<span style="color: #DC8CC3;">(</span>a a a c<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">defun</span> <span style="color: #80bcb6;">comprs</span> <span style="color: #ab98b5;">(</span>x<span style="color: #ab98b5;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">(</span>ucompr <span style="color: #5D8272;">(</span>car x<span style="color: #5D8272;">)</span> <span style="color: #cd5c60;">1</span> <span style="color: #5D8272;">(</span>cdr x<span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
- 
- 
-<span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">defun</span> <span style="color: #80bcb6;">ucompr</span> <span style="color: #ab98b5;">(</span>elmnt n lst<span style="color: #ab98b5;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">(</span><span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #5D8272;">(</span>null lst<span style="color: #5D8272;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #5D8272;">(</span>list <span style="color: #807f96;">(</span>build elmnt n<span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #5D8272;">(</span><span style="color: #4d9391; font-weight: bold;">let</span> <span style="color: #807f96;">(</span><span style="color: #6bd9db;">(</span>next <span style="color: #ab98b5;">(</span>car lst<span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span><span style="color: #807f96;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #807f96;">(</span><span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #6bd9db;">(</span>eql next elmnt<span style="color: #6bd9db;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #6bd9db;">(</span>ucompr elmnt <span style="color: #ab98b5;">(</span>+ n <span style="color: #cd5c60;">1</span><span style="color: #ab98b5;">)</span> <span style="color: #ab98b5;">(</span>cdr lst<span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #6bd9db;">(</span>cons <span style="color: #ab98b5;">(</span>build elmnt n<span style="color: #ab98b5;">)</span> <span style="color: #ab98b5;">(</span>ucompr next <span style="color: #cd5c60;">1</span> <span style="color: #5D8272;">(</span>cdr lst<span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span><span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
-           
-<span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">defun</span> <span style="color: #80bcb6;">build</span> <span style="color: #ab98b5;">(</span>elmnt n<span style="color: #ab98b5;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">(</span><span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #5D8272;">(</span>&gt; n <span style="color: #cd5c60;">1</span><span style="color: #5D8272;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #5D8272;">(</span>list n elmnt<span style="color: #5D8272;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> elmnt<span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">comprs</span> <span style="color: #DC8CC3;">(</span>x<span style="color: #DC8CC3;">)</span>
+&#9474; <span style="color: #DC8CC3;">(</span>ucompr <span style="color: #7F9F7F;">(</span>car x<span style="color: #7F9F7F;">)</span> <span style="color: #DCDCDC; font-weight: bold;">1</span> <span style="color: #7F9F7F;">(</span>cdr x<span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
+&#9474;
+&#9474;
+<span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">ucompr</span> <span style="color: #DC8CC3;">(</span>elmnt n lst<span style="color: #DC8CC3;">)</span>
+&#9474; <span style="color: #DC8CC3;">(</span><span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #7F9F7F;">(</span>null lst<span style="color: #7F9F7F;">)</span>
+&#9474; &#9474; &#9474; <span style="color: #7F9F7F;">(</span>list <span style="color: #a9a1e1;">(</span>build elmnt n<span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span>
+&#9474; &#9474; &#9474; <span style="color: #7F9F7F;">(</span><span style="color: #F0DFAF; font-weight: bold;">let</span> <span style="color: #a9a1e1;">(</span><span style="color: #8CD0D3;">(</span>next <span style="color: #DC8CC3;">(</span>car lst<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span>
+&#9474; &#9474; &#9474; &#9474; <span style="color: #a9a1e1;">(</span><span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #8CD0D3;">(</span>eql next elmnt<span style="color: #8CD0D3;">)</span>
+&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; <span style="color: #8CD0D3;">(</span>ucompr elmnt <span style="color: #DC8CC3;">(</span>+ n <span style="color: #DCDCDC; font-weight: bold;">1</span><span style="color: #DC8CC3;">)</span> <span style="color: #DC8CC3;">(</span>cdr lst<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
+&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; <span style="color: #8CD0D3;">(</span>cons <span style="color: #DC8CC3;">(</span>build elmnt n<span style="color: #DC8CC3;">)</span> <span style="color: #DC8CC3;">(</span>ucompr next <span style="color: #DCDCDC; font-weight: bold;">1</span> <span style="color: #7F9F7F;">(</span>cdr lst<span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
+&#9474; &#9474; &#9474; &#9474; &#9474; &#9474;
+<span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">build</span> <span style="color: #DC8CC3;">(</span>elmnt n<span style="color: #DC8CC3;">)</span>
+&#9474; <span style="color: #DC8CC3;">(</span><span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #7F9F7F;">(</span>&gt; n <span style="color: #DCDCDC; font-weight: bold;">1</span><span style="color: #7F9F7F;">)</span>
+&#9474; &#9474; &#9474; <span style="color: #7F9F7F;">(</span>list n elmnt<span style="color: #7F9F7F;">)</span>
+&#9474; &#9474; &#9474; elmnt<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 
@@ -1011,20 +1009,20 @@ Can you write one to do uncompress?
 </p>
 
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">defun</span> <span style="color: #80bcb6;">unbuild</span> <span style="color: #ab98b5;">(</span>n elmt<span style="color: #ab98b5;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">(</span><span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #5D8272;">(</span>zerop n<span style="color: #5D8272;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> nil
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #5D8272;">(</span>cons elmt <span style="color: #807f96;">(</span>unbuild <span style="color: #6bd9db;">(</span>- n <span style="color: #cd5c60;">1</span><span style="color: #6bd9db;">)</span> elmt<span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
-     
-<span style="color: #6bd9db;">(</span><span style="color: #4d9391; font-weight: bold;">defun</span> <span style="color: #80bcb6;">uncompress</span> <span style="color: #ab98b5;">(</span>lst<span style="color: #ab98b5;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">(</span><span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #5D8272;">(</span>null lst<span style="color: #5D8272;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> nil
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #5D8272;">(</span><span style="color: #4d9391; font-weight: bold;">if</span> <span style="color: #807f96;">(</span>listp <span style="color: #6bd9db;">(</span>car lst<span style="color: #6bd9db;">)</span><span style="color: #807f96;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #807f96;">(</span><span style="color: #4d9391; font-weight: bold;">let</span> <span style="color: #6bd9db;">(</span><span style="color: #ab98b5;">(</span>f <span style="color: #5D8272;">(</span>car <span style="color: #807f96;">(</span>car lst<span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">(</span>s <span style="color: #5D8272;">(</span>cdr <span style="color: #807f96;">(</span>car lst<span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #6bd9db;">(</span>cons <span style="color: #ab98b5;">(</span>unbuild f s<span style="color: #ab98b5;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #ab98b5;">(</span>uncompress <span style="color: #5D8272;">(</span>cdr lst<span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span><span style="color: #807f96;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #807f96;">(</span>uncompress <span style="color: #6bd9db;">(</span>cdr lst<span style="color: #6bd9db;">)</span><span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">unbuild</span> <span style="color: #DC8CC3;">(</span>n elmt<span style="color: #DC8CC3;">)</span>
+&#9474; <span style="color: #DC8CC3;">(</span><span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #7F9F7F;">(</span>zerop n<span style="color: #7F9F7F;">)</span>
+&#9474; &#9474; &#9474; nil
+&#9474; &#9474; &#9474; <span style="color: #7F9F7F;">(</span>cons elmt <span style="color: #a9a1e1;">(</span>unbuild <span style="color: #8CD0D3;">(</span>- n <span style="color: #DCDCDC; font-weight: bold;">1</span><span style="color: #8CD0D3;">)</span> elmt<span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
+&#9474; &#9474; &#9474;
+<span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">uncompress</span> <span style="color: #DC8CC3;">(</span>lst<span style="color: #DC8CC3;">)</span>
+&#9474; <span style="color: #DC8CC3;">(</span><span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #7F9F7F;">(</span>null lst<span style="color: #7F9F7F;">)</span>
+&#9474; &#9474; &#9474; nil
+&#9474; &#9474; &#9474; <span style="color: #7F9F7F;">(</span><span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #a9a1e1;">(</span>listp <span style="color: #8CD0D3;">(</span>car lst<span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span>
+&#9474; &#9474; &#9474; &#9474; &#9474; <span style="color: #a9a1e1;">(</span><span style="color: #F0DFAF; font-weight: bold;">let</span> <span style="color: #8CD0D3;">(</span><span style="color: #DC8CC3;">(</span>f <span style="color: #7F9F7F;">(</span>car <span style="color: #a9a1e1;">(</span>car lst<span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span>
+&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; <span style="color: #DC8CC3;">(</span>s <span style="color: #7F9F7F;">(</span>cdr <span style="color: #a9a1e1;">(</span>car lst<span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
+&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; <span style="color: #8CD0D3;">(</span>cons <span style="color: #DC8CC3;">(</span>unbuild f s<span style="color: #DC8CC3;">)</span>
+&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; <span style="color: #DC8CC3;">(</span>uncompress <span style="color: #7F9F7F;">(</span>cdr lst<span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span>
+&#9474; &#9474; &#9474; &#9474; &#9474; <span style="color: #a9a1e1;">(</span>uncompress <span style="color: #8CD0D3;">(</span>cdr lst<span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 
@@ -1033,26 +1031,26 @@ This will work, however, as you will see we are going to get some different kind
 of lists, lists of lists;
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>uncompress <span style="color: #ab98b5;">(</span>list '<span style="color: #5D8272;">(</span><span style="color: #cd5c60;">3</span> A<span style="color: #5D8272;">)</span> '<span style="color: #5D8272;">(</span><span style="color: #cd5c60;">3</span> B<span style="color: #5D8272;">)</span> '<span style="color: #5D8272;">(</span><span style="color: #cd5c60;">2</span> C<span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>uncompress <span style="color: #DC8CC3;">(</span>list '<span style="color: #7F9F7F;">(</span><span style="color: #DCDCDC; font-weight: bold;">3</span> A<span style="color: #7F9F7F;">)</span> '<span style="color: #7F9F7F;">(</span><span style="color: #DCDCDC; font-weight: bold;">3</span> B<span style="color: #7F9F7F;">)</span> '<span style="color: #7F9F7F;">(</span><span style="color: #DCDCDC; font-weight: bold;">2</span> C<span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgb3be906" class="outline-3">
-<h3 id="orgb3be906">Access</h3>
-<div class="outline-text-3" id="text-orgb3be906">
+<div id="outline-container-org7735d18" class="outline-3">
+<h3 id="org7735d18">Access</h3>
+<div class="outline-text-3" id="text-org7735d18">
 <p>
 Common Lisp has additional access functions defined in terms of <code>car</code> and
 <code>cdr</code>. To find the element at a given position in a list we call <code>nth</code>,
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>nth <span style="color: #cd5c60;">0</span> ' <span style="color: #ab98b5;">(</span> a b c<span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>nth <span style="color: #DCDCDC; font-weight: bold;">0</span> ' <span style="color: #DC8CC3;">(</span> a b c<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
 and to find the nth cdr, we call <code>nthcdr</code>:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>nthcdr <span style="color: #cd5c60;">2</span> ' <span style="color: #ab98b5;">(</span> a b c<span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>nthcdr <span style="color: #DCDCDC; font-weight: bold;">2</span> ' <span style="color: #DC8CC3;">(</span> a b c<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 
@@ -1065,9 +1063,9 @@ nthcdr.
 </p>
 </div>
 </div>
-<div id="outline-container-orgded6684" class="outline-3">
-<h3 id="orgded6684">Mapping functions</h3>
-<div class="outline-text-3" id="text-orgded6684">
+<div id="outline-container-org6d1782e" class="outline-3">
+<h3 id="org6d1782e">Mapping functions</h3>
+<div class="outline-text-3" id="text-org6d1782e">
 <p>
 Common Lisp provides several functions for calling functions on the elements
 of a list. The most frequently used is mapcar, which takes a function and
@@ -1075,8 +1073,8 @@ one or more lists, and returns the result of applying the function to elements
 taken from each list, until some list runs out:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>mapcar #'<span style="color: #ab98b5;">(</span><span style="color: #4d9391; font-weight: bold;">lambda</span> <span style="color: #5D8272;">(</span>x<span style="color: #5D8272;">)</span> <span style="color: #5D8272;">(</span>+ x <span style="color: #cd5c60;">10</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span>'<span style="color: #ab98b5;">(</span><span style="color: #cd5c60;">1</span> <span style="color: #cd5c60;">2</span> <span style="color: #cd5c60;">3</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>mapcar #'<span style="color: #DC8CC3;">(</span><span style="color: #F0DFAF; font-weight: bold;">lambda</span> <span style="color: #7F9F7F;">(</span>x<span style="color: #7F9F7F;">)</span> <span style="color: #7F9F7F;">(</span>+ x <span style="color: #DCDCDC; font-weight: bold;">10</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span>
+&#9474; &#9474; &#9474; &#9474; &#9474;'<span style="color: #DC8CC3;">(</span><span style="color: #DCDCDC; font-weight: bold;">1</span> <span style="color: #DCDCDC; font-weight: bold;">2</span> <span style="color: #DCDCDC; font-weight: bold;">3</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -1084,19 +1082,19 @@ The related <code>maplist</code> takes the same arguments, but calls the functio
 successive <code>cdrs</code> of the lists:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>maplist #'<span style="color: #ab98b5;">(</span><span style="color: #4d9391; font-weight: bold;">lambda</span> <span style="color: #5D8272;">(</span>x<span style="color: #5D8272;">)</span> x<span style="color: #ab98b5;">)</span>
-<span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> <span style="color: #31b1351b37b1;"> </span> '<span style="color: #ab98b5;">(</span>a b c<span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>maplist #'<span style="color: #DC8CC3;">(</span><span style="color: #F0DFAF; font-weight: bold;">lambda</span> <span style="color: #7F9F7F;">(</span>x<span style="color: #7F9F7F;">)</span> x<span style="color: #DC8CC3;">)</span>
+&#9474; &#9474; &#9474; &#9474; &#9474; '<span style="color: #DC8CC3;">(</span>a b c<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org9cac9b5" class="outline-3">
-<h3 id="org9cac9b5">Trees</h3>
-<div class="outline-text-3" id="text-org9cac9b5">
+<div id="outline-container-orgbfd2e38" class="outline-3">
+<h3 id="orgbfd2e38">Trees</h3>
+<div class="outline-text-3" id="text-orgbfd2e38">
 <p>
 Conses can also be considered as binary trees, with the car representing the
 right subtree and the cdr the left. For example, the list
 </p>
-<pre class="example" id="orge2865a9">
+<pre class="example" id="orgba4853d">
 (a (b c) d)
 </pre>
 
@@ -1105,7 +1103,7 @@ is also the tree represented in the following figure:
 </p>
 
 
-<figure id="org114d29d">
+<figure id="org72e2530">
 <img src="../i/old/2023-03-05_17-47.png" alt="2023-03-05_17-47.png">
 
 </figure>
@@ -1117,14 +1115,14 @@ but because one needs a way to do something to a list and all the lists within
 it. For example, suppose we have a list like
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>and <span style="color: #ab98b5;">(</span>integerp x<span style="color: #ab98b5;">)</span> <span style="color: #ab98b5;">(</span>zerop <span style="color: #5D8272;">(</span>mod x <span style="color: #cd5c60;">2</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>and <span style="color: #DC8CC3;">(</span>integerp x<span style="color: #DC8CC3;">)</span> <span style="color: #DC8CC3;">(</span>zerop <span style="color: #7F9F7F;">(</span>mod x <span style="color: #DCDCDC; font-weight: bold;">2</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
 and we want to substitute y for x throughout. It won&rsquo;t do to call substitute,
 which replaces elements in a sequence:
 </p>
-<pre class="code"><code><span style="color: #6bd9db;">(</span>substitute 'y 'x '<span style="color: #ab98b5;">(</span>and <span style="color: #5D8272;">(</span>integerp x<span style="color: #5D8272;">)</span> <span style="color: #5D8272;">(</span>zerop <span style="color: #807f96;">(</span>mod x <span style="color: #cd5c60;">2</span><span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>substitute 'y 'x '<span style="color: #DC8CC3;">(</span>and <span style="color: #7F9F7F;">(</span>integerp x<span style="color: #7F9F7F;">)</span> <span style="color: #7F9F7F;">(</span>zerop <span style="color: #a9a1e1;">(</span>mod x <span style="color: #DCDCDC; font-weight: bold;">2</span><span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -1133,7 +1131,7 @@ sequential elements, like this:
 </p>
 
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>substitute 'y 'x '<span style="color: #ab98b5;">(</span>x <span style="color: #5D8272;">(</span>integerp x<span style="color: #5D8272;">)</span> <span style="color: #5D8272;">(</span>zerop <span style="color: #807f96;">(</span>mod x <span style="color: #cd5c60;">2</span><span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>substitute 'y 'x '<span style="color: #DC8CC3;">(</span>x <span style="color: #7F9F7F;">(</span>integerp x<span style="color: #7F9F7F;">)</span> <span style="color: #7F9F7F;">(</span>zerop <span style="color: #a9a1e1;">(</span>mod x <span style="color: #DCDCDC; font-weight: bold;">2</span><span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 <p>
 However, there is a good replacement which is <code>subset</code>, which can access
@@ -1141,16 +1139,16 @@ subtrees:
 </p>
 
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>subst 'y 'x '<span style="color: #ab98b5;">(</span>and <span style="color: #5D8272;">(</span>integerp x<span style="color: #5D8272;">)</span> <span style="color: #5D8272;">(</span>zerop <span style="color: #807f96;">(</span>mod x <span style="color: #cd5c60;">2</span><span style="color: #807f96;">)</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>subst 'y 'x '<span style="color: #DC8CC3;">(</span>and <span style="color: #7F9F7F;">(</span>integerp x<span style="color: #7F9F7F;">)</span> <span style="color: #7F9F7F;">(</span>zerop <span style="color: #a9a1e1;">(</span>mod x <span style="color: #DCDCDC; font-weight: bold;">2</span><span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 <p>
 (AND (INTEGERP Y) (ZEROP (MOD Y 2)))
 </p>
 </div>
 </div>
-<div id="outline-container-org43fb4e3" class="outline-3">
-<h3 id="org43fb4e3">Sequences</h3>
-<div class="outline-text-3" id="text-org43fb4e3">
+<div id="outline-container-org9a85732" class="outline-3">
+<h3 id="org9a85732">Sequences</h3>
+<div class="outline-text-3" id="text-org9a85732">
 <p>
 Another way to think of a list is as a series of objects in a particular order.
 In Common Lisp, sequences include both lists and vectors.
@@ -1167,7 +1165,7 @@ The function <code>reverse</code> returns a sequence with the same elements as i
 argument, but in the reverse order:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>reverse '<span style="color: #ab98b5;">(</span>a b c<span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>reverse '<span style="color: #DC8CC3;">(</span>a b c<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -1177,7 +1175,7 @@ elements, sorted according to the function:
 </p>
 
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>sort '<span style="color: #ab98b5;">(</span> <span style="color: #cd5c60;">0</span> <span style="color: #cd5c60;">2</span> <span style="color: #cd5c60;">1</span> <span style="color: #cd5c60;">3</span> <span style="color: #cd5c60;">8</span> <span style="color: #ab98b5;">)</span> #'&gt;<span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>sort '<span style="color: #DC8CC3;">(</span> <span style="color: #DCDCDC; font-weight: bold;">0</span> <span style="color: #DCDCDC; font-weight: bold;">2</span> <span style="color: #DCDCDC; font-weight: bold;">1</span> <span style="color: #DCDCDC; font-weight: bold;">3</span> <span style="color: #DCDCDC; font-weight: bold;">8</span> <span style="color: #DC8CC3;">)</span> #'&gt;<span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -1187,9 +1185,9 @@ argument. So if you don&rsquo;t want your original sequence modified, pass a cop
 </p>
 </div>
 </div>
-<div id="outline-container-org5aa150b" class="outline-3">
-<h3 id="org5aa150b">Dotted Pair Notation</h3>
-<div class="outline-text-3" id="text-org5aa150b">
+<div id="outline-container-org466ab60" class="outline-3">
+<h3 id="org466ab60">Dotted Pair Notation</h3>
+<div class="outline-text-3" id="text-org466ab60">
 <p>
 Dotted pair notation is a general syntax for cons cells that represents the CAR
 and CDR explicitly. In this syntax, <code>(a . b)</code> stands for a cons cell whose CAR
@@ -1203,9 +1201,9 @@ only used if the CDR of a cons cell is not a list.
 </p>
 </div>
 </div>
-<div id="outline-container-orgaca6b4c" class="outline-3">
-<h3 id="orgaca6b4c"><span class="done KILL">KILL</span> Example: Shortest Path&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h3>
-<div class="outline-text-3" id="text-orgaca6b4c">
+<div id="outline-container-orge10c23e" class="outline-3">
+<h3 id="orge10c23e"><span class="done KILL">KILL</span> Example: Shortest Path&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h3>
+<div class="outline-text-3" id="text-orge10c23e">
 <p>
 Following code contains a program for finding the shortest path through a
 network.  The function <code>shortest-path</code> takes a start node, a destination node,
@@ -1218,13 +1216,13 @@ In this example, nodes are represented as symbols, and networks are represented
 as assoc-lists with elements of the form
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>node . neighbors<span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>node . neighbors<span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
 For example:
 </p>
-<pre class="code"><code><span style="color: #6bd9db;">(</span>setf min '<span style="color: #ab98b5;">(</span><span style="color: #5D8272;">(</span>a b c<span style="color: #5D8272;">)</span> <span style="color: #5D8272;">(</span>b c<span style="color: #5D8272;">)</span> <span style="color: #5D8272;">(</span>c d<span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>setf min '<span style="color: #DC8CC3;">(</span><span style="color: #7F9F7F;">(</span>a b c<span style="color: #7F9F7F;">)</span> <span style="color: #7F9F7F;">(</span>b c<span style="color: #7F9F7F;">)</span> <span style="color: #7F9F7F;">(</span>c d<span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -1232,15 +1230,15 @@ We can visualize it like this:
 </p>
 
 
-<figure id="orgcdd9b1c">
+<figure id="org7b99aef">
 <img src="../i/old/Oa3OgZT.png" alt="Oa3OgZT.png">
 
 </figure>
 </div>
 </div>
-<div id="outline-container-org44a6821" class="outline-3">
-<h3 id="org44a6821">Garbage</h3>
-<div class="outline-text-3" id="text-org44a6821">
+<div id="outline-container-org159a90f" class="outline-3">
+<h3 id="org159a90f">Garbage</h3>
+<div class="outline-text-3" id="text-org159a90f">
 <p>
 Lists can be slow for several reasons. They offer sequential instead of random
 access, so retrieving a given element takes longer in a list than an array, for
@@ -1267,7 +1265,7 @@ called garbage, and the scavenging operation is called garbage collection, or
 GC.
 </p>
 
-<pre class="example" id="org5726268">
+<pre class="example" id="orga1bb52d">
 &gt; (setf 1st (list 'a &gt;b }c))
 (A B C)
 &gt; (setf 1st nil)
@@ -1294,9 +1292,9 @@ leaks and dangling pointers are simply impossible in Lisp.
 </div>
 </div>
 </div>
-<div id="outline-container-org66b1c06" class="outline-2">
-<h2 id="org66b1c06">Data Structure</h2>
-<div class="outline-text-2" id="text-org66b1c06">
+<div id="outline-container-orgebe5f8a" class="outline-2">
+<h2 id="orgebe5f8a">Data Structure</h2>
+<div class="outline-text-2" id="text-orgebe5f8a">
 <p>
 The preceding discussed the list, Lisp&rsquo;s most versatile data structure.  This
 chapter shows how to use Lisp&rsquo;s other data structures: arrays (including vectors
@@ -1304,45 +1302,45 @@ and strings), structures, and hash tables. They may not be as flexible as lists,
 but they can make access faster, and take up less space.
 </p>
 </div>
-<div id="outline-container-org66aba47" class="outline-3">
-<h3 id="org66aba47">Arrays</h3>
-<div class="outline-text-3" id="text-org66aba47">
+<div id="outline-container-org6deae07" class="outline-3">
+<h3 id="org6deae07">Arrays</h3>
+<div class="outline-text-3" id="text-org6deae07">
 <p>
 In Common Lisp, you can make an array by calling make-array with a list
 of dimensions as the first argument. To make a 2x3 array we would say:
 </p>
-<pre class="code"><code><span style="color: #6bd9db;">(</span>make-array '<span style="color: #ab98b5;">(</span><span style="color: #cd5c60;">2</span> <span style="color: #cd5c60;">3</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>make-array '<span style="color: #DC8CC3;">(</span><span style="color: #DCDCDC; font-weight: bold;">2</span> <span style="color: #DCDCDC; font-weight: bold;">3</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 <p>
 The <code>n</code> before the A tells how many dimensions the array have. You can also pass
 a tag <code>initial-element</code> to set its value:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>make-array '<span style="color: #ab98b5;">(</span><span style="color: #cd5c60;">2</span> <span style="color: #cd5c60;">3</span><span style="color: #ab98b5;">)</span> <span style="color: #80bcb6;">:initial-element</span> <span style="color: #cd5c60;">2</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>make-array '<span style="color: #DC8CC3;">(</span><span style="color: #DCDCDC; font-weight: bold;">2</span> <span style="color: #DCDCDC; font-weight: bold;">3</span><span style="color: #DC8CC3;">)</span> <span style="color: #DCDCDC; font-weight: bold;">:initial-element</span> <span style="color: #DCDCDC; font-weight: bold;">2</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
 We can access both vectors and arrays using <code>aref</code>:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>aref <span style="color: #ab98b5;">(</span>make-array '<span style="color: #5D8272;">(</span><span style="color: #cd5c60;">2</span> <span style="color: #cd5c60;">3</span><span style="color: #5D8272;">)</span> <span style="color: #80bcb6;">:initial-element</span> <span style="color: #cd5c60;">2</span><span style="color: #ab98b5;">)</span> <span style="color: #cd5c60;">0</span> <span style="color: #cd5c60;">0</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>aref <span style="color: #DC8CC3;">(</span>make-array '<span style="color: #7F9F7F;">(</span><span style="color: #DCDCDC; font-weight: bold;">2</span> <span style="color: #DCDCDC; font-weight: bold;">3</span><span style="color: #7F9F7F;">)</span> <span style="color: #DCDCDC; font-weight: bold;">:initial-element</span> <span style="color: #DCDCDC; font-weight: bold;">2</span><span style="color: #DC8CC3;">)</span> <span style="color: #DCDCDC; font-weight: bold;">0</span> <span style="color: #DCDCDC; font-weight: bold;">0</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
 However, in the cause of vectors there is a fastere function which is <code>svref</code>
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>svref <span style="color: #ab98b5;">(</span>vector 'a 'b 'c<span style="color: #ab98b5;">)</span> <span style="color: #cd5c60;">2</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>svref <span style="color: #DC8CC3;">(</span>vector 'a 'b 'c<span style="color: #DC8CC3;">)</span> <span style="color: #DCDCDC; font-weight: bold;">2</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orged47892" class="outline-3">
-<h3 id="orged47892"><span class="done KILL">KILL</span> Structures&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h3>
+<div id="outline-container-org6d7c7aa" class="outline-3">
+<h3 id="org6d7c7aa"><span class="done KILL">KILL</span> Structures&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h3>
 </div>
 </div>
-<div id="outline-container-org53ce055" class="outline-2">
-<h2 id="org53ce055">Functions</h2>
-<div class="outline-text-2" id="text-org53ce055">
+<div id="outline-container-org5f1d5b5" class="outline-2">
+<h2 id="org5f1d5b5">Functions</h2>
+<div class="outline-text-2" id="text-org5f1d5b5">
 <p>
 Understanding functions is one of the keys to understanding Lisp. Conceptually,
 functions are at the core of Lisp. Practically, they are one of the most useful
@@ -1355,29 +1353,29 @@ The predicate f boundp tells whether there is a function with a given symbol as
 its name. If a symbol is the name of a function, symbol-function will return it:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>fboundp '+<span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>fboundp '+<span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
 By setting the symbol-function of some name to a function,
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>setf <span style="color: #ab98b5;">(</span>symbol-function 'add2<span style="color: #ab98b5;">)</span> #'<span style="color: #ab98b5;">(</span><span style="color: #4d9391; font-weight: bold;">lambda</span> <span style="color: #5D8272;">(</span>x<span style="color: #5D8272;">)</span> <span style="color: #5D8272;">(</span>+ x <span style="color: #cd5c60;">2</span><span style="color: #5D8272;">)</span><span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>setf <span style="color: #DC8CC3;">(</span>symbol-function 'add2<span style="color: #DC8CC3;">)</span> #'<span style="color: #DC8CC3;">(</span><span style="color: #F0DFAF; font-weight: bold;">lambda</span> <span style="color: #7F9F7F;">(</span>x<span style="color: #7F9F7F;">)</span> <span style="color: #7F9F7F;">(</span>+ x <span style="color: #DCDCDC; font-weight: bold;">2</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>add2 <span style="color: #cd5c60;">3</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>add2 <span style="color: #DCDCDC; font-weight: bold;">3</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 </div>
-<div id="outline-container-orgc6d0c16" class="outline-3">
-<h3 id="orgc6d0c16">Tags</h3>
-<div class="outline-text-3" id="text-orgc6d0c16">
+<div id="outline-container-org363f221" class="outline-3">
+<h3 id="org363f221">Tags</h3>
+<div class="outline-text-3" id="text-org363f221">
 <p>
 We&rsquo;ve already seen four functions for retrieving elements of sequences:
 nth for lists, aref and svref for vectors, and char for strings. Common
 Lisp also provides a function <code>elt</code> that works for sequences of any kind:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>elt '<span style="color: #ab98b5;">(</span>a b c<span style="color: #ab98b5;">)</span> <span style="color: #cd5c60;">1</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>elt '<span style="color: #DC8CC3;">(</span>a b c<span style="color: #DC8CC3;">)</span> <span style="color: #DCDCDC; font-weight: bold;">1</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -1437,9 +1435,9 @@ standard set listed in this table:
 </div>
 </div>
 </div>
-<div id="outline-container-orgea679f0" class="outline-2">
-<h2 id="orgea679f0">Functional Programming</h2>
-<div class="outline-text-2" id="text-orgea679f0">
+<div id="outline-container-org78903ef" class="outline-2">
+<h2 id="org78903ef">Functional Programming</h2>
+<div class="outline-text-2" id="text-org78903ef">
 <p>
 Functional programming means writing programs that work by returning values,
 instead of by modifying things. It is the dominant paradigm in Lisp.  Most
@@ -1457,8 +1455,8 @@ Why not just say that remove removes an object from a list? Because that&rsquo;s
 what it does. The original list is untouched afterwards:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>setf 1st ' <span style="color: #ab98b5;">(</span>c a r a t <span style="color: #ab98b5;">)</span> <span style="color: #6bd9db;">)</span>
-<span style="color: #6bd9db;">(</span>remove 'a 1st<span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>setf 1st ' <span style="color: #DC8CC3;">(</span>c a r a t <span style="color: #DC8CC3;">)</span> <span style="color: #8CD0D3;">)</span>
+<span style="color: #8CD0D3;">(</span>remove 'a 1st<span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -1475,7 +1473,7 @@ and using setf with the return value. To remove all the as from a list x, we
 say:
 </p>
 
-<pre class="code"><code><span style="color: #6bd9db;">(</span>setf x <span style="color: #ab98b5;">(</span>remove 'a x<span style="color: #ab98b5;">)</span><span style="color: #6bd9db;">)</span>
+<pre class="code"><code><span style="color: #8CD0D3;">(</span>setf x <span style="color: #DC8CC3;">(</span>remove 'a x<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
 </code></pre>
 
 <p>
@@ -1503,25 +1501,25 @@ telephone, as compared to letters, enabled a new style of communication.
 </p>
 </div>
 </div>
-<div id="outline-container-orge117ed2" class="outline-2">
-<h2 id="orge117ed2">Some Other Resources</h2>
-<div class="outline-text-2" id="text-orge117ed2">
+<div id="outline-container-org84fd864" class="outline-2">
+<h2 id="org84fd864">Some Other Resources</h2>
+<div class="outline-text-2" id="text-org84fd864">
 <ul class="org-ul">
 <li><a href="https://www.reddit.com/r/lisp/comments/tna6zo/moving_from_the_beam_to_common_lisp_what_are_my/i21hjef/">Concurrncy</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org65b5dfe" class="outline-2">
-<h2 id="org65b5dfe"><span class="todo TODO">TODO</span> Ray-Tracing</h2>
+<div id="outline-container-orgdc8f173" class="outline-2">
+<h2 id="orgdc8f173"><span class="todo TODO">TODO</span> Ray-Tracing</h2>
 </div>
-<div id="outline-container-org673120c" class="outline-2">
-<h2 id="org673120c">Misc: <code>eqal?</code></h2>
-<div class="outline-text-2" id="text-org673120c">
+<div id="outline-container-orgd57349e" class="outline-2">
+<h2 id="orgd57349e">Misc: <code>eqal?</code></h2>
+<div class="outline-text-2" id="text-orgd57349e">
 <ul class="org-ul">
 <li><p>
 <code>(eq x y)</code> is true if and only if x and y are the same identical object.
 </p>
-<pre class="example" id="orgf959217">
+<pre class="example" id="org4655c81">
 (eq 'a 'b) is false.
 (eq 'a 'a) is true.
 (eq 3 3) might be true or false, depending on the implementation.
@@ -1547,7 +1545,7 @@ The <code>eql</code> predicate is true if its arguments are <code>eq</code>, or 
 of the same type with the same value, or if they are character objects that
 represent the same character.
 </p>
-<pre class="example" id="org32394b8">
+<pre class="example" id="org9e97a8d">
 (eql 'a 'b) is false.
 (eql 'a 'a) is true.
 (eql 3 3) is true.
@@ -1590,7 +1588,7 @@ and only if their printed representations are the same.</li>
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 31.0.50 (<a href="https://orgmode.org">Org</a> mode 9.7.11). Written by: Salih Muhammed, by the date of: 2023-02-16 Thu 18:55. Last build date: 2024-12-14 Sat 21:43.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.93 (<a href="https://orgmode.org">Org</a> mode 9.7.22). Written by: Salih Muhammed, by the date of: 2023-02-16 Thu 18:55. Last build date: 2025-01-07 Tue 16:37.</p>
 
 </div>
 </div>

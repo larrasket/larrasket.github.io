@@ -1,0 +1,11 @@
+
+# Exclude development files
+.git
+.gitignore
+*.md
+README*
+.DS_Store
+Thumbs.db
+.env*
+node_modules/
+*.log
