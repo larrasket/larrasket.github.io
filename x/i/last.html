@@ -95,35 +95,35 @@ The next step would be how to analysis the scrapped data, which is usually very
 big. Here&rsquo;s my simple algorithm (take records as the list of all user actions):
 </p>
 
-<pre class="code"><code>&#9474;   <span style="color: #F0DFAF; font-weight: bold;">var</span> <span style="color: #DFAF8F;">uptime</span> <span style="color: #7CB8BB;">time.Duration</span>
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">var</span> <span style="color: #DFAF8F;">res</span> []<span style="color: #7CB8BB;">Record</span>
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">for</span> <span style="color: #DFAF8F;">i</span> := <span style="color: #DCDCDC; font-weight: bold;">1</span>; i &lt; <span style="color: #DCDCDC; font-weight: bold;">len</span>(records); i++ {
-&#9474;   &#9474;   <span style="color: #DFAF8F;">between</span> := records[i].End.<span style="color: #93E0E3;">Sub</span>(records[i-<span style="color: #DCDCDC; font-weight: bold;">1</span>].End)
-&#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">if</span> between &gt;= cfg.SleepDuration {
+<pre class="code"><code>&#9474;   <span style="color: #ef80bf; font-weight: bold;">var</span> <span style="color: #df7fff;">uptime</span> <span style="color: #f470df;">time.Duration</span>
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">var</span> <span style="color: #df7fff;">res</span> []<span style="color: #f470df;">Record</span>
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> <span style="color: #df7fff;">i</span> := 1; i &lt; <span style="color: #a897ef; font-weight: bold;">len</span>(records); i++ {
+&#9474;   &#9474;   <span style="color: #df7fff;">between</span> := records[i].End.<span style="color: #f59280;">Sub</span>(records[i-1].End)
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> between &gt;= cfg.SleepDuration {
 &#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">if</span> between &gt;= cfg.MaxSleepTime {
-&#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #DFAF8F;">r</span> := rand.<span style="color: #93E0E3;">Intn</span>(<span style="color: #DCDCDC; font-weight: bold;">100</span>)
+&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> between &gt;= cfg.MaxSleepTime {
+&#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #df7fff;">r</span> := rand.<span style="color: #f59280;">Intn</span>(100)
 &#9474;   &#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   &#9474;   res = <span style="color: #DCDCDC; font-weight: bold;">append</span>(res, <span style="color: #7CB8BB;">Record</span>{<span style="color: #BFEBBF;">Type</span>: RecordTypeSleep, <span style="color: #BFEBBF;">ActionRecord</span>: <span style="color: #7CB8BB;">ActionRecord</span>{
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #BFEBBF;">Start</span>: records[i-<span style="color: #DCDCDC; font-weight: bold;">1</span>].End,
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #BFEBBF;">End</span>:   records[i-<span style="color: #DCDCDC; font-weight: bold;">1</span>].End.<span style="color: #93E0E3;">Add</span>(<span style="color: #DCDCDC; font-weight: bold;">8</span> * time.Hour).<span style="color: #93E0E3;">Add</span>(time.<span style="color: #93E0E3;">Duration</span>(r) * time.Minute),
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #BFEBBF;">Total</span>: records[i-<span style="color: #DCDCDC; font-weight: bold;">1</span>].End.<span style="color: #93E0E3;">Add</span>(<span style="color: #DCDCDC; font-weight: bold;">8</span> * time.Hour).<span style="color: #93E0E3;">Add</span>(time.<span style="color: #93E0E3;">Duration</span>(r) * time.Minute).<span style="color: #93E0E3;">Sub</span>(records[i-<span style="color: #DCDCDC; font-weight: bold;">1</span>].End),
+&#9474;   &#9474;   &#9474;   &#9474;   res = <span style="color: #a897ef; font-weight: bold;">append</span>(res, <span style="color: #f470df;">Record</span>{<span style="color: #ff78aa;">Type</span>: RecordTypeSleep, <span style="color: #ff78aa;">ActionRecord</span>: <span style="color: #f470df;">ActionRecord</span>{
+&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #ff78aa;">Start</span>: records[i-1].End,
+&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #ff78aa;">End</span>:   records[i-1].End.<span style="color: #f59280;">Add</span>(8 * time.Hour).<span style="color: #f59280;">Add</span>(time.<span style="color: #f59280;">Duration</span>(r) * time.Minute),
+&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #ff78aa;">Total</span>: records[i-1].End.<span style="color: #f59280;">Add</span>(8 * time.Hour).<span style="color: #f59280;">Add</span>(time.<span style="color: #f59280;">Duration</span>(r) * time.Minute).<span style="color: #f59280;">Sub</span>(records[i-1].End),
 &#9474;   &#9474;   &#9474;   &#9474;   }})
 &#9474;   &#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   &#9474;   res = <span style="color: #DCDCDC; font-weight: bold;">append</span>(res, <span style="color: #7CB8BB;">Record</span>{<span style="color: #BFEBBF;">Type</span>: RecordTypeUnkown, <span style="color: #BFEBBF;">ActionRecord</span>: <span style="color: #7CB8BB;">ActionRecord</span>{
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #BFEBBF;">Start</span>: records[i-<span style="color: #DCDCDC; font-weight: bold;">1</span>].End.<span style="color: #93E0E3;">Add</span>(<span style="color: #DCDCDC; font-weight: bold;">8</span> * time.Hour).<span style="color: #93E0E3;">Add</span>(time.<span style="color: #93E0E3;">Duration</span>(r) * time.Minute),
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #BFEBBF;">End</span>:   records[i].Start,
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #BFEBBF;">Total</span>: records[i].Start.<span style="color: #93E0E3;">Sub</span>(records[i-<span style="color: #DCDCDC; font-weight: bold;">1</span>].End.<span style="color: #93E0E3;">Add</span>(<span style="color: #DCDCDC; font-weight: bold;">8</span> * time.Hour).<span style="color: #93E0E3;">Add</span>(time.<span style="color: #93E0E3;">Duration</span>(r) * time.Minute)),
+&#9474;   &#9474;   &#9474;   &#9474;   res = <span style="color: #a897ef; font-weight: bold;">append</span>(res, <span style="color: #f470df;">Record</span>{<span style="color: #ff78aa;">Type</span>: RecordTypeUnkown, <span style="color: #ff78aa;">ActionRecord</span>: <span style="color: #f470df;">ActionRecord</span>{
+&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #ff78aa;">Start</span>: records[i-1].End.<span style="color: #f59280;">Add</span>(8 * time.Hour).<span style="color: #f59280;">Add</span>(time.<span style="color: #f59280;">Duration</span>(r) * time.Minute),
+&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #ff78aa;">End</span>:   records[i].Start,
+&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #ff78aa;">Total</span>: records[i].Start.<span style="color: #f59280;">Sub</span>(records[i-1].End.<span style="color: #f59280;">Add</span>(8 * time.Hour).<span style="color: #f59280;">Add</span>(time.<span style="color: #f59280;">Duration</span>(r) * time.Minute)),
 &#9474;   &#9474;   &#9474;   &#9474;   }})
 &#9474;   &#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   } <span style="color: #F0DFAF; font-weight: bold;">else</span> {
+&#9474;   &#9474;   &#9474;   } <span style="color: #ef80bf; font-weight: bold;">else</span> {
 &#9474;   &#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   &#9474;   res = <span style="color: #DCDCDC; font-weight: bold;">append</span>(res, *<span style="color: #93E0E3;">NewRecord</span>(records[i-<span style="color: #DCDCDC; font-weight: bold;">1</span>], records[i], RecordTypeSleep))
+&#9474;   &#9474;   &#9474;   &#9474;   res = <span style="color: #a897ef; font-weight: bold;">append</span>(res, *<span style="color: #f59280;">NewRecord</span>(records[i-1], records[i], RecordTypeSleep))
 &#9474;   &#9474;   &#9474;   }
 &#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   uptime = <span style="color: #DCDCDC; font-weight: bold;">0</span>
-&#9474;   &#9474;   } <span style="color: #F0DFAF; font-weight: bold;">else</span> {
-&#9474;   &#9474;   &#9474;   res = <span style="color: #DCDCDC; font-weight: bold;">append</span>(res, *<span style="color: #93E0E3;">NewRecord</span>(records[i-<span style="color: #DCDCDC; font-weight: bold;">1</span>], records[i], RecordTypeAwake))
+&#9474;   &#9474;   &#9474;   uptime = 0
+&#9474;   &#9474;   } <span style="color: #ef80bf; font-weight: bold;">else</span> {
+&#9474;   &#9474;   &#9474;   res = <span style="color: #a897ef; font-weight: bold;">append</span>(res, *<span style="color: #f59280;">NewRecord</span>(records[i-1], records[i], RecordTypeAwake))
 &#9474;   &#9474;   &#9474;   uptime += between
 &#9474;   &#9474;   }
 &#9474;   }
@@ -225,7 +225,7 @@ For a complete version, <a href="example19_bar_graph.html">click here</a>.
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.93 (<a href="https://orgmode.org">Org</a> mode 9.7.22). Written by: Salih Muhammed, by the date of: 2023-11-27 Mon 04:17. Last build date: 2025-01-07 Tue 16:37.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: 2023-11-27 Mon 04:17. Last build date: 2025-06-28 Sat 18:37.</p>
 
 </div>
 </div>

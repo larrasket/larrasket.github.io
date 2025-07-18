@@ -54,6 +54,380 @@ margin-block-start: auto;
 <h2 id="posts">Posts</h2>
 <div class="outline-text-2" id="text-posts">
 </div>
+<div id="outline-container-org40a5774" class="outline-3">
+<h3 id="org40a5774">Mulan (1998)</h3>
+<div class="outline-text-3" id="text-org40a5774">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-07-05 Sat 19:15]</span></span>
+</p>
+ </div>
+<div class="notes"> <p>
+:ID:       h8gioqf0hmk0
+:CUSTOM_ID: h8gioqf0hmk0
+</p>
+ </div>
+<p>
+There&rsquo;s an observation that I thought about as a kid watching that movie,
+powerful training montage where Mulan is struggling to complete the challenge of
+retrieving an arrow from the top of a tall wooden pole. The movie supposed to go
+in the theme that after some life-changing exercises, effort, and most
+importantly mindset, she is finally able to do this very hard challenge. But She
+actually were never able to, what happens instead is that instead of letting the
+weights drag her down, she uses them as tools. She loops the straps of the
+weights together to form a grip, anchoring herself on the pole. While this sounds
+smart and everything; it is not what the exercise is meant for, otherwise there
+would be many other smarter and easier ways to get the arrow, the exercise was
+meant for bare brute strength, not thinking differently.
+</p>
+</div>
+</div>
+<div id="outline-container-748hmep0gmk0" class="outline-3">
+<h3 id="748hmep0gmk0"><a href="https://eev.ee/blog/2025/07/03/the-rise-of-whatever/">The rise of Whatever</a></h3>
+<div class="outline-text-3" id="text-748hmep0gmk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-07-05 Sat 04:32]</span></span>
+</p>
+ </div>
+<div class="tag" id="orgba2815f">
+<p>
+This section was labeled under, or is related to Capitalism
+</p>
+
+</div>
+<p>
+I&rsquo;m not sure if the author is aware of that, but this nice article up there is a
+really good critique of capitalism and how it ruined almost every small shred of
+goodness on the internet.
+</p>
+</div>
+</div>
+<div id="outline-container-orga978240" class="outline-3">
+<h3 id="orga978240">Emacs M4 Experience</h3>
+<div class="outline-text-3" id="text-orga978240">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-07-05 Sat 02:54]</span></span>
+</p>
+ </div>
+<div class="tag" id="org4d4886d">
+<p>
+This section was labeled under, or is related to Emacs
+</p>
+
+</div>
+<p>
+Using Intel processor for all these years, which is quite slow compared to Apple
+Chips, made me spend a lot of work to optimize my single-threaded favorite
+display editor. The experience was pleasant overall, but using it now on a very
+fast computer, it is not just pleasant it is blazingly fast. The difference is
+just unimaginable.
+</p>
+</div>
+</div>
+<div id="outline-container-m12g2z40gmk0" class="outline-3">
+<h3 id="m12g2z40gmk0">I don&rsquo;t want to say Jewish but Jewish</h3>
+<div class="outline-text-3" id="text-m12g2z40gmk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-07-04 Fri 21:10]</span></span>
+</p>
+ </div>
+<p>
+<a href="https://videos.lukesmith.xyz/w/gyPw6M5PcsLJhE3yQNJ1XR?start=1h16m44s">https://videos.lukesmith.xyz/w/gyPw6M5PcsLJhE3yQNJ1XR?start=1h16m44s</a>
+</p>
+</div>
+</div>
+<div id="outline-container-pkdgxxi0cmk0" class="outline-3">
+<h3 id="pkdgxxi0cmk0">A useful Git &rsquo;trick&rsquo;</h3>
+<div class="outline-text-3" id="text-orgd957a56">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-07-02 Wed 01:23]</span></span>
+</p>
+ </div>
+<div class="tag" id="orgb375845">
+<p>
+This section was labeled under, or is related to <a href="t/programming.html#4u5664n02wj0">Programming</a>
+</p>
+
+</div>
+<p>
+Lately someone, who had left my team, left behind him a very big branch that its
+base can not be easily detected (due to the inflated number of branches we have
+in that repo). Following are couple of ways that would have helped me to detect
+that branch (saying <i>would have</i> to imply to you that it didn&rsquo;t, due to the
+big number of merges in that branch, but it indeed <i>would have helped</i> in
+a bit smaller repo).
+</p>
+</div>
+<div id="outline-container-uv8g13k0cmk0" class="outline-4">
+<h4 id="uv8g13k0cmk0">Git: List all the branches compared to this branch with behind/ahead logs</h4>
+<div class="outline-text-4" id="text-org65cce2c">
+<div class="tag" id="orgf1d0387">
+<p>
+This section was labeled under, or is related to Tech Search
+</p>
+
+</div>
+<pre class="code"><code><span style="color: #bf9f8f; font-style: italic;">#</span><span style="color: #bf9f8f; font-style: italic;">!/bin/</span><span style="color: #ef80bf; font-weight: bold;">bash</span>
+<span style="color: #df7fff;">current_branch</span>=$(<span style="color: #a897ef; font-weight: bold;">git rev-parse --abbrev-ref HEAD</span>)
+<span style="color: #f470df;">echo</span> <span style="color: #e5b76f;">"Branch analysis for: </span><span style="color: #ff78aa;">$</span><span style="color: #df7fff;">current_branch</span><span style="color: #e5b76f;">"</span>
+
+<span style="color: #ef80bf; font-weight: bold;">for</span> branch<span style="color: #ef80bf; font-weight: bold;"> in</span> $(<span style="color: #a897ef; font-weight: bold;">git for-each-ref --format='%(refname:short</span><span style="color: #e5b76f;">)'</span> refs/remotes refs/heads | <span style="color: #f470df;">grep</span> -v <span style="color: #e5b76f;">"</span><span style="color: #ff78aa;">$</span><span style="color: #df7fff;">current_branch</span><span style="color: #e5b76f;">"</span> | <span style="color: #f470df;">grep</span> -v <span style="color: #e5b76f;">"staging-mas"</span>); <span style="color: #ef80bf; font-weight: bold;">do</span>
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> <span style="color: #df7fff;">merge_base</span>=$(<span style="color: #a897ef; font-weight: bold;">git merge-base "$branch" HEAD 2&gt;/dev/null</span>); <span style="color: #ef80bf; font-weight: bold;">then</span>
+&#9474;   &#9474;   <span style="color: #df7fff;">ahead</span>=$(<span style="color: #a897ef; font-weight: bold;">git rev-list --count "$merge_base..HEAD" 2&gt;/dev/null</span>)
+&#9474;   &#9474;   <span style="color: #df7fff;">behind</span>=$(<span style="color: #a897ef; font-weight: bold;">git rev-list --count "$merge_base..$branch" 2&gt;/dev/null</span>)
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> [ <span style="color: #e5b76f;">"</span><span style="color: #ff78aa;">$</span><span style="color: #df7fff;">ahead</span><span style="color: #e5b76f;">"</span> -gt 0 ]; <span style="color: #ef80bf; font-weight: bold;">then</span>
+&#9474;   &#9474;   &#9474;   <span style="color: #f470df;">echo</span> <span style="color: #e5b76f;">"</span><span style="color: #ff78aa;">$</span><span style="color: #df7fff;">branch</span><span style="color: #e5b76f;">: </span><span style="color: #ff78aa;">$</span><span style="color: #df7fff;">ahead</span><span style="color: #e5b76f;"> commits ahead, </span><span style="color: #ff78aa;">$</span><span style="color: #df7fff;">behind</span><span style="color: #e5b76f;"> commits behind"</span>
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">fi</span>
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">fi</span>
+<span style="color: #ef80bf; font-weight: bold;">done</span>
+</code></pre>
+</div>
+</div>
+<div id="outline-container-kjr773k0cmk0" class="outline-4">
+<h4 id="kjr773k0cmk0">Trying to find only the modified files</h4>
+<div class="outline-text-4" id="text-orgda3b682">
+<div class="tag" id="orgbb5f87c">
+<p>
+This section was labeled under, or is related to Tech Search
+</p>
+
+</div>
+<p>
+The previous way didn&rsquo;t help much in my case, I found that the optimal way would
+be just migrating the files I care about into a separate branch (since there are
+no dependencies in this repo). I needed to get the files that were modified in
+this branch by that person:
+</p>
+<pre class="code"><code><span style="color: #f470df;">git</span> log main..HEAD --author=<span style="color: #e5b76f;">"The Dude Full Name <a href="mailto:TheDudeEmail%40smth.edu">&lt;TheDudeEmail@smth.edu&gt;</a>"</span> --name-status --pretty=format:
+</code></pre>
+</div>
+</div>
+</div>
+<div id="outline-container-ve76rh517mk0" class="outline-3">
+<h3 id="ve76rh517mk0">Phantom Thread (2017)</h3>
+<div class="outline-text-3" id="text-ve76rh517mk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-06-28 Sat 14:28]</span></span>
+</p>
+ </div>
+<p>
+I found a claim that <a href="https://skeptics.stackexchange.com/q/55650/69248">women in Middle Ages Europe used to poison their husbands
+to keep them close</a>. I watched Phantom Thread (2017) a couple of months ago,
+which had a similar theme to this claim. I wounder if it was inspired by this
+myth. Phantom Thread is one of the movies that I don&rsquo;t think I will ever have
+the courage to rewatch.
+</p>
+</div>
+</div>
+<div id="outline-container-hrz5vtl02mk0" class="outline-3">
+<h3 id="hrz5vtl02mk0">Emojis in Code Comments</h3>
+<div class="outline-text-3" id="text-hrz5vtl02mk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-06-24 Tue 12:22]</span></span>
+</p>
+ </div>
+<p>
+Whoever writes emojis inside code comments, has to be a very dumb LLM, or the
+happiest girl ever.
+</p>
+</div>
+</div>
+<div id="outline-container-9pwhrlo01mk0" class="outline-3">
+<h3 id="9pwhrlo01mk0">Cimabue and Cima da Conegliano</h3>
+<div class="outline-text-3" id="text-9pwhrlo01mk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-06-23 Mon 19:10]</span></span>
+</p>
+ </div>
+<div class="tag" id="orgb79d2ec">
+<p>
+This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
+</p>
+
+</div>
+<p>
+Cimabue and Cima da Conegliano works on <a href="h/art_paintings_media.html#r98aze11tik0">Christian Art</a> are very dedicated. I
+wonder how their lives were like.
+</p>
+</div>
+</div>
+<div id="outline-container-op50qae1ylk0" class="outline-3">
+<h3 id="op50qae1ylk0">Supabase</h3>
+<div class="outline-text-3" id="text-op50qae1ylk0">
+<ul class="org-ul">
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-06-23 Mon 00:10]</span></span>: <br>
+Today I thought of giving nhost a try.
+<a href="https://github.com/nhost/nhost/discussions/2498">https://github.com/nhost/nhost/discussions/2498</a> Horrible. What&rsquo;s the point of
+making such a project even open source if it is going to be useless to the community?</li>
+</ul>
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-06-21 Sat 21:49]</span></span>
+</p>
+ </div>
+<div class="tag" id="orgb504924">
+<p>
+This section was labeled under, or is related to <a href="t/programming.html#4u5664n02wj0">Programming</a>
+</p>
+
+</div>
+<p>
+I had a terrible experience trying to self-host Supabase today. I have read on
+the community posts that the experience is usually not very pleasant, however, I
+found official maintainers responding to that saying that it was improved, with
+a video showing it running on a 2GB of RAM and 2vCPUs droplet. I had various
+problems with getting the docker-compose to work; apparently you can not really
+change the default passwords without running into an authentication issue (see
+<a href="https://github.com/supabase/supabase/issues/11957">here</a> for example), and even if you fixed that you will go through couple of
+<a href="https://github.com/supabase/cli/issues/2737">analytics</a> issues. My biggest concern, however, was that I was never able to get
+anything to run on the very small droplet that the maintainer showed off, in
+fact, the only specifications that could provide the bare minimum performance
+(that is: the dashboard is loading) was 8GB of RAM, and two dedicated CPUs (yes,
+dedicated, not vCPUs), however, even with that a lot of problems persisted (many
+features are not working, and it is a hell to try to authenticate the CLI with
+that setup). I wonder if their development team is choosing deliberately not to
+make the self-host experience better to enforce people to use their cloud
+services instead of selfhosting it. I really do not get the point of having such
+a software to be open-source if it won&rsquo;t be easy to self-host.
+</p>
+</div>
+</div>
+<div id="outline-container-dchk6n80xlk0" class="outline-3">
+<h3 id="dchk6n80xlk0">Portrait of a North African (1870)</h3>
+<div class="outline-text-3" id="text-dchk6n80xlk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-06-20 Fri 12:37]</span></span>
+</p>
+ </div>
+<div class="tag" id="org60b13ca">
+<p>
+This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
+</p>
+
+</div>
+<p>
+<a href="h/art_paintings_media.html#eaphdi80xlk0">Alexandre Cabanel</a> has a painting of this name depicting a black man with
+some North African features. What interests me that it has a name on the top
+right, it reads like: محمد بن الدبم. I wonder who is that and how the
+interaction between him and Cabanel went like.
+</p>
+</div>
+</div>
+<div id="outline-container-gpp2spb0rlk0" class="outline-3">
+<h3 id="gpp2spb0rlk0">William Bradford</h3>
+<div class="outline-text-3" id="text-gpp2spb0rlk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-06-16 Mon 00:29]</span></span>
+</p>
+ </div>
+<div class="tag" id="orgb857c51">
+<p>
+This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
+</p>
+
+</div>
+<p>
+Bradford (the <a href="https://en.wikipedia.org/wiki/William_Bradford_(painter)">artist</a>) paintings of the sea are very moving. I wonder if
+<a href="h/art_paintings_media.html#2lq0ch91vik0">Ivan Aivazovsky</a> ever inspired him.
+</p>
+</div>
+</div>
+<div id="outline-container-zj592c30olk0" class="outline-3">
+<h3 id="zj592c30olk0">She understood the music</h3>
+<div class="outline-text-3" id="text-zj592c30olk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-06-13 Fri 14:51]</span></span>
+</p>
+ </div>
+<div class="tag" id="org31069cc">
+<p>
+This section was labeled under, or is related to Kierkegaard
+</p>
+
+</div>
+<p>
+Form Papers and journals:
+</p>
+<div class="epigraph"><blockquote>
+<p>
+Encounter on 30 Nov., when they were doing Two Days, with an unknown but beautiful lady (she spoke
+German) – she was alone in the stalls with a little brother – she understood the music.
+</p>
+
+<p>
+36 I A 297
+</p>
+
+</blockquote></div>
+
+<p>
+It&rsquo;s an interesting remark. It&rsquo;s really interesting to see someone who
+understands the music.
+</p>
+</div>
+</div>
+<div id="outline-container-orgdefec7a" class="outline-3">
+<h3 id="orgdefec7a">Katharina von Bora</h3>
+<div class="outline-text-3" id="text-orgdefec7a">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-06-13 Fri 14:48]</span></span>
+</p>
+ </div>
+<div class="tag" id="orgee08014">
+<p>
+This section was labeled under, or is related to Kierkegaard
+</p>
+
+</div>
+<p>
+From Papers and journals:
+</p>
+<div class="epigraph"><blockquote>
+<p>
+An old saying, that the Anti-Christ would be born to a nun by a monk (was once used with regard to
+Luther’s marriage).
+</p>
+
+</blockquote></div>
+</div>
+</div>
+<div id="outline-container-rvkdlr10olk0" class="outline-3">
+<h3 id="rvkdlr10olk0">Some resources on <a href="h/art_paintings_media.html#23mfma60wkk0">William-Adolphe Bouguereau</a></h3>
+<div class="outline-text-3" id="text-rvkdlr10olk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-06-13 Fri 14:18]</span></span>
+</p>
+ </div>
+<div class="tag" id="org3897da2">
+<p>
+This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
+</p>
+
+</div>
+<ul class="org-ul">
+<li><a href="https://bouguereau.org/biography.html">William-Adolphe Bouguereau</a></li>
+<li><a href="https://youtu.be/8qA5g4Evg5I">William Bouguereau, Unparalleled Brilliance and Dedication</a> [video]</li>
+<li><a href="https://youtu.be/oFYHLpd_cII">What We Love About: William Bouguereau</a> [video]</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-gxzffkh0glk0" class="outline-3">
+<h3 id="gxzffkh0glk0">A Young Girl and Eros</h3>
+<div class="outline-text-3" id="text-gxzffkh0glk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-06-07 Sat 18:21]</span></span>
+</p>
+ </div>
+<div class="tag" id="orgaadb0d3">
+<p>
+This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
+</p>
+
+</div>
+<p>
+<a href="h/art_paintings_media.html#cbv0qjh0glk0">A Young Girl Defending Herself Against  Eros, William-Adolphe Bouguereau</a>,
+that&rsquo;s so cute.
+</p>
+</div>
+</div>
 <div id="outline-container-c41iyx70flk0" class="outline-3">
 <h3 id="c41iyx70flk0">Kierkegaard on the Joy of Natural Science</h3>
 <div class="outline-text-3" id="text-c41iyx70flk0">
@@ -61,6 +435,12 @@ margin-block-start: auto;
 <span class="timestamp-wrapper"><span class="timestamp">[2025-06-06 Fri 20:40]</span></span>
 </p>
  </div>
+<div class="tag" id="org38ce79c">
+<p>
+This section was labeled under, or is related to Kierkegaard and <a href="t/modus.html#ydb1kfn02wj0">Modus Vivendi</a>
+</p>
+
+</div>
 <p>
 I found in the journals of Kierkegaard today an entry very similar to what I
 include in my homepage by René Descartes about the method of life:
@@ -90,6 +470,12 @@ My old post about math might be also related: <a href="p/prelude.html#8ay4irp02w
 <span class="timestamp-wrapper"><span class="timestamp">[2025-06-06 Fri 20:23]</span></span>
 </p>
  </div>
+<div class="tag" id="orgb2d0668">
+<p>
+This section was labeled under, or is related to Kierkegaard
+</p>
+
+</div>
 <p>
 I was reading <a href="https://www.chronicle.com/article/what-would-kierkegaard-do/">What Would Kierkegaard Do?</a>. This part made me laugh a lot:
 </p>
@@ -106,14 +492,71 @@ Osama, if you’re reading this, now’s the time to turn the page.
 </blockquote></div>
 </div>
 </div>
-<div id="outline-container-orgbc44d5a" class="outline-3">
-<h3 id="orgbc44d5a">Reflecting on old Org</h3>
-<div class="outline-text-3" id="text-orgbc44d5a">
+<div id="outline-container-bzhfgq51tlk0" class="outline-3">
+<h3 id="bzhfgq51tlk0">Reflecting on old Org</h3>
+<div class="outline-text-3" id="text-bzhfgq51tlk0">
+<ul class="org-ul">
+<li><p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-06-22 Sun 20:00]</span></span>: <br>
+Many of the entries I went through during this experience left me feeling quite
+sad. While it’s been helpful in confronting the reality that I was forced to
+live a life that didn’t truly feel like what would I wish for (which contradicts
+one of my main principles of life; Amor Fati), I’m not sure it’s worth
+continuing this process at this stage in my life. Perhaps I’ll return to it in
+five years or so.
+</p>
+<div class="epigraph"><blockquote>
+خُطوبٌ إِذا لاقَيتُهُنَّ رَدَدنَني<br>
+جَريحاً كَأَنّي قَد لَقيتُ الكَتائِبا<br>
+
+</blockquote></div></li>
+
+<li><p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-06-17 Tue 23:42]</span></span>: <br>
+A year ago from now I was working on <a href="t/programming.html#q0jctp51tlk0">statuesless</a>, a software that I always
+wanted to build when I initially moved to Linux, but I couldn&rsquo;t because I was
+not yet a capable programmer. I feel nostalgic now about it and how I no longer
+get to use it since I moved to MacOS.
+</p>
+
+<pre class="example" id="org7bde779">
+  :LOGBOOK:
+  CLOCK: [2024-06-27 Thu 13:37]--[2024-06-27 Thu 13:56] =&gt;  0:19
+  CLOCK: [2024-07-02 Tue 04:11]--[2024-07-02 Tue 04:47] =&gt;  0:36
+  CLOCK: [2024-07-01 Mon 10:49]--[2024-07-01 Mon 11:48] =&gt;  0:59
+  CLOCK: [2024-06-15 Sat 08:41]--[2024-06-15 Sat 09:07] =&gt;  0:26
+  CLOCK: [2024-06-15 Sat 08:30]--[2024-06-15 Sat 08:32] =&gt;  0:02
+  CLOCK: [2024-06-15 Sat 04:53]--[2024-06-15 Sat 08:30] =&gt;  3:37
+  CLOCK: [2024-06-17 Mon 12:22]--[2024-06-17 Mon 12:43] =&gt;  0:21
+  CLOCK: [2024-06-17 Mon 07:14]--[2024-06-17 Mon 07:49] =&gt;  0:35
+  CLOCK: [2024-06-26 Wed 15:13]--[2024-06-26 Wed 16:03] =&gt;  0:50
+  :END:
+</pre></li>
+<li><p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-06-13 Fri 10:55]</span></span>: <br>
+I found an old funny entry today:
+</p>
+
+<pre class="example" id="org944e0b7">
+  ** DONE Get ement to work again                                       :@general:
+  :PROPERTIES:
+  :ID:       s1dexrp0tfk0
+  :CUSTOM_ID: s1dexrp0tfk0
+  :END:
+  :LOGBOOK:
+  CLOCK: [2023-06-13 Tue 13:54]--[2023-06-13 Tue 14:07] =&gt;  0:13
+  CLOCK: [2023-06-13 Tue 13:06]--[2023-06-13 Tue 13:54] =&gt;  0:48
+  :END:
+  For some reason that pantalaimon cocksucker was storing some kind of data
+  somewhere that I couldn't reach. I used --data-path to specify custom location
+  to skip using cachedd data. Which caused this issue.
+</pre></li>
+</ul>
 <div class="notes"> <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2025-06-06 Fri 18:52]</span></span>
 </p>
  </div>
-<div class="tag" id="orga83dc58">
+<div class="tag" id="org9be87a7">
 <p>
 This section was labeled under, or is related to <a href="t/programming.html#4u5664n02wj0">Programming</a>
 </p>
@@ -127,17 +570,17 @@ still there. I wanted something similar that can make me reflect on the history
 I have for myself in Org-mode. I wrote this:
 </p>
 
-<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">salih/org-search-entries-with-today-date</span> <span style="color: #DC8CC3;">()</span>
-  <span style="color: #9FC59F;">"Search all Org files for timestamps matching today's day and month."</span>
-  <span style="color: #DC8CC3;">(</span><span style="color: #F0DFAF; font-weight: bold;">interactive</span><span style="color: #DC8CC3;">)</span>
-  <span style="color: #DC8CC3;">(</span><span style="color: #F0DFAF; font-weight: bold;">let*</span> <span style="color: #7F9F7F;">(</span><span style="color: #a9a1e1;">(</span>today <span style="color: #8CD0D3;">(</span><span style="color: #BFEBBF;">decode-time</span> <span style="color: #DC8CC3;">(</span><span style="color: #BFEBBF;">current-time</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span>
-         <span style="color: #a9a1e1;">(</span>day <span style="color: #8CD0D3;">(</span><span style="color: #BFEBBF;">format</span> <span style="color: #CC9393;">"%02d"</span> <span style="color: #DC8CC3;">(</span><span style="color: #BFEBBF;">nth</span> <span style="color: #DCDCDC; font-weight: bold;">3</span> today<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span>
-         <span style="color: #a9a1e1;">(</span>month <span style="color: #8CD0D3;">(</span><span style="color: #BFEBBF;">format</span> <span style="color: #CC9393;">"%02d"</span> <span style="color: #DC8CC3;">(</span><span style="color: #BFEBBF;">nth</span> <span style="color: #DCDCDC; font-weight: bold;">4</span> today<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span>
-         <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">Match both active &lt;YYYY-MM-DD ...&gt; and inactive [YYYY-MM-DD ...]</span>
-         <span style="color: #a9a1e1;">(</span>pattern <span style="color: #8CD0D3;">(</span><span style="color: #BFEBBF;">format</span> <span style="color: #CC9393;">"</span><span style="color: #8CD0D3; font-weight: bold;">\\</span><span style="color: #8CD0D3; font-weight: bold;">(</span><span style="color: #CC9393;">[&lt;[]</span><span style="color: #8CD0D3; font-weight: bold;">\\</span><span style="color: #8CD0D3; font-weight: bold;">)</span><span style="color: #CC9393;">[0-9]\\{</span><span style="color: #DFAF8F;">4\\</span><span style="color: #CC9393;">}-%s-%s[</span><span style="color: #8CD0D3; font-weight: bold;">^</span><span style="color: #CC9393;">]&gt;]*[]&gt;]?"</span> month day<span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span>
-         <span style="color: #a9a1e1;">(</span><span style="color: #DFAF8F;">consult-ripgrep-args</span>
-          <span style="color: #8CD0D3;">(</span><span style="color: #BFEBBF;">concat</span> <span style="color: #DFAF8F;">consult-ripgrep-args</span> <span style="color: #CC9393;">" -g *.org"</span><span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span>
-    <span style="color: #7F9F7F;">(</span><span style="color: #BFEBBF;">consult-ripgrep</span> <span style="color: #DFAF8F;">org-roam-directory</span> pattern<span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
+<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">salih/org-search-entries-with-today-date</span> ()
+  <span style="color: #cc9bcf; font-style: italic;">"Search all Org files for timestamps matching today's day and month."</span>
+  (<span style="color: #ef80bf; font-weight: bold;">interactive</span>)
+  (<span style="color: #ef80bf; font-weight: bold;">let*</span> ((today (<span style="color: #ff78aa;">decode-time</span> (<span style="color: #ff78aa;">current-time</span>)))
+         (day (<span style="color: #ff78aa;">format</span> <span style="color: #e5b76f;">"%02d"</span> (<span style="color: #ff78aa;">nth</span> 3 today)))
+         (month (<span style="color: #ff78aa;">format</span> <span style="color: #e5b76f;">"%02d"</span> (<span style="color: #ff78aa;">nth</span> 4 today)))
+         <span style="color: #bf9f8f; font-style: italic;">;; </span><span style="color: #bf9f8f; font-style: italic;">Match both active &lt;YYYY-MM-DD ...&gt; and inactive [YYYY-MM-DD ...]</span>
+         (pattern (<span style="color: #ff78aa;">format</span> <span style="color: #e5b76f;">"</span><span style="color: #9ac0e4;">\\</span><span style="color: #ff7359;">(</span><span style="color: #e5b76f;">[&lt;[]</span><span style="color: #9ac0e4;">\\</span><span style="color: #ff7359;">)</span><span style="color: #e5b76f;">[0-9]\\{</span><span style="color: #df7fff;">4\\</span><span style="color: #e5b76f;">}-%s-%s[</span><span style="color: #e5b76f; font-weight: bold;">^</span><span style="color: #e5b76f;">]&gt;]*[]&gt;]?"</span> month day))
+         (<span style="color: #df7fff;">consult-ripgrep-args</span>
+          (<span style="color: #ff78aa;">concat</span> <span style="color: #df7fff;">consult-ripgrep-args</span> <span style="color: #e5b76f;">" -g *.org"</span>)))
+    (<span style="color: #ff78aa;">consult-ripgrep</span> <span style="color: #df7fff;">org-roam-directory</span> pattern)))
 </code></pre>
 
 <p>
@@ -149,20 +592,20 @@ the job for now. I already feel so nostalgic.
 I also wrote this to read old journals:
 </p>
 
-<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">salih/open-journal-file-for-today</span> <span style="color: #DC8CC3;">()</span>
-  <span style="color: #9FC59F;">"List journal files in /Users/l/roam/journal that match today's MM-DD and let me open one."</span>
-  <span style="color: #DC8CC3;">(</span><span style="color: #F0DFAF; font-weight: bold;">interactive</span><span style="color: #DC8CC3;">)</span>
-  <span style="color: #DC8CC3;">(</span><span style="color: #F0DFAF; font-weight: bold;">let*</span> <span style="color: #7F9F7F;">(</span><span style="color: #a9a1e1;">(</span>journal-dir <span style="color: #CC9393;">"~/roam/journal/"</span><span style="color: #a9a1e1;">)</span>
-         <span style="color: #a9a1e1;">(</span>today <span style="color: #8CD0D3;">(</span><span style="color: #BFEBBF;">decode-time</span> <span style="color: #DC8CC3;">(</span><span style="color: #BFEBBF;">current-time</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span>
-         <span style="color: #a9a1e1;">(</span>month <span style="color: #8CD0D3;">(</span><span style="color: #BFEBBF;">format</span> <span style="color: #CC9393;">"%02d"</span> <span style="color: #DC8CC3;">(</span><span style="color: #BFEBBF;">nth</span> <span style="color: #DCDCDC; font-weight: bold;">4</span> today<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span>
-         <span style="color: #a9a1e1;">(</span>day <span style="color: #8CD0D3;">(</span><span style="color: #BFEBBF;">format</span> <span style="color: #CC9393;">"%02d"</span> <span style="color: #DC8CC3;">(</span><span style="color: #BFEBBF;">nth</span> <span style="color: #DCDCDC; font-weight: bold;">3</span> today<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span>
-         <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">Pattern to match filenames like 2023-06-08.org.gpg for today's MM-DD</span>
-         <span style="color: #a9a1e1;">(</span>match-pattern <span style="color: #8CD0D3;">(</span><span style="color: #BFEBBF;">format</span> <span style="color: #CC9393;">"-%s-%s\\.org\\.gpg$"</span> month day<span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span>
-         <span style="color: #a9a1e1;">(</span>files <span style="color: #8CD0D3;">(</span><span style="color: #BFEBBF;">directory-files</span> journal-dir nil match-pattern<span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span>
-    <span style="color: #7F9F7F;">(</span><span style="color: #F0DFAF; font-weight: bold;">if</span> files
-        <span style="color: #a9a1e1;">(</span><span style="color: #F0DFAF; font-weight: bold;">let</span> <span style="color: #8CD0D3;">(</span><span style="color: #DC8CC3;">(</span>file-to-open <span style="color: #7F9F7F;">(</span><span style="color: #BFEBBF;">completing-read</span> <span style="color: #CC9393;">"Open journal file: "</span> files nil t<span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
-          <span style="color: #8CD0D3;">(</span><span style="color: #BFEBBF;">find-file</span> <span style="color: #DC8CC3;">(</span><span style="color: #BFEBBF;">expand-file-name</span> file-to-open journal-dir<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span>
-      <span style="color: #a9a1e1;">(</span><span style="color: #BFEBBF;">message</span> <span style="color: #CC9393;">"No journal files found for today (%s-%s)"</span> month day<span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
+<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">salih/open-journal-file-for-today</span> ()
+  <span style="color: #cc9bcf; font-style: italic;">"List journal files in /Users/l/roam/journal that match today's MM-DD and let me open one."</span>
+  (<span style="color: #ef80bf; font-weight: bold;">interactive</span>)
+  (<span style="color: #ef80bf; font-weight: bold;">let*</span> ((journal-dir <span style="color: #e5b76f;">"~/roam/journal/"</span>)
+         (today (<span style="color: #ff78aa;">decode-time</span> (<span style="color: #ff78aa;">current-time</span>)))
+         (month (<span style="color: #ff78aa;">format</span> <span style="color: #e5b76f;">"%02d"</span> (<span style="color: #ff78aa;">nth</span> 4 today)))
+         (day (<span style="color: #ff78aa;">format</span> <span style="color: #e5b76f;">"%02d"</span> (<span style="color: #ff78aa;">nth</span> 3 today)))
+         <span style="color: #bf9f8f; font-style: italic;">;; </span><span style="color: #bf9f8f; font-style: italic;">Pattern to match filenames like 2023-06-08.org.gpg for today's MM-DD</span>
+         (match-pattern (<span style="color: #ff78aa;">format</span> <span style="color: #e5b76f;">"-%s-%s\\.org\\.gpg$"</span> month day))
+         (files (<span style="color: #ff78aa;">directory-files</span> journal-dir nil match-pattern)))
+    (<span style="color: #ef80bf; font-weight: bold;">if</span> files
+        (<span style="color: #ef80bf; font-weight: bold;">let</span> ((file-to-open (<span style="color: #ff78aa;">completing-read</span> <span style="color: #e5b76f;">"Open journal file: "</span> files nil t)))
+          (<span style="color: #ff78aa;">find-file</span> (<span style="color: #ff78aa;">expand-file-name</span> file-to-open journal-dir)))
+      (<span style="color: #ff78aa;">message</span> <span style="color: #e5b76f;">"No journal files found for today (%s-%s)"</span> month day))))
 </code></pre>
 
 <p>
@@ -170,9 +613,9 @@ But it hurt.
 </p>
 </div>
 </div>
-<div id="outline-container-orgd1a5c22" class="outline-3">
-<h3 id="orgd1a5c22">No blue</h3>
-<div class="outline-text-3" id="text-orgd1a5c22">
+<div id="outline-container-org443785d" class="outline-3">
+<h3 id="org443785d">No blue</h3>
+<div class="outline-text-3" id="text-org443785d">
 <div class="notes"> <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2025-06-01 Sun 14:13]</span></span>
 </p>
@@ -186,7 +629,7 @@ No water, no life. No blue, no green. – Sylvia Earle
 <h3 id="jvne8ie10lk0">Floyd&rsquo;s tortoise and hare</h3>
 <div class="outline-text-3" id="text-jvne8ie10lk0">
 <ul class="org-ul">
-<li>Note taken on <span class="timestamp-wrapper"><span class="timestamp">[2025-05-27 Tue 02:59]</span></span> <br>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-05-27 Tue 02:59]</span></span>: <br>
 Just found out that flattenability of graphs <a href="https://en.wikipedia.org/wiki/Graph_flattenability">are folklore too</a>. Wondering if a
 lot of graph theories are like that.</li>
 </ul>
@@ -194,7 +637,7 @@ lot of graph theories are like that.</li>
 <span class="timestamp-wrapper"><span class="timestamp">[2025-05-27 Tue 02:56]</span></span>
 </p>
  </div>
-<div class="tag" id="org112da44">
+<div class="tag" id="org4ea9f44">
 <p>
 This section was labeled under, or is related to <a href="t/programming.html#4u5664n02wj0">Programming</a> and <a href="h/graph.html#rib7uvo02wj0">Representations and Implementations of Graphs</a>
 </p>
@@ -223,14 +666,18 @@ I wonder if anyone asked Donald Knuth about that in an interview.
 </p>
 </div>
 </div>
-<div id="outline-container-org7fe15a9" class="outline-3">
-<h3 id="org7fe15a9"><span class="todo TODO">TODO</span> <a href="h/art_paintings_media.html#e2d6e3z0nkk0">Sandro Botticelli</a> Symbol of goodness&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_check">@check</span>&#xa0;<span class="_later">@later</span></span></h3>
-<div class="outline-text-3" id="text-org7fe15a9">
+<div id="outline-container-org1ba486c" class="outline-3">
+<h3 id="org1ba486c"><span class="todo TODO">TODO</span> <a href="h/art_paintings_media.html#e2d6e3z0nkk0">Sandro Botticelli</a> Symbol of goodness&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_check">@check</span>&#xa0;<span class="_later">@later</span></span></h3>
+<div class="outline-text-3" id="text-org1ba486c">
+<ul class="org-ul">
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-06-16 Mon 00:43]</span></span>: <br>
+I have a feeling that <a href="h/art_paintings_media.html#qse5o7c0rlk0">Frederic William Burton</a> did the same thing.</li>
+</ul>
 <div class="notes"> <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2025-05-17 Sat 00:43]</span></span>
 </p>
  </div>
-<div class="tag" id="orgcce461b">
+<div class="tag" id="org3377cba">
 <p>
 This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
 </p>
@@ -249,7 +696,7 @@ investigating.
 <span class="timestamp-wrapper"><span class="timestamp">[2025-05-16 Fri 23:35]</span></span>
 </p>
  </div>
-<div class="tag" id="orgfcd6bd9">
+<div class="tag" id="orgce45fba">
 <p>
 This section was labeled under, or is related to <a href="p/fcinema.html#kwlj2jo02wj0">Cinema</a>
 </p>
@@ -271,7 +718,7 @@ This section was labeled under, or is related to <a href="p/fcinema.html#kwlj2jo
 <span class="timestamp-wrapper"><span class="timestamp">[2025-05-10 Sat 04:13]</span></span>
 </p>
  </div>
-<div class="tag" id="org811603a">
+<div class="tag" id="orga2778bf">
 <p>
 This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
 </p>
@@ -292,7 +739,7 @@ probably purchased in some rich palaces around the world.
 <span class="timestamp-wrapper"><span class="timestamp">[2025-05-09 Fri 06:44]</span></span>
 </p>
  </div>
-<div class="tag" id="orge385158">
+<div class="tag" id="org37d2e91">
 <p>
 This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
 </p>
@@ -325,7 +772,7 @@ Luigi Boccherini/Orpheus Chamber Orchestra:
 <span class="timestamp-wrapper"><span class="timestamp">[2025-05-04 Sun 06:22]</span></span>
 </p>
  </div>
-<div class="tag" id="orgdd96e64">
+<div class="tag" id="orge3f2bd9">
 <p>
 This section was labeled under, or is related to Poetry
 </p>
@@ -342,14 +789,14 @@ hushed and gentle like the gazelle.<br>
 </blockquote></div>
 </div>
 </div>
-<div id="outline-container-org716ee76" class="outline-3">
-<h3 id="org716ee76">leonardcohenfiles.com</h3>
-<div class="outline-text-3" id="text-org716ee76">
+<div id="outline-container-org3ff1e00" class="outline-3">
+<h3 id="org3ff1e00">leonardcohenfiles.com</h3>
+<div class="outline-text-3" id="text-org3ff1e00">
 <div class="notes"> <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2025-05-04 Sun 06:16]</span></span>
 </p>
  </div>
-<div class="tag" id="orgb7195ee">
+<div class="tag" id="org0267549">
 <p>
 This section was labeled under, or is related to <a href="h/me.html#lfoaq730yck0">Music</a>
 </p>
@@ -368,7 +815,7 @@ TIL there&rsquo;s a great website of <a href="h/me.html#sqw4olv04xj0">Leonard Co
 <span class="timestamp-wrapper"><span class="timestamp">[2025-05-03 Sat 08:12]</span></span>
 </p>
  </div>
-<div class="tag" id="org82710af">
+<div class="tag" id="orgc0a3093">
 <p>
 This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
 </p>
@@ -395,7 +842,7 @@ or religious in nature—that hasn&rsquo;t survived in mainstream records.</li>
 <span class="timestamp-wrapper"><span class="timestamp">[2025-05-03 Sat 00:31]</span></span>
 </p>
  </div>
-<div class="tag" id="orgb00e277">
+<div class="tag" id="org090dd48">
 <p>
 This section was labeled under, or is related to <a href="h/me.html#lfoaq730yck0">Music</a> and History
 </p>
@@ -415,7 +862,7 @@ project, or, in fact, loved her.
 <div class="outline-text-3" id="text-t9wkunc04kk0">
 <ul class="org-ul">
 <li><p>
-Note taken on <span class="timestamp-wrapper"><span class="timestamp">[2025-06-05 Thu 16:08]</span></span> <br>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-06-05 Thu 16:08]</span></span>: <br>
 ينهي تولستوي الاعترافات بحلم جميل. لا أعرف كيف لم يتحول لفيلم. يقول في نهايته
 &ldquo;ثم تيقظت.&rdquo; ويختتم كتابه وكلامه. ثم تيقظت.
 </p>
@@ -450,7 +897,7 @@ marriage
 <span class="timestamp-wrapper"><span class="timestamp">[2025-05-02 Fri 06:46]</span></span>
 </p>
  </div>
-<div class="tag" id="org92f4e64">
+<div class="tag" id="orga9d9149">
 <p>
 This section was labeled under, or is related to <a href="t/modus.html#ydb1kfn02wj0">Modus Vivendi</a>
 </p>
@@ -469,6 +916,12 @@ beautiful books I have ever read. Definitely making my Godchild (if any) read th
 <span class="timestamp-wrapper"><span class="timestamp">[2025-04-28 Mon 23:55]</span></span>
 </p>
  </div>
+<div class="tag" id="org04d2db9">
+<p>
+This section was labeled under, or is related to Kierkegaard
+</p>
+
+</div>
 <p>
 I was never interested in Kierkegaard&rsquo;s personal life. Today I read this:
 </p>
@@ -486,9 +939,9 @@ I downloaded his biography. Very interested to learn more about the man&rsquo;s 
 </p>
 </div>
 </div>
-<div id="outline-container-org1ab2819" class="outline-3">
-<h3 id="org1ab2819">My heart</h3>
-<div class="outline-text-3" id="text-org1ab2819">
+<div id="outline-container-org0c61a3b" class="outline-3">
+<h3 id="org0c61a3b">My heart</h3>
+<div class="outline-text-3" id="text-org0c61a3b">
 <div class="notes"> <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2025-04-08 Tue 01:44]</span></span>
 </p>
@@ -505,7 +958,7 @@ My heart is a <code>C-x C-b</code> menu.
 <span class="timestamp-wrapper"><span class="timestamp">[2025-03-28 Fri 16:47]</span></span>
 </p>
  </div>
-<div class="tag" id="orgebfdb5a">
+<div class="tag" id="org120182a">
 <p>
 This section was labeled under, or is related to <a href="t/modus.html#ydb1kfn02wj0">Modus Vivendi</a>
 </p>
@@ -525,7 +978,7 @@ This section was labeled under, or is related to <a href="t/modus.html#ydb1kfn02
 <span class="timestamp-wrapper"><span class="timestamp">[2025-03-28 Fri 16:24]</span></span>
 </p>
  </div>
-<div class="tag" id="org73b59a0">
+<div class="tag" id="org6a69ff4">
 <p>
 This section was labeled under, or is related to <a href="t/modus.html#ydb1kfn02wj0">Modus Vivendi</a>
 </p>
@@ -544,7 +997,7 @@ find myself trying to explain this kind of boundaries people from time to time.
 <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2025-03-28 Fri 14:17]</span></span>
 </p>
-<div class="tag" id="orgcbdf305">
+<div class="tag" id="orgad461e4">
 <p>
 This section was labeled under, or is related to Literature
 </p>
@@ -606,7 +1059,7 @@ and The Window.
 <span class="timestamp-wrapper"><span class="timestamp">[2025-03-24 Mon 01:12]</span></span>
 </p>
  </div>
-<div class="tag" id="org9c5028a">
+<div class="tag" id="orgc95669d">
 <p>
 This section was labeled under, or is related to <a href="t/programming.html#4u5664n02wj0">Programming</a> and <a href="t/programming.html#5idj6nt0oik0">Emacs for Everything</a>
 </p>
@@ -642,7 +1095,7 @@ It is not just bigger and brighter; it simply makes everything else vanish.
 <span class="timestamp-wrapper"><span class="timestamp">[2025-03-17 Mon 00:07]</span></span>
 </p>
  </div>
-<div class="tag" id="org5a981b5">
+<div class="tag" id="orgd2500e5">
 <p>
 This section was labeled under, or is related to <a href="t/programming.html#4u5664n02wj0">Programming</a>
 </p>
@@ -713,7 +1166,7 @@ control, aggressive pricing, and an ecosystem that thrives on exclusivity.
 <span class="timestamp-wrapper"><span class="timestamp">[2025-03-12 Wed 02:30]</span></span>
 </p>
  </div>
-<div class="tag" id="org8547f25">
+<div class="tag" id="org8c75686">
 <p>
 This section was labeled under, or is related to <a href="t/tayyib.html#nk2kigk0ybk0">al-Mutanabbi</a> and <a href="t/modus.html#ydb1kfn02wj0">Modus Vivendi</a>
 </p>
@@ -805,7 +1258,7 @@ their pleasures.&rdquo;
 <span class="timestamp-wrapper"><span class="timestamp">[2025-03-11 Tue 05:15]</span></span>
 </p>
  </div>
-<div class="tag" id="org448c693">
+<div class="tag" id="org2436663">
 <p>
 This section was labeled under, or is related to <a href="t/islam.html#nm0dxtp02wj0">Islam</a>, <a href="t/tayyib.html#nk2kigk0ybk0">al-Mutanabbi</a> and <a href="t/modus.html#ydb1kfn02wj0">Modus Vivendi</a>
 </p>
@@ -854,7 +1307,7 @@ This section was labeled under, or is related to <a href="t/islam.html#nm0dxtp02
 <span class="timestamp-wrapper"><span class="timestamp">[2025-03-01 Sat 05:15]</span></span>
 </p>
  </div>
-<div class="tag" id="org3627c6c">
+<div class="tag" id="org7e656bd">
 <p>
 This section was labeled under, or is related to <a href="t/tayyib.html#nk2kigk0ybk0">al-Mutanabbi</a> and <a href="t/modus.html#ydb1kfn02wj0">Modus Vivendi</a>
 </p>
@@ -921,7 +1374,7 @@ This section was labeled under, or is related to <a href="t/tayyib.html#nk2kigk0
 <span class="timestamp-wrapper"><span class="timestamp">[2025-02-27 Thu 00:21]</span></span>
 </p>
  </div>
-<div class="tag" id="orge6a759f">
+<div class="tag" id="org7941b88">
 <p>
 This section was labeled under, or is related to Philosophy and <a href="t/modus.html#ydb1kfn02wj0">Modus Vivendi</a>
 </p>
@@ -976,7 +1429,7 @@ URL:
 <span class="timestamp-wrapper"><span class="timestamp">[2025-02-25 Tue 00:21]</span></span>
 </p>
  </div>
-<div class="tag" id="org7ffbdfb">
+<div class="tag" id="org4add13e">
 <p>
 This section was labeled under, or is related to <a href="t/modus.html#ydb1kfn02wj0">Modus Vivendi</a>
 </p>
@@ -1031,7 +1484,7 @@ URL: <a href="https://thematamixta.blogspot.com/2025/01/something-worth-living.h
 <div id="outline-container-bg9fk4b0mhk0" class="outline-3">
 <h3 id="bg9fk4b0mhk0">Nietzsche&rsquo;s view of reflection.</h3>
 <div class="outline-text-3" id="text-bg9fk4b0mhk0">
-<div class="tag" id="org4a89a03">
+<div class="tag" id="org62e48f5">
 <p>
 This section was labeled under, or is related to <a href="t/modus.html#i9ijlra0mhk0">So Many Unmarried Men</a>
 </p>
@@ -1049,7 +1502,7 @@ This section was labeled under, or is related to <a href="t/modus.html#i9ijlra0m
 <span class="timestamp-wrapper"><span class="timestamp">[2025-02-15 Sat 03:04]</span></span>
 </p>
  </div>
-<div class="tag" id="org21c799d">
+<div class="tag" id="orgdd4b56f">
 <p>
 This section was labeled under, or is related to <a href="t/tayyib.html#nk2kigk0ybk0">al-Mutanabbi</a>
 </p>
@@ -1132,7 +1585,7 @@ This section was labeled under, or is related to <a href="t/tayyib.html#nk2kigk0
 <span class="timestamp-wrapper"><span class="timestamp">[2025-02-14 Fri 20:30]</span></span>
 </p>
  </div>
-<div class="tag" id="orgd36c246">
+<div class="tag" id="org4ac5ac8">
 <p>
 This section was labeled under, or is related to <a href="t/tayyib.html#nk2kigk0ybk0">al-Mutanabbi</a>
 </p>
@@ -1150,7 +1603,7 @@ This section was labeled under, or is related to <a href="t/tayyib.html#nk2kigk0
 <span class="timestamp-wrapper"><span class="timestamp">[2025-02-12 Wed 20:09]</span></span>
 </p>
  </div>
-<div class="tag" id="org7831af5">
+<div class="tag" id="orga50edf1">
 <p>
 This section was labeled under, or is related to <a href="t/tayyib.html#nk2kigk0ybk0">Al-Mutanabbi</a>
 </p>
@@ -1221,7 +1674,7 @@ internal and external dissonance.
 <h3 id="qml50930mek0"><span class="done DONE">DONE</span> Excited for Nix&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h3>
 <div class="outline-text-3" id="text-qml50930mek0">
 <ul class="org-ul">
-<li>Note taken on <span class="timestamp-wrapper"><span class="timestamp">[2025-05-01 Thu 22:14]</span></span> <br>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-05-01 Thu 22:14]</span></span>: <br>
 I wrote this note 5 months ago before migrating to MacOS. I still think that
 NixOS is a great OS though.</li>
 </ul>
@@ -1252,7 +1705,7 @@ Can&rsquo;t wait for getting my new laptop and installing NixOS on it.
 <span class="timestamp-wrapper"><span class="timestamp">[2024-12-01 Sun 10:54]</span></span>
 </p>
  </div>
-<div class="tag" id="org6c3067f">
+<div class="tag" id="org078d11b">
 <p>
 This section was labeled under, or is related to <a href="t/modus.html#ydb1kfn02wj0">Modus Vivendi</a>
 </p>
@@ -1292,7 +1745,7 @@ should be, and demands alteration.
 <span class="timestamp-wrapper"><span class="timestamp">[2024-11-28 Thu 18:01]</span></span>
 </p>
  </div>
-<div class="tag" id="org3fc9294">
+<div class="tag" id="org14fbed1">
 <p>
 This section was labeled under, or is related to <a href="t/tayyib.html#nk2kigk0ybk0">al-Mutanabbi</a>
 </p>
@@ -1322,7 +1775,7 @@ Some are born posthumously
 <span class="timestamp-wrapper"><span class="timestamp">[2024-11-24 Sun 18:48]</span></span>
 </p>
  </div>
-<div class="tag" id="orgf0facd7">
+<div class="tag" id="org87d2af1">
 <p>
 This section was labeled under, or is related to <a href="t/programming.html#4u5664n02wj0">Programming</a>
 </p>
@@ -1347,7 +1800,7 @@ First of all, simply, extract the exe content:
 <p>
 The extracted directory should have a similar tree to this:
 </p>
-<pre class="example" id="orgf62ed47">
+<pre class="example" id="orga7c2928">
 larrasket [~/tmp/rq/e]$ ls -l
 total 152
 -rw-r--r-- 1 l l   2227 Aug 21 14:42 config.js
@@ -1369,7 +1822,7 @@ drwxr-xr-x 1 l l    232 Aug 21 14:42 locales
 From here it&rsquo;s very obvious that we can run this node app in a web server. You
 can run a simple http server here:
 </p>
-<pre class="code"><code>python3 -m http.server <span style="color: #DCDCDC; font-weight: bold;">9000</span>
+<pre class="code"><code>python3 -m http.server 9000
 </code></pre>
 <p>
 And the app will be available at port 9000. Alternatively you can build an epub
@@ -1380,8 +1833,8 @@ from the provided epub directory:
 Inside the epub directory append the mimetype
 </p>
 
-<pre class="code"><code>zip -0X <span style="color: #CC9393;">"../book.epub"</span> mimetype
-zip -rDX9 <span style="color: #CC9393;">"../book.epub"</span> * -x <span style="color: #CC9393;">"*.DS_Store"</span> -x mimetype
+<pre class="code"><code>zip -0X <span style="color: #e5b76f;">"../book.epub"</span> mimetype
+zip -rDX9 <span style="color: #e5b76f;">"../book.epub"</span> * -x <span style="color: #e5b76f;">"*.DS_Store"</span> -x mimetype
 </code></pre>
 
 <p>
@@ -1396,8 +1849,8 @@ This will get you the epub. Right after, you can convert it to pdf with
 As a single command:
 </p>
 
-<pre class="code"><code><span style="color: #8CD0D3;">(</span>zip -0X <span style="color: #CC9393;">"../book.epub"</span> mimetype &amp;&amp; <span style="color: #CC9393;">\\</span>
-&#9474;   &#9474;zip -rDX9 <span style="color: #CC9393;">"../book.epub"</span> * -x <span style="color: #CC9393;">"*.DS_Store"</span> -x mimetype<span style="color: #8CD0D3;">)</span> <span style="color: #CC9393;">\\</span>
+<pre class="code"><code>(zip -0X <span style="color: #e5b76f;">"../book.epub"</span> mimetype &amp;&amp; <span style="color: #e5b76f;">\\</span>
+&#9474;   &#9474;zip -rDX9 <span style="color: #e5b76f;">"../book.epub"</span> * -x <span style="color: #e5b76f;">"*.DS_Store"</span> -x mimetype) <span style="color: #e5b76f;">\\</span>
 &#9474;   &#9474;   &amp;&amp; ebook-convert ../book.epub ../book.pdf
 </code></pre>
 </div>
@@ -1409,7 +1862,7 @@ As a single command:
 <span class="timestamp-wrapper"><span class="timestamp">[2024-11-12 Tue 04:49]</span></span>
 </p>
  </div>
-<div class="tag" id="org336673f">
+<div class="tag" id="org33c9e8c">
 <p>
 This section was labeled under, or is related to <a href="t/political.html#thc4j6p02wj0">Politics</a>
 </p>
@@ -1500,12 +1953,12 @@ biological state. <a href="p/nature.html#tixkcwk0gwj0">Related</a>.
 </div>
 <div id="outline-container-06f35v80xck0" class="outline-3">
 <h3 id="06f35v80xck0"><a href="https://github.com/alphapapa/org-ql/pull/325">Fix: (org-ql-view.el) Adjust priority for agenda elements by anpandey</a></h3>
-<div class="outline-text-3" id="text-org902c7d7">
+<div class="outline-text-3" id="text-org7a2e99c">
 <div class="notes"> <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2024-08-22 Thu 12:50]</span></span>
 </p>
  </div>
-<div class="tag" id="orge84c17b">
+<div class="tag" id="orga6979b9">
 <p>
 This section was labeled under, or is related to <a href="t/programming.html#4u5664n02wj0">Programming</a>
 </p>
@@ -1533,7 +1986,7 @@ do any of this (or even register at a new forge other than github).
 </div>
 <div id="outline-container-jene6a516ak0" class="outline-3">
 <h3 id="jene6a516ak0">Nostalgic Bibliography</h3>
-<div class="outline-text-3" id="text-org281129d">
+<div class="outline-text-3" id="text-org1d18aa6">
 <div class="notes"> <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2024-08-04 Sun 03:32]</span></span>
 </p>
@@ -1581,12 +2034,12 @@ So many other memories with the rest of the list! خُلِقتُ أَلوفاً 
 </div>
 <div id="outline-container-j4lijmn05ak0" class="outline-3">
 <h3 id="j4lijmn05ak0">SEP Friendship</h3>
-<div class="outline-text-3" id="text-org698f705">
+<div class="outline-text-3" id="text-orgd56cf93">
 <div class="notes"> <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2024-08-03 Sat 03:14]</span></span>
 </p>
  </div>
-<div class="tag" id="org409b2d8">
+<div class="tag" id="orgcd26afa">
 <p>
 This section was labeled under, or is related to Philosophy
 </p>
@@ -1600,153 +2053,64 @@ hold more than few long articles, SEP average entry is about ~50 pages or so, th
 long article even. Here&rsquo;s how I get their entries as nice PDFs without subscription,
 simply save the article part of the HTML page into a file, and using <a href="https://pandoc.org/">pandoc</a> run:
 </p>
-<pre class="code"><code>pandoc concept_of_religion.html --pdf-engine=xelatex -o concept_of_religion.pdf --variable=documentclass:book -V geometry:b5paper -V <span style="color: #DFAF8F;">margin</span>=3cm -V <span style="color: #DFAF8F;">mainfont</span>=<span style="color: #CC9393;">"Times New Roman"</span>
+<pre class="code"><code>pandoc concept_of_religion.html --pdf-engine=xelatex -o concept_of_religion.pdf --variable=documentclass:book -V geometry:b5paper -V <span style="color: #df7fff;">margin</span>=3cm -V <span style="color: #df7fff;">mainfont</span>=<span style="color: #e5b76f;">"Times New Roman"</span>
 </code></pre>
 </div>
 </div>
 <div id="outline-container-kuh0x3t0p9k0" class="outline-3">
 <h3 id="kuh0x3t0p9k0">I can&rsquo;t find a <a href="cs/lisp.html#vlm4vsn02wj0">Lisp</a></h3>
-<div class="outline-text-3" id="text-org280e3b8">
+<div class="outline-text-3" id="text-org392ad0b">
 <div class="notes"> <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2024-07-22 Mon 02:01]</span></span>
 </p>
  </div>
-<div class="tag" id="org8d532c8">
+<div class="tag" id="orgf0725c7">
 <p>
 This section was labeled under, or is related to <a href="t/programming.html#4u5664n02wj0">Programming</a>
 </p>
 
 </div>
 <p>
-Basically almost every Lisp out there have a major downside that turns me down from using
+Basically almost every Lisp out there has a major downside that turns me off from using
 it to the extent I consider using Haskell&rsquo;s s-expression tolerance (like <code>(map odd
-[1,2,3]) (((.) fst snd) (1,(2,3)))</code>)
+[1,2,3]) (((.) fst snd) (1,(2,3)))</code>) (which, obviously, would be a very bad practice)
 </p>
 
 <ul class="org-ul">
-<li>Common Lisp: Classical OOP everywhere, very bad build automation and packaging (asdf),
-available implementations have low support, bugs are everywhere due to the limited teams
-who are working on those.</li>
-<li>Scheme: Same as CL, in addition to the scare language support in most editor (not sure
-even if it has a Lisp), also it&rsquo;s hard to find libraries/packages to build something on.</li>
+<li>Common Lisp: Classical OOP everywhere, very bad build automation and packaging
+(asdf), available implementations have low support availability, bugs are
+everywhere due to the limited teams who are working on those.</li>
+<li>Scheme: Same as CL, in addition to the scare language support in most editors
+(not sure even if it has an LSP), also it&rsquo;s hard to find libraries/packages to
+build something on.</li>
 <li>EuLisp, ZetaLisp, MacLisp, InterLisp, ISLisp, <a href="https://mumble.net/~jar/tproject/">T</a>, Arc, PicoLisp: I still find it hard to
 believe those are not in the museum of computing yet.</li>
 <li>Guile, Racket: both look so promising but the lack of interest from community which
-inevitability results in an effect on the number of available packages to build on make
+results in an effect on the number of available packages to build on, makes
 it much harder to start a new project in any of them without reinventing the wheel.</li>
 <li>Clojure: aside from the JVM dependency and the build system hassle, the language is just
 too big, still the most plausible option in this whole list though.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-vbl22tf0z3k0" class="outline-3">
-<h3 id="vbl22tf0z3k0">Another killer feature for <a href="cs/go.html#lvkhzyo02wj0">Go</a></h3>
-<div class="outline-text-3" id="text-org1754491">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2024-02-16 Fri 14:07]</span></span>
-</p>
- </div>
-<div class="tag" id="org5003bec">
-<p>
-This section was labeled under, or is related to <a href="t/programming.html#4u5664n02wj0">Programming</a>
-</p>
-
 </div>
-<p>
-I&rsquo;d always prefer a Lisp. But ideally, Go wins (more at <a href="d/languages.html#jb9efrq00xj0">The Prefect Programming
-Language</a>) by its unauthoritarian package manager and not using <a href="d/languages.html#x0z0fu11qxj0">exception
-handling</a>. As aforementioned @ <a href="sh/Dec2023-Feb2024.html#gvdlay40j3k0">A thought about Clojure</a>, I think Clojure is the
-modern day Lisp that works very good for interactive programming and rapid
-development. But here&rsquo;s another killer feature of Go that roughly does not exist
-elsewhere: the great STD. With Go, I can feel very comfortable writing a Go
-application without the need of checking the internet for questions or 3rd-party
-libraries, eventually I might need to, but if compared to any other tool I&rsquo;ve
-ever used, it&rsquo;s amazing (back in the day when I used C# I&rsquo;d need a web browser
-always running alongside to my IDE). I do not have internet connection those
-days and while playing tracks I thought of building a simple CLI to handle my
-audio tracks synchronization, I know how to do it without reinventing the wheel
-in Go, with only using the STD, with Clojure, it&rsquo;s going to be unrapid developement.
-</p>
-</div>
-</div>
-<div id="outline-container-ah445bg0y3k0" class="outline-3">
-<h3 id="ah445bg0y3k0">Consolation</h3>
-<div class="outline-text-3" id="text-org94f58cf">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2024-02-15 Thu 19:50]</span></span>
-</p>
- </div>
-<div class="tag" id="org523553b">
-<p>
-This section was labeled under, or is related to <a href="t/modus.html#ydb1kfn02wj0">Modus Vivendi</a>
-</p>
-
-</div>
-<div class="epigraph"><blockquote>
-<p>
-الخبث خبثان: خُبث الداهية وخَبث الأحمق. الأخير هو، إلى حدِّ الآن، الأسوأ.
-</p>
-
-<p>
-— عباس ابراهام.
-</p>
-
-</blockquote></div>
-
-<p>
-Here&rsquo;s my consolation for a very big part of my life of which I remind myself
-very frequently especially if I&rsquo;m suspecting the existence of stupidity around.
-A solace that often comes to the forefront.
-Let me establish something that is misconstrued usually, people think that
-smart people tend to be evil much more than stupid people. Which is correct,
-intelligent people would be indeed much more capable of doing harm (i.e. evil).
-However, here&rsquo;s the thing about stupidity; evilness is highly subjective that a
-stupid person does not have to be aware that he/she is seeking something achieved,
-that he/she is harming or even doing anything at all to be &rsquo;evil&rsquo; to an intelligent
-individual. I want to give you some example but لولا النفوس الضعيفة سريعة المرض،
-سيئة الغرض I&rsquo;d skip on that. Anyway, let&rsquo;s get back to my point about where I
-find my consolation about this kind of nefarious and base evilness: it bounces
-back. Stupids, imbeciles and retards 99% of the times hurt themselves back,
-making shitty life decisions or just of being irritating to others. Their
-decisions, marred by imprudence, or merely their presence, vexatious to others,
-invariably rebound upon them. &ldquo;Errare humanum est, sed in errare perseverare
-diabolicum&rdquo;.
-</p>
-</div>
-</div>
-<div id="outline-container-9rmjr9i0o3k0" class="outline-3">
-<h3 id="9rmjr9i0o3k0">Clojure has Go-like channels</h3>
-<div class="outline-text-3" id="text-org900f039">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2024-02-08 Thu 06:45]</span></span>
-</p>
- </div>
-<div class="tag" id="orge011308">
-<p>
-This section was labeled under, or is related to <a href="t/programming.html#4u5664n02wj0">Programming</a>
-</p>
-
-</div>
-<p>
-Found out that Clojure has <a href="cs/go.html#lvkhzyo02wj0">Go</a>-like channels.
-<a href="https://clojure.org/guides/async_walkthrough">https://clojure.org/guides/async_walkthrough</a>, very promising to use it (as
-mentioned at <a href="sh/Dec2023-Feb2024.html#gvdlay40j3k0">a thought about Clojure</a>)
-</p>
-</div>
-</div>
-</div>
-<div id="outline-container-org68282dd" class="outline-2">
-<h2 id="org68282dd">Archive</h2>
-<div class="outline-text-2" id="text-org68282dd">
+<div id="outline-container-org32e3403" class="outline-2">
+<h2 id="org32e3403">Archive</h2>
+<div class="outline-text-2" id="text-org32e3403">
+<ul class="org-ul">
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-06-28 Sat 20:04]</span></span>: <br>
+2024-2025 was a heavy time. I will probably organize it in the archive after I
+get over it.</li>
+</ul>
 <p>
 <a href="sh/Dec2023-Feb2024.html#h6p5sz01e2k0">December 2023-February 2024</a> | <a href="sh/Sept2023-Nov2023.html#e9d6oix021k0">September 2023-November 2023</a> | <a href="sh/Jun2023-August2023.html#1c4frpp02wj0">June 2023-August 2023</a> | <a href="sh/Mar2023-May2023.html#v3pf36o02wj0">March
 2023-May 2023</a> | <a href="sh/Dec2022-Feb2023.html#7i03ryn02wj0">December 2022-February 2023</a> | <a href="sh/Sept22-Nov2022.html#ssl77go02wj0">September 2022-November 2023</a>
 </p>
 </div>
 </div>
-<div id="outline-container-org4ad2463" class="outline-2">
-<h2 id="org4ad2463">How does this page work</h2>
-<div class="outline-text-2" id="text-org4ad2463">
+<div id="outline-container-orgf13e59c" class="outline-2">
+<h2 id="orgf13e59c">How does this page work</h2>
+<div class="outline-text-2" id="text-orgf13e59c">
 <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2022-09-23 Fri 20:15]</span></span>: If you are an old reader (if such a thing exists) of
 this blog, you should know about my old attempts of creating a stack-like
@@ -1758,11 +2122,11 @@ string, and I started to implement it as a separated program. However, while
 doing it I recognized that <code>(org-caputre)</code> already does it, just needed a simple
 custom configuration:
 </p>
-<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">setq</span> <span style="color: #DFAF8F;">+org-capture-journal-file</span> <span style="color: #CC9393;">"~/blog/content/stack.org"</span><span style="color: #8CD0D3;">)</span>
-<span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">setq</span> <span style="color: #DFAF8F;">org-capture-templates</span>
-      <span style="color: #8CD0D3;">'</span><span style="color: #DC8CC3;">(</span><span style="color: #7F9F7F;">(</span><span style="color: #CC9393;">"j"</span> <span style="color: #CC9393;">"Journal"</span> entry
-           <span style="color: #a9a1e1;">(</span>file+headline <span style="color: #DFAF8F;">+org-capture-journal-file</span> <span style="color: #CC9393;">"Posts"</span><span style="color: #a9a1e1;">)</span>
-           <span style="color: #CC9393;">"* %&lt;%A, %d %B %Y&gt;\n%?"</span>  <span style="color: #DCDCDC; font-weight: bold;">:prepend</span> t<span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
+<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">setq</span> <span style="color: #df7fff;">+org-capture-journal-file</span> <span style="color: #e5b76f;">"~/blog/content/stack.org"</span>)
+(<span style="color: #ef80bf; font-weight: bold;">setq</span> <span style="color: #df7fff;">org-capture-templates</span>
+      <span style="color: #ef80bf; font-weight: bold;">'</span>((<span style="color: #e5b76f;">"j"</span> <span style="color: #e5b76f;">"Journal"</span> entry
+           (file+headline <span style="color: #df7fff;">+org-capture-journal-file</span> <span style="color: #e5b76f;">"Posts"</span>)
+           <span style="color: #e5b76f;">"* %&lt;%A, %d %B %Y&gt;\n%?"</span>  <span style="color: #a897ef; font-weight: bold;">:prepend</span> t)))
 </code></pre>
 
 <p>
@@ -1803,7 +2167,7 @@ Some are born posthumously
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.93 (<a href="https://orgmode.org">Org</a> mode 9.7.29). Written by: Salih Muhammed, by the date of: . Last build date: 2025-06-06 Fri 21:03.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: . Last build date: 2025-07-05 Sat 19:51.</p>
 
 </div>
 </div>

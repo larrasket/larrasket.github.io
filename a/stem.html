@@ -54,23 +54,23 @@ margin-block-start: auto;
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org5e61169">Introduction</a></li>
-<li><a href="#org47dad17">Methodology</a></li>
-<li><a href="#org16720fc">Testing</a>
+<li><a href="#org2dcb097">Introduction</a></li>
+<li><a href="#org299ddb4">Methodology</a></li>
+<li><a href="#orgce5b9ed">Testing</a>
 <ul>
-<li><a href="#org47d3d7d">(<a href="#citeproc_bib_item_4">Eldesouki, 2017</a>)</a></li>
-<li><a href="#org4b4a7cf">(<a href="#citeproc_bib_item_7">Taghva et al., 2005</a>)</a></li>
-<li><a href="#orgf895f71">(<a href="#citeproc_bib_item_3">Chelli, 2018</a>)</a></li>
-<li><a href="#orgced84f3">(<a href="#citeproc_bib_item_2">Boudlal and Lakhouaja, 2010</a>)</a></li>
-<li><a href="#orgac9d12b">(<a href="#citeproc_bib_item_5">Khoja, 1999</a>) and (<a href="#citeproc_bib_item_1">Al-Shalabi et al., 2003</a>)</a></li>
+<li><a href="#org4c017a9">(<a href="#citeproc_bib_item_4">Eldesouki, 2017</a>)</a></li>
+<li><a href="#org2818baf">(<a href="#citeproc_bib_item_7">Taghva et al., 2005</a>)</a></li>
+<li><a href="#org177689f">(<a href="#citeproc_bib_item_3">Chelli, 2018</a>)</a></li>
+<li><a href="#org4c907de">(<a href="#citeproc_bib_item_2">Boudlal and Lakhouaja, 2010</a>)</a></li>
+<li><a href="#orgccc9957">(<a href="#citeproc_bib_item_5">Khoja, 1999</a>) and (<a href="#citeproc_bib_item_1">Al-Shalabi et al., 2003</a>)</a></li>
 </ul>
 </li>
-<li><a href="#org49e643e">Conclusion</a></li>
-<li><a href="#org1aa858c">References</a></li>
+<li><a href="#org1f0de03">Conclusion</a></li>
+<li><a href="#org7557c23">References</a></li>
 </ul>
 </div>
 </nav>
-<div class="PREVIEW" id="org7cae7f2">
+<div class="PREVIEW" id="org888411e">
 <p>
 This article presents a comprehensive report on the current landscape of
 open-source Arabic language stemming algorithms and services.
@@ -93,9 +93,9 @@ scenarios. The findings contribute to the Arabic NLP community by offering an
 in-depth analysis of open-source stemming tools and facilitating informed
 decision-making for researchers, developers, and practitioners.
 </p>
-<div id="outline-container-org5e61169" class="outline-2">
-<h2 id="org5e61169">Introduction</h2>
-<div class="outline-text-2" id="text-org5e61169">
+<div id="outline-container-org2dcb097" class="outline-2">
+<h2 id="org2dcb097">Introduction</h2>
+<div class="outline-text-2" id="text-org2dcb097">
 <p>
 Arabic, with its rich linguistic heritage and diverse dialects, poses unique
 challenges for natural language processing (NLP) tasks, including stemming.
@@ -150,9 +150,9 @@ consolidating the argument about the status of modern Arabic stemmers.
 </p>
 </div>
 </div>
-<div id="outline-container-org47dad17" class="outline-2">
-<h2 id="org47dad17">Methodology</h2>
-<div class="outline-text-2" id="text-org47dad17">
+<div id="outline-container-org299ddb4" class="outline-2">
+<h2 id="org299ddb4">Methodology</h2>
+<div class="outline-text-2" id="text-org299ddb4">
 <p>
 Rather than investing time in deeply testing each algorithm weak points; the
 test make use of a randomly chosen set of verbs and known morphological balance,
@@ -172,9 +172,9 @@ demonstrate them. The test program separates each morphological root test set.
 </p>
 </div>
 </div>
-<div id="outline-container-org16720fc" class="outline-2">
-<h2 id="org16720fc">Testing</h2>
-<div class="outline-text-2" id="text-org16720fc">
+<div id="outline-container-orgce5b9ed" class="outline-2">
+<h2 id="orgce5b9ed">Testing</h2>
+<div class="outline-text-2" id="text-orgce5b9ed">
 <p>
 This section presents the findings and analysis of the evaluation conducted on
 the algorithms and services. The results provide insights into the performance,
@@ -182,27 +182,27 @@ accuracy, computational efficiency, and language coverage of each stemmer,
 shedding light on their suitability for integration into a dictionary project.
 </p>
 </div>
-<div id="outline-container-org47d3d7d" class="outline-3">
-<h3 id="org47d3d7d">(<a href="#citeproc_bib_item_4">Eldesouki, 2017</a>)</h3>
-<div class="outline-text-3" id="text-org47d3d7d">
+<div id="outline-container-org4c017a9" class="outline-3">
+<h3 id="org4c017a9">(<a href="#citeproc_bib_item_4">Eldesouki, 2017</a>)</h3>
+<div class="outline-text-3" id="text-org4c017a9">
 <p>
 The first tested was developed in 2017, it uses a simple trivial approach of
 eliminating articles from words and normalize them to their root.
 </p>
 
-<pre class="code"><code><span style="color: #F0DFAF; font-weight: bold;">for</span> article <span style="color: #F0DFAF; font-weight: bold;">in</span> Light10stemmer.larkey_defarticles:
-&#9474;   <span style="color: #DFAF8F;">length</span> = <span style="color: #DCDCDC; font-weight: bold;">len</span>(article)
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">if</span> (wordlen &gt; length + <span style="color: #DCDCDC; font-weight: bold;">1</span>) <span style="color: #F0DFAF; font-weight: bold;">and</span> (token[:length] == article):
-&#9474;   &#9474;   <span style="color: #DFAF8F;">token</span> = token[length:]
-&#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">break</span>
+<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">for</span> article <span style="color: #ef80bf; font-weight: bold;">in</span> Light10stemmer.larkey_defarticles:
+&#9474;   <span style="color: #df7fff;">length</span> = <span style="color: #a897ef; font-weight: bold;">len</span>(article)
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (wordlen &gt; length + 1) <span style="color: #ef80bf; font-weight: bold;">and</span> (token[:length] == article):
+&#9474;   &#9474;   <span style="color: #df7fff;">token</span> = token[length:]
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">break</span>
 &#9474;   &#9474;
-<span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #DCDCDC; font-weight: bold;">len</span>(token) &gt; <span style="color: #DCDCDC; font-weight: bold;">2</span>:
-&#9474;   <span style="color: #DFAF8F;">wordlen</span> = <span style="color: #DCDCDC; font-weight: bold;">len</span>(token)
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">for</span> suffix <span style="color: #F0DFAF; font-weight: bold;">in</span> Light10stemmer.larkey_suffixes:
-&#9474;   &#9474;   <span style="color: #DFAF8F;">suflen</span> = <span style="color: #DCDCDC; font-weight: bold;">len</span>(suffix)
-&#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">if</span> (wordlen &gt; <span style="color: #DCDCDC; font-weight: bold;">len</span>(suffix) + <span style="color: #DCDCDC; font-weight: bold;">1</span>) <span style="color: #F0DFAF; font-weight: bold;">and</span> token.endswith(suffix):
-&#9474;   &#9474;   &#9474;   <span style="color: #DFAF8F;">token</span> = token[:wordlen - suflen]
-&#9474;   &#9474;   &#9474;   <span style="color: #DFAF8F;">wordlen</span> = <span style="color: #DCDCDC; font-weight: bold;">len</span>(token)
+<span style="color: #ef80bf; font-weight: bold;">if</span> <span style="color: #a897ef; font-weight: bold;">len</span>(token) &gt; 2:
+&#9474;   <span style="color: #df7fff;">wordlen</span> = <span style="color: #a897ef; font-weight: bold;">len</span>(token)
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> suffix <span style="color: #ef80bf; font-weight: bold;">in</span> Light10stemmer.larkey_suffixes:
+&#9474;   &#9474;   <span style="color: #df7fff;">suflen</span> = <span style="color: #a897ef; font-weight: bold;">len</span>(suffix)
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (wordlen &gt; <span style="color: #a897ef; font-weight: bold;">len</span>(suffix) + 1) <span style="color: #ef80bf; font-weight: bold;">and</span> token.endswith(suffix):
+&#9474;   &#9474;   &#9474;   <span style="color: #df7fff;">token</span> = token[:wordlen - suflen]
+&#9474;   &#9474;   &#9474;   <span style="color: #df7fff;">wordlen</span> = <span style="color: #a897ef; font-weight: bold;">len</span>(token)
 </code></pre>
 
 <p>
@@ -211,9 +211,9 @@ other stemmers we got, it was only able to pass 1 test case.
 </p>
 </div>
 </div>
-<div id="outline-container-org4b4a7cf" class="outline-3">
-<h3 id="org4b4a7cf">(<a href="#citeproc_bib_item_7">Taghva et al., 2005</a>)</h3>
-<div class="outline-text-3" id="text-org4b4a7cf">
+<div id="outline-container-org2818baf" class="outline-3">
+<h3 id="org2818baf">(<a href="#citeproc_bib_item_7">Taghva et al., 2005</a>)</h3>
+<div class="outline-text-3" id="text-org2818baf">
 <p>
 The ISRI Arabic Stemmer is a Natural Language Toolkit (NLTK) algorithm that was
 developed at University of Nevada by a set of researchers. The algorithm works
@@ -223,22 +223,22 @@ patterns. It implements 25 balances. It was able to pass 17 out of 35 testcases.
 </p>
 
 
-<pre class="code"><code><span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">pro_w53</span>(<span style="color: #F0DFAF; font-weight: bold;">self</span>, word):
-&#9474;   <span style="color: #9FC59F;">"""process length five patterns and extract length three roots"""</span>
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">if</span> word[<span style="color: #DCDCDC; font-weight: bold;">2</span>] <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #F0DFAF; font-weight: bold;">self</span>.pr53[<span style="color: #DCDCDC; font-weight: bold;">0</span>] <span style="color: #F0DFAF; font-weight: bold;">and</span> word[<span style="color: #DCDCDC; font-weight: bold;">0</span>] == <span style="color: #CC9393;">"</span><span style="color: #BFEBBF;">\u0627</span><span style="color: #CC9393;">"</span>:
-&#9474;   &#9474;   <span style="color: #DFAF8F;">word</span> = word[<span style="color: #DCDCDC; font-weight: bold;">1</span>] + word[<span style="color: #DCDCDC; font-weight: bold;">3</span>:]
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">elif</span> word[<span style="color: #DCDCDC; font-weight: bold;">4</span>] == <span style="color: #CC9393;">"</span><span style="color: #BFEBBF;">\u0629</span><span style="color: #CC9393;">"</span> <span style="color: #F0DFAF; font-weight: bold;">and</span> word[<span style="color: #DCDCDC; font-weight: bold;">1</span>] == <span style="color: #CC9393;">"</span><span style="color: #BFEBBF;">\u0627</span><span style="color: #CC9393;">"</span>:
-&#9474;   &#9474;   <span style="color: #DFAF8F;">word</span> = word[<span style="color: #DCDCDC; font-weight: bold;">0</span>] + word[<span style="color: #DCDCDC; font-weight: bold;">2</span>:<span style="color: #DCDCDC; font-weight: bold;">4</span>]
+<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">def</span> <span style="color: #f59280;">pro_w53</span>(<span style="color: #ef80bf; font-weight: bold;">self</span>, word):
+&#9474;   <span style="color: #cc9bcf; font-style: italic;">"""process length five patterns and extract length three roots"""</span>
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> word[2] <span style="color: #ef80bf; font-weight: bold;">in</span> <span style="color: #ef80bf; font-weight: bold;">self</span>.pr53[0] <span style="color: #ef80bf; font-weight: bold;">and</span> word[0] == <span style="color: #e5b76f;">"</span><span style="color: #ff78aa;">\u0627</span><span style="color: #e5b76f;">"</span>:
+&#9474;   &#9474;   <span style="color: #df7fff;">word</span> = word[1] + word[3:]
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">elif</span> word[4] == <span style="color: #e5b76f;">"</span><span style="color: #ff78aa;">\u0629</span><span style="color: #e5b76f;">"</span> <span style="color: #ef80bf; font-weight: bold;">and</span> word[1] == <span style="color: #e5b76f;">"</span><span style="color: #ff78aa;">\u0627</span><span style="color: #e5b76f;">"</span>:
+&#9474;   &#9474;   <span style="color: #df7fff;">word</span> = word[0] + word[2:4]
 &#9474;   &#9474;   &#9474;   .............................
 &#9474;   &#9474;   &#9474;   .............................
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">elif</span> word[<span style="color: #DCDCDC; font-weight: bold;">4</span>] == <span style="color: #CC9393;">"</span><span style="color: #BFEBBF;">\u064a</span><span style="color: #CC9393;">"</span> <span style="color: #F0DFAF; font-weight: bold;">and</span> word[<span style="color: #DCDCDC; font-weight: bold;">2</span>] == <span style="color: #CC9393;">"</span><span style="color: #BFEBBF;">\u0627</span><span style="color: #CC9393;">"</span>:
-&#9474;   &#9474;   <span style="color: #DFAF8F;">word</span> = word[:<span style="color: #DCDCDC; font-weight: bold;">2</span>] + word[<span style="color: #DCDCDC; font-weight: bold;">3</span>]
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">elif</span> word[4] == <span style="color: #e5b76f;">"</span><span style="color: #ff78aa;">\u064a</span><span style="color: #e5b76f;">"</span> <span style="color: #ef80bf; font-weight: bold;">and</span> word[2] == <span style="color: #e5b76f;">"</span><span style="color: #ff78aa;">\u0627</span><span style="color: #e5b76f;">"</span>:
+&#9474;   &#9474;   <span style="color: #df7fff;">word</span> = word[:2] + word[3]
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgf895f71" class="outline-3">
-<h3 id="orgf895f71">(<a href="#citeproc_bib_item_3">Chelli, 2018</a>)</h3>
-<div class="outline-text-3" id="text-orgf895f71">
+<div id="outline-container-org177689f" class="outline-3">
+<h3 id="org177689f">(<a href="#citeproc_bib_item_3">Chelli, 2018</a>)</h3>
+<div class="outline-text-3" id="text-org177689f">
 <p>
 Assem&rsquo;s Arabic Light Stemmer authored by Assem Chelli is a stemmer that makes
 use of Snowball stemming framework, it implements the renowned algorithm for the
@@ -247,9 +247,9 @@ it is about 200% faster than it. It was able to pass 17 out of 35 testcases.
 </p>
 </div>
 </div>
-<div id="outline-container-orgced84f3" class="outline-3">
-<h3 id="orgced84f3">(<a href="#citeproc_bib_item_2">Boudlal and Lakhouaja, 2010</a>)</h3>
-<div class="outline-text-3" id="text-orgced84f3">
+<div id="outline-container-org4c907de" class="outline-3">
+<h3 id="org4c907de">(<a href="#citeproc_bib_item_2">Boudlal and Lakhouaja, 2010</a>)</h3>
+<div class="outline-text-3" id="text-org4c907de">
 <p>
 The Natural Language Processing Team in Computer Science Laboratory developed
 one of the most accurate &rsquo;systems&rsquo; so far for stemming in Arabic; they are using
@@ -277,9 +277,9 @@ the language recorded.
 </p>
 </div>
 </div>
-<div id="outline-container-orgac9d12b" class="outline-3">
-<h3 id="orgac9d12b">(<a href="#citeproc_bib_item_5">Khoja, 1999</a>) and (<a href="#citeproc_bib_item_1">Al-Shalabi et al., 2003</a>)</h3>
-<div class="outline-text-3" id="text-orgac9d12b">
+<div id="outline-container-orgccc9957" class="outline-3">
+<h3 id="orgccc9957">(<a href="#citeproc_bib_item_5">Khoja, 1999</a>) and (<a href="#citeproc_bib_item_1">Al-Shalabi et al., 2003</a>)</h3>
+<div class="outline-text-3" id="text-orgccc9957">
 <p>
 Both of (<a href="#citeproc_bib_item_5">Khoja, 1999</a>) and (<a href="#citeproc_bib_item_1">Al-Shalabi et al., 2003</a>) was not tested in
 this study, however, a comparative study (<a href="#citeproc_bib_item_6">Sawalha and Atwell, 2008</a>) concluded the
@@ -288,9 +288,9 @@ following results using the Qur&rsquo;an Gold Standards:
 </div>
 </div>
 </div>
-<div id="outline-container-org49e643e" class="outline-2">
-<h2 id="org49e643e">Conclusion</h2>
-<div class="outline-text-2" id="text-org49e643e">
+<div id="outline-container-org1f0de03" class="outline-2">
+<h2 id="org1f0de03">Conclusion</h2>
+<div class="outline-text-2" id="text-org1f0de03">
 <p>
 In conclusion, this article conducted a comprehensive analysis of open-source
 Arabic language stemming algorithms and services. Stemming is a vital task in
@@ -310,9 +310,9 @@ stemming algorithms.
 </p>
 </div>
 </div>
-<div id="outline-container-org1aa858c" class="outline-2">
-<h2 id="org1aa858c">References</h2>
-<div class="outline-text-2" id="text-org1aa858c">
+<div id="outline-container-org7557c23" class="outline-2">
+<h2 id="org7557c23">References</h2>
+<div class="outline-text-2" id="text-org7557c23">
 <style>.csl-entry{text-indent: -1.5em; margin-left: 1.5em;}</style><div class="csl-bib-body">
   <div class="csl-entry"><a id="citeproc_bib_item_1"></a>Al-Shalabi, R., Kanaan, G., Al-Serhan, H., 2003. New approach for extracting arabic roots, in: Proceedings of the International Arab Conference on Information Technology (Acit’2003). Egypt.</div>
   <div class="csl-entry"><a id="citeproc_bib_item_2"></a>Boudlal, A., Lakhouaja, A., 2010. Alkhalil morpho sys1: A morphosyntactic analysis system for arabic texts. Int. arab conf. inf. technol 1–6.</div>
@@ -331,7 +331,7 @@ stemming algorithms.
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.93 (<a href="https://orgmode.org">Org</a> mode 9.7.22). Written by: S. Muhammed, M. Samy and M. Rady, by the date of: 2023-05-30 Tue 00:00. Last build date: 2025-02-15 Sat 03:59.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: S. Muhammed, M. Samy and M. Rady, by the date of: 2023-05-30 Tue 00:00. Last build date: 2025-06-28 Sat 18:37.</p>
 
 </div>
 </div>

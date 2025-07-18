@@ -50,7 +50,7 @@ margin-block-start: auto;
 <div id="content" class="content">
 <header>
 <h1 class="title">Cursed Journey of Getting a Monitor to Work</h1>
-</header><div class="PREVIEW" id="org7f69151">
+</header><div class="PREVIEW" id="orgdf5320d">
 <p>
 Isn&rsquo;t it a shame that this place of the internet is supposed to be a blog yet doesn&rsquo;t contain
 blogs but obscure philosophies?
@@ -80,9 +80,9 @@ existed), I was left was the following thoughts;
 <li>USB-C Adapter</li>
 <li>USB-A Adapter</li>
 </ul>
-<div id="outline-container-orgd66e5e4" class="outline-2">
-<h2 id="orgd66e5e4">First Try; HDMI Splitter</h2>
-<div class="outline-text-2" id="text-orgd66e5e4">
+<div id="outline-container-org66335ed" class="outline-2">
+<h2 id="org66335ed">First Try; HDMI Splitter</h2>
+<div class="outline-text-2" id="text-org66335ed">
 <p>
 Worked fine but there is one main issue, it doesn&rsquo;t plug a second monitor to your machine
 the but it plugs a new monitor to the monitor plugged in your machine. I.e. it will send the
@@ -90,15 +90,15 @@ signal for both of them, just like an old fashion DSL splitter.
 </p>
 
 
-<figure id="org75fe13c">
+<figure id="org6d20e16">
 <img src="../i/old/2023-01-23_06-47-11_screenshot.png" alt="2023-01-23_06-47-11_screenshot.png">
 
 </figure>
 </div>
 </div>
-<div id="outline-container-org727505a" class="outline-2">
-<h2 id="org727505a">Second Try; USB-C</h2>
-<div class="outline-text-2" id="text-org727505a">
+<div id="outline-container-orgd23aa03" class="outline-2">
+<h2 id="orgd23aa03">Second Try; USB-C</h2>
+<div class="outline-text-2" id="text-orgd23aa03">
 <p>
 Like my head voice suggested the first thing that came out to my mind is using Type-C USB
 converter, it&rsquo;s pretty fast and Apple already did that before with Mac books, and the
@@ -118,9 +118,9 @@ devices
 </blockquote></div>
 </div>
 </div>
-<div id="outline-container-org5428e91" class="outline-2">
-<h2 id="org5428e91">Third Try; USB-A</h2>
-<div class="outline-text-2" id="text-org5428e91">
+<div id="outline-container-orgcd3621e" class="outline-2">
+<h2 id="orgcd3621e">Third Try; USB-A</h2>
+<div class="outline-text-2" id="text-orgcd3621e">
 <p>
 After while I learned that using DisplayLink is possible, yet I couldn&rsquo;t find a way to
 purchase a one without paying +$100 for customs. So I had to use a USB-A converter that uses
@@ -135,7 +135,7 @@ After I plugged it into my machine, reading <code>dmesg</code> I noticed that it
 device. So I had to force it to <code>unbind</code> this, using this <code>udevadm</code> role:
 </p>
 
-<pre class="example" id="orgd8e48d6">
+<pre class="example" id="orga99af7a">
 # For HDMI-to-USB adaptor:
 SUBSYSTEM=="usb", DRIVER=="snd-usb-audio", ATTRS{idProduct}=="2109", ATTRS{idVendor}=="534d", \
     RUN+="/bin/sh -c 'echo -n $kernel &gt; /sys/bus/usb/drivers/snd-usb-audio/unbind'"
@@ -152,17 +152,17 @@ So, getting this to work was in vain.
 </p>
 </div>
 </div>
-<div id="outline-container-org7287bde" class="outline-2">
-<h2 id="org7287bde">Fourth Try; USB-A (Right Piece)</h2>
-<div class="outline-text-2" id="text-org7287bde">
+<div id="outline-container-org5b0508e" class="outline-2">
+<h2 id="org5b0508e">Fourth Try; USB-A (Right Piece)</h2>
+<div class="outline-text-2" id="text-org5b0508e">
 <p>
 I found an abscure company called Fresco Logic that develops this kind of solution with
 claimed Linux/Android driver support, and that&rsquo;s the other story.
 </p>
 </div>
-<div id="outline-container-orgd7bcfd7" class="outline-3">
-<h3 id="orgd7bcfd7">Linux Driver</h3>
-<div class="outline-text-3" id="text-orgd7bcfd7">
+<div id="outline-container-orgca16287" class="outline-3">
+<h3 id="orgca16287">Linux Driver</h3>
+<div class="outline-text-3" id="text-orgca16287">
 <p>
 It sounds like the so-called driver that fresco logic developed was disconnected since 2021,
 I use the latest 6.1.7 kernel which means this will never compile, note that you have to
@@ -179,7 +179,7 @@ have you to look at the code first my dear;
 </p>
 
 
-<figure id="org1482e86">
+<figure id="org02f4b16">
 <img src="../i/old/2023-01-23_07-06-11_screenshot.png" alt="2023-01-23_07-06-11_screenshot.png">
 
 </figure>
@@ -196,7 +196,7 @@ situations that it &rsquo;just works&rsquo;. So I installed Windows to give it a
 </p>
 
 
-<figure id="org5521766">
+<figure id="org43c58f7">
 <img src="../i/old/2023-01-23_07-10-32_screenshot.png" alt="2023-01-23_07-10-32_screenshot.png">
 
 </figure>
@@ -208,9 +208,9 @@ buggy but at least it does the job.
 </div>
 </div>
 </div>
-<div id="outline-container-orgd7b8c8d" class="outline-2">
-<h2 id="orgd7b8c8d">Final Results</h2>
-<div class="outline-text-2" id="text-orgd7b8c8d">
+<div id="outline-container-orgf3099d3" class="outline-2">
+<h2 id="orgf3099d3">Final Results</h2>
+<div class="outline-text-2" id="text-orgf3099d3">
 <p>
 The DRM I coded was very insecure unfortunately and I couldn&rsquo;t risk depending on it, when I
 was completely desperate an idea came to my mind reminding me that I had an old unused
@@ -220,7 +220,7 @@ filesystem access lol). Unexpectedly it worked:
 </p>
 
 
-<figure id="org00d536a">
+<figure id="org6900ff2">
 <img src="../i/old/2023-01-23_07-33-42_screenshot.png" alt="2023-01-23_07-33-42_screenshot.png">
 
 </figure>
@@ -243,7 +243,7 @@ engineer, but really this experience could be much pleasant than that easily.
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.93 (<a href="https://orgmode.org">Org</a> mode 9.7.22). Written by: Salih Muhammed, by the date of: 2023-01-23 Mon 17:14. Last build date: 2025-01-07 Tue 16:37.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: 2023-01-23 Mon 17:14. Last build date: 2025-06-28 Sat 18:37.</p>
 
 </div>
 </div>

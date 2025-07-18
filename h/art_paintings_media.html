@@ -50,21 +50,207 @@ margin-block-start: auto;
 <div id="content" class="content">
 <header>
 <h1 class="title">Art</h1>
-</header>
-<figure id="org17fa945">
-<img src="../../media/Other_Content/2025-03-28_15-03-04_screenshot.png" alt="2025-03-28_15-03-04_screenshot.png">
+</header><script>
+// Lazy Loading and Collapsible Headings Script
+(function() {
+    'use strict';
 
-</figure>
+    // ========== LAZY LOADING IMPLEMENTATION ==========
+    function initLazyLoading() {
+        const images = document.querySelectorAll('img');
+
+        // Check if Intersection Observer is supported
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+
+                        // If the image has a data-src attribute, use it
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                        }
+
+                        // Remove the lazy-loading class and add loaded class
+                        img.classList.remove('lazy-loading');
+                        img.classList.add('lazy-loaded');
+
+                        // Stop observing this image
+                        observer.unobserve(img);
+                    }
+                });
+            }, {
+                rootMargin: '50px 0px', // Load images 50px before they come into view
+                threshold: 0.1
+            });
+
+            // Setup lazy-loading for all images
+            images.forEach(img => {
+                // Add lazy-loading class for styling
+                img.classList.add('lazy-loading');
+
+                // If image already has src, move it to data-src for lazy-loading
+                if (img.src && !img.dataset.src) {
+                    img.dataset.src = img.src;
+                    img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMSIgaGVpZ2h0PSIxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmMGYwZjAiLz48L3N2Zz4=';
+                }
+
+                // Start observing the image
+                imageObserver.observe(img);
+            });
+        } else {
+            // Fallback for browsers without Intersection Observer
+            images.forEach(img => {
+                if (img.dataset.src) {
+                    img.src = img.dataset.src;
+                    img.removeAttribute('data-src');
+                }
+                img.classList.add('lazy-loaded');
+            });
+        }
+    }
+
+    // ========== COLLAPSIBLE HEADINGS IMPLEMENTATION ==========
+    function initCollapsibleHeadings() {
+        const h3Headers = document.querySelectorAll('h3');
+
+        h3Headers.forEach(header => {
+            // Find the content container that follows this h3
+            const contentContainer = header.nextElementSibling;
+
+            if (contentContainer && contentContainer.classList.contains('outline-text-3')) {
+                // Initially collapse all sections
+                contentContainer.style.display = 'none';
+
+                // Add collapse indicator and styling to header
+                header.style.cursor = 'pointer';
+                header.style.userSelect = 'none';
+                header.style.position = 'relative';
+                header.style.paddingLeft = '20px';
+
+                // Add collapse/expand indicator
+                const indicator = document.createElement('span');
+                indicator.innerHTML = '&#9654;'; // HTML entity for right-pointing triangle
+                indicator.style.position = 'absolute';
+                indicator.style.left = '0';
+                indicator.style.top = '50%';
+                indicator.style.transform = 'translateY(-50%)';
+                indicator.style.transition = 'transform 0.2s ease';
+                indicator.style.fontSize = '0.8em';
+                indicator.style.color = '#666';
+                indicator.style.fontFamily = 'monospace'; // Ensures consistent rendering
+                header.insertBefore(indicator, header.firstChild);
+
+                // Add click event listener
+                header.addEventListener('click', function() {
+                    const isCollapsed = contentContainer.style.display === 'none';
+
+                    if (isCollapsed) {
+                        // Expand
+                        contentContainer.style.display = 'block';
+                        indicator.style.transform = 'translateY(-50%) rotate(90deg)';
+                        header.classList.add('expanded');
+                    } else {
+                        // Collapse
+                        contentContainer.style.display = 'none';
+                        indicator.style.transform = 'translateY(-50%) rotate(0deg)';
+                        header.classList.remove('expanded');
+                    }
+                });
+
+                // Add hover effect
+                header.addEventListener('mouseenter', function() {
+                    header.style.backgroundColor = '#f5f5f5';
+                });
+
+                header.addEventListener('mouseleave', function() {
+                    header.style.backgroundColor = 'transparent';
+                });
+            }
+        });
+    }
+
+    // ========== CSS INJECTION FOR LAZY LOADING ==========
+    function injectLazyLoadingCSS() {
+        const style = document.createElement('style');
+        style.textContent = `
+            .lazy-loading {
+                opacity: 0.5;
+                transition: opacity 0.3s ease;
+                background: #f0f0f0;
+            }
+
+            .lazy-loaded {
+                opacity: 1;
+            }
+
+            .lazy-loading::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 20px;
+                height: 20px;
+                margin: -10px 0 0 -10px;
+                border: 2px solid #ccc;
+                border-top: 2px solid #333;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+
+            /* Style for collapsible headers */
+            h3.expanded {
+                color: #0066cc;
+            }
+
+            h3:hover {
+                transition: background-color 0.2s ease;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    // ========== INITIALIZATION ==========
+    function init() {
+        // Wait for DOM to be ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                injectLazyLoadingCSS();
+                initLazyLoading();
+                initCollapsibleHeadings();
+            });
+        } else {
+            // DOM is already ready
+            injectLazyLoadingCSS();
+            initLazyLoading();
+            initCollapsibleHeadings();
+        }
+    }
+
+    // Start the initialization
+    init();
+})();
+</script>
+
 
 <hr>
-
-<p>
-Art is a diverse range of human activity and its resulting product that involves
-creative or imaginative talent generally expressive of technical proficiency,
-beauty, emotional power, or conceptual ideas.
-</p>
-
 <ul class="org-ul">
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-07-17 Thu 20:59]</span></span> I updated the page to include lazy-loading and
+collapsed all the headings by default, you will have to click them to get them
+folded. This will require JS to run (for some reason, lazy-loading is not
+working properly on some mobile phones)</li>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-07-16 Wed 05:59]</span></span> Some artist are only partially included here, because I
+absolutely adore every work of them, and I find it unnecessary to include
+each. As of now, these are:
+<ul class="org-ul">
+<li>Thomas Cole</li>
+</ul></li>
 <li><span class="timestamp-wrapper"><span class="timestamp">[2025-05-09 Fri 04:59]</span></span> This part is currently available. It used to be marked
 as a private note. I&rsquo;m making it available now just for the case of the
 references I might use in my blog. I plan some day to turn this page into a
@@ -80,15 +266,15 @@ but for managing my art collections. By now, I&rsquo;m considering just maintain
 them on this node. Thus, here you can find my favorite paintings and my notes
 on them.</li>
 </ul>
-<div id="outline-container-org1ab2e0f" class="outline-2">
-<h2 id="org1ab2e0f">Art Content</h2>
-<div class="outline-text-2" id="text-org1ab2e0f">
+<div id="outline-container-org1682746" class="outline-2">
+<h2 id="org1682746">Art Content</h2>
+<div class="outline-text-2" id="text-org1682746">
 </div>
 <div id="outline-container-wjyao88014k0" class="outline-3">
 <h3 id="wjyao88014k0">Voleurs De Nuit, Eugene Fromentin</h3>
-<div class="outline-text-3" id="text-org55eb877">
+<div class="outline-text-3" id="text-org46f588a">
 
-<figure id="orgd048d43">
+<figure id="org112cef2">
 <img src="../../media/Art_Content/2024-02-18_00-16-20_screenshot.png" alt="2024-02-18_00-16-20_screenshot.png">
 
 </figure>
@@ -118,7 +304,7 @@ Check this part from رسائل الامام الغزالي about skies:
 </p>
 
 
-<figure id="org031ee3d">
+<figure id="org11fdc0f">
 <img src="../../media/Art_Content/2024-02-18_00-48-13_screenshot.png" alt="2024-02-18_00-48-13_screenshot.png">
 
 </figure>
@@ -126,9 +312,9 @@ Check this part from رسائل الامام الغزالي about skies:
 </div>
 <div id="outline-container-jntbxnb014k0" class="outline-3">
 <h3 id="jntbxnb014k0">Ravin, Souvenir D&rsquo;Algerie, Eugene Fromentin</h3>
-<div class="outline-text-3" id="text-org3fb9179">
+<div class="outline-text-3" id="text-org730042e">
 
-<figure id="orgf65d9b6">
+<figure id="orgba0d630">
 <img src="../../media/Art_Content/2024-02-18_01-02-39_screenshot.png" alt="2024-02-18_01-02-39_screenshot.png">
 
 </figure>
@@ -141,9 +327,9 @@ many interesting spots and stories to tell about.
 </div>
 <div id="outline-container-eunaigc014k0" class="outline-3">
 <h3 id="eunaigc014k0">Le Simoun, Eugene Fromentin</h3>
-<div class="outline-text-3" id="text-orgabc8568">
+<div class="outline-text-3" id="text-org572d29c">
 
-<figure id="orgd85034d">
+<figure id="orge2bd99f">
 <img src="../../media/Art_Content/2024-02-18_01-20-00_screenshot.png" alt="2024-02-18_01-20-00_screenshot.png">
 
 </figure>
@@ -157,9 +343,9 @@ man on the white horse is clothed might be the reason.
 </div>
 <div id="outline-container-6ok7lc7024k0" class="outline-3">
 <h3 id="6ok7lc7024k0">Illusions, Henry Brown Fuller</h3>
-<div class="outline-text-3" id="text-orgd17e98c">
+<div class="outline-text-3" id="text-orgf649cc2">
 
-<figure id="org220b1cd">
+<figure id="org73a60cd">
 <img src="../../media/Art_Content/2024-02-18_17-22-43_screenshot.png" alt="2024-02-18_17-22-43_screenshot.png">
 
 </figure>
@@ -179,7 +365,7 @@ beautiful piece of art.
 <h3 id="eom7zf80nik0">The Judgement of Paris, <a href="#9o1eac80nik0">Peter Paul Rubens</a></h3>
 <div class="outline-text-3" id="text-eom7zf80nik0">
 
-<figure id="org326dbdf">
+<figure id="org4213be4">
 <img src="../../media/Art_Content/2025-03-22_23-25-19_screenshot.png" alt="2025-03-22_23-25-19_screenshot.png">
 
 </figure>
@@ -189,7 +375,7 @@ beautiful piece of art.
 <h3 id="uyqhph80nik0">The Judgement of Paris, <a href="#5bmjog80nik0">Gustav Pope</a></h3>
 <div class="outline-text-3" id="text-uyqhph80nik0">
 
-<figure id="orgd81e567">
+<figure id="org3be9be4">
 <img src="../../media/Art_Content/2025-03-22_23-26-21_screenshot.png" alt="2025-03-22_23-26-21_screenshot.png">
 
 </figure>
@@ -199,7 +385,7 @@ beautiful piece of art.
 <h3 id="oqq8gl80nik0">The Judgement of Paris, <a href="#j201sk80nik0">Jacques Clement Wagrez</a></h3>
 <div class="outline-text-3" id="text-oqq8gl80nik0">
 
-<figure id="orgc612386">
+<figure id="org9c34b5b">
 <img src="../../media/Art_Content/2025-03-22_23-28-36_screenshot.png" alt="2025-03-22_23-28-36_screenshot.png">
 
 </figure>
@@ -209,7 +395,7 @@ beautiful piece of art.
 <h3 id="yv1i7n80nik0">The Judgement of Paris, <a href="#hd8csm80nik0">Walter Crane</a></h3>
 <div class="outline-text-3" id="text-yv1i7n80nik0">
 
-<figure id="org2f81e1e">
+<figure id="orga2cd545">
 <img src="../../media/Art_Content/2025-03-22_23-29-41_screenshot.png" alt="2025-03-22_23-29-41_screenshot.png">
 
 </figure>
@@ -219,7 +405,7 @@ beautiful piece of art.
 <h3 id="5dd6lo80nik0">The Judgement of Paris, <a href="#dud71p80nik0">Francesco Albani</a></h3>
 <div class="outline-text-3" id="text-5dd6lo80nik0">
 
-<figure id="org570f853">
+<figure id="org3895555">
 <img src="../../media/Art_Content/2025-03-22_23-30-30_screenshot.png" alt="2025-03-22_23-30-30_screenshot.png">
 
 </figure>
@@ -229,7 +415,7 @@ beautiful piece of art.
 <h3 id="eab86q80nik0">The Judgement of Paris, <a href="#0xygoq80nik0">Jacques Stella</a></h3>
 <div class="outline-text-3" id="text-eab86q80nik0">
 
-<figure id="org1f6f2d1">
+<figure id="org8bbf1e0">
 <img src="../../media/Art_Content/2025-03-22_23-31-26_screenshot.png" alt="2025-03-22_23-31-26_screenshot.png">
 
 </figure>
@@ -239,7 +425,7 @@ beautiful piece of art.
 <h3 id="4uvbmr80nik0">The Judgement of Paris, <a href="#ec4fas80nik0">Joachim Wtewael</a></h3>
 <div class="outline-text-3" id="text-4uvbmr80nik0">
 
-<figure id="org3beb2bd">
+<figure id="orgfb8f4c6">
 <img src="../../media/Art_Content/2025-03-22_23-32-21_screenshot.png" alt="2025-03-22_23-32-21_screenshot.png">
 
 </figure>
@@ -249,7 +435,7 @@ beautiful piece of art.
 <h3 id="ufe6ju80nik0">The Judgement of Paris, <a href="#9vwjys80nik0">Anselm Feuerbach</a></h3>
 <div class="outline-text-3" id="text-ufe6ju80nik0">
 
-<figure id="orgd5634a9">
+<figure id="org1e5e305">
 <img src="../../media/Art_Content/2025-03-22_23-33-18_screenshot.png" alt="2025-03-22_23-33-18_screenshot.png">
 
 </figure>
@@ -265,17 +451,17 @@ beautiful piece of art.
 <h3 id="hk58zy80nik0">The Judgement of Paris, Unknown</h3>
 <div class="outline-text-3" id="text-hk58zy80nik0">
 
-<figure id="org4ece362">
+<figure id="orgf3a2fa3">
 <img src="../../media/Art_Content/2025-03-22_23-36-43_screenshot.png" alt="2025-03-22_23-36-43_screenshot.png">
 
 </figure>
 </div>
 </div>
-<div id="outline-container-org56c8fbc" class="outline-3">
-<h3 id="org56c8fbc">The Judgement of Paris, <a href="#2hl40590nik0">Joseph Hauber</a></h3>
-<div class="outline-text-3" id="text-org56c8fbc">
+<div id="outline-container-orgbc5c0a4" class="outline-3">
+<h3 id="orgbc5c0a4">The Judgement of Paris, <a href="#2hl40590nik0">Joseph Hauber</a></h3>
+<div class="outline-text-3" id="text-orgbc5c0a4">
 
-<figure id="orgdfbf7fc">
+<figure id="orgb6647de">
 <img src="../../media/Art_Content/2025-03-22_23-40-48_screenshot.png" alt="2025-03-22_23-40-48_screenshot.png">
 
 </figure>
@@ -285,7 +471,7 @@ beautiful piece of art.
 <h3 id="lcq3y9d0nik0">Martyrdom of Saint Sebastian, <a href="#2z6a49d0nik0">Mattia Preti</a></h3>
 <div class="outline-text-3" id="text-lcq3y9d0nik0">
 
-<figure id="org80463b9">
+<figure id="org6e4f96f">
 <img src="../../media/Art_Content/2025-03-23_01-09-45_screenshot.png" alt="2025-03-23_01-09-45_screenshot.png">
 
 </figure>
@@ -295,7 +481,7 @@ beautiful piece of art.
 <h3 id="ulvcsed0nik0">Martyrdom of Saint Sebastian, <a href="#733kzdd0nik0">Battistello Caracciolo</a></h3>
 <div class="outline-text-3" id="text-ulvcsed0nik0">
 
-<figure id="orgccf3ee8">
+<figure id="org11ae424">
 <img src="../../media/Art_Content/2025-03-23_01-12-37_screenshot.png" alt="2025-03-23_01-12-37_screenshot.png">
 
 </figure>
@@ -305,7 +491,7 @@ beautiful piece of art.
 <h3 id="6rm27gd0nik0">Martyrdom of Saint Sebastian, <a href="#twl4pfd0nik0">Guido Reni</a></h3>
 <div class="outline-text-3" id="text-6rm27gd0nik0">
 
-<figure id="orgb8b2af1">
+<figure id="orgde6343f">
 <img src="../../media/Art_Content/2025-03-23_01-13-27_screenshot.png" alt="2025-03-23_01-13-27_screenshot.png">
 
 </figure>
@@ -315,7 +501,7 @@ beautiful piece of art.
 <h3 id="cfb5vk11tik0"><a href="art_paintings_media.html#hz1lah11tik0">Coronation of the Virgin</a>, <a href="#oo5jig01tik0">Domingos Sequeira</a></h3>
 <div class="outline-text-3" id="text-cfb5vk11tik0">
 
-<figure id="orgb8fa89c">
+<figure id="org7db37cf">
 <img src="../../media/Art_Content/2025-03-27_23-09-33_screenshot.png" alt="2025-03-27_23-09-33_screenshot.png">
 
 </figure>
@@ -325,7 +511,7 @@ beautiful piece of art.
 <h3 id="2ej3wk11tik0"><a href="art_paintings_media.html#hz1lah11tik0">Coronation of the Virgin</a>, <a href="#prygzj11tik0">Giulio Cesare Procaccini</a></h3>
 <div class="outline-text-3" id="text-2ej3wk11tik0">
 
-<figure id="org9e2a429">
+<figure id="org3c2e4c7">
 <img src="../../media/Art_Content/2025-03-27_23-08-27_screenshot.png" alt="2025-03-27_23-08-27_screenshot.png">
 
 </figure>
@@ -335,7 +521,7 @@ beautiful piece of art.
 <h3 id="2ko23k21tik0">Two Lovers, <a href="#2jke0h21tik0">Reza Abbasi</a></h3>
 <div class="outline-text-3" id="text-2ko23k21tik0">
 
-<figure id="org17e804f">
+<figure id="org63119db">
 <img src="../../media/Art_Content/2025-03-27_23-29-28_screenshot.png" alt="2025-03-27_23-29-28_screenshot.png">
 
 </figure>
@@ -345,7 +531,7 @@ beautiful piece of art.
 <h3 id="aap3io21tik0">Country Road with Cypresses, <a href="#bc7b4p21tik0">Giuseppe Abbati</a></h3>
 <div class="outline-text-3" id="text-aap3io21tik0">
 
-<figure id="orgdfad305">
+<figure id="orged1eb31">
 <img src="../../media/Art_Content/2025-03-27_23-32-02_screenshot.png" alt="2025-03-27_23-32-02_screenshot.png">
 
 </figure>
@@ -355,7 +541,7 @@ beautiful piece of art.
 <h3 id="a88dqt21tik0">Marina in Castiglioncello, <a href="#bc7b4p21tik0">Giuseppe Abbati</a></h3>
 <div class="outline-text-3" id="text-a88dqt21tik0">
 
-<figure id="orgc13ce6b">
+<figure id="org75a0d71">
 <img src="../../media/Art_Content/2025-03-27_23-35-11_screenshot.png" alt="2025-03-27_23-35-11_screenshot.png">
 
 </figure>
@@ -365,7 +551,7 @@ beautiful piece of art.
 <h3 id="f4w8jc31tik0">O mistress mine, where are you roaming, <a href="#7x6isa31tik0">Edwin Austin Abbey</a></h3>
 <div class="outline-text-3" id="text-f4w8jc31tik0">
 
-<figure id="orgb0b89c4">
+<figure id="orgd40d9db">
 <img src="../../media/Art_Content/2025-03-27_23-50-42_screenshot.png" alt="2025-03-27_23-50-42_screenshot.png">
 
 </figure>
@@ -406,7 +592,7 @@ temptation, conflicted between duty and desire.</li>
 <h3 id="x4la6g41tik0">Morning, <a href="#nmx2lf41tik0">Oswald Achenbach</a></h3>
 <div class="outline-text-3" id="text-x4la6g41tik0">
 
-<figure id="orgc66fd81">
+<figure id="orgc9f7a0c">
 <img src="../../media/Art_Content/2025-03-28_00-10-29_screenshot.png" alt="2025-03-28_00-10-29_screenshot.png">
 
 </figure>
@@ -416,7 +602,7 @@ temptation, conflicted between duty and desire.</li>
 <h3 id="laxao6x0uik0">First Love Letter, <a href="#bjl0v3x0uik0">Eduard Quitton</a></h3>
 <div class="outline-text-3" id="text-laxao6x0uik0">
 
-<figure id="orge057483">
+<figure id="org4a84032">
 <img src="../../media/Art_Content/2025-03-28_15-45-38_screenshot.png" alt="2025-03-28_15-45-38_screenshot.png">
 
 </figure>
@@ -426,7 +612,7 @@ temptation, conflicted between duty and desire.</li>
 <h3 id="qrl15i91vik0">View of a Fountain and Peterhof Palacel, <a href="#2lq0ch91vik0">Ivan Aivazovsky</a></h3>
 <div class="outline-text-3" id="text-qrl15i91vik0">
 
-<figure id="org2656221">
+<figure id="org7cfd423">
 <img src="../../media/Art_Content/2025-03-29_14-23-57_screenshot.png" alt="2025-03-29_14-23-57_screenshot.png">
 
 </figure>
@@ -436,7 +622,7 @@ temptation, conflicted between duty and desire.</li>
 <h3 id="r9genu91vik0">Frigate Under Sails, <a href="#2lq0ch91vik0">Ivan Aivazovsky</a></h3>
 <div class="outline-text-3" id="text-r9genu91vik0">
 
-<figure id="org5036031">
+<figure id="org6f003a0">
 <img src="../../media/Art_Content/2025-03-29_14-31-27_screenshot.png" alt="2025-03-29_14-31-27_screenshot.png">
 
 </figure>
@@ -446,7 +632,7 @@ temptation, conflicted between duty and desire.</li>
 <h3 id="uy18az91vik0">Moonlit Night on the Crimea, <a href="#2lq0ch91vik0">Ivan Aivazovsky</a></h3>
 <div class="outline-text-3" id="text-uy18az91vik0">
 
-<figure id="org4a79b59">
+<figure id="org983f7fd">
 <img src="../../media/Art_Content/2025-03-29_14-34-14_screenshot.png" alt="2025-03-29_14-34-14_screenshot.png">
 
 </figure>
@@ -456,7 +642,7 @@ temptation, conflicted between duty and desire.</li>
 <h3 id="c6ecyca1vik0">The Bay of Naples at Moonlight Night, <a href="#2lq0ch91vik0">Ivan Aivazovsky</a></h3>
 <div class="outline-text-3" id="text-c6ecyca1vik0">
 
-<figure id="org4d9b19f">
+<figure id="orgbd15373">
 <img src="../../media/Art_Content/2025-03-29_14-42-26_screenshot.png" alt="2025-03-29_14-42-26_screenshot.png">
 
 </figure>
@@ -466,7 +652,7 @@ temptation, conflicted between duty and desire.</li>
 <h3 id="put6rha1vik0">Azure Grotto. Naples, <a href="#2lq0ch91vik0">Ivan Aivazovsky</a></h3>
 <div class="outline-text-3" id="text-put6rha1vik0">
 
-<figure id="orgd3876a0">
+<figure id="org7259e56">
 <img src="../../media/Art_Content/2025-03-29_14-45-19_screenshot.png" alt="2025-03-29_14-45-19_screenshot.png">
 
 </figure>
@@ -476,7 +662,7 @@ temptation, conflicted between duty and desire.</li>
 <h3 id="9hzd3ta1vik0">Russian squadron on the raid of Sevastopol, <a href="#2lq0ch91vik0">Ivan Aivazovsky</a></h3>
 <div class="outline-text-3" id="text-9hzd3ta1vik0">
 
-<figure id="org7c8ff55">
+<figure id="org7233b54">
 <img src="../../media/Art_Content/2025-03-29_14-52-08_screenshot.png" alt="2025-03-29_14-52-08_screenshot.png">
 
 </figure>
@@ -486,7 +672,7 @@ temptation, conflicted between duty and desire.</li>
 <h3 id="usm1zwa1vik0">Evening in the Crimea, <a href="#2lq0ch91vik0">Ivan Aivazovsky</a></h3>
 <div class="outline-text-3" id="text-usm1zwa1vik0">
 
-<figure id="orgba7f6b1">
+<figure id="orgb861de7">
 <img src="../../media/Art_Content/2025-03-29_14-54-27_screenshot.png" alt="2025-03-29_14-54-27_screenshot.png">
 
 </figure>
@@ -496,7 +682,7 @@ temptation, conflicted between duty and desire.</li>
 <h3 id="2h594wa0yik0">Night in the Crimea, <a href="#2lq0ch91vik0">Ivan Aivazovsky</a></h3>
 <div class="outline-text-3" id="text-2h594wa0yik0">
 
-<figure id="org1dab834">
+<figure id="orge96aec6">
 <img src="../../media/Art_Content/2025-03-31_08-33-08_screenshot.png" alt="2025-03-31_08-33-08_screenshot.png">
 
 </figure>
@@ -506,7 +692,7 @@ temptation, conflicted between duty and desire.</li>
 <h3 id="lyl5m2h0yik0">Morning, <a href="#2lq0ch91vik0">Ivan Aivazovsky</a></h3>
 <div class="outline-text-3" id="text-lyl5m2h0yik0">
 
-<figure id="org16146f7">
+<figure id="orgb01c945">
 <img src="../../media/Art_Content/2025-03-31_10-46-35_screenshot.png" alt="2025-03-31_10-46-35_screenshot.png">
 
 </figure>
@@ -516,7 +702,7 @@ temptation, conflicted between duty and desire.</li>
 <h3 id="67y0k8h0yik0">Lunar night on the Crimean coast, <a href="#2lq0ch91vik0">Ivan Aivazovsky</a></h3>
 <div class="outline-text-3" id="text-67y0k8h0yik0">
 
-<figure id="org09976b5">
+<figure id="orgf1b113f">
 <img src="../../media/Art_Content/2025-03-31_10-50-07_screenshot.png" alt="2025-03-31_10-50-07_screenshot.png">
 
 </figure>
@@ -526,7 +712,7 @@ temptation, conflicted between duty and desire.</li>
 <h3 id="5aqgceh0yik0">Night in Amalfi, <a href="#2lq0ch91vik0">Ivan Aivazovsky</a></h3>
 <div class="outline-text-3" id="text-5aqgceh0yik0">
 
-<figure id="orgf9c855e">
+<figure id="orgd8f756c">
 <img src="../../media/Art_Content/2025-03-31_10-53-43_screenshot.png" alt="2025-03-31_10-53-43_screenshot.png">
 
 </figure>
@@ -536,7 +722,7 @@ temptation, conflicted between duty and desire.</li>
 <h3 id="2ja4j3b1ajk0">The Ninth Wave, <a href="#2lq0ch91vik0">Ivan Aivazovsky</a></h3>
 <div class="outline-text-3" id="text-2ja4j3b1ajk0">
 
-<figure id="org7d56048">
+<figure id="org4fc4da9">
 <img src="../../media/Art_Content/2025-04-10_00-02-08_screenshot.png" alt="2025-04-10_00-02-08_screenshot.png">
 
 </figure>
@@ -544,9 +730,9 @@ temptation, conflicted between duty and desire.</li>
 </div>
 <div id="outline-container-nxsg2cs01kk0" class="outline-3">
 <h3 id="nxsg2cs01kk0">Darial Gorge, <a href="#2lq0ch91vik0">Ivan Aivazovsky</a></h3>
-<div class="outline-text-3" id="text-org81d5020">
+<div class="outline-text-3" id="text-org7a20fc5">
 
-<figure id="orgfd4cfdd">
+<figure id="org6badae8">
 <img src="../../media/Art_Content/2025-04-30_05-48-00_screenshot.png" alt="2025-04-30_05-48-00_screenshot.png">
 
 </figure>
@@ -556,7 +742,7 @@ temptation, conflicted between duty and desire.</li>
 <h3 id="bdck5h413kk0">Moonlit night near Yalta, <a href="#2lq0ch91vik0">Ivan Aivazovsky</a></h3>
 <div class="outline-text-3" id="text-bdck5h413kk0">
 
-<figure id="org1742107">
+<figure id="org4923c27">
 <img src="../../media/Art_Content/2025-05-01_22-35-11_screenshot.png" alt="2025-05-01_22-35-11_screenshot.png">
 
 </figure>
@@ -566,7 +752,7 @@ temptation, conflicted between duty and desire.</li>
 <h3 id="smmcf9913kk0">The Black Sea, <a href="#2lq0ch91vik0">Ivan Aivazovsky</a></h3>
 <div class="outline-text-3" id="text-smmcf9913kk0">
 
-<figure id="org245f1de">
+<figure id="org7b8d9fd">
 <img src="../../media/Art_Content/2025-05-02_00-17-44_screenshot.png" alt="2025-05-02_00-17-44_screenshot.png">
 
 </figure>
@@ -576,7 +762,7 @@ temptation, conflicted between duty and desire.</li>
 <h3 id="z9x9bd805kk0">A Rocky Coastal Landscape in the Aegean, <a href="#2lq0ch91vik0">Ivan Aivazovsky</a></h3>
 <div class="outline-text-3" id="text-z9x9bd805kk0">
 
-<figure id="org950c6c3">
+<figure id="orgf16dfaf">
 <img src="../../media/Art_Content/2025-05-02_23-26-02_screenshot.png" alt="2025-05-02_23-26-02_screenshot.png">
 
 </figure>
@@ -586,7 +772,7 @@ temptation, conflicted between duty and desire.</li>
 <h3 id="2m761qw05kk0">The Massacre of the Monks of Tamond, <a href="#b5o5tpw05kk0">Sir Lawrence Alma-Tadema</a></h3>
 <div class="outline-text-3" id="text-2m761qw05kk0">
 
-<figure id="org102cbae">
+<figure id="org7775e84">
 <img src="../../media/Art_Content/2025-05-03_08-12-20_screenshot.png" alt="2025-05-03_08-12-20_screenshot.png">
 
 </figure>
@@ -596,7 +782,7 @@ temptation, conflicted between duty and desire.</li>
 <h3 id="4qi0dq416kk0">Ask Me No more, <a href="#b5o5tpw05kk0">Sir Lawrence Alma-Tadema</a></h3>
 <div class="outline-text-3" id="text-4qi0dq416kk0">
 
-<figure id="orgfb8c7ae">
+<figure id="orga56b130">
 <img src="../../media/Art_Content/2025-05-04_05-18-54_screenshot.png" alt="2025-05-04_05-18-54_screenshot.png">
 
 </figure>
@@ -606,7 +792,7 @@ temptation, conflicted between duty and desire.</li>
 <h3 id="04rd65908kk0">Pleading, <a href="#b5o5tpw05kk0">Sir Lawrence Alma-Tadema</a></h3>
 <div class="outline-text-3" id="text-04rd65908kk0">
 
-<figure id="org24c3f33">
+<figure id="org7cadb14">
 <img src="../../media/Art_Content/2025-05-05_06-19-41_screenshot.png" alt="2025-05-05_06-19-41_screenshot.png">
 
 </figure>
@@ -620,7 +806,7 @@ Looks a lot like <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadem
 <h3 id="cmu84l908kk0">A Declaration, <a href="#b5o5tpw05kk0">Sir Lawrence Alma-Tadema</a></h3>
 <div class="outline-text-3" id="text-cmu84l908kk0">
 
-<figure id="org08fc8b3">
+<figure id="org4b3a880">
 <img src="../../media/Art_Content/2025-05-05_06-29-09_screenshot.png" alt="2025-05-05_06-29-09_screenshot.png">
 
 </figure>
@@ -630,14 +816,14 @@ Looks a lot like <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadem
 </p>
 </div>
 </div>
-<div id="outline-container-org790c0b5" class="outline-3">
-<h3 id="org790c0b5">Drawing Room, <a href="#b5o5tpw05kk0">Sir Lawrence Alma-Tadema</a></h3>
+<div id="outline-container-orgc8d6988" class="outline-3">
+<h3 id="orgc8d6988">Drawing Room, <a href="#b5o5tpw05kk0">Sir Lawrence Alma-Tadema</a></h3>
 </div>
 <div id="outline-container-muj0lsw0akk0" class="outline-3">
 <h3 id="muj0lsw0akk0">Expectations, <a href="#b5o5tpw05kk0">Sir Lawrence Alma-Tadema</a></h3>
 <div class="outline-text-3" id="text-muj0lsw0akk0">
 
-<figure id="orgcf61419">
+<figure id="org66a20a7">
 <img src="../../media/Art_Content/2025-05-07_03-14-58_screenshot.png" alt="2025-05-07_03-14-58_screenshot.png">
 
 </figure>
@@ -647,21 +833,21 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 </p>
 </div>
 </div>
-<div id="outline-container-orgd9dec4c" class="outline-3">
-<h3 id="orgd9dec4c">Landscape, <a href="#c893dc71bkk0">Knud Baade</a></h3>
-<div class="outline-text-3" id="text-orgd9dec4c">
+<div id="outline-container-org1d80ddb" class="outline-3">
+<h3 id="org1d80ddb">Landscape, <a href="#c893dc71bkk0">Knud Baade</a></h3>
+<div class="outline-text-3" id="text-org1d80ddb">
 
-<figure id="org14f87ec">
+<figure id="org8025f1f">
 <img src="../../media/Art_Content/2025-05-08_01-14-52_screenshot.png" alt="2025-05-08_01-14-52_screenshot.png">
 
 </figure>
 </div>
 </div>
-<div id="outline-container-org42951f0" class="outline-3">
-<h3 id="org42951f0">Still Life, <a href="#xymdew71bkk0">Jean-Joseph-Xavier Bidauld</a></h3>
-<div class="outline-text-3" id="text-org42951f0">
+<div id="outline-container-org8471817" class="outline-3">
+<h3 id="org8471817">Still Life, <a href="#xymdew71bkk0">Jean-Joseph-Xavier Bidauld</a></h3>
+<div class="outline-text-3" id="text-org8471817">
 
-<figure id="orga8b08ff">
+<figure id="org6765868">
 <img src="../../media/Art_Content/2025-05-08_01-26-59_screenshot.png" alt="2025-05-08_01-26-59_screenshot.png">
 
 </figure>
@@ -671,7 +857,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="9macjth0dkk0">Villa am Meer I, <a href="#xe6f8nh0dkk0">Arnold Böcklin</a></h3>
 <div class="outline-text-3" id="text-9macjth0dkk0">
 
-<figure id="org27ee537">
+<figure id="org8e8cc90">
 <img src="../../media/Art_Content/2025-05-09_04-26-03_screenshot.png" alt="2025-05-09_04-26-03_screenshot.png">
 
 </figure>
@@ -681,7 +867,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="pcl4gvh0dkk0"><a href="#9macjth0dkk0">Villa am Meer I</a>I, <a href="#xe6f8nh0dkk0">Arnold Böcklin</a></h3>
 <div class="outline-text-3" id="text-pcl4gvh0dkk0">
 
-<figure id="org413404a">
+<figure id="orge939fdd">
 <img src="../../media/Art_Content/2025-05-09_04-28-00_screenshot.png" alt="2025-05-09_04-28-00_screenshot.png">
 
 </figure>
@@ -691,7 +877,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="q11i1bi0dkk0">Der Gang nach Emmaus, <a href="#xe6f8nh0dkk0">Arnold Böcklin</a></h3>
 <div class="outline-text-3" id="text-q11i1bi0dkk0">
 
-<figure id="orgc39e308">
+<figure id="org96d87df">
 <img src="../../media/Art_Content/2025-05-09_04-29-34_screenshot.png" alt="2025-05-09_04-29-34_screenshot.png">
 
 </figure>
@@ -701,7 +887,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="hqybz2i0dkk0">Mosque in Istanbul, <a href="#zgec92i0dkk0">Alexey Bogolyubov</a></h3>
 <div class="outline-text-3" id="text-hqybz2i0dkk0">
 
-<figure id="org4df3bf4">
+<figure id="org654990d">
 <img src="../../media/Art_Content/2025-05-09_04-34-01_screenshot.png" alt="2025-05-09_04-34-01_screenshot.png">
 
 </figure>
@@ -711,7 +897,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="rmvi6bi0dkk0">St. Petersburg at Sunset, <a href="#zgec92i0dkk0">Alexey Bogolyubov</a></h3>
 <div class="outline-text-3" id="text-rmvi6bi0dkk0">
 
-<figure id="orgc393c18">
+<figure id="org7363e30">
 <img src="../../media/Art_Content/2025-05-09_04-34-57_screenshot.png" alt="2025-05-09_04-34-57_screenshot.png">
 
 </figure>
@@ -721,7 +907,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="uvbfxai0dkk0">St. Petersburg. Sledging on the Neva, <a href="#zgec92i0dkk0">Alexey Bogolyubov</a></h3>
 <div class="outline-text-3" id="text-uvbfxai0dkk0">
 
-<figure id="org6a560ac">
+<figure id="org82537db">
 <img src="../../media/Art_Content/2025-05-09_04-38-47_screenshot.png" alt="2025-05-09_04-38-47_screenshot.png">
 
 </figure>
@@ -731,7 +917,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="jviicdi0dkk0">View of the Smolny Convent from Bolshaya Okhta, <a href="#zgec92i0dkk0">Alexey Bogolyubov</a></h3>
 <div class="outline-text-3" id="text-jviicdi0dkk0">
 
-<figure id="org6da0f1b">
+<figure id="orgba021ad">
 <img src="../../media/Art_Content/2025-05-09_04-40-26_screenshot.png" alt="2025-05-09_04-40-26_screenshot.png">
 
 </figure>
@@ -741,7 +927,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="9cg8nfi0dkk0">Smolny as seen from Bolshaya Okhta, <a href="#zgec92i0dkk0">Alexey Bogolyubov</a></h3>
 <div class="outline-text-3" id="text-9cg8nfi0dkk0">
 
-<figure id="org666c4da">
+<figure id="org8f922cc">
 <img src="../../media/Art_Content/2025-05-09_04-41-01_screenshot.png" alt="2025-05-09_04-41-01_screenshot.png">
 
 </figure>
@@ -751,7 +937,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="4z30nji0dkk0">Moonlit night. Grand Canal (Venice), <a href="#zgec92i0dkk0">Alexey Bogolyubov</a></h3>
 <div class="outline-text-3" id="text-4z30nji0dkk0">
 
-<figure id="orgc043bff">
+<figure id="org1adc9db">
 <img src="../../media/Art_Content/2025-05-09_04-43-35_screenshot.png" alt="2025-05-09_04-43-35_screenshot.png">
 
 </figure>
@@ -761,7 +947,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="eaegmli0dkk0">Italian Coast, <a href="#zgec92i0dkk0">Alexey Bogolyubov</a></h3>
 <div class="outline-text-3" id="text-eaegmli0dkk0">
 
-<figure id="org60e8e44">
+<figure id="org0fe6628">
 <img src="../../media/Art_Content/2025-05-09_04-45-10_screenshot.png" alt="2025-05-09_04-45-10_screenshot.png">
 
 </figure>
@@ -771,7 +957,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="1y0immi0dkk0">Castel Sant&rsquo;Angelo, <a href="#zgec92i0dkk0">Alexey Bogolyubov</a></h3>
 <div class="outline-text-3" id="text-1y0immi0dkk0">
 
-<figure id="org8fcbd02">
+<figure id="org818a5e5">
 <img src="../../media/Art_Content/2025-05-09_04-45-39_screenshot.png" alt="2025-05-09_04-45-39_screenshot.png">
 
 </figure>
@@ -781,7 +967,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="vyldeni0dkk0">The seashore, <a href="#zgec92i0dkk0">Alexey Bogolyubov</a></h3>
 <div class="outline-text-3" id="text-vyldeni0dkk0">
 
-<figure id="org556565e">
+<figure id="org17f9e80">
 <img src="../../media/Art_Content/2025-05-09_04-46-15_screenshot.png" alt="2025-05-09_04-46-15_screenshot.png">
 
 </figure>
@@ -791,7 +977,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="fl9bgoi0dkk0">Moonlit evening in Constantinople, <a href="#zgec92i0dkk0">Alexey Bogolyubov</a></h3>
 <div class="outline-text-3" id="text-fl9bgoi0dkk0">
 
-<figure id="org286547c">
+<figure id="org77ef621">
 <img src="../../media/Art_Content/2025-05-09_04-46-54_screenshot.png" alt="2025-05-09_04-46-54_screenshot.png">
 
 </figure>
@@ -801,7 +987,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="m5k91pw0ekk0">The Rose Garden, <a href="#akcl6pw0ekk0">Carl Aagaard</a></h3>
 <div class="outline-text-3" id="text-m5k91pw0ekk0">
 
-<figure id="orgf3da46f">
+<figure id="org7352b84">
 <img src="../../media/Art_Content/2025-05-10_04-01-50_screenshot.png" alt="2025-05-10_04-01-50_screenshot.png">
 
 </figure>
@@ -811,7 +997,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="qnvaxyw0ekk0">Landscape, <a href="#akcl6pw0ekk0">Carl Aagaard</a></h3>
 <div class="outline-text-3" id="text-qnvaxyw0ekk0">
 
-<figure id="org94b0a13">
+<figure id="orgc7ca4c1">
 <img src="../../media/Art_Content/2025-05-10_04-07-50_screenshot.png" alt="2025-05-10_04-07-50_screenshot.png">
 
 </figure>
@@ -821,7 +1007,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="et16c8x0ekk0">View from Jægersborg Dyrehave. Mild daylight, <a href="#akcl6pw0ekk0">Carl Aagaard</a></h3>
 <div class="outline-text-3" id="text-et16c8x0ekk0">
 
-<figure id="orgfcb1db0">
+<figure id="org267891c">
 <img src="../../media/Art_Content/2025-05-10_04-13-17_screenshot.png" alt="2025-05-10_04-13-17_screenshot.png">
 
 </figure>
@@ -831,7 +1017,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="8lf0kl21fkk0">The Prayers of the Potuans at the Feast of the Unfathomable God, <a href="#i0jf8l21fkk0">Nicolai Abildgaard</a></h3>
 <div class="outline-text-3" id="text-8lf0kl21fkk0">
 
-<figure id="orgd0b38a1">
+<figure id="orgf5e3e41">
 <img src="../../media/Art_Content/2025-05-11_00-22-01_screenshot.png" alt="2025-05-11_00-22-01_screenshot.png">
 
 </figure>
@@ -841,7 +1027,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="wcb7a780hkk0">The Nubian Giraffe, <a href="#dcjcb680hkk0">Jacques-Laurent Agasse</a></h3>
 <div class="outline-text-3" id="text-wcb7a780hkk0">
 
-<figure id="org4e71c52">
+<figure id="org9ca36ad">
 <img src="../../media/Art_Content/2025-05-12_01-49-40_screenshot.png" alt="2025-05-12_01-49-40_screenshot.png">
 
 </figure>
@@ -851,7 +1037,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="99b1h880hkk0">The Playground, <a href="#dcjcb680hkk0">Jacques-Laurent Agasse</a></h3>
 <div class="outline-text-3" id="text-99b1h880hkk0">
 
-<figure id="org179ece1">
+<figure id="org292a28f">
 <img src="../../media/Art_Content/2025-05-12_01-50-26_screenshot.png" alt="2025-05-12_01-50-26_screenshot.png">
 
 </figure>
@@ -861,7 +1047,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="fc83ge80hkk0"><a href="art_paintings_media.html#y4d45i80hkk0">Visitation</a>, <a href="#2um0gc80hkk0">Mariotto Albertinelli</a></h3>
 <div class="outline-text-3" id="text-fc83ge80hkk0">
 
-<figure id="orgd9d99cf">
+<figure id="orgb0be751">
 <img src="../../media/People/2025-05-12_01-53-58_screenshot.png" alt="2025-05-12_01-53-58_screenshot.png">
 
 </figure>
@@ -871,20 +1057,20 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="ft813l80hkk0"><a href="art_paintings_media.html#y4d45i80hkk0">Visitation</a>, <a href="#1dq2tj80hkk0">Domenico Ghirlandaio</a></h3>
 <div class="outline-text-3" id="text-ft813l80hkk0">
 
-<figure id="org5f8139a">
+<figure id="org23c58f1">
 <img src="../../media/Art_Content/2025-05-12_01-57-56_screenshot.png" alt="2025-05-12_01-57-56_screenshot.png">
 
 </figure>
 </div>
 </div>
-<div id="outline-container-org8a82c7e" class="outline-3">
-<h3 id="org8a82c7e"><a href="art_paintings_media.html#y4d45i80hkk0">Visitation</a>, <a href="#nhf6ul80hkk0">Carmignano Visitation</a></h3>
+<div id="outline-container-org38394e3" class="outline-3">
+<h3 id="org38394e3"><a href="art_paintings_media.html#y4d45i80hkk0">Visitation</a>, <a href="#nhf6ul80hkk0">Carmignano Visitation</a></h3>
 </div>
 <div id="outline-container-ifc3sq80hkk0" class="outline-3">
 <h3 id="ifc3sq80hkk0"><a href="art_paintings_media.html#y4d45i80hkk0">Visitation</a> II, <a href="#2um0gc80hkk0">Mariotto Albertinelli</a></h3>
 <div class="outline-text-3" id="text-ifc3sq80hkk0">
 
-<figure id="org4947790">
+<figure id="org70fc9b5">
 <img src="../../media/Art_Content/2025-05-12_02-01-25_screenshot.png" alt="2025-05-12_02-01-25_screenshot.png">
 
 </figure>
@@ -894,7 +1080,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="n8g286r0ikk0">Winter Landscape, <a href="#9p5dy1r0ikk0">Denis van Alsloot</a></h3>
 <div class="outline-text-3" id="text-n8g286r0ikk0">
 
-<figure id="org030f1d5">
+<figure id="orgdae72be">
 <img src="../../media/Art_Content/2025-05-13_02-51-41_screenshot.png" alt="2025-05-13_02-51-41_screenshot.png">
 
 </figure>
@@ -904,7 +1090,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="z58cc8r0ikk0"><a href="#n8g286r0ikk0">Winter Landscape</a> II, <a href="#9p5dy1r0ikk0">Denis van Alsloot</a></h3>
 <div class="outline-text-3" id="text-z58cc8r0ikk0">
 
-<figure id="org4eec60c">
+<figure id="org2fc7869">
 <img src="../../media/Art_Content/2025-05-13_02-52-58_screenshot.png" alt="2025-05-13_02-52-58_screenshot.png">
 
 </figure>
@@ -914,7 +1100,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="18yh7hr0ikk0">Arcadian Landscape, <a href="#3ryipgr0ikk0">Jurriaan Andriessen</a></h3>
 <div class="outline-text-3" id="text-18yh7hr0ikk0">
 
-<figure id="orgb6dfb1b">
+<figure id="orgf718788">
 <img src="../../media/Art_Content/2025-05-13_02-58-31_screenshot.png" alt="2025-05-13_02-58-31_screenshot.png">
 
 </figure>
@@ -924,7 +1110,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="p2sjomg0lkk0">The Lighting, <a href="#ujv0blg0lkk0">Alexandre Antigna</a></h3>
 <div class="outline-text-3" id="text-p2sjomg0lkk0">
 
-<figure id="org1df4954">
+<figure id="orgfe5ca26">
 <img src="../../media/Art_Content/2025-05-15_05-40-45_screenshot.png" alt="2025-05-15_05-40-45_screenshot.png">
 
 </figure>
@@ -934,7 +1120,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="r7p77yg0lkk0">View in Mount Merrion Park, <a href="#2jo4pwg0lkk0">William Ashford</a></h3>
 <div class="outline-text-3" id="text-r7p77yg0lkk0">
 
-<figure id="orge5fb965">
+<figure id="orgb5523bc">
 <img src="../../media/Art_Content/2025-05-15_05-48-03_screenshot.png" alt="2025-05-15_05-48-03_screenshot.png">
 
 </figure>
@@ -944,17 +1130,17 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="7ef5v0h0lkk0">A View of Dublin from Chapelizod, <a href="#2jo4pwg0lkk0">William Ashford</a></h3>
 <div class="outline-text-3" id="text-7ef5v0h0lkk0">
 
-<figure id="org2de08af">
+<figure id="orgb5d82ce">
 <img src="../../media/Art_Content/2025-05-15_05-49-05_screenshot.png" alt="2025-05-15_05-49-05_screenshot.png">
 
 </figure>
 </div>
 </div>
-<div id="outline-container-org4e99343" class="outline-3">
-<h3 id="org4e99343">Castle Ward: The Classical Front, <a href="#2jo4pwg0lkk0">William Ashford</a></h3>
-<div class="outline-text-3" id="text-org4e99343">
+<div id="outline-container-orgb52ec89" class="outline-3">
+<h3 id="orgb52ec89">Castle Ward: The Classical Front, <a href="#2jo4pwg0lkk0">William Ashford</a></h3>
+<div class="outline-text-3" id="text-orgb52ec89">
 
-<figure id="org57d98a9">
+<figure id="org79e258a">
 <img src="../../media/Art_Content/2025-05-15_05-49-35_screenshot.png" alt="2025-05-15_05-49-35_screenshot.png">
 
 </figure>
@@ -964,7 +1150,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="g3siw4h0lkk0">Mount Kennedy, County Wicklow, <a href="#2jo4pwg0lkk0">William Ashford</a></h3>
 <div class="outline-text-3" id="text-g3siw4h0lkk0">
 
-<figure id="orgd65a89f">
+<figure id="orge0b01f1">
 <img src="../../media/Art_Content/2025-05-15_05-51-51_screenshot.png" alt="2025-05-15_05-51-51_screenshot.png">
 
 </figure>
@@ -974,7 +1160,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="logeznh0lkk0">View of Killarney, <a href="#2jo4pwg0lkk0">William Ashford</a></h3>
 <div class="outline-text-3" id="text-logeznh0lkk0">
 
-<figure id="org3aa2201">
+<figure id="orgfc2b65d">
 <img src="../../media/Art_Content/2025-05-15_05-55-08_screenshot.png" alt="2025-05-15_05-55-08_screenshot.png">
 
 </figure>
@@ -989,7 +1175,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="twycng60wkk0">The Elder Sister, <a href="#54micc60wkk0">William-Adolphe Bouguereau Motherhood Paintings</a></h3>
 <div class="outline-text-3" id="text-twycng60wkk0">
 
-<figure id="orga336589">
+<figure id="org756b7d5">
 <img src="../../media/Art_Content/2025-05-23_10-14-56_screenshot.png" alt="2025-05-23_10-14-56_screenshot.png">
 
 </figure>
@@ -999,7 +1185,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="1fgdog60wkk0">Sleep, <a href="#54micc60wkk0">William-Adolphe Bouguereau Motherhood Paintings</a></h3>
 <div class="outline-text-3" id="text-1fgdog60wkk0">
 
-<figure id="orgb265a42">
+<figure id="org2cb910f">
 <img src="../../media/Art_Content/2025-05-23_10-16-05_screenshot.png" alt="2025-05-23_10-16-05_screenshot.png">
 
 </figure>
@@ -1009,7 +1195,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="ej6kqh60wkk0">Raising her up, <a href="#54micc60wkk0">William-Adolphe Bouguereau Motherhood Paintings</a></h3>
 <div class="outline-text-3" id="text-ej6kqh60wkk0">
 
-<figure id="org0c60beb">
+<figure id="orgc4f0d0c">
 <img src="../../media/Art_Content/2025-05-23_10-16-43_screenshot.png" alt="2025-05-23_10-16-43_screenshot.png">
 
 </figure>
@@ -1019,17 +1205,17 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="nbjjhi60wkk0">The Orange, <a href="#54micc60wkk0">William-Adolphe Bouguereau Motherhood Paintings</a></h3>
 <div class="outline-text-3" id="text-nbjjhi60wkk0">
 
-<figure id="org1a331da">
+<figure id="org963ec18">
 <img src="../../media/Art_Content/2025-05-23_10-17-16_screenshot.png" alt="2025-05-23_10-17-16_screenshot.png">
 
 </figure>
 </div>
 </div>
-<div id="outline-container-orgeb02d2d" class="outline-3">
-<h3 id="orgeb02d2d">The Awakening, <a href="#54micc60wkk0">William-Adolphe Bouguereau Motherhood Paintings</a></h3>
-<div class="outline-text-3" id="text-orgeb02d2d">
+<div id="outline-container-org2f13039" class="outline-3">
+<h3 id="org2f13039">The Awakening, <a href="#54micc60wkk0">William-Adolphe Bouguereau Motherhood Paintings</a></h3>
+<div class="outline-text-3" id="text-org2f13039">
 
-<figure id="orgcec0c01">
+<figure id="orgade2002">
 <img src="../../media/Art_Content/2025-05-23_10-18-02_screenshot.png" alt="2025-05-23_10-18-02_screenshot.png">
 
 </figure>
@@ -1039,7 +1225,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="8vf3gm60wkk0">Charity or The Indigent Family, <a href="#54micc60wkk0">William-Adolphe Bouguereau Motherhood Paintings</a></h3>
 <div class="outline-text-3" id="text-8vf3gm60wkk0">
 
-<figure id="org785e530">
+<figure id="org60a7cf4">
 <img src="../../media/Art_Content/2025-05-23_10-18-51_screenshot.png" alt="2025-05-23_10-18-51_screenshot.png">
 
 </figure>
@@ -1049,7 +1235,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="73w095n08lk0">Rest at Harvest, <a href="#23mfma60wkk0">William-Adolphe Bouguereau</a></h3>
 <div class="outline-text-3" id="text-73w095n08lk0">
 
-<figure id="org2066f5b">
+<figure id="org47ca354">
 <img src="../../media/Art_Content/2025-06-01_18-43-37_screenshot.png" alt="2025-06-01_18-43-37_screenshot.png">
 
 </figure>
@@ -1059,7 +1245,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="6cd12xb1dlk0">Maternal Admiration, <a href="#54micc60wkk0">William-Adolphe Bouguereau Motherhood Paintings</a></h3>
 <div class="outline-text-3" id="text-6cd12xb1dlk0">
 
-<figure id="org419f65f">
+<figure id="orgac21c4c">
 <img src="../../media/Art_Content/2025-06-05_22-40-03_screenshot.png" alt="2025-06-05_22-40-03_screenshot.png">
 
 </figure>
@@ -1069,7 +1255,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="9mrbfpd0elk0">The Bunch Of Grapes, <a href="#54micc60wkk0">William-Adolphe Bouguereau Motherhood Paintings</a></h3>
 <div class="outline-text-3" id="text-9mrbfpd0elk0">
 
-<figure id="org69c6975">
+<figure id="orga81ece6">
 <img src="../../media/Art_Content/2025-06-06_04-33-19_screenshot.png" alt="2025-06-06_04-33-19_screenshot.png">
 
 </figure>
@@ -1079,7 +1265,7 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <h3 id="r50b9sd0elk0">Young Mother Gazing At Her Child, <a href="#54micc60wkk0">William-Adolphe Bouguereau Motherhood Paintings</a></h3>
 <div class="outline-text-3" id="text-r50b9sd0elk0">
 
-<figure id="org0ef81b8">
+<figure id="org0ca0499">
 <img src="../../media/Art_Content/2025-06-06_04-35-03_screenshot.png" alt="2025-06-06_04-35-03_screenshot.png">
 
 </figure>
@@ -1088,21 +1274,240 @@ Same place as <a href="#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</
 <div id="outline-container-twm55be0elk0" class="outline-3">
 <h3 id="twm55be0elk0">Pieta, <a href="#23mfma60wkk0">William-Adolphe Bouguereau</a></h3>
 <div class="outline-text-3" id="text-twm55be0elk0">
+<div class="tag" id="org1ad6667">
+<p>
+This section was labeled under, or is related to <a href="art_paintings_media.html#r98aze11tik0">Christian Art</a>
+</p>
 
-<figure id="org9a4acd8">
+</div>
+
+
+<figure id="org6c05723">
 <img src="../../media/Art_Content/2025-06-06_04-46-21_screenshot.png" alt="2025-06-06_04-46-21_screenshot.png">
 
 </figure>
 </div>
 </div>
+<div id="outline-container-i707wz70glk0" class="outline-3">
+<h3 id="i707wz70glk0">A Girl with a Child, <a href="#54micc60wkk0">William-Adolphe Bouguereau Motherhood Paintings</a></h3>
+<div class="outline-text-3" id="text-i707wz70glk0">
+
+<figure id="orgc0559d8">
+<img src="../../media/Art_Content/2025-06-07_14-53-17_screenshot.png" alt="2025-06-07_14-53-17_screenshot.png">
+
+</figure>
 </div>
-<div id="outline-container-org047d41b" class="outline-2">
-<h2 id="org047d41b">People</h2>
-<div class="outline-text-2" id="text-org047d41b">
+</div>
+<div id="outline-container-okbaxz70glk0" class="outline-3">
+<h3 id="okbaxz70glk0">Charity, <a href="#54micc60wkk0">William-Adolphe Bouguereau Motherhood Paintings</a></h3>
+<div class="outline-text-3" id="text-okbaxz70glk0">
+
+<figure id="orgf395d31">
+<img src="../../media/Art_Content/2025-06-07_14-54-31_screenshot.png" alt="2025-06-07_14-54-31_screenshot.png">
+
+</figure>
+</div>
+</div>
+<div id="outline-container-cbv0qjh0glk0" class="outline-3">
+<h3 id="cbv0qjh0glk0">A Young Girl Defending Herself Against  Eros, <a href="#23mfma60wkk0">William-Adolphe Bouguereau</a></h3>
+<div class="outline-text-3" id="text-cbv0qjh0glk0">
+
+<figure id="orge906020">
+<img src="../../media/Art_Content/2025-06-07_18-20-48_screenshot.png" alt="2025-06-07_18-20-48_screenshot.png">
+
+</figure>
+</div>
+</div>
+<div id="outline-container-nc1ltnn0glk0" class="outline-3">
+<h3 id="nc1ltnn0glk0">The Virgin with Angels, <a href="#23mfma60wkk0">William-Adolphe Bouguereau</a></h3>
+<div class="outline-text-3" id="text-nc1ltnn0glk0">
+<div class="tag" id="orge12ddaa">
+<p>
+This section was labeled under, or is related to <a href="art_paintings_media.html#r98aze11tik0">Christian Art</a>
+</p>
+
+</div>
+
+
+<figure id="orgaa835af">
+<img src="../../media/Art_Content/2025-06-07_20-32-54_screenshot.png" alt="2025-06-07_20-32-54_screenshot.png">
+
+</figure>
+</div>
+</div>
+<div id="outline-container-eu755co0glk0" class="outline-3">
+<h3 id="eu755co0glk0">A Little Coaxing, <a href="#23mfma60wkk0">William-Adolphe Bouguereau</a></h3>
+<div class="outline-text-3" id="text-eu755co0glk0">
+
+<figure id="org9414eba">
+<img src="../../media/Art_Content/2025-06-07_20-47-08_screenshot.png" alt="2025-06-07_20-47-08_screenshot.png">
+
+</figure>
+</div>
+</div>
+<div id="outline-container-acejlxd1ilk0" class="outline-3">
+<h3 id="acejlxd1ilk0">Pleasant Burden, <a href="#54micc60wkk0">William-Adolphe Bouguereau Motherhood Paintings</a></h3>
+<div class="outline-text-3" id="text-acejlxd1ilk0">
+
+<figure id="org72051c6">
+<img src="../../media/Art_Content/2025-06-09_18-24-55_screenshot.png" alt="2025-06-09_18-24-55_screenshot.png">
+
+</figure>
+</div>
+</div>
+<div id="outline-container-15t9dm01jlk0" class="outline-3">
+<h3 id="15t9dm01jlk0">Ladmiration, <a href="#23mfma60wkk0">William-Adolphe Bouguereau</a></h3>
+<div class="outline-text-3" id="text-15t9dm01jlk0">
+
+<figure id="orgaf57523">
+<img src="../../media/Art_Content/2025-06-10_07-49-38_screenshot.png" alt="2025-06-10_07-49-38_screenshot.png">
+
+</figure>
+</div>
+</div>
+<div id="outline-container-ya364s00olk0" class="outline-3">
+<h3 id="ya364s00olk0">Elegy, <a href="#23mfma60wkk0">William-Adolphe Bouguereau</a></h3>
+<div class="outline-text-3" id="text-ya364s00olk0">
+<div class="tag" id="org14bb95e">
+<p>
+This section was labeled under, or is related to <a href="#cbv0qjh0glk0">A Young Girl Defending Herself Against  Eros, William-Adolphe Bouguereau</a>
+</p>
+
+</div>
+
+
+<figure id="orgabe4904">
+<img src="../../media/Art_Content/2025-06-13_13-56-44_screenshot.png" alt="2025-06-13_13-56-44_screenshot.png">
+
+</figure>
+</div>
+</div>
+<div id="outline-container-388le010olk0" class="outline-3">
+<h3 id="388le010olk0">Innocence, <a href="#23mfma60wkk0">William-Adolphe Bouguereau</a></h3>
+<div class="outline-text-3" id="text-388le010olk0">
+
+<figure id="org17b1f7e">
+<img src="../../media/Art_Content/2025-06-13_14-01-48_screenshot.png" alt="2025-06-13_14-01-48_screenshot.png">
+
+</figure>
+</div>
+</div>
+<div id="outline-container-mhm2g8c0rlk0" class="outline-3">
+<h3 id="mhm2g8c0rlk0">The Meeting on the Turret Stairs, <a href="#qse5o7c0rlk0">Frederic William Burton</a></h3>
+<div class="outline-text-3" id="text-mhm2g8c0rlk0">
+
+<figure id="orgdd43847">
+<img src="../../media/Art_Content/2025-06-16_00-41-00_screenshot.png" alt="2025-06-16_00-41-00_screenshot.png">
+
+</figure>
+
+<p>
+The subject of the painting is the love story of Hellelil, who fell in love with
+her bodyguard Hildebrand. When her father hears of it, he sends her seven
+brothers to kill Hildebrand. The painting depicts the moment before Hildebrand
+goes out to meet the brothers, kissing Hellelil one last time, and parting with
+the injuction to &ldquo;say never my name&rdquo;. Hildebrand subdues each brother until he
+comes to the youngest; than Hellelil, forgetting his request, calls to him to
+plead for mercy; as Hildebrand complies, the youngest brother kills him. Said
+brother takes Hellelil back to their house by dragging her from his horse,
+tortures her, and locks her up in a tower for many days, eventually selling her
+for a church bell.
+</p>
+</div>
+</div>
+<div id="outline-container-ym36dj80xlk0" class="outline-3">
+<h3 id="ym36dj80xlk0">The Fallen Angel, <a href="#eaphdi80xlk0">Alexandre Cabanel</a></h3>
+<div class="outline-text-3" id="text-ym36dj80xlk0">
+
+<figure id="org6ef6e29">
+<img src="../../media/Art_Content/2025-06-20_12-34-47_screenshot.png" alt="2025-06-20_12-34-47_screenshot.png">
+
+</figure>
+</div>
+</div>
+<div id="outline-container-o9yhcrp01mk0" class="outline-3">
+<h3 id="o9yhcrp01mk0">Faro, Mount Desert Island, <a href="#ig8cxhp01mk0">Frederic Edwin Church</a></h3>
+<div class="outline-text-3" id="text-o9yhcrp01mk0">
+
+<figure id="orgfe1f272">
+<img src="../../media/Art_Content/2025-06-23_19-35-49_screenshot.png" alt="2025-06-23_19-35-49_screenshot.png">
+
+</figure>
+</div>
+</div>
+<div id="outline-container-z322hg616mk0" class="outline-3">
+<h3 id="z322hg616mk0">Afternoon Along The River, <a href="#ajviyf616mk0">Emile Claus</a></h3>
+<div class="outline-text-3" id="text-z322hg616mk0">
+
+<figure id="orgbde4299">
+<img src="../../media/Art_Content/2025-06-27_20-38-00_screenshot.png" alt="2025-06-27_20-38-00_screenshot.png">
+
+</figure>
+</div>
+</div>
+<div id="outline-container-rt7bnld0fmk0" class="outline-3">
+<h3 id="rt7bnld0fmk0">Kaaterskill Falls, <a href="#34feald0fmk0">Thomas Cole</a></h3>
+<div class="outline-text-3" id="text-rt7bnld0fmk0">
+
+<figure id="org1b771ac">
+<img src="../../media/Art_Content/2025-07-04_06-07-59_screenshot.png" alt="2025-07-04_06-07-59_screenshot.png">
+
+</figure>
+</div>
+</div>
+<div id="outline-container-kkfenud0fmk0" class="outline-3">
+<h3 id="kkfenud0fmk0">Landscape with Figures A Scene from The Last of the Mohicans, <a href="#34feald0fmk0">Thomas Cole</a></h3>
+<div class="outline-text-3" id="text-kkfenud0fmk0">
+
+<figure id="orgcafabc8">
+<img src="../../media/Art_Content/2025-07-04_06-10-37_screenshot.png" alt="2025-07-04_06-10-37_screenshot.png">
+
+</figure>
+</div>
+</div>
+<div id="outline-container-97q8yd01gmk0" class="outline-3">
+<h3 id="97q8yd01gmk0">Expulsion. Moon and Firelight, <a href="#34feald0fmk0">Thomas Cole</a></h3>
+<div class="outline-text-3" id="text-97q8yd01gmk0">
+
+<figure id="orgb95870f">
+<img src="../../media/Art_Content/2025-07-05_08-29-24_screenshot.png" alt="2025-07-05_08-29-24_screenshot.png">
+
+</figure>
+</div>
+</div>
+<div id="outline-container-q518iq10smk0" class="outline-3">
+<h3 id="q518iq10smk0">View of L`Esperance on the Schoharie River, <a href="#34feald0fmk0">Thomas Cole</a></h3>
+<div class="outline-text-3" id="text-q518iq10smk0">
+
+<figure id="org5990a94">
+<img src="../../media/Art_Content/2025-07-13_22-27-04_screenshot.png" alt="2025-07-13_22-27-04_screenshot.png">
+
+</figure>
+</div>
+</div>
+<div id="outline-container-k5ie5l01vmk0" class="outline-3">
+<h3 id="k5ie5l01vmk0">Distant View of Niagara Falls, <a href="#34feald0fmk0">Thomas Cole</a></h3>
+<div class="outline-text-3" id="text-k5ie5l01vmk0">
+
+<figure id="orgf78ccbb">
+<img src="../../media/Art_Content/2025-07-16_17-36-57_screenshot.png" alt="2025-07-16_17-36-57_screenshot.png">
+
+</figure>
+</div>
+</div>
+</div>
+<div id="outline-container-org0ea88c4" class="outline-2">
+<h2 id="org0ea88c4">People</h2>
+<div class="outline-text-2" id="text-org0ea88c4">
 </div>
 <div id="outline-container-2lq0ch91vik0" class="outline-3">
 <h3 id="2lq0ch91vik0">Ivan Aivazovsky</h3>
 <div class="outline-text-3" id="text-2lq0ch91vik0">
+</div>
+</div>
+<div id="outline-container-ajviyf616mk0" class="outline-3">
+<h3 id="ajviyf616mk0">Emile Claus</h3>
+<div class="outline-text-3" id="text-ajviyf616mk0">
 </div>
 </div>
 <div id="outline-container-2jo4pwg0lkk0" class="outline-3">
@@ -1301,80 +1706,99 @@ His paintings make me want to play Assassin&rsquo;s Creed again.
 <div class="outline-text-4" id="text-54micc60wkk0">
 </div>
 </div>
-</div>
-</div>
-<div id="outline-container-ww50oy21clk0" class="outline-2">
-<h2 id="ww50oy21clk0">Goodies</h2>
-<div class="outline-text-2" id="text-ww50oy21clk0">
-<p>
-Following are pieces of art, pictures, and objects I like, including things like
-watches and women clothing. Usually found through the internet.
-</p>
+<div id="outline-container-aq08zp10olk0" class="outline-4">
+<h4 id="aq08zp10olk0">Bouguereau early competitions</h4>
+<div class="outline-text-4" id="text-aq08zp10olk0">
 <ul class="org-ul">
-<li><a href="https://pin.it/6wVgE37Qv">https://pin.it/6wVgE37Qv</a></li>
-<li><a href="https://pin.it/2n9gxUqTt">https://pin.it/2n9gxUqTt</a></li>
-<li><a href="https://pin.it/1kCfycyAd">https://pin.it/1kCfycyAd</a></li>
-<li><a href="https://pin.it/5tRojj2ts">https://pin.it/5tRojj2ts</a></li>
-<li><a href="https://pin.it/5YfTwF3yU">https://pin.it/5YfTwF3yU</a></li>
-<li><a href="https://pin.it/5bBK85j52">https://pin.it/5bBK85j52</a></li>
-<li><a href="https://pin.it/4TJVQKPDH">https://pin.it/4TJVQKPDH</a></li>
-<li><a href="https://pin.it/75oPR0zZZ">https://pin.it/75oPR0zZZ</a></li>
-<li><a href="https://pin.it/4TaZihKAG">https://pin.it/4TaZihKAG</a></li>
-<li><a href="https://pin.it/7BbQiLTQc">https://pin.it/7BbQiLTQc</a></li>
-<li><a href="https://pin.it/55b2YTGFe">https://pin.it/55b2YTGFe</a></li>
-<li><a href="https://pin.it/djFpzYsN0">https://pin.it/djFpzYsN0</a></li>
-<li><a href="https://pin.it/6TcBWuXML">https://pin.it/6TcBWuXML</a></li>
-<li><a href="https://pin.it/7h3HtWQ7J">https://pin.it/7h3HtWQ7J</a></li>
-<li><a href="https://pin.it/5N676m5yg">https://pin.it/5N676m5yg</a></li>
-<li><a href="https://pin.it/6kELT9pCD">https://pin.it/6kELT9pCD</a></li>
-<li><a href="https://pin.it/3ASOnvone">https://pin.it/3ASOnvone</a></li>
-<li><a href="https://pin.it/5PA0Mseen">https://pin.it/5PA0Mseen</a></li>
-<li><a href="https://pin.it/vnP32ltm4">https://pin.it/vnP32ltm4</a></li>
-<li><a href="https://pin.it/26nB39ruP">https://pin.it/26nB39ruP</a></li>
-<li><a href="https://pin.it/1xpZSXdil">https://pin.it/1xpZSXdil</a></li>
-<li><a href="https://pin.it/2dkfTpeRq">https://pin.it/2dkfTpeRq</a></li>
-</ul>
-</div>
-<div id="outline-container-org43c8eeb" class="outline-3">
-<h3 id="org43c8eeb">Watches I might consider getting</h3>
-<div class="outline-text-3" id="text-org43c8eeb">
-<ul class="org-ul">
-<li><a href="https://pin.it/5tRojj2ts">https://pin.it/5tRojj2ts</a></li>
-<li>This one I want to gift someone: <a href="https://pin.it/6ql0uPeEc">https://pin.it/6ql0uPeEc</a></li>
-<li><a href="https://pin.it/7zr1MLyzo">https://pin.it/7zr1MLyzo</a></li>
-<li><a href="https://pin.it/1t3hvLh3v">https://pin.it/1t3hvLh3v</a></li>
-<li><a href="https://pin.it/1VOXAXQcb">https://pin.it/1VOXAXQcb</a></li>
-<li><a href="https://pin.it/5jvThYcoJ">https://pin.it/5jvThYcoJ</a></li>
-<li><a href="https://pin.it/3naB4ERqB">https://pin.it/3naB4ERqB</a></li>
-<li><a href="https://pin.it/4jARLS0ei">https://pin.it/4jARLS0ei</a></li>
-<li><a href="https://pin.it/3Cgx3QnAR">https://pin.it/3Cgx3QnAR</a></li>
-<li><a href="https://pin.it/5PCUg88lb">https://pin.it/5PCUg88lb</a></li>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-06-13 Fri 14:13]</span></span>: <br>
+This video: <a href="https://youtu.be/8qA5g4Evg5I">https://youtu.be/8qA5g4Evg5I</a> mentions something very interesting,
+that William Bouguereau won a prize for a figure painting in the École des
+beaux-arts de Bordeaux, although his practice was only two hours in the morning,
+compared to his peers who were full-time students.</li>
 </ul>
 </div>
 </div>
 </div>
-<div id="outline-container-orgf877bda" class="outline-2">
-<h2 id="orgf877bda"><span class="todo TODO">TODO</span> Everyday, a beautiful painting.&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_general">@general</span></span></h2>
-<div class="outline-text-2" id="text-orgf877bda">
+<div id="outline-container-qse5o7c0rlk0" class="outline-3">
+<h3 id="qse5o7c0rlk0">Frederic William Burton</h3>
+<div class="outline-text-3" id="text-qse5o7c0rlk0">
+</div>
+</div>
+<div id="outline-container-eaphdi80xlk0" class="outline-3">
+<h3 id="eaphdi80xlk0">Alexandre Cabanel</h3>
+<div class="outline-text-3" id="text-eaphdi80xlk0">
+</div>
+</div>
+<div id="outline-container-ig8cxhp01mk0" class="outline-3">
+<h3 id="ig8cxhp01mk0">Frederic Edwin Church</h3>
+<div class="outline-text-3" id="text-ig8cxhp01mk0">
+</div>
+</div>
+<div id="outline-container-34feald0fmk0" class="outline-3">
+<h3 id="34feald0fmk0"><span class="todo TODO">TODO</span> Thomas Cole&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_check">@check</span></span></h3>
+<div class="outline-text-3" id="text-34feald0fmk0">
 <ul class="org-ul">
-<li>Note taken on <span class="timestamp-wrapper"><span class="timestamp">[2025-05-12 Mon 02:01]</span></span> <br>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-07-16 Wed 17:48]</span></span>: <br>
+I need to schedule meditating his works for a full day.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org79700fb" class="outline-2">
+<h2 id="org79700fb"><span class="todo TODO">TODO</span> Everyday, a beautiful painting.&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_general">@general</span></span></h2>
+<div class="outline-text-2" id="text-org79700fb">
+<ul class="org-ul">
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-07-16 Wed 17:48]</span></span>: <br>
+Skipping Thomas Cole.</li>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-07-13 Sun 22:28]</span></span>: <br>
+26, Thomas</li>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-07-05 Sat 08:29]</span></span>: <br>
+25, Thomas <a href="https://www.wikiart.org/en/thomas-cole/all-works#!%23filterName:all-paintings-chronologically,resultType:masonry">https://www.wikiart.org/en/thomas-cole/all-works#!%23filterName:all-paintings-chronologically,resultType:masonry</a></li>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-06-27 Fri 20:39]</span></span>: <br>
+Next is Léon Cogniet , 1794 - 1880 , 20 artworks</li>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-06-23 Mon 19:14]</span></span>: <br>
+Claricia is next</li>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-06-20 Fri 13:14]</span></span>: <br>
+Next is Rosalba Carriera ,</li>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-06-16 Mon 11:25]</span></span>: <br>
+Next is reviewing the Bs on the other website. There&rsquo;s also another new website
+that I think deserves checking the As.</li>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-06-07 Sat 20:47]</span></span>: <br>
+William-Adolphe Bouguereau 218 / 430</li>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-06-07 Sat 14:55]</span></span>: <br>
+Next is Soul Carried to Heaven (1878)
+William-Adolphe Bouguereau 141 / 430</li>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-05-12 Mon 02:01]</span></span>: <br>
 Next is ALLIO, Domenico I</li>
-<li>Note taken on <span class="timestamp-wrapper"><span class="timestamp">[2025-05-11 Sun 00:23]</span></span> <br>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-05-11 Sun 00:23]</span></span>: <br>
 ABONDIO, Antonio</li>
-<li>Note taken on <span class="timestamp-wrapper"><span class="timestamp">[2025-05-10 Sat 04:04]</span></span> <br>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-05-10 Sat 04:04]</span></span>: <br>
 <a href="https://www.wga.hu/html_m/a/index.html">https://www.wga.hu/html_m/a/index.html</a> Juan de La start</li>
-<li>Note taken on <span class="timestamp-wrapper"><span class="timestamp">[2025-05-09 Fri 04:57]</span></span> <br>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-05-09 Fri 04:57]</span></span>: <br>
 23 Sandro Botticelli</li>
-<li>Note taken on <span class="timestamp-wrapper"><span class="timestamp">[2025-05-07 Wed 03:14]</span></span> <br>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-05-07 Wed 03:14]</span></span>: <br>
 Alma 118</li>
-<li>Note taken on <span class="timestamp-wrapper"><span class="timestamp">[2025-05-04 Sun 05:24]</span></span> <br>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-05-04 Sun 05:24]</span></span>: <br>
 164, Alma</li>
-<li>Note taken on <span class="timestamp-wrapper"><span class="timestamp">[2025-05-02 Fri 23:38]</span></span> <br>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-05-02 Fri 23:38]</span></span>: <br>
 At 567, Ivan.</li>
-<li>Note taken on <span class="timestamp-wrapper"><span class="timestamp">[2025-05-02 Fri 00:17]</span></span> <br>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-05-02 Fri 00:17]</span></span>: <br>
 At 374, Ivan</li>
 </ul>
 <div class="notes"> <ul class="org-ul">
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-07-16 Wed 17:52]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-07-13 Sun 22:28]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-07-05 Sat 08:30]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-07-04 Fri 06:13]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-06-27 Fri 20:39]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-06-20 Fri 13:14]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-06-16 Mon 00:51]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-06-13 Fri 14:26]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-06-10 Tue 08:55]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-06-09 Mon 18:48]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-06-07 Sat 20:47]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-06-07 Sat 18:30]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-06-07 Sat 14:57]</span></span></li>
 <li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-06-06 Fri 04:46]</span></span></li>
 <li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-05-23 Fri 10:22]</span></span></li>
 <li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-05-17 Sat 01:31]</span></span></li>
@@ -1408,6 +1832,86 @@ At 374, Ivan</li>
 </ul>
  </div>
 <div class="notes"> <p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-07-16 Wed 17:35]--[2025-07-16 Wed 17:52] </span> <span class="timestamp">(0:17)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-07-13 Sun 20:47]--[2025-07-13 Sun 22:28] </span> <span class="timestamp">(1:41)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-07-05 Sat 08:20]--[2025-07-05 Sat 08:30] </span> <span class="timestamp">(0:10)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-07-04 Fri 05:55]--[2025-07-04 Fri 06:13] </span> <span class="timestamp">(0:18)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-07-04 Fri 05:09]--[2025-07-04 Fri 05:14] </span> <span class="timestamp">(0:05)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-06-30 Mon 13:39]--[2025-06-30 Mon 13:43] </span> <span class="timestamp">(0:04)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-06-27 Fri 20:23]--[2025-06-27 Fri 20:39] </span> <span class="timestamp">(0:16)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-06-20 Fri 12:24]--[2025-06-20 Fri 13:14] </span> <span class="timestamp">(0:50)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-06-18 Wed 00:06]--[2025-06-18 Wed 10:42] </span> <span class="timestamp">(10:36)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-06-16 Mon 00:23]--[2025-06-16 Mon 00:51] </span> <span class="timestamp">(0:28)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-06-13 Fri 13:53]--[2025-06-13 Fri 14:26] </span> <span class="timestamp">(0:33)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-06-10 Tue 07:46]--[2025-06-10 Tue 08:55] </span> <span class="timestamp">(1:09)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-06-09 Mon 18:20]--[2025-06-09 Mon 18:48] </span> <span class="timestamp">(0:28)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-06-07 Sat 20:30]--[2025-06-07 Sat 20:47] </span> <span class="timestamp">(0:17)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-06-07 Sat 18:06]--[2025-06-07 Sat 18:30] </span> <span class="timestamp">(0:24)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-06-07 Sat 14:49]--[2025-06-07 Sat 14:57] </span> <span class="timestamp">(0:08)</span>
+</span>
+</p>
+<p>
 <span class="timestamp-wrapper">
 <span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-06-06 Fri 04:31]--[2025-06-06 Fri 04:46] </span> <span class="timestamp">(0:15)</span>
 </span>
@@ -1595,18 +2099,21 @@ At 374, Ivan</li>
  </div>
 </div>
 </div>
-<div id="outline-container-orga607c34" class="outline-2">
-<h2 id="orga607c34"><span class="todo TODO">TODO</span> Parable of the Good Samaritan next Robert Bateman&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_check">@check</span>&#xa0;<span class="_later">@later</span></span></h2>
+<div id="outline-container-orgc3bf85f" class="outline-2">
+<h2 id="orgc3bf85f"><span class="todo TODO">TODO</span> Parable of the Good Samaritan next Robert Bateman&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_check">@check</span>&#xa0;<span class="_later">@later</span></span></h2>
 </div>
-<div id="outline-container-org4942607" class="outline-2">
-<h2 id="org4942607"><span class="todo TODO">TODO</span> Read <a href="https://archive.org/details/7_20200325_20200325">https://archive.org/details/7_20200325_20200325</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_read">@read</span></span></h2>
-<div class="outline-text-2" id="text-org4942607">
+<div id="outline-container-org90ae656" class="outline-2">
+<h2 id="org90ae656"><span class="todo TODO">TODO</span> Read&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_read">@read</span></span></h2>
+<div class="outline-text-2" id="text-org90ae656">
 <div class="notes"> <p>
 <span class="timestamp-wrapper">
 <span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-05-04 Sun 05:09]--[2025-05-04 Sun 05:17] </span> <span class="timestamp">(0:08)</span>
 </span>
 </p>
  </div>
+<p>
+<a href="https://archive.org/details/7_20200325_20200325">https://archive.org/details/7_20200325_20200325</a>
+</p>
 
 <p>
 Sir Lawrence Alma-Tadema 9 / 217
@@ -1618,6 +2125,20 @@ The Death of Hippolytus (1860)
 </p>
 </div>
 </div>
+<div id="outline-container-spk1y380omk0" class="outline-2">
+<h2 id="spk1y380omk0"><span class="todo TODO">TODO</span> <a href="msgid:20250608144113.3.eca9b1a1beb41c88@mg-d0.substack.com">How Christianity Shaped Art</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_read">@read</span>&#xa0;<span class="_general">@general</span></span></h2>
+<div class="outline-text-2" id="text-spk1y380omk0">
+<p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-06-08 Sun 22:43]</span></span>
+</p>
+<div class="tag" id="orgf022c93">
+<p>
+This section was labeled under, or is related to <a href="art_paintings_media.html#r98aze11tik0">Christian Art</a>
+</p>
+
+</div>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <div id="postamble" class="status">
@@ -1625,7 +2146,7 @@ The Death of Hippolytus (1860)
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.93 (<a href="https://orgmode.org">Org</a> mode 9.7.29). Written by: Salih Muhammed, by the date of: . Last build date: 2025-06-06 Fri 04:46.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: . Last build date: 2025-07-17 Thu 21:48.</p>
 
 </div>
 </div>

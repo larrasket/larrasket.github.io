@@ -54,50 +54,50 @@ margin-block-start: auto;
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgb23d1b7">Why?</a>
+<li><a href="#org600d1e9">Why?</a>
 <ul>
-<li><a href="#org0404205">Moore&rsquo;s Law, Web, And the Current Mess</a></li>
+<li><a href="#org00dc837">Moore&rsquo;s Law, Web, And the Current Mess</a></li>
 </ul>
 </li>
-<li><a href="#org218ae4b">Problems</a>
+<li><a href="#org4dd7006">Problems</a>
 <ul>
-<li><a href="#orgbac798f">Race Conditions</a></li>
-<li><a href="#org393fa1d">Atomicity</a></li>
-<li><a href="#org2be450f">Deadlocks</a></li>
-<li><a href="#orgdcd3893"><span class="done KILL">KILL</span> Livelock</a></li>
-<li><a href="#org2d59914"><span class="done KILL">KILL</span> Starvation</a></li>
+<li><a href="#orgd8ae198">Race Conditions</a></li>
+<li><a href="#org2ce36ad">Atomicity</a></li>
+<li><a href="#orgeb1c6db">Deadlocks</a></li>
+<li><a href="#org9c8a74c"><span class="done KILL">KILL</span> Livelock</a></li>
+<li><a href="#org415dc86"><span class="done KILL">KILL</span> Starvation</a></li>
 </ul>
 </li>
 <li><a href="#y6c6tzo02wj0">Concurrency vs Parallelism</a></li>
 <li><a href="#ddj750p02wj0">CPS</a></li>
-<li><a href="#org22d702f"><code>Goroutine</code></a></li>
-<li><a href="#orgbb4c86c"><code>sync</code></a>
+<li><a href="#org815f284"><code>Goroutine</code></a></li>
+<li><a href="#orgeb7b732"><code>sync</code></a>
 <ul>
-<li><a href="#org2646ddf"><code>WaitGroup</code></a></li>
-<li><a href="#orgfb29343"><code>Mutex</code> and <code>RWMutex</code></a></li>
-<li><a href="#orge65e9cc"><code>Cond</code></a>
+<li><a href="#orgaf23a1b"><code>WaitGroup</code></a></li>
+<li><a href="#org1e69fcb"><code>Mutex</code> and <code>RWMutex</code></a></li>
+<li><a href="#org7e7a9d3"><code>Cond</code></a>
 <ul>
-<li><a href="#org85fbf02"><span class="done KILL">KILL</span> <code>Brodcast</code></a></li>
+<li><a href="#org76e6979"><span class="done KILL">KILL</span> <code>Brodcast</code></a></li>
 </ul>
 </li>
-<li><a href="#org081e730"><code>Once</code></a></li>
+<li><a href="#org2883d2c"><code>Once</code></a></li>
 </ul>
 </li>
 <li><a href="#03ogh2p02wj0">Concurrency Patterns in Go</a>
 <ul>
-<li><a href="#org87fb3a3">Confinement</a>
+<li><a href="#org5c40252">Confinement</a>
 <ul>
-<li><a href="#org93749fc">Ad Hoc</a></li>
-<li><a href="#orgdce3878">Lexical</a></li>
+<li><a href="#org4f909fd">Ad Hoc</a></li>
+<li><a href="#orgb603e2f">Lexical</a></li>
 </ul>
 </li>
-<li><a href="#org5dec08d">For-Select</a></li>
-<li><a href="#orge0e4a81">Preventing Goroutine Leaks</a></li>
+<li><a href="#orga67f896">For-Select</a></li>
+<li><a href="#orge7f5801">Preventing Goroutine Leaks</a></li>
 </ul>
 </li>
-<li><a href="#orgfde29e6">Notes</a>
+<li><a href="#orgd1ce365">Notes</a>
 <ul>
-<li><a href="#orgba385af"><span class="done KILL">KILL</span> Rendezvous</a></li>
+<li><a href="#org9b8968a"><span class="done KILL">KILL</span> Rendezvous</a></li>
 </ul>
 </li>
 </ul>
@@ -107,7 +107,7 @@ margin-block-start: auto;
 <b>This is incomplete!!</b>
 </p>
 
-<div class="PREVIEW" id="orgca023d1">
+<div class="PREVIEW" id="orgb93c76f">
 <p>
 A tutorial in concurrency and parallelism with the Go programming language.
 </p>
@@ -126,23 +126,23 @@ living their lives. They are existing <i>concurrently</i> to you.
 </p>
 
 
-<div class="propert" id="orgb0e2972">
+<div class="propert" id="orgbc825eb">
 <p>
 Part of a series on <a href="../cs/go.html#lvkhzyo02wj0">The Go Programming Language</a>
 </p>
 
 </div>
-<div id="outline-container-orgb23d1b7" class="outline-2">
-<h2 id="orgb23d1b7">Why?</h2>
-<div class="outline-text-2" id="text-orgb23d1b7">
+<div id="outline-container-org600d1e9" class="outline-2">
+<h2 id="org600d1e9">Why?</h2>
+<div class="outline-text-2" id="text-org600d1e9">
 <p>
 As with most paths toward understanding, we’ll begin with a bit of history. Let’s first
 take a look at how concurrency became such an important topic.
 </p>
 </div>
-<div id="outline-container-org0404205" class="outline-3">
-<h3 id="org0404205">Moore&rsquo;s Law, Web, And the Current Mess</h3>
-<div class="outline-text-3" id="text-org0404205">
+<div id="outline-container-org00dc837" class="outline-3">
+<h3 id="org00dc837">Moore&rsquo;s Law, Web, And the Current Mess</h3>
+<div class="outline-text-3" id="text-org00dc837">
 <p>
 In 1965, Gordon Moore wrote a three-page paper that described both the consolidation of
 the electronics market toward integrated circuits and the doubling of the number of
@@ -191,9 +191,9 @@ chunks of a problem to different instances of your application.
 </div>
 </div>
 </div>
-<div id="outline-container-org218ae4b" class="outline-2">
-<h2 id="org218ae4b">Problems</h2>
-<div class="outline-text-2" id="text-org218ae4b">
+<div id="outline-container-org4dd7006" class="outline-2">
+<h2 id="org4dd7006">Problems</h2>
+<div class="outline-text-2" id="text-org4dd7006">
 <p>
 Concurrent code is notoriously difficult to get right. It usually takes a few iterations to
 get it working as expected, and even then it’s not uncommon for bugs to exist in code for
@@ -202,9 +202,9 @@ system, etc.) causes a previously undiscovered bug to rear its head. Indeed, for
 book, I’ve gotten as many eyes as possible on the code to try and mitigate this.
 </p>
 </div>
-<div id="outline-container-orgbac798f" class="outline-3">
-<h3 id="orgbac798f">Race Conditions</h3>
-<div class="outline-text-3" id="text-orgbac798f">
+<div id="outline-container-orgd8ae198" class="outline-3">
+<h3 id="orgd8ae198">Race Conditions</h3>
+<div class="outline-text-3" id="text-orgd8ae198">
 <p>
 A race condition occurs when two or more operations must execute in the correct order, but
 the program has not been written so that this order is guaranteed to be maintained.
@@ -220,19 +220,19 @@ is attempting to write to the same variable.
 Here’s a basic example:
 </p>
 
-<pre class="code"><code><span style="color: #F0DFAF; font-weight: bold;">var</span> <span style="color: #DFAF8F;">data</span> <span style="color: #7CB8BB;">int</span>
-<span style="color: #F0DFAF; font-weight: bold;">go</span> <span style="color: #F0DFAF; font-weight: bold;">func</span>() {
+<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">var</span> <span style="color: #df7fff;">data</span> <span style="color: #f470df;">int</span>
+<span style="color: #ef80bf; font-weight: bold;">go</span> <span style="color: #ef80bf; font-weight: bold;">func</span>() {
 &#9474;   data++
 }()
-<span style="color: #F0DFAF; font-weight: bold;">if</span> data == <span style="color: #DCDCDC; font-weight: bold;">0</span> {
-&#9474;   fmt.<span style="color: #93E0E3;">Printf</span>(<span style="color: #CC9393;">"the value is %v.\n"</span>, data)
+<span style="color: #ef80bf; font-weight: bold;">if</span> data == 0 {
+&#9474;   fmt.<span style="color: #f59280;">Printf</span>(<span style="color: #e5b76f;">"the value is %v.\n"</span>, data)
 }
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org393fa1d" class="outline-3">
-<h3 id="org393fa1d">Atomicity</h3>
-<div class="outline-text-3" id="text-org393fa1d">
+<div id="outline-container-org2ce36ad" class="outline-3">
+<h3 id="org2ce36ad">Atomicity</h3>
+<div class="outline-text-3" id="text-org2ce36ad">
 <p>
 When something is considered atomic, or has the property of atomicity, this means that
 within the context that it is operating, it is indivisible, or uninterruptible.
@@ -266,7 +266,7 @@ without anything happening in that context simultaneously. That’s still a mout
 look at an example:
 </p>
 
-<pre class="example" id="org65a40f4">
+<pre class="example" id="orgc4fe3f9">
 i++
 </pre>
 <p>
@@ -291,9 +291,9 @@ context is a goroutine that doesn’t expose I to other goroutines, then this co
 </p>
 </div>
 </div>
-<div id="outline-container-org2be450f" class="outline-3">
-<h3 id="org2be450f">Deadlocks</h3>
-<div class="outline-text-3" id="text-org2be450f">
+<div id="outline-container-orgeb1c6db" class="outline-3">
+<h3 id="orgeb1c6db">Deadlocks</h3>
+<div class="outline-text-3" id="text-orgeb1c6db">
 <p>
 A deadlocked program is one in which all concurrent processes are waiting on one
 another. In this state, the program will never recover without outside intervention.
@@ -310,27 +310,27 @@ it has not been implemented. For more information, see
 </span>
 </p>
 
-<pre class="code"><code><span style="color: #F0DFAF; font-weight: bold;">var</span> <span style="color: #DFAF8F;">wg</span> <span style="color: #7CB8BB;">sync.WaitGroup</span>
-<span style="color: #DFAF8F;">printSum</span> := <span style="color: #F0DFAF; font-weight: bold;">func</span>(<span style="color: #DFAF8F;">v1</span>, <span style="color: #DFAF8F;">v2</span> *<span style="color: #7CB8BB;">value</span>) {
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">defer</span> wg.<span style="color: #93E0E3;">Done</span>()
-&#9474;   v1.mu.<span style="color: #93E0E3;">Lock</span>() <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Here we attempt to enter the critical section for the incoming value.</span>
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">defer</span> v1.mu.<span style="color: #93E0E3;">Unlock</span>() <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Here we use the defer statement to exit the critical section before printSum returns.</span>
-&#9474;   time.<span style="color: #93E0E3;">Sleep</span>(<span style="color: #DCDCDC; font-weight: bold;">2</span>*time.Second) <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Here we sleep for a period of time to simulate wor</span>
-&#9474;   v2.mu.<span style="color: #93E0E3;">Lock</span>()
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">defer</span> v2.mu.<span style="color: #93E0E3;">Unlock</span>()
-&#9474;   fmt.<span style="color: #93E0E3;">Printf</span>(<span style="color: #CC9393;">"sum=%v\n"</span>, v1.value + v2.value)
+<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">var</span> <span style="color: #df7fff;">wg</span> <span style="color: #f470df;">sync.WaitGroup</span>
+<span style="color: #df7fff;">printSum</span> := <span style="color: #ef80bf; font-weight: bold;">func</span>(<span style="color: #df7fff;">v1</span>, <span style="color: #df7fff;">v2</span> *<span style="color: #f470df;">value</span>) {
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">defer</span> wg.<span style="color: #f59280;">Done</span>()
+&#9474;   v1.mu.<span style="color: #f59280;">Lock</span>() <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Here we attempt to enter the critical section for the incoming value.</span>
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">defer</span> v1.mu.<span style="color: #f59280;">Unlock</span>() <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Here we use the defer statement to exit the critical section before printSum returns.</span>
+&#9474;   time.<span style="color: #f59280;">Sleep</span>(2*time.Second) <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Here we sleep for a period of time to simulate wor</span>
+&#9474;   v2.mu.<span style="color: #f59280;">Lock</span>()
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">defer</span> v2.mu.<span style="color: #f59280;">Unlock</span>()
+&#9474;   fmt.<span style="color: #f59280;">Printf</span>(<span style="color: #e5b76f;">"sum=%v\n"</span>, v1.value + v2.value)
 }
-<span style="color: #F0DFAF; font-weight: bold;">var</span> <span style="color: #DFAF8F;">a</span>, <span style="color: #DFAF8F;">b</span> <span style="color: #7CB8BB;">value</span>
-wg.<span style="color: #93E0E3;">Add</span>(<span style="color: #DCDCDC; font-weight: bold;">2</span>)
-<span style="color: #F0DFAF; font-weight: bold;">go</span> <span style="color: #93E0E3;">printSum</span>(&amp;a, &amp;b)
-<span style="color: #F0DFAF; font-weight: bold;">go</span> <span style="color: #93E0E3;">printSum</span>(&amp;b, &amp;a)
-wg.<span style="color: #93E0E3;">Wait</span>()
+<span style="color: #ef80bf; font-weight: bold;">var</span> <span style="color: #df7fff;">a</span>, <span style="color: #df7fff;">b</span> <span style="color: #f470df;">value</span>
+wg.<span style="color: #f59280;">Add</span>(2)
+<span style="color: #ef80bf; font-weight: bold;">go</span> <span style="color: #f59280;">printSum</span>(&amp;a, &amp;b)
+<span style="color: #ef80bf; font-weight: bold;">go</span> <span style="color: #f59280;">printSum</span>(&amp;b, &amp;a)
+wg.<span style="color: #f59280;">Wait</span>()
 </code></pre>
 
 <p>
 If you were to try and run this code, you’d probably see:
 </p>
-<pre class="example" id="org2ae020d">
+<pre class="example" id="org8ac6498">
 fatal error: all goroutines are asleep - deadlock!
 </pre>
 
@@ -342,7 +342,7 @@ graphic
 </p>
 
 
-<figure id="orgb1fdcaa">
+<figure id="orgca363d4">
 <img src="../i/old/2022-10-03_04-44-38_screenshot.png" alt="2022-10-03_04-44-38_screenshot.png">
 
 </figure>
@@ -372,9 +372,9 @@ too.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgdcd3893" class="outline-3">
-<h3 id="orgdcd3893"><span class="done KILL">KILL</span> Livelock</h3>
-<div class="outline-text-3" id="text-orgdcd3893">
+<div id="outline-container-org9c8a74c" class="outline-3">
+<h3 id="org9c8a74c"><span class="done KILL">KILL</span> Livelock</h3>
+<div class="outline-text-3" id="text-org9c8a74c">
 <p>
 Livelocks are programs that are actively performing concurrent operations, but these
 operations do nothing to move the state of the program forward.
@@ -387,13 +387,13 @@ the same. Imagine this going on forever, and you understand livelocks.
 </p>
 </div>
 </div>
-<div id="outline-container-org2d59914" class="outline-3">
-<h3 id="org2d59914"><span class="done KILL">KILL</span> Starvation</h3>
+<div id="outline-container-org415dc86" class="outline-3">
+<h3 id="org415dc86"><span class="done KILL">KILL</span> Starvation</h3>
 </div>
 </div>
 <div id="outline-container-y6c6tzo02wj0" class="outline-2">
 <h2 id="y6c6tzo02wj0">Concurrency vs Parallelism</h2>
-<div class="outline-text-2" id="text-orge7dee2b">
+<div class="outline-text-2" id="text-org627c24f">
 <p>
 The fact that concurrency is different from parallelism is often overlooked or
 misunderstood. In conversations between many developers, the two terms are often used
@@ -458,7 +458,7 @@ We’ll come back to this.
 </div>
 <div id="outline-container-ddj750p02wj0" class="outline-2">
 <h2 id="ddj750p02wj0">CPS</h2>
-<div class="outline-text-2" id="text-org08c7f91">
+<div class="outline-text-2" id="text-orgfb77e18">
 <p>
 A CSP stands for “Communicating Sequential Processes,” which is both a technique and
 the name of the paper that introduced it. In 1978, Charles Antony Richard Hoare
@@ -532,9 +532,9 @@ well.
 </p>
 </div>
 </div>
-<div id="outline-container-org22d702f" class="outline-2">
-<h2 id="org22d702f"><code>Goroutine</code></h2>
-<div class="outline-text-2" id="text-org22d702f">
+<div id="outline-container-org815f284" class="outline-2">
+<h2 id="org815f284"><code>Goroutine</code></h2>
+<div class="outline-text-2" id="text-org815f284">
 <p>
 The Goroutines are one of the most basic units of organization in a Go program, so it’s
 important we understand what they are and how they work. Every Go program has at
@@ -579,10 +579,10 @@ ensures that when these goroutines become blocked, other goroutines can be run.
 The go statement is how Go performs a fork, and the forked threads of execution are
 goroutines. Let’s return to our simple goroutine example:
 </p>
-<pre class="code"><code><span style="color: #DFAF8F;">sayHello</span> := <span style="color: #F0DFAF; font-weight: bold;">func</span>() {
-fmt.<span style="color: #93E0E3;">Println</span>(<span style="color: #CC9393;">"hello"</span>)
+<pre class="code"><code><span style="color: #df7fff;">sayHello</span> := <span style="color: #ef80bf; font-weight: bold;">func</span>() {
+fmt.<span style="color: #f59280;">Println</span>(<span style="color: #e5b76f;">"hello"</span>)
 }
-<span style="color: #F0DFAF; font-weight: bold;">go</span> <span style="color: #93E0E3;">sayHello</span>()
+<span style="color: #ef80bf; font-weight: bold;">go</span> <span style="color: #f59280;">sayHello</span>()
 </code></pre>
 
 <p>
@@ -611,34 +611,34 @@ but recall that this doesn’t actually create a join point, only a race conditi
 To a create a join point, you have to synchronize the main goroutine and the
 sayHello goroutine. This can be done in a number of ways.
 </p>
-<pre class="code"><code><span style="color: #F0DFAF; font-weight: bold;">import</span> (
-&#9474;   <span style="color: #CC9393;">"fmt"</span>
-&#9474;   <span style="color: #CC9393;">"sync"</span>
+<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">import</span> (
+&#9474;   <span style="color: #e5b76f;">"fmt"</span>
+&#9474;   <span style="color: #e5b76f;">"sync"</span>
 )
-<span style="color: #F0DFAF; font-weight: bold;">func</span> <span style="color: #93E0E3;">main</span>() {
+<span style="color: #ef80bf; font-weight: bold;">func</span> <span style="color: #f59280;">main</span>() {
 &#9474;
-&#9474;   <span style="color: #DFAF8F;">sayhello</span> := <span style="color: #F0DFAF; font-weight: bold;">func</span>() {
-&#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">defer</span> wg.<span style="color: #93E0E3;">Done</span>()
-&#9474;   &#9474;   fmt.<span style="color: #93E0E3;">Print</span>(<span style="color: #CC9393;">"hello"</span>)
+&#9474;   <span style="color: #df7fff;">sayhello</span> := <span style="color: #ef80bf; font-weight: bold;">func</span>() {
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">defer</span> wg.<span style="color: #f59280;">Done</span>()
+&#9474;   &#9474;   fmt.<span style="color: #f59280;">Print</span>(<span style="color: #e5b76f;">"hello"</span>)
 &#9474;   }
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">go</span> <span style="color: #93E0E3;">sayhello</span>()
-&#9474;   wg.<span style="color: #93E0E3;">Add</span>(<span style="color: #DCDCDC; font-weight: bold;">1</span>)
-&#9474;   wg.<span style="color: #93E0E3;">Wait</span>()
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">go</span> <span style="color: #f59280;">sayhello</span>()
+&#9474;   wg.<span style="color: #f59280;">Add</span>(1)
+&#9474;   wg.<span style="color: #f59280;">Wait</span>()
 }
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgbb4c86c" class="outline-2">
-<h2 id="orgbb4c86c"><code>sync</code></h2>
-<div class="outline-text-2" id="text-orgbb4c86c">
+<div id="outline-container-orgeb7b732" class="outline-2">
+<h2 id="orgeb7b732"><code>sync</code></h2>
+<div class="outline-text-2" id="text-orgeb7b732">
 <p>
 The sync package contains the concurrency primitives that are most useful for low- level
 memory access synchronization.
 </p>
 </div>
-<div id="outline-container-org2646ddf" class="outline-3">
-<h3 id="org2646ddf"><code>WaitGroup</code></h3>
-<div class="outline-text-3" id="text-org2646ddf">
+<div id="outline-container-orgaf23a1b" class="outline-3">
+<h3 id="orgaf23a1b"><code>WaitGroup</code></h3>
+<div class="outline-text-3" id="text-orgaf23a1b">
 <p>
 <code>WaitGroup</code> is a great way to wait for a set of concurrent operations to complete when you
 either don’t care about the result of the concurrent operation, or you have other means of
@@ -647,30 +647,30 @@ channels and a select statement instead. <code>WaitGroup</code> is so useful, I�
 so I can use it in subsequent sections. Here’s a basic example of using a <code>WaitGroup</code> to
 wait for <code>goroutines</code> to complete:
 </p>
-<pre class="code"><code><span style="color: #F0DFAF; font-weight: bold;">import</span> (
-&#9474;   <span style="color: #CC9393;">"fmt"</span>
-&#9474;   <span style="color: #CC9393;">"sync"</span>
+<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">import</span> (
+&#9474;   <span style="color: #e5b76f;">"fmt"</span>
+&#9474;   <span style="color: #e5b76f;">"sync"</span>
 )
-<span style="color: #F0DFAF; font-weight: bold;">func</span> <span style="color: #93E0E3;">main</span>() {
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">var</span> <span style="color: #DFAF8F;">wg</span> <span style="color: #7CB8BB;">sync.WaitGroup</span>
-&#9474;   wg.<span style="color: #93E0E3;">Add</span>(<span style="color: #DCDCDC; font-weight: bold;">1</span>)
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">go</span> <span style="color: #F0DFAF; font-weight: bold;">func</span>() {
-&#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">defer</span> wg.<span style="color: #93E0E3;">Done</span>()
-&#9474;   &#9474;   fmt.<span style="color: #93E0E3;">Print</span>(<span style="color: #CC9393;">"1"</span>)
+<span style="color: #ef80bf; font-weight: bold;">func</span> <span style="color: #f59280;">main</span>() {
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">var</span> <span style="color: #df7fff;">wg</span> <span style="color: #f470df;">sync.WaitGroup</span>
+&#9474;   wg.<span style="color: #f59280;">Add</span>(1)
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">go</span> <span style="color: #ef80bf; font-weight: bold;">func</span>() {
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">defer</span> wg.<span style="color: #f59280;">Done</span>()
+&#9474;   &#9474;   fmt.<span style="color: #f59280;">Print</span>(<span style="color: #e5b76f;">"1"</span>)
 &#9474;   }()
 &#9474;
-&#9474;   wg.<span style="color: #93E0E3;">Add</span>(<span style="color: #DCDCDC; font-weight: bold;">1</span>)
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">go</span> <span style="color: #F0DFAF; font-weight: bold;">func</span>() {
-&#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">defer</span> wg.<span style="color: #93E0E3;">Done</span>()
-&#9474;   &#9474;   fmt.<span style="color: #93E0E3;">Print</span>(<span style="color: #CC9393;">"2"</span>)
+&#9474;   wg.<span style="color: #f59280;">Add</span>(1)
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">go</span> <span style="color: #ef80bf; font-weight: bold;">func</span>() {
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">defer</span> wg.<span style="color: #f59280;">Done</span>()
+&#9474;   &#9474;   fmt.<span style="color: #f59280;">Print</span>(<span style="color: #e5b76f;">"2"</span>)
 &#9474;   }()
 &#9474;
-&#9474;   wg.<span style="color: #93E0E3;">Add</span>(<span style="color: #DCDCDC; font-weight: bold;">1</span>)
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">go</span> <span style="color: #F0DFAF; font-weight: bold;">func</span>() {
-&#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">defer</span> wg.<span style="color: #93E0E3;">Done</span>()
-&#9474;   &#9474;   fmt.<span style="color: #93E0E3;">Print</span>(<span style="color: #CC9393;">"3"</span>)
+&#9474;   wg.<span style="color: #f59280;">Add</span>(1)
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">go</span> <span style="color: #ef80bf; font-weight: bold;">func</span>() {
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">defer</span> wg.<span style="color: #f59280;">Done</span>()
+&#9474;   &#9474;   fmt.<span style="color: #f59280;">Print</span>(<span style="color: #e5b76f;">"3"</span>)
 &#9474;   }()
-&#9474;   wg.<span style="color: #93E0E3;">Wait</span>()
+&#9474;   wg.<span style="color: #f59280;">Wait</span>()
 }
 </code></pre>
 
@@ -679,9 +679,9 @@ The output will differ probably in your machine.
 </p>
 </div>
 </div>
-<div id="outline-container-orgfb29343" class="outline-3">
-<h3 id="orgfb29343"><code>Mutex</code> and <code>RWMutex</code></h3>
-<div class="outline-text-3" id="text-orgfb29343">
+<div id="outline-container-org1e69fcb" class="outline-3">
+<h3 id="org1e69fcb"><code>Mutex</code> and <code>RWMutex</code></h3>
+<div class="outline-text-3" id="text-org1e69fcb">
 <p>
 Mutex stands for “mutual exclusion” and is a way to guard critical sections of your program.
 A critical section is an area of your program that requires exclusive access to a shared
@@ -693,41 +693,41 @@ mutex. Here’s a simple example of two goroutines that are attempting to increm
 decrement a common value; they use a Mutex to synchronize:
 </p>
 
-<pre class="code"><code><span style="color: #F0DFAF; font-weight: bold;">func</span> <span style="color: #93E0E3;">main</span>() {
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">var</span> <span style="color: #DFAF8F;">count</span> <span style="color: #7CB8BB;">int</span>
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">var</span> <span style="color: #DFAF8F;">lock</span> <span style="color: #7CB8BB;">sync.Mutex</span>
-&#9474;   <span style="color: #DFAF8F;">increment</span> := <span style="color: #F0DFAF; font-weight: bold;">func</span>() {
-&#9474;   &#9474;   lock.<span style="color: #93E0E3;">Lock</span>()
-&#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">defer</span> lock.<span style="color: #93E0E3;">Unlock</span>()
+<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">func</span> <span style="color: #f59280;">main</span>() {
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">var</span> <span style="color: #df7fff;">count</span> <span style="color: #f470df;">int</span>
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">var</span> <span style="color: #df7fff;">lock</span> <span style="color: #f470df;">sync.Mutex</span>
+&#9474;   <span style="color: #df7fff;">increment</span> := <span style="color: #ef80bf; font-weight: bold;">func</span>() {
+&#9474;   &#9474;   lock.<span style="color: #f59280;">Lock</span>()
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">defer</span> lock.<span style="color: #f59280;">Unlock</span>()
 &#9474;   &#9474;   count++
-&#9474;   &#9474;   fmt.<span style="color: #93E0E3;">Printf</span>(<span style="color: #CC9393;">"Incrementing: %d\n"</span>, count)
+&#9474;   &#9474;   fmt.<span style="color: #f59280;">Printf</span>(<span style="color: #e5b76f;">"Incrementing: %d\n"</span>, count)
 &#9474;   }
-&#9474;   <span style="color: #DFAF8F;">decrement</span> := <span style="color: #F0DFAF; font-weight: bold;">func</span>() {
-&#9474;   &#9474;   lock.<span style="color: #93E0E3;">Lock</span>()
-&#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">defer</span> lock.<span style="color: #93E0E3;">Unlock</span>()
+&#9474;   <span style="color: #df7fff;">decrement</span> := <span style="color: #ef80bf; font-weight: bold;">func</span>() {
+&#9474;   &#9474;   lock.<span style="color: #f59280;">Lock</span>()
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">defer</span> lock.<span style="color: #f59280;">Unlock</span>()
 &#9474;   &#9474;   count--
-&#9474;   &#9474;   fmt.<span style="color: #93E0E3;">Printf</span>(<span style="color: #CC9393;">"Decrementing: %d\n"</span>, count)
+&#9474;   &#9474;   fmt.<span style="color: #f59280;">Printf</span>(<span style="color: #e5b76f;">"Decrementing: %d\n"</span>, count)
 &#9474;   }
-&#9474;   <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Increment</span>
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">var</span> <span style="color: #DFAF8F;">arithmetic</span> <span style="color: #7CB8BB;">sync.WaitGroup</span>
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">for</span> <span style="color: #DFAF8F;">i</span> := <span style="color: #DCDCDC; font-weight: bold;">0</span>; i &lt;= <span style="color: #DCDCDC; font-weight: bold;">5</span>; i++ {
-&#9474;   &#9474;   arithmetic.<span style="color: #93E0E3;">Add</span>(<span style="color: #DCDCDC; font-weight: bold;">1</span>)
-&#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">go</span> <span style="color: #F0DFAF; font-weight: bold;">func</span>() {
-&#9474;   &#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">defer</span> arithmetic.<span style="color: #93E0E3;">Done</span>()
-&#9474;   &#9474;   &#9474;   <span style="color: #93E0E3;">increment</span>()
+&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Increment</span>
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">var</span> <span style="color: #df7fff;">arithmetic</span> <span style="color: #f470df;">sync.WaitGroup</span>
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> <span style="color: #df7fff;">i</span> := 0; i &lt;= 5; i++ {
+&#9474;   &#9474;   arithmetic.<span style="color: #f59280;">Add</span>(1)
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">go</span> <span style="color: #ef80bf; font-weight: bold;">func</span>() {
+&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">defer</span> arithmetic.<span style="color: #f59280;">Done</span>()
+&#9474;   &#9474;   &#9474;   <span style="color: #f59280;">increment</span>()
 &#9474;   &#9474;   }()
 &#9474;   }
 &#9474;
-&#9474;   <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Decrement</span>
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">for</span> <span style="color: #DFAF8F;">i</span> := <span style="color: #DCDCDC; font-weight: bold;">0</span>; i &lt;= <span style="color: #DCDCDC; font-weight: bold;">5</span>; i++ {
-&#9474;   &#9474;   arithmetic.<span style="color: #93E0E3;">Add</span>(<span style="color: #DCDCDC; font-weight: bold;">1</span>)
-&#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">go</span> <span style="color: #F0DFAF; font-weight: bold;">func</span>() {
-&#9474;   &#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">defer</span> arithmetic.<span style="color: #93E0E3;">Done</span>()
-&#9474;   &#9474;   &#9474;   <span style="color: #93E0E3;">decrement</span>()
+&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Decrement</span>
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> <span style="color: #df7fff;">i</span> := 0; i &lt;= 5; i++ {
+&#9474;   &#9474;   arithmetic.<span style="color: #f59280;">Add</span>(1)
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">go</span> <span style="color: #ef80bf; font-weight: bold;">func</span>() {
+&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">defer</span> arithmetic.<span style="color: #f59280;">Done</span>()
+&#9474;   &#9474;   &#9474;   <span style="color: #f59280;">decrement</span>()
 &#9474;   &#9474;   }()
 &#9474;   }
-&#9474;   arithmetic.<span style="color: #93E0E3;">Wait</span>()
-&#9474;   fmt.<span style="color: #93E0E3;">Println</span>(<span style="color: #CC9393;">"Arithmetic complete."</span>)
+&#9474;   arithmetic.<span style="color: #f59280;">Wait</span>()
+&#9474;   fmt.<span style="color: #f59280;">Println</span>(<span style="color: #e5b76f;">"Arithmetic complete."</span>)
 }
 </code></pre>
 
@@ -743,9 +743,9 @@ memory access; however, <code>RWMutex</code> gives you a little bit more control
 </p>
 </div>
 </div>
-<div id="outline-container-orge65e9cc" class="outline-3">
-<h3 id="orge65e9cc"><code>Cond</code></h3>
-<div class="outline-text-3" id="text-orge65e9cc">
+<div id="outline-container-org7e7a9d3" class="outline-3">
+<h3 id="org7e7a9d3"><code>Cond</code></h3>
+<div class="outline-text-3" id="text-org7e7a9d3">
 <p>
 The comment for the <code>Cond</code> type does a great job of describing its purpose:
 </p>
@@ -764,7 +764,7 @@ at how to accomplish this without the Cond type, one naive approach is to use an
 loop:
 </p>
 
-<pre class="example" id="org366d2c3">
+<pre class="example" id="orgdc31893">
 for conditionTrue() == false {
 }
 </pre>
@@ -773,7 +773,7 @@ for conditionTrue() == false {
 However, this would consume all cycles of one core. To fix that, we could introduce a
 <code>time.sleep</code>
 </p>
-<pre class="example" id="org1a83acb">
+<pre class="example" id="orgf3d3a95">
 time.Sleep:
 for conditionTrue() == false {
     time.Sleep(1*time.Millisecond)
@@ -788,7 +788,7 @@ a way for a goroutine to efficiently sleep until it was signaled to wake and che
 condition.  This is exactly what the Cond type does for us. Using a Cond, we could write the
 example like:
 </p>
-<pre class="example" id="org1531d9e">
+<pre class="example" id="org7cbff99">
 c := sync.NewCond(&amp;sync.Mutex{})
 c.L.Lock()
 for conditionTrue() == false {
@@ -805,25 +805,25 @@ there is room, so we want to be notified as soon as there’s room in the queue.
 using a Cond to manage this coordination:
 </p>
 
-<pre class="code"><code><span style="color: #DFAF8F;">c</span> := sync.<span style="color: #93E0E3;">NewCond</span>(&amp;<span style="color: #7CB8BB;">sync.Mutex</span>{})
-<span style="color: #DFAF8F;">queue</span> := <span style="color: #DCDCDC; font-weight: bold;">make</span>([]<span style="color: #F0DFAF; font-weight: bold;">interface</span>{}, <span style="color: #DCDCDC; font-weight: bold;">0</span>, <span style="color: #DCDCDC; font-weight: bold;">10</span>)
-<span style="color: #DFAF8F;">removeFromQueue</span> := <span style="color: #F0DFAF; font-weight: bold;">func</span>(<span style="color: #DFAF8F;">delay</span> <span style="color: #7CB8BB;">time.Duration</span>) {
-&#9474;   time.<span style="color: #93E0E3;">Sleep</span>(delay)
-&#9474;   c.L.<span style="color: #93E0E3;">Lock</span>()
-&#9474;   queue = queue[<span style="color: #DCDCDC; font-weight: bold;">1</span>:]
-&#9474;   fmt.<span style="color: #93E0E3;">Println</span>(<span style="color: #CC9393;">"Removed from queue"</span>)
-&#9474;   c.L.<span style="color: #93E0E3;">Unlock</span>()
-&#9474;   c.<span style="color: #93E0E3;">Signal</span>()
+<pre class="code"><code><span style="color: #df7fff;">c</span> := sync.<span style="color: #f59280;">NewCond</span>(&amp;<span style="color: #f470df;">sync.Mutex</span>{})
+<span style="color: #df7fff;">queue</span> := <span style="color: #a897ef; font-weight: bold;">make</span>([]<span style="color: #ef80bf; font-weight: bold;">interface</span>{}, 0, 10)
+<span style="color: #df7fff;">removeFromQueue</span> := <span style="color: #ef80bf; font-weight: bold;">func</span>(<span style="color: #df7fff;">delay</span> <span style="color: #f470df;">time.Duration</span>) {
+&#9474;   time.<span style="color: #f59280;">Sleep</span>(delay)
+&#9474;   c.L.<span style="color: #f59280;">Lock</span>()
+&#9474;   queue = queue[1:]
+&#9474;   fmt.<span style="color: #f59280;">Println</span>(<span style="color: #e5b76f;">"Removed from queue"</span>)
+&#9474;   c.L.<span style="color: #f59280;">Unlock</span>()
+&#9474;   c.<span style="color: #f59280;">Signal</span>()
 }
-<span style="color: #F0DFAF; font-weight: bold;">for</span> <span style="color: #DFAF8F;">i</span> := <span style="color: #DCDCDC; font-weight: bold;">0</span>; i &lt; <span style="color: #DCDCDC; font-weight: bold;">10</span>; i++{
-&#9474;   c.L.<span style="color: #93E0E3;">Lock</span>()
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">for</span> <span style="color: #DCDCDC; font-weight: bold;">len</span>(queue) == <span style="color: #DCDCDC; font-weight: bold;">2</span> {
-&#9474;   &#9474;   c.<span style="color: #93E0E3;">Wait</span>()
+<span style="color: #ef80bf; font-weight: bold;">for</span> <span style="color: #df7fff;">i</span> := 0; i &lt; 10; i++{
+&#9474;   c.L.<span style="color: #f59280;">Lock</span>()
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> <span style="color: #a897ef; font-weight: bold;">len</span>(queue) == 2 {
+&#9474;   &#9474;   c.<span style="color: #f59280;">Wait</span>()
 &#9474;   }
-&#9474;   fmt.<span style="color: #93E0E3;">Println</span>(<span style="color: #CC9393;">"Adding to queue"</span>)
-&#9474;   queue = <span style="color: #DCDCDC; font-weight: bold;">append</span>(queue, <span style="color: #F0DFAF; font-weight: bold;">struct</span>{}{})
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">go</span> <span style="color: #93E0E3;">removeFromQueue</span>(<span style="color: #DCDCDC; font-weight: bold;">1</span>*time.Second)
-&#9474;   c.L.<span style="color: #93E0E3;">Unlock</span>()
+&#9474;   fmt.<span style="color: #f59280;">Println</span>(<span style="color: #e5b76f;">"Adding to queue"</span>)
+&#9474;   queue = <span style="color: #a897ef; font-weight: bold;">append</span>(queue, <span style="color: #ef80bf; font-weight: bold;">struct</span>{}{})
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">go</span> <span style="color: #f59280;">removeFromQueue</span>(1*time.Second)
+&#9474;   c.L.<span style="color: #f59280;">Unlock</span>()
 }
 </code></pre>
 
@@ -837,13 +837,13 @@ that are waiting. Broadcast is arguably the more interesting of the two methods 
 provides a way to communicate with multiple goroutines at once.
 </p>
 </div>
-<div id="outline-container-org85fbf02" class="outline-4">
-<h4 id="org85fbf02"><span class="done KILL">KILL</span> <code>Brodcast</code></h4>
+<div id="outline-container-org76e6979" class="outline-4">
+<h4 id="org76e6979"><span class="done KILL">KILL</span> <code>Brodcast</code></h4>
 </div>
 </div>
-<div id="outline-container-org081e730" class="outline-3">
-<h3 id="org081e730"><code>Once</code></h3>
-<div class="outline-text-3" id="text-org081e730">
+<div id="outline-container-org2883d2c" class="outline-3">
+<h3 id="org2883d2c"><code>Once</code></h3>
+<div class="outline-text-3" id="text-org2883d2c">
 <p>
 Once is an object that will perform exactly one action.  Sounds simple enough, what’s so
 useful about it then?
@@ -861,31 +861,31 @@ fast, so you decide to cache API results in-memory with a map. A naive solution 
 like this:
 </p>
 
-<pre class="code"><code><span style="color: #F0DFAF; font-weight: bold;">package</span> main
+<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">package</span> main
 
-<span style="color: #F0DFAF; font-weight: bold;">var</span> <span style="color: #DFAF8F;">cache</span> = <span style="color: #DCDCDC; font-weight: bold;">make</span>(<span style="color: #F0DFAF; font-weight: bold;">map</span>[<span style="color: #7CB8BB;">string</span>][]<span style="color: #7CB8BB;">byte</span>)
-<span style="color: #F0DFAF; font-weight: bold;">var</span> <span style="color: #DFAF8F;">mutex</span> = <span style="color: #DCDCDC; font-weight: bold;">new</span>(<span style="color: #7CB8BB;">sync.Mutex</span>)
+<span style="color: #ef80bf; font-weight: bold;">var</span> <span style="color: #df7fff;">cache</span> = <span style="color: #a897ef; font-weight: bold;">make</span>(<span style="color: #ef80bf; font-weight: bold;">map</span>[<span style="color: #f470df;">string</span>][]<span style="color: #f470df;">byte</span>)
+<span style="color: #ef80bf; font-weight: bold;">var</span> <span style="color: #df7fff;">mutex</span> = <span style="color: #a897ef; font-weight: bold;">new</span>(<span style="color: #f470df;">sync.Mutex</span>)
 
-<span style="color: #F0DFAF; font-weight: bold;">func</span> <span style="color: #93E0E3;">DoQuery</span>(<span style="color: #DFAF8F;">name</span> <span style="color: #7CB8BB;">string</span>) []<span style="color: #7CB8BB;">byte</span> {
-&#9474;   <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Check if the result is already cached.</span>
-&#9474;   mutex.<span style="color: #93E0E3;">Lock</span>()
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #DFAF8F;">cached</span>, <span style="color: #DFAF8F;">found</span> := cache[name]; found {
-&#9474;   &#9474;   mutex.<span style="color: #93E0E3;">Unlock</span>()
-&#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">return</span> cached, <span style="color: #BFEBBF;">nil</span>
+<span style="color: #ef80bf; font-weight: bold;">func</span> <span style="color: #f59280;">DoQuery</span>(<span style="color: #df7fff;">name</span> <span style="color: #f470df;">string</span>) []<span style="color: #f470df;">byte</span> {
+&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Check if the result is already cached.</span>
+&#9474;   mutex.<span style="color: #f59280;">Lock</span>()
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> <span style="color: #df7fff;">cached</span>, <span style="color: #df7fff;">found</span> := cache[name]; found {
+&#9474;   &#9474;   mutex.<span style="color: #f59280;">Unlock</span>()
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> cached, <span style="color: #ff78aa;">nil</span>
 &#9474;   }
-&#9474;   mutex.<span style="color: #93E0E3;">Unlock</span>()
+&#9474;   mutex.<span style="color: #f59280;">Unlock</span>()
 &#9474;
-&#9474;   <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Make the request if it's uncached.</span>
-&#9474;   <span style="color: #DFAF8F;">resp</span>, <span style="color: #DFAF8F;">err</span> := http.<span style="color: #93E0E3;">Get</span>(<span style="color: #CC9393;">"https://upstream.api/?query="</span> + url.<span style="color: #93E0E3;">QueryEscape</span>(name))
-&#9474;   <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Error handling and resp.Body.Close omitted for brevity.</span>
-&#9474;   <span style="color: #DFAF8F;">result</span>, <span style="color: #DFAF8F;">err</span> := ioutil.<span style="color: #93E0E3;">ReadAll</span>(resp)
+&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Make the request if it's uncached.</span>
+&#9474;   <span style="color: #df7fff;">resp</span>, <span style="color: #df7fff;">err</span> := http.<span style="color: #f59280;">Get</span>(<span style="color: #e5b76f;">"https://upstream.api/?query="</span> + url.<span style="color: #f59280;">QueryEscape</span>(name))
+&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Error handling and resp.Body.Close omitted for brevity.</span>
+&#9474;   <span style="color: #df7fff;">result</span>, <span style="color: #df7fff;">err</span> := ioutil.<span style="color: #f59280;">ReadAll</span>(resp)
 &#9474;
-&#9474;   <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Store the result in the cache.</span>
-&#9474;   mutex.<span style="color: #93E0E3;">Lock</span>()
+&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Store the result in the cache.</span>
+&#9474;   mutex.<span style="color: #f59280;">Lock</span>()
 &#9474;   cache[name] = result
-&#9474;   mutex.<span style="color: #93E0E3;">Unlock</span>()
+&#9474;   mutex.<span style="color: #f59280;">Unlock</span>()
 &#9474;
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">return</span> result
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> result
 }
 </code></pre>
 
@@ -900,44 +900,44 @@ request to upstream.api unnecessarily, when only one would need to complete it.
 Well, you can do something like this:
 </p>
 
-<pre class="code"><code><span style="color: #F0DFAF; font-weight: bold;">package</span> main
+<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">package</span> main
 
-<span style="color: #F0DFAF; font-weight: bold;">type</span> <span style="color: #7CB8BB;">CacheEntry</span> <span style="color: #F0DFAF; font-weight: bold;">struct</span> {
-&#9474;   data []<span style="color: #7CB8BB;">byte</span>
-&#9474;   wait &lt;-<span style="color: #F0DFAF; font-weight: bold;">chan</span> <span style="color: #F0DFAF; font-weight: bold;">struct</span>{}
+<span style="color: #ef80bf; font-weight: bold;">type</span> <span style="color: #f470df;">CacheEntry</span> <span style="color: #ef80bf; font-weight: bold;">struct</span> {
+&#9474;   data []<span style="color: #f470df;">byte</span>
+&#9474;   wait &lt;-<span style="color: #ef80bf; font-weight: bold;">chan</span> <span style="color: #ef80bf; font-weight: bold;">struct</span>{}
 }
 
-<span style="color: #F0DFAF; font-weight: bold;">var</span> <span style="color: #DFAF8F;">cache</span> = <span style="color: #DCDCDC; font-weight: bold;">make</span>(<span style="color: #F0DFAF; font-weight: bold;">map</span>[<span style="color: #7CB8BB;">string</span>]*<span style="color: #7CB8BB;">CacheEntry</span>)
-<span style="color: #F0DFAF; font-weight: bold;">var</span> <span style="color: #DFAF8F;">mutex</span> = <span style="color: #DCDCDC; font-weight: bold;">new</span>(<span style="color: #7CB8BB;">sync.Mutex</span>)
+<span style="color: #ef80bf; font-weight: bold;">var</span> <span style="color: #df7fff;">cache</span> = <span style="color: #a897ef; font-weight: bold;">make</span>(<span style="color: #ef80bf; font-weight: bold;">map</span>[<span style="color: #f470df;">string</span>]*<span style="color: #f470df;">CacheEntry</span>)
+<span style="color: #ef80bf; font-weight: bold;">var</span> <span style="color: #df7fff;">mutex</span> = <span style="color: #a897ef; font-weight: bold;">new</span>(<span style="color: #f470df;">sync.Mutex</span>)
 
-<span style="color: #F0DFAF; font-weight: bold;">func</span> <span style="color: #93E0E3;">DoQuery</span>(<span style="color: #DFAF8F;">name</span> <span style="color: #7CB8BB;">string</span>) []<span style="color: #7CB8BB;">byte</span> {
-&#9474;   <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Check if the operation has already been started.</span>
-&#9474;   mutex.<span style="color: #93E0E3;">Lock</span>()
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #DFAF8F;">cached</span>, <span style="color: #DFAF8F;">found</span> := cache[name]; found {
-&#9474;   &#9474;   mutex.<span style="color: #93E0E3;">Unlock</span>()
-&#9474;   &#9474;   <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Wait for it to complete.</span>
-&#9474;   &#9474;   &lt;-cached.wait <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">remember that when a channel is closed, you get the zero value without blocking.</span>
-&#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">return</span> cached.data, <span style="color: #BFEBBF;">nil</span>
+<span style="color: #ef80bf; font-weight: bold;">func</span> <span style="color: #f59280;">DoQuery</span>(<span style="color: #df7fff;">name</span> <span style="color: #f470df;">string</span>) []<span style="color: #f470df;">byte</span> {
+&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Check if the operation has already been started.</span>
+&#9474;   mutex.<span style="color: #f59280;">Lock</span>()
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> <span style="color: #df7fff;">cached</span>, <span style="color: #df7fff;">found</span> := cache[name]; found {
+&#9474;   &#9474;   mutex.<span style="color: #f59280;">Unlock</span>()
+&#9474;   &#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Wait for it to complete.</span>
+&#9474;   &#9474;   &lt;-cached.wait <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">remember that when a channel is closed, you get the zero value without blocking.</span>
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> cached.data, <span style="color: #ff78aa;">nil</span>
 &#9474;   }
 &#9474;
-&#9474;   <span style="color: #DFAF8F;">wait</span> := <span style="color: #DCDCDC; font-weight: bold;">make</span>(<span style="color: #F0DFAF; font-weight: bold;">chan</span> <span style="color: #F0DFAF; font-weight: bold;">struct</span>{})
+&#9474;   <span style="color: #df7fff;">wait</span> := <span style="color: #a897ef; font-weight: bold;">make</span>(<span style="color: #ef80bf; font-weight: bold;">chan</span> <span style="color: #ef80bf; font-weight: bold;">struct</span>{})
 &#9474;
-&#9474;   <span style="color: #DFAF8F;">entry</span> := &amp;<span style="color: #7CB8BB;">CacheEntry</span>{
-&#9474;   &#9474;   <span style="color: #BFEBBF;">data</span>: result,
-&#9474;   &#9474;   <span style="color: #BFEBBF;">wait</span>: wait,
+&#9474;   <span style="color: #df7fff;">entry</span> := &amp;<span style="color: #f470df;">CacheEntry</span>{
+&#9474;   &#9474;   <span style="color: #ff78aa;">data</span>: result,
+&#9474;   &#9474;   <span style="color: #ff78aa;">wait</span>: wait,
 &#9474;   }
 &#9474;   cache[name] = entry
-&#9474;   mutex.<span style="color: #93E0E3;">Unlock</span>()
+&#9474;   mutex.<span style="color: #f59280;">Unlock</span>()
 &#9474;
-&#9474;   <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Make the request if it's uncached.</span>
-&#9474;   <span style="color: #DFAF8F;">resp</span>, <span style="color: #DFAF8F;">err</span> := http.<span style="color: #93E0E3;">Get</span>(<span style="color: #CC9393;">"https://upstream.api/?query="</span> + url.<span style="color: #93E0E3;">QueryEscape</span>(name))
-&#9474;   <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Error handling and resp.Body.Close omitted for brevity</span>
-&#9474;   entry.data, err = ioutil.<span style="color: #93E0E3;">ReadAll</span>(resp)
+&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Make the request if it's uncached.</span>
+&#9474;   <span style="color: #df7fff;">resp</span>, <span style="color: #df7fff;">err</span> := http.<span style="color: #f59280;">Get</span>(<span style="color: #e5b76f;">"https://upstream.api/?query="</span> + url.<span style="color: #f59280;">QueryEscape</span>(name))
+&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Error handling and resp.Body.Close omitted for brevity</span>
+&#9474;   entry.data, err = ioutil.<span style="color: #f59280;">ReadAll</span>(resp)
 &#9474;
-&#9474;   <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Signal that the operation is complete, receiving on closed channels returns immediately.</span>
-&#9474;   <span style="color: #DCDCDC; font-weight: bold;">close</span>(wait)
+&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Signal that the operation is complete, receiving on closed channels returns immediately.</span>
+&#9474;   <span style="color: #a897ef; font-weight: bold;">close</span>(wait)
 &#9474;
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">return</span> result
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> result
 }
 
 </code></pre>
@@ -953,35 +953,35 @@ not very intuitive.
 Let&rsquo;s try again with <code>sync.Once</code>:
 </p>
 
-<pre class="code"><code><span style="color: #F0DFAF; font-weight: bold;">package</span> main
+<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">package</span> main
 
-<span style="color: #F0DFAF; font-weight: bold;">type</span> <span style="color: #7CB8BB;">CacheEntry</span> <span style="color: #F0DFAF; font-weight: bold;">struct</span> {
-&#9474;   data []<span style="color: #7CB8BB;">byte</span>
-&#9474;   once *<span style="color: #7CB8BB;">sync.Once</span>
+<span style="color: #ef80bf; font-weight: bold;">type</span> <span style="color: #f470df;">CacheEntry</span> <span style="color: #ef80bf; font-weight: bold;">struct</span> {
+&#9474;   data []<span style="color: #f470df;">byte</span>
+&#9474;   once *<span style="color: #f470df;">sync.Once</span>
 }
 
-<span style="color: #F0DFAF; font-weight: bold;">var</span> <span style="color: #DFAF8F;">cache</span> = <span style="color: #DCDCDC; font-weight: bold;">make</span>(<span style="color: #F0DFAF; font-weight: bold;">map</span>[<span style="color: #7CB8BB;">string</span>]*<span style="color: #7CB8BB;">CacheEntry</span>)
-<span style="color: #F0DFAF; font-weight: bold;">var</span> <span style="color: #DFAF8F;">mutex</span> = <span style="color: #DCDCDC; font-weight: bold;">new</span>(<span style="color: #7CB8BB;">sync.Mutex</span>)
+<span style="color: #ef80bf; font-weight: bold;">var</span> <span style="color: #df7fff;">cache</span> = <span style="color: #a897ef; font-weight: bold;">make</span>(<span style="color: #ef80bf; font-weight: bold;">map</span>[<span style="color: #f470df;">string</span>]*<span style="color: #f470df;">CacheEntry</span>)
+<span style="color: #ef80bf; font-weight: bold;">var</span> <span style="color: #df7fff;">mutex</span> = <span style="color: #a897ef; font-weight: bold;">new</span>(<span style="color: #f470df;">sync.Mutex</span>)
 
-<span style="color: #F0DFAF; font-weight: bold;">func</span> <span style="color: #93E0E3;">DoQuery</span>(<span style="color: #DFAF8F;">name</span> <span style="color: #7CB8BB;">string</span>) []<span style="color: #7CB8BB;">byte</span> {
-&#9474;   mutex.<span style="color: #93E0E3;">Lock</span>()
-&#9474;   <span style="color: #DFAF8F;">entry</span>, <span style="color: #DFAF8F;">found</span> := cache[name]
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">if</span> <span style="color: #8CD0D3; font-weight: bold;">!</span>found {
-&#9474;   &#9474;   <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Create a new entry if one does not exist already.</span>
-&#9474;   &#9474;   entry = &amp;<span style="color: #7CB8BB;">CacheEntry</span>{
-&#9474;   &#9474;   &#9474;   <span style="color: #BFEBBF;">once</span>: <span style="color: #DCDCDC; font-weight: bold;">new</span>(<span style="color: #7CB8BB;">sync.Once</span>),
+<span style="color: #ef80bf; font-weight: bold;">func</span> <span style="color: #f59280;">DoQuery</span>(<span style="color: #df7fff;">name</span> <span style="color: #f470df;">string</span>) []<span style="color: #f470df;">byte</span> {
+&#9474;   mutex.<span style="color: #f59280;">Lock</span>()
+&#9474;   <span style="color: #df7fff;">entry</span>, <span style="color: #df7fff;">found</span> := cache[name]
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> <span style="font-weight: bold;">!</span>found {
+&#9474;   &#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Create a new entry if one does not exist already.</span>
+&#9474;   &#9474;   entry = &amp;<span style="color: #f470df;">CacheEntry</span>{
+&#9474;   &#9474;   &#9474;   <span style="color: #ff78aa;">once</span>: <span style="color: #a897ef; font-weight: bold;">new</span>(<span style="color: #f470df;">sync.Once</span>),
 &#9474;   &#9474;   }
 &#9474;   &#9474;   cache[name] = entry
 &#9474;   }
-&#9474;   mutex.<span style="color: #93E0E3;">Unlock</span>()
+&#9474;   mutex.<span style="color: #f59280;">Unlock</span>()
 &#9474;
-&#9474;   entry.once.<span style="color: #93E0E3;">Do</span>(<span style="color: #F0DFAF; font-weight: bold;">func</span>() {
-&#9474;   &#9474;   <span style="color: #DFAF8F;">resp</span>, <span style="color: #DFAF8F;">err</span> := http.<span style="color: #93E0E3;">Get</span>(<span style="color: #CC9393;">"https://upstream.api/?query="</span> + url.<span style="color: #93E0E3;">QueryEscape</span>(name))
-&#9474;   &#9474;   <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Error handling and resp.Body.Close omitted for brevity</span>
-&#9474;   &#9474;   entry.data, err = ioutil.<span style="color: #93E0E3;">ReadAll</span>(resp)
+&#9474;   entry.once.<span style="color: #f59280;">Do</span>(<span style="color: #ef80bf; font-weight: bold;">func</span>() {
+&#9474;   &#9474;   <span style="color: #df7fff;">resp</span>, <span style="color: #df7fff;">err</span> := http.<span style="color: #f59280;">Get</span>(<span style="color: #e5b76f;">"https://upstream.api/?query="</span> + url.<span style="color: #f59280;">QueryEscape</span>(name))
+&#9474;   &#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Error handling and resp.Body.Close omitted for brevity</span>
+&#9474;   &#9474;   entry.data, err = ioutil.<span style="color: #f59280;">ReadAll</span>(resp)
 &#9474;   })
 &#9474;
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">return</span> entry.data
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> entry.data
 }
 </code></pre>
 
@@ -996,7 +996,7 @@ the <code>entry.wait</code> channel as before.
 </div>
 <div id="outline-container-03ogh2p02wj0" class="outline-2">
 <h2 id="03ogh2p02wj0">Concurrency Patterns in Go</h2>
-<div class="outline-text-2" id="text-orgde35727">
+<div class="outline-text-2" id="text-orgf6d6487">
 <p>
 We’ve explored the fundamentals of Go’s concurrency primitives and discussed how to properly
 use these primitives. In this chapter, we’ll do a deep-dive into how to compose these
@@ -1009,9 +1009,9 @@ contained in this chapter. In a lot of the examples, we’ll be using channels t
 interfaces (interface{}) around.
 </p>
 </div>
-<div id="outline-container-org87fb3a3" class="outline-3">
-<h3 id="org87fb3a3">Confinement</h3>
-<div class="outline-text-3" id="text-org87fb3a3">
+<div id="outline-container-org5c40252" class="outline-3">
+<h3 id="org5c40252">Confinement</h3>
+<div class="outline-text-3" id="text-org5c40252">
 <p>
 When working with concurrent code, there are a few different options for safe operation.
 We’ve gone over two of them:
@@ -1049,9 +1049,9 @@ and no synchronization is needed. There are two kinds of confinement possible: a
 lexical.
 </p>
 </div>
-<div id="outline-container-org93749fc" class="outline-4">
-<h4 id="org93749fc">Ad Hoc</h4>
-<div class="outline-text-4" id="text-org93749fc">
+<div id="outline-container-org4f909fd" class="outline-4">
+<h4 id="org4f909fd">Ad Hoc</h4>
+<div class="outline-text-4" id="text-org4f909fd">
 <p>
 Ad hoc confinement is when you achieve confinement through a convention whether it be set by
 the languages community, the group you work within, or the code-base you work within. In my
@@ -1060,19 +1060,19 @@ have tools to perform static analysis on your code every time someone commits so
 Here’s an example of ad hoc confinement that demonstrates why:
 </p>
 
-<pre class="code"><code><span style="color: #F0DFAF; font-weight: bold;">import</span> <span style="color: #CC9393;">"fmt"</span>
-<span style="color: #F0DFAF; font-weight: bold;">func</span> <span style="color: #93E0E3;">main</span>() {
-&#9474;   <span style="color: #DFAF8F;">data</span> := <span style="color: #DCDCDC; font-weight: bold;">make</span>([]<span style="color: #7CB8BB;">int</span>, <span style="color: #DCDCDC; font-weight: bold;">4</span>)
-&#9474;   <span style="color: #DFAF8F;">loopData</span> := <span style="color: #F0DFAF; font-weight: bold;">func</span>(<span style="color: #DFAF8F;">handleData</span> <span style="color: #F0DFAF; font-weight: bold;">chan</span>&lt;- <span style="color: #7CB8BB;">int</span>) {
-&#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">defer</span> <span style="color: #DCDCDC; font-weight: bold;">close</span>(handleData)
-&#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">for</span> <span style="color: #DFAF8F;">i</span> := <span style="color: #F0DFAF; font-weight: bold;">range</span> data {
+<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">import</span> <span style="color: #e5b76f;">"fmt"</span>
+<span style="color: #ef80bf; font-weight: bold;">func</span> <span style="color: #f59280;">main</span>() {
+&#9474;   <span style="color: #df7fff;">data</span> := <span style="color: #a897ef; font-weight: bold;">make</span>([]<span style="color: #f470df;">int</span>, 4)
+&#9474;   <span style="color: #df7fff;">loopData</span> := <span style="color: #ef80bf; font-weight: bold;">func</span>(<span style="color: #df7fff;">handleData</span> <span style="color: #ef80bf; font-weight: bold;">chan</span>&lt;- <span style="color: #f470df;">int</span>) {
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">defer</span> <span style="color: #a897ef; font-weight: bold;">close</span>(handleData)
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> <span style="color: #df7fff;">i</span> := <span style="color: #ef80bf; font-weight: bold;">range</span> data {
 &#9474;   &#9474;   &#9474;   handleData &lt;- data[i]
 &#9474;   &#9474;   }
 &#9474;   }
-&#9474;   <span style="color: #DFAF8F;">handleData</span> := <span style="color: #DCDCDC; font-weight: bold;">make</span>(<span style="color: #F0DFAF; font-weight: bold;">chan</span> <span style="color: #7CB8BB;">int</span>)
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">go</span> <span style="color: #93E0E3;">loopData</span>(handleData)
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">for</span> <span style="color: #DFAF8F;">num</span> := <span style="color: #F0DFAF; font-weight: bold;">range</span> handleData {
-&#9474;   &#9474;   fmt.<span style="color: #93E0E3;">Println</span>(num)
+&#9474;   <span style="color: #df7fff;">handleData</span> := <span style="color: #a897ef; font-weight: bold;">make</span>(<span style="color: #ef80bf; font-weight: bold;">chan</span> <span style="color: #f470df;">int</span>)
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">go</span> <span style="color: #f59280;">loopData</span>(handleData)
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> <span style="color: #df7fff;">num</span> := <span style="color: #ef80bf; font-weight: bold;">range</span> handleData {
+&#9474;   &#9474;   fmt.<span style="color: #f59280;">Println</span>(num)
 &#9474;   }
 }
 </code></pre>
@@ -1084,52 +1084,52 @@ the loopData function.
 </p>
 </div>
 </div>
-<div id="outline-container-orgdce3878" class="outline-4">
-<h4 id="orgdce3878">Lexical</h4>
-<div class="outline-text-4" id="text-orgdce3878">
+<div id="outline-container-orgb603e2f" class="outline-4">
+<h4 id="orgb603e2f">Lexical</h4>
+<div class="outline-text-4" id="text-orgb603e2f">
 <p>
 Lexical confinement involves using lexical scope to expose only the correct data and
 concurrency primitives for multiple concurrent processes to use. It makes it impossible to
 do the wrong thing.
 </p>
 
-<pre class="code"><code><span style="color: #F0DFAF; font-weight: bold;">package</span> main
+<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">package</span> main
 
-<span style="color: #F0DFAF; font-weight: bold;">import</span> (
-&#9474;   <span style="color: #CC9393;">"fmt"</span>
-&#9474;   <span style="color: #CC9393;">"time"</span>
+<span style="color: #ef80bf; font-weight: bold;">import</span> (
+&#9474;   <span style="color: #e5b76f;">"fmt"</span>
+&#9474;   <span style="color: #e5b76f;">"time"</span>
 )
 
-<span style="color: #F0DFAF; font-weight: bold;">func</span> <span style="color: #93E0E3;">main</span>() {
-&#9474;   <span style="color: #DFAF8F;">chanOwner</span> := <span style="color: #F0DFAF; font-weight: bold;">func</span>() &lt;-<span style="color: #F0DFAF; font-weight: bold;">chan</span> <span style="color: #7CB8BB;">int</span> {
-&#9474;   &#9474;   <span style="color: #DFAF8F;">results</span> := <span style="color: #DCDCDC; font-weight: bold;">make</span>(<span style="color: #F0DFAF; font-weight: bold;">chan</span> <span style="color: #7CB8BB;">int</span>, <span style="color: #DCDCDC; font-weight: bold;">5</span>)
-&#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">go</span> <span style="color: #F0DFAF; font-weight: bold;">func</span>() {
-&#9474;   &#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">defer</span> <span style="color: #DCDCDC; font-weight: bold;">close</span>(results)
+<span style="color: #ef80bf; font-weight: bold;">func</span> <span style="color: #f59280;">main</span>() {
+&#9474;   <span style="color: #df7fff;">chanOwner</span> := <span style="color: #ef80bf; font-weight: bold;">func</span>() &lt;-<span style="color: #ef80bf; font-weight: bold;">chan</span> <span style="color: #f470df;">int</span> {
+&#9474;   &#9474;   <span style="color: #df7fff;">results</span> := <span style="color: #a897ef; font-weight: bold;">make</span>(<span style="color: #ef80bf; font-weight: bold;">chan</span> <span style="color: #f470df;">int</span>, 5)
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">go</span> <span style="color: #ef80bf; font-weight: bold;">func</span>() {
+&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">defer</span> <span style="color: #a897ef; font-weight: bold;">close</span>(results)
 &#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">for</span> <span style="color: #DFAF8F;">i</span> := <span style="color: #DCDCDC; font-weight: bold;">0</span>; i &lt;= <span style="color: #DCDCDC; font-weight: bold;">5</span>; i++ {
-&#9474;   &#9474;   &#9474;   &#9474;   time.<span style="color: #93E0E3;">Sleep</span>(<span style="color: #DCDCDC; font-weight: bold;">1</span> * time.Second)
+&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> <span style="color: #df7fff;">i</span> := 0; i &lt;= 5; i++ {
+&#9474;   &#9474;   &#9474;   &#9474;   time.<span style="color: #f59280;">Sleep</span>(1 * time.Second)
 &#9474;   &#9474;   &#9474;   &#9474;   results &lt;- i
 &#9474;   &#9474;   &#9474;   }
 &#9474;   &#9474;   }()
 &#9474;   &#9474;
-&#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">return</span> results
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> results
 &#9474;   }
 &#9474;
-&#9474;   <span style="color: #DFAF8F;">consumer</span> := <span style="color: #F0DFAF; font-weight: bold;">func</span>(<span style="color: #DFAF8F;">results</span> &lt;-<span style="color: #F0DFAF; font-weight: bold;">chan</span> <span style="color: #7CB8BB;">int</span>) {
-&#9474;   &#9474;   fmt.<span style="color: #93E0E3;">Println</span>(results)
+&#9474;   <span style="color: #df7fff;">consumer</span> := <span style="color: #ef80bf; font-weight: bold;">func</span>(<span style="color: #df7fff;">results</span> &lt;-<span style="color: #ef80bf; font-weight: bold;">chan</span> <span style="color: #f470df;">int</span>) {
+&#9474;   &#9474;   fmt.<span style="color: #f59280;">Println</span>(results)
 &#9474;   &#9474;
-&#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">for</span> <span style="color: #DFAF8F;">result</span> := <span style="color: #F0DFAF; font-weight: bold;">range</span> results {
-&#9474;   &#9474;   &#9474;   fmt.<span style="color: #93E0E3;">Printf</span>(<span style="color: #CC9393;">"Received: %d\n"</span>, result)
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> <span style="color: #df7fff;">result</span> := <span style="color: #ef80bf; font-weight: bold;">range</span> results {
+&#9474;   &#9474;   &#9474;   fmt.<span style="color: #f59280;">Printf</span>(<span style="color: #e5b76f;">"Received: %d\n"</span>, result)
 &#9474;   &#9474;   }
 &#9474;   &#9474;
-&#9474;   &#9474;   fmt.<span style="color: #93E0E3;">Println</span>(<span style="color: #CC9393;">"Done receiving!"</span>)
+&#9474;   &#9474;   fmt.<span style="color: #f59280;">Println</span>(<span style="color: #e5b76f;">"Done receiving!"</span>)
 &#9474;   }
 &#9474;
-&#9474;   fmt.<span style="color: #93E0E3;">Println</span>(<span style="color: #CC9393;">"initiate channel"</span>)
-&#9474;   <span style="color: #DFAF8F;">results</span> := <span style="color: #93E0E3;">chanOwner</span>()
+&#9474;   fmt.<span style="color: #f59280;">Println</span>(<span style="color: #e5b76f;">"initiate channel"</span>)
+&#9474;   <span style="color: #df7fff;">results</span> := <span style="color: #f59280;">chanOwner</span>()
 &#9474;
-&#9474;   fmt.<span style="color: #93E0E3;">Println</span>(<span style="color: #CC9393;">"consumer ready - OK"</span>)
-&#9474;   <span style="color: #93E0E3;">consumer</span>(results)
+&#9474;   fmt.<span style="color: #f59280;">Println</span>(<span style="color: #e5b76f;">"consumer ready - OK"</span>)
+&#9474;   <span style="color: #f59280;">consumer</span>(results)
 }
 </code></pre>
 <p>
@@ -1144,17 +1144,17 @@ Note that lexical might abuse the memory usage in this example; for larger types
 </div>
 </div>
 </div>
-<div id="outline-container-org5dec08d" class="outline-3">
-<h3 id="org5dec08d">For-Select</h3>
-<div class="outline-text-3" id="text-org5dec08d">
+<div id="outline-container-orga67f896" class="outline-3">
+<h3 id="orga67f896">For-Select</h3>
+<div class="outline-text-3" id="text-orga67f896">
 <p>
 Obviously.
 </p>
 </div>
 </div>
-<div id="outline-container-orge0e4a81" class="outline-3">
-<h3 id="orge0e4a81">Preventing Goroutine Leaks</h3>
-<div class="outline-text-3" id="text-orge0e4a81">
+<div id="outline-container-orge7f5801" class="outline-3">
+<h3 id="orge7f5801">Preventing Goroutine Leaks</h3>
+<div class="outline-text-3" id="text-orge7f5801">
 <p>
 When you are dealing with a memory leak in Go, there is a possability by 99% that your
 dealing with goroutines leak.
@@ -1187,23 +1187,23 @@ tell its child goroutines to terminate. Let’s start with a simple exam ple of 
 leak:
 </p>
 
-<pre class="code"><code><span style="color: #F0DFAF; font-weight: bold;">func</span> <span style="color: #93E0E3;">main</span>() {
-&#9474;   <span style="color: #DFAF8F;">doWork</span> := <span style="color: #F0DFAF; font-weight: bold;">func</span>(<span style="color: #DFAF8F;">strings</span> &lt;-<span style="color: #F0DFAF; font-weight: bold;">chan</span> <span style="color: #7CB8BB;">string</span>) &lt;-<span style="color: #F0DFAF; font-weight: bold;">chan</span> <span style="color: #F0DFAF; font-weight: bold;">interface</span>{} {
-&#9474;   &#9474;   <span style="color: #DFAF8F;">completed</span> := <span style="color: #DCDCDC; font-weight: bold;">make</span>(<span style="color: #F0DFAF; font-weight: bold;">chan</span> <span style="color: #F0DFAF; font-weight: bold;">interface</span>{})
-&#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">go</span> <span style="color: #F0DFAF; font-weight: bold;">func</span>() {
-&#9474;   &#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">defer</span> fmt.<span style="color: #93E0E3;">Println</span>(<span style="color: #CC9393;">"doWork exited."</span>)
-&#9474;   &#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">defer</span> <span style="color: #DCDCDC; font-weight: bold;">close</span>(completed)
-&#9474;   &#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">for</span> <span style="color: #DFAF8F;">s</span> := <span style="color: #F0DFAF; font-weight: bold;">range</span> strings {
-&#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Do something interesting</span>
-&#9474;   &#9474;   &#9474;   &#9474;   fmt.<span style="color: #93E0E3;">Println</span>(s)
+<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">func</span> <span style="color: #f59280;">main</span>() {
+&#9474;   <span style="color: #df7fff;">doWork</span> := <span style="color: #ef80bf; font-weight: bold;">func</span>(<span style="color: #df7fff;">strings</span> &lt;-<span style="color: #ef80bf; font-weight: bold;">chan</span> <span style="color: #f470df;">string</span>) &lt;-<span style="color: #ef80bf; font-weight: bold;">chan</span> <span style="color: #ef80bf; font-weight: bold;">interface</span>{} {
+&#9474;   &#9474;   <span style="color: #df7fff;">completed</span> := <span style="color: #a897ef; font-weight: bold;">make</span>(<span style="color: #ef80bf; font-weight: bold;">chan</span> <span style="color: #ef80bf; font-weight: bold;">interface</span>{})
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">go</span> <span style="color: #ef80bf; font-weight: bold;">func</span>() {
+&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">defer</span> fmt.<span style="color: #f59280;">Println</span>(<span style="color: #e5b76f;">"doWork exited."</span>)
+&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">defer</span> <span style="color: #a897ef; font-weight: bold;">close</span>(completed)
+&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> <span style="color: #df7fff;">s</span> := <span style="color: #ef80bf; font-weight: bold;">range</span> strings {
+&#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Do something interesting</span>
+&#9474;   &#9474;   &#9474;   &#9474;   fmt.<span style="color: #f59280;">Println</span>(s)
 &#9474;   &#9474;   &#9474;   }
 &#9474;   &#9474;   }()
-&#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">return</span> completed
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> completed
 &#9474;   }
-&#9474;   <span style="color: #93E0E3;">doWork</span>(<span style="color: #BFEBBF;">nil</span>)
-&#9474;   <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Perhaps more work is done here</span>
-&#9474;   fmt.<span style="color: #93E0E3;">Println</span>(<span style="color: #CC9393;">"Done."</span>)
-&#9474;   fmt.<span style="color: #93E0E3;">Println</span>(runtime.<span style="color: #93E0E3;">NumGoroutine</span>())
+&#9474;   <span style="color: #f59280;">doWork</span>(<span style="color: #ff78aa;">nil</span>)
+&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Perhaps more work is done here</span>
+&#9474;   fmt.<span style="color: #f59280;">Println</span>(<span style="color: #e5b76f;">"Done."</span>)
+&#9474;   fmt.<span style="color: #f59280;">Println</span>(runtime.<span style="color: #f59280;">NumGoroutine</span>())
 }
 </code></pre>
 
@@ -1230,52 +1230,52 @@ passes this channel to the child goroutine and then closes the channel when it w
 cancel the child goroutine. Here’s an example:
 </p>
 
-<pre class="code"><code><span style="color: #F0DFAF; font-weight: bold;">func</span> <span style="color: #93E0E3;">main</span>() {
-&#9474;   <span style="color: #DFAF8F;">doWork</span> := <span style="color: #F0DFAF; font-weight: bold;">func</span>(
-&#9474;   &#9474;   <span style="color: #DFAF8F;">done</span> &lt;-<span style="color: #F0DFAF; font-weight: bold;">chan</span> <span style="color: #F0DFAF; font-weight: bold;">interface</span>{},
-&#9474;   &#9474;   <span style="color: #DFAF8F;">strings</span> &lt;-<span style="color: #F0DFAF; font-weight: bold;">chan</span> <span style="color: #7CB8BB;">string</span>,
-&#9474;   ) &lt;-<span style="color: #F0DFAF; font-weight: bold;">chan</span> <span style="color: #F0DFAF; font-weight: bold;">interface</span>{} {
-&#9474;   &#9474;   <span style="color: #DFAF8F;">terminated</span> := <span style="color: #DCDCDC; font-weight: bold;">make</span>(<span style="color: #F0DFAF; font-weight: bold;">chan</span> <span style="color: #F0DFAF; font-weight: bold;">interface</span>{})
-&#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">go</span> <span style="color: #F0DFAF; font-weight: bold;">func</span>() {
-&#9474;   &#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">defer</span> fmt.<span style="color: #93E0E3;">Println</span>(<span style="color: #CC9393;">"doWork exited."</span>)
-&#9474;   &#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">defer</span> <span style="color: #DCDCDC; font-weight: bold;">close</span>(terminated)
-&#9474;   &#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">for</span> {
-&#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">select</span> {
-&#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">case</span> <span style="color: #DFAF8F;">s</span> := &lt;-strings:
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Do something interesting</span>
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   fmt.<span style="color: #93E0E3;">Println</span>(s)
-&#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">case</span> &lt;-done:
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">return</span>
+<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">func</span> <span style="color: #f59280;">main</span>() {
+&#9474;   <span style="color: #df7fff;">doWork</span> := <span style="color: #ef80bf; font-weight: bold;">func</span>(
+&#9474;   &#9474;   <span style="color: #df7fff;">done</span> &lt;-<span style="color: #ef80bf; font-weight: bold;">chan</span> <span style="color: #ef80bf; font-weight: bold;">interface</span>{},
+&#9474;   &#9474;   <span style="color: #df7fff;">strings</span> &lt;-<span style="color: #ef80bf; font-weight: bold;">chan</span> <span style="color: #f470df;">string</span>,
+&#9474;   ) &lt;-<span style="color: #ef80bf; font-weight: bold;">chan</span> <span style="color: #ef80bf; font-weight: bold;">interface</span>{} {
+&#9474;   &#9474;   <span style="color: #df7fff;">terminated</span> := <span style="color: #a897ef; font-weight: bold;">make</span>(<span style="color: #ef80bf; font-weight: bold;">chan</span> <span style="color: #ef80bf; font-weight: bold;">interface</span>{})
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">go</span> <span style="color: #ef80bf; font-weight: bold;">func</span>() {
+&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">defer</span> fmt.<span style="color: #f59280;">Println</span>(<span style="color: #e5b76f;">"doWork exited."</span>)
+&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">defer</span> <span style="color: #a897ef; font-weight: bold;">close</span>(terminated)
+&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> {
+&#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">select</span> {
+&#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">case</span> <span style="color: #df7fff;">s</span> := &lt;-strings:
+&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Do something interesting</span>
+&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   fmt.<span style="color: #f59280;">Println</span>(s)
+&#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">case</span> &lt;-done:
+&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span>
 &#9474;   &#9474;   &#9474;   &#9474;   }
 &#9474;   &#9474;   &#9474;   }
 &#9474;   &#9474;   }()
-&#9474;   &#9474;   <span style="color: #F0DFAF; font-weight: bold;">return</span> terminated
+&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> terminated
 &#9474;   }
-&#9474;   <span style="color: #DFAF8F;">done</span> := <span style="color: #DCDCDC; font-weight: bold;">make</span>(<span style="color: #F0DFAF; font-weight: bold;">chan</span> <span style="color: #F0DFAF; font-weight: bold;">interface</span>{})
-&#9474;   <span style="color: #DFAF8F;">terminated</span> := <span style="color: #93E0E3;">doWork</span>(done, <span style="color: #BFEBBF;">nil</span>)
-&#9474;   <span style="color: #F0DFAF; font-weight: bold;">go</span> <span style="color: #F0DFAF; font-weight: bold;">func</span>() {
-&#9474;   &#9474;   <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Cancel the operation after 1 second.</span>
-&#9474;   &#9474;   time.<span style="color: #93E0E3;">Sleep</span>(<span style="color: #DCDCDC; font-weight: bold;">1</span> * time.Second)
-&#9474;   &#9474;   fmt.<span style="color: #93E0E3;">Println</span>(<span style="color: #CC9393;">"Canceling doWork goroutine..."</span>)
-&#9474;   &#9474;   <span style="color: #DCDCDC; font-weight: bold;">close</span>(done)
+&#9474;   <span style="color: #df7fff;">done</span> := <span style="color: #a897ef; font-weight: bold;">make</span>(<span style="color: #ef80bf; font-weight: bold;">chan</span> <span style="color: #ef80bf; font-weight: bold;">interface</span>{})
+&#9474;   <span style="color: #df7fff;">terminated</span> := <span style="color: #f59280;">doWork</span>(done, <span style="color: #ff78aa;">nil</span>)
+&#9474;   <span style="color: #ef80bf; font-weight: bold;">go</span> <span style="color: #ef80bf; font-weight: bold;">func</span>() {
+&#9474;   &#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Cancel the operation after 1 second.</span>
+&#9474;   &#9474;   time.<span style="color: #f59280;">Sleep</span>(1 * time.Second)
+&#9474;   &#9474;   fmt.<span style="color: #f59280;">Println</span>(<span style="color: #e5b76f;">"Canceling doWork goroutine..."</span>)
+&#9474;   &#9474;   <span style="color: #a897ef; font-weight: bold;">close</span>(done)
 &#9474;   }()
 &#9474;   &lt;-terminated
-&#9474;   fmt.<span style="color: #93E0E3;">Println</span>(<span style="color: #CC9393;">"Done."</span>)
+&#9474;   fmt.<span style="color: #f59280;">Println</span>(<span style="color: #e5b76f;">"Done."</span>)
 }
 </code></pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orgfde29e6" class="outline-2">
-<h2 id="orgfde29e6">Notes</h2>
-<div class="outline-text-2" id="text-orgfde29e6">
+<div id="outline-container-orgd1ce365" class="outline-2">
+<h2 id="orgd1ce365">Notes</h2>
+<div class="outline-text-2" id="text-orgd1ce365">
 <ul class="org-ul">
 <li>It is useful to use the buffered channel, but only when you have a good reason to (since they
 might help hiding race conditions)</li>
 </ul>
 </div>
-<div id="outline-container-orgba385af" class="outline-3">
-<h3 id="orgba385af"><span class="done KILL">KILL</span> Rendezvous</h3>
+<div id="outline-container-org9b8968a" class="outline-3">
+<h3 id="org9b8968a"><span class="done KILL">KILL</span> Rendezvous</h3>
 </div>
 </div>
 <div id="footnotes">
@@ -1302,7 +1302,7 @@ Note that lexical might abuse the memory usage in this example; for larger types
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.93 (<a href="https://orgmode.org">Org</a> mode 9.7.22). Written by: Salih Muhammed, by the date of: 2022-09-30 Fri 09:17. Last build date: 2025-01-07 Tue 16:37.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: 2022-09-30 Fri 09:17. Last build date: 2025-06-28 Sat 18:37.</p>
 
 </div>
 </div>

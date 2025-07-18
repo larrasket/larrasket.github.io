@@ -62,33 +62,33 @@ keep as a nice excerpt with &ldquo;@anthology&rdquo; tag. Today I thought why no
 those notes together? And here we go:
 </p>
 
-<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">salih/print-text-nodes-anth</span> <span style="color: #DC8CC3;">()</span>
-  <span style="color: #DC8CC3;">(</span><span style="color: #F0DFAF; font-weight: bold;">let*</span> <span style="color: #7F9F7F;">(</span><span style="color: #a9a1e1;">(</span>nodes <span style="color: #8CD0D3;">(</span><span style="color: #BFEBBF;">sort</span> <span style="color: #DC8CC3;">(</span><span style="color: #93E0E3;">salih/get-back-nodes</span> <span style="color: #CC9393;">"3xedczc0i2k0"</span><span style="color: #DC8CC3;">)</span>
-                      <span style="color: #8CD0D3;">#'</span><span style="color: #7CB8BB;">salih/compare-org-id</span><span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span>
-         <span style="color: #a9a1e1;">(</span>strings <span style="color: #8CD0D3;">'</span><span style="color: #8CD0D3;">()</span><span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span>
-    <span style="color: #7F9F7F;">(</span><span style="color: #F0DFAF; font-weight: bold;">while</span> nodes <span style="color: #a9a1e1;">(</span><span style="color: #F0DFAF; font-weight: bold;">push</span> <span style="color: #8CD0D3;">(</span><span style="color: #93E0E3;">salih/mkinclude</span> <span style="color: #DC8CC3;">(</span><span style="color: #BFEBBF;">car</span> nodes<span style="color: #DC8CC3;">)</span> t<span style="color: #8CD0D3;">)</span>
-                       strings<span style="color: #a9a1e1;">)</span>
-           <span style="color: #a9a1e1;">(</span><span style="color: #F0DFAF; font-weight: bold;">setq</span> nodes <span style="color: #8CD0D3;">(</span><span style="color: #BFEBBF;">cdr</span> nodes<span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span>
-    <span style="color: #7F9F7F;">(</span><span style="color: #BFEBBF;">mapconcat</span> <span style="color: #8CD0D3;">'</span><span style="color: #7CB8BB;">identity</span> strings <span style="color: #CC9393;">""</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
+<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">salih/print-text-nodes-anth</span> ()
+  (<span style="color: #ef80bf; font-weight: bold;">let*</span> ((nodes (<span style="color: #ff78aa;">sort</span> (<span style="color: #f59280;">salih/get-back-nodes</span> <span style="color: #e5b76f;">"3xedczc0i2k0"</span>)
+                      <span style="color: #ef80bf; font-weight: bold;">#'</span><span style="color: #ff78aa;">salih/compare-org-id</span>))
+         (strings <span style="color: #ef80bf; font-weight: bold;">'</span>()))
+    (<span style="color: #ef80bf; font-weight: bold;">while</span> nodes (<span style="color: #ef80bf; font-weight: bold;">push</span> (<span style="color: #f59280;">salih/mkinclude</span> (<span style="color: #ff78aa;">car</span> nodes) t)
+                       strings)
+           (<span style="color: #ef80bf; font-weight: bold;">setq</span> nodes (<span style="color: #ff78aa;">cdr</span> nodes)))
+    (<span style="color: #ff78aa;">mapconcat</span> <span style="color: #ef80bf; font-weight: bold;">'</span><span style="color: #ff78aa;">identity</span> strings <span style="color: #e5b76f;">""</span>)))
 </code></pre>
 
-<pre class="code"><code><span style="color: #8CD0D3;">(</span><span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">salih/mkinclude</span> <span style="color: #DC8CC3;">(</span>node remove-title <span style="color: #7CB8BB;">&amp;optional</span> astr<span style="color: #DC8CC3;">)</span>
-  <span style="color: #DC8CC3;">(</span><span style="color: #F0DFAF; font-weight: bold;">unless</span> astr
-    <span style="color: #7F9F7F;">(</span><span style="color: #F0DFAF; font-weight: bold;">setq</span> astr <span style="color: #CC9393;">"**"</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span>
-  <span style="color: #DC8CC3;">(</span><span style="color: #F0DFAF; font-weight: bold;">let*</span> <span style="color: #7F9F7F;">(</span><span style="color: #a9a1e1;">(</span>id <span style="color: #8CD0D3;">(</span><span style="color: #BFEBBF;">org-roam-node-id</span> node<span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span>
-         <span style="color: #a9a1e1;">(</span>entry <span style="color: #8CD0D3;">(</span><span style="color: #BFEBBF;">org-roam-node-file</span> <span style="color: #DC8CC3;">(</span><span style="color: #BFEBBF;">org-roam-node-from-id</span> id<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span>
-         <span style="color: #a9a1e1;">(</span>cite <span style="color: #8CD0D3;">(</span><span style="color: #BFEBBF;">file-name-sans-extension</span> <span style="color: #DC8CC3;">(</span><span style="color: #BFEBBF;">file-name-nondirectory</span> entry<span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span>
-    <span style="color: #7F9F7F;">(</span><span style="color: #F0DFAF; font-weight: bold;">if</span> remove-title
-        <span style="color: #a9a1e1;">(</span><span style="color: #BFEBBF;">format</span> <span style="color: #CC9393;">"#+INCLUDE: \"%s::#%s\" :only-contents t\n\n\n \n/Derived from/ [cite:@%s], p. %d. Appeared: %s\n-----\n"</span>
+<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">salih/mkinclude</span> (node remove-title <span style="color: #f470df;">&amp;optional</span> astr)
+  (<span style="color: #ef80bf; font-weight: bold;">unless</span> astr
+    (<span style="color: #ef80bf; font-weight: bold;">setq</span> astr <span style="color: #e5b76f;">"**"</span>))
+  (<span style="color: #ef80bf; font-weight: bold;">let*</span> ((id (<span style="color: #ff78aa;">org-roam-node-id</span> node))
+         (entry (<span style="color: #ff78aa;">org-roam-node-file</span> (<span style="color: #ff78aa;">org-roam-node-from-id</span> id)))
+         (cite (<span style="color: #ff78aa;">file-name-sans-extension</span> (<span style="color: #ff78aa;">file-name-nondirectory</span> entry))))
+    (<span style="color: #ef80bf; font-weight: bold;">if</span> remove-title
+        (<span style="color: #ff78aa;">format</span> <span style="color: #e5b76f;">"#+INCLUDE: \"%s::#%s\" :only-contents t\n\n\n \n/Derived from/ [cite:@%s], p. %d. Appeared: %s\n-----\n"</span>
                 entry
                 id
                 cite
-                <span style="color: #8CD0D3;">(</span>first <span style="color: #DC8CC3;">(</span><span style="color: #BFEBBF;">read</span> <span style="color: #7F9F7F;">(</span><span style="color: #BFEBBF;">cdr</span> <span style="color: #a9a1e1;">(</span><span style="color: #BFEBBF;">assoc</span> <span style="color: #CC9393;">"NOTER_PAGE"</span> <span style="color: #8CD0D3;">(</span><span style="color: #BFEBBF;">org-roam-node-properties</span> node<span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
-                <span style="color: #8CD0D3;">(</span><span style="color: #BFEBBF;">format-time-string</span> <span style="color: #CC9393;">"%Y-%m-%d (%H:%M)"</span> <span style="color: #DC8CC3;">(</span><span style="color: #BFEBBF;">cdr</span> <span style="color: #7F9F7F;">(</span><span style="color: #BFEBBF;">org-id-decode</span>  <span style="color: #a9a1e1;">(</span><span style="color: #BFEBBF;">org-roam-node-id</span> node<span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span><span style="color: #a9a1e1;">)</span>
+                (first (<span style="color: #ff78aa;">read</span> (<span style="color: #ff78aa;">cdr</span> (<span style="color: #ff78aa;">assoc</span> <span style="color: #e5b76f;">"NOTER_PAGE"</span> (<span style="color: #ff78aa;">org-roam-node-properties</span> node)))))
+                (<span style="color: #ff78aa;">format-time-string</span> <span style="color: #e5b76f;">"%Y-%m-%d (%H:%M)"</span> (<span style="color: #ff78aa;">cdr</span> (<span style="color: #ff78aa;">org-id-decode</span>  (<span style="color: #ff78aa;">org-roam-node-id</span> node)))))
 
-        <span style="color: #a9a1e1;">(</span><span style="color: #BFEBBF;">format</span> <span style="color: #CC9393;">"#+INCLUDE: \"%s::#%s\" :only-contents nil\n"</span>
+        (<span style="color: #ff78aa;">format</span> <span style="color: #e5b76f;">"#+INCLUDE: \"%s::#%s\" :only-contents nil\n"</span>
             entry
-            id<span style="color: #a9a1e1;">)</span><span style="color: #7F9F7F;">)</span><span style="color: #DC8CC3;">)</span><span style="color: #8CD0D3;">)</span>
+            id))))
 </code></pre>
 
 <p>
@@ -115,7 +115,7 @@ trace in different prints), but here it&rsquo;s denoted by the pageg.
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.93 (<a href="https://orgmode.org">Org</a> mode 9.7.22). Written by: Salih Muhammed, by the date of: 2024-04-26 Fri 12:25. Last build date: 2025-02-17 Mon 20:49.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: 2024-04-26 Fri 12:25. Last build date: 2025-06-28 Sat 18:37.</p>
 
 </div>
 </div>
