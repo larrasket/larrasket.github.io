@@ -25,6 +25,448 @@
 
   <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
   <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+
+<!-- Import LazySizes - State-of-the-art lazy loading library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+
+<!-- Optional: Import plugins for better performance -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js" async></script>
+
+<script>
+// Only run on pages with 'art_paintings_media' in the path
+if (window.location.pathname.includes('art_paintings_media')) {
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    // Configure LazySizes for optimal performance
+    window.lazySizesConfig = window.lazySizesConfig || {};
+    window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
+    window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
+    window.lazySizesConfig.expFactor = 1.5; // Expand loading area
+    window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
+
+    // Add CSS for smooth transitions and collapsible content
+    const style = document.createElement('style');
+    style.textContent = `
+      .lazyload,
+      .lazyloading {
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+      }
+      .lazyloaded {
+        opacity: 1;
+      }
+      .collapsible-content {
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+      .collapsible-content.collapsed {
+        max-height: 0 !important;
+      }
+      .collapsible-content.expanded {
+        max-height: none;
+      }
+      /* Blur effect while loading (optional) */
+      .lazyloading {
+        filter: blur(5px);
+        opacity: 0.7;
+      }
+      .lazyloaded {
+        filter: none;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Find all h3 elements
+    const h3Elements = document.querySelectorAll('h3');
+
+    h3Elements.forEach(function(h3) {
+      // Make h3 clickable and add icon
+      h3.style.position = 'relative';
+      h3.style.cursor = 'pointer';
+      h3.style.paddingLeft = '20px';
+      h3.style.userSelect = 'none';
+
+      // Add the arrow icon
+      const icon = document.createElement('span');
+      icon.innerHTML = '▶';
+      icon.style.position = 'absolute';
+      icon.style.left = '0px';
+      icon.style.top = '50%';
+      icon.style.transform = 'translateY(-50%)';
+      icon.style.transition = 'transform 0.2s';
+      icon.style.fontSize = '0.8em';
+      icon.style.color = 'rgb(102, 102, 102)';
+      icon.style.fontFamily = 'monospace';
+
+      h3.insertBefore(icon, h3.firstChild);
+
+      // Find all content after this h3 until the next h3 or end of parent
+      const contentElements = [];
+      let nextElement = h3.nextElementSibling;
+
+      while (nextElement && nextElement.tagName !== 'H3') {
+        contentElements.push(nextElement);
+        nextElement = nextElement.nextElementSibling;
+      }
+
+      // Create a wrapper for smooth collapsing
+      const wrapper = document.createElement('div');
+      wrapper.className = 'collapsible-content collapsed';
+      wrapper.style.maxHeight = '0';
+
+      // Move content elements into wrapper
+      contentElements.forEach(function(element) {
+        wrapper.appendChild(element);
+      });
+
+      // Insert wrapper after h3
+      h3.parentNode.insertBefore(wrapper, h3.nextSibling);
+
+      // Prepare images for LazySizes lazy loading and make them clickable
+      const prepareImagesForLazyLoading = (container) => {
+        const images = container.querySelectorAll('img');
+        images.forEach(function(img) {
+          // Only process if not already processed
+          if (!img.classList.contains('lazyload') && !img.dataset.processed) {
+            // Store original src in data-src for LazySizes
+            if (img.src && img.src !== '' && !img.src.startsWith('data:')) {
+              img.dataset.src = img.src;
+              // Use a tiny placeholder or low-quality placeholder
+              img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+            }
+
+            // Handle srcset for responsive images
+            if (img.srcset && img.srcset !== '') {
+              img.dataset.srcset = img.srcset;
+              img.srcset = '';
+            }
+
+            // Handle sizes attribute
+            if (img.sizes) {
+              img.dataset.sizes = img.sizes;
+            }
+
+            // Add LazySizes classes
+            img.classList.add('lazyload');
+
+            // Make image clickable - add cursor pointer
+            img.style.cursor = 'pointer';
+
+            // Add click handler to open image in new tab
+            img.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation(); // Prevent triggering h3 collapse
+
+              // Get the actual image URL (either from src or data-src)
+              let imageUrl = this.src;
+              if (this.dataset.src && !this.src.startsWith('data:')) {
+                imageUrl = this.dataset.src;
+              } else if (this.src.startsWith('data:') && this.dataset.src) {
+                imageUrl = this.dataset.src;
+              }
+
+              // Open image in new tab
+              if (imageUrl && !imageUrl.startsWith('data:')) {
+                window.open(imageUrl, '_blank');
+              }
+            });
+
+            // Mark as processed
+            img.dataset.processed = 'true';
+
+            // Maintain aspect ratio to prevent layout shift
+            if (!img.style.aspectRatio && img.width && img.height) {
+              img.style.aspectRatio = img.width + '/' + img.height;
+            }
+          }
+        });
+      };
+
+      // Prepare all images in this section for lazy loading
+      prepareImagesForLazyLoading(wrapper);
+
+      // Track collapsed state
+      let isCollapsed = true;
+      let hasBeenExpanded = false;
+
+      // Add click handler
+      h3.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        if (isCollapsed) {
+          // Expand: show content and activate lazy loading
+          icon.style.transform = 'translateY(-50%) rotate(90deg)';
+          wrapper.classList.remove('collapsed');
+          wrapper.classList.add('expanded');
+          wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+
+          // Only activate LazySizes for this section when first expanded
+          if (!hasBeenExpanded) {
+            // Trigger LazySizes to check for images in this newly visible section
+            if (window.lazySizes) {
+              // Force LazySizes to check all images in this wrapper
+              const lazyImages = wrapper.querySelectorAll('.lazyload');
+              lazyImages.forEach(img => {
+                // Add to LazySizes queue
+                window.lazySizes.loader.unveil(img);
+              });
+            }
+            hasBeenExpanded = true;
+          }
+
+          isCollapsed = false;
+
+          // Recalculate height after images potentially load
+          setTimeout(() => {
+            if (!isCollapsed) {
+              wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+            }
+          }, 100);
+
+        } else {
+          // Collapse: hide content
+          icon.style.transform = 'translateY(-50%) rotate(0deg)';
+          wrapper.classList.remove('expanded');
+          wrapper.classList.add('collapsed');
+          wrapper.style.maxHeight = '0';
+
+          isCollapsed = true;
+        }
+      });
+
+      // Listen for LazySizes events to adjust height dynamically
+      wrapper.addEventListener('lazyloaded', function(e) {
+        if (!isCollapsed) {
+          // Adjust wrapper height when images load
+          setTimeout(() => {
+            wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+          }, 50);
+        }
+      });
+    });
+  });
+}
+</script>
+
+<script>
+
+
+
+  
+// Stack Page Formatter - Apply inline layout to specific pages
+(function() {
+  'use strict';
+  
+  // Check if current page should have the formatting applied
+  function shouldApplyFormatting() {
+    const path = window.location.pathname;
+    
+    // Check if path matches our target patterns
+    return path === '/stack' || 
+           path === '/stack.html' || 
+           path.startsWith('/sh/');
+  }
+  
+  // Only proceed if we're on a target page
+  if (!shouldApplyFormatting()) {
+    return;
+  }
+  
+  // Add CSS styles
+  function addStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+      /* Basic styling for entries */
+      .outline-3 {
+        margin-bottom: 1.5em;
+        line-height: 1.5;
+      }
+
+      /* Style for reconstructed single paragraph */
+      .entry-paragraph {
+        margin: 0;
+        line-height: 1.5;
+        direction: inherit;
+        unicode-bidi: plaintext;
+      }
+
+      /* Style for date - gray and nice */
+      .entry-date {
+        color: #666;
+        font-size: 0.9em;
+        margin-right: 0.5em;
+      }
+
+      /* Style for tag at end - gray and in parentheses */
+      .entry-tag {
+        display: inline !important;
+        color: #666;
+        margin-left: 0.5em;
+      }
+
+      /* Ensure all children stay inline */
+      .entry-tag * {
+        display: inline !important;
+      }
+
+      /* Override any existing tag styles */
+      .entry-tag p,
+      .entry-tag div {
+        display: inline !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      /* Hide block elements that will be moved */
+      .outline-3 .moved-block {
+        display: block;
+        margin: 0.5em 0;
+      }
+
+      /* Ensure proper anchor target visibility */
+      .outline-3[id] {
+        scroll-margin-top: 20px;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  // Extract ID from container div
+  function extractIdFromContainer(entry) {
+    const containerId = entry.id;
+    if (containerId && containerId.startsWith('outline-container-')) {
+      return containerId.replace('outline-container-', '');
+    }
+    return null;
+  }
+  
+  // Apply the formatting transformation
+  function applyFormatting() {
+    // Process each entry
+    const entries = document.querySelectorAll('.outline-3');
+    
+    entries.forEach((entry, index) => {
+      // Extract the anchor ID from the container before transformation
+      const anchorId = extractIdFromContainer(entry);
+      
+      // Extract components
+      const h3 = entry.querySelector('h3');
+      const notes = entry.querySelector('.notes');
+      const outlineText = entry.querySelector('.outline-text-3');
+      const tag = entry.querySelector('.tag');
+      
+      if (!h3 || !outlineText) return;
+      
+      // Get title text (preserve any TODO/DONE prefixes and links)
+      let titleText = h3.innerHTML;
+      
+      // Get timestamp
+      let timestampText = '';
+      if (notes) {
+        const timestamp = notes.querySelector('.timestamp');
+        if (timestamp) {
+          timestampText = timestamp.textContent;
+        }
+      }
+      
+      // Get content paragraphs (excluding notes and tag)
+      const contentParagraphs = [];
+      const blockElements = [];
+      
+      Array.from(outlineText.children).forEach(child => {
+        if (child.classList.contains('notes') || child.classList.contains('tag')) {
+          return; // Skip these
+        }
+        
+        if (child.tagName === 'P') {
+          contentParagraphs.push(child.innerHTML);
+        } else if (child.tagName === 'UL' || child.tagName === 'OL' || 
+                   child.tagName === 'BLOCKQUOTE' || child.tagName === 'PRE' ||
+                   child.tagName === 'DL' || child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        } else if (child.tagName === 'DIV' && child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        }
+      });
+      
+      // Get tag HTML (preserve links and formatting)
+      let tagHtml = '';
+      if (tag) {
+        tagHtml = tag.outerHTML;
+      }
+      
+      // Construct the new single paragraph
+      let newContent = '';
+      
+      // Add date at the start (gray)
+      if (timestampText) {
+        newContent += '<span class="entry-date">' + timestampText + '</span>';
+      }
+      
+      // Add title with emdash
+      newContent += titleText + ' — ';
+      
+      // Add content paragraphs
+      newContent += contentParagraphs.join(' ');
+      
+      // Add tag at the end in parentheses (preserve HTML but force inline)
+      if (tagHtml) {
+        // Extract just the inner content and wrap it properly
+        let tagContent = tag.innerHTML;
+        newContent += ' <span class="entry-tag">(' + tagContent + ')</span>';
+      }
+      
+      // Create new paragraph element
+      const newParagraph = document.createElement('p');
+      newParagraph.className = 'entry-paragraph';
+      newParagraph.innerHTML = newContent;
+      
+      // Clear the entry and add the new paragraph
+      entry.innerHTML = '';
+      entry.appendChild(newParagraph);
+      
+      // Preserve the anchor ID by setting it on the transformed entry
+      if (anchorId) {
+        entry.id = anchorId;
+      }
+      
+      // Add any block elements after the paragraph
+      blockElements.forEach(blockHtml => {
+        const blockDiv = document.createElement('div');
+        blockDiv.className = 'moved-block';
+        blockDiv.innerHTML = blockHtml;
+        entry.appendChild(blockDiv);
+      });
+      
+      // Add separator after each entry (except the last one)
+      if (index < entries.length - 1) {
+        const separator = document.createElement('hr');
+        separator.style.margin = '1em 0';
+        separator.style.border = 'none';
+        separator.style.borderTop = '1px solid #ccc';
+        entry.appendChild(separator);
+      }
+    });
+  }
+  
+  // Initialize when DOM is ready
+  function init() {
+    addStyles();
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', applyFormatting);
+    } else {
+      applyFormatting();
+    }
+  }
+  
+  // Start the initialization
+  init();
+})();
+</script>
+
+
+
 </head>
 <body>
 </body>
@@ -40,8 +482,7 @@
 <h1 class="title" style="
 margin-block-start: auto;
     color: black;
-">لّermontov</h1>
-
+">Hereby, all birds fly</h1>
       </a>
 <hr class="header-divider" style="margin-block-end: -1em;">
   </div>
@@ -54,23 +495,23 @@ margin-block-start: auto;
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org2dcb097">Introduction</a></li>
-<li><a href="#org299ddb4">Methodology</a></li>
-<li><a href="#orgce5b9ed">Testing</a>
+<li><a href="#orgad4e1e7">Introduction</a></li>
+<li><a href="#orgb0b90a7">Methodology</a></li>
+<li><a href="#org837a6c4">Testing</a>
 <ul>
-<li><a href="#org4c017a9">(<a href="#citeproc_bib_item_4">Eldesouki, 2017</a>)</a></li>
-<li><a href="#org2818baf">(<a href="#citeproc_bib_item_7">Taghva et al., 2005</a>)</a></li>
-<li><a href="#org177689f">(<a href="#citeproc_bib_item_3">Chelli, 2018</a>)</a></li>
-<li><a href="#org4c907de">(<a href="#citeproc_bib_item_2">Boudlal and Lakhouaja, 2010</a>)</a></li>
-<li><a href="#orgccc9957">(<a href="#citeproc_bib_item_5">Khoja, 1999</a>) and (<a href="#citeproc_bib_item_1">Al-Shalabi et al., 2003</a>)</a></li>
+<li><a href="#orga6539cc">(<a href="#citeproc_bib_item_4">Eldesouki, 2017</a>)</a></li>
+<li><a href="#orgb9959f4">(<a href="#citeproc_bib_item_7">Taghva et al., 2005</a>)</a></li>
+<li><a href="#orgffd8618">(<a href="#citeproc_bib_item_3">Chelli, 2018</a>)</a></li>
+<li><a href="#org73489d5">(<a href="#citeproc_bib_item_2">Boudlal and Lakhouaja, 2010</a>)</a></li>
+<li><a href="#org60cd674">(<a href="#citeproc_bib_item_5">Khoja, 1999</a>) and (<a href="#citeproc_bib_item_1">Al-Shalabi et al., 2003</a>)</a></li>
 </ul>
 </li>
-<li><a href="#org1f0de03">Conclusion</a></li>
-<li><a href="#org7557c23">References</a></li>
+<li><a href="#org9622207">Conclusion</a></li>
+<li><a href="#org3a377b5">References</a></li>
 </ul>
 </div>
 </nav>
-<div class="PREVIEW" id="org888411e">
+<div class="PREVIEW" id="org2f3a948">
 <p>
 This article presents a comprehensive report on the current landscape of
 open-source Arabic language stemming algorithms and services.
@@ -93,9 +534,9 @@ scenarios. The findings contribute to the Arabic NLP community by offering an
 in-depth analysis of open-source stemming tools and facilitating informed
 decision-making for researchers, developers, and practitioners.
 </p>
-<div id="outline-container-org2dcb097" class="outline-2">
-<h2 id="org2dcb097">Introduction</h2>
-<div class="outline-text-2" id="text-org2dcb097">
+<div id="outline-container-orgad4e1e7" class="outline-2">
+<h2 id="orgad4e1e7">Introduction</h2>
+<div class="outline-text-2" id="text-orgad4e1e7">
 <p>
 Arabic, with its rich linguistic heritage and diverse dialects, poses unique
 challenges for natural language processing (NLP) tasks, including stemming.
@@ -150,9 +591,9 @@ consolidating the argument about the status of modern Arabic stemmers.
 </p>
 </div>
 </div>
-<div id="outline-container-org299ddb4" class="outline-2">
-<h2 id="org299ddb4">Methodology</h2>
-<div class="outline-text-2" id="text-org299ddb4">
+<div id="outline-container-orgb0b90a7" class="outline-2">
+<h2 id="orgb0b90a7">Methodology</h2>
+<div class="outline-text-2" id="text-orgb0b90a7">
 <p>
 Rather than investing time in deeply testing each algorithm weak points; the
 test make use of a randomly chosen set of verbs and known morphological balance,
@@ -172,9 +613,9 @@ demonstrate them. The test program separates each morphological root test set.
 </p>
 </div>
 </div>
-<div id="outline-container-orgce5b9ed" class="outline-2">
-<h2 id="orgce5b9ed">Testing</h2>
-<div class="outline-text-2" id="text-orgce5b9ed">
+<div id="outline-container-org837a6c4" class="outline-2">
+<h2 id="org837a6c4">Testing</h2>
+<div class="outline-text-2" id="text-org837a6c4">
 <p>
 This section presents the findings and analysis of the evaluation conducted on
 the algorithms and services. The results provide insights into the performance,
@@ -182,27 +623,27 @@ accuracy, computational efficiency, and language coverage of each stemmer,
 shedding light on their suitability for integration into a dictionary project.
 </p>
 </div>
-<div id="outline-container-org4c017a9" class="outline-3">
-<h3 id="org4c017a9">(<a href="#citeproc_bib_item_4">Eldesouki, 2017</a>)</h3>
-<div class="outline-text-3" id="text-org4c017a9">
+<div id="outline-container-orga6539cc" class="outline-3">
+<h3 id="orga6539cc">(<a href="#citeproc_bib_item_4">Eldesouki, 2017</a>)</h3>
+<div class="outline-text-3" id="text-orga6539cc">
 <p>
 The first tested was developed in 2017, it uses a simple trivial approach of
 eliminating articles from words and normalize them to their root.
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">for</span> article <span style="color: #ef80bf; font-weight: bold;">in</span> Light10stemmer.larkey_defarticles:
-&#9474;   <span style="color: #df7fff;">length</span> = <span style="color: #a897ef; font-weight: bold;">len</span>(article)
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (wordlen &gt; length + 1) <span style="color: #ef80bf; font-weight: bold;">and</span> (token[:length] == article):
-&#9474;   &#9474;   <span style="color: #df7fff;">token</span> = token[length:]
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">break</span>
-&#9474;   &#9474;
-<span style="color: #ef80bf; font-weight: bold;">if</span> <span style="color: #a897ef; font-weight: bold;">len</span>(token) &gt; 2:
-&#9474;   <span style="color: #df7fff;">wordlen</span> = <span style="color: #a897ef; font-weight: bold;">len</span>(token)
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> suffix <span style="color: #ef80bf; font-weight: bold;">in</span> Light10stemmer.larkey_suffixes:
-&#9474;   &#9474;   <span style="color: #df7fff;">suflen</span> = <span style="color: #a897ef; font-weight: bold;">len</span>(suffix)
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (wordlen &gt; <span style="color: #a897ef; font-weight: bold;">len</span>(suffix) + 1) <span style="color: #ef80bf; font-weight: bold;">and</span> token.endswith(suffix):
-&#9474;   &#9474;   &#9474;   <span style="color: #df7fff;">token</span> = token[:wordlen - suflen]
-&#9474;   &#9474;   &#9474;   <span style="color: #df7fff;">wordlen</span> = <span style="color: #a897ef; font-weight: bold;">len</span>(token)
+<pre class="code"><code>for article in Light10stemmer.larkey_defarticles:
+    length = len(article)
+    if (wordlen &gt; length + 1) and (token[:length] == article):
+        token = token[length:]
+        break
+
+if len(token) &gt; 2:
+    wordlen = len(token)
+    for suffix in Light10stemmer.larkey_suffixes:
+        suflen = len(suffix)
+        if (wordlen &gt; len(suffix) + 1) and token.endswith(suffix):
+            token = token[:wordlen - suflen]
+            wordlen = len(token)
 </code></pre>
 
 <p>
@@ -211,9 +652,9 @@ other stemmers we got, it was only able to pass 1 test case.
 </p>
 </div>
 </div>
-<div id="outline-container-org2818baf" class="outline-3">
-<h3 id="org2818baf">(<a href="#citeproc_bib_item_7">Taghva et al., 2005</a>)</h3>
-<div class="outline-text-3" id="text-org2818baf">
+<div id="outline-container-orgb9959f4" class="outline-3">
+<h3 id="orgb9959f4">(<a href="#citeproc_bib_item_7">Taghva et al., 2005</a>)</h3>
+<div class="outline-text-3" id="text-orgb9959f4">
 <p>
 The ISRI Arabic Stemmer is a Natural Language Toolkit (NLTK) algorithm that was
 developed at University of Nevada by a set of researchers. The algorithm works
@@ -223,22 +664,22 @@ patterns. It implements 25 balances. It was able to pass 17 out of 35 testcases.
 </p>
 
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">def</span> <span style="color: #f59280;">pro_w53</span>(<span style="color: #ef80bf; font-weight: bold;">self</span>, word):
-&#9474;   <span style="color: #cc9bcf; font-style: italic;">"""process length five patterns and extract length three roots"""</span>
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> word[2] <span style="color: #ef80bf; font-weight: bold;">in</span> <span style="color: #ef80bf; font-weight: bold;">self</span>.pr53[0] <span style="color: #ef80bf; font-weight: bold;">and</span> word[0] == <span style="color: #e5b76f;">"</span><span style="color: #ff78aa;">\u0627</span><span style="color: #e5b76f;">"</span>:
-&#9474;   &#9474;   <span style="color: #df7fff;">word</span> = word[1] + word[3:]
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">elif</span> word[4] == <span style="color: #e5b76f;">"</span><span style="color: #ff78aa;">\u0629</span><span style="color: #e5b76f;">"</span> <span style="color: #ef80bf; font-weight: bold;">and</span> word[1] == <span style="color: #e5b76f;">"</span><span style="color: #ff78aa;">\u0627</span><span style="color: #e5b76f;">"</span>:
-&#9474;   &#9474;   <span style="color: #df7fff;">word</span> = word[0] + word[2:4]
-&#9474;   &#9474;   &#9474;   .............................
-&#9474;   &#9474;   &#9474;   .............................
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">elif</span> word[4] == <span style="color: #e5b76f;">"</span><span style="color: #ff78aa;">\u064a</span><span style="color: #e5b76f;">"</span> <span style="color: #ef80bf; font-weight: bold;">and</span> word[2] == <span style="color: #e5b76f;">"</span><span style="color: #ff78aa;">\u0627</span><span style="color: #e5b76f;">"</span>:
-&#9474;   &#9474;   <span style="color: #df7fff;">word</span> = word[:2] + word[3]
+<pre class="code"><code>def pro_w53(self, word):
+    """process length five patterns and extract length three roots"""
+    if word[2] in self.pr53[0] and word[0] == "\u0627":
+        word = word[1] + word[3:]
+    elif word[4] == "\u0629" and word[1] == "\u0627":
+        word = word[0] + word[2:4]
+            .............................
+            .............................
+    elif word[4] == "\u064a" and word[2] == "\u0627":
+        word = word[:2] + word[3]
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org177689f" class="outline-3">
-<h3 id="org177689f">(<a href="#citeproc_bib_item_3">Chelli, 2018</a>)</h3>
-<div class="outline-text-3" id="text-org177689f">
+<div id="outline-container-orgffd8618" class="outline-3">
+<h3 id="orgffd8618">(<a href="#citeproc_bib_item_3">Chelli, 2018</a>)</h3>
+<div class="outline-text-3" id="text-orgffd8618">
 <p>
 Assem&rsquo;s Arabic Light Stemmer authored by Assem Chelli is a stemmer that makes
 use of Snowball stemming framework, it implements the renowned algorithm for the
@@ -247,9 +688,9 @@ it is about 200% faster than it. It was able to pass 17 out of 35 testcases.
 </p>
 </div>
 </div>
-<div id="outline-container-org4c907de" class="outline-3">
-<h3 id="org4c907de">(<a href="#citeproc_bib_item_2">Boudlal and Lakhouaja, 2010</a>)</h3>
-<div class="outline-text-3" id="text-org4c907de">
+<div id="outline-container-org73489d5" class="outline-3">
+<h3 id="org73489d5">(<a href="#citeproc_bib_item_2">Boudlal and Lakhouaja, 2010</a>)</h3>
+<div class="outline-text-3" id="text-org73489d5">
 <p>
 The Natural Language Processing Team in Computer Science Laboratory developed
 one of the most accurate &rsquo;systems&rsquo; so far for stemming in Arabic; they are using
@@ -277,9 +718,9 @@ the language recorded.
 </p>
 </div>
 </div>
-<div id="outline-container-orgccc9957" class="outline-3">
-<h3 id="orgccc9957">(<a href="#citeproc_bib_item_5">Khoja, 1999</a>) and (<a href="#citeproc_bib_item_1">Al-Shalabi et al., 2003</a>)</h3>
-<div class="outline-text-3" id="text-orgccc9957">
+<div id="outline-container-org60cd674" class="outline-3">
+<h3 id="org60cd674">(<a href="#citeproc_bib_item_5">Khoja, 1999</a>) and (<a href="#citeproc_bib_item_1">Al-Shalabi et al., 2003</a>)</h3>
+<div class="outline-text-3" id="text-org60cd674">
 <p>
 Both of (<a href="#citeproc_bib_item_5">Khoja, 1999</a>) and (<a href="#citeproc_bib_item_1">Al-Shalabi et al., 2003</a>) was not tested in
 this study, however, a comparative study (<a href="#citeproc_bib_item_6">Sawalha and Atwell, 2008</a>) concluded the
@@ -288,9 +729,9 @@ following results using the Qur&rsquo;an Gold Standards:
 </div>
 </div>
 </div>
-<div id="outline-container-org1f0de03" class="outline-2">
-<h2 id="org1f0de03">Conclusion</h2>
-<div class="outline-text-2" id="text-org1f0de03">
+<div id="outline-container-org9622207" class="outline-2">
+<h2 id="org9622207">Conclusion</h2>
+<div class="outline-text-2" id="text-org9622207">
 <p>
 In conclusion, this article conducted a comprehensive analysis of open-source
 Arabic language stemming algorithms and services. Stemming is a vital task in
@@ -310,9 +751,9 @@ stemming algorithms.
 </p>
 </div>
 </div>
-<div id="outline-container-org7557c23" class="outline-2">
-<h2 id="org7557c23">References</h2>
-<div class="outline-text-2" id="text-org7557c23">
+<div id="outline-container-org3a377b5" class="outline-2">
+<h2 id="org3a377b5">References</h2>
+<div class="outline-text-2" id="text-org3a377b5">
 <style>.csl-entry{text-indent: -1.5em; margin-left: 1.5em;}</style><div class="csl-bib-body">
   <div class="csl-entry"><a id="citeproc_bib_item_1"></a>Al-Shalabi, R., Kanaan, G., Al-Serhan, H., 2003. New approach for extracting arabic roots, in: Proceedings of the International Arab Conference on Information Technology (Acit’2003). Egypt.</div>
   <div class="csl-entry"><a id="citeproc_bib_item_2"></a>Boudlal, A., Lakhouaja, A., 2010. Alkhalil morpho sys1: A morphosyntactic analysis system for arabic texts. Int. arab conf. inf. technol 1–6.</div>
@@ -331,7 +772,7 @@ stemming algorithms.
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: S. Muhammed, M. Samy and M. Rady, by the date of: 2023-05-30 Tue 00:00. Last build date: 2025-06-28 Sat 18:37.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: S. Muhammed, M. Samy and M. Rady, by the date of: 2023-05-30 Tue 00:00. Last build date: 2025-07-25 Fri 00:00.</p>
 
 </div>
 </div>

@@ -25,6 +25,448 @@
 
   <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
   <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+
+<!-- Import LazySizes - State-of-the-art lazy loading library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+
+<!-- Optional: Import plugins for better performance -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js" async></script>
+
+<script>
+// Only run on pages with 'art_paintings_media' in the path
+if (window.location.pathname.includes('art_paintings_media')) {
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    // Configure LazySizes for optimal performance
+    window.lazySizesConfig = window.lazySizesConfig || {};
+    window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
+    window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
+    window.lazySizesConfig.expFactor = 1.5; // Expand loading area
+    window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
+
+    // Add CSS for smooth transitions and collapsible content
+    const style = document.createElement('style');
+    style.textContent = `
+      .lazyload,
+      .lazyloading {
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+      }
+      .lazyloaded {
+        opacity: 1;
+      }
+      .collapsible-content {
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+      .collapsible-content.collapsed {
+        max-height: 0 !important;
+      }
+      .collapsible-content.expanded {
+        max-height: none;
+      }
+      /* Blur effect while loading (optional) */
+      .lazyloading {
+        filter: blur(5px);
+        opacity: 0.7;
+      }
+      .lazyloaded {
+        filter: none;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Find all h3 elements
+    const h3Elements = document.querySelectorAll('h3');
+
+    h3Elements.forEach(function(h3) {
+      // Make h3 clickable and add icon
+      h3.style.position = 'relative';
+      h3.style.cursor = 'pointer';
+      h3.style.paddingLeft = '20px';
+      h3.style.userSelect = 'none';
+
+      // Add the arrow icon
+      const icon = document.createElement('span');
+      icon.innerHTML = '▶';
+      icon.style.position = 'absolute';
+      icon.style.left = '0px';
+      icon.style.top = '50%';
+      icon.style.transform = 'translateY(-50%)';
+      icon.style.transition = 'transform 0.2s';
+      icon.style.fontSize = '0.8em';
+      icon.style.color = 'rgb(102, 102, 102)';
+      icon.style.fontFamily = 'monospace';
+
+      h3.insertBefore(icon, h3.firstChild);
+
+      // Find all content after this h3 until the next h3 or end of parent
+      const contentElements = [];
+      let nextElement = h3.nextElementSibling;
+
+      while (nextElement && nextElement.tagName !== 'H3') {
+        contentElements.push(nextElement);
+        nextElement = nextElement.nextElementSibling;
+      }
+
+      // Create a wrapper for smooth collapsing
+      const wrapper = document.createElement('div');
+      wrapper.className = 'collapsible-content collapsed';
+      wrapper.style.maxHeight = '0';
+
+      // Move content elements into wrapper
+      contentElements.forEach(function(element) {
+        wrapper.appendChild(element);
+      });
+
+      // Insert wrapper after h3
+      h3.parentNode.insertBefore(wrapper, h3.nextSibling);
+
+      // Prepare images for LazySizes lazy loading and make them clickable
+      const prepareImagesForLazyLoading = (container) => {
+        const images = container.querySelectorAll('img');
+        images.forEach(function(img) {
+          // Only process if not already processed
+          if (!img.classList.contains('lazyload') && !img.dataset.processed) {
+            // Store original src in data-src for LazySizes
+            if (img.src && img.src !== '' && !img.src.startsWith('data:')) {
+              img.dataset.src = img.src;
+              // Use a tiny placeholder or low-quality placeholder
+              img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+            }
+
+            // Handle srcset for responsive images
+            if (img.srcset && img.srcset !== '') {
+              img.dataset.srcset = img.srcset;
+              img.srcset = '';
+            }
+
+            // Handle sizes attribute
+            if (img.sizes) {
+              img.dataset.sizes = img.sizes;
+            }
+
+            // Add LazySizes classes
+            img.classList.add('lazyload');
+
+            // Make image clickable - add cursor pointer
+            img.style.cursor = 'pointer';
+
+            // Add click handler to open image in new tab
+            img.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation(); // Prevent triggering h3 collapse
+
+              // Get the actual image URL (either from src or data-src)
+              let imageUrl = this.src;
+              if (this.dataset.src && !this.src.startsWith('data:')) {
+                imageUrl = this.dataset.src;
+              } else if (this.src.startsWith('data:') && this.dataset.src) {
+                imageUrl = this.dataset.src;
+              }
+
+              // Open image in new tab
+              if (imageUrl && !imageUrl.startsWith('data:')) {
+                window.open(imageUrl, '_blank');
+              }
+            });
+
+            // Mark as processed
+            img.dataset.processed = 'true';
+
+            // Maintain aspect ratio to prevent layout shift
+            if (!img.style.aspectRatio && img.width && img.height) {
+              img.style.aspectRatio = img.width + '/' + img.height;
+            }
+          }
+        });
+      };
+
+      // Prepare all images in this section for lazy loading
+      prepareImagesForLazyLoading(wrapper);
+
+      // Track collapsed state
+      let isCollapsed = true;
+      let hasBeenExpanded = false;
+
+      // Add click handler
+      h3.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        if (isCollapsed) {
+          // Expand: show content and activate lazy loading
+          icon.style.transform = 'translateY(-50%) rotate(90deg)';
+          wrapper.classList.remove('collapsed');
+          wrapper.classList.add('expanded');
+          wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+
+          // Only activate LazySizes for this section when first expanded
+          if (!hasBeenExpanded) {
+            // Trigger LazySizes to check for images in this newly visible section
+            if (window.lazySizes) {
+              // Force LazySizes to check all images in this wrapper
+              const lazyImages = wrapper.querySelectorAll('.lazyload');
+              lazyImages.forEach(img => {
+                // Add to LazySizes queue
+                window.lazySizes.loader.unveil(img);
+              });
+            }
+            hasBeenExpanded = true;
+          }
+
+          isCollapsed = false;
+
+          // Recalculate height after images potentially load
+          setTimeout(() => {
+            if (!isCollapsed) {
+              wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+            }
+          }, 100);
+
+        } else {
+          // Collapse: hide content
+          icon.style.transform = 'translateY(-50%) rotate(0deg)';
+          wrapper.classList.remove('expanded');
+          wrapper.classList.add('collapsed');
+          wrapper.style.maxHeight = '0';
+
+          isCollapsed = true;
+        }
+      });
+
+      // Listen for LazySizes events to adjust height dynamically
+      wrapper.addEventListener('lazyloaded', function(e) {
+        if (!isCollapsed) {
+          // Adjust wrapper height when images load
+          setTimeout(() => {
+            wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+          }, 50);
+        }
+      });
+    });
+  });
+}
+</script>
+
+<script>
+
+
+
+  
+// Stack Page Formatter - Apply inline layout to specific pages
+(function() {
+  'use strict';
+  
+  // Check if current page should have the formatting applied
+  function shouldApplyFormatting() {
+    const path = window.location.pathname;
+    
+    // Check if path matches our target patterns
+    return path === '/stack' || 
+           path === '/stack.html' || 
+           path.startsWith('/sh/');
+  }
+  
+  // Only proceed if we're on a target page
+  if (!shouldApplyFormatting()) {
+    return;
+  }
+  
+  // Add CSS styles
+  function addStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+      /* Basic styling for entries */
+      .outline-3 {
+        margin-bottom: 1.5em;
+        line-height: 1.5;
+      }
+
+      /* Style for reconstructed single paragraph */
+      .entry-paragraph {
+        margin: 0;
+        line-height: 1.5;
+        direction: inherit;
+        unicode-bidi: plaintext;
+      }
+
+      /* Style for date - gray and nice */
+      .entry-date {
+        color: #666;
+        font-size: 0.9em;
+        margin-right: 0.5em;
+      }
+
+      /* Style for tag at end - gray and in parentheses */
+      .entry-tag {
+        display: inline !important;
+        color: #666;
+        margin-left: 0.5em;
+      }
+
+      /* Ensure all children stay inline */
+      .entry-tag * {
+        display: inline !important;
+      }
+
+      /* Override any existing tag styles */
+      .entry-tag p,
+      .entry-tag div {
+        display: inline !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      /* Hide block elements that will be moved */
+      .outline-3 .moved-block {
+        display: block;
+        margin: 0.5em 0;
+      }
+
+      /* Ensure proper anchor target visibility */
+      .outline-3[id] {
+        scroll-margin-top: 20px;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  // Extract ID from container div
+  function extractIdFromContainer(entry) {
+    const containerId = entry.id;
+    if (containerId && containerId.startsWith('outline-container-')) {
+      return containerId.replace('outline-container-', '');
+    }
+    return null;
+  }
+  
+  // Apply the formatting transformation
+  function applyFormatting() {
+    // Process each entry
+    const entries = document.querySelectorAll('.outline-3');
+    
+    entries.forEach((entry, index) => {
+      // Extract the anchor ID from the container before transformation
+      const anchorId = extractIdFromContainer(entry);
+      
+      // Extract components
+      const h3 = entry.querySelector('h3');
+      const notes = entry.querySelector('.notes');
+      const outlineText = entry.querySelector('.outline-text-3');
+      const tag = entry.querySelector('.tag');
+      
+      if (!h3 || !outlineText) return;
+      
+      // Get title text (preserve any TODO/DONE prefixes and links)
+      let titleText = h3.innerHTML;
+      
+      // Get timestamp
+      let timestampText = '';
+      if (notes) {
+        const timestamp = notes.querySelector('.timestamp');
+        if (timestamp) {
+          timestampText = timestamp.textContent;
+        }
+      }
+      
+      // Get content paragraphs (excluding notes and tag)
+      const contentParagraphs = [];
+      const blockElements = [];
+      
+      Array.from(outlineText.children).forEach(child => {
+        if (child.classList.contains('notes') || child.classList.contains('tag')) {
+          return; // Skip these
+        }
+        
+        if (child.tagName === 'P') {
+          contentParagraphs.push(child.innerHTML);
+        } else if (child.tagName === 'UL' || child.tagName === 'OL' || 
+                   child.tagName === 'BLOCKQUOTE' || child.tagName === 'PRE' ||
+                   child.tagName === 'DL' || child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        } else if (child.tagName === 'DIV' && child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        }
+      });
+      
+      // Get tag HTML (preserve links and formatting)
+      let tagHtml = '';
+      if (tag) {
+        tagHtml = tag.outerHTML;
+      }
+      
+      // Construct the new single paragraph
+      let newContent = '';
+      
+      // Add date at the start (gray)
+      if (timestampText) {
+        newContent += '<span class="entry-date">' + timestampText + '</span>';
+      }
+      
+      // Add title with emdash
+      newContent += titleText + ' — ';
+      
+      // Add content paragraphs
+      newContent += contentParagraphs.join(' ');
+      
+      // Add tag at the end in parentheses (preserve HTML but force inline)
+      if (tagHtml) {
+        // Extract just the inner content and wrap it properly
+        let tagContent = tag.innerHTML;
+        newContent += ' <span class="entry-tag">(' + tagContent + ')</span>';
+      }
+      
+      // Create new paragraph element
+      const newParagraph = document.createElement('p');
+      newParagraph.className = 'entry-paragraph';
+      newParagraph.innerHTML = newContent;
+      
+      // Clear the entry and add the new paragraph
+      entry.innerHTML = '';
+      entry.appendChild(newParagraph);
+      
+      // Preserve the anchor ID by setting it on the transformed entry
+      if (anchorId) {
+        entry.id = anchorId;
+      }
+      
+      // Add any block elements after the paragraph
+      blockElements.forEach(blockHtml => {
+        const blockDiv = document.createElement('div');
+        blockDiv.className = 'moved-block';
+        blockDiv.innerHTML = blockHtml;
+        entry.appendChild(blockDiv);
+      });
+      
+      // Add separator after each entry (except the last one)
+      if (index < entries.length - 1) {
+        const separator = document.createElement('hr');
+        separator.style.margin = '1em 0';
+        separator.style.border = 'none';
+        separator.style.borderTop = '1px solid #ccc';
+        entry.appendChild(separator);
+      }
+    });
+  }
+  
+  // Initialize when DOM is ready
+  function init() {
+    addStyles();
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', applyFormatting);
+    } else {
+      applyFormatting();
+    }
+  }
+  
+  // Start the initialization
+  init();
+})();
+</script>
+
+
+
 </head>
 <body>
 </body>
@@ -40,8 +482,7 @@
 <h1 class="title" style="
 margin-block-start: auto;
     color: black;
-">لّermontov</h1>
-
+">Hereby, all birds fly</h1>
       </a>
 <hr class="header-divider" style="margin-block-end: -1em;">
   </div>
@@ -50,14 +491,14 @@ margin-block-start: auto;
 <div id="content" class="content">
 <header>
 <h1 class="title">Lisp Programming Language</h1>
-</header><div class="tag" id="orgf4220b4">
+</header><div class="tag" id="org9483915">
 <p>
 This section was labeled under, or is related to <a href="../t/programming.html#4u5664n02wj0">programming</a>.
 </p>
 
 </div>
 
-<div class="PREVIEW" id="org3e2de0f">
+<div class="PREVIEW" id="org1004e41">
 <p>
 Tutorial on Lisp.
 </p>
@@ -74,9 +515,9 @@ its early days, and many dialects have existed over its history. Today, the
 best-known general-purpose Lisp dialects are Common Lisp, Scheme, Racket and
 Clojure.
 </p>
-<div id="outline-container-org2f19bed" class="outline-2">
-<h2 id="org2f19bed">Choosing Implementation</h2>
-<div class="outline-text-2" id="text-org2f19bed">
+<div id="outline-container-org5b01973" class="outline-2">
+<h2 id="org5b01973">Choosing Implementation</h2>
+<div class="outline-text-2" id="text-org5b01973">
 <p>
 The first thing you have to do is to choose a Lisp implementation. This may seem
 like a strange thing to have to do for folks used to languages such as Perl,
@@ -96,9 +537,9 @@ can count on your program behaving the same in any conforming implementation.
 </p>
 </div>
 </div>
-<div id="outline-container-orgfb74745" class="outline-2">
-<h2 id="orgfb74745">Hello World</h2>
-<div class="outline-text-2" id="text-orgfb74745">
+<div id="outline-container-orge73f8ec" class="outline-2">
+<h2 id="orge73f8ec">Hello World</h2>
+<div class="outline-text-2" id="text-orge73f8ec">
 <p>
 You can just pass &ldquo;Hello World&rdquo; (with quotes) to the Lisp REPEL and you will get
 your first Hello World in Lisp.
@@ -134,7 +575,7 @@ expression that will print “hello, world” looks like this:
 </p>
 
 
-<pre class="example" id="org356c81a">
+<pre class="example" id="org77c0418">
 CL-USER&gt; (format t "hello, world")
 hello, world
 NIL
@@ -150,7 +591,7 @@ Functions are one of the basic program building blocks in Lisp and can be
 defined with a <code>DEFUN</code> expression such as this:
 </p>
 
-<pre class="code"><code>CL-USER&gt; (<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">hello-world</span> () (format t <span style="color: #e5b76f;">"hello, world"</span>))
+<pre class="code"><code>CL-USER&gt; (defun hello-world () (format t "hello, world"))
 HELLO-WORLD
 </code></pre>
 
@@ -164,24 +605,24 @@ why was it uppercased.
 </div>
 <div id="outline-container-nse0owp02wj0" class="outline-2">
 <h2 id="nse0owp02wj0">Why Lisp?</h2>
-<div class="outline-text-2" id="text-orge3bbfac">
+<div class="outline-text-2" id="text-org1fcd4b4">
 <p>
 Why learn Lisp? Because it lets you do things that you can&rsquo;t do in other
 languages. If you just wanted to write a function to return the sum of the
 numbers less than n&gt; say, it would look much the same in Lisp and C:
 </p>
 
-<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">sum</span> (n)
-&#9474; &#9474;(<span style="color: #ef80bf; font-weight: bold;">let</span> ((s 0))
-&#9474; &#9474; &#9474; &#9474;(<span style="color: #ef80bf; font-weight: bold;">dotimes</span> (i n s)
-&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; (incf s i))))
+<pre class="code"><code>(defun sum (n)
+   (let ((s 0))
+       (dotimes (i n s)
+            (incf s i))))
 </code></pre>
 
-<pre class="code"><code><span style="color: #f470df;">int</span> <span style="color: #f59280;">aum</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">n</span>){
-    <span style="color: #f470df;">int</span> <span style="color: #df7fff;">i</span> , <span style="color: #df7fff;">s</span> = 0;
-    <span style="color: #ef80bf; font-weight: bold;">for</span> ( i = 0; i &lt; n; i++)
-        s += i ;
-    <span style="color: #ef80bf; font-weight: bold;">return</span>(s);
+<pre class="code"><code>int aum(int n){
+	int i , s = 0;
+	for ( i = 0; i &lt; n; i++)
+		s += i ;
+	return(s);
 }
 </code></pre>
 
@@ -190,9 +631,9 @@ If you only need to do such simple things, it doesn&rsquo;t really matter which
 language you use. Suppose instead you want to write a function that takes a
 number n, and returns a function that adds n to its argument:
 </p>
-<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">addn</span> (n)
-&#9474; &#9474; #'(<span style="color: #ef80bf; font-weight: bold;">lambda</span> (x)
-&#9474; &#9474; &#9474;(+ x n)))
+<pre class="code"><code>(defun addn (n)
+    #'(lambda (x)
+     (+ x n)))
 </code></pre>
 
 <p>
@@ -267,16 +708,16 @@ compiling, and testing.
 </p>
 </div>
 </div>
-<div id="outline-container-org5863756" class="outline-2">
-<h2 id="org5863756">Lisp Specifications</h2>
-<div class="outline-text-2" id="text-org5863756">
+<div id="outline-container-orgf0bc48a" class="outline-2">
+<h2 id="orgf0bc48a">Lisp Specifications</h2>
+<div class="outline-text-2" id="text-orgf0bc48a">
 <p>
 &ldquo;Okay I&rsquo;m convinced&rdquo;
 </p>
 </div>
-<div id="outline-container-org3bc2f70" class="outline-3">
-<h3 id="org3bc2f70">Evaluation</h3>
-<div class="outline-text-3" id="text-org3bc2f70">
+<div id="outline-container-org9dca310" class="outline-3">
+<h3 id="org9dca310">Evaluation</h3>
+<div class="outline-text-3" id="text-org9dca310">
 <p>
 In Lisp, + is a function, and an expression like (+ 2 3) is a function call.
 When Lisp evaluates a function call, it does so in two steps:
@@ -307,7 +748,7 @@ distinct evaluation rule of its own. And the rule is: do nothing. The quote
 operator takes a single argument, and just returns it verbatim:
 </p>
 
-<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">quote</span> (<span style="color: #ff78aa;">+</span> 4 5))
+<pre class="code"><code>(quote (+ 4 5))
 </code></pre>
 
 <p>
@@ -342,9 +783,9 @@ would take them for function calls:
 </p>
 </div>
 </div>
-<div id="outline-container-org2793621" class="outline-3">
-<h3 id="org2793621">Data</h3>
-<div class="outline-text-3" id="text-org2793621">
+<div id="outline-container-orgfa32969" class="outline-3">
+<h3 id="orgfa32969">Data</h3>
+<div class="outline-text-3" id="text-orgfa32969">
 <p>
 Lisp offers all the data types we find in most other languages, along with
 several others that we don&rsquo;t. One data type we have used already is the
@@ -383,9 +824,9 @@ them.
 </p>
 </div>
 </div>
-<div id="outline-container-org24aa099" class="outline-3">
-<h3 id="org24aa099">List Operations</h3>
-<div class="outline-text-3" id="text-org24aa099">
+<div id="outline-container-org205edd8" class="outline-3">
+<h3 id="org205edd8">List Operations</h3>
+<div class="outline-text-3" id="text-org205edd8">
 <p>
 The function cons builds lists. If its second argument is a list, it returns a
 new list with the first argument added to the front:
@@ -439,9 +880,9 @@ There are also <code>first</code> and <code>second</code>, you can guess what is
 </p>
 </div>
 </div>
-<div id="outline-container-orgc674abb" class="outline-3">
-<h3 id="orgc674abb">Truth</h3>
-<div class="outline-text-3" id="text-orgc674abb">
+<div id="outline-container-orga12aace" class="outline-3">
+<h3 id="orga12aace">Truth</h3>
+<div class="outline-text-3" id="text-orga12aace">
 <p>
 In Common Lisp, the symbol t is the default representation for truth. Like
 nil, t evaluates to itself. The function <code>listp</code> returns true if its argument is
@@ -465,9 +906,9 @@ and its value is returned. If the test expression returns false, the else
 expression is evaluated and its value is returned:
 </p>
 
-<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">if</span> (listp '(abc))
-&#9474; &#9474; (+ 1 2)
-&#9474; &#9474; (+ 5 6))
+<pre class="code"><code>(if (listp '(abc))
+    (+ 1 2)
+    (+ 5 6))
 </code></pre>
 
 <p>
@@ -482,17 +923,17 @@ There are <code>and</code> and <code>or</code> functions, you probably can tell 
 </p>
 </div>
 </div>
-<div id="outline-container-org92851dc" class="outline-3">
-<h3 id="org92851dc">Basic Functions</h3>
-<div class="outline-text-3" id="text-org92851dc">
+<div id="outline-container-orgf9fec21" class="outline-3">
+<h3 id="orgf9fec21">Basic Functions</h3>
+<div class="outline-text-3" id="text-orgf9fec21">
 <p>
 You can define new functions with defun. It usually takes three or more
 arguments: a name, a list of parameters, and one or more expressions that
 will make up the body of the function. Here is how we might define third:
 </p>
 
-<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">our-third</span> (x)
-&#9474; &#9474; (car (cdr (cdr x ))))
+<pre class="code"><code>(defun our-third (x)
+    (car (cdr (cdr x ))))
 </code></pre>
 
 <p>
@@ -500,10 +941,10 @@ Let&rsquo;s try to defun <code>member</code> which tells you if whether an eleme
 function:
 </p>
 
-<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">somemeeber</span> (obj lst)
-&#9474; (<span style="color: #ef80bf; font-weight: bold;">if</span> (null lst) nil
-&#9474; &#9474; &#9474; (<span style="color: #ef80bf; font-weight: bold;">if</span> (eql (car lst) obj) t
-&#9474; &#9474; &#9474; &#9474; &#9474; (somemeeber obj (cdr lst)))))
+<pre class="code"><code>(defun somemeeber (obj lst)
+  (if (null lst) nil
+      (if (eql (car lst) obj) t
+          (somemeeber obj (cdr lst)))))
 </code></pre>
 
 
@@ -517,16 +958,16 @@ that member does it, I evaluate the truth value t.
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org84f4de3" class="outline-3">
-<h3 id="org84f4de3">I/O</h3>
-<div class="outline-text-3" id="text-org84f4de3">
+<div id="outline-container-orgcb4b165" class="outline-3">
+<h3 id="orgcb4b165">I/O</h3>
+<div class="outline-text-3" id="text-orgcb4b165">
 <p>
 The most general output function in Common Lisp is f ormat. It takes two or more
 arguments: the first indicates where the output is to be printed, the second is
 a string template, and the remaining arguments are usually objects whose printed
 representations are to be inserted into the template. Here is a typical example:
 </p>
-<pre class="code"><code>(format t <span style="color: #e5b76f;">"~A plus ~A equals ~A. ~%"</span> 2 3 ( + 2 3))
+<pre class="code"><code>(format t "~A plus ~A equals ~A. ~%" 2 3 ( + 2 3))
 </code></pre>
 
 <p>
@@ -553,15 +994,15 @@ reads from the default place, which will usually be the toplevel. Here is a
 function that prompts the user for input, and returns whatever is entered:
 </p>
 
-<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">askem</span> (string)
-&#9474; (format t <span style="color: #e5b76f;">""</span>A<span style="color: #e5b76f;">" string)</span>
-&#9474;<span style="color: #e5b76f;"> &#9474; (read))</span>
+<pre class="code"><code>(defun askem (string)
+  (format t ""A" string)
+    (read))
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgc90d700" class="outline-3">
-<h3 id="orgc90d700">Variables</h3>
-<div class="outline-text-3" id="text-orgc90d700">
+<div id="outline-container-org376f109" class="outline-3">
+<h3 id="org376f109">Variables</h3>
+<div class="outline-text-3" id="text-org376f109">
 <p>
 One of the most frequently used operators in Common Lisp is <code>let</code> , which
 allows you to introduce new local variables.
@@ -574,12 +1015,12 @@ creating variables, each of the form (variable expression). Each variable will
 initially be set to the value of the corresponding expression.
 </p>
 
-<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">ask-for-number</span> ()
-&#9474; (format t <span style="color: #e5b76f;">"Enter a number"</span>)
-&#9474; (<span style="color: #ef80bf; font-weight: bold;">let</span> ((n (read)))
-&#9474; &#9474; (<span style="color: #ef80bf; font-weight: bold;">if</span> (numberp n)
-&#9474; &#9474; &#9474; &#9474; n
-&#9474; &#9474; &#9474; &#9474; (ask-for-number))))
+<pre class="code"><code>(defun ask-for-number ()
+  (format t "Enter a number")
+  (let ((n (read)))
+    (if (numberp n)
+        n
+        (ask-for-number))))
 </code></pre>
 
 <p>
@@ -599,7 +1040,7 @@ would be pronounced &ldquo;star-glob-star&rdquo;.
 You can also define global constants, by calling def constant:
 </p>
 
-<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">defconstant</span> <span style="color: #df7fff;">limit</span> (+ *glob* 1))
+<pre class="code"><code>(defconstant limit (+ *glob* 1))
 </code></pre>
 
 
@@ -609,14 +1050,14 @@ an error if anyone uses the same name for a variable. If you want to check
 whether some symbol is the name of a global variable or constant, use boundp:
 </p>
 
-<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">defconstant</span> <span style="color: #df7fff;">*glob*</span> 43)
+<pre class="code"><code>(defconstant *glob* 43)
 (boundp '*glob*)
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgd5d578a" class="outline-3">
-<h3 id="orgd5d578a">Assignment</h3>
-<div class="outline-text-3" id="text-orgd5d578a">
+<div id="outline-container-org4bdcbb3" class="outline-3">
+<h3 id="org4bdcbb3">Assignment</h3>
+<div class="outline-text-3" id="text-org4bdcbb3">
 <p>
 In Common Lisp the most general assignment operator is setf. We can use
 it to do assignments to either kind of variable:
@@ -625,26 +1066,26 @@ it to do assignments to either kind of variable:
 </code></pre>
 
 
-<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">read-number-and-prefix-with-message</span> ()
-&#9474; (<span style="color: #ef80bf; font-weight: bold;">let</span> ((n (ask-for-number)))
-&#9474; &#9474; (setf n (+ n 1))
-&#9474; &#9474; (format t <span style="color: #e5b76f;">"The new number is ~A"</span> n)))
+<pre class="code"><code>(defun read-number-and-prefix-with-message ()
+  (let ((n (ask-for-number)))
+    (setf n (+ n 1))
+    (format t "The new number is ~A" n)))
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org3cad001" class="outline-3">
-<h3 id="org3cad001">Iteration</h3>
-<div class="outline-text-3" id="text-org3cad001">
+<div id="outline-container-orgdb02303" class="outline-3">
+<h3 id="orgdb02303">Iteration</h3>
+<div class="outline-text-3" id="text-orgdb02303">
 <p>
 When we want to do something repeatedly, it is sometimes more natural to
 use iteration than recursion. A typical case for iteration is to generate some
 sort of table. This function
 </p>
 
-<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">show-squares</span> (start end)
-&#9474; (<span style="color: #ef80bf; font-weight: bold;">do</span> ((i start (+ i 1)))
-&#9474; &#9474; &#9474; ((&gt; i end) 'done)
-&#9474; &#9474; (format t <span style="color: #e5b76f;">"~A ~A~%"</span> i (* i i))))
+<pre class="code"><code>(defun show-squares (start end)
+  (do ((i start (+ i 1)))
+      ((&gt; i end) 'done)
+    (format t "~A ~A~%" i (* i i))))
 (show-squares 2 4)
 </code></pre>
 
@@ -654,7 +1095,7 @@ do can create variables, and the first argument is a list of variable
 specifications. Each element of this list can be of the form
 </p>
 
-<pre class="example" id="org4275ea5">
+<pre class="example" id="orgf1e6970">
 {variable initial update)
 </pre>
 
@@ -677,12 +1118,12 @@ the body is evaluated.
 
 
 
-<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">show-squares</span> (i end)
-&#9474;(<span style="color: #ef80bf; font-weight: bold;">if</span> (&gt; i end)
-&#9474; 'done
-&#9474; (<span style="color: #ef80bf; font-weight: bold;">progn</span>
-&#9474; &#9474; &#9474;(format t M~A ~A~&#176;/,n i (* i i ) )
-&#9474; &#9474;(show-squares (+ i 1) e n d))))
+<pre class="code"><code>(defun show-squares (i end)
+ (if (&gt; i end)
+  'done
+  (progn
+     (format t M~A ~A~°/,n i (* i i ) )
+   (show-squares (+ i 1) e n d))))
 </code></pre>
 
 
@@ -692,16 +1133,16 @@ through the elements of a list, for example, you would be more likely to use
 <code>dolist</code> . Observe the following functions:
 </p>
 
-<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">our-length-without-do</span> (lst)
-&#9474; (<span style="color: #ef80bf; font-weight: bold;">if</span> (null lst)
-&#9474; &#9474; &#9474; 0
-&#9474; &#9474; &#9474; (+ (our-length-without-do (cdr lst)) 1)))
+<pre class="code"><code>(defun our-length-without-do (lst)
+  (if (null lst)
+      0
+      (+ (our-length-without-do (cdr lst)) 1)))
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgcb98e2d" class="outline-3">
-<h3 id="orgcb98e2d">Functions as Objects</h3>
-<div class="outline-text-3" id="text-orgcb98e2d">
+<div id="outline-container-org6b27d59" class="outline-3">
+<h3 id="org6b27d59">Functions as Objects</h3>
+<div class="outline-text-3" id="text-org6b27d59">
 <p>
 In Lisp, functions are regular objects, like symbols or strings or lists. If we
 give the name of a function to function, it will return the associated object.
@@ -734,7 +1175,7 @@ Just as we can use <code>'</code> as an abbreviation for quote, we can use <code
 abbreviation for function:
 </p>
 
-<pre class="example" id="orgeb10083">
+<pre class="example" id="org8be0c0b">
 (apply #'+ l) ==  (apply (function +) l)
 </pre>
 
@@ -759,7 +1200,7 @@ function <code>f</code>, because <code>'f</code> will still refer to the global 
 whichever function might be stored in its symbol-function slot). E.g.
 </p>
 
-<pre class="example" id="orge67cb4c">
+<pre class="example" id="orge96bafe">
 (cl-flet ((car (x y) (+ x y)))
   (list #'car 'car))
 =&gt;
@@ -809,8 +1250,8 @@ Here is a lambda expression representing a function that takes two numbers and
 returns their sum:
 </p>
 
-<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">lambda</span> (x y)
-&#9474; (+ x y))
+<pre class="code"><code>(lambda (x y)
+  (+ x y))
 </code></pre>
 
 <p>
@@ -819,13 +1260,13 @@ ordinary function name, a lambda expression can be the first element of a
 function call, for example:
 </p>
 
-<pre class="code"><code>((<span style="color: #ef80bf; font-weight: bold;">lambda</span> (x) (+ x 100)) 2)
+<pre class="code"><code>((lambda (x) (+ x 100)) 2)
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org6121e9e" class="outline-3">
-<h3 id="org6121e9e">Types</h3>
-<div class="outline-text-3" id="text-org6121e9e">
+<div id="outline-container-org8e296a9" class="outline-3">
+<h3 id="org8e296a9">Types</h3>
+<div class="outline-text-3" id="text-org8e296a9">
 <p>
 Lisp has an unusually flexible approach to types. In many languages, variables
 are what have types, and you can&rsquo;t use a variable without specifying its type.
@@ -845,9 +1286,9 @@ We will study types in details later.
 </div>
 </div>
 </div>
-<div id="outline-container-org34ef091" class="outline-2">
-<h2 id="org34ef091">Lists</h2>
-<div class="outline-text-2" id="text-org34ef091">
+<div id="outline-container-orgf1d972a" class="outline-2">
+<h2 id="orgf1d972a">Lists</h2>
+<div class="outline-text-2" id="text-orgf1d972a">
 <p>
 In Lisp, lists are one of the fundamental data structures in Lisp. In the
 earliest dialects they were the only data structure: the name &ldquo;Lisp&rdquo; originally
@@ -856,9 +1297,9 @@ Common Lisp is a general-purpose programming language with a wide variety of
 data structures.
 </p>
 </div>
-<div id="outline-container-orgc87b27e" class="outline-3">
-<h3 id="orgc87b27e">Conses</h3>
-<div class="outline-text-3" id="text-orgc87b27e">
+<div id="outline-container-org2feb550" class="outline-3">
+<h3 id="org2feb550">Conses</h3>
+<div class="outline-text-3" id="text-org2feb550">
 <p>
 We previously introduced <code>cons</code>, <code>car</code>, and <code>cdr</code>, the primitive list
 manipulation functions, what cons really does is combine two objects into a
@@ -898,8 +1339,8 @@ The function <code>consp</code> returns true if its argument is a cons. So l i s
 be defined:
 </p>
 
-<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">our-listp</span> (x)
-&#9474; &#9474;(or (null x) (consp x)))
+<pre class="code"><code>(defun our-listp (x)
+   (or (null x) (consp x)))
 </code></pre>
 
 
@@ -908,12 +1349,12 @@ Since everything that is not a cons is an atom, the predicate atom could be
 defined:
 </p>
 
-<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">our-atom</span> (x) (not (consp x )))
+<pre class="code"><code>(defun our-atom (x) (not (consp x )))
 </code></pre>
 </div>
-<div id="outline-container-orgdd7d398" class="outline-4">
-<h4 id="orgdd7d398">Equality</h4>
-<div class="outline-text-4" id="text-orgdd7d398">
+<div id="outline-container-org15d2fd0" class="outline-4">
+<h4 id="org15d2fd0">Equality</h4>
+<div class="outline-text-4" id="text-org15d2fd0">
 <p>
 Each time you call cons, Lisp allocates a new piece of memory with room
 for two pointers. So if we call cons twice with the same arguments, we get
@@ -931,9 +1372,9 @@ back two values that look the same, but are in fact distinct objects:
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org8d07ba9" class="outline-4">
-<h4 id="org8d07ba9">Pointers</h4>
-<div class="outline-text-4" id="text-org8d07ba9">
+<div id="outline-container-org420348d" class="outline-4">
+<h4 id="org420348d">Pointers</h4>
+<div class="outline-text-4" id="text-org420348d">
 <p>
 One of the secrets to understanding Lisp is to realize that variables have
 values in the same way that lists have elements. As conses have pointers to
@@ -971,9 +1412,9 @@ one variable the value of another, the two variables will have e q l values:
 </div>
 </div>
 </div>
-<div id="outline-container-orgf1fbc21" class="outline-3">
-<h3 id="orgf1fbc21">Example: Compression</h3>
-<div class="outline-text-3" id="text-orgf1fbc21">
+<div id="outline-container-org16b4dd4" class="outline-3">
+<h3 id="org16b4dd4">Example: Compression</h3>
+<div class="outline-text-3" id="text-org16b4dd4">
 <p>
 As an example, this section shows how to perform a simple form of compression on
 lists. This algorithm goes by the impressive name of <code>run-length</code>, it should
@@ -984,22 +1425,22 @@ work as follows:
 </code></pre>
 
 
-<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">comprs</span> (x)
-&#9474; (ucompr (car x) 1 (cdr x)))
-&#9474;
-&#9474;
-(<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">ucompr</span> (elmnt n lst)
-&#9474; (<span style="color: #ef80bf; font-weight: bold;">if</span> (null lst)
-&#9474; &#9474; &#9474; (list (build elmnt n))
-&#9474; &#9474; &#9474; (<span style="color: #ef80bf; font-weight: bold;">let</span> ((next (car lst)))
-&#9474; &#9474; &#9474; &#9474; (<span style="color: #ef80bf; font-weight: bold;">if</span> (eql next elmnt)
-&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; (ucompr elmnt (+ n 1) (cdr lst))
-&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; (cons (build elmnt n) (ucompr next 1 (cdr lst)))))))
-&#9474; &#9474; &#9474; &#9474; &#9474; &#9474;
-(<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">build</span> (elmnt n)
-&#9474; (<span style="color: #ef80bf; font-weight: bold;">if</span> (&gt; n 1)
-&#9474; &#9474; &#9474; (list n elmnt)
-&#9474; &#9474; &#9474; elmnt))
+<pre class="code"><code>(defun comprs (x)
+  (ucompr (car x) 1 (cdr x)))
+
+
+(defun ucompr (elmnt n lst)
+  (if (null lst)
+      (list (build elmnt n))
+      (let ((next (car lst)))
+        (if (eql next elmnt)
+            (ucompr elmnt (+ n 1) (cdr lst))
+            (cons (build elmnt n) (ucompr next 1 (cdr lst)))))))
+
+(defun build (elmnt n)
+  (if (&gt; n 1)
+      (list n elmnt)
+      elmnt))
 </code></pre>
 
 
@@ -1009,20 +1450,20 @@ Can you write one to do uncompress?
 </p>
 
 
-<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">unbuild</span> (n elmt)
-&#9474; (<span style="color: #ef80bf; font-weight: bold;">if</span> (zerop n)
-&#9474; &#9474; &#9474; nil
-&#9474; &#9474; &#9474; (cons elmt (unbuild (- n 1) elmt))))
-&#9474; &#9474; &#9474;
-(<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">uncompress</span> (lst)
-&#9474; (<span style="color: #ef80bf; font-weight: bold;">if</span> (null lst)
-&#9474; &#9474; &#9474; nil
-&#9474; &#9474; &#9474; (<span style="color: #ef80bf; font-weight: bold;">if</span> (listp (car lst))
-&#9474; &#9474; &#9474; &#9474; &#9474; (<span style="color: #ef80bf; font-weight: bold;">let</span> ((f (car (car lst)))
-&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; (s (cdr (car lst))))
-&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; (cons (unbuild f s)
-&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; (uncompress (cdr lst))))
-&#9474; &#9474; &#9474; &#9474; &#9474; (uncompress (cdr lst)))))
+<pre class="code"><code>(defun unbuild (n elmt)
+  (if (zerop n)
+      nil
+      (cons elmt (unbuild (- n 1) elmt))))
+
+(defun uncompress (lst)
+  (if (null lst)
+      nil
+      (if (listp (car lst))
+          (let ((f (car (car lst)))
+                (s (cdr (car lst))))
+            (cons (unbuild f s)
+                  (uncompress (cdr lst))))
+          (uncompress (cdr lst)))))
 </code></pre>
 
 
@@ -1035,9 +1476,9 @@ of lists, lists of lists;
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org4e1e659" class="outline-3">
-<h3 id="org4e1e659">Access</h3>
-<div class="outline-text-3" id="text-org4e1e659">
+<div id="outline-container-orgbc91500" class="outline-3">
+<h3 id="orgbc91500">Access</h3>
+<div class="outline-text-3" id="text-orgbc91500">
 <p>
 Common Lisp has additional access functions defined in terms of <code>car</code> and
 <code>cdr</code>. To find the element at a given position in a list we call <code>nth</code>,
@@ -1063,9 +1504,9 @@ nthcdr.
 </p>
 </div>
 </div>
-<div id="outline-container-org94b447e" class="outline-3">
-<h3 id="org94b447e">Mapping functions</h3>
-<div class="outline-text-3" id="text-org94b447e">
+<div id="outline-container-org5e23b94" class="outline-3">
+<h3 id="org5e23b94">Mapping functions</h3>
+<div class="outline-text-3" id="text-org5e23b94">
 <p>
 Common Lisp provides several functions for calling functions on the elements
 of a list. The most frequently used is mapcar, which takes a function and
@@ -1073,8 +1514,8 @@ one or more lists, and returns the result of applying the function to elements
 taken from each list, until some list runs out:
 </p>
 
-<pre class="code"><code>(mapcar #'(<span style="color: #ef80bf; font-weight: bold;">lambda</span> (x) (+ x 10))
-&#9474; &#9474; &#9474; &#9474; &#9474;'(1 2 3))
+<pre class="code"><code>(mapcar #'(lambda (x) (+ x 10))
+         '(1 2 3))
 </code></pre>
 
 <p>
@@ -1082,19 +1523,19 @@ The related <code>maplist</code> takes the same arguments, but calls the functio
 successive <code>cdrs</code> of the lists:
 </p>
 
-<pre class="code"><code>(maplist #'(<span style="color: #ef80bf; font-weight: bold;">lambda</span> (x) x)
-&#9474; &#9474; &#9474; &#9474; &#9474; '(a b c))
+<pre class="code"><code>(maplist #'(lambda (x) x)
+          '(a b c))
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgaf11921" class="outline-3">
-<h3 id="orgaf11921">Trees</h3>
-<div class="outline-text-3" id="text-orgaf11921">
+<div id="outline-container-orgb68de37" class="outline-3">
+<h3 id="orgb68de37">Trees</h3>
+<div class="outline-text-3" id="text-orgb68de37">
 <p>
 Conses can also be considered as binary trees, with the car representing the
 right subtree and the cdr the left. For example, the list
 </p>
-<pre class="example" id="org482013d">
+<pre class="example" id="orgc3762a3">
 (a (b c) d)
 </pre>
 
@@ -1103,7 +1544,7 @@ is also the tree represented in the following figure:
 </p>
 
 
-<figure id="org80facaf">
+<figure id="org209b0e1">
 <img src="../i/old/2023-03-05_17-47.png" alt="2023-03-05_17-47.png">
 
 </figure>
@@ -1146,9 +1587,9 @@ subtrees:
 </p>
 </div>
 </div>
-<div id="outline-container-orga539577" class="outline-3">
-<h3 id="orga539577">Sequences</h3>
-<div class="outline-text-3" id="text-orga539577">
+<div id="outline-container-org6866bd1" class="outline-3">
+<h3 id="org6866bd1">Sequences</h3>
+<div class="outline-text-3" id="text-org6866bd1">
 <p>
 Another way to think of a list is as a series of objects in a particular order.
 In Common Lisp, sequences include both lists and vectors.
@@ -1185,9 +1626,9 @@ argument. So if you don&rsquo;t want your original sequence modified, pass a cop
 </p>
 </div>
 </div>
-<div id="outline-container-orgd7f9f37" class="outline-3">
-<h3 id="orgd7f9f37">Dotted Pair Notation</h3>
-<div class="outline-text-3" id="text-orgd7f9f37">
+<div id="outline-container-orgd1eed06" class="outline-3">
+<h3 id="orgd1eed06">Dotted Pair Notation</h3>
+<div class="outline-text-3" id="text-orgd1eed06">
 <p>
 Dotted pair notation is a general syntax for cons cells that represents the CAR
 and CDR explicitly. In this syntax, <code>(a . b)</code> stands for a cons cell whose CAR
@@ -1201,9 +1642,9 @@ only used if the CDR of a cons cell is not a list.
 </p>
 </div>
 </div>
-<div id="outline-container-org9ded136" class="outline-3">
-<h3 id="org9ded136"><span class="done KILL">KILL</span> Example: Shortest Path&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h3>
-<div class="outline-text-3" id="text-org9ded136">
+<div id="outline-container-org56eb7d7" class="outline-3">
+<h3 id="org56eb7d7"><span class="done KILL">KILL</span> Example: Shortest Path&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h3>
+<div class="outline-text-3" id="text-org56eb7d7">
 <p>
 Following code contains a program for finding the shortest path through a
 network.  The function <code>shortest-path</code> takes a start node, a destination node,
@@ -1230,15 +1671,15 @@ We can visualize it like this:
 </p>
 
 
-<figure id="org113b573">
+<figure id="org9781145">
 <img src="../i/old/Oa3OgZT.png" alt="Oa3OgZT.png">
 
 </figure>
 </div>
 </div>
-<div id="outline-container-org8d5a801" class="outline-3">
-<h3 id="org8d5a801">Garbage</h3>
-<div class="outline-text-3" id="text-org8d5a801">
+<div id="outline-container-orgb084488" class="outline-3">
+<h3 id="orgb084488">Garbage</h3>
+<div class="outline-text-3" id="text-orgb084488">
 <p>
 Lists can be slow for several reasons. They offer sequential instead of random
 access, so retrieving a given element takes longer in a list than an array, for
@@ -1265,7 +1706,7 @@ called garbage, and the scavenging operation is called garbage collection, or
 GC.
 </p>
 
-<pre class="example" id="org78655aa">
+<pre class="example" id="orga387e0a">
 &gt; (setf 1st (list 'a &gt;b }c))
 (A B C)
 &gt; (setf 1st nil)
@@ -1292,9 +1733,9 @@ leaks and dangling pointers are simply impossible in Lisp.
 </div>
 </div>
 </div>
-<div id="outline-container-org4b0d569" class="outline-2">
-<h2 id="org4b0d569">Data Structure</h2>
-<div class="outline-text-2" id="text-org4b0d569">
+<div id="outline-container-org33f1cf6" class="outline-2">
+<h2 id="org33f1cf6">Data Structure</h2>
+<div class="outline-text-2" id="text-org33f1cf6">
 <p>
 The preceding discussed the list, Lisp&rsquo;s most versatile data structure.  This
 chapter shows how to use Lisp&rsquo;s other data structures: arrays (including vectors
@@ -1302,9 +1743,9 @@ and strings), structures, and hash tables. They may not be as flexible as lists,
 but they can make access faster, and take up less space.
 </p>
 </div>
-<div id="outline-container-org1481596" class="outline-3">
-<h3 id="org1481596">Arrays</h3>
-<div class="outline-text-3" id="text-org1481596">
+<div id="outline-container-org4916379" class="outline-3">
+<h3 id="org4916379">Arrays</h3>
+<div class="outline-text-3" id="text-org4916379">
 <p>
 In Common Lisp, you can make an array by calling make-array with a list
 of dimensions as the first argument. To make a 2x3 array we would say:
@@ -1316,14 +1757,14 @@ The <code>n</code> before the A tells how many dimensions the array have. You ca
 a tag <code>initial-element</code> to set its value:
 </p>
 
-<pre class="code"><code>(make-array '(2 3) <span style="color: #a897ef; font-weight: bold;">:initial-element</span> 2)
+<pre class="code"><code>(make-array '(2 3) :initial-element 2)
 </code></pre>
 
 <p>
 We can access both vectors and arrays using <code>aref</code>:
 </p>
 
-<pre class="code"><code>(aref (make-array '(2 3) <span style="color: #a897ef; font-weight: bold;">:initial-element</span> 2) 0 0)
+<pre class="code"><code>(aref (make-array '(2 3) :initial-element 2) 0 0)
 </code></pre>
 
 <p>
@@ -1334,13 +1775,13 @@ However, in the cause of vectors there is a fastere function which is <code>svre
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org036ffe2" class="outline-3">
-<h3 id="org036ffe2"><span class="done KILL">KILL</span> Structures&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h3>
+<div id="outline-container-org60adb13" class="outline-3">
+<h3 id="org60adb13"><span class="done KILL">KILL</span> Structures&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h3>
 </div>
 </div>
-<div id="outline-container-org7d48d7a" class="outline-2">
-<h2 id="org7d48d7a">Functions</h2>
-<div class="outline-text-2" id="text-org7d48d7a">
+<div id="outline-container-orgc800edf" class="outline-2">
+<h2 id="orgc800edf">Functions</h2>
+<div class="outline-text-2" id="text-orgc800edf">
 <p>
 Understanding functions is one of the keys to understanding Lisp. Conceptually,
 functions are at the core of Lisp. Practically, they are one of the most useful
@@ -1360,15 +1801,15 @@ its name. If a symbol is the name of a function, symbol-function will return it:
 By setting the symbol-function of some name to a function,
 </p>
 
-<pre class="code"><code>(setf (symbol-function 'add2) #'(<span style="color: #ef80bf; font-weight: bold;">lambda</span> (x) (+ x 2)))
+<pre class="code"><code>(setf (symbol-function 'add2) #'(lambda (x) (+ x 2)))
 </code></pre>
 
 <pre class="code"><code>(add2 3)
 </code></pre>
 </div>
-<div id="outline-container-orge440ca3" class="outline-3">
-<h3 id="orge440ca3">Tags</h3>
-<div class="outline-text-3" id="text-orge440ca3">
+<div id="outline-container-org3627690" class="outline-3">
+<h3 id="org3627690">Tags</h3>
+<div class="outline-text-3" id="text-org3627690">
 <p>
 We&rsquo;ve already seen four functions for retrieving elements of sequences:
 nth for lists, aref and svref for vectors, and char for strings. Common
@@ -1435,9 +1876,9 @@ standard set listed in this table:
 </div>
 </div>
 </div>
-<div id="outline-container-org0a3930b" class="outline-2">
-<h2 id="org0a3930b">Functional Programming</h2>
-<div class="outline-text-2" id="text-org0a3930b">
+<div id="outline-container-org564039d" class="outline-2">
+<h2 id="org564039d">Functional Programming</h2>
+<div class="outline-text-2" id="text-org564039d">
 <p>
 Functional programming means writing programs that work by returning values,
 instead of by modifying things. It is the dominant paradigm in Lisp.  Most
@@ -1501,25 +1942,25 @@ telephone, as compared to letters, enabled a new style of communication.
 </p>
 </div>
 </div>
-<div id="outline-container-orge8702ab" class="outline-2">
-<h2 id="orge8702ab">Some Other Resources</h2>
-<div class="outline-text-2" id="text-orge8702ab">
+<div id="outline-container-org4c3f390" class="outline-2">
+<h2 id="org4c3f390">Some Other Resources</h2>
+<div class="outline-text-2" id="text-org4c3f390">
 <ul class="org-ul">
 <li><a href="https://www.reddit.com/r/lisp/comments/tna6zo/moving_from_the_beam_to_common_lisp_what_are_my/i21hjef/">Concurrncy</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org39dd504" class="outline-2">
-<h2 id="org39dd504"><span class="todo TODO">TODO</span> Ray-Tracing</h2>
+<div id="outline-container-orgb07ffb2" class="outline-2">
+<h2 id="orgb07ffb2"><span class="todo TODO">TODO</span> Ray-Tracing</h2>
 </div>
-<div id="outline-container-orgce5f111" class="outline-2">
-<h2 id="orgce5f111">Misc: <code>eqal?</code></h2>
-<div class="outline-text-2" id="text-orgce5f111">
+<div id="outline-container-org1ede0f1" class="outline-2">
+<h2 id="org1ede0f1">Misc: <code>eqal?</code></h2>
+<div class="outline-text-2" id="text-org1ede0f1">
 <ul class="org-ul">
 <li><p>
 <code>(eq x y)</code> is true if and only if x and y are the same identical object.
 </p>
-<pre class="example" id="org4a8a793">
+<pre class="example" id="org10e9837">
 (eq 'a 'b) is false.
 (eq 'a 'a) is true.
 (eq 3 3) might be true or false, depending on the implementation.
@@ -1545,7 +1986,7 @@ The <code>eql</code> predicate is true if its arguments are <code>eq</code>, or 
 of the same type with the same value, or if they are character objects that
 represent the same character.
 </p>
-<pre class="example" id="orge8afb8e">
+<pre class="example" id="orgc47fa6e">
 (eql 'a 'b) is false.
 (eql 'a 'a) is true.
 (eql 3 3) is true.
@@ -1588,7 +2029,7 @@ and only if their printed representations are the same.</li>
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: 2023-02-16 Thu 18:55. Last build date: 2025-06-28 Sat 18:37.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: 2023-02-16 Thu 18:55. Last build date: 2025-07-25 Fri 00:00.</p>
 
 </div>
 </div>

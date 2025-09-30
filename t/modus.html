@@ -25,6 +25,448 @@
 
   <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
   <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+
+<!-- Import LazySizes - State-of-the-art lazy loading library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+
+<!-- Optional: Import plugins for better performance -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js" async></script>
+
+<script>
+// Only run on pages with 'art_paintings_media' in the path
+if (window.location.pathname.includes('art_paintings_media')) {
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    // Configure LazySizes for optimal performance
+    window.lazySizesConfig = window.lazySizesConfig || {};
+    window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
+    window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
+    window.lazySizesConfig.expFactor = 1.5; // Expand loading area
+    window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
+
+    // Add CSS for smooth transitions and collapsible content
+    const style = document.createElement('style');
+    style.textContent = `
+      .lazyload,
+      .lazyloading {
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+      }
+      .lazyloaded {
+        opacity: 1;
+      }
+      .collapsible-content {
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+      .collapsible-content.collapsed {
+        max-height: 0 !important;
+      }
+      .collapsible-content.expanded {
+        max-height: none;
+      }
+      /* Blur effect while loading (optional) */
+      .lazyloading {
+        filter: blur(5px);
+        opacity: 0.7;
+      }
+      .lazyloaded {
+        filter: none;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Find all h3 elements
+    const h3Elements = document.querySelectorAll('h3');
+
+    h3Elements.forEach(function(h3) {
+      // Make h3 clickable and add icon
+      h3.style.position = 'relative';
+      h3.style.cursor = 'pointer';
+      h3.style.paddingLeft = '20px';
+      h3.style.userSelect = 'none';
+
+      // Add the arrow icon
+      const icon = document.createElement('span');
+      icon.innerHTML = '▶';
+      icon.style.position = 'absolute';
+      icon.style.left = '0px';
+      icon.style.top = '50%';
+      icon.style.transform = 'translateY(-50%)';
+      icon.style.transition = 'transform 0.2s';
+      icon.style.fontSize = '0.8em';
+      icon.style.color = 'rgb(102, 102, 102)';
+      icon.style.fontFamily = 'monospace';
+
+      h3.insertBefore(icon, h3.firstChild);
+
+      // Find all content after this h3 until the next h3 or end of parent
+      const contentElements = [];
+      let nextElement = h3.nextElementSibling;
+
+      while (nextElement && nextElement.tagName !== 'H3') {
+        contentElements.push(nextElement);
+        nextElement = nextElement.nextElementSibling;
+      }
+
+      // Create a wrapper for smooth collapsing
+      const wrapper = document.createElement('div');
+      wrapper.className = 'collapsible-content collapsed';
+      wrapper.style.maxHeight = '0';
+
+      // Move content elements into wrapper
+      contentElements.forEach(function(element) {
+        wrapper.appendChild(element);
+      });
+
+      // Insert wrapper after h3
+      h3.parentNode.insertBefore(wrapper, h3.nextSibling);
+
+      // Prepare images for LazySizes lazy loading and make them clickable
+      const prepareImagesForLazyLoading = (container) => {
+        const images = container.querySelectorAll('img');
+        images.forEach(function(img) {
+          // Only process if not already processed
+          if (!img.classList.contains('lazyload') && !img.dataset.processed) {
+            // Store original src in data-src for LazySizes
+            if (img.src && img.src !== '' && !img.src.startsWith('data:')) {
+              img.dataset.src = img.src;
+              // Use a tiny placeholder or low-quality placeholder
+              img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+            }
+
+            // Handle srcset for responsive images
+            if (img.srcset && img.srcset !== '') {
+              img.dataset.srcset = img.srcset;
+              img.srcset = '';
+            }
+
+            // Handle sizes attribute
+            if (img.sizes) {
+              img.dataset.sizes = img.sizes;
+            }
+
+            // Add LazySizes classes
+            img.classList.add('lazyload');
+
+            // Make image clickable - add cursor pointer
+            img.style.cursor = 'pointer';
+
+            // Add click handler to open image in new tab
+            img.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation(); // Prevent triggering h3 collapse
+
+              // Get the actual image URL (either from src or data-src)
+              let imageUrl = this.src;
+              if (this.dataset.src && !this.src.startsWith('data:')) {
+                imageUrl = this.dataset.src;
+              } else if (this.src.startsWith('data:') && this.dataset.src) {
+                imageUrl = this.dataset.src;
+              }
+
+              // Open image in new tab
+              if (imageUrl && !imageUrl.startsWith('data:')) {
+                window.open(imageUrl, '_blank');
+              }
+            });
+
+            // Mark as processed
+            img.dataset.processed = 'true';
+
+            // Maintain aspect ratio to prevent layout shift
+            if (!img.style.aspectRatio && img.width && img.height) {
+              img.style.aspectRatio = img.width + '/' + img.height;
+            }
+          }
+        });
+      };
+
+      // Prepare all images in this section for lazy loading
+      prepareImagesForLazyLoading(wrapper);
+
+      // Track collapsed state
+      let isCollapsed = true;
+      let hasBeenExpanded = false;
+
+      // Add click handler
+      h3.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        if (isCollapsed) {
+          // Expand: show content and activate lazy loading
+          icon.style.transform = 'translateY(-50%) rotate(90deg)';
+          wrapper.classList.remove('collapsed');
+          wrapper.classList.add('expanded');
+          wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+
+          // Only activate LazySizes for this section when first expanded
+          if (!hasBeenExpanded) {
+            // Trigger LazySizes to check for images in this newly visible section
+            if (window.lazySizes) {
+              // Force LazySizes to check all images in this wrapper
+              const lazyImages = wrapper.querySelectorAll('.lazyload');
+              lazyImages.forEach(img => {
+                // Add to LazySizes queue
+                window.lazySizes.loader.unveil(img);
+              });
+            }
+            hasBeenExpanded = true;
+          }
+
+          isCollapsed = false;
+
+          // Recalculate height after images potentially load
+          setTimeout(() => {
+            if (!isCollapsed) {
+              wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+            }
+          }, 100);
+
+        } else {
+          // Collapse: hide content
+          icon.style.transform = 'translateY(-50%) rotate(0deg)';
+          wrapper.classList.remove('expanded');
+          wrapper.classList.add('collapsed');
+          wrapper.style.maxHeight = '0';
+
+          isCollapsed = true;
+        }
+      });
+
+      // Listen for LazySizes events to adjust height dynamically
+      wrapper.addEventListener('lazyloaded', function(e) {
+        if (!isCollapsed) {
+          // Adjust wrapper height when images load
+          setTimeout(() => {
+            wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+          }, 50);
+        }
+      });
+    });
+  });
+}
+</script>
+
+<script>
+
+
+
+  
+// Stack Page Formatter - Apply inline layout to specific pages
+(function() {
+  'use strict';
+  
+  // Check if current page should have the formatting applied
+  function shouldApplyFormatting() {
+    const path = window.location.pathname;
+    
+    // Check if path matches our target patterns
+    return path === '/stack' || 
+           path === '/stack.html' || 
+           path.startsWith('/sh/');
+  }
+  
+  // Only proceed if we're on a target page
+  if (!shouldApplyFormatting()) {
+    return;
+  }
+  
+  // Add CSS styles
+  function addStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+      /* Basic styling for entries */
+      .outline-3 {
+        margin-bottom: 1.5em;
+        line-height: 1.5;
+      }
+
+      /* Style for reconstructed single paragraph */
+      .entry-paragraph {
+        margin: 0;
+        line-height: 1.5;
+        direction: inherit;
+        unicode-bidi: plaintext;
+      }
+
+      /* Style for date - gray and nice */
+      .entry-date {
+        color: #666;
+        font-size: 0.9em;
+        margin-right: 0.5em;
+      }
+
+      /* Style for tag at end - gray and in parentheses */
+      .entry-tag {
+        display: inline !important;
+        color: #666;
+        margin-left: 0.5em;
+      }
+
+      /* Ensure all children stay inline */
+      .entry-tag * {
+        display: inline !important;
+      }
+
+      /* Override any existing tag styles */
+      .entry-tag p,
+      .entry-tag div {
+        display: inline !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      /* Hide block elements that will be moved */
+      .outline-3 .moved-block {
+        display: block;
+        margin: 0.5em 0;
+      }
+
+      /* Ensure proper anchor target visibility */
+      .outline-3[id] {
+        scroll-margin-top: 20px;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  // Extract ID from container div
+  function extractIdFromContainer(entry) {
+    const containerId = entry.id;
+    if (containerId && containerId.startsWith('outline-container-')) {
+      return containerId.replace('outline-container-', '');
+    }
+    return null;
+  }
+  
+  // Apply the formatting transformation
+  function applyFormatting() {
+    // Process each entry
+    const entries = document.querySelectorAll('.outline-3');
+    
+    entries.forEach((entry, index) => {
+      // Extract the anchor ID from the container before transformation
+      const anchorId = extractIdFromContainer(entry);
+      
+      // Extract components
+      const h3 = entry.querySelector('h3');
+      const notes = entry.querySelector('.notes');
+      const outlineText = entry.querySelector('.outline-text-3');
+      const tag = entry.querySelector('.tag');
+      
+      if (!h3 || !outlineText) return;
+      
+      // Get title text (preserve any TODO/DONE prefixes and links)
+      let titleText = h3.innerHTML;
+      
+      // Get timestamp
+      let timestampText = '';
+      if (notes) {
+        const timestamp = notes.querySelector('.timestamp');
+        if (timestamp) {
+          timestampText = timestamp.textContent;
+        }
+      }
+      
+      // Get content paragraphs (excluding notes and tag)
+      const contentParagraphs = [];
+      const blockElements = [];
+      
+      Array.from(outlineText.children).forEach(child => {
+        if (child.classList.contains('notes') || child.classList.contains('tag')) {
+          return; // Skip these
+        }
+        
+        if (child.tagName === 'P') {
+          contentParagraphs.push(child.innerHTML);
+        } else if (child.tagName === 'UL' || child.tagName === 'OL' || 
+                   child.tagName === 'BLOCKQUOTE' || child.tagName === 'PRE' ||
+                   child.tagName === 'DL' || child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        } else if (child.tagName === 'DIV' && child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        }
+      });
+      
+      // Get tag HTML (preserve links and formatting)
+      let tagHtml = '';
+      if (tag) {
+        tagHtml = tag.outerHTML;
+      }
+      
+      // Construct the new single paragraph
+      let newContent = '';
+      
+      // Add date at the start (gray)
+      if (timestampText) {
+        newContent += '<span class="entry-date">' + timestampText + '</span>';
+      }
+      
+      // Add title with emdash
+      newContent += titleText + ' — ';
+      
+      // Add content paragraphs
+      newContent += contentParagraphs.join(' ');
+      
+      // Add tag at the end in parentheses (preserve HTML but force inline)
+      if (tagHtml) {
+        // Extract just the inner content and wrap it properly
+        let tagContent = tag.innerHTML;
+        newContent += ' <span class="entry-tag">(' + tagContent + ')</span>';
+      }
+      
+      // Create new paragraph element
+      const newParagraph = document.createElement('p');
+      newParagraph.className = 'entry-paragraph';
+      newParagraph.innerHTML = newContent;
+      
+      // Clear the entry and add the new paragraph
+      entry.innerHTML = '';
+      entry.appendChild(newParagraph);
+      
+      // Preserve the anchor ID by setting it on the transformed entry
+      if (anchorId) {
+        entry.id = anchorId;
+      }
+      
+      // Add any block elements after the paragraph
+      blockElements.forEach(blockHtml => {
+        const blockDiv = document.createElement('div');
+        blockDiv.className = 'moved-block';
+        blockDiv.innerHTML = blockHtml;
+        entry.appendChild(blockDiv);
+      });
+      
+      // Add separator after each entry (except the last one)
+      if (index < entries.length - 1) {
+        const separator = document.createElement('hr');
+        separator.style.margin = '1em 0';
+        separator.style.border = 'none';
+        separator.style.borderTop = '1px solid #ccc';
+        entry.appendChild(separator);
+      }
+    });
+  }
+  
+  // Initialize when DOM is ready
+  function init() {
+    addStyles();
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', applyFormatting);
+    } else {
+      applyFormatting();
+    }
+  }
+  
+  // Start the initialization
+  init();
+})();
+</script>
+
+
+
 </head>
 <body>
 </body>
@@ -40,8 +482,7 @@
 <h1 class="title" style="
 margin-block-start: auto;
     color: black;
-">لّermontov</h1>
-
+">Hereby, all birds fly</h1>
       </a>
 <hr class="header-divider" style="margin-block-end: -1em;">
   </div>
@@ -111,10 +552,87 @@ h2,h3,h4,h5,h6,h7,h8 {
 </style>
 </head>
 <hr>
-<div id="outline-container-orga8efa38" class="outline-2">
-<h2 id="orga8efa38"><a href="../d/cogethi.html#5z1kghw0mbk0">Cognitive Dissonance in Ethics and Moral Relativism</a></h2>
-<div class="outline-text-2" id="text-orga8efa38">
-<div class="smth" id="orga658f96">
+<div id="outline-container-org7b9c587" class="outline-2">
+<h2 id="org7b9c587"><a href="../p/solitude.html#xdykbzb0eok0">On Solitude and Other Things</a></h2>
+<div class="outline-text-2" id="text-org7b9c587">
+<div class="smth" id="org79223c7">
+<p>
+Wed 27 Aug 2025
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-orgc20eb0f" class="outline-2">
+<h2 id="orgc20eb0f"><b>Arabic</b> <a href="../p/myself.html#szj4j7618ik0">Praise to the Architect of Self</a></h2>
+<div class="outline-text-2" id="text-orgc20eb0f">
+<div class="smth" id="org822e0e4">
+<p>
+Wed 12 Mar 2025
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-org8b4c929" class="outline-2">
+<h2 id="org8b4c929"><b>Arabic</b> <a href="../p/believer.html#vfi1bv910ik0">A believer eats in one intestine</a></h2>
+<div class="outline-text-2" id="text-org8b4c929">
+<div class="smth" id="orgacefdeb">
+<p>
+Tue 11 Mar 2025
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-org77ca87a" class="outline-2">
+<h2 id="org77ca87a"><b>Arabic</b> <a href="../p/love.html#ae7iqgo0uhk0">Where the Love of Life Delivers</a></h2>
+<div class="outline-text-2" id="text-org77ca87a">
+<div class="smth" id="org3d7ead7">
+<p>
+Sat 01 Mar 2025
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-orgd8e3c68" class="outline-2">
+<h2 id="orgd8e3c68"><a href="../p/seek.html#im0655n0shk0">Let no man seek to make it easy</a></h2>
+<div class="outline-text-2" id="text-orgd8e3c68">
+<div class="smth" id="orgb500c6a">
+<p>
+Thu 27 Feb 2025
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-orga9161d7" class="outline-2">
+<h2 id="orga9161d7"><a href="../p/living.html#jly77mb1ohk0">Something Worth Living For</a></h2>
+<div class="outline-text-2" id="text-orga9161d7">
+<div class="smth" id="org2daa619">
+<p>
+Tue 25 Feb 2025
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-org73c7407" class="outline-2">
+<h2 id="org73c7407"><a href="../d/slavery.html#q1v1r670kek0">The Slavery of Our Time</a></h2>
+<div class="outline-text-2" id="text-org73c7407">
+<div class="smth" id="orgc303543">
+<p>
+Sun 01 Dec 2024
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-org9c2a99f" class="outline-2">
+<h2 id="org9c2a99f"><a href="../d/cogethi.html#5z1kghw0mbk0">Cognitive Dissonance in Ethics and Moral Relativism</a></h2>
+<div class="outline-text-2" id="text-org9c2a99f">
+<div class="smth" id="orgee91d8c">
 <p>
 Thu 12 Sep 2024
 </p>
@@ -122,10 +640,21 @@ Thu 12 Sep 2024
 </div>
 </div>
 </div>
-<div id="outline-container-org18b5c34" class="outline-2">
-<h2 id="org18b5c34"><a href="../p/depression.html#yh144x4121k0">On Depression</a></h2>
-<div class="outline-text-2" id="text-org18b5c34">
-<div class="smth" id="org4314f08">
+<div id="outline-container-orgcae67e2" class="outline-2">
+<h2 id="orgcae67e2"><a href="../p/nosalgic_bib.html#jene6a516ak0">Nostalgic Bibliography</a></h2>
+<div class="outline-text-2" id="text-orgcae67e2">
+<div class="smth" id="org8ff84e0">
+<p>
+Sun 04 Aug 2024
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-orgcec8789" class="outline-2">
+<h2 id="orgcec8789"><a href="../p/depression.html#yh144x4121k0">On Depression</a></h2>
+<div class="outline-text-2" id="text-orgcec8789">
+<div class="smth" id="orge616745">
 <p>
 Wed 29 Nov 2023
 </p>
@@ -133,10 +662,10 @@ Wed 29 Nov 2023
 </div>
 </div>
 </div>
-<div id="outline-container-org9d9cb3f" class="outline-2">
-<h2 id="org9d9cb3f"><a href="../p/nature.html#tixkcwk0gwj0">The Power of Understanding Human Nature</a></h2>
-<div class="outline-text-2" id="text-org9d9cb3f">
-<div class="smth" id="org0cfdaed">
+<div id="outline-container-org33d5a69" class="outline-2">
+<h2 id="org33d5a69"><a href="../p/nature.html#tixkcwk0gwj0">The Power of Understanding Human Nature</a></h2>
+<div class="outline-text-2" id="text-org33d5a69">
+<div class="smth" id="orgd4672f5">
 <p>
 Wed 26 Jul 2023
 </p>
@@ -144,10 +673,10 @@ Wed 26 Jul 2023
 </div>
 </div>
 </div>
-<div id="outline-container-orgf408d26" class="outline-2">
-<h2 id="orgf408d26"><a href="../d/computing.html#wtn40en02wj0">Computers Are No Longer Used</a></h2>
-<div class="outline-text-2" id="text-orgf408d26">
-<div class="smth" id="org38482c8">
+<div id="outline-container-orga2a9634" class="outline-2">
+<h2 id="orga2a9634"><a href="../d/computing.html#wtn40en02wj0">Computers Are No Longer Used</a></h2>
+<div class="outline-text-2" id="text-orga2a9634">
+<div class="smth" id="org6e0088e">
 <p>
 Wed 12 Jul 2023
 </p>
@@ -155,10 +684,10 @@ Wed 12 Jul 2023
 </div>
 </div>
 </div>
-<div id="outline-container-org33ad4e3" class="outline-2">
-<h2 id="org33ad4e3"><a href="../p/comfort.html#7mfij1q02wj0">&ldquo;Where you fear, there is your mission&rdquo;</a></h2>
-<div class="outline-text-2" id="text-org33ad4e3">
-<div class="smth" id="orgda907fe">
+<div id="outline-container-org19e90ba" class="outline-2">
+<h2 id="org19e90ba"><a href="../p/comfort.html#7mfij1q02wj0">&ldquo;Where you fear, there is your mission&rdquo;</a></h2>
+<div class="outline-text-2" id="text-org19e90ba">
+<div class="smth" id="org9ac4119">
 <p>
 Sun 07 May 2023
 </p>
@@ -166,10 +695,10 @@ Sun 07 May 2023
 </div>
 </div>
 </div>
-<div id="outline-container-org000fc55" class="outline-2">
-<h2 id="org000fc55"><a href="../p/anthology_of_les_passions_de_l_ame.html#3wacz0q02wj0">Anthology of Les Passions de l&rsquo;âme</a></h2>
-<div class="outline-text-2" id="text-org000fc55">
-<div class="smth" id="org437ae9f">
+<div id="outline-container-org6946c8e" class="outline-2">
+<h2 id="org6946c8e"><a href="../p/anthology_of_les_passions_de_l_ame.html#3wacz0q02wj0">Anthology of Les Passions de l&rsquo;âme</a></h2>
+<div class="outline-text-2" id="text-org6946c8e">
+<div class="smth" id="orgeadeec9">
 <p>
 Sat 11 Mar 2023
 </p>
@@ -177,10 +706,10 @@ Sat 11 Mar 2023
 </div>
 </div>
 </div>
-<div id="outline-container-org148b55e" class="outline-2">
-<h2 id="org148b55e"><a href="../p/me.html#zft297p02wj0">&ldquo;Literally me&rdquo;</a></h2>
-<div class="outline-text-2" id="text-org148b55e">
-<div class="smth" id="orgefd8ecd">
+<div id="outline-container-org078efbc" class="outline-2">
+<h2 id="org078efbc"><a href="../p/me.html#zft297p02wj0">&ldquo;Literally me&rdquo;</a></h2>
+<div class="outline-text-2" id="text-org078efbc">
+<div class="smth" id="org79bab10">
 <p>
 Sat 28 Jan 2023
 </p>
@@ -188,10 +717,10 @@ Sat 28 Jan 2023
 </div>
 </div>
 </div>
-<div id="outline-container-orgc02431b" class="outline-2">
-<h2 id="orgc02431b"><a href="../p/kalam.html#q822pmp02wj0">Beyond Decliamists and Intellectuals</a></h2>
-<div class="outline-text-2" id="text-orgc02431b">
-<div class="smth" id="org6096ee4">
+<div id="outline-container-org8df1241" class="outline-2">
+<h2 id="org8df1241"><a href="../p/kalam.html#q822pmp02wj0">Beyond Decliamists and Intellectuals</a></h2>
+<div class="outline-text-2" id="text-org8df1241">
+<div class="smth" id="orgde7a04a">
 <p>
 Wed 29 Sep 2021
 </p>
@@ -200,14 +729,36 @@ Wed 29 Sep 2021
 </div>
 </div>
 
-<div id="outline-container-orgff4ff00" class="outline-2">
-<h2 id="orgff4ff00">Short Posts</h2>
+<div id="outline-container-org4d4842c" class="outline-2">
+<h2 id="org4d4842c">Short Posts</h2>
 </div>
 
-<div id="outline-container-org2c356e2" class="outline-3">
-<h3 id="org2c356e2"><a href="../stack.html#c41iyx70flk0">Kierkegaard on the Joy of Natural Science</a></h3>
-<div class="outline-text-3" id="text-org2c356e2">
-<div class="smth" id="orgbd388d8">
+<div id="outline-container-org2b40ead" class="outline-3">
+<h3 id="org2b40ead"><a href="../stack.html#3chjkek09pk0">Oh fuck, you&rsquo;re still sad?</a></h3>
+<div class="outline-text-3" id="text-org2b40ead">
+<div class="smth" id="org4e065e4">
+<p>
+Fri 19 Sep 2025
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-orgdd2e0db" class="outline-3">
+<h3 id="orgdd2e0db"><a href="../stack.html#dw5k49l08ok0">أبن سينا عن الحواس</a></h3>
+<div class="outline-text-3" id="text-orgdd2e0db">
+<div class="smth" id="org8dc8fd2">
+<p>
+Fri 22 Aug 2025
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-orgcfe7dff" class="outline-3">
+<h3 id="orgcfe7dff"><a href="../stack.html#c41iyx70flk0">Kierkegaard on the Joy of Natural Science</a></h3>
+<div class="outline-text-3" id="text-orgcfe7dff">
+<div class="smth" id="org8769c1f">
 <p>
 Fri 06 Jun 2025
 </p>
@@ -215,21 +766,10 @@ Fri 06 Jun 2025
 </div>
 </div>
 </div>
-<div id="outline-container-orgf9f5879" class="outline-3">
-<h3 id="orgf9f5879"><a href="../stack.html#t9wkunc04kk0">Confession</a></h3>
-<div class="outline-text-3" id="text-orgf9f5879">
-<div class="smth" id="org91066da">
-<p>
-Fri 02 May 2025
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-org7ad65cb" class="outline-3">
-<h3 id="org7ad65cb"><a href="../stack.html#dxu3h501uik0">You become what you think about</a></h3>
-<div class="outline-text-3" id="text-org7ad65cb">
-<div class="smth" id="orgcfcb909">
+<div id="outline-container-orgc7934e3" class="outline-3">
+<h3 id="orgc7934e3"><a href="../stack.html#2cb3f0z0uik0">Good video on setting boundaries</a></h3>
+<div class="outline-text-3" id="text-orgc7934e3">
+<div class="smth" id="orgf7c0d4c">
 <p>
 Fri 28 Mar 2025
 </p>
@@ -237,87 +777,10 @@ Fri 28 Mar 2025
 </div>
 </div>
 </div>
-<div id="outline-container-org0f74b6f" class="outline-3">
-<h3 id="org0f74b6f"><a href="../stack.html#2cb3f0z0uik0">Good video on setting boundaries</a></h3>
-<div class="outline-text-3" id="text-org0f74b6f">
-<div class="smth" id="org942e1d1">
-<p>
-Fri 28 Mar 2025
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-org1ee5b9b" class="outline-3">
-<h3 id="org1ee5b9b"><a href="../stack.html#szj4j7618ik0">سبحان خالق نفسي</a></h3>
-<div class="outline-text-3" id="text-org1ee5b9b">
-<div class="smth" id="org0804fcb">
-<p>
-Wed 12 Mar 2025
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-org2adcc64" class="outline-3">
-<h3 id="org2adcc64"><a href="../stack.html#vfi1bv910ik0">المؤمن يأكل في معي واحد</a></h3>
-<div class="outline-text-3" id="text-org2adcc64">
-<div class="smth" id="orgfc11b0a">
-<p>
-Thu 06 Mar 2025
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-org16adf42" class="outline-3">
-<h3 id="org16adf42"><a href="../stack.html#ae7iqgo0uhk0">وحب الجبان النفس أورده الحربا</a></h3>
-<div class="outline-text-3" id="text-org16adf42">
-<div class="smth" id="orgcc8aab7">
-<p>
-Sat 01 Mar 2025
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-org5b0cf47" class="outline-3">
-<h3 id="org5b0cf47"><a href="../stack.html#im0655n0shk0">Let no man seek to make it easy</a></h3>
-<div class="outline-text-3" id="text-org5b0cf47">
-<div class="smth" id="orgc183b94">
-<p>
-Thu 27 Feb 2025
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-orgf0cdbf2" class="outline-3">
-<h3 id="orgf0cdbf2"><a href="../stack.html#jly77mb1ohk0">Something Worth Living For</a></h3>
-<div class="outline-text-3" id="text-orgf0cdbf2">
-<div class="smth" id="orgbe018de">
-<p>
-Tue 25 Feb 2025
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-orgd132c96" class="outline-3">
-<h3 id="orgd132c96"><a href="../stack.html#q1v1r670kek0">The Slavery of Our Time</a></h3>
-<div class="outline-text-3" id="text-orgd132c96">
-<div class="smth" id="orgb827429">
-<p>
-Sun 01 Dec 2024
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-orgee01b6b" class="outline-3">
-<h3 id="orgee01b6b"><a href="../sh/Dec2023-Feb2024.html#ah445bg0y3k0">Consolation</a></h3>
-<div class="outline-text-3" id="text-orgee01b6b">
-<div class="smth" id="orgfdfb335">
+<div id="outline-container-orgbb102f4" class="outline-3">
+<h3 id="orgbb102f4"><a href="../sh/Dec2023-Feb2024.html#ah445bg0y3k0">Consolation</a></h3>
+<div class="outline-text-3" id="text-orgbb102f4">
+<div class="smth" id="org6bddec8">
 <p>
 Thu 15 Feb 2024
 </p>
@@ -325,10 +788,10 @@ Thu 15 Feb 2024
 </div>
 </div>
 </div>
-<div id="outline-container-org08902a6" class="outline-3">
-<h3 id="org08902a6"><a href="../sh/Dec2023-Feb2024.html#shui29f0w2k0">Note on marriage</a></h3>
-<div class="outline-text-3" id="text-org08902a6">
-<div class="smth" id="org0b2c979">
+<div id="outline-container-org09abdb8" class="outline-3">
+<h3 id="org09abdb8"><a href="../sh/Dec2023-Feb2024.html#shui29f0w2k0">Note on marriage</a></h3>
+<div class="outline-text-3" id="text-org09abdb8">
+<div class="smth" id="org079d1b2">
 <p>
 Wed 17 Jan 2024
 </p>
@@ -336,10 +799,10 @@ Wed 17 Jan 2024
 </div>
 </div>
 </div>
-<div id="outline-container-org50070a2" class="outline-3">
-<h3 id="org50070a2"><a href="../sh/Dec2023-Feb2024.html#0dvc5611e2k0">A tip on post-achievement depression</a></h3>
-<div class="outline-text-3" id="text-org50070a2">
-<div class="smth" id="orgbd79c81">
+<div id="outline-container-orgb200749" class="outline-3">
+<h3 id="orgb200749"><a href="../sh/Dec2023-Feb2024.html#0dvc5611e2k0">A tip on post-achievement depression</a></h3>
+<div class="outline-text-3" id="text-orgb200749">
+<div class="smth" id="org2aac90f">
 <p>
 Thu 04 Jan 2024
 </p>
@@ -347,10 +810,10 @@ Thu 04 Jan 2024
 </div>
 </div>
 </div>
-<div id="outline-container-orgc540cbc" class="outline-3">
-<h3 id="orgc540cbc"><a href="../sh/Mar2023-May2023.html#ud7gn6c0fzj0">The Impact of Censored Violence</a></h3>
-<div class="outline-text-3" id="text-orgc540cbc">
-<div class="smth" id="org8a7a25d">
+<div id="outline-container-orge4cdb2b" class="outline-3">
+<h3 id="orge4cdb2b"><a href="../sh/Mar2023-May2023.html#ud7gn6c0fzj0">The Impact of Censored Violence</a></h3>
+<div class="outline-text-3" id="text-orge4cdb2b">
+<div class="smth" id="org076603b">
 <p>
 Sun 15 Oct 2023
 </p>
@@ -358,10 +821,10 @@ Sun 15 Oct 2023
 </div>
 </div>
 </div>
-<div id="outline-container-orga1b9be7" class="outline-3">
-<h3 id="orga1b9be7"><a href="../sh/Jun2023-August2023.html#7dpgjjq02wj0">What is Wisdom?</a></h3>
-<div class="outline-text-3" id="text-orga1b9be7">
-<div class="smth" id="orgb0d03c3">
+<div id="outline-container-org3773682" class="outline-3">
+<h3 id="org3773682"><a href="../sh/Jun2023-August2023.html#7dpgjjq02wj0">What is Wisdom?</a></h3>
+<div class="outline-text-3" id="text-org3773682">
+<div class="smth" id="org3fcb563">
 <p>
 Sat 15 Jul 2023
 </p>
@@ -369,10 +832,10 @@ Sat 15 Jul 2023
 </div>
 </div>
 </div>
-<div id="outline-container-org290f341" class="outline-3">
-<h3 id="org290f341"><a href="../sh/Mar2023-May2023.html#6swjyso02wj0">All Life is Problem Solving</a></h3>
-<div class="outline-text-3" id="text-org290f341">
-<div class="smth" id="org62359b0">
+<div id="outline-container-orgee64f81" class="outline-3">
+<h3 id="orgee64f81"><a href="../sh/Mar2023-May2023.html#6swjyso02wj0">All Life is Problem Solving</a></h3>
+<div class="outline-text-3" id="text-orgee64f81">
+<div class="smth" id="org401e13f">
 <p>
 Sat 15 Jul 2023
 </p>
@@ -380,10 +843,10 @@ Sat 15 Jul 2023
 </div>
 </div>
 </div>
-<div id="outline-container-org79e0b78" class="outline-3">
-<h3 id="org79e0b78"><a href="../sh/Sept22-Nov2022.html#dsr00go02wj0">Nobility versus pleasure</a></h3>
-<div class="outline-text-3" id="text-org79e0b78">
-<div class="smth" id="org661771d">
+<div id="outline-container-org3270a72" class="outline-3">
+<h3 id="org3270a72"><a href="../sh/Sept22-Nov2022.html#dsr00go02wj0">Nobility versus pleasure</a></h3>
+<div class="outline-text-3" id="text-org3270a72">
+<div class="smth" id="orgf6fed6f">
 <p>
 Sat 15 Jul 2023
 </p>
@@ -391,10 +854,10 @@ Sat 15 Jul 2023
 </div>
 </div>
 </div>
-<div id="outline-container-org243d68a" class="outline-3">
-<h3 id="org243d68a"><a href="../sh/Mar2023-May2023.html#5wv57do02wj0">There are (mostly) no special days</a></h3>
-<div class="outline-text-3" id="text-org243d68a">
-<div class="smth" id="org1e35b64">
+<div id="outline-container-org86a6677" class="outline-3">
+<h3 id="org86a6677"><a href="../sh/Mar2023-May2023.html#5wv57do02wj0">There are (mostly) no special days</a></h3>
+<div class="outline-text-3" id="text-org86a6677">
+<div class="smth" id="orgc1a4885">
 <p>
 Sat 15 Jul 2023
 </p>
@@ -402,10 +865,10 @@ Sat 15 Jul 2023
 </div>
 </div>
 </div>
-<div id="outline-container-orgf2d6d9c" class="outline-3">
-<h3 id="orgf2d6d9c"><a href="../sh/Mar2023-May2023.html#1g48iao02wj0">About &rsquo;Book Communities&rsquo;</a></h3>
-<div class="outline-text-3" id="text-orgf2d6d9c">
-<div class="smth" id="org0324e7f">
+<div id="outline-container-org34fc8ef" class="outline-3">
+<h3 id="org34fc8ef"><a href="../sh/Mar2023-May2023.html#1g48iao02wj0">About &rsquo;Book Communities&rsquo;</a></h3>
+<div class="outline-text-3" id="text-org34fc8ef">
+<div class="smth" id="orgc603ace">
 <p>
 Sat 15 Jul 2023
 </p>
@@ -413,10 +876,10 @@ Sat 15 Jul 2023
 </div>
 </div>
 </div>
-<div id="outline-container-orgcbf426e" class="outline-3">
-<h3 id="orgcbf426e"><a href="../sh/Dec2022-Feb2023.html#7d23d2o02wj0">Message to Self</a></h3>
-<div class="outline-text-3" id="text-orgcbf426e">
-<div class="smth" id="orga24b7fa">
+<div id="outline-container-org8fa498f" class="outline-3">
+<h3 id="org8fa498f"><a href="../sh/Dec2022-Feb2023.html#7d23d2o02wj0">Message to Self</a></h3>
+<div class="outline-text-3" id="text-org8fa498f">
+<div class="smth" id="org8ac99ef">
 <p>
 Sat 15 Jul 2023
 </p>
@@ -431,7 +894,7 @@ Sat 15 Jul 2023
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: . Last build date: 2025-07-11 Fri 00:00.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.34). Written by: Salih Muhammed, by the date of: . Last build date: 2025-09-20 Sat 22:21.</p>
 
 </div>
 </div>

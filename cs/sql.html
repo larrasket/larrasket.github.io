@@ -25,6 +25,448 @@
 
   <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
   <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+
+<!-- Import LazySizes - State-of-the-art lazy loading library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+
+<!-- Optional: Import plugins for better performance -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js" async></script>
+
+<script>
+// Only run on pages with 'art_paintings_media' in the path
+if (window.location.pathname.includes('art_paintings_media')) {
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    // Configure LazySizes for optimal performance
+    window.lazySizesConfig = window.lazySizesConfig || {};
+    window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
+    window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
+    window.lazySizesConfig.expFactor = 1.5; // Expand loading area
+    window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
+
+    // Add CSS for smooth transitions and collapsible content
+    const style = document.createElement('style');
+    style.textContent = `
+      .lazyload,
+      .lazyloading {
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+      }
+      .lazyloaded {
+        opacity: 1;
+      }
+      .collapsible-content {
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+      .collapsible-content.collapsed {
+        max-height: 0 !important;
+      }
+      .collapsible-content.expanded {
+        max-height: none;
+      }
+      /* Blur effect while loading (optional) */
+      .lazyloading {
+        filter: blur(5px);
+        opacity: 0.7;
+      }
+      .lazyloaded {
+        filter: none;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Find all h3 elements
+    const h3Elements = document.querySelectorAll('h3');
+
+    h3Elements.forEach(function(h3) {
+      // Make h3 clickable and add icon
+      h3.style.position = 'relative';
+      h3.style.cursor = 'pointer';
+      h3.style.paddingLeft = '20px';
+      h3.style.userSelect = 'none';
+
+      // Add the arrow icon
+      const icon = document.createElement('span');
+      icon.innerHTML = '▶';
+      icon.style.position = 'absolute';
+      icon.style.left = '0px';
+      icon.style.top = '50%';
+      icon.style.transform = 'translateY(-50%)';
+      icon.style.transition = 'transform 0.2s';
+      icon.style.fontSize = '0.8em';
+      icon.style.color = 'rgb(102, 102, 102)';
+      icon.style.fontFamily = 'monospace';
+
+      h3.insertBefore(icon, h3.firstChild);
+
+      // Find all content after this h3 until the next h3 or end of parent
+      const contentElements = [];
+      let nextElement = h3.nextElementSibling;
+
+      while (nextElement && nextElement.tagName !== 'H3') {
+        contentElements.push(nextElement);
+        nextElement = nextElement.nextElementSibling;
+      }
+
+      // Create a wrapper for smooth collapsing
+      const wrapper = document.createElement('div');
+      wrapper.className = 'collapsible-content collapsed';
+      wrapper.style.maxHeight = '0';
+
+      // Move content elements into wrapper
+      contentElements.forEach(function(element) {
+        wrapper.appendChild(element);
+      });
+
+      // Insert wrapper after h3
+      h3.parentNode.insertBefore(wrapper, h3.nextSibling);
+
+      // Prepare images for LazySizes lazy loading and make them clickable
+      const prepareImagesForLazyLoading = (container) => {
+        const images = container.querySelectorAll('img');
+        images.forEach(function(img) {
+          // Only process if not already processed
+          if (!img.classList.contains('lazyload') && !img.dataset.processed) {
+            // Store original src in data-src for LazySizes
+            if (img.src && img.src !== '' && !img.src.startsWith('data:')) {
+              img.dataset.src = img.src;
+              // Use a tiny placeholder or low-quality placeholder
+              img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+            }
+
+            // Handle srcset for responsive images
+            if (img.srcset && img.srcset !== '') {
+              img.dataset.srcset = img.srcset;
+              img.srcset = '';
+            }
+
+            // Handle sizes attribute
+            if (img.sizes) {
+              img.dataset.sizes = img.sizes;
+            }
+
+            // Add LazySizes classes
+            img.classList.add('lazyload');
+
+            // Make image clickable - add cursor pointer
+            img.style.cursor = 'pointer';
+
+            // Add click handler to open image in new tab
+            img.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation(); // Prevent triggering h3 collapse
+
+              // Get the actual image URL (either from src or data-src)
+              let imageUrl = this.src;
+              if (this.dataset.src && !this.src.startsWith('data:')) {
+                imageUrl = this.dataset.src;
+              } else if (this.src.startsWith('data:') && this.dataset.src) {
+                imageUrl = this.dataset.src;
+              }
+
+              // Open image in new tab
+              if (imageUrl && !imageUrl.startsWith('data:')) {
+                window.open(imageUrl, '_blank');
+              }
+            });
+
+            // Mark as processed
+            img.dataset.processed = 'true';
+
+            // Maintain aspect ratio to prevent layout shift
+            if (!img.style.aspectRatio && img.width && img.height) {
+              img.style.aspectRatio = img.width + '/' + img.height;
+            }
+          }
+        });
+      };
+
+      // Prepare all images in this section for lazy loading
+      prepareImagesForLazyLoading(wrapper);
+
+      // Track collapsed state
+      let isCollapsed = true;
+      let hasBeenExpanded = false;
+
+      // Add click handler
+      h3.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        if (isCollapsed) {
+          // Expand: show content and activate lazy loading
+          icon.style.transform = 'translateY(-50%) rotate(90deg)';
+          wrapper.classList.remove('collapsed');
+          wrapper.classList.add('expanded');
+          wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+
+          // Only activate LazySizes for this section when first expanded
+          if (!hasBeenExpanded) {
+            // Trigger LazySizes to check for images in this newly visible section
+            if (window.lazySizes) {
+              // Force LazySizes to check all images in this wrapper
+              const lazyImages = wrapper.querySelectorAll('.lazyload');
+              lazyImages.forEach(img => {
+                // Add to LazySizes queue
+                window.lazySizes.loader.unveil(img);
+              });
+            }
+            hasBeenExpanded = true;
+          }
+
+          isCollapsed = false;
+
+          // Recalculate height after images potentially load
+          setTimeout(() => {
+            if (!isCollapsed) {
+              wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+            }
+          }, 100);
+
+        } else {
+          // Collapse: hide content
+          icon.style.transform = 'translateY(-50%) rotate(0deg)';
+          wrapper.classList.remove('expanded');
+          wrapper.classList.add('collapsed');
+          wrapper.style.maxHeight = '0';
+
+          isCollapsed = true;
+        }
+      });
+
+      // Listen for LazySizes events to adjust height dynamically
+      wrapper.addEventListener('lazyloaded', function(e) {
+        if (!isCollapsed) {
+          // Adjust wrapper height when images load
+          setTimeout(() => {
+            wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+          }, 50);
+        }
+      });
+    });
+  });
+}
+</script>
+
+<script>
+
+
+
+  
+// Stack Page Formatter - Apply inline layout to specific pages
+(function() {
+  'use strict';
+  
+  // Check if current page should have the formatting applied
+  function shouldApplyFormatting() {
+    const path = window.location.pathname;
+    
+    // Check if path matches our target patterns
+    return path === '/stack' || 
+           path === '/stack.html' || 
+           path.startsWith('/sh/');
+  }
+  
+  // Only proceed if we're on a target page
+  if (!shouldApplyFormatting()) {
+    return;
+  }
+  
+  // Add CSS styles
+  function addStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+      /* Basic styling for entries */
+      .outline-3 {
+        margin-bottom: 1.5em;
+        line-height: 1.5;
+      }
+
+      /* Style for reconstructed single paragraph */
+      .entry-paragraph {
+        margin: 0;
+        line-height: 1.5;
+        direction: inherit;
+        unicode-bidi: plaintext;
+      }
+
+      /* Style for date - gray and nice */
+      .entry-date {
+        color: #666;
+        font-size: 0.9em;
+        margin-right: 0.5em;
+      }
+
+      /* Style for tag at end - gray and in parentheses */
+      .entry-tag {
+        display: inline !important;
+        color: #666;
+        margin-left: 0.5em;
+      }
+
+      /* Ensure all children stay inline */
+      .entry-tag * {
+        display: inline !important;
+      }
+
+      /* Override any existing tag styles */
+      .entry-tag p,
+      .entry-tag div {
+        display: inline !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      /* Hide block elements that will be moved */
+      .outline-3 .moved-block {
+        display: block;
+        margin: 0.5em 0;
+      }
+
+      /* Ensure proper anchor target visibility */
+      .outline-3[id] {
+        scroll-margin-top: 20px;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  // Extract ID from container div
+  function extractIdFromContainer(entry) {
+    const containerId = entry.id;
+    if (containerId && containerId.startsWith('outline-container-')) {
+      return containerId.replace('outline-container-', '');
+    }
+    return null;
+  }
+  
+  // Apply the formatting transformation
+  function applyFormatting() {
+    // Process each entry
+    const entries = document.querySelectorAll('.outline-3');
+    
+    entries.forEach((entry, index) => {
+      // Extract the anchor ID from the container before transformation
+      const anchorId = extractIdFromContainer(entry);
+      
+      // Extract components
+      const h3 = entry.querySelector('h3');
+      const notes = entry.querySelector('.notes');
+      const outlineText = entry.querySelector('.outline-text-3');
+      const tag = entry.querySelector('.tag');
+      
+      if (!h3 || !outlineText) return;
+      
+      // Get title text (preserve any TODO/DONE prefixes and links)
+      let titleText = h3.innerHTML;
+      
+      // Get timestamp
+      let timestampText = '';
+      if (notes) {
+        const timestamp = notes.querySelector('.timestamp');
+        if (timestamp) {
+          timestampText = timestamp.textContent;
+        }
+      }
+      
+      // Get content paragraphs (excluding notes and tag)
+      const contentParagraphs = [];
+      const blockElements = [];
+      
+      Array.from(outlineText.children).forEach(child => {
+        if (child.classList.contains('notes') || child.classList.contains('tag')) {
+          return; // Skip these
+        }
+        
+        if (child.tagName === 'P') {
+          contentParagraphs.push(child.innerHTML);
+        } else if (child.tagName === 'UL' || child.tagName === 'OL' || 
+                   child.tagName === 'BLOCKQUOTE' || child.tagName === 'PRE' ||
+                   child.tagName === 'DL' || child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        } else if (child.tagName === 'DIV' && child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        }
+      });
+      
+      // Get tag HTML (preserve links and formatting)
+      let tagHtml = '';
+      if (tag) {
+        tagHtml = tag.outerHTML;
+      }
+      
+      // Construct the new single paragraph
+      let newContent = '';
+      
+      // Add date at the start (gray)
+      if (timestampText) {
+        newContent += '<span class="entry-date">' + timestampText + '</span>';
+      }
+      
+      // Add title with emdash
+      newContent += titleText + ' — ';
+      
+      // Add content paragraphs
+      newContent += contentParagraphs.join(' ');
+      
+      // Add tag at the end in parentheses (preserve HTML but force inline)
+      if (tagHtml) {
+        // Extract just the inner content and wrap it properly
+        let tagContent = tag.innerHTML;
+        newContent += ' <span class="entry-tag">(' + tagContent + ')</span>';
+      }
+      
+      // Create new paragraph element
+      const newParagraph = document.createElement('p');
+      newParagraph.className = 'entry-paragraph';
+      newParagraph.innerHTML = newContent;
+      
+      // Clear the entry and add the new paragraph
+      entry.innerHTML = '';
+      entry.appendChild(newParagraph);
+      
+      // Preserve the anchor ID by setting it on the transformed entry
+      if (anchorId) {
+        entry.id = anchorId;
+      }
+      
+      // Add any block elements after the paragraph
+      blockElements.forEach(blockHtml => {
+        const blockDiv = document.createElement('div');
+        blockDiv.className = 'moved-block';
+        blockDiv.innerHTML = blockHtml;
+        entry.appendChild(blockDiv);
+      });
+      
+      // Add separator after each entry (except the last one)
+      if (index < entries.length - 1) {
+        const separator = document.createElement('hr');
+        separator.style.margin = '1em 0';
+        separator.style.border = 'none';
+        separator.style.borderTop = '1px solid #ccc';
+        entry.appendChild(separator);
+      }
+    });
+  }
+  
+  // Initialize when DOM is ready
+  function init() {
+    addStyles();
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', applyFormatting);
+    } else {
+      applyFormatting();
+    }
+  }
+  
+  // Start the initialization
+  init();
+})();
+</script>
+
+
+
 </head>
 <body>
 </body>
@@ -72,8 +514,7 @@
 <h1 class="title" style="
 margin-block-start: auto;
     color: black;
-">لّermontov</h1>
-
+">Hereby, all birds fly</h1>
       </a>
 <hr class="header-divider" style="margin-block-end: -1em;">
   </div>
@@ -82,16 +523,16 @@ margin-block-start: auto;
 <div id="content" class="content">
 <header>
 <h1 class="title">Introduction to The Relational Language</h1>
-</header><div class="tag" id="org162770a">
+</header><div class="tag" id="orgd4db6e2">
 <p>
 This section was labeled under, or is related to <a href="../t/programming.html#4u5664n02wj0">programming</a>.
 </p>
 
 </div>
-<div id="outline-container-orgb27bc4a" class="outline-2">
-<h2 id="orgb27bc4a">Sequel, The Structured Query Language</h2>
-<div class="outline-text-2" id="text-orgb27bc4a">
-<div class="PREVIEW" id="orgb85138d">
+<div id="outline-container-orgcc72460" class="outline-2">
+<h2 id="orgcc72460">Sequel, The Structured Query Language</h2>
+<div class="outline-text-2" id="text-orgcc72460">
+<div class="PREVIEW" id="orgd322afa">
 <p>
 IBM developed the original version of SQL, originally called Sequel, as part of the
 System R project in the early 1970s. The Sequel language has evolved since then, and its
@@ -140,16 +581,16 @@ relation, including:
 <li>The physical storage structure of each relation on disk.</li>
 </ul>
 </div>
-<div id="outline-container-orgaa9d8d7" class="outline-3">
-<h3 id="orgaa9d8d7">Pre-theory</h3>
-<div class="outline-text-3" id="text-orgaa9d8d7">
+<div id="outline-container-orgda6a55e" class="outline-3">
+<h3 id="orgda6a55e">Pre-theory</h3>
+<div class="outline-text-3" id="text-orgda6a55e">
 <p>
 Before going through any SQL flavor, let us take a look at the thoery prerequisites.
 </p>
 </div>
-<div id="outline-container-orgce4733b" class="outline-4">
-<h4 id="orgce4733b">Set Theory</h4>
-<div class="outline-text-4" id="text-orgce4733b">
+<div id="outline-container-org16c6d15" class="outline-4">
+<h4 id="org16c6d15">Set Theory</h4>
+<div class="outline-text-4" id="text-org16c6d15">
 <p>
 Set theory, which originated with the mathematician Georg Cantor, is one of the mathematical
 branches on which the relational model is based. Cantor’s definition of a set follows:
@@ -191,9 +632,9 @@ table won’t qualify as a set. Rather, the table would be a multiset or a bag.
 </p>
 </div>
 </div>
-<div id="outline-container-org135b74c" class="outline-4">
-<h4 id="org135b74c">Predicate Logic</h4>
-<div class="outline-text-4" id="text-org135b74c">
+<div id="outline-container-org380263e" class="outline-4">
+<h4 id="org380263e">Predicate Logic</h4>
+<div class="outline-text-4" id="text-org380263e">
 <p>
 Predicate logic, is another branch of mathematics on which the relational model is based.
 Dr. Edgar F. Codd, in creating the relational model, had the insight to connect predicate
@@ -220,9 +661,9 @@ greater than or equal to 0 and smaller than or equal to 9.”
 </p>
 </div>
 </div>
-<div id="outline-container-org6f82254" class="outline-4">
-<h4 id="org6f82254">Propositions, Predicates, and Relations</h4>
-<div class="outline-text-4" id="text-org6f82254">
+<div id="outline-container-org988496c" class="outline-4">
+<h4 id="org988496c">Propositions, Predicates, and Relations</h4>
+<div class="outline-text-4" id="text-org988496c">
 <p>
 The common belief that the term relational stems from relationships between tables is
 incorrect. “Relational” actually pertains to the mathematical term relation. In set theory,
@@ -246,9 +687,9 @@ is known as the close world assumption (CWA).
 </div>
 </div>
 </div>
-<div id="outline-container-orgb9809ae" class="outline-3">
-<h3 id="orgb9809ae">Basic Types</h3>
-<div class="outline-text-3" id="text-orgb9809ae">
+<div id="outline-container-org0b16474" class="outline-3">
+<h3 id="org0b16474">Basic Types</h3>
+<div class="outline-text-3" id="text-org0b16474">
 <p>
 The SQL standard supports a variety of built-in types, including:
 </p>
@@ -282,20 +723,20 @@ we may wish to prohibit null values from being entered, as we shall see shortly.
 You can understand the difference between <code>char</code> and <code>varchar</code> this way:
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">Create</span> <span style="color: #ef80bf; font-weight: bold;">table</span> <span style="color: #f59280;">temp</span>
-(City <span style="color: #f470df;">CHAR</span>(10),
-Street <span style="color: #f470df;">VARCHAR</span>(10));
+<pre class="code"><code>Create table temp
+(City CHAR(10),
+Street VARCHAR(10));
 
-<span style="color: #ef80bf; font-weight: bold;">Insert</span> <span style="color: #ef80bf; font-weight: bold;">into</span> temp
-<span style="color: #ef80bf; font-weight: bold;">values</span>(<span style="color: #e5b76f;">'Pune'</span>,<span style="color: #e5b76f;">'Oxford'</span>);
+Insert into temp
+values('Pune','Oxford');
 
-<span style="color: #ef80bf; font-weight: bold;">select</span> <span style="color: #ef80bf; font-weight: bold;">length</span>(city), <span style="color: #ef80bf; font-weight: bold;">length</span>(street) <span style="color: #ef80bf; font-weight: bold;">from</span> temp;
+select length(city), length(street) from temp;
 </code></pre>
 
 <p>
 output will be:
 </p>
-<pre class="example" id="orge4335d9">
+<pre class="example" id="orgd7b704e">
 length(City)          Length(street)
 10                    6
 </pre>
@@ -310,20 +751,20 @@ we may wish to prohibit null values from being entered, as we shall see shortly.
 </p>
 </div>
 </div>
-<div id="outline-container-orga9843b8" class="outline-3">
-<h3 id="orga9843b8">Schema Definition</h3>
-<div class="outline-text-3" id="text-orga9843b8">
+<div id="outline-container-orgce2033c" class="outline-3">
+<h3 id="orgce2033c">Schema Definition</h3>
+<div class="outline-text-3" id="text-orgce2033c">
 <p>
 We define an SQL elation by using the create table command. The following command creates a
 relation <i>department</i> in the database:
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">create</span> <span style="color: #ef80bf; font-weight: bold;">table</span> <span style="color: #f59280;">department</span>
+<pre class="code"><code>create table department
 (
-    dept_name <span style="color: #f470df;">varchar</span> (20),
-    building <span style="color: #f470df;">varchar</span> (15),
-    budget <span style="color: #f470df;">numeric</span> (12,2),
-    <span style="color: #ef80bf; font-weight: bold;">primary</span> <span style="color: #ef80bf; font-weight: bold;">key</span> (dept_name)
+    dept_name varchar (20),
+    building varchar (15),
+    budget numeric (12,2),
+    primary key (dept_name)
 );
 </code></pre>
 
@@ -339,7 +780,7 @@ department relation.
 The general form of writing this kind of schemas looks like this:
 </p>
 
-<pre class="example" id="org977b71a">
+<pre class="example" id="orge085ab4">
 create table r
     (A1 D1 ,
     A2 D2 ,
@@ -398,9 +839,9 @@ for the attribute when you insert a row. For example, the following code defines
 constraint for the orderts attribute (representing the order’s time stamp):
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">ALTER</span> <span style="color: #ef80bf; font-weight: bold;">TABLE</span> <span style="color: #f59280;">dbo.Orders</span>
-      <span style="color: #ef80bf; font-weight: bold;">ADD</span> <span style="color: #ef80bf; font-weight: bold;">CONSTRAINT</span> DFT_Orders_orderts
-      <span style="color: #ef80bf; font-weight: bold;">DEFAULT</span>(SYSDATETIME()) <span style="color: #ef80bf; font-weight: bold;">FOR</span> orderts;
+<pre class="code"><code>ALTER TABLE dbo.Orders
+      ADD CONSTRAINT DFT_Orders_orderts
+      DEFAULT(SYSDATETIME()) FOR orderts;
 </code></pre></li>
 </ul>
 
@@ -414,9 +855,9 @@ would violate the foreign-key constraint on course, and SQL prevents such an ins
 taking place.
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">ALTER</span> <span style="color: #ef80bf; font-weight: bold;">TABLE</span> <span style="color: #f59280;">dbo.Employees</span>
-      <span style="color: #ef80bf; font-weight: bold;">ADD</span> <span style="color: #ef80bf; font-weight: bold;">CONSTRAINT</span> CHK_Employees_salary
-    <span style="color: #ef80bf; font-weight: bold;">CHECK</span>(salary &gt; 0.00);
+<pre class="code"><code>ALTER TABLE dbo.Employees
+      ADD CONSTRAINT CHK_Employees_salary
+    CHECK(salary &gt; 0.00);
 </code></pre>
 
 
@@ -429,9 +870,9 @@ to either TRUE or UNKNOWN. For example, salary –1000 will be rejected, whereas
 </p>
 </div>
 </div>
-<div id="outline-container-orgb5fb4a9" class="outline-3">
-<h3 id="orgb5fb4a9">Structure of SQL Queries</h3>
-<div class="outline-text-3" id="text-orgb5fb4a9">
+<div id="outline-container-orge545ffa" class="outline-3">
+<h3 id="orge545ffa">Structure of SQL Queries</h3>
+<div class="outline-text-3" id="text-orge545ffa">
 <p>
 The basic structure of an SQL query consists of three clauses: select, from, and where.  A
 query takes as its input the relations listed in the from clause, operates on them as
@@ -440,9 +881,9 @@ introduce the SQL syntax through examples, and we describe the general structure
 queries later.
 </p>
 </div>
-<div id="outline-container-org5e2a70c" class="outline-4">
-<h4 id="org5e2a70c"><i>Select</i></h4>
-<div class="outline-text-4" id="text-org5e2a70c">
+<div id="outline-container-org5dbfddc" class="outline-4">
+<h4 id="org5dbfddc"><i>Select</i></h4>
+<div class="outline-text-4" id="text-org5dbfddc">
 <p>
 Database tables are objects that store all the data in a database. In a table, data is
 logically organized in a row-and-column format which is similar to a spreadsheet.
@@ -453,16 +894,16 @@ To query data from a table, you use the <code>SELECT</code> statement. The follo
 basic form of the <code>SELECT</code> statement:
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">SELECT</span>
+<pre class="code"><code>SELECT
     select_list
-<span style="color: #ef80bf; font-weight: bold;">FROM</span>
-    <span style="color: #ef80bf; font-weight: bold;">schema_name</span>.<span style="color: #ef80bf; font-weight: bold;">table_name</span>;
+FROM
+    schema_name.table_name;
 
 </code></pre>
 </div>
-<div id="outline-container-org84e931a" class="outline-5">
-<h5 id="org84e931a">Order by</h5>
-<div class="outline-text-5" id="text-org84e931a">
+<div id="outline-container-orge2f37d6" class="outline-5">
+<h5 id="orge2f37d6">Order by</h5>
+<div class="outline-text-5" id="text-orge2f37d6">
 <p>
 When you use the <code>SELECT</code> statement to query data from a table, the order of rows in the
 result set is not guaranteed. It means that SQL can return a result set with an
@@ -474,25 +915,25 @@ The only way for you to guarantee that the rows in the result set are sorted is 
 <code>ORDER BY</code> clause. The following illustrates the ORDER BY clause syntax:
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">SELECT</span>
+<pre class="code"><code>SELECT
     select_list
-<span style="color: #ef80bf; font-weight: bold;">FROM</span>
-    <span style="color: #ef80bf; font-weight: bold;">table_name</span>
-<span style="color: #ef80bf; font-weight: bold;">ORDER</span> <span style="color: #ef80bf; font-weight: bold;">BY</span>
-    <span style="color: #ef80bf; font-weight: bold;">column_name</span> | expression [<span style="color: #ef80bf; font-weight: bold;">ASC</span> | <span style="color: #ef80bf; font-weight: bold;">DESC</span> ];
+FROM
+    table_name
+ORDER BY
+    column_name | expression [ASC | DESC ];
 </code></pre>
 </div>
-<div id="outline-container-org9e7ce83" class="outline-6">
-<h6 id="org9e7ce83">Offset Fetch</h6>
-<div class="outline-text-6" id="text-org9e7ce83">
+<div id="outline-container-org1cac875" class="outline-6">
+<h6 id="org1cac875">Offset Fetch</h6>
+<div class="outline-text-6" id="text-org1cac875">
 <p>
 The <code>OFFSET</code> and <code>FETCH</code> clauses are the options of the ORDER BY clause. They allow you to limit
 the number of rows to be returned by a query.
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">ORDER</span> <span style="color: #ef80bf; font-weight: bold;">BY</span> column_list [<span style="color: #ef80bf; font-weight: bold;">ASC</span> |<span style="color: #ef80bf; font-weight: bold;">DESC</span>]
-OFFSET offset_row_count {<span style="color: #f470df;">ROW</span> | <span style="color: #ef80bf; font-weight: bold;">ROWS</span>}
-<span style="color: #ef80bf; font-weight: bold;">FETCH</span> {<span style="color: #ef80bf; font-weight: bold;">FIRST</span> | <span style="color: #ef80bf; font-weight: bold;">NEXT</span>} fetch_row_count {<span style="color: #f470df;">ROW</span> | <span style="color: #ef80bf; font-weight: bold;">ROWS</span>} <span style="color: #ef80bf; font-weight: bold;">ONLY</span>
+<pre class="code"><code>ORDER BY column_list [ASC |DESC]
+OFFSET offset_row_count {ROW | ROWS}
+FETCH {FIRST | NEXT} fetch_row_count {ROW | ROWS} ONLY
 </code></pre>
 
 <p>
@@ -522,33 +963,33 @@ will get an error.
 </div>
 </div>
 </div>
-<div id="outline-container-org3c315d9" class="outline-4">
-<h4 id="org3c315d9">Top</h4>
-<div class="outline-text-4" id="text-org3c315d9">
+<div id="outline-container-org596af10" class="outline-4">
+<h4 id="org596af10">Top</h4>
+<div class="outline-text-4" id="text-org596af10">
 <p>
 The SELECT TOP clause allows you to limit the number of rows or percentage of rows returned
 in a query result set.
 </p>
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">SELECT</span> TOP (expression) [PERCENT]
-    [<span style="color: #ef80bf; font-weight: bold;">WITH</span> TIES]
-<span style="color: #ef80bf; font-weight: bold;">FROM</span>
-    <span style="color: #ef80bf; font-weight: bold;">table_name</span>
-<span style="color: #ef80bf; font-weight: bold;">ORDER</span> <span style="color: #ef80bf; font-weight: bold;">BY</span>
-    <span style="color: #ef80bf; font-weight: bold;">column_name</span>;
+<pre class="code"><code>SELECT TOP (expression) [PERCENT]
+    [WITH TIES]
+FROM
+    table_name
+ORDER BY
+    column_name;
 </code></pre>
 </div>
-<div id="outline-container-orga77e6ce" class="outline-6">
-<h6 id="orga77e6ce">Percent</h6>
-<div class="outline-text-6" id="text-orga77e6ce">
+<div id="outline-container-org31c7819" class="outline-6">
+<h6 id="org31c7819">Percent</h6>
+<div class="outline-text-6" id="text-org31c7819">
 <p>
 The <code>PERCENT</code> keyword indicates that the query returns the first <code>N</code> percentage of rows,
 where <code>N</code> is the result of the expression.
 </p>
 </div>
 </div>
-<div id="outline-container-org1e8af35" class="outline-6">
-<h6 id="org1e8af35">With Ties</h6>
-<div class="outline-text-6" id="text-org1e8af35">
+<div id="outline-container-orgfdabace" class="outline-6">
+<h6 id="orgfdabace">With Ties</h6>
+<div class="outline-text-6" id="text-orgfdabace">
 <p>
 The WITH TIES allows you to return more rows with values that match the last row in the
 limited result set. Note that WITH TIES may cause more rows to be returned than you specify
@@ -556,23 +997,23 @@ in the expression.
 </p>
 </div>
 </div>
-<div id="outline-container-org356ca3f" class="outline-5">
-<h5 id="org356ca3f">Distinct</h5>
-<div class="outline-text-5" id="text-org356ca3f">
+<div id="outline-container-org7eff7ca" class="outline-5">
+<h5 id="org7eff7ca">Distinct</h5>
+<div class="outline-text-5" id="text-org7eff7ca">
 <p>
 Sometimes, you may want to get only distinct values in a specified column of a table. To do
 this, you use the SELECT DISTINCT clause as follows:
 </p>
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">SELECT</span> <span style="color: #ef80bf; font-weight: bold;">DISTINCT</span>
-    <span style="color: #ef80bf; font-weight: bold;">column_name</span>
-<span style="color: #ef80bf; font-weight: bold;">FROM</span>
-    <span style="color: #ef80bf; font-weight: bold;">table_name</span>;
+<pre class="code"><code>SELECT DISTINCT
+    column_name
+FROM
+    table_name;
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org9c76b81" class="outline-5">
-<h5 id="org9c76b81">Where</h5>
-<div class="outline-text-5" id="text-org9c76b81">
+<div id="outline-container-orgec56499" class="outline-5">
+<h5 id="orgec56499">Where</h5>
+<div class="outline-text-5" id="text-orgec56499">
 <p>
 When you use the SELECT statement to query data against a table, you get all the rows of
 that table, which is unnecessary because the application may only process a set of rows at
@@ -584,100 +1025,100 @@ To get the rows from the table that satisfy one or more conditions, you use the 
 as follows:
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">SELECT</span>
+<pre class="code"><code>SELECT
     select_list
-<span style="color: #ef80bf; font-weight: bold;">FROM</span>
-    <span style="color: #ef80bf; font-weight: bold;">table_name</span>
-<span style="color: #ef80bf; font-weight: bold;">WHERE</span>
+FROM
+    table_name
+WHERE
     search_condition;
 </code></pre>
 </div>
-<div id="outline-container-org442bba8" class="outline-6">
-<h6 id="org442bba8">And</h6>
-<div class="outline-text-6" id="text-org442bba8">
+<div id="outline-container-org77eb2b0" class="outline-6">
+<h6 id="org77eb2b0">And</h6>
+<div class="outline-text-6" id="text-org77eb2b0">
 <p>
 The AND is a logical operator that allows you to combine two Boolean expressions. It returns
 TRUE only when both expressions evaluate to TRUE.
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">SELECT</span>
+<pre class="code"><code>SELECT
     product_id,
     product_name,
     category_id,
     model_year,
     list_price
-<span style="color: #ef80bf; font-weight: bold;">FROM</span>
+FROM
     production.products
-<span style="color: #ef80bf; font-weight: bold;">WHERE</span>
-    category_id = 1 <span style="color: #ef80bf; font-weight: bold;">AND</span> model_year = 2018
-<span style="color: #ef80bf; font-weight: bold;">ORDER</span> <span style="color: #ef80bf; font-weight: bold;">BY</span>
-    list_price <span style="color: #ef80bf; font-weight: bold;">DESC</span>;
+WHERE
+    category_id = 1 AND model_year = 2018
+ORDER BY
+    list_price DESC;
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org585c568" class="outline-6">
-<h6 id="org585c568">Or</h6>
-<div class="outline-text-6" id="text-org585c568">
+<div id="outline-container-org46f4e87" class="outline-6">
+<h6 id="org46f4e87">Or</h6>
+<div class="outline-text-6" id="text-org46f4e87">
 <p>
 The OR is a logical operator that allows you to combine two Boolean expressions.  It returns
 TRUE when either of the conditions evaluates to TRUE.
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">SELECT</span>
+<pre class="code"><code>SELECT
     product_id,
     product_name,
     category_id,
     model_year,
     list_price
-<span style="color: #ef80bf; font-weight: bold;">FROM</span>
+FROM
     production.products
-<span style="color: #ef80bf; font-weight: bold;">WHERE</span>
-    list_price &gt; 3000 <span style="color: #ef80bf; font-weight: bold;">OR</span> model_year = 2018
-<span style="color: #ef80bf; font-weight: bold;">ORDER</span> <span style="color: #ef80bf; font-weight: bold;">BY</span>
-    list_price <span style="color: #ef80bf; font-weight: bold;">DESC</span>;
+WHERE
+    list_price &gt; 3000 OR model_year = 2018
+ORDER BY
+    list_price DESC;
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org7d2bf44" class="outline-6">
-<h6 id="org7d2bf44">Between</h6>
-<div class="outline-text-6" id="text-org7d2bf44">
+<div id="outline-container-org7e61076" class="outline-6">
+<h6 id="org7e61076">Between</h6>
+<div class="outline-text-6" id="text-org7e61076">
 <p>
 The BETWEEN operator is a logical operator that allows you to specify a range to test.
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">SELECT</span>
+<pre class="code"><code>SELECT
     product_id,
     product_name,
     category_id,
     model_year,
     list_price
-<span style="color: #ef80bf; font-weight: bold;">FROM</span>
+FROM
     production.products
-<span style="color: #ef80bf; font-weight: bold;">WHERE</span>
-    list_price <span style="color: #ef80bf; font-weight: bold;">BETWEEN</span> 1899.00 <span style="color: #ef80bf; font-weight: bold;">AND</span> 1999.99
-<span style="color: #ef80bf; font-weight: bold;">ORDER</span> <span style="color: #ef80bf; font-weight: bold;">BY</span>
-    list_price <span style="color: #ef80bf; font-weight: bold;">DESC</span>;
+WHERE
+    list_price BETWEEN 1899.00 AND 1999.99
+ORDER BY
+    list_price DESC;
 </code></pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orgcee2d6b" class="outline-5">
-<h5 id="orgcee2d6b">Null</h5>
-<div class="outline-text-5" id="text-orgcee2d6b">
+<div id="outline-container-org9609133" class="outline-5">
+<h5 id="org9609133">Null</h5>
+<div class="outline-text-5" id="text-org9609133">
 <p>
 In the database world, NULL is used to indicate the absence of any data value. For example,
 when recording the customer information, the email may be unknown, so you record it as NULL
 in the database.
 </p>
 </div>
-<div id="outline-container-orgff60f67" class="outline-6">
-<h6 id="orgff60f67">Is Null</h6>
-<div class="outline-text-6" id="text-orgff60f67">
+<div id="outline-container-org9c72728" class="outline-6">
+<h6 id="org9c72728">Is Null</h6>
+<div class="outline-text-6" id="text-org9c72728">
 <p>
 See the following customers table from the sample database.
 </p>
 
-<pre class="example" id="org52bb1b4">
+<pre class="example" id="orgbf72b95">
 customer_id(PK, int, not null),
 first_name(varchar, not null),
 last_name(varchar, not null),
@@ -694,16 +1135,16 @@ The following statement finds the customers who do not have phone numbers record
 customers table:
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">SELECT</span>
+<pre class="code"><code>SELECT
     customer_id,
     first_name,
     last_name,
     phone
-<span style="color: #ef80bf; font-weight: bold;">FROM</span>
+FROM
     sales.customers
-<span style="color: #ef80bf; font-weight: bold;">WHERE</span>
-    phone = <span style="color: #ef80bf; font-weight: bold;">NULL</span>
-<span style="color: #ef80bf; font-weight: bold;">ORDER</span> <span style="color: #ef80bf; font-weight: bold;">BY</span>
+WHERE
+    phone = NULL
+ORDER BY
     first_name,
     last_name;
 </code></pre>
@@ -717,7 +1158,7 @@ The <code>WHERE</code> clause returns rows that cause its predicate evaluates to
 following expression evaluates to <code>UNKNOWN</code>.
 </p>
 
-<pre class="example" id="org47cce15">
+<pre class="example" id="org5b111bf">
 phone = NULL;
 </pre>
 
@@ -725,16 +1166,16 @@ phone = NULL;
 The right way to do it is to use the following instead:
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">SELECT</span>
+<pre class="code"><code>SELECT
     customer_id,
     first_name,
     last_name,
     phone
-<span style="color: #ef80bf; font-weight: bold;">FROM</span>
+FROM
     sales.customers
-<span style="color: #ef80bf; font-weight: bold;">WHERE</span>
-    phone <span style="color: #ef80bf; font-weight: bold;">IS</span> <span style="color: #ef80bf; font-weight: bold;">NULL</span>
-<span style="color: #ef80bf; font-weight: bold;">ORDER</span> <span style="color: #ef80bf; font-weight: bold;">BY</span>
+WHERE
+    phone IS NULL
+ORDER BY
     first_name,
     last_name;
 
@@ -743,7 +1184,7 @@ The right way to do it is to use the following instead:
 <p>
 Which evaluates to:
 </p>
-<pre class="example" id="org401f761">
+<pre class="example" id="org85c3267">
 | customer_id | first_name | last_name | phone |
 |-------------+------------+-----------+-------|
 |         338 | Abbey      | Pugh      | NULL  |
@@ -766,9 +1207,9 @@ As you may guess, to check if a value is not NULL, you can use the IS NOT NULL o
 </div>
 </div>
 </div>
-<div id="outline-container-org1e70efe" class="outline-4">
-<h4 id="org1e70efe">Joins</h4>
-<div class="outline-text-4" id="text-org1e70efe">
+<div id="outline-container-orge559c60" class="outline-4">
+<h4 id="orge559c60">Joins</h4>
+<div class="outline-text-4" id="text-orge559c60">
 <p>
 The FROM clause of a query is the first clause to be logically processed, and within the
 FROM clause, table operators operate on input tables. Microsoft SQL Server supports four
@@ -800,9 +1241,9 @@ query processing. The SQL Server relational engine often applies many shortcuts 
 optimization purposes when it knows that it can still produce the correct result.
 </p>
 </div>
-<div id="outline-container-org5b61a26" class="outline-5">
-<h5 id="org5b61a26">Cross Joins</h5>
-<div class="outline-text-5" id="text-org5b61a26">
+<div id="outline-container-orga25e176" class="outline-5">
+<h5 id="orga25e176">Cross Joins</h5>
+<div class="outline-text-5" id="text-orga25e176">
 <p>
 Logically, a cross join is the simplest type of join. A cross join implements only one
 logical query processing phase—a Cartesian Product. This phase operates on the two tables
@@ -811,17 +1252,17 @@ row from one input is matched with all rows from the other. So if you have \(m\)
 table and \(n\) rows in the other, you get \(m \cdot n\) rows in the result.
 </p>
 </div>
-<div id="outline-container-orgce216c0" class="outline-6">
-<h6 id="orgce216c0">ANSI Syntax</h6>
-<div class="outline-text-6" id="text-orgce216c0">
+<div id="outline-container-org5276791" class="outline-6">
+<h6 id="org5276791">ANSI Syntax</h6>
+<div class="outline-text-6" id="text-org5276791">
 <p>
 T-SQL supports two standard syntaxes for cross joins—the ANSI SQL-92 and ANSI SQL-89
 syntaxes. I recommend that you use the ANSI-SQL 92 syntax for reasons that I’ll describe
 shortly.
 </p>
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">SELECT</span> C.custid, E.empid
-<span style="color: #ef80bf; font-weight: bold;">FROM</span> Sales.Customers <span style="color: #ef80bf; font-weight: bold;">AS</span> C
-<span style="color: #ef80bf; font-weight: bold;">CROSS</span> <span style="color: #ef80bf; font-weight: bold;">JOIN</span> HR.Employees <span style="color: #ef80bf; font-weight: bold;">AS</span> E;
+<pre class="code"><code>SELECT C.custid, E.empid
+FROM Sales.Customers AS C
+CROSS JOIN HR.Employees AS E;
 </code></pre>
 
 <p>
@@ -831,9 +1272,9 @@ query produces a result set with 819 rows, as shown here in abbreviated form.
 </div>
 </div>
 </div>
-<div id="outline-container-org7c8cab1" class="outline-5">
-<h5 id="org7c8cab1">Inner Joins</h5>
-<div class="outline-text-5" id="text-org7c8cab1">
+<div id="outline-container-orgce014bb" class="outline-5">
+<h5 id="orgce014bb">Inner Joins</h5>
+<div class="outline-text-5" id="text-orgce014bb">
 <p>
 An inner join applies two logical query processing phases—it applies a Cartesian product
 between the two input tables as in a cross join, and then it filters rows based on a
@@ -847,10 +1288,10 @@ JOIN keyword alone. You specify the predicate that is used to filter rows in a d
 clause called ON. This predicate is also known as the join condition.
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">SELECT</span> E.empid, E.firstname, E.lastname, O.orderid
-<span style="color: #ef80bf; font-weight: bold;">FROM</span> HR.Employees <span style="color: #ef80bf; font-weight: bold;">AS</span> E
-<span style="color: #ef80bf; font-weight: bold;">JOIN</span> Sales.Orders <span style="color: #ef80bf; font-weight: bold;">AS</span> O
-<span style="color: #ef80bf; font-weight: bold;">ON</span> E.empid = O.empid;
+<pre class="code"><code>SELECT E.empid, E.firstname, E.lastname, O.orderid
+FROM HR.Employees AS E
+JOIN Sales.Orders AS O
+ON E.empid = O.empid;
 </code></pre>
 
 
@@ -858,8 +1299,8 @@ clause called ON. This predicate is also known as the join condition.
 This was the SQL-92 syntax, here is 89&rsquo;s:
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">SELECT</span> E.empid, E.firstname, E.lastname, O.orderid
-<span style="color: #ef80bf; font-weight: bold;">FROM</span> HR.Employees <span style="color: #ef80bf; font-weight: bold;">AS</span> E, Sa
+<pre class="code"><code>SELECT E.empid, E.firstname, E.lastname, O.orderid
+FROM HR.Employees AS E, Sa
 </code></pre>
 
 <p>
@@ -870,19 +1311,19 @@ parser generates an error. For example, try to run the following code.
 </p>
 
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">SELECT</span> E.empid, E.firstname, E.lastname, O.orderid
-<span style="color: #ef80bf; font-weight: bold;">FROM</span> HR.Employees <span style="color: #ef80bf; font-weight: bold;">AS</span> E
-<span style="color: #ef80bf; font-weight: bold;">JOIN</span> Sales.Orders <span style="color: #ef80bf; font-weight: bold;">AS</span> O;
+<pre class="code"><code>SELECT E.empid, E.firstname, E.lastname, O.orderid
+FROM HR.Employees AS E
+JOIN Sales.Orders AS O;
 </code></pre>
 
-<pre class="example" id="org7556b37">
+<pre class="example" id="orgf90c168">
 Msg 102, Level 15, State 1, Line 3
 Incorrect syntax near ';'.
 </pre>
 </div>
-<div id="outline-container-orgc751efc" class="outline-6">
-<h6 id="orgc751efc">Composite Joins</h6>
-<div class="outline-text-6" id="text-orgc751efc">
+<div id="outline-container-orgca6b16f" class="outline-6">
+<h6 id="orgca6b16f">Composite Joins</h6>
+<div class="outline-text-6" id="text-orgca6b16f">
 <p>
 A composite join is simply a join based on a predicate that involves more than one attribute
 from each side. A composite join is commonly required when you need to join two tables based
@@ -893,10 +1334,10 @@ write a query that joins the two based on a primary key–foreign key relationsh
 clause of the query would look like this.
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">FROM</span> dbo.Table1 <span style="color: #ef80bf; font-weight: bold;">AS</span> T1
-<span style="color: #ef80bf; font-weight: bold;">JOIN</span> dbo.Table2 <span style="color: #ef80bf; font-weight: bold;">AS</span> T2
-<span style="color: #ef80bf; font-weight: bold;">ON</span> T1.col1 = T2.col1
-<span style="color: #ef80bf; font-weight: bold;">AND</span> T1.col2 = T2.col2
+<pre class="code"><code>FROM dbo.Table1 AS T1
+JOIN dbo.Table2 AS T2
+ON T1.col1 = T2.col1
+AND T1.col2 = T2.col2
 </code></pre>
 
 <p>
@@ -906,9 +1347,9 @@ called OrderDetailsAudit.
 </p>
 </div>
 </div>
-<div id="outline-container-org5c00690" class="outline-6">
-<h6 id="org5c00690">Multi-Joins</h6>
-<div class="outline-text-6" id="text-org5c00690">
+<div id="outline-container-org9faf092" class="outline-6">
+<h6 id="org9faf092">Multi-Joins</h6>
+<div class="outline-text-6" id="text-org9faf092">
 <p>
 A join table operator operates only on two tables, but a single query can have multiple
 joins. In general, when more than one table operator appears in the FROM clause, the table
@@ -928,21 +1369,21 @@ with their orders, and then it joins the result of the first join with the Order
 table to match orders with their order lines.
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">SELECT</span>
+<pre class="code"><code>SELECT
 C.custid, C.companyname, O.orderid,
 OD.productid, OD.qty
-<span style="color: #ef80bf; font-weight: bold;">FROM</span> Sales.Customers <span style="color: #ef80bf; font-weight: bold;">AS</span> C
-<span style="color: #ef80bf; font-weight: bold;">JOIN</span> Sales.Orders <span style="color: #ef80bf; font-weight: bold;">AS</span> O
-<span style="color: #ef80bf; font-weight: bold;">ON</span> C.custid = O.custid
-<span style="color: #ef80bf; font-weight: bold;">JOIN</span> Sales.OrderDetails <span style="color: #ef80bf; font-weight: bold;">AS</span> OD
-<span style="color: #ef80bf; font-weight: bold;">ON</span> O.orderid = OD.orderid;
+FROM Sales.Customers AS C
+JOIN Sales.Orders AS O
+ON C.custid = O.custid
+JOIN Sales.OrderDetails AS OD
+ON O.orderid = OD.orderid;
 </code></pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org5e61873" class="outline-5">
-<h5 id="org5e61873">Outer Joins</h5>
-<div class="outline-text-5" id="text-org5e61873">
+<div id="outline-container-org80e37e5" class="outline-5">
+<h5 id="org80e37e5">Outer Joins</h5>
+<div class="outline-text-5" id="text-org80e37e5">
 <p>
 Outer joins were introduced in ANSI SQL-92 and, unlike inner joins and cross joins, have
 only one standard syntax—the one in which the JOIN keyword is specified between the table
@@ -964,13 +1405,13 @@ placeholders for the attributes from the nonpreserved side of the join in those
 outer rows.
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">SELECT</span>
-    <span style="color: #ef80bf; font-weight: bold;">m</span>.<span style="color: #ef80bf; font-weight: bold;">name</span> member,
+<pre class="code"><code>SELECT
+    m.name member,
     p.title project
-<span style="color: #ef80bf; font-weight: bold;">FROM</span>
-    pm.members <span style="color: #ef80bf; font-weight: bold;">m</span>
-    <span style="color: #ef80bf; font-weight: bold;">RIGHT</span> <span style="color: #ef80bf; font-weight: bold;">OUTER</span> <span style="color: #ef80bf; font-weight: bold;">JOIN</span> pm.projects p
-    <span style="color: #ef80bf; font-weight: bold;">ON</span> p.id = <span style="color: #ef80bf; font-weight: bold;">m</span>.project_id
+FROM
+    pm.members m
+    RIGHT OUTER JOIN pm.projects p
+    ON p.id = m.project_id
 </code></pre>
 
 <p>
@@ -989,9 +1430,9 @@ respect to rows that it filters out, unlike the ON clause.
 </div>
 </div>
 </div>
-<div id="outline-container-org0cdbc3f" class="outline-4">
-<h4 id="org0cdbc3f">Aggregation with Grouping</h4>
-<div class="outline-text-4" id="text-org0cdbc3f">
+<div id="outline-container-org869f86e" class="outline-4">
+<h4 id="org869f86e">Aggregation with Grouping</h4>
+<div class="outline-text-4" id="text-org869f86e">
 <p>
 There are circumstances where we would like to apply the aggregate function not only to a
 single set of tuples, but also to a group of sets of tuples; we specify this in SQL using
@@ -1006,15 +1447,15 @@ write this query as follows
 </p>
 
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">select</span> dept <span style="color: #ef80bf; font-weight: bold;">name</span>, <span style="color: #a897ef; font-weight: bold;">avg</span> (salary) <span style="color: #ef80bf; font-weight: bold;">as</span> <span style="color: #a897ef; font-weight: bold;">avg</span> salary
-<span style="color: #ef80bf; font-weight: bold;">from</span> instructor
-<span style="color: #ef80bf; font-weight: bold;">group</span> <span style="color: #ef80bf; font-weight: bold;">by</span> dept <span style="color: #ef80bf; font-weight: bold;">name</span>;
+<pre class="code"><code>select dept name, avg (salary) as avg salary
+from instructor
+group by dept name;
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgeda7099" class="outline-4">
-<h4 id="orgeda7099">Nested Subqueries</h4>
-<div class="outline-text-4" id="text-orgeda7099">
+<div id="outline-container-org4763c84" class="outline-4">
+<h4 id="org4763c84">Nested Subqueries</h4>
+<div class="outline-text-4" id="text-org4763c84">
 <p>
 SQL provides a mechanism for nesting subqueries. A subquery is a select-from-where
 expression that is nested within another query. A common use of subqueries is to perform
@@ -1022,9 +1463,9 @@ tests for set membership, make set comparisons, and determine set cardinality by
 subqueries in the where clause.
 </p>
 </div>
-<div id="outline-container-orgec12c4c" class="outline-5">
-<h5 id="orgec12c4c">Set Membership</h5>
-<div class="outline-text-5" id="text-orgec12c4c">
+<div id="outline-container-orgd0bde3a" class="outline-5">
+<h5 id="orgd0bde3a">Set Membership</h5>
+<div class="outline-text-5" id="text-orgd0bde3a">
 <p>
 SQL allows testing tuples for membership in a relation. The in connective tests for set
 membership, where the set is a collection of values produced by a select clause. The
@@ -1046,9 +1487,9 @@ our query using the in connective of SQL. We begin by ﬁnding all courses taugh
 Spring 2018, and we write the subquery:
 </p>
 
-<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">select</span> course id
-<span style="color: #ef80bf; font-weight: bold;">from</span> <span style="color: #ef80bf; font-weight: bold;">section</span>
-<span style="color: #ef80bf; font-weight: bold;">where</span> semester = <span style="color: #e5b76f;">'Spring'</span> <span style="color: #ef80bf; font-weight: bold;">and</span> <span style="color: #ef80bf; font-weight: bold;">year</span>= 2018)
+<pre class="code"><code>(select course id
+from section
+where semester = 'Spring' and year= 2018)
 </code></pre>
 
 <p>
@@ -1058,26 +1499,26 @@ where clause of an outer query. The resulting query is:
 </p>
 
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">select</span> <span style="color: #ef80bf; font-weight: bold;">distinct</span> course id
-<span style="color: #ef80bf; font-weight: bold;">from</span> <span style="color: #ef80bf; font-weight: bold;">section</span>
-<span style="color: #ef80bf; font-weight: bold;">where</span> semester = <span style="color: #e5b76f;">'Fall'</span> <span style="color: #ef80bf; font-weight: bold;">and</span> <span style="color: #ef80bf; font-weight: bold;">year</span>= 2017 <span style="color: #ef80bf; font-weight: bold;">and</span>
-course id <span style="color: #ef80bf; font-weight: bold;">in</span> (<span style="color: #ef80bf; font-weight: bold;">select</span> course id
-<span style="color: #ef80bf; font-weight: bold;">from</span> <span style="color: #ef80bf; font-weight: bold;">section</span>
-<span style="color: #ef80bf; font-weight: bold;">where</span> semester = <span style="color: #e5b76f;">'Spring'</span> <span style="color: #ef80bf; font-weight: bold;">and</span> <span style="color: #ef80bf; font-weight: bold;">year</span>= 2018);
+<pre class="code"><code>select distinct course id
+from section
+where semester = 'Fall' and year= 2017 and
+course id in (select course id
+from section
+where semester = 'Spring' and year= 2018);
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org8890f7e" class="outline-5">
-<h5 id="org8890f7e">Set Comparison</h5>
-<div class="outline-text-5" id="text-org8890f7e">
+<div id="outline-container-org24b34d4" class="outline-5">
+<h5 id="org24b34d4">Set Comparison</h5>
+<div class="outline-text-5" id="text-org24b34d4">
 <p>
 Check the MSDOCS; <a href="https://learn.microsoft.com/en-us/sql/t-sql/language-elements/some-any-transact-sql?view=sql-server-ver16">here</a>, <a href="https://learn.microsoft.com/en-us/sql/t-sql/language-elements/all-transact-sql?view=sql-server-ver16">here</a>.
 </p>
 </div>
 </div>
-<div id="outline-container-org1d19917" class="outline-5">
-<h5 id="org1d19917">Test for Empty Relations</h5>
-<div class="outline-text-5" id="text-org1d19917">
+<div id="outline-container-org1d714bf" class="outline-5">
+<h5 id="org1d714bf">Test for Empty Relations</h5>
+<div class="outline-text-5" id="text-org1d714bf">
 <p>
 SQL includes a feature for testing whether a subquery has any tuples in its result. The
 exists construct returns the value true if the argument subquery is nonempty. Using the
@@ -1085,12 +1526,12 @@ exists construct, we can write the query “Find all courses taught in both the 
 semester and in the Spring 2018 semester” in still another way:
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">select</span> course id
-<span style="color: #ef80bf; font-weight: bold;">from</span> <span style="color: #ef80bf; font-weight: bold;">section</span> <span style="color: #ef80bf; font-weight: bold;">as</span> S
-<span style="color: #ef80bf; font-weight: bold;">where</span> semester = <span style="color: #e5b76f;">'Fall'</span> <span style="color: #ef80bf; font-weight: bold;">and</span> <span style="color: #ef80bf; font-weight: bold;">year</span>= 2017 <span style="color: #ef80bf; font-weight: bold;">and</span>
-<span style="color: #ef80bf; font-weight: bold;">exists</span> (<span style="color: #ef80bf; font-weight: bold;">select</span> *
-<span style="color: #ef80bf; font-weight: bold;">from</span> <span style="color: #ef80bf; font-weight: bold;">section</span> <span style="color: #ef80bf; font-weight: bold;">as</span> T
-<span style="color: #ef80bf; font-weight: bold;">where</span> semester = <span style="color: #e5b76f;">'Spring'</span> <span style="color: #ef80bf; font-weight: bold;">and</span> <span style="color: #ef80bf; font-weight: bold;">year</span>= 2018 <span style="color: #ef80bf; font-weight: bold;">and</span>
+<pre class="code"><code>select course id
+from section as S
+where semester = 'Fall' and year= 2017 and
+exists (select *
+from section as T
+where semester = 'Spring' and year= 2018 and
 S.course id= T .course id);
 </code></pre>
 
@@ -1102,12 +1543,12 @@ contains no duplicate tuples. Using the unique construct, we can write the query
 all courses that were offered at most once in 2017” as follows:
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">select</span> T .course id
-<span style="color: #ef80bf; font-weight: bold;">from</span> course <span style="color: #ef80bf; font-weight: bold;">as</span> T
-<span style="color: #ef80bf; font-weight: bold;">where</span> <span style="color: #ef80bf; font-weight: bold;">unique</span> (<span style="color: #ef80bf; font-weight: bold;">select</span> R.course id
-<span style="color: #ef80bf; font-weight: bold;">from</span> <span style="color: #ef80bf; font-weight: bold;">section</span> <span style="color: #ef80bf; font-weight: bold;">as</span> R
-<span style="color: #ef80bf; font-weight: bold;">where</span> T .course id= R.course id <span style="color: #ef80bf; font-weight: bold;">and</span>
-R.<span style="color: #ef80bf; font-weight: bold;">year</span> = 2017);
+<pre class="code"><code>select T .course id
+from course as T
+where unique (select R.course id
+from section as R
+where T .course id= R.course id and
+R.year = 2017);
 </code></pre>
 
 <p>
@@ -1116,44 +1557,44 @@ result, and the unique predicate would evaluate to true on the empty set.
 An equivalent version of this query not using the unique construct is:
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">select</span> T .course id
-<span style="color: #ef80bf; font-weight: bold;">from</span> course <span style="color: #ef80bf; font-weight: bold;">as</span> T
-<span style="color: #ef80bf; font-weight: bold;">where</span> 1 &gt;= (<span style="color: #ef80bf; font-weight: bold;">select</span> <span style="color: #a897ef; font-weight: bold;">count</span>(R.course id)
-<span style="color: #ef80bf; font-weight: bold;">from</span> <span style="color: #ef80bf; font-weight: bold;">section</span> <span style="color: #ef80bf; font-weight: bold;">as</span> R
-<span style="color: #ef80bf; font-weight: bold;">where</span> T .course id= R.course id <span style="color: #ef80bf; font-weight: bold;">and</span>
-R.<span style="color: #ef80bf; font-weight: bold;">year</span> = 2017);
+<pre class="code"><code>select T .course id
+from course as T
+where 1 &gt;= (select count(R.course id)
+from section as R
+where T .course id= R.course id and
+R.year = 2017);
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org0a84084" class="outline-5">
-<h5 id="org0a84084"><i>From</i> Subqueries</h5>
-<div class="outline-text-5" id="text-org0a84084">
+<div id="outline-container-orgd81bc4c" class="outline-5">
+<h5 id="orgd81bc4c"><i>From</i> Subqueries</h5>
+<div class="outline-text-5" id="text-orgd81bc4c">
 <p>
 SQL allows a subquery expression to be used in the from clause. The key concept ap- plied
 here is that any select-from-where expression returns a relation as a result and, therefore,
 can be inserted into another select-from-where anywhere that a relation can appear.
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">select</span> dept <span style="color: #ef80bf; font-weight: bold;">name</span>, <span style="color: #a897ef; font-weight: bold;">avg</span> salary
-<span style="color: #ef80bf; font-weight: bold;">from</span> (<span style="color: #ef80bf; font-weight: bold;">select</span> dept <span style="color: #ef80bf; font-weight: bold;">name</span>, <span style="color: #a897ef; font-weight: bold;">avg</span> (salary) <span style="color: #ef80bf; font-weight: bold;">as</span> <span style="color: #a897ef; font-weight: bold;">avg</span> salary
-<span style="color: #ef80bf; font-weight: bold;">from</span> instructor
-<span style="color: #ef80bf; font-weight: bold;">group</span> <span style="color: #ef80bf; font-weight: bold;">by</span> dept <span style="color: #ef80bf; font-weight: bold;">name</span>)
-<span style="color: #ef80bf; font-weight: bold;">where</span> <span style="color: #a897ef; font-weight: bold;">avg</span> salary &gt; 42000;
+<pre class="code"><code>select dept name, avg salary
+from (select dept name, avg (salary) as avg salary
+from instructor
+group by dept name)
+where avg salary &gt; 42000;
 </code></pre>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-orgf60ea6f" class="outline-3">
-<h3 id="orgf60ea6f">Gotchas</h3>
-<div class="outline-text-3" id="text-orgf60ea6f">
+<div id="outline-container-org7554aa9" class="outline-3">
+<h3 id="org7554aa9">Gotchas</h3>
+<div class="outline-text-3" id="text-org7554aa9">
 <p>
 This section contains several exercise and tricks for various topics.
 </p>
 </div>
-<div id="outline-container-orgbde34e0" class="outline-4">
-<h4 id="orgbde34e0">Generating Five Copies from Each Row&#xa0;&#xa0;&#xa0;<span class="tag"><span class="cross_joins">cross_joins</span></span></h4>
-<div class="outline-text-4" id="text-orgbde34e0">
+<div id="outline-container-org615812a" class="outline-4">
+<h4 id="org615812a">Generating Five Copies from Each Row&#xa0;&#xa0;&#xa0;<span class="tag"><span class="cross_joins">cross_joins</span></span></h4>
+<div class="outline-text-4" id="text-org615812a">
 <p>
 Producing multiple copies of rows can be achieved with a fundamental technique that utilizes
 a cross  join. If you need to produce five copies of each employee row, you need to perform
@@ -1164,26 +1605,26 @@ for this purpose. Simply cross Employees and Nums,  and filter from Nums as many
 number of requested copies (five, in this case).
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">create</span> <span style="color: #ef80bf; font-weight: bold;">table</span> <span style="color: #f59280;">temptable</span>
+<pre class="code"><code>create table temptable
 (
-    id <span style="color: #f470df;">int</span>
+    id int
 );
-<span style="color: #ef80bf; font-weight: bold;">insert</span> <span style="color: #ef80bf; font-weight: bold;">into</span> temptable
-<span style="color: #ef80bf; font-weight: bold;">values</span>
+insert into temptable
+values
     (1),
     (2),
     (3),
     (4),
     (5);
 
-<span style="color: #ef80bf; font-weight: bold;">select</span> stf.staff_id empid, stf.first_name firstname, last_name lastname, tmp.id n
-<span style="color: #ef80bf; font-weight: bold;">from</span> sales.staffs <span style="color: #ef80bf; font-weight: bold;">as</span> stf <span style="color: #ef80bf; font-weight: bold;">cross</span> <span style="color: #ef80bf; font-weight: bold;">join</span> temptable <span style="color: #ef80bf; font-weight: bold;">as</span> tmp
-<span style="color: #ef80bf; font-weight: bold;">order</span> <span style="color: #ef80bf; font-weight: bold;">by</span> firstname, n;
+select stf.staff_id empid, stf.first_name firstname, last_name lastname, tmp.id n
+from sales.staffs as stf cross join temptable as tmp
+order by firstname, n;
 
-<span style="color: #ef80bf; font-weight: bold;">drop</span> <span style="color: #ef80bf; font-weight: bold;">table</span> <span style="color: #f59280;">temptable</span>;
+drop table temptable;
 </code></pre>
 
-<pre class="example" id="org82155d2">
+<pre class="example" id="org4e24dae">
 | empid | firstname  | lastname | n |
 |-------+------------+----------+---|
 |    10 | Bernardine | Houston  | 1 |
@@ -1202,9 +1643,9 @@ Load 10 more... (10/50)
 </div>
 </div>
 </div>
-<div id="outline-container-org53c8f29" class="outline-3">
-<h3 id="org53c8f29">General Notes</h3>
-<div class="outline-text-3" id="text-org53c8f29">
+<div id="outline-container-orgf74bbfb" class="outline-3">
+<h3 id="orgf74bbfb">General Notes</h3>
+<div class="outline-text-3" id="text-orgf74bbfb">
 <ul class="org-ul">
 <li>When you use the NOT IN predicate against a subquery that returns at least one NULL, the
 outer query always returns an empty set. Values from the outer table that are known to
@@ -1221,11 +1662,11 @@ variable. The following code demonstrates this technique.
 </p>
 
 <pre class="code"><code>USE TSQL2012;
-<span style="color: #ef80bf; font-weight: bold;">DECLARE</span> @maxid <span style="color: #ef80bf; font-weight: bold;">AS</span> <span style="color: #f470df;">INT</span> = (<span style="color: #ef80bf; font-weight: bold;">SELECT</span> <span style="color: #a897ef; font-weight: bold;">MAX</span>(orderid)
-<span style="color: #ef80bf; font-weight: bold;">FROM</span> Sales.Orders);
-<span style="color: #ef80bf; font-weight: bold;">SELECT</span> orderid, orderdate, empid, custid
-<span style="color: #ef80bf; font-weight: bold;">FROM</span> Sales.Orders
-<span style="color: #ef80bf; font-weight: bold;">WHERE</span> orderid = @maxid;
+DECLARE @maxid AS INT = (SELECT MAX(orderid)
+FROM Sales.Orders);
+SELECT orderid, orderdate, empid, custid
+FROM Sales.Orders
+WHERE orderid = @maxid;
 </code></pre></li>
 <li><p>
 Suppose that you need to query the Orders table in the TSQL2012 database and return, for
@@ -1237,17 +1678,17 @@ equivalent is “the maximum value that is smaller than the current value.” Th
 be expressed in T-SQL with a correlated subquery like this.
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">SELECT</span> orderid, orderdate, empid, custid,
-       (<span style="color: #ef80bf; font-weight: bold;">SELECT</span> <span style="color: #a897ef; font-weight: bold;">MAX</span>(O2.orderid)
-        <span style="color: #ef80bf; font-weight: bold;">FROM</span> Sales.Orders <span style="color: #ef80bf; font-weight: bold;">AS</span> O2
-        <span style="color: #ef80bf; font-weight: bold;">WHERE</span> O2.orderid &lt; O1.orderid) <span style="color: #ef80bf; font-weight: bold;">AS</span> prevorderid
-<span style="color: #ef80bf; font-weight: bold;">FROM</span> Sales.Orders <span style="color: #ef80bf; font-weight: bold;">AS</span> O1;
+<pre class="code"><code>SELECT orderid, orderdate, empid, custid,
+       (SELECT MAX(O2.orderid)
+        FROM Sales.Orders AS O2
+        WHERE O2.orderid &lt; O1.orderid) AS prevorderid
+FROM Sales.Orders AS O1;
 </code></pre></li>
 </ul>
 </div>
-<div id="outline-container-orge3b0018" class="outline-4">
-<h4 id="orge3b0018">Confusions</h4>
-<div class="outline-text-4" id="text-orge3b0018">
+<div id="outline-container-org47fffd0" class="outline-4">
+<h4 id="org47fffd0">Confusions</h4>
+<div class="outline-text-4" id="text-org47fffd0">
 <ul class="org-ul">
 <li>The different between <code>UNION</code> and <code>UNION ALL</code> is that, <code>UNION</code> will remove duplicates from
 your query, <code>UNION ALL</code> will not.</li>
@@ -1255,9 +1696,9 @@ your query, <code>UNION ALL</code> will not.</li>
 </div>
 </div>
 </div>
-<div id="outline-container-orge07b420" class="outline-3">
-<h3 id="orge07b420">Table Expressions</h3>
-<div class="outline-text-3" id="text-orge07b420">
+<div id="outline-container-org9567073" class="outline-3">
+<h3 id="org9567073">Table Expressions</h3>
+<div class="outline-text-3" id="text-org9567073">
 <p>
 A table expression is a named query expression that represents a valid relational table. You
 can use table expressions in data manipulation statements much like you use other tables.
@@ -1274,9 +1715,9 @@ language, such as the inability to refer to column aliases assigned in the SELEC
 query clauses that are logically processed before the <code>SELECT</code> clause.
 </p>
 </div>
-<div id="outline-container-orga76cf37" class="outline-4">
-<h4 id="orga76cf37">Derived Tables</h4>
-<div class="outline-text-4" id="text-orga76cf37">
+<div id="outline-container-orgf82f39e" class="outline-4">
+<h4 id="orgf82f39e">Derived Tables</h4>
+<div class="outline-text-4" id="text-orgf82f39e">
 <p>
 Derived tables (also known as table subqueries) are defined in the FROM clause of an outer
 query. Their scope of existence is the outer query. As soon as the outer query is finished,
@@ -1291,10 +1732,10 @@ outer query selects all rows from the derived table.
 </p>
 
 <pre class="code"><code>USE TSQL2012;
-<span style="color: #ef80bf; font-weight: bold;">SELECT</span> *
-<span style="color: #ef80bf; font-weight: bold;">FROM</span> (<span style="color: #ef80bf; font-weight: bold;">SELECT</span> custid, companyname
-<span style="color: #ef80bf; font-weight: bold;">FROM</span> Sales.Customers
-<span style="color: #ef80bf; font-weight: bold;">WHERE</span> country = N<span style="color: #e5b76f;">'USA'</span>) <span style="color: #ef80bf; font-weight: bold;">AS</span> USACusts;
+SELECT *
+FROM (SELECT custid, companyname
+FROM Sales.Customers
+WHERE country = N'USA') AS USACusts;
 </code></pre>
 
 <p>
@@ -1325,16 +1766,16 @@ to define a table expression.
 </p>
 </div>
 </div>
-<div id="outline-container-orge2a16e2" class="outline-4">
-<h4 id="orge2a16e2">Common Table Expressions</h4>
-<div class="outline-text-4" id="text-orge2a16e2">
+<div id="outline-container-orgb8fb117" class="outline-4">
+<h4 id="orgb8fb117">Common Table Expressions</h4>
+<div class="outline-text-4" id="text-orgb8fb117">
 <p>
 Common table expressions (CTEs) are another standard form of table expression very similar to derived tables, yet with a couple of important advantages.
 CTEs are defined by using a WITH statement and have the following general form.
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">WITH</span> &lt;CTE_Name&gt;[(&lt;target_column_list&gt;)]
-<span style="color: #ef80bf; font-weight: bold;">AS</span>
+<pre class="code"><code>WITH &lt;CTE_Name&gt;[(&lt;target_column_list&gt;)]
+AS
 (
 &lt;inner_query_defining_CTE&gt;
 )
@@ -1348,13 +1789,13 @@ USACusts based on a query that returns all customers from the United States, and
 query selects all rows from the CTE.
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">WITH</span> USACusts <span style="color: #ef80bf; font-weight: bold;">AS</span>
+<pre class="code"><code>WITH USACusts AS
 (
-    <span style="color: #ef80bf; font-weight: bold;">SELECT</span> custid, companyname
-    <span style="color: #ef80bf; font-weight: bold;">FROM</span> Sales.Customers
-    <span style="color: #ef80bf; font-weight: bold;">WHERE</span> country = N<span style="color: #e5b76f;">'USA'</span>
+    SELECT custid, companyname
+    FROM Sales.Customers
+    WHERE country = N'USA'
 )
-<span style="color: #ef80bf; font-weight: bold;">SELECT</span> * <span style="color: #ef80bf; font-weight: bold;">FROM</span> USACusts;
+SELECT * FROM USACusts;
 </code></pre>
 
 <p>
@@ -1365,33 +1806,33 @@ With CTE, there are two ways of assigning aliases:
 <li><p>
 The inline form:
 </p>
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">WITH</span> C <span style="color: #ef80bf; font-weight: bold;">AS</span>
+<pre class="code"><code>WITH C AS
 (
-<span style="color: #ef80bf; font-weight: bold;">SELECT</span> <span style="color: #ef80bf; font-weight: bold;">YEAR</span>(orderdate) <span style="color: #ef80bf; font-weight: bold;">AS</span> orderyear, custid
-<span style="color: #ef80bf; font-weight: bold;">FROM</span> Sales.Orders
+SELECT YEAR(orderdate) AS orderyear, custid
+FROM Sales.Orders
 )
-<span style="color: #ef80bf; font-weight: bold;">SELECT</span> orderyear, <span style="color: #a897ef; font-weight: bold;">COUNT</span>(<span style="color: #ef80bf; font-weight: bold;">DISTINCT</span> custid) <span style="color: #ef80bf; font-weight: bold;">AS</span> numcusts
-<span style="color: #ef80bf; font-weight: bold;">FROM</span> C
-<span style="color: #ef80bf; font-weight: bold;">GROUP</span> <span style="color: #ef80bf; font-weight: bold;">BY</span> orderyear;
+SELECT orderyear, COUNT(DISTINCT custid) AS numcusts
+FROM C
+GROUP BY orderyear;
 </code></pre></li>
 <li><p>
 The external form:
 </p>
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">WITH</span> C(orderyear, custid) <span style="color: #ef80bf; font-weight: bold;">AS</span>
+<pre class="code"><code>WITH C(orderyear, custid) AS
 (
-<span style="color: #ef80bf; font-weight: bold;">SELECT</span> <span style="color: #ef80bf; font-weight: bold;">YEAR</span>(orderdate), custid
-<span style="color: #ef80bf; font-weight: bold;">FROM</span> Sales.Orders
+SELECT YEAR(orderdate), custid
+FROM Sales.Orders
 )
-<span style="color: #ef80bf; font-weight: bold;">SELECT</span> orderyear, <span style="color: #a897ef; font-weight: bold;">COUNT</span>(<span style="color: #ef80bf; font-weight: bold;">DISTINCT</span> custid) <span style="color: #ef80bf; font-weight: bold;">AS</span> numcusts
-<span style="color: #ef80bf; font-weight: bold;">FROM</span> C
-<span style="color: #ef80bf; font-weight: bold;">GROUP</span> <span style="color: #ef80bf; font-weight: bold;">BY</span> orderyear;
+SELECT orderyear, COUNT(DISTINCT custid) AS numcusts
+FROM C
+GROUP BY orderyear;
 </code></pre></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgfbd6b5a" class="outline-4">
-<h4 id="orgfbd6b5a">Recursive Common Table Expressions</h4>
-<div class="outline-text-4" id="text-orgfbd6b5a">
+<div id="outline-container-orgbda57b3" class="outline-4">
+<h4 id="orgbda57b3">Recursive Common Table Expressions</h4>
+<div class="outline-text-4" id="text-orgbda57b3">
 <p>
 CTEs are unique among table expressions because they have recursive capabilities. A recursive
 CTE is defined by at least two queries (more are possible)—at least one query known as the anchor
@@ -1399,11 +1840,11 @@ member and at least one query known as the recursive member. The general form of
 CTE looks like the following.
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">WITH</span> &lt;CTE_Name&gt;[(&lt;target_column_list&gt;)]
-<span style="color: #ef80bf; font-weight: bold;">AS</span>
+<pre class="code"><code>WITH &lt;CTE_Name&gt;[(&lt;target_column_list&gt;)]
+AS
 (
 &lt;anchor_member&gt;
-<span style="color: #ef80bf; font-weight: bold;">UNION</span> <span style="color: #ef80bf; font-weight: bold;">ALL</span>
+UNION ALL
 &lt;recursive_member&gt;
 )
 &lt;outer_query_against_CTE&gt;;
@@ -1443,25 +1884,25 @@ employee (Don Funk, employee ID 2) and all of the employee’s subordinates in a
 </p>
 
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">WITH</span> EmpsCTE <span style="color: #ef80bf; font-weight: bold;">AS</span>
+<pre class="code"><code>WITH EmpsCTE AS
 (
-    <span style="color: #ef80bf; font-weight: bold;">SELECT</span> empid, mgrid, firstname, lastname
-    <span style="color: #ef80bf; font-weight: bold;">FROM</span> HR.Employees
-     <span style="color: #ef80bf; font-weight: bold;">WHERE</span> empid = 2
-     <span style="color: #ef80bf; font-weight: bold;">UNION</span> <span style="color: #ef80bf; font-weight: bold;">ALL</span>
-    <span style="color: #ef80bf; font-weight: bold;">SELECT</span> C.empid, C.mgrid, C.firstname, C.lastname
-     <span style="color: #ef80bf; font-weight: bold;">FROM</span> EmpsCTE <span style="color: #ef80bf; font-weight: bold;">AS</span> P
-    <span style="color: #ef80bf; font-weight: bold;">JOIN</span> HR.Employees <span style="color: #ef80bf; font-weight: bold;">AS</span> C
-     <span style="color: #ef80bf; font-weight: bold;">ON</span> C.mgrid = P.empid
+    SELECT empid, mgrid, firstname, lastname
+    FROM HR.Employees
+     WHERE empid = 2
+     UNION ALL
+    SELECT C.empid, C.mgrid, C.firstname, C.lastname
+     FROM EmpsCTE AS P
+    JOIN HR.Employees AS C
+     ON C.mgrid = P.empid
 )
-<span style="color: #ef80bf; font-weight: bold;">SELECT</span> empid, mgrid, firstname, lastname
-<span style="color: #ef80bf; font-weight: bold;">FROM</span> EmpsCTE;
+SELECT empid, mgrid, firstname, lastname
+FROM EmpsCTE;
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orge7722a5" class="outline-4">
-<h4 id="orge7722a5">Views</h4>
-<div class="outline-text-4" id="text-orge7722a5">
+<div id="outline-container-org39c4514" class="outline-4">
+<h4 id="org39c4514">Views</h4>
+<div class="outline-text-4" id="text-org39c4514">
 <p>
 The two types of table expressions discussed so far—derived tables and CTEs—have a very
 limited scope, which is the single-statement scope. As soon as the outer query against those
@@ -1477,12 +1918,12 @@ those objects are permanent parts of the database and are only removed from the 
 they are explicitly dropped.
 </p>
 
-<pre class="code"><code>IF OBJECT_ID (<span style="color: #e5b76f;">'Sales.USACusts'</span>) <span style="color: #ef80bf; font-weight: bold;">IS</span> <span style="color: #ef80bf; font-weight: bold;">NOT</span> <span style="color: #ef80bf; font-weight: bold;">NULL</span> <span style="color: #ef80bf; font-weight: bold;">DROP</span> <span style="color: #ef80bf; font-weight: bold;">VIEW</span> Sales.USACusts;
+<pre class="code"><code>IF OBJECT_ID ('Sales.USACusts') IS NOT NULL DROP VIEW Sales.USACusts;
 
-<span style="color: #ef80bf; font-weight: bold;">GO</span>
-<span style="color: #ef80bf; font-weight: bold;">CREATE</span> <span style="color: #ef80bf; font-weight: bold;">VIEW</span> <span style="color: #f59280;">Sales.USACusts</span>
-<span style="color: #ef80bf; font-weight: bold;">AS</span>
-    <span style="color: #ef80bf; font-weight: bold;">SELECT</span>
+GO
+CREATE VIEW Sales.USACusts
+AS
+    SELECT
         custid,
         companyname,
         contactname,
@@ -1494,12 +1935,12 @@ they are explicitly dropped.
         country,
         phone,
         fax
-    <span style="color: #ef80bf; font-weight: bold;">FROM</span>
+    FROM
         Sales.Customers
-    <span style="color: #ef80bf; font-weight: bold;">WHERE</span>
-  country = N<span style="color: #e5b76f;">'USA'</span>;
+    WHERE
+  country = N'USA';
 
-<span style="color: #ef80bf; font-weight: bold;">GO</span>
+GO
 </code></pre>
 
 <p>
@@ -1516,9 +1957,9 @@ columns are added to the underlying tables and you need them in the view, use th
 statement to revise the view definition accordingly.
 </p>
 </div>
-<div id="outline-container-org0ed9684" class="outline-5">
-<h5 id="org0ed9684">Order</h5>
-<div class="outline-text-5" id="text-org0ed9684">
+<div id="outline-container-orgf62cb3a" class="outline-5">
+<h5 id="orgf62cb3a">Order</h5>
+<div class="outline-text-5" id="text-orgf62cb3a">
 <p>
 The query that you use to define a view must meet all requirements mentioned earlier with
 respect to table expressions in the context of derived tables. The view should not guarantee
@@ -1544,15 +1985,15 @@ some people think that they can create “ordered views.” One of the ways to t
 using <code>TOP (100) PERCENT</code>, like the following.
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">ALTER</span> <span style="color: #ef80bf; font-weight: bold;">VIEW</span> <span style="color: #f59280;">Sales.USACusts</span>
-<span style="color: #ef80bf; font-weight: bold;">AS</span>
-<span style="color: #ef80bf; font-weight: bold;">SELECT</span> TOP (100) PERCENT
+<pre class="code"><code>ALTER VIEW Sales.USACusts
+AS
+SELECT TOP (100) PERCENT
 custid, companyname, contactname, contacttitle, address,
 city, region, postalcode, country, phone, fax
-<span style="color: #ef80bf; font-weight: bold;">FROM</span> Sales.Customers
-<span style="color: #ef80bf; font-weight: bold;">WHERE</span> country = N<span style="color: #e5b76f;">'USA'</span>
-<span style="color: #ef80bf; font-weight: bold;">ORDER</span> <span style="color: #ef80bf; font-weight: bold;">BY</span> region;
-<span style="color: #ef80bf; font-weight: bold;">GO</span>
+FROM Sales.Customers
+WHERE country = N'USA'
+ORDER BY region;
+GO
 </code></pre>
 
 <p>
@@ -1564,9 +2005,9 @@ guaranteed.
 </p>
 </div>
 </div>
-<div id="outline-container-org1edb684" class="outline-5">
-<h5 id="org1edb684">Options</h5>
-<div class="outline-text-5" id="text-org1edb684">
+<div id="outline-container-orgd55b261" class="outline-5">
+<h5 id="orgd55b261">Options</h5>
+<div class="outline-text-5" id="text-orgd55b261">
 <p>
 When you create or alter a view, you can specify view attributes and options as part of the view
 definition. In the header of the view, under the <code>WITH</code> clause, you can specify attributes such as
@@ -1574,9 +2015,9 @@ definition. In the header of the view, under the <code>WITH</code> clause, you c
 OPTION</code>.
 </p>
 </div>
-<div id="outline-container-orgffdb8b7" class="outline-6">
-<h6 id="orgffdb8b7">Encryption</h6>
-<div class="outline-text-6" id="text-orgffdb8b7">
+<div id="outline-container-orge283a74" class="outline-6">
+<h6 id="orge283a74">Encryption</h6>
+<div class="outline-text-6" id="text-orge283a74">
 <p>
 The ENCRYPTION option is available when you create or alter views, stored procedures, triggers, and
 user-defined functions (UDFs). The ENCRYPTION option indicates that SQL Server will internally store
@@ -1588,24 +2029,24 @@ visible to users through any of the catalog objects—only to privileged users t
 Consider the following definition:
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">ALTER</span> <span style="color: #ef80bf; font-weight: bold;">VIEW</span> <span style="color: #f59280;">Sales.USACusts</span>
-<span style="color: #ef80bf; font-weight: bold;">AS</span>
-    <span style="color: #ef80bf; font-weight: bold;">SELECT</span>
+<pre class="code"><code>ALTER VIEW Sales.USACusts
+AS
+    SELECT
         custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax
-    <span style="color: #ef80bf; font-weight: bold;">FROM</span> Sales.Customers
-    <span style="color: #ef80bf; font-weight: bold;">WHERE</span>
-  country = N<span style="color: #e5b76f;">'USA'</span>;
+    FROM Sales.Customers
+    WHERE
+  country = N'USA';
 
-<span style="color: #ef80bf; font-weight: bold;">GO</span>
+GO
 </code></pre>
 
 <p>
 To get the definition of the view, invoke the <code>OBJECT_DEFINITION</code> function like this.
 </p>
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">SELECT</span> OBJECT_DEFINITION(OBJECT_ID(<span style="color: #e5b76f;">'Sales.USACusts'</span>));
+<pre class="code"><code>SELECT OBJECT_DEFINITION(OBJECT_ID('Sales.USACusts'));
 </code></pre>
 
-<pre class="example" id="org409cda1">
+<pre class="example" id="org1d82de9">
 | (No column name)           |
 |----------------------------|
 | CREATE VIEW Sales.USACusts |
@@ -1626,11 +2067,11 @@ The text with the definition of the view is available because the view was creat
 <p>
 Next, alter the view definition—only this time, include the ENCRYPTION option.
 </p>
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">ALTER</span> <span style="color: #ef80bf; font-weight: bold;">VIEW</span> <span style="color: #f59280;">Sales.USACusts</span>
-<span style="color: #ef80bf; font-weight: bold;">WITH</span>
+<pre class="code"><code>ALTER VIEW Sales.USACusts
+WITH
   ENCRYPTION
-<span style="color: #ef80bf; font-weight: bold;">AS</span>
-  <span style="color: #ef80bf; font-weight: bold;">SELECT</span>
+AS
+  SELECT
     custid,
     companyname,
     contactname,
@@ -1642,17 +2083,17 @@ Next, alter the view definition—only this time, include the ENCRYPTION option.
     country,
     phone,
     fax
-  <span style="color: #ef80bf; font-weight: bold;">FROM</span> Sales.Customers
-  <span style="color: #ef80bf; font-weight: bold;">WHERE</span>
-  country = N<span style="color: #e5b76f;">'USA'</span>;
+  FROM Sales.Customers
+  WHERE
+  country = N'USA';
 
-<span style="color: #ef80bf; font-weight: bold;">GO</span>
+GO
 </code></pre>
 
 <p>
 You will get:
 </p>
-<pre class="example" id="org3c1b53e">
+<pre class="example" id="orga38e0d1">
 | (No column name) |
 |------------------|
 | NULL             |
@@ -1663,9 +2104,9 @@ You will get:
 </p>
 </div>
 </div>
-<div id="outline-container-orgf9bacee" class="outline-6">
-<h6 id="orgf9bacee">Check</h6>
-<div class="outline-text-6" id="text-orgf9bacee">
+<div id="outline-container-org88220d4" class="outline-6">
+<h6 id="org88220d4">Check</h6>
+<div class="outline-text-6" id="text-org88220d4">
 <p>
 The purpose of CHECK OPTION is to prevent modifications through the view that conflict with
 the view’s filter—assuming that one exists in the query defining the view.
@@ -1680,12 +2121,12 @@ name Customer ABCDE from the United Kingdom through the view.
 </p>
 
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">INSERT</span> <span style="color: #ef80bf; font-weight: bold;">INTO</span> Sales.USACusts(
+<pre class="code"><code>INSERT INTO Sales.USACusts(
 companyname, contactname, contacttitle, address,
 city, region, postalcode, country, phone, fax)
-<span style="color: #ef80bf; font-weight: bold;">VALUES</span>(
-N<span style="color: #e5b76f;">'Customer ABCDE'</span>, N<span style="color: #e5b76f;">'Contact ABCDE'</span>, N<span style="color: #e5b76f;">'Title ABCDE'</span>, N<span style="color: #e5b76f;">'Address ABCDE'</span>,
-N<span style="color: #e5b76f;">'London'</span>, <span style="color: #ef80bf; font-weight: bold;">NULL</span>, N<span style="color: #e5b76f;">'12345'</span>, N<span style="color: #e5b76f;">'UK'</span>, N<span style="color: #e5b76f;">'012-3456789'</span>, N<span style="color: #e5b76f;">'012-3456789'</span>);
+VALUES(
+N'Customer ABCDE', N'Contact ABCDE', N'Title ABCDE', N'Address ABCDE',
+N'London', NULL, N'12345', N'UK', N'012-3456789', N'012-3456789');
 </code></pre>
 
 
@@ -1702,21 +2143,21 @@ at the end of the query defining the view.
 </p>
 
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">SELECT</span>
+<pre class="code"><code>SELECT
 custid, companyname, contactname, contacttitle, address,
 city, region, postalcode, country, phone, fax
-<span style="color: #ef80bf; font-weight: bold;">FROM</span> Sales.Customers
-<span style="color: #ef80bf; font-weight: bold;">WHERE</span> country = N<span style="color: #e5b76f;">'USA'</span>
-<span style="color: #ef80bf; font-weight: bold;">WITH</span> <span style="color: #ef80bf; font-weight: bold;">CHECK</span> <span style="color: #ef80bf; font-weight: bold;">OPTION</span>;
-<span style="color: #ef80bf; font-weight: bold;">GO</span>
+FROM Sales.Customers
+WHERE country = N'USA'
+WITH CHECK OPTION;
+GO
 </code></pre>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-org90b80fd" class="outline-4">
-<h4 id="org90b80fd">Inline Table-Valued Function</h4>
-<div class="outline-text-4" id="text-org90b80fd">
+<div id="outline-container-orgbb665f0" class="outline-4">
+<h4 id="orgbb665f0">Inline Table-Valued Function</h4>
+<div class="outline-text-4" id="text-orgbb665f0">
 <p>
 Inline TVFs are reusable table expressions that support input parameters. In all respects except for the
 support for input parameters, inline TVFs are similar to views. For this reason, I like to think of inline
@@ -1725,13 +2166,13 @@ TVFs as parameterized views, even though they are not called this formally.
 
 <pre class="code"><code>USE TSQL2012;
 
-IF OBJECT_ID (<span style="color: #e5b76f;">'dbo.GetCustOrders'</span>) <span style="color: #ef80bf; font-weight: bold;">IS</span> <span style="color: #ef80bf; font-weight: bold;">NOT</span> <span style="color: #ef80bf; font-weight: bold;">NULL</span> <span style="color: #ef80bf; font-weight: bold;">DROP</span> <span style="color: #ef80bf; font-weight: bold;">FUNCTION</span> dbo.GetCustOrders;
+IF OBJECT_ID ('dbo.GetCustOrders') IS NOT NULL DROP FUNCTION dbo.GetCustOrders;
 
-<span style="color: #ef80bf; font-weight: bold;">GO</span>
-<span style="color: #ef80bf; font-weight: bold;">CREATE</span> <span style="color: #ef80bf; font-weight: bold;">FUNCTION</span> <span style="color: #f59280;">dbo.GetCustOrders</span> (@cid <span style="color: #ef80bf; font-weight: bold;">AS</span> <span style="color: #f470df;">int</span>)
-  <span style="color: #ef80bf; font-weight: bold;">RETURNS</span> <span style="color: #ef80bf; font-weight: bold;">TABLE</span>
-  <span style="color: #ef80bf; font-weight: bold;">AS</span> <span style="color: #ef80bf; font-weight: bold;">RETURN</span>
-  <span style="color: #ef80bf; font-weight: bold;">SELECT</span>
+GO
+CREATE FUNCTION dbo.GetCustOrders (@cid AS int)
+  RETURNS TABLE
+  AS RETURN
+  SELECT
     orderid,
     custid,
     empid,
@@ -1746,18 +2187,18 @@ IF OBJECT_ID (<span style="color: #e5b76f;">'dbo.GetCustOrders'</span>) <span st
     shipregion,
     shippostalcode,
     shipcountry
-<span style="color: #ef80bf; font-weight: bold;">FROM</span>
+FROM
     Sales.Orders
-<span style="color: #ef80bf; font-weight: bold;">WHERE</span>
+WHERE
     custid = @cid;
 
-<span style="color: #ef80bf; font-weight: bold;">GO</span>
+GO
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org9696426" class="outline-4">
-<h4 id="org9696426"><span class="done KILL">KILL</span> Apply</h4>
-<div class="outline-text-4" id="text-org9696426">
+<div id="outline-container-orgd82fe23" class="outline-4">
+<h4 id="orgd82fe23"><span class="done KILL">KILL</span> Apply</h4>
+<div class="outline-text-4" id="text-orgd82fe23">
 <p>
 The APPLY operator is a very powerful table operator. Like all table operators, this operator is used
 in the FROM clause of a query. The two supported types of APPLY operator are CROSS APPLY and
@@ -1767,9 +2208,9 @@ APPLY implements two.
 </div>
 </div>
 </div>
-<div id="outline-container-orgbc20835" class="outline-3">
-<h3 id="orgbc20835">Sets</h3>
-<div class="outline-text-3" id="text-orgbc20835">
+<div id="outline-container-org4a2c9bf" class="outline-3">
+<h3 id="org4a2c9bf">Sets</h3>
+<div class="outline-text-3" id="text-org4a2c9bf">
 <p>
 Set operators are operators that are applied between two input sets—or, to use the more
 accurate SQL term, multisets—that result from two input queries. Remember, <b>a multiset is not
@@ -1781,9 +2222,9 @@ set operator (a DISTINCT flavor), the result is a set with no duplicates. If the
 a multiset operator (an ALL flavor), the result is a multiset with possible duplicates.
 </p>
 </div>
-<div id="outline-container-orgdec9032" class="outline-4">
-<h4 id="orgdec9032">Precedence</h4>
-<div class="outline-text-4" id="text-orgdec9032">
+<div id="outline-container-org59a8bf3" class="outline-4">
+<h4 id="org59a8bf3">Precedence</h4>
+<div class="outline-text-4" id="text-org59a8bf3">
 <p>
 SQL defines precedence among set operators. The INTERSECT operator precedes UNION and EXCEPT,
 and UNION and EXCEPT are considered equal. In a query that contains multiple set operators, first
@@ -1794,11 +2235,11 @@ based on order of appearance.
 <p>
 Consider the following query, which shows how INTERSECT precedes EXCEPT.
 </p>
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">SELECT</span> country, region, city <span style="color: #ef80bf; font-weight: bold;">FROM</span> Production.Suppliers
-<span style="color: #ef80bf; font-weight: bold;">EXCEPT</span>
-<span style="color: #ef80bf; font-weight: bold;">SELECT</span> country, region, city <span style="color: #ef80bf; font-weight: bold;">FROM</span> HR.Employees
-<span style="color: #ef80bf; font-weight: bold;">INTERSECT</span>
-<span style="color: #ef80bf; font-weight: bold;">SELECT</span> country, region, city <span style="color: #ef80bf; font-weight: bold;">FROM</span> Sales.Customers;
+<pre class="code"><code>SELECT country, region, city FROM Production.Suppliers
+EXCEPT
+SELECT country, region, city FROM HR.Employees
+INTERSECT
+SELECT country, region, city FROM Sales.Customers;
 </code></pre>
 <p>
 Because INTERSECT precedes EXCEPT, the INTERSECT operator is evaluated first, even though it
@@ -1814,9 +2255,9 @@ Write a query that returns customer and employee pairs that had order activity i
 </div>
 </div>
 </div>
-<div id="outline-container-orgcb4199a" class="outline-2">
-<h2 id="orgcb4199a">Terminology</h2>
-<div class="outline-text-2" id="text-orgcb4199a">
+<div id="outline-container-orgcaaa66a" class="outline-2">
+<h2 id="orgcaaa66a">Terminology</h2>
+<div class="outline-text-2" id="text-orgcaaa66a">
 <p>
 Subqueries terminology might sound a little bit confusing, this section provides some basic
 glossary that might help you.
@@ -1837,12 +2278,12 @@ concrete examples of self-contained subqueries.
 With Scalar
 </p>
 <pre class="code"><code>USE TSQL2012;
-<span style="color: #ef80bf; font-weight: bold;">DECLARE</span> @maxid <span style="color: #ef80bf; font-weight: bold;">AS</span> <span style="color: #f470df;">INT</span> = (<span style="color: #ef80bf; font-weight: bold;">SELECT</span> <span style="color: #a897ef; font-weight: bold;">MAX</span>(orderid)
-                        <span style="color: #ef80bf; font-weight: bold;">FROM</span> Sales.Orders);
+DECLARE @maxid AS INT = (SELECT MAX(orderid)
+                        FROM Sales.Orders);
 
-<span style="color: #ef80bf; font-weight: bold;">SELECT</span> orderid, orderdate, empid, custid
-<span style="color: #ef80bf; font-weight: bold;">FROM</span> Sales.Orders
-<span style="color: #ef80bf; font-weight: bold;">WHERE</span> orderid = @maxid;
+SELECT orderid, orderdate, empid, custid
+FROM Sales.Orders
+WHERE orderid = @maxid;
 </code></pre></li>
 </ul></li>
 <li><b>Self-Contained Multivalued Subquery</b>.
@@ -1884,7 +2325,7 @@ stored even in varchar types.
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: 2022-04-22 Fri 03:00. Last build date: 2025-06-28 Sat 18:37.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: 2022-04-22 Fri 03:00. Last build date: 2025-07-25 Fri 00:00.</p>
 
 </div>
 </div>

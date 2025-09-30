@@ -25,6 +25,448 @@
 
   <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
   <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+
+<!-- Import LazySizes - State-of-the-art lazy loading library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+
+<!-- Optional: Import plugins for better performance -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js" async></script>
+
+<script>
+// Only run on pages with 'art_paintings_media' in the path
+if (window.location.pathname.includes('art_paintings_media')) {
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    // Configure LazySizes for optimal performance
+    window.lazySizesConfig = window.lazySizesConfig || {};
+    window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
+    window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
+    window.lazySizesConfig.expFactor = 1.5; // Expand loading area
+    window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
+
+    // Add CSS for smooth transitions and collapsible content
+    const style = document.createElement('style');
+    style.textContent = `
+      .lazyload,
+      .lazyloading {
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+      }
+      .lazyloaded {
+        opacity: 1;
+      }
+      .collapsible-content {
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+      .collapsible-content.collapsed {
+        max-height: 0 !important;
+      }
+      .collapsible-content.expanded {
+        max-height: none;
+      }
+      /* Blur effect while loading (optional) */
+      .lazyloading {
+        filter: blur(5px);
+        opacity: 0.7;
+      }
+      .lazyloaded {
+        filter: none;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Find all h3 elements
+    const h3Elements = document.querySelectorAll('h3');
+
+    h3Elements.forEach(function(h3) {
+      // Make h3 clickable and add icon
+      h3.style.position = 'relative';
+      h3.style.cursor = 'pointer';
+      h3.style.paddingLeft = '20px';
+      h3.style.userSelect = 'none';
+
+      // Add the arrow icon
+      const icon = document.createElement('span');
+      icon.innerHTML = '▶';
+      icon.style.position = 'absolute';
+      icon.style.left = '0px';
+      icon.style.top = '50%';
+      icon.style.transform = 'translateY(-50%)';
+      icon.style.transition = 'transform 0.2s';
+      icon.style.fontSize = '0.8em';
+      icon.style.color = 'rgb(102, 102, 102)';
+      icon.style.fontFamily = 'monospace';
+
+      h3.insertBefore(icon, h3.firstChild);
+
+      // Find all content after this h3 until the next h3 or end of parent
+      const contentElements = [];
+      let nextElement = h3.nextElementSibling;
+
+      while (nextElement && nextElement.tagName !== 'H3') {
+        contentElements.push(nextElement);
+        nextElement = nextElement.nextElementSibling;
+      }
+
+      // Create a wrapper for smooth collapsing
+      const wrapper = document.createElement('div');
+      wrapper.className = 'collapsible-content collapsed';
+      wrapper.style.maxHeight = '0';
+
+      // Move content elements into wrapper
+      contentElements.forEach(function(element) {
+        wrapper.appendChild(element);
+      });
+
+      // Insert wrapper after h3
+      h3.parentNode.insertBefore(wrapper, h3.nextSibling);
+
+      // Prepare images for LazySizes lazy loading and make them clickable
+      const prepareImagesForLazyLoading = (container) => {
+        const images = container.querySelectorAll('img');
+        images.forEach(function(img) {
+          // Only process if not already processed
+          if (!img.classList.contains('lazyload') && !img.dataset.processed) {
+            // Store original src in data-src for LazySizes
+            if (img.src && img.src !== '' && !img.src.startsWith('data:')) {
+              img.dataset.src = img.src;
+              // Use a tiny placeholder or low-quality placeholder
+              img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+            }
+
+            // Handle srcset for responsive images
+            if (img.srcset && img.srcset !== '') {
+              img.dataset.srcset = img.srcset;
+              img.srcset = '';
+            }
+
+            // Handle sizes attribute
+            if (img.sizes) {
+              img.dataset.sizes = img.sizes;
+            }
+
+            // Add LazySizes classes
+            img.classList.add('lazyload');
+
+            // Make image clickable - add cursor pointer
+            img.style.cursor = 'pointer';
+
+            // Add click handler to open image in new tab
+            img.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation(); // Prevent triggering h3 collapse
+
+              // Get the actual image URL (either from src or data-src)
+              let imageUrl = this.src;
+              if (this.dataset.src && !this.src.startsWith('data:')) {
+                imageUrl = this.dataset.src;
+              } else if (this.src.startsWith('data:') && this.dataset.src) {
+                imageUrl = this.dataset.src;
+              }
+
+              // Open image in new tab
+              if (imageUrl && !imageUrl.startsWith('data:')) {
+                window.open(imageUrl, '_blank');
+              }
+            });
+
+            // Mark as processed
+            img.dataset.processed = 'true';
+
+            // Maintain aspect ratio to prevent layout shift
+            if (!img.style.aspectRatio && img.width && img.height) {
+              img.style.aspectRatio = img.width + '/' + img.height;
+            }
+          }
+        });
+      };
+
+      // Prepare all images in this section for lazy loading
+      prepareImagesForLazyLoading(wrapper);
+
+      // Track collapsed state
+      let isCollapsed = true;
+      let hasBeenExpanded = false;
+
+      // Add click handler
+      h3.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        if (isCollapsed) {
+          // Expand: show content and activate lazy loading
+          icon.style.transform = 'translateY(-50%) rotate(90deg)';
+          wrapper.classList.remove('collapsed');
+          wrapper.classList.add('expanded');
+          wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+
+          // Only activate LazySizes for this section when first expanded
+          if (!hasBeenExpanded) {
+            // Trigger LazySizes to check for images in this newly visible section
+            if (window.lazySizes) {
+              // Force LazySizes to check all images in this wrapper
+              const lazyImages = wrapper.querySelectorAll('.lazyload');
+              lazyImages.forEach(img => {
+                // Add to LazySizes queue
+                window.lazySizes.loader.unveil(img);
+              });
+            }
+            hasBeenExpanded = true;
+          }
+
+          isCollapsed = false;
+
+          // Recalculate height after images potentially load
+          setTimeout(() => {
+            if (!isCollapsed) {
+              wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+            }
+          }, 100);
+
+        } else {
+          // Collapse: hide content
+          icon.style.transform = 'translateY(-50%) rotate(0deg)';
+          wrapper.classList.remove('expanded');
+          wrapper.classList.add('collapsed');
+          wrapper.style.maxHeight = '0';
+
+          isCollapsed = true;
+        }
+      });
+
+      // Listen for LazySizes events to adjust height dynamically
+      wrapper.addEventListener('lazyloaded', function(e) {
+        if (!isCollapsed) {
+          // Adjust wrapper height when images load
+          setTimeout(() => {
+            wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+          }, 50);
+        }
+      });
+    });
+  });
+}
+</script>
+
+<script>
+
+
+
+  
+// Stack Page Formatter - Apply inline layout to specific pages
+(function() {
+  'use strict';
+  
+  // Check if current page should have the formatting applied
+  function shouldApplyFormatting() {
+    const path = window.location.pathname;
+    
+    // Check if path matches our target patterns
+    return path === '/stack' || 
+           path === '/stack.html' || 
+           path.startsWith('/sh/');
+  }
+  
+  // Only proceed if we're on a target page
+  if (!shouldApplyFormatting()) {
+    return;
+  }
+  
+  // Add CSS styles
+  function addStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+      /* Basic styling for entries */
+      .outline-3 {
+        margin-bottom: 1.5em;
+        line-height: 1.5;
+      }
+
+      /* Style for reconstructed single paragraph */
+      .entry-paragraph {
+        margin: 0;
+        line-height: 1.5;
+        direction: inherit;
+        unicode-bidi: plaintext;
+      }
+
+      /* Style for date - gray and nice */
+      .entry-date {
+        color: #666;
+        font-size: 0.9em;
+        margin-right: 0.5em;
+      }
+
+      /* Style for tag at end - gray and in parentheses */
+      .entry-tag {
+        display: inline !important;
+        color: #666;
+        margin-left: 0.5em;
+      }
+
+      /* Ensure all children stay inline */
+      .entry-tag * {
+        display: inline !important;
+      }
+
+      /* Override any existing tag styles */
+      .entry-tag p,
+      .entry-tag div {
+        display: inline !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      /* Hide block elements that will be moved */
+      .outline-3 .moved-block {
+        display: block;
+        margin: 0.5em 0;
+      }
+
+      /* Ensure proper anchor target visibility */
+      .outline-3[id] {
+        scroll-margin-top: 20px;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  // Extract ID from container div
+  function extractIdFromContainer(entry) {
+    const containerId = entry.id;
+    if (containerId && containerId.startsWith('outline-container-')) {
+      return containerId.replace('outline-container-', '');
+    }
+    return null;
+  }
+  
+  // Apply the formatting transformation
+  function applyFormatting() {
+    // Process each entry
+    const entries = document.querySelectorAll('.outline-3');
+    
+    entries.forEach((entry, index) => {
+      // Extract the anchor ID from the container before transformation
+      const anchorId = extractIdFromContainer(entry);
+      
+      // Extract components
+      const h3 = entry.querySelector('h3');
+      const notes = entry.querySelector('.notes');
+      const outlineText = entry.querySelector('.outline-text-3');
+      const tag = entry.querySelector('.tag');
+      
+      if (!h3 || !outlineText) return;
+      
+      // Get title text (preserve any TODO/DONE prefixes and links)
+      let titleText = h3.innerHTML;
+      
+      // Get timestamp
+      let timestampText = '';
+      if (notes) {
+        const timestamp = notes.querySelector('.timestamp');
+        if (timestamp) {
+          timestampText = timestamp.textContent;
+        }
+      }
+      
+      // Get content paragraphs (excluding notes and tag)
+      const contentParagraphs = [];
+      const blockElements = [];
+      
+      Array.from(outlineText.children).forEach(child => {
+        if (child.classList.contains('notes') || child.classList.contains('tag')) {
+          return; // Skip these
+        }
+        
+        if (child.tagName === 'P') {
+          contentParagraphs.push(child.innerHTML);
+        } else if (child.tagName === 'UL' || child.tagName === 'OL' || 
+                   child.tagName === 'BLOCKQUOTE' || child.tagName === 'PRE' ||
+                   child.tagName === 'DL' || child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        } else if (child.tagName === 'DIV' && child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        }
+      });
+      
+      // Get tag HTML (preserve links and formatting)
+      let tagHtml = '';
+      if (tag) {
+        tagHtml = tag.outerHTML;
+      }
+      
+      // Construct the new single paragraph
+      let newContent = '';
+      
+      // Add date at the start (gray)
+      if (timestampText) {
+        newContent += '<span class="entry-date">' + timestampText + '</span>';
+      }
+      
+      // Add title with emdash
+      newContent += titleText + ' — ';
+      
+      // Add content paragraphs
+      newContent += contentParagraphs.join(' ');
+      
+      // Add tag at the end in parentheses (preserve HTML but force inline)
+      if (tagHtml) {
+        // Extract just the inner content and wrap it properly
+        let tagContent = tag.innerHTML;
+        newContent += ' <span class="entry-tag">(' + tagContent + ')</span>';
+      }
+      
+      // Create new paragraph element
+      const newParagraph = document.createElement('p');
+      newParagraph.className = 'entry-paragraph';
+      newParagraph.innerHTML = newContent;
+      
+      // Clear the entry and add the new paragraph
+      entry.innerHTML = '';
+      entry.appendChild(newParagraph);
+      
+      // Preserve the anchor ID by setting it on the transformed entry
+      if (anchorId) {
+        entry.id = anchorId;
+      }
+      
+      // Add any block elements after the paragraph
+      blockElements.forEach(blockHtml => {
+        const blockDiv = document.createElement('div');
+        blockDiv.className = 'moved-block';
+        blockDiv.innerHTML = blockHtml;
+        entry.appendChild(blockDiv);
+      });
+      
+      // Add separator after each entry (except the last one)
+      if (index < entries.length - 1) {
+        const separator = document.createElement('hr');
+        separator.style.margin = '1em 0';
+        separator.style.border = 'none';
+        separator.style.borderTop = '1px solid #ccc';
+        entry.appendChild(separator);
+      }
+    });
+  }
+  
+  // Initialize when DOM is ready
+  function init() {
+    addStyles();
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', applyFormatting);
+    } else {
+      applyFormatting();
+    }
+  }
+  
+  // Start the initialization
+  init();
+})();
+</script>
+
+
+
 </head>
 <body>
 </body>
@@ -40,8 +482,7 @@
 <h1 class="title" style="
 margin-block-start: auto;
     color: black;
-">لّermontov</h1>
-
+">Hereby, all birds fly</h1>
       </a>
 <hr class="header-divider" style="margin-block-end: -1em;">
   </div>
@@ -54,49 +495,49 @@ margin-block-start: auto;
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org90720da">Canceled</a></li>
-<li><a href="#org304287b">Later</a></li>
+<li><a href="#org4aec9d5">Canceled</a></li>
+<li><a href="#orgd04647c">Later</a></li>
 <li><a href="#history">History</a>
 <ul>
-<li><a href="#org0737089">Middle East/ Ummah</a></li>
-<li><a href="#org97ce27f">Ancient World</a></li>
-<li><a href="#orga49953c">Crusades</a></li>
-<li><a href="#org1054346">Rome and Ancient Europe</a></li>
-<li><a href="#orgdc9a64e">The West</a></li>
-<li><a href="#org4b129b2">Story of a History</a></li>
-<li><a href="#orgcc5df83">The United States</a></li>
-<li><a href="#org1d88aab">Asian Warfare</a></li>
-<li><a href="#org33aba97">Europe</a></li>
+<li><a href="#org1f0c906">Middle East/ Ummah</a></li>
+<li><a href="#orgbcf819f">Ancient World</a></li>
+<li><a href="#orgbabd7ee">Crusades</a></li>
+<li><a href="#orgd931039">Rome and Ancient Europe</a></li>
+<li><a href="#org074ed3a">The West</a></li>
+<li><a href="#org835365c">Story of a History</a></li>
+<li><a href="#org444aadd">The United States</a></li>
+<li><a href="#org6c4f506">Asian Warfare</a></li>
+<li><a href="#orgcd0bf18">Europe</a></li>
 </ul>
 </li>
-<li><a href="#org2bbb191">Economics/ Capitalism</a></li>
-<li><a href="#orgd6a93b3">Marxism</a>
+<li><a href="#orgcedac18">Economics/ Capitalism</a></li>
+<li><a href="#orgbaaf6c9">Marxism</a>
 <ul>
-<li><a href="#org6828675">Struggle</a></li>
-<li><a href="#org7a0e427">Hardcore Capitalism</a></li>
+<li><a href="#orgfe313b0">Struggle</a></li>
+<li><a href="#org091ef53">Hardcore Capitalism</a></li>
 </ul>
 </li>
-<li><a href="#org3317f38">ʿAqīdah</a></li>
-<li><a href="#org3cb623b">Democracy</a></li>
-<li><a href="#org408e5e1">History of Mathematics</a></li>
-<li><a href="#org6c945c4">Greek</a></li>
-<li><a href="#org4e9fb3c">Humanities &amp; Anthropology</a></li>
-<li><a href="#org0c0e01f">Fitness</a></li>
-<li><a href="#orgf1a85fb">Social Nationalism</a></li>
-<li><a href="#org1880444">Middle East Struggle Related</a>
+<li><a href="#orgffea31b">ʿAqīdah</a></li>
+<li><a href="#org6f52349">Democracy</a></li>
+<li><a href="#org2732428">History of Mathematics</a></li>
+<li><a href="#orga94c870">Greek</a></li>
+<li><a href="#orgb38ee5d">Humanities &amp; Anthropology</a></li>
+<li><a href="#orgd6ed666">Fitness</a></li>
+<li><a href="#org97f8bc5">Social Nationalism</a></li>
+<li><a href="#org83b29e1">Middle East Struggle Related</a>
 <ul>
-<li><a href="#org8554157">On The Zionism Movement and The Israeli Occupation in Palestine</a></li>
+<li><a href="#org41b1e6e">On The Zionism Movement and The Israeli Occupation in Palestine</a></li>
 </ul>
 </li>
-<li><a href="#org9eb2f68">Misc Authors</a></li>
-<li><a href="#org4f5ef42">Poetry</a></li>
-<li><a href="#org2858550">Politics</a></li>
-<li><a href="#orgcc304a6">Science-related</a></li>
-<li><a href="#org8193423">Chess</a></li>
-<li><a href="#orgd3e3cf2">Heritage</a></li>
-<li><a href="#org8d710e4">Aesthetics</a></li>
-<li><a href="#org8cef5b6">Literature</a></li>
-<li><a href="#org0008eec">Uncatagorized</a></li>
+<li><a href="#orgfce805c">Misc Authors</a></li>
+<li><a href="#orgfc42247">Poetry</a></li>
+<li><a href="#org6adaad6">Politics</a></li>
+<li><a href="#org6d7dc55">Science-related</a></li>
+<li><a href="#org1637253">Chess</a></li>
+<li><a href="#orgbb26ece">Heritage</a></li>
+<li><a href="#orgf781d89">Aesthetics</a></li>
+<li><a href="#org5f41ee6">Literature</a></li>
+<li><a href="#org6a589a7">Uncatagorized</a></li>
 </ul>
 </div>
 </nav>
@@ -115,9 +556,9 @@ List (for others)</a> or <a href="fullbooks.html#omy9ejo02wj0">Bibliography</a><
 <p>
 <b>IMPORTANT: categories are totally messed up here</b>.
 </p>
-<div id="outline-container-org90720da" class="outline-2">
-<h2 id="org90720da">Canceled</h2>
-<div class="outline-text-2" id="text-org90720da">
+<div id="outline-container-org4aec9d5" class="outline-2">
+<h2 id="org4aec9d5">Canceled</h2>
+<div class="outline-text-2" id="text-org4aec9d5">
 <ul class="org-ul">
 <li>Of Popes and Unicorns: Science, Christianity, and How the Conflict Thesis Fooled the World</li>
 <li>Writing with Style: Conversations on the Art of Writing</li>
@@ -126,16 +567,16 @@ List (for others)</a> or <a href="fullbooks.html#omy9ejo02wj0">Bibliography</a><
 </ul>
 </div>
 </div>
-<div id="outline-container-org304287b" class="outline-2">
-<h2 id="org304287b">Later</h2>
+<div id="outline-container-orgd04647c" class="outline-2">
+<h2 id="orgd04647c">Later</h2>
 </div>
 <div id="outline-container-history" class="outline-2">
 <h2 id="history">History</h2>
 <div class="outline-text-2" id="text-history">
 </div>
-<div id="outline-container-org0737089" class="outline-3">
-<h3 id="org0737089">Middle East/ Ummah</h3>
-<div class="outline-text-3" id="text-org0737089">
+<div id="outline-container-org1f0c906" class="outline-3">
+<h3 id="org1f0c906">Middle East/ Ummah</h3>
+<div class="outline-text-3" id="text-org1f0c906">
 <ul class="org-ul">
 <li>Social Origins of Dictatorship and Democracy: Lord and Peasant in the Making of the Modern World</li>
 <li>Beyond Chutzpah: On the Misuse of Anti-Semitism and the Abuse of History</li>
@@ -230,9 +671,9 @@ Islam and Racial Capitalism in Algeria
 </ul>
 </div>
 </div>
-<div id="outline-container-org97ce27f" class="outline-3">
-<h3 id="org97ce27f">Ancient World</h3>
-<div class="outline-text-3" id="text-org97ce27f">
+<div id="outline-container-orgbcf819f" class="outline-3">
+<h3 id="orgbcf819f">Ancient World</h3>
+<div class="outline-text-3" id="text-orgbcf819f">
 <ul class="org-ul">
 <li>المدن الفينيقية (مهران)</li>
 <li>المدن الكبرى (مهران)</li>
@@ -243,9 +684,9 @@ Islam and Racial Capitalism in Algeria
 </ul>
 </div>
 </div>
-<div id="outline-container-orga49953c" class="outline-3">
-<h3 id="orga49953c">Crusades</h3>
-<div class="outline-text-3" id="text-orga49953c">
+<div id="outline-container-orgbabd7ee" class="outline-3">
+<h3 id="orgbabd7ee">Crusades</h3>
+<div class="outline-text-3" id="text-orgbabd7ee">
 <ul class="org-ul">
 <li>What were the Crusades? (Riley-Smith)</li>
 <li>Crusades (Jonathan Riley-Smith)</li>
@@ -253,9 +694,9 @@ Islam and Racial Capitalism in Algeria
 </ul>
 </div>
 </div>
-<div id="outline-container-org1054346" class="outline-3">
-<h3 id="org1054346">Rome and Ancient Europe</h3>
-<div class="outline-text-3" id="text-org1054346">
+<div id="outline-container-orgd931039" class="outline-3">
+<h3 id="orgd931039">Rome and Ancient Europe</h3>
+<div class="outline-text-3" id="text-orgd931039">
 <ul class="org-ul">
 <li>الإمبراطورية الرومانية (لورو)</li>
 <li>Europe: A History (Norman Davies)</li>
@@ -269,9 +710,9 @@ Islam and Racial Capitalism in Algeria
 </ul>
 </div>
 </div>
-<div id="outline-container-orgdc9a64e" class="outline-3">
-<h3 id="orgdc9a64e">The West</h3>
-<div class="outline-text-3" id="text-orgdc9a64e">
+<div id="outline-container-org074ed3a" class="outline-3">
+<h3 id="org074ed3a">The West</h3>
+<div class="outline-text-3" id="text-org074ed3a">
 <ul class="org-ul">
 <li>Colonialism and Neocolonialism (Sartre)</li>
 <li>How the Scots Invented the Modern World</li>
@@ -332,9 +773,9 @@ Also A People&rsquo;s History of American Empire (Zinn)
 </ul>
 </div>
 </div>
-<div id="outline-container-org4b129b2" class="outline-3">
-<h3 id="org4b129b2">Story of a History</h3>
-<div class="outline-text-3" id="text-org4b129b2">
+<div id="outline-container-org835365c" class="outline-3">
+<h3 id="org835365c">Story of a History</h3>
+<div class="outline-text-3" id="text-org835365c">
 <ul class="org-ul">
 <li>مختصر تاريخ العالم (غومبريتش)</li>
 <li>Unfamiliar Fishes (Vowell)</li>
@@ -351,9 +792,9 @@ Also A People&rsquo;s History of American Empire (Zinn)
 </ul>
 </div>
 </div>
-<div id="outline-container-orgcc5df83" class="outline-3">
-<h3 id="orgcc5df83">The United States</h3>
-<div class="outline-text-3" id="text-orgcc5df83">
+<div id="outline-container-org444aadd" class="outline-3">
+<h3 id="org444aadd">The United States</h3>
+<div class="outline-text-3" id="text-org444aadd">
 <ul class="org-ul">
 <li>Operation Paperclip<label for="25" class="margin-toggle sidenote-number"></label><input type="checkbox" id="25" class="margin-toggle"/><span class="sidenote">
 The Secret Intelligence Program that Brought Nazi Scientists to America
@@ -377,9 +818,9 @@ A Guide to Pseudo-Events in America
 </ul>
 </div>
 </div>
-<div id="outline-container-org1d88aab" class="outline-3">
-<h3 id="org1d88aab">Asian Warfare</h3>
-<div class="outline-text-3" id="text-org1d88aab">
+<div id="outline-container-org6c4f506" class="outline-3">
+<h3 id="org6c4f506">Asian Warfare</h3>
+<div class="outline-text-3" id="text-org6c4f506">
 <ul class="org-ul">
 <li>Red Capitalism (Howie)<label for="28" class="margin-toggle sidenote-number"></label><input type="checkbox" id="28" class="margin-toggle"/><span class="sidenote">
 The Fragile Financial Foundation of China&rsquo;s Extraordinary Rise
@@ -408,9 +849,9 @@ Vol. 12
 </ul>
 </div>
 </div>
-<div id="outline-container-org33aba97" class="outline-3">
-<h3 id="org33aba97">Europe</h3>
-<div class="outline-text-3" id="text-org33aba97">
+<div id="outline-container-orgcd0bf18" class="outline-3">
+<h3 id="orgcd0bf18">Europe</h3>
+<div class="outline-text-3" id="text-orgcd0bf18">
 <ul class="org-ul">
 <li>النظام القديم والثورة الفرنسية</li>
 <li>Nazi Germany and the Jews (Friedländer)</li>
@@ -437,9 +878,9 @@ Jewish Survival in Europe.
 </div>
 </div>
 </div>
-<div id="outline-container-org2bbb191" class="outline-2">
-<h2 id="org2bbb191">Economics/ Capitalism</h2>
-<div class="outline-text-2" id="text-org2bbb191">
+<div id="outline-container-orgcedac18" class="outline-2">
+<h2 id="orgcedac18">Economics/ Capitalism</h2>
+<div class="outline-text-2" id="text-orgcedac18">
 <ul class="org-ul">
 <li>Basic Economics<label for="36" class="margin-toggle sidenote-number"></label><input type="checkbox" id="36" class="margin-toggle"/><span class="sidenote">
 A Citizen&rsquo;s Guide to the Economy
@@ -473,9 +914,9 @@ The History of a Dangerous Idea
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd6a93b3" class="outline-2">
-<h2 id="orgd6a93b3">Marxism</h2>
-<div class="outline-text-2" id="text-orgd6a93b3">
+<div id="outline-container-orgbaaf6c9" class="outline-2">
+<h2 id="orgbaaf6c9">Marxism</h2>
+<div class="outline-text-2" id="text-orgbaaf6c9">
 <ul class="org-ul">
 <li>The Society of the Spectacle (Debord)</li>
 <li>كارل ماركس (برلين)</li>
@@ -511,9 +952,9 @@ The History of a Dangerous Idea
 <li>الفكر الحقوقي البرجوازي (تومانوف، ف)</li>
 </ul>
 </div>
-<div id="outline-container-org6828675" class="outline-3">
-<h3 id="org6828675">Struggle</h3>
-<div class="outline-text-3" id="text-org6828675">
+<div id="outline-container-orgfe313b0" class="outline-3">
+<h3 id="orgfe313b0">Struggle</h3>
+<div class="outline-text-3" id="text-orgfe313b0">
 <ul class="org-ul">
 <li>دور العنف (إنجلز)</li>
 <li>النبي المسلح</li>
@@ -524,9 +965,9 @@ The History of a Dangerous Idea
 </ul>
 </div>
 </div>
-<div id="outline-container-org7a0e427" class="outline-3">
-<h3 id="org7a0e427">Hardcore Capitalism</h3>
-<div class="outline-text-3" id="text-org7a0e427">
+<div id="outline-container-org091ef53" class="outline-3">
+<h3 id="org091ef53">Hardcore Capitalism</h3>
+<div class="outline-text-3" id="text-org091ef53">
 <ul class="org-ul">
 <li>الكتاب الأسود للرأسمالية</li>
 <li>الطب الإمبريالي</li>
@@ -549,9 +990,9 @@ The History of a Dangerous Idea
 </div>
 </div>
 </div>
-<div id="outline-container-org3317f38" class="outline-2">
-<h2 id="org3317f38">ʿAqīdah</h2>
-<div class="outline-text-2" id="text-org3317f38">
+<div id="outline-container-orgffea31b" class="outline-2">
+<h2 id="orgffea31b">ʿAqīdah</h2>
+<div class="outline-text-2" id="text-orgffea31b">
 <ul class="org-ul">
 <li>قراءة جديدة لحروب الردة</li>
 <li>كتب العلوين المقدسة</li>
@@ -661,9 +1102,9 @@ The History of a Dangerous Idea
 </ul>
 </div>
 </div>
-<div id="outline-container-org3cb623b" class="outline-2">
-<h2 id="org3cb623b">Democracy</h2>
-<div class="outline-text-2" id="text-org3cb623b">
+<div id="outline-container-org6f52349" class="outline-2">
+<h2 id="org6f52349">Democracy</h2>
+<div class="outline-text-2" id="text-org6f52349">
 <ul class="org-ul">
 <li><span class="underline">ديموقراطيات في خطر (ألفريد ستبيان)</span></li>
 <li>الديموقراطية ونقادها (دال)</li>
@@ -674,9 +1115,9 @@ The History of a Dangerous Idea
 </ul>
 </div>
 </div>
-<div id="outline-container-org408e5e1" class="outline-2">
-<h2 id="org408e5e1">History of Mathematics</h2>
-<div class="outline-text-2" id="text-org408e5e1">
+<div id="outline-container-org2732428" class="outline-2">
+<h2 id="org2732428">History of Mathematics</h2>
+<div class="outline-text-2" id="text-org2732428">
 <ul class="org-ul">
 <li>Journey through Genius</li>
 <li>Men of Mathematics</li>
@@ -693,9 +1134,9 @@ The History of a Dangerous Idea
 </ul>
 </div>
 </div>
-<div id="outline-container-org6c945c4" class="outline-2">
-<h2 id="org6c945c4">Greek</h2>
-<div class="outline-text-2" id="text-org6c945c4">
+<div id="outline-container-orga94c870" class="outline-2">
+<h2 id="orga94c870">Greek</h2>
+<div class="outline-text-2" id="text-orga94c870">
 <ul class="org-ul">
 <li>Ancient Greece<label for="48" class="margin-toggle sidenote-number"></label><input type="checkbox" id="48" class="margin-toggle"/><span class="sidenote">
 A political, social, and cultural history
@@ -707,9 +1148,9 @@ A political, social, and cultural history
 </ul>
 </div>
 </div>
-<div id="outline-container-org4e9fb3c" class="outline-2">
-<h2 id="org4e9fb3c">Humanities &amp; Anthropology</h2>
-<div class="outline-text-2" id="text-org4e9fb3c">
+<div id="outline-container-orgb38ee5d" class="outline-2">
+<h2 id="orgb38ee5d">Humanities &amp; Anthropology</h2>
+<div class="outline-text-2" id="text-orgb38ee5d">
 <ul class="org-ul">
 <li>النفس والجنس والجريمة</li>
 <li>علم الفراسة (زيدان)</li>
@@ -857,18 +1298,18 @@ universal Secret science of human and natural transformation.
 </ul>
 </div>
 </div>
-<div id="outline-container-org0c0e01f" class="outline-2">
-<h2 id="org0c0e01f">Fitness</h2>
-<div class="outline-text-2" id="text-org0c0e01f">
+<div id="outline-container-orgd6ed666" class="outline-2">
+<h2 id="orgd6ed666">Fitness</h2>
+<div class="outline-text-2" id="text-orgd6ed666">
 <ul class="org-ul">
 <li>Science and Practice of Strength Training</li>
 <li>Starting Strength (Rippetoe)</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf1a85fb" class="outline-2">
-<h2 id="orgf1a85fb">Social Nationalism</h2>
-<div class="outline-text-2" id="text-orgf1a85fb">
+<div id="outline-container-org97f8bc5" class="outline-2">
+<h2 id="org97f8bc5">Social Nationalism</h2>
+<div class="outline-text-2" id="text-org97f8bc5">
 <ul class="org-ul">
 <li>Facing Total War: German Sucicty, 1914-1918</li>
 <li>Germany after the First World War</li>
@@ -885,9 +1326,9 @@ universal Secret science of human and natural transformation.
 </ul>
 </div>
 </div>
-<div id="outline-container-org1880444" class="outline-2">
-<h2 id="org1880444">Middle East Struggle Related</h2>
-<div class="outline-text-2" id="text-org1880444">
+<div id="outline-container-org83b29e1" class="outline-2">
+<h2 id="org83b29e1">Middle East Struggle Related</h2>
+<div class="outline-text-2" id="text-org83b29e1">
 <ul class="org-ul">
 <li>Apocalypse in Islam</li>
 <li>From Deep State to Islamic State</li>
@@ -930,9 +1371,9 @@ Revolution, Failed Transition and Counter-Revolution
 <li>بحوث في التاريخ الاجتماعي والثقافي للجزائر إبان الاحتلال الفرنسي</li>
 </ul>
 </div>
-<div id="outline-container-org8554157" class="outline-3">
-<h3 id="org8554157">On The Zionism Movement and The Israeli Occupation in Palestine</h3>
-<div class="outline-text-3" id="text-org8554157">
+<div id="outline-container-org41b1e6e" class="outline-3">
+<h3 id="org41b1e6e">On The Zionism Movement and The Israeli Occupation in Palestine</h3>
+<div class="outline-text-3" id="text-org41b1e6e">
 <ul class="org-ul">
 <li>Ethnocracy (Yifachel)</li>
 <li>Language They Understand (Thrall)</li>
@@ -951,9 +1392,9 @@ Revolution, Failed Transition and Counter-Revolution
 </div>
 </div>
 </div>
-<div id="outline-container-org9eb2f68" class="outline-2">
-<h2 id="org9eb2f68">Misc Authors</h2>
-<div class="outline-text-2" id="text-org9eb2f68">
+<div id="outline-container-orgfce805c" class="outline-2">
+<h2 id="orgfce805c">Misc Authors</h2>
+<div class="outline-text-2" id="text-orgfce805c">
 <ul class="org-ul">
 <li>Antony C. Sutton</li>
 <li>Immanuel Wallerstein</li>
@@ -963,9 +1404,9 @@ Revolution, Failed Transition and Counter-Revolution
 </ul>
 </div>
 </div>
-<div id="outline-container-org4f5ef42" class="outline-2">
-<h2 id="org4f5ef42">Poetry</h2>
-<div class="outline-text-2" id="text-org4f5ef42">
+<div id="outline-container-orgfc42247" class="outline-2">
+<h2 id="orgfc42247">Poetry</h2>
+<div class="outline-text-2" id="text-orgfc42247">
 <ul class="org-ul">
 <li><del>The Canteos (Pound)</del></li>
 <li>Collected Poems (Kipling)</li>
@@ -975,9 +1416,9 @@ Revolution, Failed Transition and Counter-Revolution
 </ul>
 </div>
 </div>
-<div id="outline-container-org2858550" class="outline-2">
-<h2 id="org2858550">Politics</h2>
-<div class="outline-text-2" id="text-org2858550">
+<div id="outline-container-org6adaad6" class="outline-2">
+<h2 id="org6adaad6">Politics</h2>
+<div class="outline-text-2" id="text-org6adaad6">
 <ul class="org-ul">
 <li><span class="underline">Propaganda and the Public Mind (Chomsky)</span></li>
 <li>The Protestant Ethic (Weber)</li>
@@ -1027,9 +1468,9 @@ Islam, Politics, and Modernity&rsquo;s Moral Predicament
 </ul>
 </div>
 </div>
-<div id="outline-container-orgcc304a6" class="outline-2">
-<h2 id="orgcc304a6">Science-related</h2>
-<div class="outline-text-2" id="text-orgcc304a6">
+<div id="outline-container-org6d7dc55" class="outline-2">
+<h2 id="org6d7dc55">Science-related</h2>
+<div class="outline-text-2" id="text-org6d7dc55">
 <ul class="org-ul">
 <li>Fossils (Thomson)</li>
 <li>The Behaviour of the Domestic Cat</li>
@@ -1043,9 +1484,9 @@ Jay Gould
 </ul>
 </div>
 </div>
-<div id="outline-container-org8193423" class="outline-2">
-<h2 id="org8193423">Chess</h2>
-<div class="outline-text-2" id="text-org8193423">
+<div id="outline-container-org1637253" class="outline-2">
+<h2 id="org1637253">Chess</h2>
+<div class="outline-text-2" id="text-org1637253">
 <ul class="org-ul">
 <li>Amateur to IM (Hawkins)</li>
 <li>Chess for Zebras (Rowson)</li>
@@ -1057,9 +1498,9 @@ Jay Gould
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd3e3cf2" class="outline-2">
-<h2 id="orgd3e3cf2">Heritage</h2>
-<div class="outline-text-2" id="text-orgd3e3cf2">
+<div id="outline-container-orgbb26ece" class="outline-2">
+<h2 id="orgbb26ece">Heritage</h2>
+<div class="outline-text-2" id="text-orgbb26ece">
 <ul class="org-ul">
 <li>تاريخ الحسين</li>
 <li>حديقة الحقيقة</li>
@@ -1076,9 +1517,9 @@ Jay Gould
 </ul>
 </div>
 </div>
-<div id="outline-container-org8d710e4" class="outline-2">
-<h2 id="org8d710e4">Aesthetics</h2>
-<div class="outline-text-2" id="text-org8d710e4">
+<div id="outline-container-orgf781d89" class="outline-2">
+<h2 id="orgf781d89">Aesthetics</h2>
+<div class="outline-text-2" id="text-orgf781d89">
 <ul class="org-ul">
 <li><span class="underline">Culture and Value (Wittgenstein)</span></li>
 <li><span class="underline">Esoterism as Principle and as Way</span></li>
@@ -1100,9 +1541,9 @@ Jay Gould
 </ul>
 </div>
 </div>
-<div id="outline-container-org8cef5b6" class="outline-2">
-<h2 id="org8cef5b6">Literature</h2>
-<div class="outline-text-2" id="text-org8cef5b6">
+<div id="outline-container-org5f41ee6" class="outline-2">
+<h2 id="org5f41ee6">Literature</h2>
+<div class="outline-text-2" id="text-org5f41ee6">
 <ul class="org-ul">
 <li>The Illuminatus! Trilogy (Wilson, R. and Shea, R.)</li>
 <li>Confession (Gorky, M.)</li>
@@ -1125,9 +1566,9 @@ Jay Gould
 </ul>
 </div>
 </div>
-<div id="outline-container-org0008eec" class="outline-2">
-<h2 id="org0008eec">Uncatagorized</h2>
-<div class="outline-text-2" id="text-org0008eec">
+<div id="outline-container-org6a589a7" class="outline-2">
+<h2 id="org6a589a7">Uncatagorized</h2>
+<div class="outline-text-2" id="text-org6a589a7">
 <ul class="org-ul">
 <li><i>Anarchism</i> by Daniel Guerin</li>
 <li><i>Anarcho-Syndicalism: Theory and Practice</i> by Rudolf Rocker</li>
@@ -1534,7 +1975,7 @@ Jay Gould
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: . Last build date: 2025-06-28 Sat 18:37.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: . Last build date: 2025-07-25 Fri 00:00.</p>
 
 </div>
 </div>

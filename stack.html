@@ -25,6 +25,448 @@
 
   <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
   <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+
+<!-- Import LazySizes - State-of-the-art lazy loading library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+
+<!-- Optional: Import plugins for better performance -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js" async></script>
+
+<script>
+// Only run on pages with 'art_paintings_media' in the path
+if (window.location.pathname.includes('art_paintings_media')) {
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    // Configure LazySizes for optimal performance
+    window.lazySizesConfig = window.lazySizesConfig || {};
+    window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
+    window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
+    window.lazySizesConfig.expFactor = 1.5; // Expand loading area
+    window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
+
+    // Add CSS for smooth transitions and collapsible content
+    const style = document.createElement('style');
+    style.textContent = `
+      .lazyload,
+      .lazyloading {
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+      }
+      .lazyloaded {
+        opacity: 1;
+      }
+      .collapsible-content {
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+      .collapsible-content.collapsed {
+        max-height: 0 !important;
+      }
+      .collapsible-content.expanded {
+        max-height: none;
+      }
+      /* Blur effect while loading (optional) */
+      .lazyloading {
+        filter: blur(5px);
+        opacity: 0.7;
+      }
+      .lazyloaded {
+        filter: none;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Find all h3 elements
+    const h3Elements = document.querySelectorAll('h3');
+
+    h3Elements.forEach(function(h3) {
+      // Make h3 clickable and add icon
+      h3.style.position = 'relative';
+      h3.style.cursor = 'pointer';
+      h3.style.paddingLeft = '20px';
+      h3.style.userSelect = 'none';
+
+      // Add the arrow icon
+      const icon = document.createElement('span');
+      icon.innerHTML = '▶';
+      icon.style.position = 'absolute';
+      icon.style.left = '0px';
+      icon.style.top = '50%';
+      icon.style.transform = 'translateY(-50%)';
+      icon.style.transition = 'transform 0.2s';
+      icon.style.fontSize = '0.8em';
+      icon.style.color = 'rgb(102, 102, 102)';
+      icon.style.fontFamily = 'monospace';
+
+      h3.insertBefore(icon, h3.firstChild);
+
+      // Find all content after this h3 until the next h3 or end of parent
+      const contentElements = [];
+      let nextElement = h3.nextElementSibling;
+
+      while (nextElement && nextElement.tagName !== 'H3') {
+        contentElements.push(nextElement);
+        nextElement = nextElement.nextElementSibling;
+      }
+
+      // Create a wrapper for smooth collapsing
+      const wrapper = document.createElement('div');
+      wrapper.className = 'collapsible-content collapsed';
+      wrapper.style.maxHeight = '0';
+
+      // Move content elements into wrapper
+      contentElements.forEach(function(element) {
+        wrapper.appendChild(element);
+      });
+
+      // Insert wrapper after h3
+      h3.parentNode.insertBefore(wrapper, h3.nextSibling);
+
+      // Prepare images for LazySizes lazy loading and make them clickable
+      const prepareImagesForLazyLoading = (container) => {
+        const images = container.querySelectorAll('img');
+        images.forEach(function(img) {
+          // Only process if not already processed
+          if (!img.classList.contains('lazyload') && !img.dataset.processed) {
+            // Store original src in data-src for LazySizes
+            if (img.src && img.src !== '' && !img.src.startsWith('data:')) {
+              img.dataset.src = img.src;
+              // Use a tiny placeholder or low-quality placeholder
+              img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+            }
+
+            // Handle srcset for responsive images
+            if (img.srcset && img.srcset !== '') {
+              img.dataset.srcset = img.srcset;
+              img.srcset = '';
+            }
+
+            // Handle sizes attribute
+            if (img.sizes) {
+              img.dataset.sizes = img.sizes;
+            }
+
+            // Add LazySizes classes
+            img.classList.add('lazyload');
+
+            // Make image clickable - add cursor pointer
+            img.style.cursor = 'pointer';
+
+            // Add click handler to open image in new tab
+            img.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation(); // Prevent triggering h3 collapse
+
+              // Get the actual image URL (either from src or data-src)
+              let imageUrl = this.src;
+              if (this.dataset.src && !this.src.startsWith('data:')) {
+                imageUrl = this.dataset.src;
+              } else if (this.src.startsWith('data:') && this.dataset.src) {
+                imageUrl = this.dataset.src;
+              }
+
+              // Open image in new tab
+              if (imageUrl && !imageUrl.startsWith('data:')) {
+                window.open(imageUrl, '_blank');
+              }
+            });
+
+            // Mark as processed
+            img.dataset.processed = 'true';
+
+            // Maintain aspect ratio to prevent layout shift
+            if (!img.style.aspectRatio && img.width && img.height) {
+              img.style.aspectRatio = img.width + '/' + img.height;
+            }
+          }
+        });
+      };
+
+      // Prepare all images in this section for lazy loading
+      prepareImagesForLazyLoading(wrapper);
+
+      // Track collapsed state
+      let isCollapsed = true;
+      let hasBeenExpanded = false;
+
+      // Add click handler
+      h3.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        if (isCollapsed) {
+          // Expand: show content and activate lazy loading
+          icon.style.transform = 'translateY(-50%) rotate(90deg)';
+          wrapper.classList.remove('collapsed');
+          wrapper.classList.add('expanded');
+          wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+
+          // Only activate LazySizes for this section when first expanded
+          if (!hasBeenExpanded) {
+            // Trigger LazySizes to check for images in this newly visible section
+            if (window.lazySizes) {
+              // Force LazySizes to check all images in this wrapper
+              const lazyImages = wrapper.querySelectorAll('.lazyload');
+              lazyImages.forEach(img => {
+                // Add to LazySizes queue
+                window.lazySizes.loader.unveil(img);
+              });
+            }
+            hasBeenExpanded = true;
+          }
+
+          isCollapsed = false;
+
+          // Recalculate height after images potentially load
+          setTimeout(() => {
+            if (!isCollapsed) {
+              wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+            }
+          }, 100);
+
+        } else {
+          // Collapse: hide content
+          icon.style.transform = 'translateY(-50%) rotate(0deg)';
+          wrapper.classList.remove('expanded');
+          wrapper.classList.add('collapsed');
+          wrapper.style.maxHeight = '0';
+
+          isCollapsed = true;
+        }
+      });
+
+      // Listen for LazySizes events to adjust height dynamically
+      wrapper.addEventListener('lazyloaded', function(e) {
+        if (!isCollapsed) {
+          // Adjust wrapper height when images load
+          setTimeout(() => {
+            wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+          }, 50);
+        }
+      });
+    });
+  });
+}
+</script>
+
+<script>
+
+
+
+  
+// Stack Page Formatter - Apply inline layout to specific pages
+(function() {
+  'use strict';
+  
+  // Check if current page should have the formatting applied
+  function shouldApplyFormatting() {
+    const path = window.location.pathname;
+    
+    // Check if path matches our target patterns
+    return path === '/stack' || 
+           path === '/stack.html' || 
+           path.startsWith('/sh/');
+  }
+  
+  // Only proceed if we're on a target page
+  if (!shouldApplyFormatting()) {
+    return;
+  }
+  
+  // Add CSS styles
+  function addStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+      /* Basic styling for entries */
+      .outline-3 {
+        margin-bottom: 1.5em;
+        line-height: 1.5;
+      }
+
+      /* Style for reconstructed single paragraph */
+      .entry-paragraph {
+        margin: 0;
+        line-height: 1.5;
+        direction: inherit;
+        unicode-bidi: plaintext;
+      }
+
+      /* Style for date - gray and nice */
+      .entry-date {
+        color: #666;
+        font-size: 0.9em;
+        margin-right: 0.5em;
+      }
+
+      /* Style for tag at end - gray and in parentheses */
+      .entry-tag {
+        display: inline !important;
+        color: #666;
+        margin-left: 0.5em;
+      }
+
+      /* Ensure all children stay inline */
+      .entry-tag * {
+        display: inline !important;
+      }
+
+      /* Override any existing tag styles */
+      .entry-tag p,
+      .entry-tag div {
+        display: inline !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      /* Hide block elements that will be moved */
+      .outline-3 .moved-block {
+        display: block;
+        margin: 0.5em 0;
+      }
+
+      /* Ensure proper anchor target visibility */
+      .outline-3[id] {
+        scroll-margin-top: 20px;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  // Extract ID from container div
+  function extractIdFromContainer(entry) {
+    const containerId = entry.id;
+    if (containerId && containerId.startsWith('outline-container-')) {
+      return containerId.replace('outline-container-', '');
+    }
+    return null;
+  }
+  
+  // Apply the formatting transformation
+  function applyFormatting() {
+    // Process each entry
+    const entries = document.querySelectorAll('.outline-3');
+    
+    entries.forEach((entry, index) => {
+      // Extract the anchor ID from the container before transformation
+      const anchorId = extractIdFromContainer(entry);
+      
+      // Extract components
+      const h3 = entry.querySelector('h3');
+      const notes = entry.querySelector('.notes');
+      const outlineText = entry.querySelector('.outline-text-3');
+      const tag = entry.querySelector('.tag');
+      
+      if (!h3 || !outlineText) return;
+      
+      // Get title text (preserve any TODO/DONE prefixes and links)
+      let titleText = h3.innerHTML;
+      
+      // Get timestamp
+      let timestampText = '';
+      if (notes) {
+        const timestamp = notes.querySelector('.timestamp');
+        if (timestamp) {
+          timestampText = timestamp.textContent;
+        }
+      }
+      
+      // Get content paragraphs (excluding notes and tag)
+      const contentParagraphs = [];
+      const blockElements = [];
+      
+      Array.from(outlineText.children).forEach(child => {
+        if (child.classList.contains('notes') || child.classList.contains('tag')) {
+          return; // Skip these
+        }
+        
+        if (child.tagName === 'P') {
+          contentParagraphs.push(child.innerHTML);
+        } else if (child.tagName === 'UL' || child.tagName === 'OL' || 
+                   child.tagName === 'BLOCKQUOTE' || child.tagName === 'PRE' ||
+                   child.tagName === 'DL' || child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        } else if (child.tagName === 'DIV' && child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        }
+      });
+      
+      // Get tag HTML (preserve links and formatting)
+      let tagHtml = '';
+      if (tag) {
+        tagHtml = tag.outerHTML;
+      }
+      
+      // Construct the new single paragraph
+      let newContent = '';
+      
+      // Add date at the start (gray)
+      if (timestampText) {
+        newContent += '<span class="entry-date">' + timestampText + '</span>';
+      }
+      
+      // Add title with emdash
+      newContent += titleText + ' — ';
+      
+      // Add content paragraphs
+      newContent += contentParagraphs.join(' ');
+      
+      // Add tag at the end in parentheses (preserve HTML but force inline)
+      if (tagHtml) {
+        // Extract just the inner content and wrap it properly
+        let tagContent = tag.innerHTML;
+        newContent += ' <span class="entry-tag">(' + tagContent + ')</span>';
+      }
+      
+      // Create new paragraph element
+      const newParagraph = document.createElement('p');
+      newParagraph.className = 'entry-paragraph';
+      newParagraph.innerHTML = newContent;
+      
+      // Clear the entry and add the new paragraph
+      entry.innerHTML = '';
+      entry.appendChild(newParagraph);
+      
+      // Preserve the anchor ID by setting it on the transformed entry
+      if (anchorId) {
+        entry.id = anchorId;
+      }
+      
+      // Add any block elements after the paragraph
+      blockElements.forEach(blockHtml => {
+        const blockDiv = document.createElement('div');
+        blockDiv.className = 'moved-block';
+        blockDiv.innerHTML = blockHtml;
+        entry.appendChild(blockDiv);
+      });
+      
+      // Add separator after each entry (except the last one)
+      if (index < entries.length - 1) {
+        const separator = document.createElement('hr');
+        separator.style.margin = '1em 0';
+        separator.style.border = 'none';
+        separator.style.borderTop = '1px solid #ccc';
+        entry.appendChild(separator);
+      }
+    });
+  }
+  
+  // Initialize when DOM is ready
+  function init() {
+    addStyles();
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', applyFormatting);
+    } else {
+      applyFormatting();
+    }
+  }
+  
+  // Start the initialization
+  init();
+})();
+</script>
+
+
+
 </head>
 <body>
 </body>
@@ -40,8 +482,7 @@
 <h1 class="title" style="
 margin-block-start: auto;
     color: black;
-">لّermontov</h1>
-
+">Hereby, all birds fly</h1>
       </a>
 <hr class="header-divider" style="margin-block-end: -1em;">
   </div>
@@ -54,16 +495,547 @@ margin-block-start: auto;
 <h2 id="posts">Posts</h2>
 <div class="outline-text-2" id="text-posts">
 </div>
-<div id="outline-container-org40a5774" class="outline-3">
-<h3 id="org40a5774">Mulan (1998)</h3>
-<div class="outline-text-3" id="text-org40a5774">
+<div id="outline-container-96c8ydk0kpk0" class="outline-3">
+<h3 id="96c8ydk0kpk0">Unintentional ASMR</h3>
+<div class="outline-text-3" id="text-96c8ydk0kpk0">
 <div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-07-05 Sat 19:15]</span></span>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-09-27 Sat 23:59]</span></span>
 </p>
  </div>
+<p>
+There&rsquo;s an uploaded video on YouTube on a channel that posts &ldquo;unintentional ASMR&rdquo;s, which are videos that can be used for an &ldquo;ASMR purpose&rdquo; but they were not intended to be so. One of these videos, is Chomsky <a href="https://www.youtube.com/watch?v=QJj7WiwcadU&amp;t=11s">speaking about surveillance</a>. One commenter said: &ldquo;If you actually listen to what he says, you won&rsquo;t get any sleep.&rdquo;
+</p>
+</div>
+</div>
+<div id="outline-container-g180s3g0kpk0" class="outline-3">
+<h3 id="g180s3g0kpk0"><span class="todo TODO">TODO</span> <a href="h/art_paintings_media.html#3xifm2g0kpk0">The Romans in their Decadence</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_read">@read</span>&#xa0;<span class="_later">@later</span></span></h3>
+<div class="outline-text-3" id="text-g180s3g0kpk0">
 <div class="notes"> <p>
-:ID:       h8gioqf0hmk0
-:CUSTOM_ID: h8gioqf0hmk0
+<span class="timestamp-wrapper"><span class="timestamp">[2025-09-27 Sat 23:59]</span></span>
+</p>
+ </div>
+<div class="tag" id="org5332452">
+<p>
+This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
+</p>
+
+</div>
+<p>
+I really like this painting a lot, but I fail to properly interpret it. Do you know a good interpretation? Share it in the email please (this applies also if you&rsquo;re reading this post in a distant future, I keep track of long old TODOs).
+</p>
+</div>
+</div>
+<div id="outline-container-6vudjq51ipk0" class="outline-3">
+<h3 id="6vudjq51ipk0">Patrick SmartPants</h3>
+<div class="outline-text-3" id="text-6vudjq51ipk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-09-26 Fri 20:54]</span></span>
+</p>
+ </div>
+<p>
+There&rsquo;s an funny episode from SpongeBob that goes like this: Patrick falls off a
+cliff and his &ldquo;brain&rdquo; (actually brain coral) falls out of his head. SpongeBob
+finds it and puts it back, but accidentally places it upside down. This makes
+Patrick incredibly intelligent. He becomes sophisticated, well-spoken, and
+knowledgeable about science and literature. However, his newfound intelligence
+creates a rift between him and SpongeBob, as Patrick no longer enjoys their
+usual silly activities. Eventually, Patrick realizes that being smart isn&rsquo;t
+worth losing his best friend, so he removes the brain coral to return to his
+lovably dim self, and he and SpongeBob happily resume their friendship. I think it&rsquo;s a quite halirious that the smartest decision a smart Patrick could made is unsmarting himself.
+</p>
+</div>
+</div>
+<div id="outline-container-yti352w0ipk0" class="outline-3">
+<h3 id="yti352w0ipk0"><a href="h/art_paintings_media.html#fzsf1xv0ipk0">Adam Et Eve</a></h3>
+<div class="outline-text-3" id="text-yti352w0ipk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-09-26 Fri 17:25]</span></span>
+</p>
+ </div>
+<div class="tag" id="org0cd0a9f">
+<p>
+This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
+</p>
+
+</div>
+<p>
+The tree, the flowers, the look, the snake. Absolute art. (<img src="https://commons.wikimedia.org/wiki/File:Adam_et_Eve_-_Gustave_Courtois.jpg" alt="File:Adam_et_Eve_-_Gustave_Courtois.jpg">)
+</p>
+</div>
+</div>
+<div id="outline-container-obm0ls01hpk0" class="outline-3">
+<h3 id="obm0ls01hpk0"><a href="h/art_paintings_media.html#72iefq01hpk0">The Fountain of the Sweet Waters of Asia</a></h3>
+<div class="outline-text-3" id="text-obm0ls01hpk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-09-25 Thu 23:59]</span></span>
+</p>
+ </div>
+<div class="tag" id="orgc6d3e70">
+<p>
+This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
+</p>
+
+</div>
+<p>
+<a href="https://www.wikiart.org/en/hermann-david-salomon-corrodi/the-fountain-of-the-sweet-waters-of-asia-on-the-bosphorus/">https://www.wikiart.org/en/hermann-david-salomon-corrodi/the-fountain-of-the-sweet-waters-of-asia-on-the-bosphorus/</a> this is crazy beautiful. Reminded me of an old game. <a href="https://en.wikipedia.org/wiki/Metin2">https://en.wikipedia.org/wiki/Metin2</a>
+</p>
+</div>
+</div>
+<div id="outline-container-24u27g21apk0" class="outline-3">
+<h3 id="24u27g21apk0">&ldquo;<a href="https://evil.readthedocs.io/en/latest/settings.html">This variable must be set before Evil is loaded.</a>&rdquo;</h3>
+<div class="outline-text-3" id="text-24u27g21apk0">
+<ul class="org-ul">
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-09-26 Fri 00:57]</span></span> <br>
+<a href="https://github.com/doomemacs/doomemacs/pull/8518">https://github.com/doomemacs/doomemacs/pull/8518</a></li>
+</ul>
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-09-20 Sat 18:05]</span></span>
+</p>
+ </div>
+<div class="tag" id="org982b092">
+<p>
+This section was labeled under, or is related to Emacs
+</p>
+
+</div>
+<p>
+Why?
+</p>
+</div>
+</div>
+<div id="outline-container-205igy41apk0" class="outline-3">
+<h3 id="205igy41apk0">Cast Away (2000) is an amazing film.</h3>
+<div class="outline-text-3" id="text-205igy41apk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-09-20 Sat 17:58]</span></span>
+</p>
+ </div>
+<div class="tag" id="orga042149">
+<p>
+This section was labeled under, or is related to <a href="p/fcinema.html#kwlj2jo02wj0">Cinema</a>
+</p>
+
+</div>
+<p>
+I spent last night rewatching Cast Away. The last time I watched it was when I was lost, my perception about it was alike the one I had to other mainstream films that his return to life was not respectful to everyone around him (i.e. main character delima). What I could remember before my watch was something like that her wife either stays with her new husband, or she leaves her new husband for him, both are equally awful. But the ending doesn&rsquo;t show Kelly leaving her new husband. Instead, there&rsquo;s a bittersweet final meeting between Chuck and Kelly where they acknowledge their love for each other, but Kelly chooses to stay with her current family. Chuck ultimately lets her go and drives away to start his new life. The film ends with Chuck at a crossroads (literally and figuratively), suggesting hope for his future as he decides which direction to take.
+</p>
+</div>
+</div>
+<div id="outline-container-3chjkek09pk0" class="outline-3">
+<h3 id="3chjkek09pk0"><a href="https://bessstillman.substack.com/p/oh-fuck-youre-still-sad">Oh fuck, you&rsquo;re still sad?</a></h3>
+<div class="outline-text-3" id="text-3chjkek09pk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-09-19 Fri 17:22]</span></span>
+</p>
+ </div>
+<div class="tag" id="org17633c4">
+<p>
+This section was labeled under, or is related to <a href="t/modus.html#ydb1kfn02wj0">Modus Vivendi</a>
+</p>
+
+</div>
+<p>
+Rare times I have read good pieces on sadness like this.
+</p>
+</div>
+</div>
+<div id="outline-container-tpqa1lq04pk0" class="outline-3">
+<h3 id="tpqa1lq04pk0">Note for Windows Programmers</h3>
+<div class="outline-text-3" id="text-tpqa1lq04pk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-09-15 Mon 23:59]</span></span>
+</p>
+ </div>
+<div class="tag" id="org358f97c">
+<p>
+This section was labeled under, or is related to <a href="t/programming.html#4u5664n02wj0">Programming</a>
+</p>
+
+</div>
+<p>
+Reading.<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle"/><span class="sidenote">Brian "Beej Jorgensen" Hall, <i>Beej’s Guide to Network Programming</i> (Beej.us, 2023), <a href="https://beej.us/guide/bgnet/">https://beej.us/guide/bgnet/</a>.</span> It has an interesting note for Windows
+programmers: &ldquo;At this point in the guide, historically, I’ve done a bit of
+bagging on Windows, simply due to the fact that I don’t like it very much. But
+then Windows and Microsoft (as a company) got a lot better. Windows 10 coupled
+with WSL (below) actually makes for a decent operating system. Not really a lot
+to complain about.  Well, a little—for example, I’m writing this (in 2025) on a
+2015 laptop that used to run Windows 10. Eventually it got too slow and I
+installed Linux on it. And have been using it ever since.  But now we have
+Windows 11 that apparently requires beefier hardware than Windows 10. I’m not a
+fan of that. The OS should be as unobtrusive as possible and not require you to
+spend more money.  The extra CPU power should be for apps, not the OS!
+Additionally, Microsoft knows what you want, and what you want is more
+advertising! Right? In your operating system! Weren’t you missing that? Now you
+can have it with Windows 11.  So… I still encourage you to try Linux , BSD ,
+illumos or any other flavor of Unix instead of Windows.&rdquo;. It&rsquo;s a nice harsh
+punch for newcomers. I still think that MS Windows is one of the worst blocking
+obstacles in 21th computing. Perhaps one big factor that made mobile usage
+thrive they way it is, was the way MS made the desktop experience so bad, and
+the way Apple made it unaffordable.
+</p>
+</div>
+</div>
+<div id="outline-container-glwbc9x01pk0" class="outline-3">
+<h3 id="glwbc9x01pk0"><a href="https://youtu.be/dSlMmCD5quc">Emacs bankruptcy</a></h3>
+<div class="outline-text-3" id="text-glwbc9x01pk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-09-13 Sat 20:22]</span></span>
+</p>
+ </div>
+<p>
+I was recently introduced to the concept Emacs Bankruptcy (EB) by this cool
+video from Jake B. I have done EB maybe more than 10 times, I never knew the
+term though. I&rsquo;m currently in the process of doing another one, hopefully the
+last.
+</p>
+</div>
+</div>
+<div id="outline-container-suff34a0zok0" class="outline-3">
+<h3 id="suff34a0zok0"><a href="https://www.thenexus.media/your-phone-already-has-social-credit-we-just-lie-about-it/">We already live in social credit, we just don&rsquo;t call it that</a></h3>
+<div class="outline-text-3" id="text-suff34a0zok0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-09-11 Thu 23:37]</span></span>
+</p>
+ </div>
+<p>
+The article missed how the educational framework, employment and <a href="https://www.youtube.com/watch?v=tgXZuGIMuwQ">rewarding
+obedience</a> are also part of the social credit system.
+</p>
+</div>
+</div>
+<div id="outline-container-jxdgqja0rok0" class="outline-3">
+<h3 id="jxdgqja0rok0">C#, Dating, and Ukraine War</h3>
+<div class="outline-text-3" id="text-jxdgqja0rok0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-09-05 Fri 22:09]</span></span>
+</p>
+ </div>
+<p>
+These might sound extremely unrelated topics, and yes they are. Around 4 or 5
+years ago I used to watch a YouTuber who started his channel with the pandamic,
+and I was learning some C# patterns then. He was making these nice videos about
+C#, and his way of explaining some topics was really fun. However, he started
+also giving some dating advices<label for="2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="2" class="margin-toggle"/><span class="sidenote">
+which was halirious, because he looked like
+someoen who would really make use of some
+</span>, I stopped following him when he started
+doing all that dating stuff, but later he made a single one video on Ukraine
+war, it was about the tanks. The video went so popular and since then his
+channel got around 500K followers, I don&rsquo;t recall him making any videos again on
+tech or dating and I&rsquo;m unsure if he even kept them. The reason why I&rsquo;m talking
+about him (and sorry if it will disappoint you), is that he keeps popping into
+my mind every once and a while, and I totally forgot about him and his name, and
+the story sounds very unfamiliar that if I tell anyone about it they might not
+believe me. So I&rsquo;m putting this here, if you know what I&rsquo;m talking about, even
+if you&rsquo;re reading this 5 years later, let me know that I&rsquo;m not the only person
+who remembers that strange phenomena.
+</p>
+</div>
+</div>
+<div id="outline-container-z6s48l31ook0" class="outline-3">
+<h3 id="z6s48l31ook0">Aang realizing it&rsquo;s a long journey</h3>
+<div class="outline-text-3" id="text-z6s48l31ook0">
+<ul class="org-ul">
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-09-06 Sat 15:03]</span></span> <br>
+I still wish I could learn how to be a good teacher like Iroh was. My
+exeperience has teached me that I&rsquo;m terrible at teaching, not exactly at
+transfering knowledge (in which I believe I&rsquo;m outstanding) but in keeping my
+temper when my students do not get what I&rsquo;m saying, or do not apperciate it. We
+call this in Arabic <a href="https://t.me/IneffableText/1365">Holm</a>.</li>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-09-06 Sat 15:00]</span></span> <br>
+I learned a lot from this show as a kid. I learned responsability and sacrifice.</li>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-09-06 Sat 02:16]</span></span> <br>
+I&rsquo;m rewatching the show slowley for the fisrt time now, and I&rsquo;m realizing how
+absurd was the reason that made Katara hate Jack a lot. I always remembered him
+as her cheater ex-boyfriend who lied to her horribly. I even remember believing
+that he tried to trade Aang with the fire nation at least (that&rsquo;s how I was
+trying to understand why Katara hated him that much), founded that he just lied
+to her about destroying a settlement. I personally agree with views like his:
+there is no victories without some loses (can&rsquo;t make an omelet without breaking
+some eggs), and I think it was not that big of a reason to hate on Jack (well,
+maybe his dishonesty?). It&rsquo;s a bit sad that we had to live with a leftover like
+Jack in the show.</li>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-09-04 Thu 02:16]</span></span> <br>
+<a href="https://www.youtube.com/watch?v=_6FbPLEW_p4">https://www.youtube.com/watch?v=_6FbPLEW_p4</a> I uploaded the scene.</li>
+</ul>
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-09-03 Wed 23:59]</span></span>
+</p>
+ </div>
+<p>
+In ATLA, the episode S01E03 ends in a way that I just noticed it in a rewatch
+I&rsquo;m makign now. Aang is realizing that the world he knew and loved is no longer
+there again for him, however, the realization is not there yet until he is
+saying goodbye to his home, flying away from it, looking at it and contemplating
+his memories that will never be revived again, and thinking of how it is going
+to be a very long journey in this new world he spawned into. How ironic that I
+watched this as a kid, with memories that I yearn everyday to revive, but will
+never be able to. It&rsquo;s really a spectacular scene. And a spectacular show.
+</p>
+</div>
+</div>
+<div id="outline-container-1xh6igp0bok0" class="outline-3">
+<h3 id="1xh6igp0bok0"><a href="h/art_paintings_media.html#wjgg6fp0bok0">The Return, by Thomas Cole</a></h3>
+<div class="outline-text-3" id="text-1xh6igp0bok0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-08-24 Sun 23:59]</span></span>
+</p>
+ </div>
+<div class="tag" id="org9a778e0">
+<p>
+This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
+</p>
+
+</div>
+<p>
+<a href="h/art_paintings_media.html#34feald0fmk0">Thomas Cole</a> world is so different. I wish I could see the world the way he
+had seen it.
+</p>
+</div>
+</div>
+<div id="outline-container-org1b7db6d" class="outline-3">
+<h3 id="org1b7db6d"><a href="https://mastodon.schub.social/@denschub/114996915811779017">An LLM Rant</a></h3>
+<div class="outline-text-3" id="text-org1b7db6d">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-08-22 Fri 15:06]</span></span>
+</p>
+ </div>
+<p>
+A nice one actually.
+</p>
+</div>
+</div>
+<div id="outline-container-orgddba96c" class="outline-3">
+<h3 id="orgddba96c"><a href="https://news.ycombinator.com/item?id=3151465">https://news.ycombinator.com/item?id=3151465</a></h3>
+<div class="outline-text-3" id="text-orgddba96c">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-08-22 Fri 14:53]</span></span>
+</p>
+ </div>
+<p>
+Haha.
+</p>
+</div>
+</div>
+<div id="outline-container-n0bkmiz07ok0" class="outline-3">
+<h3 id="n0bkmiz07ok0"><a href="https://youtu.be/uuCoyILqut8">&ldquo;Life is tremendously sad&rdquo;</a></h3>
+<div class="outline-text-3" id="text-n0bkmiz07ok0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-08-21 Thu 23:59]</span></span>
+</p>
+ </div>
+<p>
+While I don&rsquo;t totally agree with his life perception, I really love how Louie is
+so consistant on his philosophy. I&rsquo;m pretty sure that the show was written with
+an intense care for ideas and different philosophies, as it even discusses many
+moral issues as of the course of it. This same part that louie talks about here
+in the video reminded me of that episode (too lazy to reference the exact one)
+when his Hungarian girlfriend leaves, and he tells the doctor about it and the
+doctor <a href="https://www.youtube.com/watch?v=7VIPKVdUK40">tells him</a> that what he feels now is &ldquo;love&rdquo;, or like he puts it in the
+linked reference: &ldquo;Sadness is poetic, you&rsquo;re lucky to live sad moments&rdquo;.
+</p>
+</div>
+</div>
+<div id="outline-container-up1dphm0qnk0" class="outline-3">
+<h3 id="up1dphm0qnk0"><a href="h/art_paintings_media.html#0ablccm0qnk0">View on the Catskill, Early Autumn</a></h3>
+<div class="outline-text-3" id="text-up1dphm0qnk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-08-09 Sat 01:59]</span></span>
+</p>
+ </div>
+<div class="tag" id="org4a5329e">
+<p>
+This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
+</p>
+
+</div>
+<p>
+The details on the painting are incridable, they were even difficult for me to
+comperhend. It reminded me of cartoon shows that I used to watch in my
+childhood of heros having adventures in a very big jungles.
+</p>
+</div>
+</div>
+<div id="outline-container-oabd0kc0qnk0" class="outline-3">
+<h3 id="oabd0kc0qnk0">A note on anger</h3>
+<div class="outline-text-3" id="text-oabd0kc0qnk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-08-08 Fri 01:59]</span></span>
+</p>
+ </div>
+
+<p>
+Following is a good note on anger, mentioned in:<label for="3" class="margin-toggle sidenote-number"></label><input type="checkbox" id="3" class="margin-toggle"/><span class="sidenote">Abdullah ibn Al-Muqaffa’a, <i>Al-Durrah Al-Yateemah</i> (Hindawi, 2019).</span> اعلم أن من الناس ناسًا كثيرًا يبلغ من
+أحدهم الغضبُ — إذا غضب — أن يحمله ذلك على الكلوح والتقطيب في وجه غير من أغضبه،
+وسوء اللفظ لمن لا ذنب له، والعقوبة لمن لم يكن يهم بعقوبته، وسوء المعاقبة باليد
+واللسان لمن لم يكن يريد به إلا دون ذلك، ثم يبلغ به الرضى — إذا رضي — أن يتبرَّع
+بالأمر ذي الخطر لمن ليس بمنزلة ذلك عنده، ويعطي من لم يكن أعطاه، ويكرم من لا حق
+له ولا مودَّة. فاحذرْ هذا الباب كلَّه، فإنه ليس أحدٌ أسوأَ حالًا من أهل القدرة الذين
+يُفرِّطون باقتدارهم في غضبهم وسرعة رضاهم، فإنه لو وصف بهذه الصفة من يلتبس بعقله أو
+يتخبَّطه المسُّ أن يُعاقِب في غضبه غيرَ من أغضبه، ويحبو عند رضاه غيرَ من أرضاه، لكان
+جائزًا في صفته.
+</p>
+</div>
+</div>
+<div id="outline-container-4mu5yt40pnk0" class="outline-3">
+<h3 id="4mu5yt40pnk0">Karl Marx Romance</h3>
+<div class="outline-text-3" id="text-orgd6514bd">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-08-07 Thu 23:59]</span></span>
+</p>
+ </div>
+<p>
+TIL that Karl Marx had some really bad romantic poems when he was a teeager.
+<a href="https://archive.org/details/lovepoemsofkarlm0000marx">Love poems of Karl Marx : Marx, Karl, 1818-1883 : Free Download, Borrow, and
+Streaming : Internet Archive</a>
+</p>
+</div>
+</div>
+<div id="outline-container-ohej2wq0hnk0" class="outline-3">
+<h3 id="ohej2wq0hnk0">Louie/Letterman <a href="https://en.wikipedia.org/wiki/Late_Show_(Louie)">(Late Show)</a></h3>
+<div class="outline-text-3" id="text-org1e77d25">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-08-02 Sat 06:37]</span></span>
+</p>
+ </div>
+<p>
+The Late Show episodes from the Louie show are really interesting. They give me
+a deep gloomy vibe as they used to when I watched them for the first time. For
+some reason I believed that this really happened with Louie CK in the real life,
+but I think it might be symbolic to something else. Funny enough that I used to
+watch it when I started interviewing for the first time, so it was very
+relevant. It was also the reason why I stopped watching Louie. I remember asking
+Antar: &ldquo;Hey, is it going to be depressive starting from season 3?&rdquo;.
+</p>
+</div>
+</div>
+<div id="outline-container-orgc496d62" class="outline-3">
+<h3 id="orgc496d62">Daddy&rsquo;s Girlfriend</h3>
+<div class="outline-text-3" id="text-orgc496d62">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-07-30 Wed 22:07]</span></span>
+</p>
+ </div>
+<p>
+I&rsquo;m watching <a href="https://www.imdb.com/title/tt2210378/">&ldquo;Louie&rdquo; Daddy&rsquo;s Girlfriend: Part 1</a>. It&rsquo;s so relatable to some
+people I knew. So funny.
+</p>
+</div>
+</div>
+<div id="outline-container-ci6k4440dnk0" class="outline-3">
+<h3 id="ci6k4440dnk0">Introduction the theory of value</h3>
+<div class="outline-text-3" id="text-ci6k4440dnk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-07-29 Tue 21:36]</span></span>
+</p>
+ </div>
+<p>
+<a href="d/value.html#mmyjm240dnk0">This</a> is an LLM written introduction into the theory of value. It&rsquo;s easy to
+understand and I thought it might be useful for people who want to quickly
+understand how value works. &ldquo;Workers don&rsquo;t own what they produce.  The products
+of their labor become commodities owned by capitalists and sold back to workers
+in the market.&rdquo; for me, this part is the most painful, when I work under a
+capitalist system<label for="4" class="margin-toggle sidenote-number"></label><input type="checkbox" id="4" class="margin-toggle"/><span class="sidenote">
+Unless in rare occasions my employer would decide it will be a GPL
+licensed software.
+</span>
+</p>
+</div>
+</div>
+<div id="outline-container-kjr2hy617nk0" class="outline-3">
+<h3 id="kjr2hy617nk0">Be Right There</h3>
+<div class="outline-text-3" id="text-kjr2hy617nk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-07-25 Fri 22:22]</span></span>
+</p>
+ </div>
+<div class="tag" id="orgb46c209">
+<p>
+This section was labeled under, or is related to <a href="h/bm.html#4swh72s0s1k0">Postmodern Abyss: Black Mirror</a>
+</p>
+
+</div>
+<p>
+The Be Right There episode is probably the most heartbreaking episode of Black
+Mirror. I was rewatching it right now. I just noticed how Jack gave his mother a
+fake smile in that old photo, the girlfriend says &ldquo;Well, she didn&rsquo;t know it was
+a fake one&rdquo;, &ldquo;That makes it worse&rdquo; he responded. Which is the whole point of the
+episode. I love this kind of symbolism .
+</p>
+</div>
+</div>
+<div id="outline-container-98ckxai06nk0" class="outline-3">
+<h3 id="98ckxai06nk0">View of the Pont au Change from Quai de Gesvres by <a href="h/art_paintings_media.html#48iifil01nk0">Jean-Baptiste Camille Corot</a></h3>
+<div class="outline-text-3" id="text-98ckxai06nk0">
+<ul class="org-ul">
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-08-05 Tue 21:49]</span></span> <br>
+Another example is Souvenir of the Villa Borghese (1855).</li>
+</ul>
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-07-24 Thu 19:17]</span></span>
+</p>
+ </div>
+<div class="tag" id="orgcab1323">
+<p>
+This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
+</p>
+
+</div>
+<p>
+I noticed how almost all Corot paintings are not very colorful, his era is the
+beginning of less vibrant art.
+</p>
+</div>
+</div>
+<div id="outline-container-sljh9tm01nk0" class="outline-3">
+<h3 id="sljh9tm01nk0"><a href="https://www.marxists.org/">Marxists Internet Archive</a></h3>
+<div class="outline-text-3" id="text-sljh9tm01nk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-07-20 Sun 23:59]</span></span>
+</p>
+ </div>
+<p>
+I spent some time today reading about the Maxist Internet Archive history. I
+used to contribute to the Arabic section back in the day before realizing that
+this was not really helpful<label for="5" class="margin-toggle sidenote-number"></label><input type="checkbox" id="5" class="margin-toggle"/><span class="sidenote">
+I&rsquo;m not talking here about Marxism, but contributing to Arabic
+translation, such contributions are not really helpful at this point, as you
+can not reach such an advanced point in learning something without mastering the
+lingua de franca.
+</span>. Anyway, I found it quite funny that it didn&rsquo;t
+take them much time to have their first fight: &ldquo; By 1996 the website, Marx.org,
+was hosted by a commercial ISP. This was followed by an increased activity from
+the volunteers. In the following years, however, a conflict developed between
+the volunteers working on the website and Zodiac, who retained control of the
+project and domain name. As the scope of the archive expanded, Zodiac feared
+that the opening toward diverse currents of Marxism was a &rdquo;slippery slope"
+toward sectarianism. The volunteers who had been undertaking the work of
+transcribing texts resented having little influence over the way in which the
+archive was organized and run. In early 1998 Zodiac decided that Marx.org would
+return to its roots and that all writers other than Marx and Engels would be
+removed.
+</p>
+</div>
+</div>
+<div id="outline-container-d2wiomt06nk0" class="outline-3">
+<h3 id="d2wiomt06nk0">Raksit Leila</h3>
+<div class="outline-text-3" id="text-d2wiomt06nk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-07-19 Sat 23:31]</span></span>
+</p>
+ </div>
+<p>
+<a href="https://youtu.be/5vvr7KXAfck">Raksit Lelia</a>&rsquo;s music video is one of the best music videos I ever watched. It&rsquo;s
+really impressive that Sinno contributed to such an amazing work when he was
+only 20 years old.
+</p>
+</div>
+</div>
+<div id="outline-container-h8gioqf0hmk0" class="outline-3">
+<h3 id="h8gioqf0hmk0">Mulan (1998)</h3>
+<div class="outline-text-3" id="text-h8gioqf0hmk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2025-07-05 Sat 19:15]</span></span>
 </p>
  </div>
 <p>
@@ -88,7 +1060,7 @@ meant for bare brute strength, not thinking differently.
 <span class="timestamp-wrapper"><span class="timestamp">[2025-07-05 Sat 04:32]</span></span>
 </p>
  </div>
-<div class="tag" id="orgba2815f">
+<div class="tag" id="org3013201">
 <p>
 This section was labeled under, or is related to Capitalism
 </p>
@@ -101,14 +1073,14 @@ goodness on the internet.
 </p>
 </div>
 </div>
-<div id="outline-container-orga978240" class="outline-3">
-<h3 id="orga978240">Emacs M4 Experience</h3>
-<div class="outline-text-3" id="text-orga978240">
+<div id="outline-container-orge28c8a6" class="outline-3">
+<h3 id="orge28c8a6">Emacs M4 Experience</h3>
+<div class="outline-text-3" id="text-orge28c8a6">
 <div class="notes"> <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2025-07-05 Sat 02:54]</span></span>
 </p>
  </div>
-<div class="tag" id="org4d4886d">
+<div class="tag" id="org7ac87fe">
 <p>
 This section was labeled under, or is related to Emacs
 </p>
@@ -133,73 +1105,6 @@ just unimaginable.
 <p>
 <a href="https://videos.lukesmith.xyz/w/gyPw6M5PcsLJhE3yQNJ1XR?start=1h16m44s">https://videos.lukesmith.xyz/w/gyPw6M5PcsLJhE3yQNJ1XR?start=1h16m44s</a>
 </p>
-</div>
-</div>
-<div id="outline-container-pkdgxxi0cmk0" class="outline-3">
-<h3 id="pkdgxxi0cmk0">A useful Git &rsquo;trick&rsquo;</h3>
-<div class="outline-text-3" id="text-orgd957a56">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-07-02 Wed 01:23]</span></span>
-</p>
- </div>
-<div class="tag" id="orgb375845">
-<p>
-This section was labeled under, or is related to <a href="t/programming.html#4u5664n02wj0">Programming</a>
-</p>
-
-</div>
-<p>
-Lately someone, who had left my team, left behind him a very big branch that its
-base can not be easily detected (due to the inflated number of branches we have
-in that repo). Following are couple of ways that would have helped me to detect
-that branch (saying <i>would have</i> to imply to you that it didn&rsquo;t, due to the
-big number of merges in that branch, but it indeed <i>would have helped</i> in
-a bit smaller repo).
-</p>
-</div>
-<div id="outline-container-uv8g13k0cmk0" class="outline-4">
-<h4 id="uv8g13k0cmk0">Git: List all the branches compared to this branch with behind/ahead logs</h4>
-<div class="outline-text-4" id="text-org65cce2c">
-<div class="tag" id="orgf1d0387">
-<p>
-This section was labeled under, or is related to Tech Search
-</p>
-
-</div>
-<pre class="code"><code><span style="color: #bf9f8f; font-style: italic;">#</span><span style="color: #bf9f8f; font-style: italic;">!/bin/</span><span style="color: #ef80bf; font-weight: bold;">bash</span>
-<span style="color: #df7fff;">current_branch</span>=$(<span style="color: #a897ef; font-weight: bold;">git rev-parse --abbrev-ref HEAD</span>)
-<span style="color: #f470df;">echo</span> <span style="color: #e5b76f;">"Branch analysis for: </span><span style="color: #ff78aa;">$</span><span style="color: #df7fff;">current_branch</span><span style="color: #e5b76f;">"</span>
-
-<span style="color: #ef80bf; font-weight: bold;">for</span> branch<span style="color: #ef80bf; font-weight: bold;"> in</span> $(<span style="color: #a897ef; font-weight: bold;">git for-each-ref --format='%(refname:short</span><span style="color: #e5b76f;">)'</span> refs/remotes refs/heads | <span style="color: #f470df;">grep</span> -v <span style="color: #e5b76f;">"</span><span style="color: #ff78aa;">$</span><span style="color: #df7fff;">current_branch</span><span style="color: #e5b76f;">"</span> | <span style="color: #f470df;">grep</span> -v <span style="color: #e5b76f;">"staging-mas"</span>); <span style="color: #ef80bf; font-weight: bold;">do</span>
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> <span style="color: #df7fff;">merge_base</span>=$(<span style="color: #a897ef; font-weight: bold;">git merge-base "$branch" HEAD 2&gt;/dev/null</span>); <span style="color: #ef80bf; font-weight: bold;">then</span>
-&#9474;   &#9474;   <span style="color: #df7fff;">ahead</span>=$(<span style="color: #a897ef; font-weight: bold;">git rev-list --count "$merge_base..HEAD" 2&gt;/dev/null</span>)
-&#9474;   &#9474;   <span style="color: #df7fff;">behind</span>=$(<span style="color: #a897ef; font-weight: bold;">git rev-list --count "$merge_base..$branch" 2&gt;/dev/null</span>)
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> [ <span style="color: #e5b76f;">"</span><span style="color: #ff78aa;">$</span><span style="color: #df7fff;">ahead</span><span style="color: #e5b76f;">"</span> -gt 0 ]; <span style="color: #ef80bf; font-weight: bold;">then</span>
-&#9474;   &#9474;   &#9474;   <span style="color: #f470df;">echo</span> <span style="color: #e5b76f;">"</span><span style="color: #ff78aa;">$</span><span style="color: #df7fff;">branch</span><span style="color: #e5b76f;">: </span><span style="color: #ff78aa;">$</span><span style="color: #df7fff;">ahead</span><span style="color: #e5b76f;"> commits ahead, </span><span style="color: #ff78aa;">$</span><span style="color: #df7fff;">behind</span><span style="color: #e5b76f;"> commits behind"</span>
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">fi</span>
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">fi</span>
-<span style="color: #ef80bf; font-weight: bold;">done</span>
-</code></pre>
-</div>
-</div>
-<div id="outline-container-kjr773k0cmk0" class="outline-4">
-<h4 id="kjr773k0cmk0">Trying to find only the modified files</h4>
-<div class="outline-text-4" id="text-orgda3b682">
-<div class="tag" id="orgbb5f87c">
-<p>
-This section was labeled under, or is related to Tech Search
-</p>
-
-</div>
-<p>
-The previous way didn&rsquo;t help much in my case, I found that the optimal way would
-be just migrating the files I care about into a separate branch (since there are
-no dependencies in this repo). I needed to get the files that were modified in
-this branch by that person:
-</p>
-<pre class="code"><code><span style="color: #f470df;">git</span> log main..HEAD --author=<span style="color: #e5b76f;">"The Dude Full Name <a href="mailto:TheDudeEmail%40smth.edu">&lt;TheDudeEmail@smth.edu&gt;</a>"</span> --name-status --pretty=format:
-</code></pre>
-</div>
 </div>
 </div>
 <div id="outline-container-ve76rh517mk0" class="outline-3">
@@ -238,7 +1143,7 @@ happiest girl ever.
 <span class="timestamp-wrapper"><span class="timestamp">[2025-06-23 Mon 19:10]</span></span>
 </p>
  </div>
-<div class="tag" id="orgb79d2ec">
+<div class="tag" id="orgcd290c9">
 <p>
 This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
 </p>
@@ -254,8 +1159,7 @@ wonder how their lives were like.
 <h3 id="op50qae1ylk0">Supabase</h3>
 <div class="outline-text-3" id="text-op50qae1ylk0">
 <ul class="org-ul">
-<li><span class="timestamp-wrapper"><span class="timestamp">[2025-06-23 Mon 00:10]</span></span>: <br>
-Today I thought of giving nhost a try.
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-06-23 Mon 00:10]</span></span> Today I thought of giving nhost a try.
 <a href="https://github.com/nhost/nhost/discussions/2498">https://github.com/nhost/nhost/discussions/2498</a> Horrible. What&rsquo;s the point of
 making such a project even open source if it is going to be useless to the community?</li>
 </ul>
@@ -263,7 +1167,7 @@ making such a project even open source if it is going to be useless to the commu
 <span class="timestamp-wrapper"><span class="timestamp">[2025-06-21 Sat 21:49]</span></span>
 </p>
  </div>
-<div class="tag" id="orgb504924">
+<div class="tag" id="org0ed028d">
 <p>
 This section was labeled under, or is related to <a href="t/programming.html#4u5664n02wj0">Programming</a>
 </p>
@@ -297,7 +1201,7 @@ a software to be open-source if it won&rsquo;t be easy to self-host.
 <span class="timestamp-wrapper"><span class="timestamp">[2025-06-20 Fri 12:37]</span></span>
 </p>
  </div>
-<div class="tag" id="org60b13ca">
+<div class="tag" id="orgc1e2190">
 <p>
 This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
 </p>
@@ -318,7 +1222,7 @@ interaction between him and Cabanel went like.
 <span class="timestamp-wrapper"><span class="timestamp">[2025-06-16 Mon 00:29]</span></span>
 </p>
  </div>
-<div class="tag" id="orgb857c51">
+<div class="tag" id="orgf9177ec">
 <p>
 This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
 </p>
@@ -337,76 +1241,37 @@ Bradford (the <a href="https://en.wikipedia.org/wiki/William_Bradford_(painter)"
 <span class="timestamp-wrapper"><span class="timestamp">[2025-06-13 Fri 14:51]</span></span>
 </p>
  </div>
-<div class="tag" id="org31069cc">
+<div class="tag" id="org1ace15d">
 <p>
 This section was labeled under, or is related to Kierkegaard
 </p>
 
 </div>
 <p>
-Form Papers and journals:
-</p>
-<div class="epigraph"><blockquote>
-<p>
-Encounter on 30 Nov., when they were doing Two Days, with an unknown but beautiful lady (she spoke
-German) – she was alone in the stalls with a little brother – she understood the music.
-</p>
-
-<p>
-36 I A 297
-</p>
-
-</blockquote></div>
-
-<p>
-It&rsquo;s an interesting remark. It&rsquo;s really interesting to see someone who
-understands the music.
+Form Papers and journals: &ldquo;Encounter on 30 Nov., when they were doing Two Days,
+with an unknown but beautiful lady (she spoke German) – she was alone in the
+stalls with a little brother – she understood the music.&rdquo; It&rsquo;s an interesting
+remark. It&rsquo;s really interesting to see someone who understands the music.
 </p>
 </div>
 </div>
-<div id="outline-container-orgdefec7a" class="outline-3">
-<h3 id="orgdefec7a">Katharina von Bora</h3>
-<div class="outline-text-3" id="text-orgdefec7a">
+<div id="outline-container-org00cdc5d" class="outline-3">
+<h3 id="org00cdc5d">Katharina von Bora</h3>
+<div class="outline-text-3" id="text-org00cdc5d">
 <div class="notes"> <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2025-06-13 Fri 14:48]</span></span>
 </p>
  </div>
-<div class="tag" id="orgee08014">
+<div class="tag" id="orgfd547e2">
 <p>
 This section was labeled under, or is related to Kierkegaard
 </p>
 
 </div>
 <p>
-From Papers and journals:
+From Papers and journals: &ldquo;An old saying, that the Anti-Christ would be born to
+a nun by a monk (was once used with regard to Luther’s marriage).&rdquo;
 </p>
-<div class="epigraph"><blockquote>
-<p>
-An old saying, that the Anti-Christ would be born to a nun by a monk (was once used with regard to
-Luther’s marriage).
-</p>
-
-</blockquote></div>
-</div>
-</div>
-<div id="outline-container-rvkdlr10olk0" class="outline-3">
-<h3 id="rvkdlr10olk0">Some resources on <a href="h/art_paintings_media.html#23mfma60wkk0">William-Adolphe Bouguereau</a></h3>
-<div class="outline-text-3" id="text-rvkdlr10olk0">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-06-13 Fri 14:18]</span></span>
-</p>
- </div>
-<div class="tag" id="org3897da2">
-<p>
-This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
-</p>
-
-</div>
-<ul class="org-ul">
-<li><a href="https://bouguereau.org/biography.html">William-Adolphe Bouguereau</a></li>
-<li><a href="https://youtu.be/8qA5g4Evg5I">William Bouguereau, Unparalleled Brilliance and Dedication</a> [video]</li>
-<li><a href="https://youtu.be/oFYHLpd_cII">What We Love About: William Bouguereau</a> [video]</li>
-</ul>
 </div>
 </div>
 <div id="outline-container-gxzffkh0glk0" class="outline-3">
@@ -416,7 +1281,7 @@ This section was labeled under, or is related to <a href="h/art_paintings_media.
 <span class="timestamp-wrapper"><span class="timestamp">[2025-06-07 Sat 18:21]</span></span>
 </p>
  </div>
-<div class="tag" id="orgaadb0d3">
+<div class="tag" id="orge481140">
 <p>
 This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
 </p>
@@ -435,7 +1300,7 @@ that&rsquo;s so cute.
 <span class="timestamp-wrapper"><span class="timestamp">[2025-06-06 Fri 20:40]</span></span>
 </p>
  </div>
-<div class="tag" id="org38ce79c">
+<div class="tag" id="org8c65531">
 <p>
 This section was labeled under, or is related to Kierkegaard and <a href="t/modus.html#ydb1kfn02wj0">Modus Vivendi</a>
 </p>
@@ -470,7 +1335,7 @@ My old post about math might be also related: <a href="p/prelude.html#8ay4irp02w
 <span class="timestamp-wrapper"><span class="timestamp">[2025-06-06 Fri 20:23]</span></span>
 </p>
  </div>
-<div class="tag" id="orgb2d0668">
+<div class="tag" id="orge6ed277">
 <p>
 This section was labeled under, or is related to Kierkegaard
 </p>
@@ -492,130 +1357,9 @@ Osama, if you’re reading this, now’s the time to turn the page.
 </blockquote></div>
 </div>
 </div>
-<div id="outline-container-bzhfgq51tlk0" class="outline-3">
-<h3 id="bzhfgq51tlk0">Reflecting on old Org</h3>
-<div class="outline-text-3" id="text-bzhfgq51tlk0">
-<ul class="org-ul">
-<li><p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-06-22 Sun 20:00]</span></span>: <br>
-Many of the entries I went through during this experience left me feeling quite
-sad. While it’s been helpful in confronting the reality that I was forced to
-live a life that didn’t truly feel like what would I wish for (which contradicts
-one of my main principles of life; Amor Fati), I’m not sure it’s worth
-continuing this process at this stage in my life. Perhaps I’ll return to it in
-five years or so.
-</p>
-<div class="epigraph"><blockquote>
-خُطوبٌ إِذا لاقَيتُهُنَّ رَدَدنَني<br>
-جَريحاً كَأَنّي قَد لَقيتُ الكَتائِبا<br>
-
-</blockquote></div></li>
-
-<li><p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-06-17 Tue 23:42]</span></span>: <br>
-A year ago from now I was working on <a href="t/programming.html#q0jctp51tlk0">statuesless</a>, a software that I always
-wanted to build when I initially moved to Linux, but I couldn&rsquo;t because I was
-not yet a capable programmer. I feel nostalgic now about it and how I no longer
-get to use it since I moved to MacOS.
-</p>
-
-<pre class="example" id="org7bde779">
-  :LOGBOOK:
-  CLOCK: [2024-06-27 Thu 13:37]--[2024-06-27 Thu 13:56] =&gt;  0:19
-  CLOCK: [2024-07-02 Tue 04:11]--[2024-07-02 Tue 04:47] =&gt;  0:36
-  CLOCK: [2024-07-01 Mon 10:49]--[2024-07-01 Mon 11:48] =&gt;  0:59
-  CLOCK: [2024-06-15 Sat 08:41]--[2024-06-15 Sat 09:07] =&gt;  0:26
-  CLOCK: [2024-06-15 Sat 08:30]--[2024-06-15 Sat 08:32] =&gt;  0:02
-  CLOCK: [2024-06-15 Sat 04:53]--[2024-06-15 Sat 08:30] =&gt;  3:37
-  CLOCK: [2024-06-17 Mon 12:22]--[2024-06-17 Mon 12:43] =&gt;  0:21
-  CLOCK: [2024-06-17 Mon 07:14]--[2024-06-17 Mon 07:49] =&gt;  0:35
-  CLOCK: [2024-06-26 Wed 15:13]--[2024-06-26 Wed 16:03] =&gt;  0:50
-  :END:
-</pre></li>
-<li><p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-06-13 Fri 10:55]</span></span>: <br>
-I found an old funny entry today:
-</p>
-
-<pre class="example" id="org944e0b7">
-  ** DONE Get ement to work again                                       :@general:
-  :PROPERTIES:
-  :ID:       s1dexrp0tfk0
-  :CUSTOM_ID: s1dexrp0tfk0
-  :END:
-  :LOGBOOK:
-  CLOCK: [2023-06-13 Tue 13:54]--[2023-06-13 Tue 14:07] =&gt;  0:13
-  CLOCK: [2023-06-13 Tue 13:06]--[2023-06-13 Tue 13:54] =&gt;  0:48
-  :END:
-  For some reason that pantalaimon cocksucker was storing some kind of data
-  somewhere that I couldn't reach. I used --data-path to specify custom location
-  to skip using cachedd data. Which caused this issue.
-</pre></li>
-</ul>
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-06-06 Fri 18:52]</span></span>
-</p>
- </div>
-<div class="tag" id="org9be87a7">
-<p>
-This section was labeled under, or is related to <a href="t/programming.html#4u5664n02wj0">Programming</a>
-</p>
-
-</div>
-
-<p>
-Today I remembered that feature of Facebook which would let you see your posts
-from years ago in the same day. It&rsquo;s called &ldquo;memories&rdquo;, I&rsquo;m not sure if it is
-still there. I wanted something similar that can make me reflect on the history
-I have for myself in Org-mode. I wrote this:
-</p>
-
-<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">salih/org-search-entries-with-today-date</span> ()
-  <span style="color: #cc9bcf; font-style: italic;">"Search all Org files for timestamps matching today's day and month."</span>
-  (<span style="color: #ef80bf; font-weight: bold;">interactive</span>)
-  (<span style="color: #ef80bf; font-weight: bold;">let*</span> ((today (<span style="color: #ff78aa;">decode-time</span> (<span style="color: #ff78aa;">current-time</span>)))
-         (day (<span style="color: #ff78aa;">format</span> <span style="color: #e5b76f;">"%02d"</span> (<span style="color: #ff78aa;">nth</span> 3 today)))
-         (month (<span style="color: #ff78aa;">format</span> <span style="color: #e5b76f;">"%02d"</span> (<span style="color: #ff78aa;">nth</span> 4 today)))
-         <span style="color: #bf9f8f; font-style: italic;">;; </span><span style="color: #bf9f8f; font-style: italic;">Match both active &lt;YYYY-MM-DD ...&gt; and inactive [YYYY-MM-DD ...]</span>
-         (pattern (<span style="color: #ff78aa;">format</span> <span style="color: #e5b76f;">"</span><span style="color: #9ac0e4;">\\</span><span style="color: #ff7359;">(</span><span style="color: #e5b76f;">[&lt;[]</span><span style="color: #9ac0e4;">\\</span><span style="color: #ff7359;">)</span><span style="color: #e5b76f;">[0-9]\\{</span><span style="color: #df7fff;">4\\</span><span style="color: #e5b76f;">}-%s-%s[</span><span style="color: #e5b76f; font-weight: bold;">^</span><span style="color: #e5b76f;">]&gt;]*[]&gt;]?"</span> month day))
-         (<span style="color: #df7fff;">consult-ripgrep-args</span>
-          (<span style="color: #ff78aa;">concat</span> <span style="color: #df7fff;">consult-ripgrep-args</span> <span style="color: #e5b76f;">" -g *.org"</span>)))
-    (<span style="color: #ff78aa;">consult-ripgrep</span> <span style="color: #df7fff;">org-roam-directory</span> pattern)))
-</code></pre>
-
-<p>
-It has the issue of showing clock entries, schedules and deadlines, but it does
-the job for now. I already feel so nostalgic.
-</p>
-
-<p>
-I also wrote this to read old journals:
-</p>
-
-<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">defun</span> <span style="color: #f59280;">salih/open-journal-file-for-today</span> ()
-  <span style="color: #cc9bcf; font-style: italic;">"List journal files in /Users/l/roam/journal that match today's MM-DD and let me open one."</span>
-  (<span style="color: #ef80bf; font-weight: bold;">interactive</span>)
-  (<span style="color: #ef80bf; font-weight: bold;">let*</span> ((journal-dir <span style="color: #e5b76f;">"~/roam/journal/"</span>)
-         (today (<span style="color: #ff78aa;">decode-time</span> (<span style="color: #ff78aa;">current-time</span>)))
-         (month (<span style="color: #ff78aa;">format</span> <span style="color: #e5b76f;">"%02d"</span> (<span style="color: #ff78aa;">nth</span> 4 today)))
-         (day (<span style="color: #ff78aa;">format</span> <span style="color: #e5b76f;">"%02d"</span> (<span style="color: #ff78aa;">nth</span> 3 today)))
-         <span style="color: #bf9f8f; font-style: italic;">;; </span><span style="color: #bf9f8f; font-style: italic;">Pattern to match filenames like 2023-06-08.org.gpg for today's MM-DD</span>
-         (match-pattern (<span style="color: #ff78aa;">format</span> <span style="color: #e5b76f;">"-%s-%s\\.org\\.gpg$"</span> month day))
-         (files (<span style="color: #ff78aa;">directory-files</span> journal-dir nil match-pattern)))
-    (<span style="color: #ef80bf; font-weight: bold;">if</span> files
-        (<span style="color: #ef80bf; font-weight: bold;">let</span> ((file-to-open (<span style="color: #ff78aa;">completing-read</span> <span style="color: #e5b76f;">"Open journal file: "</span> files nil t)))
-          (<span style="color: #ff78aa;">find-file</span> (<span style="color: #ff78aa;">expand-file-name</span> file-to-open journal-dir)))
-      (<span style="color: #ff78aa;">message</span> <span style="color: #e5b76f;">"No journal files found for today (%s-%s)"</span> month day))))
-</code></pre>
-
-<p>
-But it hurt.
-</p>
-</div>
-</div>
-<div id="outline-container-org443785d" class="outline-3">
-<h3 id="org443785d">No blue</h3>
-<div class="outline-text-3" id="text-org443785d">
+<div id="outline-container-org3120826" class="outline-3">
+<h3 id="org3120826">No blue</h3>
+<div class="outline-text-3" id="text-org3120826">
 <div class="notes"> <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2025-06-01 Sun 14:13]</span></span>
 </p>
@@ -629,15 +1373,14 @@ No water, no life. No blue, no green. – Sylvia Earle
 <h3 id="jvne8ie10lk0">Floyd&rsquo;s tortoise and hare</h3>
 <div class="outline-text-3" id="text-jvne8ie10lk0">
 <ul class="org-ul">
-<li><span class="timestamp-wrapper"><span class="timestamp">[2025-05-27 Tue 02:59]</span></span>: <br>
-Just found out that flattenability of graphs <a href="https://en.wikipedia.org/wiki/Graph_flattenability">are folklore too</a>. Wondering if a
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-05-27 Tue 02:59]</span></span> Just found out that flattenability of graphs <a href="https://en.wikipedia.org/wiki/Graph_flattenability">are folklore too</a>. Wondering if a
 lot of graph theories are like that.</li>
 </ul>
 <div class="notes"> <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2025-05-27 Tue 02:56]</span></span>
 </p>
  </div>
-<div class="tag" id="org4ea9f44">
+<div class="tag" id="org2605525">
 <p>
 This section was labeled under, or is related to <a href="t/programming.html#4u5664n02wj0">Programming</a> and <a href="h/graph.html#rib7uvo02wj0">Representations and Implementations of Graphs</a>
 </p>
@@ -666,18 +1409,17 @@ I wonder if anyone asked Donald Knuth about that in an interview.
 </p>
 </div>
 </div>
-<div id="outline-container-org1ba486c" class="outline-3">
-<h3 id="org1ba486c"><span class="todo TODO">TODO</span> <a href="h/art_paintings_media.html#e2d6e3z0nkk0">Sandro Botticelli</a> Symbol of goodness&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_check">@check</span>&#xa0;<span class="_later">@later</span></span></h3>
-<div class="outline-text-3" id="text-org1ba486c">
+<div id="outline-container-orge2f0c3e" class="outline-3">
+<h3 id="orge2f0c3e"><span class="todo TODO">TODO</span> <a href="h/art_paintings_media.html#e2d6e3z0nkk0">Sandro Botticelli</a> Symbol of goodness&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_check">@check</span>&#xa0;<span class="_later">@later</span></span></h3>
+<div class="outline-text-3" id="text-orge2f0c3e">
 <ul class="org-ul">
-<li><span class="timestamp-wrapper"><span class="timestamp">[2025-06-16 Mon 00:43]</span></span>: <br>
-I have a feeling that <a href="h/art_paintings_media.html#qse5o7c0rlk0">Frederic William Burton</a> did the same thing.</li>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-06-16 Mon 00:43]</span></span> I have a feeling that <a href="h/art_paintings_media.html#qse5o7c0rlk0">Frederic William Burton</a> did the same thing.</li>
 </ul>
 <div class="notes"> <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2025-05-17 Sat 00:43]</span></span>
 </p>
  </div>
-<div class="tag" id="org3377cba">
+<div class="tag" id="org0462a3a">
 <p>
 This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
 </p>
@@ -689,28 +1431,6 @@ investigating.
 </p>
 </div>
 </div>
-<div id="outline-container-iiwe1xv0nkk0" class="outline-3">
-<h3 id="iiwe1xv0nkk0">God on Trail (2008)</h3>
-<div class="outline-text-3" id="text-iiwe1xv0nkk0">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-05-16 Fri 23:35]</span></span>
-</p>
- </div>
-<div class="tag" id="orgce45fba">
-<p>
-This section was labeled under, or is related to <a href="p/fcinema.html#kwlj2jo02wj0">Cinema</a>
-</p>
-
-</div>
-<p>
-شخصية أديك في هذا الفيلم جميلة. <a href="i/mpv-shot0060.jpg">هذه الصورة له في أول مجيئة للمعسكر</a> ويمكنك أن
-تراه في <a href="https://www.youtube.com/watch?v=9MgXqxmRQOg">هذا الفيديو</a> وهو يدافع عن خطة الله بكل فصاحة وبيان قبل أن يتعرض لمحاولة
-إذلاله الأولى من الألمان، ففي الجلسة الثانية من المحكمة يحاول أن يدافع مرة أخرى
-عن خطة الله ولكن لا يلبث إلا أن ينهمر في البكاء على حاله (<a href="i/COPY_1_God on Trial [2008]DVDRip[Xvid]AC3 5.1[Eng]BlueLady _FROM_00-51-59-840_TO_00-52-44-680.mp4">فيديو</a>) ولا ريب أنه فقد
-من إيمانه جزءا جراء البلاء. اللهم لا تختبرني وأعني إن اختبرتني.
-</p>
-</div>
-</div>
 <div id="outline-container-hhikuax0ekk0" class="outline-3">
 <h3 id="hhikuax0ekk0">Works of <a href="h/art_paintings_media.html#akcl6pw0ekk0">Carl Aagaard</a></h3>
 <div class="outline-text-3" id="text-hhikuax0ekk0">
@@ -718,7 +1438,7 @@ This section was labeled under, or is related to <a href="p/fcinema.html#kwlj2jo
 <span class="timestamp-wrapper"><span class="timestamp">[2025-05-10 Sat 04:13]</span></span>
 </p>
  </div>
-<div class="tag" id="orga2778bf">
+<div class="tag" id="org7da8292">
 <p>
 This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
 </p>
@@ -732,71 +1452,14 @@ probably purchased in some rich palaces around the world.
 </p>
 </div>
 </div>
-<div id="outline-container-9rhar4o0dkk0" class="outline-3">
-<h3 id="9rhar4o0dkk0">Skies in <a href="h/art_paintings_media.html#zgec92i0dkk0">Alexey Bogolyubov</a> works</h3>
-<div class="outline-text-3" id="text-9rhar4o0dkk0">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-05-09 Fri 06:44]</span></span>
-</p>
- </div>
-<div class="tag" id="org37d2e91">
-<p>
-This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
-</p>
-
-</div>
-<p>
-Bogolyubov had a very beautiful skies in his work. I spent my dusk looking into
-them while listening to String Quintet in E Major, G. 275: III. Menuetto by
-Luigi Boccherini/Orpheus Chamber Orchestra:
-</p>
-
-<ul class="org-ul">
-<li><a href="h/art_paintings_media.html#fl9bgoi0dkk0">Moonlit evening in Constantinople, Alexey Bogolyubov</a></li>
-<li><a href="h/art_paintings_media.html#vyldeni0dkk0">The seashore, Alexey Bogolyubov</a></li>
-<li><a href="h/art_paintings_media.html#1y0immi0dkk0">Castel Sant&rsquo;Angelo, Alexey Bogolyubov</a></li>
-<li><a href="h/art_paintings_media.html#eaegmli0dkk0">Italian Coast, Alexey Bogolyubov</a></li>
-<li><a href="h/art_paintings_media.html#4z30nji0dkk0">Moonlit night. Grand Canal (Venice), Alexey Bogolyubov</a></li>
-<li><a href="h/art_paintings_media.html#9cg8nfi0dkk0">Smolny as seen from Bolshaya Okhta, Alexey Bogolyubov</a></li>
-<li><a href="h/art_paintings_media.html#jviicdi0dkk0">View of the Smolny Convent from Bolshaya Okhta, Alexey Bogolyubov</a></li>
-<li><a href="h/art_paintings_media.html#uvbfxai0dkk0">St. Petersburg. Sledging on the Neva, Alexey Bogolyubov</a></li>
-<li><a href="h/art_paintings_media.html#rmvi6bi0dkk0">St. Petersburg at Sunset, Alexey Bogolyubov</a></li>
-<li><a href="h/art_paintings_media.html#hqybz2i0dkk0">Mosque in Istanbul, Alexey Bogolyubov</a></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-7zugeq716kk0" class="outline-3">
-<h3 id="7zugeq716kk0">Dusk (Gabriela Mistral)</h3>
-<div class="outline-text-3" id="text-7zugeq716kk0">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-05-04 Sun 06:22]</span></span>
-</p>
- </div>
-<div class="tag" id="orge3f2bd9">
-<p>
-This section was labeled under, or is related to Poetry
-</p>
-
-</div>
-<div class="epigraph"><blockquote>
-I feel my heart melting<br>
-in the mildness like candles:<br>
-my veins are slow oil<br>
-and not wine,<br>
-and I feel my life fleeing<br>
-hushed and gentle like the gazelle.<br>
-
-</blockquote></div>
-</div>
-</div>
-<div id="outline-container-org3ff1e00" class="outline-3">
-<h3 id="org3ff1e00">leonardcohenfiles.com</h3>
-<div class="outline-text-3" id="text-org3ff1e00">
+<div id="outline-container-org84fdede" class="outline-3">
+<h3 id="org84fdede">leonardcohenfiles.com</h3>
+<div class="outline-text-3" id="text-org84fdede">
 <div class="notes"> <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2025-05-04 Sun 06:16]</span></span>
 </p>
  </div>
-<div class="tag" id="org0267549">
+<div class="tag" id="org116d51c">
 <p>
 This section was labeled under, or is related to <a href="h/me.html#lfoaq730yck0">Music</a>
 </p>
@@ -815,7 +1478,7 @@ TIL there&rsquo;s a great website of <a href="h/me.html#sqw4olv04xj0">Leonard Co
 <span class="timestamp-wrapper"><span class="timestamp">[2025-05-03 Sat 08:12]</span></span>
 </p>
  </div>
-<div class="tag" id="orgc0a3093">
+<div class="tag" id="orgcc4be78">
 <p>
 This section was labeled under, or is related to <a href="h/art_paintings_media.html#mvk9gc7014k0">Art</a>
 </p>
@@ -824,15 +1487,11 @@ This section was labeled under, or is related to <a href="h/art_paintings_media.
 <p>
 I liked this painting a lot and I felt the urge to learn more about its history,
 but looks like we do not know anything about what Alma-Tadema refered to there,
-he was 19 years old when he painted it. It&rsquo;s either:
+he was 19 years old when he painted it. It&rsquo;s either:  A fictional or imagined
+scene created by Lawrence Alma-Tadema early in his career, or a reference to a
+now-obscure historical or legendary episode—possibly medieval or religious in
+nature—that hasn&rsquo;t survived in mainstream records.
 </p>
-
-<ul class="org-ul">
-<li>A fictional or imagined scene created by Lawrence Alma-Tadema early in his
-career, or</li>
-<li>A reference to a now-obscure historical or legendary episode—possibly medieval
-or religious in nature—that hasn&rsquo;t survived in mainstream records.</li>
-</ul>
 </div>
 </div>
 <div id="outline-container-5uf8web05kk0" class="outline-3">
@@ -842,7 +1501,7 @@ or religious in nature—that hasn&rsquo;t survived in mainstream records.</li>
 <span class="timestamp-wrapper"><span class="timestamp">[2025-05-03 Sat 00:31]</span></span>
 </p>
  </div>
-<div class="tag" id="org090dd48">
+<div class="tag" id="orgc1c8132">
 <p>
 This section was labeled under, or is related to <a href="h/me.html#lfoaq730yck0">Music</a> and History
 </p>
@@ -857,91 +1516,9 @@ project, or, in fact, loved her.
 </p>
 </div>
 </div>
-<div id="outline-container-t9wkunc04kk0" class="outline-3">
-<h3 id="t9wkunc04kk0">Confession</h3>
-<div class="outline-text-3" id="text-t9wkunc04kk0">
-<ul class="org-ul">
-<li><p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-06-05 Thu 16:08]</span></span>: <br>
-ينهي تولستوي الاعترافات بحلم جميل. لا أعرف كيف لم يتحول لفيلم. يقول في نهايته
-&ldquo;ثم تيقظت.&rdquo; ويختتم كتابه وكلامه. ثم تيقظت.
-</p>
-
-<div class="epigraph"><blockquote>
-<p>
-All this was clear to me, and I was glad and calm. And someone seems to be
-saying to me, “Watch, remember.” And I wake up.
-</p>
-
-</blockquote></div>
-
-<p>
-إن قراءة هذا ليبث في جسدي القشعريرة. كثيرًا ما تمنيت لو كان لي أحد المناهج
-الثابتة التي ذكرها تولستوي في كتابه، والتي كما يبدوا أنه استطاع، وإن كان في
-نهاية الأمر، أن يلزم نفسه بواحدٍ منها. منهج ديكارت موجود على صفحتي الرئيسية ولكني
-سأكون كاذبًا لو قلت إني قدرت على الالتزام به لأكثر من ثلاثة أشهر. إني كما يقول
-سورين:
-</p>
-
-<div class="epigraph"><blockquote>
-<p>
-One moment a child, the next an old man; one moment you are thinking most
-earnestly about the most important scholarly problems, how you will devote your
-life to them, and the next you are a lovesick fool. But you are a long way from
-marriage
-</p>
-
-</blockquote></div></li>
-</ul>
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-05-02 Fri 06:46]</span></span>
-</p>
- </div>
-<div class="tag" id="orga9d9149">
-<p>
-This section was labeled under, or is related to <a href="t/modus.html#ydb1kfn02wj0">Modus Vivendi</a>
-</p>
-
-</div>
-<p>
-I just finished reading Leo Tolstoy&rsquo;s A Confession. One of the most
-beautiful books I have ever read. Definitely making my Godchild (if any) read that.
-</p>
-</div>
-</div>
-<div id="outline-container-au59hga1zjk0" class="outline-3">
-<h3 id="au59hga1zjk0">Kierkegaard&rsquo;s life</h3>
-<div class="outline-text-3" id="text-au59hga1zjk0">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-04-28 Mon 23:55]</span></span>
-</p>
- </div>
-<div class="tag" id="org04d2db9">
-<p>
-This section was labeled under, or is related to Kierkegaard
-</p>
-
-</div>
-<p>
-I was never interested in Kierkegaard&rsquo;s personal life. Today I read this:
-</p>
-<div class="epigraph"><blockquote>
-<p>
-Kierkegaard told Emil Boesen, a friend since childhood, who kept a record of his
-conversations with Kierkegaard, that his life had been one of immense suffering,
-which may have seemed like vanity to others, but he did not think it so.
-</p>
-
-</blockquote></div>
-
-<p>
-I downloaded his biography. Very interested to learn more about the man&rsquo;s life.
-</p>
-</div>
-</div>
-<div id="outline-container-org0c61a3b" class="outline-3">
-<h3 id="org0c61a3b">My heart</h3>
-<div class="outline-text-3" id="text-org0c61a3b">
+<div id="outline-container-org94a351e" class="outline-3">
+<h3 id="org94a351e">My heart</h3>
+<div class="outline-text-3" id="text-org94a351e">
 <div class="notes"> <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2025-04-08 Tue 01:44]</span></span>
 </p>
@@ -951,26 +1528,6 @@ My heart is a <code>C-x C-b</code> menu.
 </p>
 </div>
 </div>
-<div id="outline-container-dxu3h501uik0" class="outline-3">
-<h3 id="dxu3h501uik0">You become what you think about</h3>
-<div class="outline-text-3" id="text-dxu3h501uik0">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-03-28 Fri 16:47]</span></span>
-</p>
- </div>
-<div class="tag" id="org120182a">
-<p>
-This section was labeled under, or is related to <a href="t/modus.html#ydb1kfn02wj0">Modus Vivendi</a>
-</p>
-
-</div>
-<ul class="org-ul">
-<li><a href="https://www.tiktok.com/@mindtalklab/video/7470296092962245910">https://www.tiktok.com/@mindtalklab/video/7470296092962245910</a></li>
-<li><a href="https://www.tiktok.com/@mindtalklab/video/7473159586464271618">https://www.tiktok.com/@mindtalklab/video/7473159586464271618</a></li>
-<li><a href="https://www.tiktok.com/@thelimitlessgrowth/video/7447975326082288918">https://www.tiktok.com/@thelimitlessgrowth/video/7447975326082288918</a></li>
-</ul>
-</div>
-</div>
 <div id="outline-container-2cb3f0z0uik0" class="outline-3">
 <h3 id="2cb3f0z0uik0">Good video on setting boundaries</h3>
 <div class="outline-text-3" id="text-2cb3f0z0uik0">
@@ -978,7 +1535,7 @@ This section was labeled under, or is related to <a href="t/modus.html#ydb1kfn02
 <span class="timestamp-wrapper"><span class="timestamp">[2025-03-28 Fri 16:24]</span></span>
 </p>
  </div>
-<div class="tag" id="org6a69ff4">
+<div class="tag" id="orgf7928e6">
 <p>
 This section was labeled under, or is related to <a href="t/modus.html#ydb1kfn02wj0">Modus Vivendi</a>
 </p>
@@ -989,53 +1546,6 @@ Here&rsquo;s a good video from TikTok about setting boundaries in kinds of
 friendships: <a href="https://www.tiktok.com/@the3rdside/video/7479090078267231534">https://www.tiktok.com/@the3rdside/video/7479090078267231534</a>. I
 find myself trying to explain this kind of boundaries people from time to time.
 </p>
-</div>
-</div>
-<div id="outline-container-ktb9vdd0rik0" class="outline-3">
-<h3 id="ktb9vdd0rik0">Selected Works of Selected Works of Chekhov</h3>
-<div class="outline-text-3" id="text-ktb9vdd0rik0">
-<p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-03-28 Fri 14:17]</span></span>
-</p>
-<div class="tag" id="orgad461e4">
-<p>
-This section was labeled under, or is related to Literature
-</p>
-
-</div>
-<p>
-Following are quick notes I toke while reading the first volume of Chekhov&rsquo;s
-selected works. I might add notes for the rest of the book later.
-</p>
-
-<dl class="org-dl">
-<dt>After the Theater</dt><dd>&ldquo;Onyegin was interesting because he was not in love at
-all, and Tatyana was fascinating because she was so much in love; but if they
-had been equally in love with each other and had been happy, they would
-perhaps have seemed dull&rdquo;.</dd>
-
-<dt>The Runaway</dt><dd>Reminded me of an old memory with my father at the dentist. I
-loved the vibes.</dd>
-
-<dt>Volodya</dt><dd>Very strange story. I think I should read some analysis for it, but I have not got any time for that.</dd>
-
-<dt>(no term)</dt><dd>The Boys</dd>
-
-<dt>(no term)</dt><dd>Enemies</dd>
-
-<dt>(no term)</dt><dd>Malingerers</dd>
-
-<dt>(no term)</dt><dd>العازف الأجير</dd>
-
-<dt>(no term)</dt><dd>Vanka</dd>
-
-<dt>(no term)</dt><dd>A Naughty Boy</dd>
-
-<dt>(no term)</dt><dd>The Trousseau</dd>
-<dt>Agafya</dt><dd>Aesthetic story, I want to live in a world like the one Chekhov
-describes there.</dd>
-<dt>A Misfortune</dt><dd>One of the saddest stories I&rsquo;ve ever read. Really moved me.</dd>
-</dl>
 </div>
 </div>
 <div id="outline-container-beyd3x21tik0" class="outline-3">
@@ -1052,439 +1562,10 @@ and The Window.
 </p>
 </div>
 </div>
-<div id="outline-container-of6hyht0oik0" class="outline-3">
-<h3 id="of6hyht0oik0"><a href="https://en.wikipedia.org/wiki/In_the_Beginning..._Was_the_Command_Line">In the Beginning&#x2026; Was the Command Line</a></h3>
-<div class="outline-text-3" id="text-of6hyht0oik0">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-03-24 Mon 01:12]</span></span>
-</p>
- </div>
-<div class="tag" id="orgc95669d">
-<p>
-This section was labeled under, or is related to <a href="t/programming.html#4u5664n02wj0">Programming</a> and <a href="t/programming.html#5idj6nt0oik0">Emacs for Everything</a>
-</p>
-
-</div>
-<div class="epigraph"><blockquote>
-<p>
-I use Emacs, which might be thought of as a thermonuclear word processor. It
-was created by Richard Stallman; enough said. It is written in <a href="cs/lisp.html#vlm4vsn02wj0">Lisp</a>, which
-is the only computer language that is beautiful. It is colossal, and yet it
-only edits straight ASCII text files, which is to say, no fonts, no
-boldface, no underlining. In other words, the engineer-hours that, in the
-case of Microsoft Word, were devoted to features like mail merge, and the
-ability to embed feature-length motion pictures in corporate memoranda,
-were, in the case of emacs, focused with maniacal intensity on the
-deceptively simple-seeming problem of editing text. If you are a
-professional writer–i.e., if someone else is getting paid to worry about how
-your words are formatted and printed–emacs outshines all other editing
-software in approximately the same way that the noonday sun does the stars.
-It is not just bigger and brighter; it simply makes everything else vanish.
-</p>
-
-</blockquote></div>
-<p>
-— Neal Stephenson
-</p>
-</div>
-</div>
-<div id="outline-container-p4pacx81lik0" class="outline-3">
-<h3 id="p4pacx81lik0">The reason that makes Apple&rsquo;s software better</h3>
-<div class="outline-text-3" id="text-p4pacx81lik0">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-03-17 Mon 00:07]</span></span>
-</p>
- </div>
-<div class="tag" id="orgd2500e5">
-<p>
-This section was labeled under, or is related to <a href="t/programming.html#4u5664n02wj0">Programming</a>
-</p>
-
-</div>
-<p>
-I believe that the software products that Apple builds are some of the most
-well-engineered, well-designed, and well-written software ever. And I think
-there are some reasons for that, most of them are not good ones:
-</p>
-
-<ol class="org-ol">
-<li>Apple products are massively overpriced, which creates a significant surplus
-that allows them to invest heavily in software development. Capitalism
-rewards monopolistic pricing, and Apple has mastered the art of leveraging
-brand power and exclusivity to justify insane markups. Unlike something like
-Linux, which I’ve used for a long time, open-source projects struggle to get
-consistent funding or sponsorship, making it much harder to compete at the
-same level.</li>
-
-<li>Apple does not care about backward compatibility, worldwide compatibility, or
-anything else outside its walled garden. Their software is built to work
-exclusively on Apple hardware, and they have zero interest in making it
-usable for non-Apple users. They also deprecate anything older than seven
-years, forcing people into costly upgrades. As someone who has worked
-extensively with system architecture and design, I can confirm that a
-significant amount of engineering effort typically goes into maintaining
-backward compatibility and ensuring interoperability with the rest of the
-tech ecosystem. By outright ignoring these two concerns, Apple engineers get
-to focus almost entirely on UX, making their software feel smoother and more
-polished than competitors.</li>
-
-<li>Since (1), Apple can afford to invest in developing much better SDKs, which
-ensures that software built on their platforms is high quality. This is why
-you often find software that exists on both Apple’s OSs and other operating
-systems but still runs better on Apple’s—because their development tools and
-ecosystem are simply better funded. This also attracts top-tier developers
-who prefer the stability and optimization of Apple’s environment, further
-reinforcing their advantage.</li>
-
-<li>Apple controls both the hardware and the software, which means they don’t
-have to deal with the same fragmentation issues that plague other ecosystems.
-Unlike Windows or Android, where developers have to account for a ridiculous
-range of hardware variations, Apple’s tight integration allows them to
-optimize performance and deliver a more cohesive experience. However, this
-comes at the cost of user freedom—if Apple decides they don’t want you
-running certain apps or repairing your own device, you’re out of luck.</li>
-
-<li>The cult-like marketing and closed ecosystem trap users into staying within
-Apple’s platform. iMessage lock-in, proprietary file formats, restrictive App
-Store policies—everything is designed to make switching inconvenient. This
-means Apple doesn’t just create good software; they create software that
-<b>feels</b> indispensable, even when there are equal or better alternatives
-elsewhere.</li>
-</ol>
-
-<p>
-Apple&rsquo;s software is good. Sometimes too good. But the reasons behind it are far
-less about pure engineering brilliance and far more about strategic corporate
-control, aggressive pricing, and an ecosystem that thrives on exclusivity.
-</p>
-</div>
-</div>
-<div id="outline-container-szj4j7618ik0" class="outline-3">
-<h3 id="szj4j7618ik0">سبحان خالق نفسي</h3>
-<div class="outline-text-3" id="text-szj4j7618ik0">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-03-12 Wed 02:30]</span></span>
-</p>
- </div>
-<div class="tag" id="org8c75686">
-<p>
-This section was labeled under, or is related to <a href="t/tayyib.html#nk2kigk0ybk0">al-Mutanabbi</a> and <a href="t/modus.html#ydb1kfn02wj0">Modus Vivendi</a>
-</p>
-
-</div>
-
-<p>
-قال أبو الطيب:
-</p>
-<div class="epigraph"><blockquote>
-سُبحان خالق نفسي كيف لذتها<br>
-فيما النفوسُ تراه غاية الألمِ<br>
-
-</blockquote></div>
-
-<p>
-قال الواحدي: يقول: سبحان من جعل نفسي صبورةً، متجلدةً أمام شدائد الدهر، تجد لذّتها
-فيما تتألم منه سائر النفوس، وتسكن إلى ما يكرهه غيرها. كتب المتنبي هذه الأبيات
-قبيل وفاته، وأحسب أنه في تلك الفترة كان يغوص في تأملات عميقة حول مسار حياته.
-يقول في البيت الذي يليه:
-</p>
-
-<div class="epigraph"><blockquote>
-أتى الزمان بنوه في شبيبته<br>
-فسرّهم وأتيناه على الهرمِ<br>
-
-</blockquote></div>
-
-<p>
-إن بلوى المتنبي في حياته أمر لا يدركه كثيرون، ولعل من وعى مسيرته، وتلمس آماله
-ومطامحه، وأحسّ بغربته بين قومه، فقط من يدرك مداها. وهو القائل:
-</p>
-
-<div class="epigraph"><blockquote>
-أَذاقَني زَمَني بَلوى شَرِقتُ بِها<br>
-لَو ذاقَها لَبَكى ما عاشَ وَاِنتَحَبا<br>
-
-</blockquote></div>
-
-<p>
-ولعل هذا البيت من أعمق ما قاله في رثاء نفسه، وكأنّي به يقف على أطلال تاريخه وهو
-ينشده، مستعيدًا مشاهد الاضطرار إلى مدح من يمقتهم، وفقدان زوجته وجدته، وحرمانه من
-طفولة سليمة، وخيانة الملوك والعبيد له على السواء، ومحاولات اغتياله، لكن أشدّ ما
-أنهكه: بعد مقدرته عن إدراك غايته. ومن المصادفة الطريفة أنه قال:
-</p>
-
-<div class="epigraph"><blockquote>
-لَحا اللَهُ ذي الدُنيا مُناخاً لِراكِبٍ<br>
-فَكُلُّ بَعيدِ الهَمِّ فيها مُعَذَّبُ<br>
-
-</blockquote></div>
-
-<p>
-قبل أن يبدأ مدح كافورٍٍ ببيت واحد. وفي ذلك البيت يقول ضمنيًا أنه مُجبر على ذلك
-المديح. نعود إلى البيت الأول؛ ففيه يتعجب المتنبي من غربته عن أبناء عصره – وقد
-هجاهم في البيت الذي يسبقه – إذ يجد في الألم والعذاب، اللذين يواجههما في سبيل
-غايته، لذّةً أسمى وأرفع من المتع التي ينعم بها أهل زمانه. وكنت قد كتبتُ فيما مضى:
-&ldquo;For those who live loftily and dangerously, who need few comforts, the very
-things that others dread—solitude, pain, hardship, weirdness—actually become
-their pleasures.&rdquo;
-</p>
-
-<p>
-وقد حدث أن اشتدت الحمى على المتنبي، فقال:
-</p>
-
-
-<div class="epigraph"><blockquote>
-ذَراني وَالفَلاةُ بِلا دَليلٍ<br>
-وَوَجهي وَالهَجيرَ بِلا لِثامِ<br>
-<br>
-فَإِنّي أَستَريحُ بِذي وَهَذا<br>
-وَأَتعَبُ بِالإِناخَةِ وَالمُقامِ<br>
-
-</blockquote></div>
-
-<p>
-أي: أن الراحة عنده ليست في السكون والاستقرار، بل في السعي الدؤوب نحو المجد. وقد
-قال <a href="h/abbass_braham.html#7sq9bk71x2k0">أبو العباس</a>: وملحمة الإنسان هي ملحمة الانتقال. ولا يكون الانتقال بمجرّد
-الارتحال؛ وإنّما هو عملية عنيفة. ولا يكون ارتحال بلا سيْف: ذهني أو واقِعي. والسيفُ
-أبو الارتحال، ولذات السبب، أبو التاريخ.
-</p>
-</div>
-</div>
-<div id="outline-container-vfi1bv910ik0" class="outline-3">
-<h3 id="vfi1bv910ik0">المؤمن يأكل في معي واحد</h3>
-<div class="outline-text-3" id="text-vfi1bv910ik0">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-03-11 Tue 05:15]</span></span>
-</p>
- </div>
-<div class="tag" id="org2436663">
-<p>
-This section was labeled under, or is related to <a href="t/islam.html#nm0dxtp02wj0">Islam</a>, <a href="t/tayyib.html#nk2kigk0ybk0">al-Mutanabbi</a> and <a href="t/modus.html#ydb1kfn02wj0">Modus Vivendi</a>
-</p>
-
-</div>
-
-<p>
-يُروى أن النبي صلى الله عليه وسلم زاره رجل من الأعراب في المدينة وتعشى عنده، فملئ
-له النبي وعاء اللبن أولًا فشربه، فثانيًا فشربه، وثالثًا فشربه حتى بلغ سبعة أوعية من
-اللبن، فلما أسلم في اليوم التالي جاء عند النبي وملئ له وعاء اللبن فشربه، وقدم له
-النبي الوعاء الثاني، فقال شبعت. فقال النبي: إن المؤمن يأكل في مِعيٍ واحد، والكافر
-يأكل في سبعة أمعاء. وهذا لهم المؤمن في الدنيا، وقال تعالى: والذين كَفروا يأكلون
-ويتمتعون كما تأكل الأنعام، فالتشبيه هنا في محل عقلية الأنعام وليس نهمها. يقول
-أبو الطيب: 
-</p>
-
-<div class="epigraph"><blockquote>
-تَهوي بِمُنجَرِدٍ لَيسَت مَذاهِبُهُ<br>
-لِلُبسِ ثَوبٍ وَمَأكولٍ وَمَشروبِ<br>
-
-</blockquote></div>
-<p>
-والمنجرد هو الرجل الماضي في الأمور، الجادّ فيها لا يردّه شيء، وكذا المؤمن وهَمه في
-الدنيا، وكيف بهمه في أهم حقبة في الإسلام وتعمير دولته. وقال أيضًا في ذلك:
-</p>
-
-<div class="epigraph"><blockquote>
-شَرابُه النَّشح لا لِلرِيّ يَطلبه<br>
-وطَعمهُ لقوام الجِسم لا السمنِ<br>
-
-</blockquote></div>
-
-<p>
-والنشح هو القليل، أي أن شرابه قليل جدًا. والشرب لا يُعاب عليه، ولكن أنظر لعلو
-الهمة وطلب المجد، فهو لا يجد وقتًا ولا يأخذ من هذا إلا ما يعينه على ما يريد من
-الدنيا، وليس العكس: أن يكدح في الدنيا لطلب ما يستهلكه من متاعها &ldquo;لا للري يَطلبه&rdquo;
-أي ليس بطالب شرابه لأن يرتوي ويشبع ويرضي بدنه: وطَعمه لقوام الجسم، كي يقضي
-حواجيه، لا للإكثار والسِمن. وقال ديوجانس الحكيم: آكل لأعيش، وغيري يعيش ليأكل. 
-</p>
-</div>
-</div>
-<div id="outline-container-ae7iqgo0uhk0" class="outline-3">
-<h3 id="ae7iqgo0uhk0">وحب الجبان النفس أورده الحربا</h3>
-<div class="outline-text-3" id="text-ae7iqgo0uhk0">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-03-01 Sat 05:15]</span></span>
-</p>
- </div>
-<div class="tag" id="org7e656bd">
-<p>
-This section was labeled under, or is related to <a href="t/tayyib.html#nk2kigk0ybk0">al-Mutanabbi</a> and <a href="t/modus.html#ydb1kfn02wj0">Modus Vivendi</a>
-</p>
-
-</div>
-<p>
-قال أبو الطيب: 
-</p>
-<div class="epigraph"><blockquote>
-أرى كلنا يبغي الحياة لنفسه<br>
-حريصًا عليها مُستهامًا بها صبَّا<br>
-<br>
-فحُب الجبان النفس أورده التقى<br>
-وحب الشجاع النفس أورده الحربا<br>
-<br>
-ويختلف الرزقان، والفِعل واحدٌ<br>
-إلى أن يرى إحسان هذا لذا ذَنبا<br>
-
-</blockquote></div>
-<p>
-وهذا خير ما قاله، رحمه الله، في التفريق بين الكريم والجبان. فحب الحياة والصراع
-من أجل البقاء فطرة عند كل الكائنات، يقول &ldquo;مُستهامًا&rdquo; والمُستهام هي مبالغة عربية
-جميلة في وصف العاشق، أي يشتد عليه العشق والصبابة حتى يهيم على وجهه لا يدري أين
-هو. وهذا هو حالنا. فثم: حب الجبان النفس، أورده التقى، أي أن يتقي ويحتمي من
-الدخول في المعركة، ويتجنبها، ويستكن للأمن ويطمئن له (وأليس هو القائل: وما الخوف
-إلا ما تخوفه الفتى ولا الأمن إلا ما رآه الفتى أمنا؟) وقال تعالى واصفًا الغافلين:
-ورضوا بالحياة الدنيا واطمأنوا بها. وقال أيضًا: ومن الذين أشركوا يود أحدهم لو يعمر
-ألف سنة. فالجبان يرى في ذلك مجازاته لحبه لنفسه، أما الكريم فحبه لنفسه ومنزلة
-نفسه ومكان نفسه، وعلو مجازاته لها أورده القتال والحرب وإن راحت به مهجته. فاختلف
-الرزقان، والفعل واحدٌ. وقد خَلص أبو الطيب نفسه في سنٍ مبكرة من اتقاء الموت والحرب،
-فقال في صباه: 
-</p>
-
-<div class="epigraph"><blockquote>
-رِدي حِياضَ الرَدى يا نَفسُ وَاِتَّرِكي<br>
-حِياضَ خَوفِ الرَدى لِلشاءِ وَالنِعَمِ<br>
-
-</blockquote></div>
-
-<p>
-فهُنا هو آمر نفسه: ردي هي الأمر لصيغة المؤنث من فعل &ldquo;ورد&rdquo; (وهو نفس الفعل الذي
-ذكره في البيت أعلاه: أورده الحربا) والحياض هو جمع الحوض، ومنه كانت تشرب الناس
-وكذا الإبل والشاء. ثم أنظر إلى قولته &ldquo;واتركي&rdquo; وهي تعني اتركي، وتمعن هنا في
-استخدام صيغة الافتعال للمبالغة، فيا حبذا ترك كهذا الترك لا رجعة فيه. وفعل الورود
-هنا له دلاله، فالورود هو القُدوم على الشيء، وليس فقط تقبله، أي أنه لا يأمر نفسه
-بألا تهب الموت وحسب، بل أن ترده، ويعلل ذلك بعد بيتين بأن المجد والعلا لا يأتيان
-إلا بذي السُبل، فيقول: 
-</p>
-
-<div class="epigraph"><blockquote>
-أَيَملِكُ المُلكَ وَالأَسيافُ ظامِئَةٌ <br>
-وَالطَيرُ جائِعَةٌ لَحمٌ عَلى وَضَمِ<br>
-
-</blockquote></div>
-<p>
-لا والله يا أبا الطيب لا يُملك الملك إلا بذلك. 
-</p>
-</div>
-</div>
-<div id="outline-container-im0655n0shk0" class="outline-3">
-<h3 id="im0655n0shk0">Let no man seek to make it easy</h3>
-<div class="outline-text-3" id="text-im0655n0shk0">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-02-27 Thu 00:21]</span></span>
-</p>
- </div>
-<div class="tag" id="org7941b88">
-<p>
-This section was labeled under, or is related to Philosophy and <a href="t/modus.html#ydb1kfn02wj0">Modus Vivendi</a>
-</p>
-
-</div>
-<p>
-Carl Jung, “The Love Problem of a Student,” in Civilization in Transition
-(Princeton: Princeton University Press, 1978, vol. 10 of the Collected Works),
-§§231-2, 111-112:
-</p>
-<div class="epigraph"><blockquote>
-<p>
-
-</p>
-
-<p>
-. . . Love requires depth and loyalty of feeling; without them it is not
-love but mere caprice. True love will always commit itself and engage in
-lasting ties; it needs freedom only to effect its choice, not for its
-accomplishment. Every true and deep love is a sacrifice. The lover
-sacrifices all other possibilities, or rather, the illusion that such
-possibilities exist. If this sacrifice is not made, his illusions prevent
-the growth of any deep and responsible feeling, so that the very possibility
-of experiencing real love is denied him.
-</p>
-
-<p>
-Love has more than one thing in common with religious faith. It demands
-unconditional trust and expects absolute surrender. Just as nobody but the
-believer who surrenders himself wholly to God can partake of divine grace,
-so love reveals its highest mysteries and its wonder only to those who are
-capable of unqualified devotion and loyalty of feeling. And because this is
-so difficult, few mortals can boast of such an achievement. But, precisely
-because the truest and most devoted love is also the most beautiful, let no
-man seek to make it easy. He is a sorry knight who shrinks from the
-difficulty of loving his lady. Love is like God: both give themselves only
-to their bravest knights.
-</p>
-
-</blockquote></div>
-
-<p>
-URL:
-<a href="https://thematamixta.blogspot.com/2024/12/let-no-man-seek-to-make-it-easy.html">https://thematamixta.blogspot.com/2024/12/let-no-man-seek-to-make-it-easy.html</a>
-</p>
-</div>
-</div>
-<div id="outline-container-jly77mb1ohk0" class="outline-3">
-<h3 id="jly77mb1ohk0">Something Worth Living For</h3>
-<div class="outline-text-3" id="text-jly77mb1ohk0">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-02-25 Tue 00:21]</span></span>
-</p>
- </div>
-<div class="tag" id="org4add13e">
-<p>
-This section was labeled under, or is related to <a href="t/modus.html#ydb1kfn02wj0">Modus Vivendi</a>
-</p>
-
-</div>
-<p>
-Henry David Thoreau, Journal, March 31, 1852 (emphasis mine):
-</p>
-
-<div class="epigraph"><blockquote>
-<p>
-Why the moaning of the storm gives me pleasure. Methinks it is be cause it
-puts to rout the trivialness of our fair-weather life and gives it at least
-a tragic interest. The sound has the effect of a pleasing challenge, to call
-forth our energy to resist the invaders of our life&rsquo;s territory. It is
-musical and thrilling, as the sound of an enemy&rsquo;s bugle. Our spirits revive
-like lichens in the storm. There is something worth living for when we are
-resisted, threatened. As at the last day we might be thrilled with the
-prospect of the grandeur of our destiny, so in these first days our destiny
-appears grander. What would the days, what would our life, be worth, if some
-nights were not dark as pitch,—of darkness tangible or that you can cut with
-a knife? How else could the light in the mind shine? How should we be
-conscious of the light of reason? If it were not for physical cold, how
-should we have discovered the warmth of the affections? I sometimes feel
-that I need to sit in a far-away cave through a three weeks&rsquo; storm, cold and
-wet, to give a tone to my system. The spring has its windy March to usher it
-in, with many soaking rains reaching into April. Methinks I would share
-every creature&rsquo;s suffering for the sake of its experience and joy. The song
-sparrow and the transient fox-colored sparrow,—have they brought me no
-message this year? Do they go to lead heroic lives in Rupert&rsquo;s Land? They
-are so small, I think their destinies must be large. Have I heard what this
-tiny passenger has to say, while it flits thus from tree to tree? Is not the
-coming of the fox-colored sparrow something more earnest and significant
-than I have dreamed of? Can I forgive myself if I let it go to Rupert&rsquo;s Land
-before I have appreciated it? God did not make this world in jest; no, nor
-in indifference. These migrating sparrows all bear messages that concern my
-life. I do not pluck the fruits in their season. I love the birds and beasts
-because they are mythologically in earnest. I see that the sparrow cheeps
-and flits and sings adequately to the great design of the universe; that man
-does not communicate with it, understand its language, because he is not at
-one with nature. I reproach myself because I have regarded with indifference
-the passage of the birds; I have thought them no better than I.
-</p>
-
-</blockquote></div>
-
-<p>
-URL: <a href="https://thematamixta.blogspot.com/2025/01/something-worth-living.html">https://thematamixta.blogspot.com/2025/01/something-worth-living.html</a>
-</p>
-</div>
-</div>
 <div id="outline-container-bg9fk4b0mhk0" class="outline-3">
 <h3 id="bg9fk4b0mhk0">Nietzsche&rsquo;s view of reflection.</h3>
 <div class="outline-text-3" id="text-bg9fk4b0mhk0">
-<div class="tag" id="org62e48f5">
+<div class="tag" id="org128d9e8">
 <p>
 This section was labeled under, or is related to <a href="t/modus.html#i9ijlra0mhk0">So Many Unmarried Men</a>
 </p>
@@ -1495,425 +1576,9 @@ This section was labeled under, or is related to <a href="t/modus.html#i9ijlra0m
 </p>
 </div>
 </div>
-<div id="outline-container-uhej5u91bhk0" class="outline-3">
-<h3 id="uhej5u91bhk0">الشاعر</h3>
-<div class="outline-text-3" id="text-uhej5u91bhk0">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-02-15 Sat 03:04]</span></span>
-</p>
- </div>
-<div class="tag" id="orgdd4b56f">
-<p>
-This section was labeled under, or is related to <a href="t/tayyib.html#nk2kigk0ybk0">al-Mutanabbi</a>
-</p>
-
-</div>
-<p>
-كان المعري يذكر اسم من يقتبسه، فلو اقتبس من النابغة الذبياني شيئًا يقول: &ldquo;قال
-الذبياني&rdquo; أو &ldquo;قال الفرزدق&rdquo; وهلم جرا، ولكن إذا ما اقتبس من المتنبي كان يقول &ldquo;قال
-الشاعر&rdquo; وكأنه لا شاعرٌ سوى المتنبي. وللمتنبي كثير في المعنى، فما كان يرتضي لفظة
-&ldquo;شاعر&rdquo; غير لنفسه، فوصف من يعانده من الشعراء الآخرين قائلًا:
-</p>
-
-<div class="epigraph"><blockquote>
-أَفي كُلِّ يَومٍ تَحتَ ضِبني شُوَيعِرٌ<br>
-ضَعيفٌ يُقاويني قَصيرٌ يُطاوِلُ<br>
-
-</blockquote></div>
-
-<p>
-فيصغر باقي الشعراء على نفسه. وله أيضًا:
-</p>
-
-<div class="epigraph"><blockquote>
-أَرى المُتَشاعِرينَ غَروا بِذَمّي<br>
-وَمَن ذا يَحمَدُ الداءَ العُضالا<br>
-
-</blockquote></div>
-<p>
-وللمتنبي باع طويل في التصغير. فيقول:
-</p>
-
-<div class="epigraph"><blockquote>
-أذم إلى هذا الزمان «أهيله»<br>
-&#xa0;فأعلمهم فدم وأحزمهم وغد<br>
-
-</blockquote></div>
-
-<p>
-وكتب عباس محمود العقاد في كتابه &ldquo;مطالعات في الكتب والحياة&rdquo; فصلًا عن التصغير عند
-المتنبي، ولأيمن العتوم الكثير من المقاطع على النت عن ولع المتنبي بالتصغير.
-المهم، أن المتنبي كان يُصغر باقي شعراء عصره، وكان المعري لا يرى شاعرًا سواه.
-وللمتنبي أيضًا كثير في هذا الوصف، فيقول:
-</p>
-
-<div class="epigraph"><blockquote>
-خَليلَيَّ إِنّي لا أَرى غَيرَ شاعِرٍ<br>
-فَلِم مِنهُمُ الدَعوى وَمِنّي القَصائِدُ<br>
-
-</blockquote></div>
-
-<p>
-أي: لا أرى شاعرٌ سواي. وفي نفس القصيدة في البيت التالي يقول ألا سيف سوى سيف الدولة:
-</p>
-
-<div class="epigraph"><blockquote>
-فَلا تَعجَبا إِنَّ السُيوفَ كَثيرَةٌ<br>
-وَلَكِنَّ سَيفَ الدَولَةِ اليَومَ واحِدٌ<br>
-
-</blockquote></div>
-
-<p>
-ويقول له أيضًا:
-</p>
-
-<div class="epigraph"><blockquote>
-فَنَحنُ الأُلى لا نَأتَلي لَكَ نُصرَةً<br>
-وَأَنتَ الَّذي لَو أَنَّهُ وَحدَهُ أَغنى<br>
-
-</blockquote></div>
-
-<p>
-طيب الله ثراه.
-</p>
-</div>
-</div>
-<div id="outline-container-mrzgtmr0bhk0" class="outline-3">
-<h3 id="mrzgtmr0bhk0">نبوغ المتنبي</h3>
-<div class="outline-text-3" id="text-mrzgtmr0bhk0">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-02-14 Fri 20:30]</span></span>
-</p>
- </div>
-<div class="tag" id="org4ac5ac8">
-<p>
-This section was labeled under, or is related to <a href="t/tayyib.html#nk2kigk0ybk0">al-Mutanabbi</a>
-</p>
-
-</div>
-<p>
-في الصورة التالية: محمود شاكر يتحدث عن نبوغ المتنبي: <a href="../../blog/content/i/blough.png">01</a>.
-</p>
-</div>
-</div>
-<div id="outline-container-w6bkqel02hk0" class="outline-3">
-<h3 id="w6bkqel02hk0">الغامض في حياة المتنبي</h3>
-<div class="outline-text-3" id="text-w6bkqel02hk0">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-02-12 Wed 20:09]</span></span>
-</p>
- </div>
-<div class="tag" id="orga50edf1">
-<p>
-This section was labeled under, or is related to <a href="t/tayyib.html#nk2kigk0ybk0">Al-Mutanabbi</a>
-</p>
-
-</div>
-<p>
-أختلف المؤرخون حول نسب وأصل المتنبي، وأورد أغلب المترجمون له ثلاثة أنساب
-مختلفة، والرواية الراجحة بين المؤرخين أنه كان ابن سقاء (والسقاء كان بائع المياه
-في ذلك العصر) وهذا كان عن راوية التنوخي وغيره. ومن الغامض أيضًا أنه قد سُجن بعض
-سنين في شبابه، وقيل إن سبب الدفن هو ادعاء المتنبي أنه نبي (ويذكر مع هذا غالبًا
-قوله: &ldquo;أنا في أُمة تداركها الله - غريبٌ كصالحٍ في ثمودِ. أو روايته في طبرية أنه كان
-يعلم الناس بموعد هطول المطر)، وأضيف لذلك أن هذا سبب تسميته &rdquo;المتنبي" أي ادعاءه
-النبوة. وقد فند هذا القول الكثير من المحللين ومنهم ابن النحوي والذي قال إن
-المتنبي يعني العالي المرتفع عن الأرض. ومن الغامض كذلك عنه هو علاقته مع العلويين
-المنتسبين لعلي ابن أبي طالب، فمن الثابت تعلم المتنبي في مدارس العلويين (ومدارس
-العلويين لا يدخلها سواهم، وهذا غريب في حد ذاته، فكل الأنساب التي وردت للمتنبي
-لم تورد أنه علوي النسب) ولكن مع كِبر سنه، فإنه يتجنب العلويين ولا يمدح من قومهم
-سوى واحد تمرد عليهم، ويذكر أنهم تربصوا له وحاولوا اغتياله غير مره. وفي الصورة
-التالية يوضح محمود شاكر رؤيته لحياة المتنبي ويوضح اجتهاده لتقريب ما جرى من
-غموض: <a href="i/01.jpeg">01</a>, <a href="i/02.jpeg">02</a>, <a href="i/03.jpeg">03</a>, <a href="i/04.jpeg">04</a>, <a href="i/05.jpeg">05</a>, <a href="i/06.jpeg">06</a>, <a href="i/07.jpeg">07</a>.
-</p>
-</div>
-</div>
-<div id="outline-container-ffc2i8a0ahk0" class="outline-3">
-<h3 id="ffc2i8a0ahk0">Jean Baudrillard theory on Pornography</h3>
-<div class="outline-text-3" id="text-ffc2i8a0ahk0">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2024-12-18 Wed 05:06]</span></span>
-</p>
- </div>
-<p>
-I wrote about the <a href="d/porn.html#yh5juz019wj0">Industry and Consumption of Pornography</a> a while ago. Today I
-learnt that Baudrillard has a related theory<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle"/><span class="sidenote">Frederic Lenoir, <i>Philosophy of desire</i> (Dar Al Saqi, 2023), 45.</span> that reminded me of the Social Learning theory in the sociobiological theories of rape:
-</p>
-<div class="epigraph"><blockquote>
-<p>
-Jean Baudrillard wrote the following maxim: &ldquo;Sexuality does not hide in
-tolerance, repression, or morality, it is certainly hidden in what is more
-sexual than sex itself: pornography.&rdquo; In Baudrillard&rsquo;s view, the global success
-of pornography is not a result of sexual liberation but rather the triumph of
-capitalism, which turns everything into a commodity, including bodies that lose
-their ability to enjoy and experience desire.
-</p>
-
-<p>
-Hans Blüher continued where Baudrillard’s works left off and tried to show that
-the transition from sexual desire to pornography marks the boundary of the
-&ldquo;unforgivable violation&rdquo; with absolute permission—driven immediately by the urge
-to fulfill expectations and fantasies. This, he claims, signals the end of
-otherness in sexual and romantic relationships. The body of the other is
-consumed and discarded as if it were a consumable and disposable object. The
-desire for the other becomes a desire for oneself alone.
-</p>
-
-<p>
-We now strive for comfort, safety, and ease in the field of unity and isolation.
-Today’s love is free of all excess and all sin (&#x2026;). Eros aims for the other in
-an emotional sense, yet does not allow itself to recover in the system of the
-self. In this identical, increasingly homogeneous society, contradictions no
-longer exist, and hence no erotic experience. This assumes a state of both
-internal and external dissonance.
-</p>
-
-</blockquote></div>
-</div>
-</div>
-<div id="outline-container-qml50930mek0" class="outline-3">
-<h3 id="qml50930mek0"><span class="done DONE">DONE</span> Excited for Nix&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h3>
-<div class="outline-text-3" id="text-qml50930mek0">
-<ul class="org-ul">
-<li><span class="timestamp-wrapper"><span class="timestamp">[2025-05-01 Thu 22:14]</span></span>: <br>
-I wrote this note 5 months ago before migrating to MacOS. I still think that
-NixOS is a great OS though.</li>
-</ul>
-<div class="notes"> <p>
-<span class="timestamp-wrapper">
-<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-05-01 Thu 22:13]--[2025-05-01 Thu 22:14] </span> <span class="timestamp">(0:01)</span>
-</span>
-</p>
-<p>
-<span class="timestamp-wrapper">
-<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-02-17 Mon 20:50]--[2025-02-17 Mon 20:59] </span> <span class="timestamp">(0:09)</span>
-</span>
-</p>
- </div>
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2024-12-02 Mon 21:54]</span></span>
-</p>
- </div>
-<p>
-Can&rsquo;t wait for getting my new laptop and installing NixOS on it.
-</p>
-</div>
-</div>
-<div id="outline-container-q1v1r670kek0" class="outline-3">
-<h3 id="q1v1r670kek0">The Slavery of Our Time</h3>
-<div class="outline-text-3" id="text-q1v1r670kek0">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2024-12-01 Sun 10:54]</span></span>
-</p>
- </div>
-<div class="tag" id="org078d11b">
-<p>
-This section was labeled under, or is related to <a href="t/modus.html#ydb1kfn02wj0">Modus Vivendi</a>
-</p>
-
-</div>
-<p>
-I found an interesting piece by Leo Tolstoy:
-<a href="https://www.marxists.org/archive/tolstoy/1900/slavery-of-our-times.html">https://www.marxists.org/archive/tolstoy/1900/slavery-of-our-times.html</a> on wage
-labor:
-</p>
-
-<div class="epigraph"><blockquote>
-<p>
-Slavery exists in full vigor, but we do not perceive it, just as in Europe at
-the end of the Eighteenth Century the slavery of serfdom was not perceived.
-People of that day thought that the position of men obliged to till the land for
-their lords, and to obey them, was a natural, inevitable, economic condition of
-life, and they did not call it slavery.  It is the same among us: people of our
-day consider the position of the laborer to be a natural, inevitable economic
-condition, and they do not call it slavery. And as, at the end of the Eighteenth
-Century, the people of Europe began little by little to understand that what
-formerly seemed a natural and inevitable form of economic life-namely, the
-position of peasants who were completely in the power of their lords-was wrong,
-unjust and immoral, and demanded alteration, so now people today are beginning
-to understand that the position of hired workmen, and of the working classes in
-general, which formerly seemed quite right and quite normal, is not what it
-should be, and demands alteration.
-</p>
-
-</blockquote></div>
-</div>
-</div>
-<div id="outline-container-o7xge9013hk0" class="outline-3">
-<h3 id="o7xge9013hk0">لا خيل ولا مال</h3>
-<div class="outline-text-3" id="text-o7xge9013hk0">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2024-11-28 Thu 18:01]</span></span>
-</p>
- </div>
-<div class="tag" id="org14fbed1">
-<p>
-This section was labeled under, or is related to <a href="t/tayyib.html#nk2kigk0ybk0">al-Mutanabbi</a>
-</p>
-
-</div>
-<p>
-القصيدة دي لها مكان خاص عندي، من أول مرة قرأتها وحسيت بخصوصية لها وبؤلفه شديدة:
-المتنبي متثبت بخيط أمل رفيع للغاية (علاقته بأبي شجاع فاتك، ومُنياه في انقلابه على
-كافور الإخشيدي)، بيبدأها بإنه يبث فَقره: لا خيل عندك. ومعه هدفه من الغنى:
-&ldquo;تُهديها&rdquo;، أي الجود وليس المال لأجل الرفاه. حُزنه المستمر على بقاء نيته محل النية:
-&ldquo;وَإِن تَكُن مُحكَماتُ الشُكلِ تَمنَعُني&rdquo; وقدرته فقط على البوح بها دون إنفاذها: &ldquo;فَلي فيهِنَّ
-تَصهالُ&rdquo; تذكيره لنفسه بأمل مشقته ومعاناته في الحياة: لَولا المَشَقَّةُ سادَ الناسُ كُلُّهُمُ
-<code>...</code> الجودُ يُفقِرُ وَالإِقدامُ قَتّالُ، وأخيرًا تسليمه بأنه وُلد في غير زمانه<label for="2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="2" class="margin-toggle"/><span class="sidenote">
-Some are born posthumously
-</span>: ذِكرُ
-الفَتى عُمرُهُ الثاني وَحاجَتُهُ ما قاتَهُ وَفُضولُ العَيشِ أَشغالُ. عَرفت فيما بعد أن المتنبي
-كتب هذه القصيدة عندما كان يقطن نفس المدينة التي أقطنها حاليًا، ويا لها من صدفة.
-مات أمل أبو الطيب المتنبي (أبو شجاع فاتك) بعد شهور قليلة من القصيدة، وماتت بعده
-أمال المتنبي الكثيرة، ومات معها فارسًا مقبلًا. طيب الله ثراه.
-</p>
-</div>
-</div>
-<div id="outline-container-gffg0lh0bek0" class="outline-3">
-<h3 id="gffg0lh0bek0">Extract <a href="https://www.kotobee.com/">https://www.kotobee.com/</a></h3>
-<div class="outline-text-3" id="text-gffg0lh0bek0">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2024-11-24 Sun 18:48]</span></span>
-</p>
- </div>
-<div class="tag" id="org87d2af1">
-<p>
-This section was labeled under, or is related to <a href="t/programming.html#4u5664n02wj0">Programming</a>
-</p>
-
-</div>
-<p>
-My friend&rsquo;s university sent her today a PDF file that was bundled inside an MS
-windows executable (exe), she needed to run it outside of the Windows machine.
-Upon extracting it, I found it was bundled as a Kotobee ebook, which turned to
-be a DRM service to create &ldquo;interactive books&rdquo;. After doing a quick binary
-analysis to ensure that we are indeed dealing with a DRM&rsquo;d exe file (and not
-embarrassingly fdoc file renamed to be .exe), I managed to build a document out
-of it. Here&rsquo;s the steps:
-</p>
-
-<p>
-First of all, simply, extract the exe content:
-</p>
-<pre class="code"><code>unzip file.exe -d extracted_directory
-</code></pre>
-
-<p>
-The extracted directory should have a similar tree to this:
-</p>
-<pre class="example" id="orga7c2928">
-larrasket [~/tmp/rq/e]$ ls -l
-total 152
--rw-r--r-- 1 l l   2227 Aug 21 14:42 config.js
-drwxr-xr-x 1 l l     44 Aug 21 14:42 css
-drwxr-xr-x 1 l l     52 Aug 21 14:42 epub
-drwxr-xr-x 1 l l     90 Aug 21 14:42 fonts
--rw-r--r-- 1 l l  10709 Aug 21 14:42 icon.png
-drwxr-xr-x 1 l l      4 Aug 21 14:42 img
-drwxr-xr-x 1 l l      0 Aug 21 14:42 imgUser
--rw-r--r-- 1 l l  14844 Aug 21 14:42 index.html
-drwxr-xr-x 1 l l     98 Aug 21 14:42 js
-drwxr-xr-x 1 l l     74 Aug 21 14:42 lib
-drwxr-xr-x 1 l l    232 Aug 21 14:42 locales
--rw-r--r-- 1 l l 116350 Aug 21 14:42 npmModules.min.js
--rw-r--r-- 1 l l    294 Aug 21 14:42 package.json
-</pre>
-
-<p>
-From here it&rsquo;s very obvious that we can run this node app in a web server. You
-can run a simple http server here:
-</p>
-<pre class="code"><code>python3 -m http.server 9000
-</code></pre>
-<p>
-And the app will be available at port 9000. Alternatively you can build an epub
-from the provided epub directory:
-</p>
-
-<p>
-Inside the epub directory append the mimetype
-</p>
-
-<pre class="code"><code>zip -0X <span style="color: #e5b76f;">"../book.epub"</span> mimetype
-zip -rDX9 <span style="color: #e5b76f;">"../book.epub"</span> * -x <span style="color: #e5b76f;">"*.DS_Store"</span> -x mimetype
-</code></pre>
-
-<p>
-This will get you the epub. Right after, you can convert it to pdf with
-<code>epub-tools</code>:
-</p>
-
-<pre class="code"><code>ebook-convert ../book.epub ../book.pdf
-</code></pre>
-
-<p>
-As a single command:
-</p>
-
-<pre class="code"><code>(zip -0X <span style="color: #e5b76f;">"../book.epub"</span> mimetype &amp;&amp; <span style="color: #e5b76f;">\\</span>
-&#9474;   &#9474;zip -rDX9 <span style="color: #e5b76f;">"../book.epub"</span> * -x <span style="color: #e5b76f;">"*.DS_Store"</span> -x mimetype) <span style="color: #e5b76f;">\\</span>
-&#9474;   &#9474;   &amp;&amp; ebook-convert ../book.epub ../book.pdf
-</code></pre>
-</div>
-</div>
-<div id="outline-container-lbkhxd21udk0" class="outline-3">
-<h3 id="lbkhxd21udk0">Buying Votes</h3>
-<div class="outline-text-3" id="text-lbkhxd21udk0">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2024-11-12 Tue 04:49]</span></span>
-</p>
- </div>
-<div class="tag" id="org33c9e8c">
-<p>
-This section was labeled under, or is related to <a href="t/political.html#thc4j6p02wj0">Politics</a>
-</p>
-
-</div>
-<p>
-It&rsquo;s been said we are in the age of pricing. <a href="p/commodity.html#4fb240m099k0">The Age of Commodity</a>. I had a lot of thoughts
-about that when I was reading this paragraph from Harper&rsquo;s review (<a href="t/political.html#klqcz9v0zfk0">“Were all going to be dead soon.”</a>):
-</p>
-<div class="epigraph"><blockquote>
-<p>
-In the United States, it was reported that the Microsoft founder Bill Gates, the world&rsquo;s
-twelfth-richest person, secretly gave $50 million to an organization supporting the
-campaign of the Democratic presidential candidate; and that the Tesla and SpaceX
-co-founder Elon Musk, the world&rsquo;s richest person, had been warned by federal prosecutors
-of the potential illegality of his practice of giving $1 million each day to a randomly
-selected swing-state voter who signed a petition for his super PAC that backs the
-Republican presidential candidate. <a href="https://www.fox29.com/news/bill-gates-not-10-wealthiest-billionaires-world-who-made-list#">^{1}</a> <a href="https://www.nytimes.com/2024/10/22/us/elections/bill-gates-future-forward-kamala-harris.html">^{2}</a> <a href="https://www.forbes.com/real-time-billionaires/#2bf3dcf3d788">^{3}</a> <a href="https://www.nbcnews.com/tech/tech-news/elon-musk-defends-1-million-petition-giveaway-federal-warning-rcna177377">^{4}</a> In Moldova, where last month it was
-reported that the Russian government had paid at least 130,000 people more than $15
-million to vote against joining the European Union, authorities announced that they had
-identified an additional $24 million also directed toward purchasing the votes of 20
-percent of the entire electorate; violence erupted at polling stations across the country
-of Georgia, where international observers warned of Russian “vote-buying” in its
-parliamentary elections and whose president said that the elections&rsquo; results “cannot be
-accepted” and should be opposed with protests in the streets; and police in Mozambique
-shot and killed at least ten of the thousands of demonstrators marching against the ruling
-party&rsquo;s claim that it had just won more than 70 percent of votes nationally. <a href="https://kyivindependent.com/moldova-uncovers-15-million-russian-backed-plot-to-influence-upcoming-elections-with-bribes-and-disinformation/">^{5}</a> <a href="https://kyivindependent.com/moscow-funneled-39-million-into-moldova-ahead-of-presidential-election-in-attempt-to-influence-results-moldovan-authorities-say/">^{6}</a>
-<a href="https://www.politico.eu/article/georgia-president-protests-election-salome-zourabichvili-widespread-citizens/">^{7}</a> <a href="https://clubofmozambique.com/news/cip-mozambique-elections-up-to-10-dead-in-two-days-of-demonstrations-269621/">^{8}</a> <a href="https://www.aljazeera.com/news/2024/10/24/mozambique-ruling-party-declared-winner-of-election-amid-fraud-claims">^{9}</a> Days before Uzbekistan&rsquo;s parliamentary elections, a would-be assassin fired
-five bullets at the car of the country&rsquo;s former head of communications, who was lobbying
-for reforms to protect press freedoms; and in Bulgaria, hackers published a list of more
-than 200 businessmen and government officials who are alleged to have bought votes under
-the direction of the former owner of 6 of the country&rsquo;s 12 largest-circulating newspapers.
-<a href="https://www.forbes.com/sites/melikkaylan/2024/10/26/a-failed-assassination-attempt-in-uzbekistan-as-it-faces-elections/">^{10}</a> <a href="https://www.politico.eu/article/bulgaria-ethical-hacking-group-bg-elves-oligarch-delyan-peevski-election-fraud-vote-buying/">^{11}</a> <a href="https://www.economist.com/eastern-approaches/2013/09/20/breaking-up-with-peevski">^{12}</a> It was reported that an internal battle in the Iranian government over
-the 85-year-old ayatollah&rsquo;s successor would likely be won by his second son, a former de
-facto commanding officer in the Basij who was accused of rigging the 2009 election in
-favor of the incumbent, who later accused him of embezzling money from the treasury; the
-Vietnamese parliament elected a military general to replace its president, who, while
-being investigated for bribery, resigned from the presidential office he&rsquo;d taken over from
-his predecessor, who himself had resigned after 539 of his subordinates were implicated in
-multiple corruption rackets; and Tunisia&rsquo;s incumbent president, who last month arrested
-dozens of members of the nation&rsquo;s largest opposition party, was inaugurated for a second
-term. <a href="https://www.jpost.com/middle-east/iran-news/article-826211">^{13}</a> <a href="https://web.archive.org/web/20090621204752/http://www.atimes.com/atimes/Middle_East/KF19Ak04.html">^{14}</a> <a href="https://english.alarabiya.net/articles/2012/01/15/188461">^{15}</a> <a href="https://www.channelnewsasia.com/commentary/vietnam-president-vo-van-thuong-resign-cpv-national-congress-general-secretary-4211431">^{16}</a> <a href="https://www.reuters.com/world/asia-pacific/vietnams-president-phuc-quits-blamed-ministers-violations-2023-01-17/">^{17}</a> <a href="https://apnews.com/article/tunisia-president-kais-saied-f911f1dfc86445ef8be157a3a792e1e2">^{18}</a> “Vipers,” he said at his swearing in, are
-“circulating.”  <a href="https://apnews.com/article/tunisia-president-kais-saied-f911f1dfc86445ef8be157a3a792e1e2">^{19}</a>
-</p>
-
-</blockquote></div>
-</div>
-</div>
 <div id="outline-container-1uw1fd21udk0" class="outline-3">
 <h3 id="1uw1fd21udk0">Abdel Wahab al-Messiri, Paul Fussell and Kagi</h3>
-<div class="outline-text-3" id="text-1uw1fd21udk0">
+<div class="outline-text-3" id="text-orgc79a2dc">
 <div class="notes"> <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2024-10-17 Thu 18:27]</span></span>
 </p>
@@ -1951,14 +1616,40 @@ biological state. <a href="p/nature.html#tixkcwk0gwj0">Related</a>.
 </p>
 </div>
 </div>
+<div id="outline-container-1g2kfzz06nk0" class="outline-3">
+<h3 id="1g2kfzz06nk0">SEP Friendship</h3>
+<div class="outline-text-3" id="text-1g2kfzz06nk0">
+<div class="notes"> <p>
+<span class="timestamp-wrapper"><span class="timestamp">[2024-08-03 Sat 03:14]</span></span>
+</p>
+ </div>
+<div class="tag" id="orgd84cd58">
+<p>
+This section was labeled under, or is related to Philosophy
+</p>
+
+</div>
+<p>
+I really like Stanford Encyclopedia of Philosophy&rsquo;s PDFs (<a href="https://plato.stanford.edu/support/friends.html">preview here</a>), however, they do
+not allow you to download it without a subscription. It&rsquo;s actually good enough for a
+subscription if you compare it to the HTML. For someone like me, my HTML appetite can not
+hold more than few long articles, SEP average entry is about ~50 pages or so, that&rsquo;s not a
+long article even. Here&rsquo;s how I get their entries as nice PDFs without subscription,
+simply save the article part of the HTML page into a file, and using <a href="https://pandoc.org/">pandoc</a> run:
+</p>
+
+<pre class="code"><code>pandoc concept_of_religion.html --pdf-engine=xelatex -o concept_of_religion.pdf --variable=documentclass:book -V geometry:b5paper -V <span style="color: #40B8C5;">margin</span>=3cm -V <span style="color: #40B8C5;">mainfont</span>=<span style="color: #c5a332;">"Times New Roman"</span>
+</code></pre>
+</div>
+</div>
 <div id="outline-container-06f35v80xck0" class="outline-3">
 <h3 id="06f35v80xck0"><a href="https://github.com/alphapapa/org-ql/pull/325">Fix: (org-ql-view.el) Adjust priority for agenda elements by anpandey</a></h3>
-<div class="outline-text-3" id="text-org7a2e99c">
+<div class="outline-text-3" id="text-org7b52d98">
 <div class="notes"> <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2024-08-22 Thu 12:50]</span></span>
 </p>
  </div>
-<div class="tag" id="orga6979b9">
+<div class="tag" id="org2a63d0a">
 <p>
 This section was labeled under, or is related to <a href="t/programming.html#4u5664n02wj0">Programming</a>
 </p>
@@ -1984,123 +1675,13 @@ do any of this (or even register at a new forge other than github).
 </ul>
 </div>
 </div>
-<div id="outline-container-jene6a516ak0" class="outline-3">
-<h3 id="jene6a516ak0">Nostalgic Bibliography</h3>
-<div class="outline-text-3" id="text-org1d18aa6">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2024-08-04 Sun 03:32]</span></span>
-</p>
- </div>
-<p>
-I&rsquo;m reorganizing my <a href="fullbooks.html#omy9ejo02wj0">bibliography</a>, found out that there are many titles that I felt
-nostalgic towards. Many titles are related to people I used to discuss with or phases in
-my life. Some of them are:
-</p>
-
-<dl class="org-dl">
-<dt>In Praise of Idleness and Other Essays (Russell, B.)</dt><dd>one of the very first books I&rsquo;ve
-ever read.</dd>
-<dt>The Hero With a Thousand Faces (Campbell, J.)</dt><dd>I really miss that era of exploring
-Campbell and psychoanalysis&#x2026; used to be in a very fun communities.</dd>
-<dt>The Human Web (McNeill et al.)</dt><dd>It was a very hard job for me to get a paper version
-of this book, I remember reading it in public transportation, in winter.</dd>
-<dt>Being Mortal (Gawande, A.)</dt><dd>Same as previous one, I read it in the same era.</dd>
-<dt>The Naked Ape (Morris, D.)</dt><dd>I&rsquo;ve some of the dearest memories with this book. I
-remember recommending it to somebody, they were too shy to discuss the sex chapter and I
-found that funny, we never talked or met again.</dd>
-<dt>Your Inner Fish (Shubin, N.)</dt><dd>one of the first books ever that I read about evolution,
-recommended to me by my neighbor after he saw the documentary.</dd>
-<dt>Totem and taboo (Freud, S.)</dt><dd>My first book to read by Freud, first book to get me very
-invested into the psychoanalysis theory as well. I even made infographics for this
-book. It also introduced me to many other European orientalists.</dd>
-<dt>Group Psychology (Freud, S.)</dt><dd>Second book to read for Freud, was recommended to me by
-the same friend who recommended &ldquo;Your Inner Fish&rdquo;.</dd>
-<dt>Differential Equations for Dummies (Holzner, S.)</dt><dd>very bad memories with this one.</dd>
-<dt>Algorithms (Sedgewick, R.)</dt><dd>This was my alternative for the common algorithms
-reference, I don&rsquo;t even remember the name of that reference anymore.</dd>
-<dt>Data Structures and Algorithm Analysis (Shaffer, C.)</dt><dd>My first algorithms book, one of
-the books that I completed 100% of it. I truly loved it, I had a TODO note to thank the
-author, but I never did.</dd>
-</dl>
-
-<p>
-So many other memories with the rest of the list! خُلِقتُ أَلوفاً لَو رَحَلتُ إِلى الصِبا لَفارَقتُ شَيبي موجَعَ القَلبِ باكِيا.
-</p>
-
+</div>
+<div id="outline-container-org64e8856" class="outline-2">
+<h2 id="org64e8856">Archive</h2>
+<div class="outline-text-2" id="text-org64e8856">
 <ul class="org-ul">
-<li><span class="timestamp-wrapper"><span class="timestamp">[2025-05-23 Fri 17:26]</span></span> Sometimes I wonder whether that feeling is healthy.</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-j4lijmn05ak0" class="outline-3">
-<h3 id="j4lijmn05ak0">SEP Friendship</h3>
-<div class="outline-text-3" id="text-orgd56cf93">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2024-08-03 Sat 03:14]</span></span>
-</p>
- </div>
-<div class="tag" id="orgcd26afa">
-<p>
-This section was labeled under, or is related to Philosophy
-</p>
-
-</div>
-<p>
-I really like Stanford Encyclopedia of Philosophy&rsquo;s PDFs (<a href="https://plato.stanford.edu/support/friends.html">preview here</a>), however, they do
-not allow you to download it without a subscription. It&rsquo;s actually good enough for a
-subscription if you compare it to the HTML. For someone like me, my HTML appetite can not
-hold more than few long articles, SEP average entry is about ~50 pages or so, that&rsquo;s not a
-long article even. Here&rsquo;s how I get their entries as nice PDFs without subscription,
-simply save the article part of the HTML page into a file, and using <a href="https://pandoc.org/">pandoc</a> run:
-</p>
-<pre class="code"><code>pandoc concept_of_religion.html --pdf-engine=xelatex -o concept_of_religion.pdf --variable=documentclass:book -V geometry:b5paper -V <span style="color: #df7fff;">margin</span>=3cm -V <span style="color: #df7fff;">mainfont</span>=<span style="color: #e5b76f;">"Times New Roman"</span>
-</code></pre>
-</div>
-</div>
-<div id="outline-container-kuh0x3t0p9k0" class="outline-3">
-<h3 id="kuh0x3t0p9k0">I can&rsquo;t find a <a href="cs/lisp.html#vlm4vsn02wj0">Lisp</a></h3>
-<div class="outline-text-3" id="text-org392ad0b">
-<div class="notes"> <p>
-<span class="timestamp-wrapper"><span class="timestamp">[2024-07-22 Mon 02:01]</span></span>
-</p>
- </div>
-<div class="tag" id="orgf0725c7">
-<p>
-This section was labeled under, or is related to <a href="t/programming.html#4u5664n02wj0">Programming</a>
-</p>
-
-</div>
-<p>
-Basically almost every Lisp out there has a major downside that turns me off from using
-it to the extent I consider using Haskell&rsquo;s s-expression tolerance (like <code>(map odd
-[1,2,3]) (((.) fst snd) (1,(2,3)))</code>) (which, obviously, would be a very bad practice)
-</p>
-
-<ul class="org-ul">
-<li>Common Lisp: Classical OOP everywhere, very bad build automation and packaging
-(asdf), available implementations have low support availability, bugs are
-everywhere due to the limited teams who are working on those.</li>
-<li>Scheme: Same as CL, in addition to the scare language support in most editors
-(not sure even if it has an LSP), also it&rsquo;s hard to find libraries/packages to
-build something on.</li>
-<li>EuLisp, ZetaLisp, MacLisp, InterLisp, ISLisp, <a href="https://mumble.net/~jar/tproject/">T</a>, Arc, PicoLisp: I still find it hard to
-believe those are not in the museum of computing yet.</li>
-<li>Guile, Racket: both look so promising but the lack of interest from community which
-results in an effect on the number of available packages to build on, makes
-it much harder to start a new project in any of them without reinventing the wheel.</li>
-<li>Clojure: aside from the JVM dependency and the build system hassle, the language is just
-too big, still the most plausible option in this whole list though.</li>
-</ul>
-</div>
-</div>
-</div>
-<div id="outline-container-org32e3403" class="outline-2">
-<h2 id="org32e3403">Archive</h2>
-<div class="outline-text-2" id="text-org32e3403">
-<ul class="org-ul">
-<li><span class="timestamp-wrapper"><span class="timestamp">[2025-06-28 Sat 20:04]</span></span>: <br>
-2024-2025 was a heavy time. I will probably organize it in the archive after I
-get over it.</li>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-06-28 Sat 20:04]</span></span> 2024-2025 was a heavy time. I will probably organize it
+in the archive after I get over it.</li>
 </ul>
 <p>
 <a href="sh/Dec2023-Feb2024.html#h6p5sz01e2k0">December 2023-February 2024</a> | <a href="sh/Sept2023-Nov2023.html#e9d6oix021k0">September 2023-November 2023</a> | <a href="sh/Jun2023-August2023.html#1c4frpp02wj0">June 2023-August 2023</a> | <a href="sh/Mar2023-May2023.html#v3pf36o02wj0">March
@@ -2108,9 +1689,9 @@ get over it.</li>
 </p>
 </div>
 </div>
-<div id="outline-container-orgf13e59c" class="outline-2">
-<h2 id="orgf13e59c">How does this page work</h2>
-<div class="outline-text-2" id="text-orgf13e59c">
+<div id="outline-container-org1d54e7d" class="outline-2">
+<h2 id="org1d54e7d">How does this page work</h2>
+<div class="outline-text-2" id="text-org1d54e7d">
 <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2022-09-23 Fri 20:15]</span></span>: If you are an old reader (if such a thing exists) of
 this blog, you should know about my old attempts of creating a stack-like
@@ -2122,11 +1703,11 @@ string, and I started to implement it as a separated program. However, while
 doing it I recognized that <code>(org-caputre)</code> already does it, just needed a simple
 custom configuration:
 </p>
-<pre class="code"><code>(<span style="color: #ef80bf; font-weight: bold;">setq</span> <span style="color: #df7fff;">+org-capture-journal-file</span> <span style="color: #e5b76f;">"~/blog/content/stack.org"</span>)
-(<span style="color: #ef80bf; font-weight: bold;">setq</span> <span style="color: #df7fff;">org-capture-templates</span>
-      <span style="color: #ef80bf; font-weight: bold;">'</span>((<span style="color: #e5b76f;">"j"</span> <span style="color: #e5b76f;">"Journal"</span> entry
-           (file+headline <span style="color: #df7fff;">+org-capture-journal-file</span> <span style="color: #e5b76f;">"Posts"</span>)
-           <span style="color: #e5b76f;">"* %&lt;%A, %d %B %Y&gt;\n%?"</span>  <span style="color: #a897ef; font-weight: bold;">:prepend</span> t)))
+<pre class="code"><code>(<span style="color: #0098dd;">setq</span> <span style="color: #40B8C5;">+org-capture-journal-file</span> <span style="color: #c5a332;">"~/blog/content/stack.org"</span>)
+(<span style="color: #0098dd;">setq</span> <span style="color: #40B8C5;">org-capture-templates</span>
+&#9474; &#9474; &#9474; <span style="color: #7a82da;">'</span>((<span style="color: #c5a332;">"j"</span> <span style="color: #c5a332;">"Journal"</span> entry
+&#9474; &#9474; &#9474; &#9474; &#9474; &#9474;(file+headline <span style="color: #40B8C5;">+org-capture-journal-file</span> <span style="color: #c5a332;">"Posts"</span>)
+&#9474; &#9474; &#9474; &#9474; &#9474; &#9474;<span style="color: #c5a332;">"* %&lt;%A, %d %B %Y&gt;\n%?"</span>  <span style="color: #23974a;">:prepend</span> t)))
 </code></pre>
 
 <p>
@@ -2148,14 +1729,42 @@ else soon.</li>
 </ul>
 </div>
 </div>
+<div id="outline-container-org1f3e5b0" class="outline-2">
+<h2 id="org1f3e5b0">2025</h2>
+<div class="outline-text-2" id="text-org1f3e5b0">
+</div>
+<div id="outline-container-orgce8a723" class="outline-3">
+<h3 id="orgce8a723">2025-09 September</h3>
+<div class="outline-text-3" id="text-orgce8a723">
+</div>
+<div id="outline-container-orgbf8070f" class="outline-4">
+<h4 id="orgbf8070f">2025-09-13 Saturday</h4>
+</div>
+</div>
+</div>
 <div id="footnotes">
 <h2 class="footnotes">Footnotes: </h2>
 <div id="text-footnotes">
 
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">Frederic Lenoir, <i>Philosophy of desire</i> (Dar Al Saqi, 2023), 45.</p></div></div>
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">Brian "Beej Jorgensen" Hall, <i>Beej’s Guide to Network Programming</i> (Beej.us, 2023), <a href="https://beej.us/guide/bgnet/">https://beej.us/guide/bgnet/</a>.</p></div></div>
 
 <div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-Some are born posthumously
+which was halirious, because he looked like
+someoen who would really make use of some
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">Abdullah ibn Al-Muqaffa’a, <i>Al-Durrah Al-Yateemah</i> (Hindawi, 2019).</p></div></div>
+
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Unless in rare occasions my employer would decide it will be a GPL
+licensed software.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+I&rsquo;m not talking here about Marxism, but contributing to Arabic
+translation, such contributions are not really helpful at this point, as you
+can not reach such an advanced point in learning something without mastering the
+lingua de franca.
 </p></div></div>
 
 
@@ -2167,7 +1776,7 @@ Some are born posthumously
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: . Last build date: 2025-07-05 Sat 19:51.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.34). Written by: Salih Muhammed, by the date of: . Last build date: 2025-09-28 Sun 01:45.</p>
 
 </div>
 </div>

@@ -25,6 +25,448 @@
 
   <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
   <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+
+<!-- Import LazySizes - State-of-the-art lazy loading library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+
+<!-- Optional: Import plugins for better performance -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js" async></script>
+
+<script>
+// Only run on pages with 'art_paintings_media' in the path
+if (window.location.pathname.includes('art_paintings_media')) {
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    // Configure LazySizes for optimal performance
+    window.lazySizesConfig = window.lazySizesConfig || {};
+    window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
+    window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
+    window.lazySizesConfig.expFactor = 1.5; // Expand loading area
+    window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
+
+    // Add CSS for smooth transitions and collapsible content
+    const style = document.createElement('style');
+    style.textContent = `
+      .lazyload,
+      .lazyloading {
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+      }
+      .lazyloaded {
+        opacity: 1;
+      }
+      .collapsible-content {
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+      .collapsible-content.collapsed {
+        max-height: 0 !important;
+      }
+      .collapsible-content.expanded {
+        max-height: none;
+      }
+      /* Blur effect while loading (optional) */
+      .lazyloading {
+        filter: blur(5px);
+        opacity: 0.7;
+      }
+      .lazyloaded {
+        filter: none;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Find all h3 elements
+    const h3Elements = document.querySelectorAll('h3');
+
+    h3Elements.forEach(function(h3) {
+      // Make h3 clickable and add icon
+      h3.style.position = 'relative';
+      h3.style.cursor = 'pointer';
+      h3.style.paddingLeft = '20px';
+      h3.style.userSelect = 'none';
+
+      // Add the arrow icon
+      const icon = document.createElement('span');
+      icon.innerHTML = '▶';
+      icon.style.position = 'absolute';
+      icon.style.left = '0px';
+      icon.style.top = '50%';
+      icon.style.transform = 'translateY(-50%)';
+      icon.style.transition = 'transform 0.2s';
+      icon.style.fontSize = '0.8em';
+      icon.style.color = 'rgb(102, 102, 102)';
+      icon.style.fontFamily = 'monospace';
+
+      h3.insertBefore(icon, h3.firstChild);
+
+      // Find all content after this h3 until the next h3 or end of parent
+      const contentElements = [];
+      let nextElement = h3.nextElementSibling;
+
+      while (nextElement && nextElement.tagName !== 'H3') {
+        contentElements.push(nextElement);
+        nextElement = nextElement.nextElementSibling;
+      }
+
+      // Create a wrapper for smooth collapsing
+      const wrapper = document.createElement('div');
+      wrapper.className = 'collapsible-content collapsed';
+      wrapper.style.maxHeight = '0';
+
+      // Move content elements into wrapper
+      contentElements.forEach(function(element) {
+        wrapper.appendChild(element);
+      });
+
+      // Insert wrapper after h3
+      h3.parentNode.insertBefore(wrapper, h3.nextSibling);
+
+      // Prepare images for LazySizes lazy loading and make them clickable
+      const prepareImagesForLazyLoading = (container) => {
+        const images = container.querySelectorAll('img');
+        images.forEach(function(img) {
+          // Only process if not already processed
+          if (!img.classList.contains('lazyload') && !img.dataset.processed) {
+            // Store original src in data-src for LazySizes
+            if (img.src && img.src !== '' && !img.src.startsWith('data:')) {
+              img.dataset.src = img.src;
+              // Use a tiny placeholder or low-quality placeholder
+              img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+            }
+
+            // Handle srcset for responsive images
+            if (img.srcset && img.srcset !== '') {
+              img.dataset.srcset = img.srcset;
+              img.srcset = '';
+            }
+
+            // Handle sizes attribute
+            if (img.sizes) {
+              img.dataset.sizes = img.sizes;
+            }
+
+            // Add LazySizes classes
+            img.classList.add('lazyload');
+
+            // Make image clickable - add cursor pointer
+            img.style.cursor = 'pointer';
+
+            // Add click handler to open image in new tab
+            img.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation(); // Prevent triggering h3 collapse
+
+              // Get the actual image URL (either from src or data-src)
+              let imageUrl = this.src;
+              if (this.dataset.src && !this.src.startsWith('data:')) {
+                imageUrl = this.dataset.src;
+              } else if (this.src.startsWith('data:') && this.dataset.src) {
+                imageUrl = this.dataset.src;
+              }
+
+              // Open image in new tab
+              if (imageUrl && !imageUrl.startsWith('data:')) {
+                window.open(imageUrl, '_blank');
+              }
+            });
+
+            // Mark as processed
+            img.dataset.processed = 'true';
+
+            // Maintain aspect ratio to prevent layout shift
+            if (!img.style.aspectRatio && img.width && img.height) {
+              img.style.aspectRatio = img.width + '/' + img.height;
+            }
+          }
+        });
+      };
+
+      // Prepare all images in this section for lazy loading
+      prepareImagesForLazyLoading(wrapper);
+
+      // Track collapsed state
+      let isCollapsed = true;
+      let hasBeenExpanded = false;
+
+      // Add click handler
+      h3.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        if (isCollapsed) {
+          // Expand: show content and activate lazy loading
+          icon.style.transform = 'translateY(-50%) rotate(90deg)';
+          wrapper.classList.remove('collapsed');
+          wrapper.classList.add('expanded');
+          wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+
+          // Only activate LazySizes for this section when first expanded
+          if (!hasBeenExpanded) {
+            // Trigger LazySizes to check for images in this newly visible section
+            if (window.lazySizes) {
+              // Force LazySizes to check all images in this wrapper
+              const lazyImages = wrapper.querySelectorAll('.lazyload');
+              lazyImages.forEach(img => {
+                // Add to LazySizes queue
+                window.lazySizes.loader.unveil(img);
+              });
+            }
+            hasBeenExpanded = true;
+          }
+
+          isCollapsed = false;
+
+          // Recalculate height after images potentially load
+          setTimeout(() => {
+            if (!isCollapsed) {
+              wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+            }
+          }, 100);
+
+        } else {
+          // Collapse: hide content
+          icon.style.transform = 'translateY(-50%) rotate(0deg)';
+          wrapper.classList.remove('expanded');
+          wrapper.classList.add('collapsed');
+          wrapper.style.maxHeight = '0';
+
+          isCollapsed = true;
+        }
+      });
+
+      // Listen for LazySizes events to adjust height dynamically
+      wrapper.addEventListener('lazyloaded', function(e) {
+        if (!isCollapsed) {
+          // Adjust wrapper height when images load
+          setTimeout(() => {
+            wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+          }, 50);
+        }
+      });
+    });
+  });
+}
+</script>
+
+<script>
+
+
+
+  
+// Stack Page Formatter - Apply inline layout to specific pages
+(function() {
+  'use strict';
+  
+  // Check if current page should have the formatting applied
+  function shouldApplyFormatting() {
+    const path = window.location.pathname;
+    
+    // Check if path matches our target patterns
+    return path === '/stack' || 
+           path === '/stack.html' || 
+           path.startsWith('/sh/');
+  }
+  
+  // Only proceed if we're on a target page
+  if (!shouldApplyFormatting()) {
+    return;
+  }
+  
+  // Add CSS styles
+  function addStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+      /* Basic styling for entries */
+      .outline-3 {
+        margin-bottom: 1.5em;
+        line-height: 1.5;
+      }
+
+      /* Style for reconstructed single paragraph */
+      .entry-paragraph {
+        margin: 0;
+        line-height: 1.5;
+        direction: inherit;
+        unicode-bidi: plaintext;
+      }
+
+      /* Style for date - gray and nice */
+      .entry-date {
+        color: #666;
+        font-size: 0.9em;
+        margin-right: 0.5em;
+      }
+
+      /* Style for tag at end - gray and in parentheses */
+      .entry-tag {
+        display: inline !important;
+        color: #666;
+        margin-left: 0.5em;
+      }
+
+      /* Ensure all children stay inline */
+      .entry-tag * {
+        display: inline !important;
+      }
+
+      /* Override any existing tag styles */
+      .entry-tag p,
+      .entry-tag div {
+        display: inline !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      /* Hide block elements that will be moved */
+      .outline-3 .moved-block {
+        display: block;
+        margin: 0.5em 0;
+      }
+
+      /* Ensure proper anchor target visibility */
+      .outline-3[id] {
+        scroll-margin-top: 20px;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  // Extract ID from container div
+  function extractIdFromContainer(entry) {
+    const containerId = entry.id;
+    if (containerId && containerId.startsWith('outline-container-')) {
+      return containerId.replace('outline-container-', '');
+    }
+    return null;
+  }
+  
+  // Apply the formatting transformation
+  function applyFormatting() {
+    // Process each entry
+    const entries = document.querySelectorAll('.outline-3');
+    
+    entries.forEach((entry, index) => {
+      // Extract the anchor ID from the container before transformation
+      const anchorId = extractIdFromContainer(entry);
+      
+      // Extract components
+      const h3 = entry.querySelector('h3');
+      const notes = entry.querySelector('.notes');
+      const outlineText = entry.querySelector('.outline-text-3');
+      const tag = entry.querySelector('.tag');
+      
+      if (!h3 || !outlineText) return;
+      
+      // Get title text (preserve any TODO/DONE prefixes and links)
+      let titleText = h3.innerHTML;
+      
+      // Get timestamp
+      let timestampText = '';
+      if (notes) {
+        const timestamp = notes.querySelector('.timestamp');
+        if (timestamp) {
+          timestampText = timestamp.textContent;
+        }
+      }
+      
+      // Get content paragraphs (excluding notes and tag)
+      const contentParagraphs = [];
+      const blockElements = [];
+      
+      Array.from(outlineText.children).forEach(child => {
+        if (child.classList.contains('notes') || child.classList.contains('tag')) {
+          return; // Skip these
+        }
+        
+        if (child.tagName === 'P') {
+          contentParagraphs.push(child.innerHTML);
+        } else if (child.tagName === 'UL' || child.tagName === 'OL' || 
+                   child.tagName === 'BLOCKQUOTE' || child.tagName === 'PRE' ||
+                   child.tagName === 'DL' || child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        } else if (child.tagName === 'DIV' && child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        }
+      });
+      
+      // Get tag HTML (preserve links and formatting)
+      let tagHtml = '';
+      if (tag) {
+        tagHtml = tag.outerHTML;
+      }
+      
+      // Construct the new single paragraph
+      let newContent = '';
+      
+      // Add date at the start (gray)
+      if (timestampText) {
+        newContent += '<span class="entry-date">' + timestampText + '</span>';
+      }
+      
+      // Add title with emdash
+      newContent += titleText + ' — ';
+      
+      // Add content paragraphs
+      newContent += contentParagraphs.join(' ');
+      
+      // Add tag at the end in parentheses (preserve HTML but force inline)
+      if (tagHtml) {
+        // Extract just the inner content and wrap it properly
+        let tagContent = tag.innerHTML;
+        newContent += ' <span class="entry-tag">(' + tagContent + ')</span>';
+      }
+      
+      // Create new paragraph element
+      const newParagraph = document.createElement('p');
+      newParagraph.className = 'entry-paragraph';
+      newParagraph.innerHTML = newContent;
+      
+      // Clear the entry and add the new paragraph
+      entry.innerHTML = '';
+      entry.appendChild(newParagraph);
+      
+      // Preserve the anchor ID by setting it on the transformed entry
+      if (anchorId) {
+        entry.id = anchorId;
+      }
+      
+      // Add any block elements after the paragraph
+      blockElements.forEach(blockHtml => {
+        const blockDiv = document.createElement('div');
+        blockDiv.className = 'moved-block';
+        blockDiv.innerHTML = blockHtml;
+        entry.appendChild(blockDiv);
+      });
+      
+      // Add separator after each entry (except the last one)
+      if (index < entries.length - 1) {
+        const separator = document.createElement('hr');
+        separator.style.margin = '1em 0';
+        separator.style.border = 'none';
+        separator.style.borderTop = '1px solid #ccc';
+        entry.appendChild(separator);
+      }
+    });
+  }
+  
+  // Initialize when DOM is ready
+  function init() {
+    addStyles();
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', applyFormatting);
+    } else {
+      applyFormatting();
+    }
+  }
+  
+  // Start the initialization
+  init();
+})();
+</script>
+
+
+
 </head>
 <body>
 </body>
@@ -40,8 +482,7 @@
 <h1 class="title" style="
 margin-block-start: auto;
     color: black;
-">لّermontov</h1>
-
+">Hereby, all birds fly</h1>
       </a>
 <hr class="header-divider" style="margin-block-end: -1em;">
   </div>
@@ -125,9 +566,9 @@ Whom and For What&rdquo;.
 </span></li>
 <li><span class="timestamp-wrapper"><span class="timestamp">[2024-10-01 Tue 17:37]</span></span> A useful source for cultures and arts <a href="http://www.infocobuild.com/">http://www.infocobuild.com/</a></li>
 </ul>
-<div id="outline-container-org0b5644d" class="outline-2">
-<h2 id="org0b5644d">Humanities and the like</h2>
-<div class="outline-text-2" id="text-org0b5644d">
+<div id="outline-container-orgd11b10c" class="outline-2">
+<h2 id="orgd11b10c">Humanities and the like</h2>
+<div class="outline-text-2" id="text-orgd11b10c">
 <ul class="org-ul">
 <li>Conjectures and Refutations (Popper, K.)</li>
 <li>Analytic Philosophy of Religion (Harris, J. F.) <label for="3" class="margin-toggle sidenote-number"></label><input type="checkbox" id="3" class="margin-toggle"/><span class="sidenote">
@@ -143,7 +584,6 @@ Allah. Also, read <a href="https://sophy.ca/blog/2013/03/how-not-to-write-in-phi
 <li>A History of Western Philosophy (Russell, B.)</li>
 <li>Utilitarianism (Lazari-Radek et al.)</li>
 <li>The Hero With a Thousand Faces (Campbell, J.)</li>
-<li>Introduction to Marxism (Mandel, E.)</li>
 <li>The Poetics of Iblis (Bodman, W.)</li>
 <li>Beyond Good and Evil (Nietzsche, F.)</li>
 <li>A Theologico-Political Treatise (Spinoza, B.)</li>
@@ -196,11 +636,14 @@ Very poor review.
 <li>What is art? (Tolstoy, L.)</li>
 <li>The Structure of Scientific Revolutions (Kuhn, T. S.)</li>
 <li>Metaphysics of Love (Schopenhauer, A.)</li>
+<li>An Introduction to The Philosophy of Language (Morris, M.)</li>
+<li>The Revolutionary Ideas of Karl Marx (Callinicos, A.)</li>
+<li>LLMs Should Not Replace Mental Health Providers (Moore et al.)</li>
 </ul>
 </div>
-<div id="outline-container-org9d627df" class="outline-3">
-<h3 id="org9d627df">Modernism and Postmodernism</h3>
-<div class="outline-text-3" id="text-org9d627df">
+<div id="outline-container-org47722c9" class="outline-3">
+<h3 id="org47722c9">Modernism and Postmodernism</h3>
+<div class="outline-text-3" id="text-org47722c9">
 <ul class="org-ul">
 <li>Liquid Modernity (Bauman, Z.)</li>
 <li>Community: Seeking Safety in an Insecure World (Bauman, Z.)</li>
@@ -216,9 +659,9 @@ Very poor review.
 </ul>
 </div>
 </div>
-<div id="outline-container-org6faf4cf" class="outline-3">
-<h3 id="org6faf4cf">Other</h3>
-<div class="outline-text-3" id="text-org6faf4cf">
+<div id="outline-container-org314f35e" class="outline-3">
+<h3 id="org314f35e">Other</h3>
+<div class="outline-text-3" id="text-org314f35e">
 <ul class="org-ul">
 <li>ما وراء الحجاب (المرسيني، ف.)<label for="5" class="margin-toggle sidenote-number"></label><input type="checkbox" id="5" class="margin-toggle"/><span class="sidenote">
 Mernissi forces herself to act like an orientalist, however she ain&rsquo;t. Since I
@@ -259,9 +702,9 @@ Pretty much up-to-date version of &ldquo;The Protocols of the Elders of Zion&rdq
 </div>
 </div>
 </div>
-<div id="outline-container-org759aa66" class="outline-2">
-<h2 id="org759aa66">Science</h2>
-<div class="outline-text-2" id="text-org759aa66">
+<div id="outline-container-orgf87fce3" class="outline-2">
+<h2 id="orgf87fce3">Science</h2>
+<div class="outline-text-2" id="text-orgf87fce3">
 <ul class="org-ul">
 <li>The Computational Beauty of Nature (Flake, G. W.)<label for="9" class="margin-toggle sidenote-number"></label><input type="checkbox" id="9" class="margin-toggle"/><span class="sidenote">
 On fractals, for computer scientists.
@@ -311,7 +754,7 @@ Related: <a href="https://youtu.be/dK_narib4do?list=PLE418513C3CDF6C11&amp;t=152
 </div>
 <div id="outline-container-l9scma0070k0" class="outline-3">
 <h3 id="l9scma0070k0">Evolution and Evolutionary Science</h3>
-<div class="outline-text-3" id="text-org2c09746">
+<div class="outline-text-3" id="text-org202b1c8">
 <p>
 The scientific theory of evolution by natural selection was conceived
 independently by two British naturalists, Charles Darwin and Alfred Russel
@@ -336,9 +779,9 @@ new to thinking about evolution.
 </ul>
 </div>
 </div>
-<div id="outline-container-org9726ffb" class="outline-3">
-<h3 id="org9726ffb">Linguistics</h3>
-<div class="outline-text-3" id="text-org9726ffb">
+<div id="outline-container-org945a26d" class="outline-3">
+<h3 id="org945a26d">Linguistics</h3>
+<div class="outline-text-3" id="text-org945a26d">
 <ul class="org-ul">
 <li>The Atoms of Language (Baker, M.)</li>
 <li>An Introduction to Language (Fromkin et al.)
@@ -352,7 +795,7 @@ expert who teaches courses on that topic&rdquo;, also the print is much nicer.</
 </div>
 <div id="outline-container-607e726d-e2f5-4a32-b430-2fb8e157feaa" class="outline-4">
 <h4 id="607e726d-e2f5-4a32-b430-2fb8e157feaa">Stemming</h4>
-<div class="outline-text-4" id="text-orga0bc4fa">
+<div class="outline-text-4" id="text-orgc749c55">
 <ul class="org-ul">
 <li>A Comparative Survey on Arabic Stemming (Mustafa et al.)</li>
 <li>Pattern-based Stemmer Analysis and Implementation on Arabic Text (Wulandari et al.)<label for="15" class="margin-toggle sidenote-number"></label><input type="checkbox" id="15" class="margin-toggle"/><span class="sidenote">
@@ -368,9 +811,9 @@ Does not include a testing/accuracy section.
 </div>
 </div>
 </div>
-<div id="outline-container-orgafe3ded" class="outline-3">
-<h3 id="orgafe3ded">Intelligence</h3>
-<div class="outline-text-3" id="text-orgafe3ded">
+<div id="outline-container-orge42127c" class="outline-3">
+<h3 id="orge42127c">Intelligence</h3>
+<div class="outline-text-3" id="text-orge42127c">
 <ul class="org-ul">
 <li>Intelligence: History of the Concept (Carson, J.)</li>
 <li>Intelligence Science: Leading the Age of Intelligence (Shi, Z.)</li>
@@ -378,9 +821,9 @@ Does not include a testing/accuracy section.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf60d9a5" class="outline-3">
-<h3 id="orgf60d9a5">Psychology</h3>
-<div class="outline-text-3" id="text-orgf60d9a5">
+<div id="outline-container-org069d287" class="outline-3">
+<h3 id="org069d287">Psychology</h3>
+<div class="outline-text-3" id="text-org069d287">
 <ul class="org-ul">
 <li>Psychology’s Status as a Science (Uher, J.)</li>
 <li>The Social Animal (Aronson, E.)</li>
@@ -404,7 +847,7 @@ behavior.
 </div>
 <div id="outline-container-vqkhia40xyj0" class="outline-4">
 <h4 id="vqkhia40xyj0">Sexology</h4>
-<div class="outline-text-4" id="text-org084ad1d">
+<div class="outline-text-4" id="text-orgf325619">
 <p>
 (anything written by Frued, S above is eligible to be here too)
 </p>
@@ -450,9 +893,9 @@ such studies.</span></li>
 </div>
 </div>
 </div>
-<div id="outline-container-org198eca9" class="outline-3">
-<h3 id="org198eca9">Cognitive Science</h3>
-<div class="outline-text-3" id="text-org198eca9">
+<div id="outline-container-org2b85ad1" class="outline-3">
+<h3 id="org2b85ad1">Cognitive Science</h3>
+<div class="outline-text-3" id="text-org2b85ad1">
 <ul class="org-ul">
 <li>Mind as Machine: a History of Cognitive Science (Boden, A.)
 <label for="23" class="margin-toggle sidenote-number"></label><input type="checkbox" id="23" class="margin-toggle"/><span class="sidenote">I really liked (<a href="#citeproc_bib_item_9">Muller, 2008</a>) description of this work (I will cut it
@@ -462,9 +905,9 @@ it for me, or for anybody else, in a word: it is not a book for readers.</span><
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd81e945" class="outline-3">
-<h3 id="orgd81e945">Mathematics</h3>
-<div class="outline-text-3" id="text-orgd81e945">
+<div id="outline-container-orged8d198" class="outline-3">
+<h3 id="orged8d198">Mathematics</h3>
+<div class="outline-text-3" id="text-orged8d198">
 <ul class="org-ul">
 <li>Introduction to Linear Algebra (Strang, G.)</li>
 <li>The Calculus Wars (Bardi, J. S.)</li>
@@ -516,9 +959,9 @@ again someday in a master class.
 <li>Distributed Systems (Steen et al.)</li>
 </ul>
 </div>
-<div id="outline-container-orgf72c5e3" class="outline-4">
-<h4 id="orgf72c5e3">Miscellaneous</h4>
-<div class="outline-text-4" id="text-orgf72c5e3">
+<div id="outline-container-org1556ba3" class="outline-4">
+<h4 id="org1556ba3">Miscellaneous</h4>
+<div class="outline-text-4" id="text-org1556ba3">
 <p>
 Those are very important writings, however they are more &rsquo;optional&rsquo; if mentioned with the
 above list.
@@ -539,9 +982,9 @@ Do not confuse for computer code. See: <a href="https://en.wikipedia.org/w/index
 <li>Mastering Clojure Data Analysis (Rochester, E.)</li>
 </ul>
 </div>
-<div id="outline-container-org07718e0" class="outline-5">
-<h5 id="org07718e0">Cryptography and Computer Security</h5>
-<div class="outline-text-5" id="text-org07718e0">
+<div id="outline-container-org63d741e" class="outline-5">
+<h5 id="org63d741e">Cryptography and Computer Security</h5>
+<div class="outline-text-5" id="text-org63d741e">
 <ul class="org-ul">
 <li>Gray Hat Hacking (Harper et al.)</li>
 <li>Foundation of Cryptography (Goldreich.)</li>
@@ -550,9 +993,9 @@ Do not confuse for computer code. See: <a href="https://en.wikipedia.org/w/index
 </ul>
 </div>
 </div>
-<div id="outline-container-orgce0035a" class="outline-5">
-<h5 id="orgce0035a">Databases</h5>
-<div class="outline-text-5" id="text-orgce0035a">
+<div id="outline-container-org45de346" class="outline-5">
+<h5 id="org45de346">Databases</h5>
+<div class="outline-text-5" id="text-org45de346">
 <ul class="org-ul">
 <li>Database Internal (Petrov, A.)</li>
 <li>Querying Databases Privately (Asonov, D.)</li>
@@ -560,9 +1003,9 @@ Do not confuse for computer code. See: <a href="https://en.wikipedia.org/w/index
 </div>
 </div>
 </div>
-<div id="outline-container-org308a0b8" class="outline-4">
-<h4 id="org308a0b8">Books of Beauty</h4>
-<div class="outline-text-4" id="text-org308a0b8">
+<div id="outline-container-org6865f39" class="outline-4">
+<h4 id="org6865f39">Books of Beauty</h4>
+<div class="outline-text-4" id="text-org6865f39">
 <ul class="org-ul">
 <li>Beauty is Our Business (Feijen et al.)</li>
 <li>A Discipline of Programming (Dijkstra, E.)</li>
@@ -579,9 +1022,9 @@ I&rsquo;m not into game programming, but it was very fun to read this book.
 </ul>
 </div>
 </div>
-<div id="outline-container-org824ba8c" class="outline-4">
-<h4 id="org824ba8c">Artificial Intelligence</h4>
-<div class="outline-text-4" id="text-org824ba8c">
+<div id="outline-container-org0417cb9" class="outline-4">
+<h4 id="org0417cb9">Artificial Intelligence</h4>
+<div class="outline-text-4" id="text-org0417cb9">
 <ul class="org-ul">
 <li>An Introduction to Statistical Learning (James et al.)</li>
 <li>Paradigms of Artificial Intelligence Programming (Norvig, P.)</li>
@@ -594,9 +1037,9 @@ I&rsquo;m not reading this, just using it as a reference book.
 </ul>
 </div>
 </div>
-<div id="outline-container-org9a021f0" class="outline-4">
-<h4 id="org9a021f0">Unscientific</h4>
-<div class="outline-text-4" id="text-org9a021f0">
+<div id="outline-container-org2604137" class="outline-4">
+<h4 id="org2604137">Unscientific</h4>
+<div class="outline-text-4" id="text-org2604137">
 <p>
 Books that focuses on applications rather than theory. They are just matters of my choice,
 please ignore them.
@@ -611,9 +1054,9 @@ please ignore them.
 <li>Designing BSD Rootkits (Kong, J.)</li>
 </ul>
 </div>
-<div id="outline-container-org7bb63c5" class="outline-5">
-<h5 id="org7bb63c5">Languages</h5>
-<div class="outline-text-5" id="text-org7bb63c5">
+<div id="outline-container-org0ec980d" class="outline-5">
+<h5 id="org0ec980d">Languages</h5>
+<div class="outline-text-5" id="text-org0ec980d">
 <ul class="org-ul">
 <li>The C Programming Language (Kernighan et al.)<label for="30" class="margin-toggle sidenote-number"></label><input type="checkbox" id="30" class="margin-toggle"/><span class="sidenote">
 For a better PDF version of this great book, please <del>find this link</del>
@@ -649,9 +1092,9 @@ Enjoyable work.
 </div>
 </div>
 </div>
-<div id="outline-container-org2272780" class="outline-2">
-<h2 id="org2272780">Politics</h2>
-<div class="outline-text-2" id="text-org2272780">
+<div id="outline-container-org862821f" class="outline-2">
+<h2 id="org862821f">Politics</h2>
+<div class="outline-text-2" id="text-org862821f">
 <ul class="org-ul">
 <li><p>
 Manifesto of the Communist Party (Marx et al.)<label for="36" class="margin-toggle sidenote-number"></label><input type="checkbox" id="36" class="margin-toggle"/><span class="sidenote">
@@ -735,9 +1178,9 @@ broken)</i>.
 <li>War in Ukraine (Benjamin et al.)</li>
 </ul>
 </div>
-<div id="outline-container-org5a17316" class="outline-3">
-<h3 id="org5a17316">Propaganda</h3>
-<div class="outline-text-3" id="text-org5a17316">
+<div id="outline-container-org6cb3bc7" class="outline-3">
+<h3 id="org6cb3bc7">Propaganda</h3>
+<div class="outline-text-3" id="text-org6cb3bc7">
 <p>
 Are you interested in reading about the propaganda model? Following related
 literature is recommended, however, I recommend starting with a small modern
@@ -768,9 +1211,9 @@ to be an out-of-date model, see (<a href="#citeproc_bib_item_11">Pedro-Caranana 
 </div>
 </div>
 </div>
-<div id="outline-container-org0d98490" class="outline-2">
-<h2 id="org0d98490">Economics/ Capitalism</h2>
-<div class="outline-text-2" id="text-org0d98490">
+<div id="outline-container-orgebc9570" class="outline-2">
+<h2 id="orgebc9570">Economics/ Capitalism</h2>
+<div class="outline-text-2" id="text-orgebc9570">
 <ul class="org-ul">
 <li>Capitalism, Socialism and Democracy (Schumpeter, J. A.)</li>
 <li>History of Economic Thought (Hunt et al.)<label for="45" class="margin-toggle sidenote-number"></label><input type="checkbox" id="45" class="margin-toggle"/><span class="sidenote">
@@ -778,12 +1221,14 @@ Also check Dr Anwar&rsquo;s: <a href="https://www.youtube.com/playlist?list=PLTM
 </span></li>
 <li>Socialism: A Very Short Introduction (Newman, M.)</li>
 <li>Understanding Socialism (Wolff, R. D.)</li>
+<li>Introduction to Marxist Economy (Mandel, E.)</li>
+<li>Marx&amp;rsquo;s Capital Illustrated (Smith, D.)</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orged72c1a" class="outline-2">
-<h2 id="orged72c1a">Religion</h2>
-<div class="outline-text-2" id="text-orged72c1a">
+<div id="outline-container-org847915e" class="outline-2">
+<h2 id="org847915e">Religion</h2>
+<div class="outline-text-2" id="text-org847915e">
 <ul class="org-ul">
 <li>al-Sirah al-Nabawiyyah (Ibn Hisham, a.)</li>
 <li>The Origins and Early Development of Shia Islam (Ja&rsquo;fari, S)</li>
@@ -824,18 +1269,18 @@ some wisdom, but I might do it someday.
 <li>ابن حزم (أبو زهرة، م.)</li>
 </ul>
 </div>
-<div id="outline-container-orgfa328d3" class="outline-3">
-<h3 id="orgfa328d3">Wahhabism</h3>
-<div class="outline-text-3" id="text-orgfa328d3">
+<div id="outline-container-orgd99a926" class="outline-3">
+<h3 id="orgd99a926">Wahhabism</h3>
+<div class="outline-text-3" id="text-orgd99a926">
 <ul class="org-ul">
 <li>Wahhabism and the World Understanding Saudi Arabia&amp;rsquo;s Global Influence on Islam (Mandaville, P.)</li>
 <li>Intellectual Life in the Ḥijāz before Wahhabism (Al-Abduljabbar, N. A.)</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org86229c2" class="outline-3">
-<h3 id="org86229c2">Other</h3>
-<div class="outline-text-3" id="text-org86229c2">
+<div id="outline-container-org01b8d6c" class="outline-3">
+<h3 id="org01b8d6c">Other</h3>
+<div class="outline-text-3" id="text-org01b8d6c">
 <ul class="org-ul">
 <li>مثالب معاوية (المالكي، ف.)<label for="49" class="margin-toggle sidenote-number"></label><input type="checkbox" id="49" class="margin-toggle"/><span class="sidenote">
 Poorly written book, nothing new or special in the study, the author
@@ -848,9 +1293,9 @@ tends to have an evident ignorance on Takhrij al-hadith.
 </div>
 </div>
 </div>
-<div id="outline-container-org71d2481" class="outline-2">
-<h2 id="org71d2481">History</h2>
-<div class="outline-text-2" id="text-org71d2481">
+<div id="outline-container-org8e77daa" class="outline-2">
+<h2 id="org8e77daa">History</h2>
+<div class="outline-text-2" id="text-org8e77daa">
 <p>
 &ldquo;There&rsquo;s a good reason why nobody studies history, it just teaches you too much&rdquo;. — Noam Chomsky.
 </p>
@@ -872,9 +1317,9 @@ tends to have an evident ignorance on Takhrij al-hadith.
 <li>Forced Secularization in Soviet Russia (Froese, P.)</li>
 </ul>
 </div>
-<div id="outline-container-org4c7dfa8" class="outline-3">
-<h3 id="org4c7dfa8">Ancient World</h3>
-<div class="outline-text-3" id="text-org4c7dfa8">
+<div id="outline-container-orgb420c42" class="outline-3">
+<h3 id="orgb420c42">Ancient World</h3>
+<div class="outline-text-3" id="text-orgb420c42">
 <ul class="org-ul">
 <li>Our Oriental Heritage (Durant et al.)</li>
 <li>The First Social Revolution in Ancient Egypt (Mahran, M. B.)</li>
@@ -891,9 +1336,9 @@ tends to have an evident ignorance on Takhrij al-hadith.
 </ul>
 </div>
 </div>
-<div id="outline-container-org9db5bd3" class="outline-3">
-<h3 id="org9db5bd3">Middle East/ Ummah</h3>
-<div class="outline-text-3" id="text-org9db5bd3">
+<div id="outline-container-org1d6b668" class="outline-3">
+<h3 id="org1d6b668">Middle East/ Ummah</h3>
+<div class="outline-text-3" id="text-org1d6b668">
 <ul class="org-ul">
 <li>The Arabs: A History (Rogan, E.)<label for="50" class="margin-toggle sidenote-number"></label><input type="checkbox" id="50" class="margin-toggle"/><span class="sidenote">
 Very good book. I recommend it as a good start for anybody who wants to
@@ -955,9 +1400,9 @@ al-Kamel fi al-Tarikh (al-Athir, I.)
 <li>تكوين العقل العربي (الجابري، م.)</li>
 </ul>
 </div>
-<div id="outline-container-org392fdba" class="outline-4">
-<h4 id="org392fdba">Iran</h4>
-<div class="outline-text-4" id="text-org392fdba">
+<div id="outline-container-org4036585" class="outline-4">
+<h4 id="org4036585">Iran</h4>
+<div class="outline-text-4" id="text-org4036585">
 <ul class="org-ul">
 <li>تاريخ إيران بعد الإسلام (إقبال، ع.) <label for="54" class="margin-toggle sidenote-number"></label><input type="checkbox" id="54" class="margin-toggle"/><span class="sidenote">
 Too much informative, in the sense that it doesn&rsquo;t really provide a historical
@@ -968,9 +1413,9 @@ another book on the early history of Iran soon.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgbf5f17d" class="outline-4">
-<h4 id="orgbf5f17d">Algeria</h4>
-<div class="outline-text-4" id="text-orgbf5f17d">
+<div id="outline-container-org139d3e5" class="outline-4">
+<h4 id="org139d3e5">Algeria</h4>
+<div class="outline-text-4" id="text-org139d3e5">
 <ul class="org-ul">
 <li>الثورة الجزائرية (الزبيري، م.)</li>
 <li>كيف دخل الفرنسيون الجزائر (الجزائري، ا.)</li>
@@ -978,9 +1423,9 @@ another book on the early history of Iran soon.
 </ul>
 </div>
 </div>
-<div id="outline-container-org6c97c2e" class="outline-4">
-<h4 id="org6c97c2e">Zionism/ Palestine</h4>
-<div class="outline-text-4" id="text-org6c97c2e">
+<div id="outline-container-orgfe3bc34" class="outline-4">
+<h4 id="orgfe3bc34">Zionism/ Palestine</h4>
+<div class="outline-text-4" id="text-orgfe3bc34">
 <ul class="org-ul">
 <li>Prelude to Israel: Zionist Diplomacy (Schulze, K.)</li>
 <li>State of Terror (Suarez, Y.)</li>
@@ -993,9 +1438,9 @@ another book on the early history of Iran soon.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgce2b2ae" class="outline-4">
-<h4 id="orgce2b2ae">Other</h4>
-<div class="outline-text-4" id="text-orgce2b2ae">
+<div id="outline-container-orgfa61205" class="outline-4">
+<h4 id="orgfa61205">Other</h4>
+<div class="outline-text-4" id="text-orgfa61205">
 <ul class="org-ul">
 <li>الحداثة والإمبريالية: الغزو الفرنسي وإشكالية نهضة مصر (الشلق، أ)</li>
 <li>نجد قبل الوهابية (الجهني، ع)</li>
@@ -1004,9 +1449,9 @@ another book on the early history of Iran soon.
 </div>
 </div>
 </div>
-<div id="outline-container-orgffa9fe4" class="outline-3">
-<h3 id="orgffa9fe4">The United States</h3>
-<div class="outline-text-3" id="text-orgffa9fe4">
+<div id="outline-container-orga083679" class="outline-3">
+<h3 id="orga083679">The United States</h3>
+<div class="outline-text-3" id="text-orga083679">
 <ul class="org-ul">
 <li>A People History of The United States (Zinn, H.)</li>
 <li>Killing Hope (Blum, W.)</li>
@@ -1015,11 +1460,12 @@ another book on the early history of Iran soon.
 </div>
 </div>
 </div>
-<div id="outline-container-org5a8e6df" class="outline-2">
-<h2 id="org5a8e6df">Modus Vivendi</h2>
-<div class="outline-text-2" id="text-org5a8e6df">
+<div id="outline-container-org4763eb4" class="outline-2">
+<h2 id="org4763eb4">Modus Vivendi</h2>
+<div class="outline-text-2" id="text-org4763eb4">
 <ul class="org-ul">
 <li>Les Passions de L&amp;rsquo;âme (Descartes, R.)</li>
+<li>Reveries of The Solitary Walker (Rousseau, J.)</li>
 <li><p>
 Thus Spoke Zarathustra (Nietzsche, F.)
 From (<a href="#citeproc_bib_item_10">Nietzsche, 2009</a>):
@@ -1072,9 +1518,9 @@ If I were to raise someone one day, I&rsquo;d definitely use this book.
 </ul>
 </div>
 </div>
-<div id="outline-container-org92a2bf0" class="outline-2">
-<h2 id="org92a2bf0">Aesthetics</h2>
-<div class="outline-text-2" id="text-org92a2bf0">
+<div id="outline-container-org4e45d58" class="outline-2">
+<h2 id="org4e45d58">Aesthetics</h2>
+<div class="outline-text-2" id="text-org4e45d58">
 <p>
 All ancient books which have once been called sacred by man, will have their
 lasting place in the history of mankind, and those who possess the courage, the
@@ -1128,9 +1574,9 @@ Was that really a book about &ldquo;women are so weak omg&rdquo;?
 </span></li>
 </ul>
 </div>
-<div id="outline-container-org2146ee0" class="outline-3">
-<h3 id="org2146ee0">Literature</h3>
-<div class="outline-text-3" id="text-org2146ee0">
+<div id="outline-container-org6d3b2d4" class="outline-3">
+<h3 id="org6d3b2d4">Literature</h3>
+<div class="outline-text-3" id="text-org6d3b2d4">
 <p>
 This section will not be updated anymore.
 </p>
@@ -1141,8 +1587,7 @@ This section will not be updated anymore
 
 <ul class="org-ul">
 <li><p>
-<span class="timestamp-wrapper"><span class="timestamp">[2025-06-16 Mon 23:35]</span></span>: <br>
-Also see this interesting part by Kierkegaard on fiction:
+<span class="timestamp-wrapper"><span class="timestamp">[2025-06-16 Mon 23:35]</span></span> Also see this interesting part by Kierkegaard on fiction:
 </p>
 <div class="epigraph"><blockquote>
 <p>
@@ -1156,14 +1601,13 @@ cares and suffering.’ […]
 </p>
 
 </blockquote></div></li>
-<li><span class="timestamp-wrapper"><span class="timestamp">[2023-10-24 Tue 18:19]</span></span>: <br>
- I wrote the sentence above "This section will not be updated anymore" years
+<li><span class="timestamp-wrapper"><span class="timestamp">[2023-10-24 Tue 18:19]</span></span>  I wrote the sentence above &ldquo;This section will not be updated anymore&rdquo; years
 ago, after a discussion with someone that really convinced me that reading
 literature is an absolute waste of time, since it is not possible to extract
 concrete expressive knowledge, at best it might help you at giving parables
 before telling a theory, making you look more eloquent. I also believe that it
 might deeply help in understanding how people might act in some situation,
-literature is human experience after all. What I've understood recently is
+literature is human experience after all. What I&rsquo;ve understood recently is
 that entertainment is necessary in man&rsquo;s life, no matter how disciplined and
 optimized you are, at some point you will need a rest, whereupon you will be
 interested in an ease and have two options cinema and TV <i>or</i> literature. Here
@@ -1276,9 +1720,9 @@ Ones I didn&rsquo;t enjoy reading:
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf1c981c" class="outline-3">
-<h3 id="orgf1c981c">Heritage</h3>
-<div class="outline-text-3" id="text-orgf1c981c">
+<div id="outline-container-orgc644386" class="outline-3">
+<h3 id="orgc644386">Heritage</h3>
+<div class="outline-text-3" id="text-orgc644386">
 <p>
 <b>Note</b>: the author names in this list are to be fixed, there is a small bug in
 the script I use to generate them, and I&rsquo;m too lazy to check for them by hand.
@@ -1332,9 +1776,9 @@ the script I use to generate them, and I&rsquo;m too lazy to check for them by h
 </ul>
 </div>
 </div>
-<div id="outline-container-org4f5f9b2" class="outline-3">
-<h3 id="org4f5f9b2">Poetry</h3>
-<div class="outline-text-3" id="text-org4f5f9b2">
+<div id="outline-container-org7877b82" class="outline-3">
+<h3 id="org7877b82">Poetry</h3>
+<div class="outline-text-3" id="text-org7877b82">
 <ul class="org-ul">
 <li>The Norton Anthology of Poetry (Ferguson et al.)</li>
 <li>Abuzun al-Omani&amp;rsquo;s Poetry (al-Omani, A.)</li>
@@ -1346,9 +1790,9 @@ the script I use to generate them, and I&rsquo;m too lazy to check for them by h
 </div>
 </div>
 </div>
-<div id="outline-container-org92cd3b6" class="outline-2">
-<h2 id="org92cd3b6">Chess</h2>
-<div class="outline-text-2" id="text-org92cd3b6">
+<div id="outline-container-org41e5a30" class="outline-2">
+<h2 id="org41e5a30">Chess</h2>
+<div class="outline-text-2" id="text-org41e5a30">
 <ul class="org-ul">
 <li>Play Winning Chess (Seirawan, W)<label for="61" class="margin-toggle sidenote-number"></label><input type="checkbox" id="61" class="margin-toggle"/><span class="sidenote">
 I wish if I&rsquo;ve started with this book instead of chess for dummies.
@@ -1362,9 +1806,9 @@ I wish if I&rsquo;ve started with this book instead of chess for dummies.
 </ul>
 </div>
 </div>
-<div id="outline-container-org1526baf" class="outline-2">
-<h2 id="org1526baf">Other</h2>
-<div class="outline-text-2" id="text-org1526baf">
+<div id="outline-container-org44a10aa" class="outline-2">
+<h2 id="org44a10aa">Other</h2>
+<div class="outline-text-2" id="text-org44a10aa">
 <ul class="org-ul">
 <li>The Subtle Art of Not Giving a F*ck (Manson, M.).</li>
 <li>Why is it so hard to do my work? (Leroy, S.)</li>
@@ -1374,9 +1818,9 @@ I wish if I&rsquo;ve started with this book instead of chess for dummies.
 </ul>
 </div>
 </div>
-<div id="outline-container-org12cf572" class="outline-2">
-<h2 id="org12cf572">References</h2>
-<div class="outline-text-2" id="text-org12cf572">
+<div id="outline-container-orgaec744d" class="outline-2">
+<h2 id="orgaec744d">References</h2>
+<div class="outline-text-2" id="text-orgaec744d">
 <style>.csl-entry{text-indent: -1.5em; margin-left: 1.5em;}</style><div class="csl-bib-body">
   <div class="csl-entry"><a id="citeproc_bib_item_1"></a>Alford, M., 2018. A screen entertainment propaganda model, in: Pedro-Carañana, J., Broudy, D., Klaehn, J. (Eds.), The Propaganda Model Today: Filtering Perception and Awareness. University of Westminster Press, London, pp. 145–158. <a href="https://doi.org/https://doi.org/10.16997/book27.j">https://doi.org/https://doi.org/10.16997/book27.j</a></div>
   <div class="csl-entry"><a id="citeproc_bib_item_2"></a>Evensen, M., 2021. <a href="https://scholarsarchive.byu.edu/intuition/vol15/iss1/2">Sociocultural factors of female sexual desire and sexual satisfaction</a>. Intuition: The byu undergraduate journal of psychology 15, Article 2.</div>
@@ -1755,7 +2199,7 @@ I wish if I&rsquo;ve started with this book instead of chess for dummies.
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: . Last build date: 2025-06-28 Sat 18:37.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: . Last build date: 2025-07-25 Fri 00:00.</p>
 
 </div>
 </div>

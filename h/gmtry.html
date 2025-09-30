@@ -26,6 +26,448 @@
 
   <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
   <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+
+<!-- Import LazySizes - State-of-the-art lazy loading library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+
+<!-- Optional: Import plugins for better performance -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js" async></script>
+
+<script>
+// Only run on pages with 'art_paintings_media' in the path
+if (window.location.pathname.includes('art_paintings_media')) {
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    // Configure LazySizes for optimal performance
+    window.lazySizesConfig = window.lazySizesConfig || {};
+    window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
+    window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
+    window.lazySizesConfig.expFactor = 1.5; // Expand loading area
+    window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
+
+    // Add CSS for smooth transitions and collapsible content
+    const style = document.createElement('style');
+    style.textContent = `
+      .lazyload,
+      .lazyloading {
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+      }
+      .lazyloaded {
+        opacity: 1;
+      }
+      .collapsible-content {
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+      .collapsible-content.collapsed {
+        max-height: 0 !important;
+      }
+      .collapsible-content.expanded {
+        max-height: none;
+      }
+      /* Blur effect while loading (optional) */
+      .lazyloading {
+        filter: blur(5px);
+        opacity: 0.7;
+      }
+      .lazyloaded {
+        filter: none;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Find all h3 elements
+    const h3Elements = document.querySelectorAll('h3');
+
+    h3Elements.forEach(function(h3) {
+      // Make h3 clickable and add icon
+      h3.style.position = 'relative';
+      h3.style.cursor = 'pointer';
+      h3.style.paddingLeft = '20px';
+      h3.style.userSelect = 'none';
+
+      // Add the arrow icon
+      const icon = document.createElement('span');
+      icon.innerHTML = '▶';
+      icon.style.position = 'absolute';
+      icon.style.left = '0px';
+      icon.style.top = '50%';
+      icon.style.transform = 'translateY(-50%)';
+      icon.style.transition = 'transform 0.2s';
+      icon.style.fontSize = '0.8em';
+      icon.style.color = 'rgb(102, 102, 102)';
+      icon.style.fontFamily = 'monospace';
+
+      h3.insertBefore(icon, h3.firstChild);
+
+      // Find all content after this h3 until the next h3 or end of parent
+      const contentElements = [];
+      let nextElement = h3.nextElementSibling;
+
+      while (nextElement && nextElement.tagName !== 'H3') {
+        contentElements.push(nextElement);
+        nextElement = nextElement.nextElementSibling;
+      }
+
+      // Create a wrapper for smooth collapsing
+      const wrapper = document.createElement('div');
+      wrapper.className = 'collapsible-content collapsed';
+      wrapper.style.maxHeight = '0';
+
+      // Move content elements into wrapper
+      contentElements.forEach(function(element) {
+        wrapper.appendChild(element);
+      });
+
+      // Insert wrapper after h3
+      h3.parentNode.insertBefore(wrapper, h3.nextSibling);
+
+      // Prepare images for LazySizes lazy loading and make them clickable
+      const prepareImagesForLazyLoading = (container) => {
+        const images = container.querySelectorAll('img');
+        images.forEach(function(img) {
+          // Only process if not already processed
+          if (!img.classList.contains('lazyload') && !img.dataset.processed) {
+            // Store original src in data-src for LazySizes
+            if (img.src && img.src !== '' && !img.src.startsWith('data:')) {
+              img.dataset.src = img.src;
+              // Use a tiny placeholder or low-quality placeholder
+              img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+            }
+
+            // Handle srcset for responsive images
+            if (img.srcset && img.srcset !== '') {
+              img.dataset.srcset = img.srcset;
+              img.srcset = '';
+            }
+
+            // Handle sizes attribute
+            if (img.sizes) {
+              img.dataset.sizes = img.sizes;
+            }
+
+            // Add LazySizes classes
+            img.classList.add('lazyload');
+
+            // Make image clickable - add cursor pointer
+            img.style.cursor = 'pointer';
+
+            // Add click handler to open image in new tab
+            img.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation(); // Prevent triggering h3 collapse
+
+              // Get the actual image URL (either from src or data-src)
+              let imageUrl = this.src;
+              if (this.dataset.src && !this.src.startsWith('data:')) {
+                imageUrl = this.dataset.src;
+              } else if (this.src.startsWith('data:') && this.dataset.src) {
+                imageUrl = this.dataset.src;
+              }
+
+              // Open image in new tab
+              if (imageUrl && !imageUrl.startsWith('data:')) {
+                window.open(imageUrl, '_blank');
+              }
+            });
+
+            // Mark as processed
+            img.dataset.processed = 'true';
+
+            // Maintain aspect ratio to prevent layout shift
+            if (!img.style.aspectRatio && img.width && img.height) {
+              img.style.aspectRatio = img.width + '/' + img.height;
+            }
+          }
+        });
+      };
+
+      // Prepare all images in this section for lazy loading
+      prepareImagesForLazyLoading(wrapper);
+
+      // Track collapsed state
+      let isCollapsed = true;
+      let hasBeenExpanded = false;
+
+      // Add click handler
+      h3.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        if (isCollapsed) {
+          // Expand: show content and activate lazy loading
+          icon.style.transform = 'translateY(-50%) rotate(90deg)';
+          wrapper.classList.remove('collapsed');
+          wrapper.classList.add('expanded');
+          wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+
+          // Only activate LazySizes for this section when first expanded
+          if (!hasBeenExpanded) {
+            // Trigger LazySizes to check for images in this newly visible section
+            if (window.lazySizes) {
+              // Force LazySizes to check all images in this wrapper
+              const lazyImages = wrapper.querySelectorAll('.lazyload');
+              lazyImages.forEach(img => {
+                // Add to LazySizes queue
+                window.lazySizes.loader.unveil(img);
+              });
+            }
+            hasBeenExpanded = true;
+          }
+
+          isCollapsed = false;
+
+          // Recalculate height after images potentially load
+          setTimeout(() => {
+            if (!isCollapsed) {
+              wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+            }
+          }, 100);
+
+        } else {
+          // Collapse: hide content
+          icon.style.transform = 'translateY(-50%) rotate(0deg)';
+          wrapper.classList.remove('expanded');
+          wrapper.classList.add('collapsed');
+          wrapper.style.maxHeight = '0';
+
+          isCollapsed = true;
+        }
+      });
+
+      // Listen for LazySizes events to adjust height dynamically
+      wrapper.addEventListener('lazyloaded', function(e) {
+        if (!isCollapsed) {
+          // Adjust wrapper height when images load
+          setTimeout(() => {
+            wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+          }, 50);
+        }
+      });
+    });
+  });
+}
+</script>
+
+<script>
+
+
+
+  
+// Stack Page Formatter - Apply inline layout to specific pages
+(function() {
+  'use strict';
+  
+  // Check if current page should have the formatting applied
+  function shouldApplyFormatting() {
+    const path = window.location.pathname;
+    
+    // Check if path matches our target patterns
+    return path === '/stack' || 
+           path === '/stack.html' || 
+           path.startsWith('/sh/');
+  }
+  
+  // Only proceed if we're on a target page
+  if (!shouldApplyFormatting()) {
+    return;
+  }
+  
+  // Add CSS styles
+  function addStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+      /* Basic styling for entries */
+      .outline-3 {
+        margin-bottom: 1.5em;
+        line-height: 1.5;
+      }
+
+      /* Style for reconstructed single paragraph */
+      .entry-paragraph {
+        margin: 0;
+        line-height: 1.5;
+        direction: inherit;
+        unicode-bidi: plaintext;
+      }
+
+      /* Style for date - gray and nice */
+      .entry-date {
+        color: #666;
+        font-size: 0.9em;
+        margin-right: 0.5em;
+      }
+
+      /* Style for tag at end - gray and in parentheses */
+      .entry-tag {
+        display: inline !important;
+        color: #666;
+        margin-left: 0.5em;
+      }
+
+      /* Ensure all children stay inline */
+      .entry-tag * {
+        display: inline !important;
+      }
+
+      /* Override any existing tag styles */
+      .entry-tag p,
+      .entry-tag div {
+        display: inline !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      /* Hide block elements that will be moved */
+      .outline-3 .moved-block {
+        display: block;
+        margin: 0.5em 0;
+      }
+
+      /* Ensure proper anchor target visibility */
+      .outline-3[id] {
+        scroll-margin-top: 20px;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  // Extract ID from container div
+  function extractIdFromContainer(entry) {
+    const containerId = entry.id;
+    if (containerId && containerId.startsWith('outline-container-')) {
+      return containerId.replace('outline-container-', '');
+    }
+    return null;
+  }
+  
+  // Apply the formatting transformation
+  function applyFormatting() {
+    // Process each entry
+    const entries = document.querySelectorAll('.outline-3');
+    
+    entries.forEach((entry, index) => {
+      // Extract the anchor ID from the container before transformation
+      const anchorId = extractIdFromContainer(entry);
+      
+      // Extract components
+      const h3 = entry.querySelector('h3');
+      const notes = entry.querySelector('.notes');
+      const outlineText = entry.querySelector('.outline-text-3');
+      const tag = entry.querySelector('.tag');
+      
+      if (!h3 || !outlineText) return;
+      
+      // Get title text (preserve any TODO/DONE prefixes and links)
+      let titleText = h3.innerHTML;
+      
+      // Get timestamp
+      let timestampText = '';
+      if (notes) {
+        const timestamp = notes.querySelector('.timestamp');
+        if (timestamp) {
+          timestampText = timestamp.textContent;
+        }
+      }
+      
+      // Get content paragraphs (excluding notes and tag)
+      const contentParagraphs = [];
+      const blockElements = [];
+      
+      Array.from(outlineText.children).forEach(child => {
+        if (child.classList.contains('notes') || child.classList.contains('tag')) {
+          return; // Skip these
+        }
+        
+        if (child.tagName === 'P') {
+          contentParagraphs.push(child.innerHTML);
+        } else if (child.tagName === 'UL' || child.tagName === 'OL' || 
+                   child.tagName === 'BLOCKQUOTE' || child.tagName === 'PRE' ||
+                   child.tagName === 'DL' || child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        } else if (child.tagName === 'DIV' && child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        }
+      });
+      
+      // Get tag HTML (preserve links and formatting)
+      let tagHtml = '';
+      if (tag) {
+        tagHtml = tag.outerHTML;
+      }
+      
+      // Construct the new single paragraph
+      let newContent = '';
+      
+      // Add date at the start (gray)
+      if (timestampText) {
+        newContent += '<span class="entry-date">' + timestampText + '</span>';
+      }
+      
+      // Add title with emdash
+      newContent += titleText + ' — ';
+      
+      // Add content paragraphs
+      newContent += contentParagraphs.join(' ');
+      
+      // Add tag at the end in parentheses (preserve HTML but force inline)
+      if (tagHtml) {
+        // Extract just the inner content and wrap it properly
+        let tagContent = tag.innerHTML;
+        newContent += ' <span class="entry-tag">(' + tagContent + ')</span>';
+      }
+      
+      // Create new paragraph element
+      const newParagraph = document.createElement('p');
+      newParagraph.className = 'entry-paragraph';
+      newParagraph.innerHTML = newContent;
+      
+      // Clear the entry and add the new paragraph
+      entry.innerHTML = '';
+      entry.appendChild(newParagraph);
+      
+      // Preserve the anchor ID by setting it on the transformed entry
+      if (anchorId) {
+        entry.id = anchorId;
+      }
+      
+      // Add any block elements after the paragraph
+      blockElements.forEach(blockHtml => {
+        const blockDiv = document.createElement('div');
+        blockDiv.className = 'moved-block';
+        blockDiv.innerHTML = blockHtml;
+        entry.appendChild(blockDiv);
+      });
+      
+      // Add separator after each entry (except the last one)
+      if (index < entries.length - 1) {
+        const separator = document.createElement('hr');
+        separator.style.margin = '1em 0';
+        separator.style.border = 'none';
+        separator.style.borderTop = '1px solid #ccc';
+        entry.appendChild(separator);
+      }
+    });
+  }
+  
+  // Initialize when DOM is ready
+  function init() {
+    addStyles();
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', applyFormatting);
+    } else {
+      applyFormatting();
+    }
+  }
+  
+  // Start the initialization
+  init();
+})();
+</script>
+
+
+
 </head>
 <body>
 </body>
@@ -73,8 +515,7 @@
 <h1 class="title" style="
 margin-block-start: auto;
     color: black;
-">لّermontov</h1>
-
+">Hereby, all birds fly</h1>
       </a>
 <hr class="header-divider" style="margin-block-end: -1em;">
   </div>
@@ -87,24 +528,24 @@ margin-block-start: auto;
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org911da22">Introduction</a></li>
-<li><a href="#org327452a">Vectors</a></li>
-<li><a href="#orgc7d17dd">Intersection</a></li>
-<li><a href="#org7d6a227">Finding The Equation of a Line for a Segment</a></li>
-<li><a href="#orga3d45bb">Orientation of 3 Points</a></li>
-<li><a href="#org272e3d7">Finding a Circle From 3 Points</a></li>
-<li><a href="#orge3a11c9">Convex Hull</a></li>
+<li><a href="#orgedb7ace">Introduction</a></li>
+<li><a href="#orgf39e15b">Vectors</a></li>
+<li><a href="#org8ed0278">Intersection</a></li>
+<li><a href="#org6956d8f">Finding The Equation of a Line for a Segment</a></li>
+<li><a href="#org604c489">Orientation of 3 Points</a></li>
+<li><a href="#orgd7e96ff">Finding a Circle From 3 Points</a></li>
+<li><a href="#org86b7949">Convex Hull</a></li>
 </ul>
 </div>
 </nav>
-<div class="PREVIEW" id="org2f9eb4d">
+<div class="PREVIEW" id="orgdd65875">
 <p>
 Based on TopCoder&rsquo;s thrive and <a href="https://www.ti.inf.ethz.ch/ew/courses/CG13/index.html">Computational Geometry (252-1425-00L) HS13</a> lecture notes.
 </p>
 
 </div>
 
-<div class="propert" id="orge13e1b1">
+<div class="propert" id="org030c1a9">
 <p>
 Part of a series on <a href="../cs/g.html#13122uo02wj0">Exploring Computational Geometry</a>
 </p>
@@ -115,9 +556,9 @@ Part of a series on <a href="../cs/g.html#13122uo02wj0">Exploring Computational 
 <p>
 (Problems mostly from <a href="https://leetcode.com/tag/geometry">LeetCode</a>)
 </p>
-<div id="outline-container-org911da22" class="outline-2">
-<h2 id="org911da22">Introduction</h2>
-<div class="outline-text-2" id="text-org911da22">
+<div id="outline-container-orgedb7ace" class="outline-2">
+<h2 id="orgedb7ace">Introduction</h2>
+<div class="outline-text-2" id="text-orgedb7ace">
 <p>
 I&rsquo;m not sure how to properly introduce this long plain text —or even how to put it—. You can
 easily consider it as a small handbook that contains some computational problems solutions,
@@ -144,9 +585,9 @@ aloud but I liked to put the quote😎).
 </p>
 </div>
 </div>
-<div id="outline-container-org327452a" class="outline-2">
-<h2 id="org327452a">Vectors</h2>
-<div class="outline-text-2" id="text-org327452a">
+<div id="outline-container-orgf39e15b" class="outline-2">
+<h2 id="orgf39e15b">Vectors</h2>
+<div class="outline-text-2" id="text-orgf39e15b">
 <p>
 Basically, a vector is a geometric object with length and direction (direction and
 magnitude). In the case of two-dimension geometry, we represent vectors as a pair of numbers
@@ -157,13 +598,13 @@ the second representation, a vector only defines the direction and the magnitude
 segment, but it can&rsquo;t define the starting and the ending locations.
 </p>
 </div>
-<div id="outline-container-orgc0d3337" class="outline-3">
-<h3 id="orgc0d3337">Operations on Vectors</h3>
-<div class="outline-text-3" id="text-orgc0d3337">
+<div id="outline-container-orgc942edd" class="outline-3">
+<h3 id="orgc942edd">Operations on Vectors</h3>
+<div class="outline-text-3" id="text-orgc942edd">
 </div>
-<div id="outline-container-org3c6a9e7" class="outline-4">
-<h4 id="org3c6a9e7">Addition</h4>
-<div class="outline-text-4" id="text-org3c6a9e7">
+<div id="outline-container-org6133b09" class="outline-4">
+<h4 id="org6133b09">Addition</h4>
+<div class="outline-text-4" id="text-org6133b09">
 <p>
 The most beloved operation in which authors wastes ~3 pages in their textbook to explain
 it. You can add two vector together and as a result you get a new vector, if you have two
@@ -172,9 +613,9 @@ y_2)\)
 </p>
 </div>
 </div>
-<div id="outline-container-org207e0c4" class="outline-4">
-<h4 id="org207e0c4">Dot Product</h4>
-<div class="outline-text-4" id="text-org207e0c4">
+<div id="outline-container-org6e3af1f" class="outline-4">
+<h4 id="org6e3af1f">Dot Product</h4>
+<div class="outline-text-4" id="text-org6e3af1f">
 <p>
 The dot product is <b>the sum of the corresponding element</b>, notice that it is not a vector,
 but a number. For example, if we have the two vector \((x_1, y_1)\) and \((x_2, y_2)\) then
@@ -196,9 +637,9 @@ angle between two vectors simply using two steps:
 </ol>
 </div>
 </div>
-<div id="outline-container-org675bd4b" class="outline-4">
-<h4 id="org675bd4b">Cross Product</h4>
-<div class="outline-text-4" id="text-org675bd4b">
+<div id="outline-container-org8988e95" class="outline-4">
+<h4 id="org8988e95">Cross Product</h4>
+<div class="outline-text-4" id="text-org8988e95">
 <p>
 This is more like the regular product: the cross product of 2D vectors \((x_1, y_1)\) and
 \((x_2, y_2)\) is \(x_{1} \cdot y_{2} - y_{1} \cdot x_{2}\), and its formula \(A \cdot B = |A|
@@ -209,9 +650,9 @@ it is negative or positive based on the right-hand rule.
 </p>
 </div>
 </div>
-<div id="outline-container-org9e44ac4" class="outline-4">
-<h4 id="org9e44ac4">Line-Point Distance</h4>
-<div class="outline-text-4" id="text-org9e44ac4">
+<div id="outline-container-org323aa8b" class="outline-4">
+<h4 id="org323aa8b">Line-Point Distance</h4>
+<div class="outline-text-4" id="text-org323aa8b">
 <p>
 Lets say that you are given 3 points, \(A\), \(B\), and \(C\), and you want to find the distance
 from the point $C$to the line defined by \(A\) and \(B\).The first step is to find the two
@@ -224,7 +665,7 @@ Now, take the cross product \(AB \cdot AC\), and divide by \(|AB|\). This gives 
 </p>
 
 
-<figure id="org11b9c65">
+<figure id="org1e83e30">
 <img src="../i/old/2022-01-19_04-58-41_screenshot.png" alt="2022-01-19_04-58-41_screenshot.png">
 
 </figure>
@@ -243,59 +684,59 @@ is the absolute value.
 <p>
 Let&rsquo;s repeat in C(++):
 </p>
-<pre class="code"><code><span style="color: #bf9f8f; font-style: italic;">//</span><span style="color: #bf9f8f; font-style: italic;">Compute the dot product AB &#8901; BC</span>
-<span style="color: #f470df;">int</span> <span style="color: #f59280;">dot</span>(<span style="color: #f470df;">int</span>[] A, <span style="color: #f470df;">int</span>[] B, <span style="color: #f470df;">int</span>[] C) {
-&#9474; AB = <span style="color: #ef80bf; font-weight: bold;">new</span> <span style="color: #f470df;">int</span>[2];
-&#9474; BC = <span style="color: #ef80bf; font-weight: bold;">new</span> <span style="color: #f470df;">int</span>[2];
-&#9474; AB[0] = B[0] - A[0];
-&#9474; AB[1] = B[1] - A[1];
-&#9474; BC[0] = C[0] - B[0];
-&#9474; BC[1] = C[1] - B[1];
-&#9474; <span style="color: #f470df;">int</span> <span style="color: #df7fff;">dot</span> = AB[0] * BC[0] + AB[1] * BC[1];
-&#9474; <span style="color: #ef80bf; font-weight: bold;">return</span> dot;
+<pre class="code"><code>//Compute the dot product AB ⋅ BC
+int dot(int[] A, int[] B, int[] C) {
+  AB = new int[2];
+  BC = new int[2];
+  AB[0] = B[0] - A[0];
+  AB[1] = B[1] - A[1];
+  BC[0] = C[0] - B[0];
+  BC[1] = C[1] - B[1];
+  int dot = AB[0] * BC[0] + AB[1] * BC[1];
+  return dot;
 }
-<span style="color: #bf9f8f; font-style: italic;">//</span><span style="color: #bf9f8f; font-style: italic;">Compute the cross product AB x AC</span>
-<span style="color: #f470df;">int</span> <span style="color: #f59280;">cross</span>(<span style="color: #f470df;">int</span>[] A, <span style="color: #f470df;">int</span>[] B, <span style="color: #f470df;">int</span>[] C) {
-&#9474; AB = <span style="color: #ef80bf; font-weight: bold;">new</span> <span style="color: #f470df;">int</span>[2];
-&#9474; AC = <span style="color: #ef80bf; font-weight: bold;">new</span> <span style="color: #f470df;">int</span>[2];
-&#9474; AB[0] = B[0] - A[0];
-&#9474; AB[1] = B[1] - A[1];
-&#9474; AC[0] = C[0] - A[0];
-&#9474; AC[1] = C[1] - A[1];
-&#9474; <span style="color: #f470df;">int</span> <span style="color: #df7fff;">cross</span> = AB[0] * AC[1] - AB[1] * AC[0];
-&#9474; <span style="color: #ef80bf; font-weight: bold;">return</span> cross;
+//Compute the cross product AB x AC
+int cross(int[] A, int[] B, int[] C) {
+  AB = new int[2];
+  AC = new int[2];
+  AB[0] = B[0] - A[0];
+  AB[1] = B[1] - A[1];
+  AC[0] = C[0] - A[0];
+  AC[1] = C[1] - A[1];
+  int cross = AB[0] * AC[1] - AB[1] * AC[0];
+  return cross;
 }
-<span style="color: #bf9f8f; font-style: italic;">//</span><span style="color: #bf9f8f; font-style: italic;">Compute the distance from A to B</span>
-<span style="color: #f470df;">double</span> <span style="color: #f59280;">distance</span>(<span style="color: #f470df;">int</span>[] A, <span style="color: #f470df;">int</span>[] B) {
-&#9474; <span style="color: #f470df;">int</span> <span style="color: #df7fff;">d1</span> = A[0] - B[0];
-&#9474; <span style="color: #f470df;">int</span> <span style="color: #df7fff;">d2</span> = A[1] - B[1];
-&#9474; <span style="color: #ef80bf; font-weight: bold;">return</span> sqrt(d1d1 + d2d2);
+//Compute the distance from A to B
+double distance(int[] A, int[] B) {
+  int d1 = A[0] - B[0];
+  int d2 = A[1] - B[1];
+  return sqrt(d1d1 + d2d2);
 }
-<span style="color: #bf9f8f; font-style: italic;">//</span><span style="color: #bf9f8f; font-style: italic;">Compute the distance from AB to C</span>
-<span style="color: #bf9f8f; font-style: italic;">//</span><span style="color: #bf9f8f; font-style: italic;">if isSegment is true, AB is a segment, not a line.</span>
-<span style="color: #f470df;">double</span> <span style="color: #f59280;">linePointDist</span>(<span style="color: #f470df;">int</span>[] A, <span style="color: #f470df;">int</span>[] B, <span style="color: #f470df;">int</span>[] C, <span style="color: #f470df;">boolean</span> <span style="color: #df7fff;">isSegment</span>) {
-&#9474; <span style="color: #f470df;">double</span> <span style="color: #df7fff;">dist</span> = cross(A, B, C) / distance(A, B);
-&#9474; <span style="color: #ef80bf; font-weight: bold;">if</span> (isSegment) {
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">dot1</span> = dot(A, B, C);
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (dot1 &gt; 0) <span style="color: #ef80bf; font-weight: bold;">return</span> distance(B, C);
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">dot2</span> = dot(B, A, C);
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (dot2 &gt; 0) <span style="color: #ef80bf; font-weight: bold;">return</span> distance(A, C);
-&#9474; }
-&#9474; <span style="color: #ef80bf; font-weight: bold;">return</span> abs(dist);
+//Compute the distance from AB to C
+//if isSegment is true, AB is a segment, not a line.
+double linePointDist(int[] A, int[] B, int[] C, boolean isSegment) {
+  double dist = cross(A, B, C) / distance(A, B);
+  if (isSegment) {
+    int dot1 = dot(A, B, C);
+    if (dot1 &gt; 0) return distance(B, C);
+    int dot2 = dot(B, A, C);
+    if (dot2 &gt; 0) return distance(A, C);
+  }
+  return abs(dist);
 }
 </code></pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org8dbb5d8" class="outline-3">
-<h3 id="org8dbb5d8">Polygon Area</h3>
-<div class="outline-text-3" id="text-org8dbb5d8">
+<div id="outline-container-org5a92f47" class="outline-3">
+<h3 id="org5a92f47">Polygon Area</h3>
+<div class="outline-text-3" id="text-org5a92f47">
 <p>
 Consider this non-convex:
 </p>
 
 
-<figure id="org5b8fe08">
+<figure id="org6efb6c1">
 <img src="../i/old/2022-01-19_04-59-01_screenshot.png" alt="2022-01-19_04-59-01_screenshot.png">
 
 </figure>
@@ -330,30 +771,30 @@ it is obvious that the area of the polygon is the area of \(ABCD\) (which is the
 </p>
 
 
-<pre class="code"><code><span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">(X[i], Y[i]) are coordinates of i'th point.</span>
-<span style="color: #f470df;">double</span> <span style="color: #f59280;">polygonArea</span>(<span style="color: #f470df;">double</span> <span style="color: #df7fff;">X</span>[], <span style="color: #f470df;">double</span> <span style="color: #df7fff;">Y</span>[], <span style="color: #f470df;">int</span> <span style="color: #df7fff;">n</span>)
+<pre class="code"><code>// (X[i], Y[i]) are coordinates of i'th point.
+double polygonArea(double X[], double Y[], int n)
 {
-&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Initialize area</span>
-&#9474;   <span style="color: #f470df;">double</span> <span style="color: #df7fff;">area</span> = 0.0;
-&#9474;
-&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Calculate value of shoelace formula</span>
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">j</span> = n - 1;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #f470df;">int</span> <span style="color: #df7fff;">i</span> = 0; i &lt; n; i++)
-&#9474;   {
-&#9474;   &#9474;   area += (X[j] + X[i]) * (Y[j] - Y[i]);
-&#9474;   &#9474;   j = i;  <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">j is previous vertex to i</span>
-&#9474;   }
-&#9474;
-&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Return absolute value</span>
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> abs(area / 2.0);
+    // Initialize area
+    double area = 0.0;
+
+    // Calculate value of shoelace formula
+    int j = n - 1;
+    for (int i = 0; i &lt; n; i++)
+    {
+        area += (X[j] + X[i]) * (Y[j] - Y[i]);
+        j = i;  // j is previous vertex to i
+    }
+
+    // Return absolute value
+    return abs(area / 2.0);
 }
 </code></pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orgc7d17dd" class="outline-2">
-<h2 id="orgc7d17dd">Intersection</h2>
-<div class="outline-text-2" id="text-orgc7d17dd">
+<div id="outline-container-org8ed0278" class="outline-2">
+<h2 id="org8ed0278">Intersection</h2>
+<div class="outline-text-2" id="text-org8ed0278">
 <p>
 The first thing to think about in line-line intersection problem is what form we given our
 lines in, and what form would we like them in? In the best cases, each line will be in such
@@ -389,7 +830,7 @@ This basic formula is called <i>slope-intercept form</i>:
 </p>
 
 
-<figure id="orga77c7f1">
+<figure id="orgf8ce88e">
 <img src="../i/old/2022-01-19_04-59-48_screenshot.png" alt="2022-01-19_04-59-48_screenshot.png">
 
 </figure>
@@ -460,7 +901,7 @@ Now, let&rsquo;s define what we mean by intersection, let&rsquo;s say we have th
 
 
 
-<figure id="org994c048">
+<figure id="org886213a">
 <img src="../i/old/2022-01-19_05-00-07_screenshot.png" alt="2022-01-19_05-00-07_screenshot.png">
 
 </figure>
@@ -539,19 +980,19 @@ intersection point using the mentioned formulas.
 <p>
 Now, we can repeat easily in C:
 </p>
-<pre class="code"><code><span style="color: #f470df;">double</span> <span style="color: #df7fff;">det</span> = A1 * B2 - A2 * B1
-<span style="color: #ef80bf; font-weight: bold;">if</span> (det == 0) {
-&#9474; <span style="color: #bf9f8f; font-style: italic;">//</span><span style="color: #bf9f8f; font-style: italic;">Lines are parallel</span>
-} <span style="color: #ef80bf; font-weight: bold;">else</span> {
-&#9474; <span style="color: #f470df;">double</span> <span style="color: #df7fff;">x</span> = (B2 * C1 - B1 * C2) / det
-&#9474; <span style="color: #f470df;">double</span> y = (A1 * C2 - A2 * C1) / det
+<pre class="code"><code>double det = A1 * B2 - A2 * B1
+if (det == 0) {
+  //Lines are parallel
+} else {
+  double x = (B2 * C1 - B1 * C2) / det
+  double y = (A1 * C2 - A2 * C1) / det
 }
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org7d6a227" class="outline-2">
-<h2 id="org7d6a227">Finding The Equation of a Line for a Segment</h2>
-<div class="outline-text-2" id="text-org7d6a227">
+<div id="outline-container-org6956d8f" class="outline-2">
+<h2 id="org6956d8f">Finding The Equation of a Line for a Segment</h2>
+<div class="outline-text-2" id="text-org6956d8f">
 <p>
 Let the given segment be \(PQ\)  i.e. the known coordinates of its ends \(P_x, P_y, Q_x, Q_y\)
 </p>
@@ -579,19 +1020,19 @@ B &= Q_x - P_x, \\
 C &= - A P_x - B P_y.
 \end{align}
 </div>
-<div id="outline-container-orgb0ca7d9" class="outline-3">
-<h3 id="orgb0ca7d9"><span class="done KILL">KILL</span> Real Case vs. Integer Case</h3>
+<div id="outline-container-org75b3191" class="outline-3">
+<h3 id="org75b3191"><span class="done KILL">KILL</span> Real Case vs. Integer Case</h3>
 </div>
 </div>
-<div id="outline-container-orga3d45bb" class="outline-2">
-<h2 id="orga3d45bb">Orientation of 3 Points</h2>
-<div class="outline-text-2" id="text-orga3d45bb">
+<div id="outline-container-org604c489" class="outline-2">
+<h2 id="org604c489">Orientation of 3 Points</h2>
+<div class="outline-text-2" id="text-org604c489">
 <p>
 To get the intuition of what is left and what is right turn, consider an example shown below.
 </p>
 
 
-<figure id="orga0a589e">
+<figure id="orgaf8f58f">
 <img src="../i/old/2022-02-10_21-33-40_screenshot.png" alt="2022-02-10_21-33-40_screenshot.png">
 
 </figure>
@@ -631,9 +1072,9 @@ them into the vectors. This can be done in the following way.
 </p>
 </div>
 </div>
-<div id="outline-container-org272e3d7" class="outline-2">
-<h2 id="org272e3d7">Finding a Circle From 3 Points</h2>
-<div class="outline-text-2" id="text-org272e3d7">
+<div id="outline-container-orgd7e96ff" class="outline-2">
+<h2 id="orgd7e96ff">Finding a Circle From 3 Points</h2>
+<div class="outline-text-2" id="text-orgd7e96ff">
 <p>
 Given 3 points which are not colinear (all on the same line) those three points uniquely
 define a circle. But, how do you find the center and radius of that circle? This task turns
@@ -643,7 +1084,7 @@ the center of the circle.
 </p>
 
 
-<figure id="orgc21cd6e">
+<figure id="orga6e194a">
 <img src="../i/old/2022-01-19_05-00-24_screenshot.png" alt="2022-01-19_05-00-24_screenshot.png">
 
 </figure>
@@ -661,61 +1102,61 @@ the equation of circle in general form is x² + y² + 2gx + 2fy + c = 0 and in r
 (x – h)² + (y -k)² = r², where (h, k) is the center of the circle and r is the radius.
 </p>
 
-<pre class="code"><code><span style="color: #f470df;">void</span> <span style="color: #f59280;">findCircle</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">x1</span>, <span style="color: #f470df;">int</span> <span style="color: #df7fff;">y1</span>, <span style="color: #f470df;">int</span> <span style="color: #df7fff;">x2</span>, <span style="color: #f470df;">int</span> <span style="color: #df7fff;">y2</span>, <span style="color: #f470df;">int</span> <span style="color: #df7fff;">x3</span>, <span style="color: #f470df;">int</span> <span style="color: #df7fff;">y3</span>)
+<pre class="code"><code>void findCircle(int x1, int y1, int x2, int y2, int x3, int y3)
 {
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">x12</span> = x1 - x2;
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">x13</span> = x1 - x3;
-&#9474;
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">y12</span> = y1 - y2;
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">y13</span> = y1 - y3;
-&#9474;
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">y31</span> = y3 - y1;
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">y21</span> = y2 - y1;
-&#9474;
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">x31</span> = x3 - x1;
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">x21</span> = x2 - x1;
-&#9474;
-&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">x1^2 - x3^2</span>
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">sx13</span> = pow(x1, 2) - pow(x3, 2);
-&#9474;
-&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">y1^2 - y3^2</span>
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">sy13</span> = pow(y1, 2) - pow(y3, 2);
-&#9474;
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">sx21</span> = pow(x2, 2) - pow(x1, 2);
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">sy21</span> = pow(y2, 2) - pow(y1, 2);
-&#9474;
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">f</span> = ((sx13) * (x12)
-&#9474;   &#9474;   &#9474;   &#9474;+ (sy13) * (x12)
-&#9474;   &#9474;   &#9474;   &#9474;+ (sx21) * (x13)
-&#9474;   &#9474;   &#9474;   &#9474;+ (sy21) * (x13))
-&#9474;   &#9474;   &#9474;   / (2 * ((y31) * (x12) - (y21) * (x13)));
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">g</span> = ((sx13) * (y12)
-&#9474;   &#9474;   &#9474;   &#9474;+ (sy13) * (y12)
-&#9474;   &#9474;   &#9474;   &#9474;+ (sx21) * (y13)
-&#9474;   &#9474;   &#9474;   &#9474;+ (sy21) * (y13))
-&#9474;   &#9474;   &#9474;   / (2 * ((x31) * (y12) - (x21) * (y13)));
-&#9474;   &#9474;   &#9474;
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">c</span> = -pow(x1, 2) - pow(y1, 2) - 2 * g * x1 - 2 * f * y1;
-&#9474;
-&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">eqn of circle be x^2 + y^2 + 2*g*x + 2*f*y + c = 0</span>
-&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">where centre is (h = -g, k = -f) and radius r</span>
-&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">as r^2 = h^2 + k^2 - c</span>
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">h</span> = -g;
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">k</span> = -f;
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">sqr_of_r</span> = h * h + k * k - c;
-&#9474;
-&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">r is the radius</span>
-&#9474;   <span style="color: #f470df;">float</span> <span style="color: #df7fff;">r</span> = sqrt(sqr_of_r);
-&#9474;
-&#9474;   cout &lt;&lt; <span style="color: #e5b76f;">"Centre = ("</span> &lt;&lt; h &lt;&lt; <span style="color: #e5b76f;">", "</span> &lt;&lt; k &lt;&lt; <span style="color: #e5b76f;">")"</span> &lt;&lt; endl;
-&#9474;   cout &lt;&lt; <span style="color: #e5b76f;">"Radius = "</span> &lt;&lt; r;
+    int x12 = x1 - x2;
+    int x13 = x1 - x3;
+
+    int y12 = y1 - y2;
+    int y13 = y1 - y3;
+
+    int y31 = y3 - y1;
+    int y21 = y2 - y1;
+
+    int x31 = x3 - x1;
+    int x21 = x2 - x1;
+
+    // x1^2 - x3^2
+    int sx13 = pow(x1, 2) - pow(x3, 2);
+
+    // y1^2 - y3^2
+    int sy13 = pow(y1, 2) - pow(y3, 2);
+
+    int sx21 = pow(x2, 2) - pow(x1, 2);
+    int sy21 = pow(y2, 2) - pow(y1, 2);
+
+    int f = ((sx13) * (x12)
+             + (sy13) * (x12)
+             + (sx21) * (x13)
+             + (sy21) * (x13))
+            / (2 * ((y31) * (x12) - (y21) * (x13)));
+    int g = ((sx13) * (y12)
+             + (sy13) * (y12)
+             + (sx21) * (y13)
+             + (sy21) * (y13))
+            / (2 * ((x31) * (y12) - (x21) * (y13)));
+
+    int c = -pow(x1, 2) - pow(y1, 2) - 2 * g * x1 - 2 * f * y1;
+
+    // eqn of circle be x^2 + y^2 + 2*g*x + 2*f*y + c = 0
+    // where centre is (h = -g, k = -f) and radius r
+    // as r^2 = h^2 + k^2 - c
+    int h = -g;
+    int k = -f;
+    int sqr_of_r = h * h + k * k - c;
+
+    // r is the radius
+    float r = sqrt(sqr_of_r);
+
+    cout &lt;&lt; "Centre = (" &lt;&lt; h &lt;&lt; ", " &lt;&lt; k &lt;&lt; ")" &lt;&lt; endl;
+    cout &lt;&lt; "Radius = " &lt;&lt; r;
 }
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orge3a11c9" class="outline-2">
-<h2 id="orge3a11c9">Convex Hull</h2>
-<div class="outline-text-2" id="text-orge3a11c9">
+<div id="outline-container-org86b7949" class="outline-2">
+<h2 id="org86b7949">Convex Hull</h2>
+<div class="outline-text-2" id="text-org86b7949">
 <p>
 A convex hull of a set of points is the smallest convex polygon that contains every one of
 the points. It is defined by a subset of all the points in the original set. One way to
@@ -724,9 +1165,9 @@ a board. Take a rubber band and stretch it around all of the points. The polygon
 the rubber band is a convex hull.
 </p>
 </div>
-<div id="outline-container-org2681066" class="outline-3">
-<h3 id="org2681066">Jarvi&rsquo;s algorithm</h3>
-<div class="outline-text-3" id="text-org2681066">
+<div id="outline-container-orge69d422" class="outline-3">
+<h3 id="orge69d422">Jarvi&rsquo;s algorithm</h3>
+<div class="outline-text-3" id="text-orge69d422">
 <p>
 \(O(n^2)\)
 \(O(n \cdot h)\)
@@ -758,7 +1199,7 @@ How to check if point is more counterclockwise? We can use orientation checker:
 </p>
 
 
-<figure id="org13a18f4">
+<figure id="orge1fc70b">
 <img src="../i/old/2022-01-19_05-00-40_screenshot.png" alt="2022-01-19_05-00-40_screenshot.png">
 
 </figure>
@@ -767,13 +1208,13 @@ How to check if point is more counterclockwise? We can use orientation checker:
 (in this figure, clockwise triplet \(ABC\): cross product of \(AB\) and \(AC\) vectors is \(> 0\) anticlockwise triplet \(ACD\): cross product of \(AC\) and \(AD\) is negative.)
 </p>
 
-<pre class="code"><code><span style="color: #f470df;">int</span> <span style="color: #f59280;">orientation</span>(<span style="color: #f470df;">Point</span> <span style="color: #df7fff;">p</span>, <span style="color: #f470df;">Point</span> <span style="color: #df7fff;">q</span>, <span style="color: #f470df;">Point</span> <span style="color: #df7fff;">r</span>)
+<pre class="code"><code>int orientation(Point p, Point q, Point r)
 {
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">val</span> = (q.y - p.y) * (r.x - q.x) -
-&#9474;   &#9474;   &#9474;   &#9474; (q.x - p.x) * (r.y - q.y);
-&#9474;   &#9474;   &#9474;   &#9474;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (val == 0) <span style="color: #ef80bf; font-weight: bold;">return</span> 0;  <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">collinear</span>
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> (val &gt; 0)? 1: 2; <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">clock or counterclock wise</span>
+    int val = (q.y - p.y) * (r.x - q.x) -
+              (q.x - p.x) * (r.y - q.y);
+
+    if (val == 0) return 0;  // collinear
+    return (val &gt; 0)? 1: 2; // clock or counterclock wise
 }
 </code></pre>
 
@@ -782,9 +1223,9 @@ If we found that the points are collinear, we should consider taking the points 
 more distance, using a distance utility
 </p>
 
-<pre class="code"><code><span style="color: #f470df;">float</span> <span style="color: #f59280;">dis</span>(<span style="color: #f470df;">point</span> <span style="color: #df7fff;">p</span>, <span style="color: #f470df;">point</span> <span style="color: #df7fff;">q</span>) {
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> sqrt(   pow(p[x] - q[x], 2) +
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   pow(p[y] - q[y] , 2) * 1.0 );
+<pre class="code"><code>float dis(point p, point q) {
+    return sqrt(   pow(p[x] - q[x], 2) +
+                    pow(p[y] - q[y] , 2) * 1.0 );
 }
 </code></pre></li>
 
@@ -798,61 +1239,61 @@ more distance, using a distance utility
 Now, let&rsquo;s repeat in C(++):
 </p>
 
-<pre class="code"><code><span style="color: #8fbaef;">#include</span> <span style="color: #e5b76f;">&lt;vector&gt;</span>
-<span style="color: #8fbaef;">#include</span> <span style="color: #e5b76f;">&lt;iostream&gt;</span>
-<span style="color: #8fbaef;">#include</span> <span style="color: #e5b76f;">&lt;cmath&gt;</span>
-<span style="color: #8fbaef;">#define</span> <span style="color: #df7fff;">x</span> 0
-<span style="color: #8fbaef;">#define</span> <span style="color: #df7fff;">y</span> 1
-<span style="color: #8fbaef;">#define</span> <span style="color: #df7fff;">point</span> <span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt;
-<span style="color: #ef80bf; font-weight: bold;">using</span> <span style="color: #ef80bf; font-weight: bold;">namespace</span> <span style="color: #ff78aa;">std</span>;
-<span style="color: #f470df;">int</span> <span style="color: #f59280;">orinetation</span>(<span style="color: #f470df;">point</span> <span style="color: #df7fff;">p</span>, <span style="color: #f470df;">point</span> <span style="color: #df7fff;">q</span>, <span style="color: #f470df;">point</span> <span style="color: #df7fff;">r</span>) {
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">val</span> = (q[y] - p[y] ) * (r[x] - q[x]) -
-&#9474;   &#9474;   (q[x] - p [x] ) * (r[y] - q[y]);
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (val ==0 ) <span style="color: #ef80bf; font-weight: bold;">return</span> 0; <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">collinear</span>
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> (val &gt; 0) ? 1 : 2;
-&#9474;
+<pre class="code"><code>#include &lt;vector&gt;
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+#define x 0
+#define y 1
+#define point vector&lt;int&gt;
+using namespace std;
+int orinetation(point p, point q, point r) {
+    int val = (q[y] - p[y] ) * (r[x] - q[x]) -
+        (q[x] - p [x] ) * (r[y] - q[y]);
+    if (val ==0 ) return 0; // collinear
+    return (val &gt; 0) ? 1 : 2;
+
 }
 
-<span style="color: #f470df;">float</span> <span style="color: #f59280;">dis</span>(<span style="color: #f470df;">point</span> <span style="color: #df7fff;">p</span>, <span style="color: #f470df;">point</span> <span style="color: #df7fff;">q</span>) {
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> sqrt(pow(p[x] - q[x], 2) +
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   pow(p[y] - q[y] , 2) * 1.0 );
+float dis(point p, point q) {
+    return sqrt(pow(p[x] - q[x], 2) +
+                    pow(p[y] - q[y] , 2) * 1.0 );
 }
 
-<span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt;&gt; <span style="color: #f59280;">jarvis_march</span>(<span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt;&gt; <span style="color: #df7fff;">points</span>) {
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">n</span> = points.size();
-&#9474;   <span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt;&gt;<span style="color: #df7fff;">hull</span>;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (n &lt; 3) <span style="color: #ef80bf; font-weight: bold;">return</span> hull;
-&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">find list most</span>
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">l</span> = 0;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #f470df;">int</span> <span style="color: #df7fff;">i</span> = 1; i &lt; n; i++) {
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (points[i][x] &lt; points[l][x])
-&#9474;   &#9474;   &#9474;   l = i;
-&#9474;   }
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">q</span>, <span style="color: #df7fff;">left</span> = l;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">do</span> {
-&#9474;   hull.push_back(points[l]);
-&#9474;   q = (l+1) % n;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #f470df;">int</span> <span style="color: #df7fff;">i</span> = 0; i &lt; n; i++) {
-&#9474;   &#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">direction</span> = orinetation(points[l], points[i], points[q]);
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span>(direction == 2 || ( direction == 0 &amp;&amp; dis(points[i], points[l]) &gt; dis(points[q],points[l]))  )
-&#9474;   &#9474;   &#9474;   q = i;
-&#9474;   }
-&#9474;   l=q;
-&#9474;
-&#9474;   } <span style="color: #ef80bf; font-weight: bold;">while</span> (l != left );
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> hull;
+vector&lt;vector&lt;int&gt;&gt; jarvis_march(vector&lt;vector&lt;int&gt;&gt; points) {
+    int n = points.size();
+    vector&lt;vector&lt;int&gt;&gt;hull;
+    if (n &lt; 3) return hull;
+    // find list most
+    int l = 0;
+    for (int i = 1; i &lt; n; i++) {
+        if (points[i][x] &lt; points[l][x])
+            l = i;
+    }
+    int q, left = l;
+    do {
+    hull.push_back(points[l]);
+    q = (l+1) % n;
+    for (int i = 0; i &lt; n; i++) {
+        int direction = orinetation(points[l], points[i], points[q]);
+        if(direction == 2 || ( direction == 0 &amp;&amp; dis(points[i], points[l]) &gt; dis(points[q],points[l]))  )
+            q = i;
+    }
+    l=q;
+
+    } while (l != left );
+    return hull;
 }
-<span style="color: #f470df;">int</span> <span style="color: #f59280;">main</span>() {
-&#9474;   <span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt;&gt; <span style="color: #df7fff;">po</span> { {1,4}, {3,3} , {5,5} , {9,6} , {5,2}, {0,0} , {3,1} , {7,0} };
-&#9474;   <span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt;&gt;<span style="color: #df7fff;">l</span> = jarvis_march(po);
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #ef80bf; font-weight: bold;">auto</span> <span style="color: #df7fff;">i</span> : l)
-&#9474;   &#9474;   {
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #ef80bf; font-weight: bold;">auto</span> <span style="color: #df7fff;">k</span> : i)
-&#9474;   &#9474;   &#9474;   cout &lt;&lt; k &lt;&lt; <span style="color: #e5b76f;">" "</span>;
-&#9474;   &#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   &#9474;   cout &lt;&lt; endl;
-&#9474;   &#9474;   }
-&#9474;   &#9474;
+int main() {
+    vector&lt;vector&lt;int&gt;&gt; po { {1,4}, {3,3} , {5,5} , {9,6} , {5,2}, {0,0} , {3,1} , {7,0} };
+    vector&lt;vector&lt;int&gt;&gt;l = jarvis_march(po);
+    for (auto i : l)
+        {
+        for (auto k : i)
+            cout &lt;&lt; k &lt;&lt; " ";
+
+                cout &lt;&lt; endl;
+        }
+
 }
 </code></pre>
 
@@ -860,52 +1301,52 @@ Now, let&rsquo;s repeat in C(++):
 <p>
 Python implementation:
 </p>
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">def</span> <span style="color: #f59280;">jarvis_march</span>(points):
-&#9474;   <span style="color: #bf9f8f; font-style: italic;"># </span><span style="color: #bf9f8f; font-style: italic;">find the leftmost point</span>
-&#9474;   <span style="color: #df7fff;">a</span> =  <span style="color: #a897ef; font-weight: bold;">min</span>(points, key = <span style="color: #ef80bf; font-weight: bold;">lambda</span> point: point.x)
-&#9474;   <span style="color: #df7fff;">index</span> = points.index(a)
-&#9474;
-&#9474;   <span style="color: #bf9f8f; font-style: italic;"># </span><span style="color: #bf9f8f; font-style: italic;">selection sort</span>
-&#9474;   <span style="color: #df7fff;">l</span> = index
-&#9474;   <span style="color: #df7fff;">result</span> = []
-&#9474;   result.append(a)
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">while</span> (<span style="color: #ff78aa;">True</span>):
-&#9474;   &#9474;   <span style="color: #df7fff;">q</span> = (l + 1) % <span style="color: #a897ef; font-weight: bold;">len</span>(points)
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> i <span style="color: #ef80bf; font-weight: bold;">in</span> <span style="color: #a897ef; font-weight: bold;">range</span>(<span style="color: #a897ef; font-weight: bold;">len</span>(points)):
-&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> i == l:
-&#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">continue</span>
-&#9474;   &#9474;   &#9474;   <span style="color: #bf9f8f; font-style: italic;"># </span><span style="color: #bf9f8f; font-style: italic;">find the greatest left turn</span>
-&#9474;   &#9474;   &#9474;   <span style="color: #bf9f8f; font-style: italic;"># </span><span style="color: #bf9f8f; font-style: italic;">in case of collinearity, consider the farthest point</span>
-&#9474;   &#9474;   &#9474;   <span style="color: #df7fff;">d</span> = direction(points[l], points[i], points[q])
-&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> d &gt; 0 <span style="color: #ef80bf; font-weight: bold;">or</span> (d == 0 <span style="color: #ef80bf; font-weight: bold;">and</span> distance_sq(points[i], points[l]) &gt; distance_sq(points[q], points[l])):
-&#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #df7fff;">q</span> = i
-&#9474;   &#9474;   <span style="color: #df7fff;">l</span> = q
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> l == index:
-&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">break</span>
-&#9474;   &#9474;   result.append(points[q])
-&#9474;   &#9474;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> result
+<pre class="code"><code>def jarvis_march(points):
+    # find the leftmost point
+    a =  min(points, key = lambda point: point.x)
+    index = points.index(a)
+
+    # selection sort
+    l = index
+    result = []
+    result.append(a)
+    while (True):
+        q = (l + 1) % len(points)
+        for i in range(len(points)):
+            if i == l:
+                continue
+            # find the greatest left turn
+            # in case of collinearity, consider the farthest point
+            d = direction(points[l], points[i], points[q])
+            if d &gt; 0 or (d == 0 and distance_sq(points[i], points[l]) &gt; distance_sq(points[q], points[l])):
+                q = i
+        l = q
+        if l == index:
+            break
+        result.append(points[q])
+
+    return result
 </code></pre>
 <p>
 A visualization:
 </p>
 
 
-<figure id="org2902a19">
+<figure id="org796778d">
 <img src="../i/old/2022-01-19_05-01-38_Animation_depicting_the_gift_wrapping_algorithm.gif" alt="2022-01-19_05-01-38_Animation_depicting_the_gift_wrapping_algorithm.gif">
 
 </figure>
 </div>
-<div id="outline-container-org8ea834a" class="outline-4">
-<h4 id="org8ea834a">Trace</h4>
-<div class="outline-text-4" id="text-org8ea834a">
+<div id="outline-container-orgbd93e21" class="outline-4">
+<h4 id="orgbd93e21">Trace</h4>
+<div class="outline-text-4" id="text-orgbd93e21">
 <p>
 Let&rsquo;s try to trace the C(++) program above with the very same given points in the program:
 </p>
 
 
 
-<figure id="org307c266">
+<figure id="orgbc1e6d9">
 <img src="../i/old/2022-01-19_05-01-56_screenshot.png" alt="2022-01-19_05-01-56_screenshot.png">
 
 </figure>
@@ -917,7 +1358,7 @@ convex hull vertices as shown by the green circle in the figure below.
 </p>
 
 
-<figure id="orgbd19f90">
+<figure id="org476e89a">
 <img src="../i/old/2022-01-19_05-02-14_screenshot.png" alt="2022-01-19_05-02-14_screenshot.png">
 
 </figure>
@@ -951,7 +1392,7 @@ We add point \((1,4)\) to the convex hull.
 </p>
 
 
-<figure id="org17e88af">
+<figure id="orgb16ad33">
 <img src="../i/old/2022-01-19_05-02-31_screenshot.png" alt="2022-01-19_05-02-31_screenshot.png">
 
 </figure>
@@ -963,7 +1404,7 @@ above. If we follow all the steps, the leftmost point will be \((9,6)\).
 
 
 
-<figure id="org9e79f36">
+<figure id="org2400de1">
 <img src="../i/old/2022-01-19_05-02-42_screenshot.png" alt="2022-01-19_05-02-42_screenshot.png">
 
 </figure>
@@ -975,7 +1416,7 @@ Using the same process, the leftmost point from \((9,6)\) will be the point \((7
 </p>
 
 
-<figure id="orgea9d49e">
+<figure id="orgf326d60">
 <img src="../i/old/2022-01-19_05-02-53_screenshot.png" alt="2022-01-19_05-02-53_screenshot.png">
 
 </figure>
@@ -986,9 +1427,9 @@ Finally from \((7,0)\) we compute the leftmost point. The leftmost point from \(
 </p>
 </div>
 </div>
-<div id="outline-container-orgcd4ebd2" class="outline-4">
-<h4 id="orgcd4ebd2">Complexity</h4>
-<div class="outline-text-4" id="text-orgcd4ebd2">
+<div id="outline-container-org9d4f962" class="outline-4">
+<h4 id="org9d4f962">Complexity</h4>
+<div class="outline-text-4" id="text-org9d4f962">
 <p>
 The algorithm spends \(O(n)\) time on each convex hull vertex. If there are h convex hull
 vertices, the total time complexity of the algorithm would be \(O(nh)\). Since h is the number
@@ -997,9 +1438,9 @@ the complexity also depends on the number of output.
 </p>
 </div>
 </div>
-<div id="outline-container-orgfce5ca1" class="outline-4">
-<h4 id="orgfce5ca1">Further Reading</h4>
-<div class="outline-text-4" id="text-orgfce5ca1">
+<div id="outline-container-orgdc448d7" class="outline-4">
+<h4 id="orgdc448d7">Further Reading</h4>
+<div class="outline-text-4" id="text-orgdc448d7">
 <ul class="org-ul">
 <li>Briquet, C. (n.d.). Introduction to Convex Hull Applications. Lecture. Retrieved August 23, 2018, from <a href="http://www.montefiore.ulg.ac.be/~briquet/algo3-chull-20070206.pdf">http://www.montefiore.ulg.ac.be/~briquet/algo3-chull-20070206.pdf</a></li>
 <li>Erickson, J. (n.d.). Convex Hulls. Lecture. Retrieved August 23, 2018, from <a href="http://jeffe.cs.illinois.edu/teaching/373/notes/x05-convexhull.pdf">http://jeffe.cs.illinois.edu/teaching/373/notes/x05-convexhull.pdf</a></li>
@@ -1008,9 +1449,9 @@ the complexity also depends on the number of output.
 </div>
 </div>
 </div>
-<div id="outline-container-org2923c40" class="outline-3">
-<h3 id="org2923c40">Grahm Scan</h3>
-<div class="outline-text-3" id="text-org2923c40">
+<div id="outline-container-orgf7ada51" class="outline-3">
+<h3 id="orgf7ada51">Grahm Scan</h3>
+<div class="outline-text-3" id="text-orgf7ada51">
 <p>
 \(O(n \cdot log(n))\)
 </p>
@@ -1033,7 +1474,7 @@ Sort the points based on the polar angle i.e. the angle made by the line with th
 </p>
 
 
-<figure id="org3d32a57">
+<figure id="org16e2dcd">
 <img src="../i/old/2022-01-19_05-03-08_screenshot.png" alt="2022-01-19_05-03-08_screenshot.png">
 
 </figure></li>
@@ -1050,7 +1491,7 @@ has complexity \(O(n \log n)\).
 </p>
 
 
-<figure id="orge6deefa">
+<figure id="orgedcf2c7">
 <img src="../i/old/2022-01-19_05-03-21_screenshot.png" alt="2022-01-19_05-03-21_screenshot.png">
 
 </figure>
@@ -1066,7 +1507,7 @@ It looks like this:
 </p>
 
 
-<figure id="org481cedb">
+<figure id="orge5bcca2">
 <img src="../i/old/2022-01-19_05-03-40_screenshot.png" alt="2022-01-19_05-03-40_screenshot.png">
 
 </figure>
@@ -1085,54 +1526,54 @@ If we perform these steps on a set of points, we should get correct convex hull.
 Let&rsquo;s repeat in C(++):
 </p>
 
-<pre class="code"><code><span style="color: #8fbaef;">#define</span> <span style="color: #df7fff;">x</span> 0
-<span style="color: #8fbaef;">#define</span> <span style="color: #df7fff;">y</span> 1
-<span style="color: #8fbaef;">#define</span> <span style="color: #df7fff;">point</span> <span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt;
-<span style="color: #ef80bf; font-weight: bold;">using</span> <span style="color: #ef80bf; font-weight: bold;">namespace</span> <span style="color: #ff78aa;">std</span>;
-<span style="color: #f470df;">int</span> <span style="color: #f59280;">orinetation</span>(<span style="color: #f470df;">point</span> <span style="color: #df7fff;">p</span>, <span style="color: #f470df;">point</span> <span style="color: #df7fff;">q</span>, <span style="color: #f470df;">point</span> <span style="color: #df7fff;">r</span>) {
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">val</span> = (q[y] - p[y] ) * (r[x] - q[x]) -
-&#9474;   &#9474;   (q[x] - p [x] ) * (r[y] - q[y]);
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (val ==0 ) <span style="color: #ef80bf; font-weight: bold;">return</span> 0; <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">collinear</span>
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> (val &gt; 0) ? 1 : 2; <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">clockwise : counterclockwise</span>
+<pre class="code"><code>#define x 0
+#define y 1
+#define point vector&lt;int&gt;
+using namespace std;
+int orinetation(point p, point q, point r) {
+    int val = (q[y] - p[y] ) * (r[x] - q[x]) -
+        (q[x] - p [x] ) * (r[y] - q[y]);
+    if (val ==0 ) return 0; // collinear
+    return (val &gt; 0) ? 1 : 2; // clockwise : counterclockwise
 }
 
-<span style="color: #f470df;">float</span> <span style="color: #f59280;">dis</span>(<span style="color: #f470df;">point</span> <span style="color: #df7fff;">p</span>, <span style="color: #f470df;">point</span> <span style="color: #df7fff;">q</span>) {
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> sqrt(   pow(p[x] - q[x], 2) +
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   pow(p[y] - q[y] , 2) * 1.0 );
+float dis(point p, point q) {
+    return sqrt(   pow(p[x] - q[x], 2) +
+                    pow(p[y] - q[y] , 2) * 1.0 );
 }
 
-<span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt;&gt; <span style="color: #f59280;">jarvis_march</span>(<span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt;&gt; <span style="color: #df7fff;">points</span>) {
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">n</span> = points.size();
-&#9474;   <span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt;&gt;<span style="color: #df7fff;">hull</span>;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (n &lt; 3) <span style="color: #ef80bf; font-weight: bold;">return</span> hull;
-&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">find left most</span>
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">l</span> = 0;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #f470df;">int</span> <span style="color: #df7fff;">i</span> = 1; i &lt; n; i++) {
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (points[i][x] &lt; points[l][x])
-&#9474;   &#9474;   &#9474;   l = i;
-&#9474;   }
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">q</span>, <span style="color: #df7fff;">left</span> = l;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">do</span> {
-&#9474;   hull.push_back(points[l]);
-&#9474;   q = (l+1) % n;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #f470df;">int</span> <span style="color: #df7fff;">i</span> = 0; i &lt; n; i++) {
-&#9474;   &#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">direction</span> = orinetation(points[l], points[i], points[q]);
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span>(direction == 2 || ( direction == 0 &amp;&amp; dis(points[i], points[l]) &gt; dis(points[q],points[l]))  )
-&#9474;   &#9474;   &#9474;   q = i;
-&#9474;   }
-&#9474;   l=q;
-&#9474;   } <span style="color: #ef80bf; font-weight: bold;">while</span> (l != left );
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> hull;
+vector&lt;vector&lt;int&gt;&gt; jarvis_march(vector&lt;vector&lt;int&gt;&gt; points) {
+    int n = points.size();
+    vector&lt;vector&lt;int&gt;&gt;hull;
+    if (n &lt; 3) return hull;
+    // find left most
+    int l = 0;
+    for (int i = 1; i &lt; n; i++) {
+        if (points[i][x] &lt; points[l][x])
+            l = i;
+    }
+    int q, left = l;
+    do {
+    hull.push_back(points[l]);
+    q = (l+1) % n;
+    for (int i = 0; i &lt; n; i++) {
+        int direction = orinetation(points[l], points[i], points[q]);
+        if(direction == 2 || ( direction == 0 &amp;&amp; dis(points[i], points[l]) &gt; dis(points[q],points[l]))  )
+            q = i;
+    }
+    l=q;
+    } while (l != left );
+    return hull;
 }
 
-<span style="color: #f470df;">int</span> <span style="color: #f59280;">main</span>() {
-<span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt;&gt; <span style="color: #df7fff;">pointts</span> = {{0, 3}, {2, 2}, {1, 1}, {2, 1}, {3, 0}, {0, 0}, {3, 3}};
-<span style="color: #f470df;">vector</span> &lt;<span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt;&gt; <span style="color: #df7fff;">hull</span> = jarvis_march(pointts);
-<span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #ef80bf; font-weight: bold;">auto</span> <span style="color: #df7fff;">i</span> : hull ) {
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #ef80bf; font-weight: bold;">auto</span> <span style="color: #df7fff;">j</span> : i ) {
-&#9474;   &#9474;   cout &lt;&lt; j &lt;&lt; endl;
-&#9474;   }
-&#9474;   cout &lt;&lt; endl;
+int main() {
+vector&lt;vector&lt;int&gt;&gt; pointts = {{0, 3}, {2, 2}, {1, 1}, {2, 1}, {3, 0}, {0, 0}, {3, 3}};
+vector &lt;vector&lt;int&gt;&gt; hull = jarvis_march(pointts);
+for (auto i : hull ) {
+    for (auto j : i ) {
+        cout &lt;&lt; j &lt;&lt; endl;
+    }
+    cout &lt;&lt; endl;
 }
 
 }
@@ -1141,69 +1582,69 @@ Let&rsquo;s repeat in C(++):
 <p>
 Python implementation:
 </p>
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">def</span> <span style="color: #f59280;">find_min_y</span>(points):
-&#9474;   <span style="color: #df7fff;">miny</span> = 999999
-&#9474;   <span style="color: #df7fff;">mini</span> = 0
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> i, point <span style="color: #ef80bf; font-weight: bold;">in</span> <span style="color: #a897ef; font-weight: bold;">enumerate</span>(points):
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> point.y &lt; miny:
-&#9474;   &#9474;   &#9474;   <span style="color: #df7fff;">miny</span> = point.y
-&#9474;   &#9474;   &#9474;   <span style="color: #df7fff;">mini</span> = i
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> point.y == miny:
-&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> point.x &lt; points[mini].x:
-&#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #df7fff;">mini</span> = i
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> points[mini], mini
-&#9474;
-<span style="color: #ef80bf; font-weight: bold;">def</span> <span style="color: #f59280;">polar_comparator</span>(p1, p2, p0):
-&#9474;   <span style="color: #df7fff;">d</span> = direction(p0, p1, p2)
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> d &lt; 0:
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> -1
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> d &gt; 0:
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> 1
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> d == 0:
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> distance_sq(p1, p0) &lt; distance_sq(p2, p0):
-&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> -1
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">else</span>:
-&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> 1
-&#9474;   &#9474;   &#9474;
-<span style="color: #ef80bf; font-weight: bold;">def</span> <span style="color: #f59280;">graham_scan</span>(points):
-&#9474;   <span style="color: #df7fff;">p0</span>, <span style="color: #df7fff;">index</span> = find_min_y(points)
-&#9474;   <span style="color: #df7fff;">points</span>[0], <span style="color: #df7fff;">points</span>[index] = points[index], points[0]
-&#9474;   <span style="color: #df7fff;">sorted_polar</span> = <span style="color: #a897ef; font-weight: bold;">sorted</span>(points[1:], <span style="color: #a897ef; font-weight: bold;">cmp</span> = <span style="color: #ef80bf; font-weight: bold;">lambda</span> p1, p2: polar_comparator(p1, p2, p0))
-&#9474;   <span style="color: #df7fff;">to_remove</span> = []
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> i <span style="color: #ef80bf; font-weight: bold;">in</span> <span style="color: #a897ef; font-weight: bold;">range</span>(<span style="color: #a897ef; font-weight: bold;">len</span>(sorted_polar) - 1):
-&#9474;   &#9474;   <span style="color: #df7fff;">d</span> = direction(sorted_polar[i], sorted_polar[i + 1], p0)
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> d == 0:
-&#9474;   &#9474;   &#9474;   to_remove.append(i)
-&#9474;   <span style="color: #df7fff;">sorted_polar</span> = [i <span style="color: #ef80bf; font-weight: bold;">for</span> j, i <span style="color: #ef80bf; font-weight: bold;">in</span> <span style="color: #a897ef; font-weight: bold;">enumerate</span>(sorted_polar) <span style="color: #ef80bf; font-weight: bold;">if</span> j <span style="color: #ef80bf; font-weight: bold;">not</span> <span style="color: #ef80bf; font-weight: bold;">in</span> to_remove]
-&#9474;   <span style="color: #df7fff;">m</span> = <span style="color: #a897ef; font-weight: bold;">len</span>(sorted_polar)
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> m &lt; 2:
-&#9474;   &#9474;   <span style="color: #a897ef; font-weight: bold;">print</span> <span style="color: #e5b76f;">'Convex hull is empty'</span>
-&#9474;   &#9474;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">else</span>:
-&#9474;   &#9474;   <span style="color: #df7fff;">stack</span> = []
-&#9474;   &#9474;   <span style="color: #df7fff;">stack_size</span> = 0
-&#9474;   &#9474;   stack.append(points[0])
-&#9474;   &#9474;   stack.append(sorted_polar[0])
-&#9474;   &#9474;   stack.append(sorted_polar[1])
-&#9474;   &#9474;   <span style="color: #df7fff;">stack_size</span> = 3
-&#9474;   &#9474;
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> i <span style="color: #ef80bf; font-weight: bold;">in</span> <span style="color: #a897ef; font-weight: bold;">range</span>(2, m):
-&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">while</span> (<span style="color: #ff78aa;">True</span>):
-&#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #df7fff;">d</span> = direction(stack[stack_size - 2], stack[stack_size - 1], sorted_polar[i])
-&#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> d &lt; 0: <span style="color: #bf9f8f; font-style: italic;"># </span><span style="color: #bf9f8f; font-style: italic;">if it makes left turn</span>
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">break</span>
-&#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">else</span>: <span style="color: #bf9f8f; font-style: italic;"># </span><span style="color: #bf9f8f; font-style: italic;">if it makes non left turn</span>
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   stack.pop()
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #df7fff;">stack_size</span> -= 1
-&#9474;   &#9474;   &#9474;   stack.append(sorted_polar[i])
-&#9474;   &#9474;   &#9474;   <span style="color: #df7fff;">stack_size</span> += 1
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> stack
+<pre class="code"><code>def find_min_y(points):
+    miny = 999999
+    mini = 0
+    for i, point in enumerate(points):
+        if point.y &lt; miny:
+            miny = point.y
+            mini = i
+        if point.y == miny:
+            if point.x &lt; points[mini].x:
+                mini = i
+    return points[mini], mini
+
+def polar_comparator(p1, p2, p0):
+    d = direction(p0, p1, p2)
+    if d &lt; 0:
+        return -1
+    if d &gt; 0:
+        return 1
+    if d == 0:
+        if distance_sq(p1, p0) &lt; distance_sq(p2, p0):
+            return -1
+        else:
+            return 1
+
+def graham_scan(points):
+    p0, index = find_min_y(points)
+    points[0], points[index] = points[index], points[0]
+    sorted_polar = sorted(points[1:], cmp = lambda p1, p2: polar_comparator(p1, p2, p0))
+    to_remove = []
+    for i in range(len(sorted_polar) - 1):
+        d = direction(sorted_polar[i], sorted_polar[i + 1], p0)
+        if d == 0:
+            to_remove.append(i)
+    sorted_polar = [i for j, i in enumerate(sorted_polar) if j not in to_remove]
+    m = len(sorted_polar)
+    if m &lt; 2:
+        print 'Convex hull is empty'
+
+    else:
+        stack = []
+        stack_size = 0
+        stack.append(points[0])
+        stack.append(sorted_polar[0])
+        stack.append(sorted_polar[1])
+        stack_size = 3
+
+        for i in range(2, m):
+            while (True):
+                d = direction(stack[stack_size - 2], stack[stack_size - 1], sorted_polar[i])
+                if d &lt; 0: # if it makes left turn
+                    break
+                else: # if it makes non left turn
+                    stack.pop()
+                    stack_size -= 1
+            stack.append(sorted_polar[i])
+            stack_size += 1
+    return stack
 </code></pre>
 </div>
 </div>
 <div id="outline-container-c8a188da-1279-4cc2-a069-b5b7bb0b9633" class="outline-3">
 <h3 id="c8a188da-1279-4cc2-a069-b5b7bb0b9633"><span class="done KILL">KILL</span> Monotone chain</h3>
-<div class="outline-text-3" id="text-org8e8be82">
+<div class="outline-text-3" id="text-org48a441b">
 <p>
 \(O(n \cdot log(n))\)
 </p>
@@ -1217,7 +1658,7 @@ Python implementation:
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: 2021-12-18 Sat 05:40. Last build date: 2025-06-28 Sat 18:37.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: 2021-12-18 Sat 05:40. Last build date: 2025-07-25 Fri 00:00.</p>
 
 </div>
 </div>

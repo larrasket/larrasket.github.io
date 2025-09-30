@@ -25,6 +25,448 @@
 
   <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
   <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+
+<!-- Import LazySizes - State-of-the-art lazy loading library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+
+<!-- Optional: Import plugins for better performance -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js" async></script>
+
+<script>
+// Only run on pages with 'art_paintings_media' in the path
+if (window.location.pathname.includes('art_paintings_media')) {
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    // Configure LazySizes for optimal performance
+    window.lazySizesConfig = window.lazySizesConfig || {};
+    window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
+    window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
+    window.lazySizesConfig.expFactor = 1.5; // Expand loading area
+    window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
+
+    // Add CSS for smooth transitions and collapsible content
+    const style = document.createElement('style');
+    style.textContent = `
+      .lazyload,
+      .lazyloading {
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+      }
+      .lazyloaded {
+        opacity: 1;
+      }
+      .collapsible-content {
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+      .collapsible-content.collapsed {
+        max-height: 0 !important;
+      }
+      .collapsible-content.expanded {
+        max-height: none;
+      }
+      /* Blur effect while loading (optional) */
+      .lazyloading {
+        filter: blur(5px);
+        opacity: 0.7;
+      }
+      .lazyloaded {
+        filter: none;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Find all h3 elements
+    const h3Elements = document.querySelectorAll('h3');
+
+    h3Elements.forEach(function(h3) {
+      // Make h3 clickable and add icon
+      h3.style.position = 'relative';
+      h3.style.cursor = 'pointer';
+      h3.style.paddingLeft = '20px';
+      h3.style.userSelect = 'none';
+
+      // Add the arrow icon
+      const icon = document.createElement('span');
+      icon.innerHTML = '▶';
+      icon.style.position = 'absolute';
+      icon.style.left = '0px';
+      icon.style.top = '50%';
+      icon.style.transform = 'translateY(-50%)';
+      icon.style.transition = 'transform 0.2s';
+      icon.style.fontSize = '0.8em';
+      icon.style.color = 'rgb(102, 102, 102)';
+      icon.style.fontFamily = 'monospace';
+
+      h3.insertBefore(icon, h3.firstChild);
+
+      // Find all content after this h3 until the next h3 or end of parent
+      const contentElements = [];
+      let nextElement = h3.nextElementSibling;
+
+      while (nextElement && nextElement.tagName !== 'H3') {
+        contentElements.push(nextElement);
+        nextElement = nextElement.nextElementSibling;
+      }
+
+      // Create a wrapper for smooth collapsing
+      const wrapper = document.createElement('div');
+      wrapper.className = 'collapsible-content collapsed';
+      wrapper.style.maxHeight = '0';
+
+      // Move content elements into wrapper
+      contentElements.forEach(function(element) {
+        wrapper.appendChild(element);
+      });
+
+      // Insert wrapper after h3
+      h3.parentNode.insertBefore(wrapper, h3.nextSibling);
+
+      // Prepare images for LazySizes lazy loading and make them clickable
+      const prepareImagesForLazyLoading = (container) => {
+        const images = container.querySelectorAll('img');
+        images.forEach(function(img) {
+          // Only process if not already processed
+          if (!img.classList.contains('lazyload') && !img.dataset.processed) {
+            // Store original src in data-src for LazySizes
+            if (img.src && img.src !== '' && !img.src.startsWith('data:')) {
+              img.dataset.src = img.src;
+              // Use a tiny placeholder or low-quality placeholder
+              img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+            }
+
+            // Handle srcset for responsive images
+            if (img.srcset && img.srcset !== '') {
+              img.dataset.srcset = img.srcset;
+              img.srcset = '';
+            }
+
+            // Handle sizes attribute
+            if (img.sizes) {
+              img.dataset.sizes = img.sizes;
+            }
+
+            // Add LazySizes classes
+            img.classList.add('lazyload');
+
+            // Make image clickable - add cursor pointer
+            img.style.cursor = 'pointer';
+
+            // Add click handler to open image in new tab
+            img.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation(); // Prevent triggering h3 collapse
+
+              // Get the actual image URL (either from src or data-src)
+              let imageUrl = this.src;
+              if (this.dataset.src && !this.src.startsWith('data:')) {
+                imageUrl = this.dataset.src;
+              } else if (this.src.startsWith('data:') && this.dataset.src) {
+                imageUrl = this.dataset.src;
+              }
+
+              // Open image in new tab
+              if (imageUrl && !imageUrl.startsWith('data:')) {
+                window.open(imageUrl, '_blank');
+              }
+            });
+
+            // Mark as processed
+            img.dataset.processed = 'true';
+
+            // Maintain aspect ratio to prevent layout shift
+            if (!img.style.aspectRatio && img.width && img.height) {
+              img.style.aspectRatio = img.width + '/' + img.height;
+            }
+          }
+        });
+      };
+
+      // Prepare all images in this section for lazy loading
+      prepareImagesForLazyLoading(wrapper);
+
+      // Track collapsed state
+      let isCollapsed = true;
+      let hasBeenExpanded = false;
+
+      // Add click handler
+      h3.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        if (isCollapsed) {
+          // Expand: show content and activate lazy loading
+          icon.style.transform = 'translateY(-50%) rotate(90deg)';
+          wrapper.classList.remove('collapsed');
+          wrapper.classList.add('expanded');
+          wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+
+          // Only activate LazySizes for this section when first expanded
+          if (!hasBeenExpanded) {
+            // Trigger LazySizes to check for images in this newly visible section
+            if (window.lazySizes) {
+              // Force LazySizes to check all images in this wrapper
+              const lazyImages = wrapper.querySelectorAll('.lazyload');
+              lazyImages.forEach(img => {
+                // Add to LazySizes queue
+                window.lazySizes.loader.unveil(img);
+              });
+            }
+            hasBeenExpanded = true;
+          }
+
+          isCollapsed = false;
+
+          // Recalculate height after images potentially load
+          setTimeout(() => {
+            if (!isCollapsed) {
+              wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+            }
+          }, 100);
+
+        } else {
+          // Collapse: hide content
+          icon.style.transform = 'translateY(-50%) rotate(0deg)';
+          wrapper.classList.remove('expanded');
+          wrapper.classList.add('collapsed');
+          wrapper.style.maxHeight = '0';
+
+          isCollapsed = true;
+        }
+      });
+
+      // Listen for LazySizes events to adjust height dynamically
+      wrapper.addEventListener('lazyloaded', function(e) {
+        if (!isCollapsed) {
+          // Adjust wrapper height when images load
+          setTimeout(() => {
+            wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+          }, 50);
+        }
+      });
+    });
+  });
+}
+</script>
+
+<script>
+
+
+
+  
+// Stack Page Formatter - Apply inline layout to specific pages
+(function() {
+  'use strict';
+  
+  // Check if current page should have the formatting applied
+  function shouldApplyFormatting() {
+    const path = window.location.pathname;
+    
+    // Check if path matches our target patterns
+    return path === '/stack' || 
+           path === '/stack.html' || 
+           path.startsWith('/sh/');
+  }
+  
+  // Only proceed if we're on a target page
+  if (!shouldApplyFormatting()) {
+    return;
+  }
+  
+  // Add CSS styles
+  function addStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+      /* Basic styling for entries */
+      .outline-3 {
+        margin-bottom: 1.5em;
+        line-height: 1.5;
+      }
+
+      /* Style for reconstructed single paragraph */
+      .entry-paragraph {
+        margin: 0;
+        line-height: 1.5;
+        direction: inherit;
+        unicode-bidi: plaintext;
+      }
+
+      /* Style for date - gray and nice */
+      .entry-date {
+        color: #666;
+        font-size: 0.9em;
+        margin-right: 0.5em;
+      }
+
+      /* Style for tag at end - gray and in parentheses */
+      .entry-tag {
+        display: inline !important;
+        color: #666;
+        margin-left: 0.5em;
+      }
+
+      /* Ensure all children stay inline */
+      .entry-tag * {
+        display: inline !important;
+      }
+
+      /* Override any existing tag styles */
+      .entry-tag p,
+      .entry-tag div {
+        display: inline !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      /* Hide block elements that will be moved */
+      .outline-3 .moved-block {
+        display: block;
+        margin: 0.5em 0;
+      }
+
+      /* Ensure proper anchor target visibility */
+      .outline-3[id] {
+        scroll-margin-top: 20px;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  // Extract ID from container div
+  function extractIdFromContainer(entry) {
+    const containerId = entry.id;
+    if (containerId && containerId.startsWith('outline-container-')) {
+      return containerId.replace('outline-container-', '');
+    }
+    return null;
+  }
+  
+  // Apply the formatting transformation
+  function applyFormatting() {
+    // Process each entry
+    const entries = document.querySelectorAll('.outline-3');
+    
+    entries.forEach((entry, index) => {
+      // Extract the anchor ID from the container before transformation
+      const anchorId = extractIdFromContainer(entry);
+      
+      // Extract components
+      const h3 = entry.querySelector('h3');
+      const notes = entry.querySelector('.notes');
+      const outlineText = entry.querySelector('.outline-text-3');
+      const tag = entry.querySelector('.tag');
+      
+      if (!h3 || !outlineText) return;
+      
+      // Get title text (preserve any TODO/DONE prefixes and links)
+      let titleText = h3.innerHTML;
+      
+      // Get timestamp
+      let timestampText = '';
+      if (notes) {
+        const timestamp = notes.querySelector('.timestamp');
+        if (timestamp) {
+          timestampText = timestamp.textContent;
+        }
+      }
+      
+      // Get content paragraphs (excluding notes and tag)
+      const contentParagraphs = [];
+      const blockElements = [];
+      
+      Array.from(outlineText.children).forEach(child => {
+        if (child.classList.contains('notes') || child.classList.contains('tag')) {
+          return; // Skip these
+        }
+        
+        if (child.tagName === 'P') {
+          contentParagraphs.push(child.innerHTML);
+        } else if (child.tagName === 'UL' || child.tagName === 'OL' || 
+                   child.tagName === 'BLOCKQUOTE' || child.tagName === 'PRE' ||
+                   child.tagName === 'DL' || child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        } else if (child.tagName === 'DIV' && child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        }
+      });
+      
+      // Get tag HTML (preserve links and formatting)
+      let tagHtml = '';
+      if (tag) {
+        tagHtml = tag.outerHTML;
+      }
+      
+      // Construct the new single paragraph
+      let newContent = '';
+      
+      // Add date at the start (gray)
+      if (timestampText) {
+        newContent += '<span class="entry-date">' + timestampText + '</span>';
+      }
+      
+      // Add title with emdash
+      newContent += titleText + ' — ';
+      
+      // Add content paragraphs
+      newContent += contentParagraphs.join(' ');
+      
+      // Add tag at the end in parentheses (preserve HTML but force inline)
+      if (tagHtml) {
+        // Extract just the inner content and wrap it properly
+        let tagContent = tag.innerHTML;
+        newContent += ' <span class="entry-tag">(' + tagContent + ')</span>';
+      }
+      
+      // Create new paragraph element
+      const newParagraph = document.createElement('p');
+      newParagraph.className = 'entry-paragraph';
+      newParagraph.innerHTML = newContent;
+      
+      // Clear the entry and add the new paragraph
+      entry.innerHTML = '';
+      entry.appendChild(newParagraph);
+      
+      // Preserve the anchor ID by setting it on the transformed entry
+      if (anchorId) {
+        entry.id = anchorId;
+      }
+      
+      // Add any block elements after the paragraph
+      blockElements.forEach(blockHtml => {
+        const blockDiv = document.createElement('div');
+        blockDiv.className = 'moved-block';
+        blockDiv.innerHTML = blockHtml;
+        entry.appendChild(blockDiv);
+      });
+      
+      // Add separator after each entry (except the last one)
+      if (index < entries.length - 1) {
+        const separator = document.createElement('hr');
+        separator.style.margin = '1em 0';
+        separator.style.border = 'none';
+        separator.style.borderTop = '1px solid #ccc';
+        entry.appendChild(separator);
+      }
+    });
+  }
+  
+  // Initialize when DOM is ready
+  function init() {
+    addStyles();
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', applyFormatting);
+    } else {
+      applyFormatting();
+    }
+  }
+  
+  // Start the initialization
+  init();
+})();
+</script>
+
+
+
 </head>
 <body>
 </body>
@@ -40,8 +482,7 @@
 <h1 class="title" style="
 margin-block-start: auto;
     color: black;
-">لّermontov</h1>
-
+">Hereby, all birds fly</h1>
       </a>
 <hr class="header-divider" style="margin-block-end: -1em;">
   </div>
@@ -111,10 +552,10 @@ h2,h3,h4,h5,h6,h7,h8 {
 </style>
 </head>
 <hr>
-<div id="outline-container-org3796f56" class="outline-2">
-<h2 id="org3796f56"><a href="../p/ossnfoss.html#lkni0t70xmk0">Words to avoid: Open Source</a></h2>
-<div class="outline-text-2" id="text-org3796f56">
-<div class="smth" id="orge351e35">
+<div id="outline-container-orgabca845" class="outline-2">
+<h2 id="orgabca845"><a href="../p/ossnfoss.html#lkni0t70xmk0">Words to Avoid: OOS</a></h2>
+<div class="outline-text-2" id="text-orgabca845">
+<div class="smth" id="orgc75e4cb">
 <p>
 Thu 17 Jul 2025
 </p>
@@ -122,10 +563,21 @@ Thu 17 Jul 2025
 </div>
 </div>
 </div>
-<div id="outline-container-org00d7378" class="outline-2">
-<h2 id="org00d7378"><a href="../d/distributedsys.html#behkc161zik0">What is a distributed system</a></h2>
-<div class="outline-text-2" id="text-org00d7378">
-<div class="smth" id="org6a5f138">
+<div id="outline-container-org3d9fdf2" class="outline-2">
+<h2 id="org3d9fdf2"><a href="../d/git.html#pkdgxxi0cmk0">A useful Git &rsquo;trick&rsquo;</a></h2>
+<div class="outline-text-2" id="text-org3d9fdf2">
+<div class="smth" id="org956c845">
+<p>
+Wed 02 Jul 2025
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-org9826dd4" class="outline-2">
+<h2 id="org9826dd4"><a href="../d/distributedsys.html#behkc161zik0">What is a distributed system</a></h2>
+<div class="outline-text-2" id="text-org9826dd4">
+<div class="smth" id="orge98b7d7">
 <p>
 Tue 01 Apr 2025
 </p>
@@ -133,10 +585,10 @@ Tue 01 Apr 2025
 </div>
 </div>
 </div>
-<div id="outline-container-orgc55fdad" class="outline-2">
-<h2 id="orgc55fdad"><a href="../d/sf-cognito.html#peqdauc0vik0">Implementing Salesforce SSO with Cognito Using SF SessionID</a></h2>
-<div class="outline-text-2" id="text-orgc55fdad">
-<div class="smth" id="org952deb1">
+<div id="outline-container-orgba554f6" class="outline-2">
+<h2 id="orgba554f6"><a href="../d/sf-cognito.html#peqdauc0vik0">Implementing Salesforce SSO with Cognito Using SF SessionID</a></h2>
+<div class="outline-text-2" id="text-orgba554f6">
+<div class="smth" id="orgd581e57">
 <p>
 Sat 29 Mar 2025
 </p>
@@ -144,10 +596,54 @@ Sat 29 Mar 2025
 </div>
 </div>
 </div>
-<div id="outline-container-orgc4a6e67" class="outline-2">
-<h2 id="orgc4a6e67"><a href="../d/linux_new_users.html#hqpi5530h2k0">The Issue of Identifying and New Linux Users</a></h2>
-<div class="outline-text-2" id="text-orgc4a6e67">
-<div class="smth" id="org670604d">
+<div id="outline-container-orgd148c35" class="outline-2">
+<h2 id="orgd148c35"><a href="../d/command.html#of6hyht0oik0">In the Beginning&#x2026; Was the Command Line</a></h2>
+<div class="outline-text-2" id="text-orgd148c35">
+<div class="smth" id="org168a58e">
+<p>
+Mon 24 Mar 2025
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-orge4f8e8e" class="outline-2">
+<h2 id="orge4f8e8e"><a href="../d/apple.html#p4pacx81lik0">Why Apple makes better software</a></h2>
+<div class="outline-text-2" id="text-orge4f8e8e">
+<div class="smth" id="orgc0d88bb">
+<p>
+Mon 17 Mar 2025
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-orgd7515ee" class="outline-2">
+<h2 id="orgd7515ee"><a href="../p/kotebee.html#gffg0lh0bek0">Extract https://www.kotobee.com/</a></h2>
+<div class="outline-text-2" id="text-orgd7515ee">
+<div class="smth" id="org443101c">
+<p>
+Sun 24 Nov 2024
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-org95c53e0" class="outline-2">
+<h2 id="org95c53e0"><a href="../d/lisp.html#kuh0x3t0p9k0">I can&rsquo;t find a Lisp</a></h2>
+<div class="outline-text-2" id="text-org95c53e0">
+<div class="smth" id="orgfd131f9">
+<p>
+Mon 22 Jul 2024
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-org879ca78" class="outline-2">
+<h2 id="org879ca78"><a href="../d/linux_new_users.html#hqpi5530h2k0">The Issue of Identifying and New Linux Users</a></h2>
+<div class="outline-text-2" id="text-org879ca78">
+<div class="smth" id="orgdd22936">
 <p>
 Sat 06 Jan 2024
 </p>
@@ -155,10 +651,10 @@ Sat 06 Jan 2024
 </div>
 </div>
 </div>
-<div id="outline-container-orgffd3131" class="outline-2">
-<h2 id="orgffd3131"><a href="../d/languages.html#jb9efrq00xj0">The Perfect Programming Language</a></h2>
-<div class="outline-text-2" id="text-orgffd3131">
-<div class="smth" id="orgf98406f">
+<div id="outline-container-orgc7392c6" class="outline-2">
+<h2 id="orgc7392c6"><a href="../d/languages.html#jb9efrq00xj0">The Perfect Programming Language</a></h2>
+<div class="outline-text-2" id="text-orgc7392c6">
+<div class="smth" id="org4fb34c7">
 <p>
 Thu 10 Aug 2023
 </p>
@@ -166,10 +662,10 @@ Thu 10 Aug 2023
 </div>
 </div>
 </div>
-<div id="outline-container-org5f532f9" class="outline-2">
-<h2 id="org5f532f9"><a href="../cs/lisp.html#vlm4vsn02wj0">Lisp Programming Language</a></h2>
-<div class="outline-text-2" id="text-org5f532f9">
-<div class="smth" id="org1710d09">
+<div id="outline-container-org67c8e8e" class="outline-2">
+<h2 id="org67c8e8e"><a href="../cs/lisp.html#vlm4vsn02wj0">Lisp Programming Language</a></h2>
+<div class="outline-text-2" id="text-org67c8e8e">
+<div class="smth" id="orge257067">
 <p>
 Thu 16 Feb 2023
 </p>
@@ -177,10 +673,10 @@ Thu 16 Feb 2023
 </div>
 </div>
 </div>
-<div id="outline-container-org90a477c" class="outline-2">
-<h2 id="org90a477c"><a href="../cs/sql.html#bow8avp02wj0">Introduction to The Relational Language</a></h2>
-<div class="outline-text-2" id="text-org90a477c">
-<div class="smth" id="orgf1a5763">
+<div id="outline-container-org42eb82e" class="outline-2">
+<h2 id="org42eb82e"><a href="../cs/sql.html#bow8avp02wj0">Introduction to The Relational Language</a></h2>
+<div class="outline-text-2" id="text-org42eb82e">
+<div class="smth" id="orga90bdf0">
 <p>
 Fri 22 Apr 2022
 </p>
@@ -188,10 +684,10 @@ Fri 22 Apr 2022
 </div>
 </div>
 </div>
-<div id="outline-container-orge6227f1" class="outline-2">
-<h2 id="orge6227f1"><a href="../cs/go.html#lvkhzyo02wj0">The Go Programming Language</a></h2>
-<div class="outline-text-2" id="text-orge6227f1">
-<div class="smth" id="orgdf923c9">
+<div id="outline-container-orgd3b4381" class="outline-2">
+<h2 id="orgd3b4381"><a href="../cs/go.html#lvkhzyo02wj0">The Go Programming Language</a></h2>
+<div class="outline-text-2" id="text-orgd3b4381">
+<div class="smth" id="org6a4d147">
 <p>
 Sun 09 Jan 2022
 </p>
@@ -200,25 +696,25 @@ Sun 09 Jan 2022
 </div>
 </div>
 
-<div id="outline-container-orgf6649e0" class="outline-2">
-<h2 id="orgf6649e0">Short Posts</h2>
+<div id="outline-container-org9f4a6dc" class="outline-2">
+<h2 id="org9f4a6dc">Short Posts</h2>
 </div>
 
-<div id="outline-container-org1439052" class="outline-3">
-<h3 id="org1439052"><a href="../stack.html#pkdgxxi0cmk0">A useful Git &rsquo;trick&rsquo;</a></h3>
-<div class="outline-text-3" id="text-org1439052">
-<div class="smth" id="org3c3e30a">
+<div id="outline-container-orgdaddd25" class="outline-3">
+<h3 id="orgdaddd25"><a href="../stack.html#tpqa1lq04pk0">Note for Windows Programmers</a></h3>
+<div class="outline-text-3" id="text-orgdaddd25">
+<div class="smth" id="org4384ad0">
 <p>
-Wed 02 Jul 2025
+Tue 16 Sep 2025
 </p>
 
 </div>
 </div>
 </div>
-<div id="outline-container-org7194090" class="outline-3">
-<h3 id="org7194090"><a href="../stack.html#op50qae1ylk0">Supabase</a></h3>
-<div class="outline-text-3" id="text-org7194090">
-<div class="smth" id="org5029938">
+<div id="outline-container-org719552d" class="outline-3">
+<h3 id="org719552d"><a href="../stack.html#op50qae1ylk0">Supabase</a></h3>
+<div class="outline-text-3" id="text-org719552d">
+<div class="smth" id="orgea3e4b2">
 <p>
 Sat 21 Jun 2025
 </p>
@@ -226,21 +722,10 @@ Sat 21 Jun 2025
 </div>
 </div>
 </div>
-<div id="outline-container-org44618e4" class="outline-3">
-<h3 id="org44618e4"><a href="../stack.html#bzhfgq51tlk0">Reflecting on old Org</a></h3>
-<div class="outline-text-3" id="text-org44618e4">
-<div class="smth" id="orge12a665">
-<p>
-Tue 17 Jun 2025
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-org31dd1a7" class="outline-3">
-<h3 id="org31dd1a7"><a href="../stack.html#jvne8ie10lk0">Floyd&rsquo;s tortoise and hare</a></h3>
-<div class="outline-text-3" id="text-org31dd1a7">
-<div class="smth" id="org871782e">
+<div id="outline-container-orgf55d33a" class="outline-3">
+<h3 id="orgf55d33a"><a href="../stack.html#jvne8ie10lk0">Floyd&rsquo;s tortoise and hare</a></h3>
+<div class="outline-text-3" id="text-orgf55d33a">
+<div class="smth" id="org86134cd">
 <p>
 Tue 27 May 2025
 </p>
@@ -248,43 +733,10 @@ Tue 27 May 2025
 </div>
 </div>
 </div>
-<div id="outline-container-orgc993dd7" class="outline-3">
-<h3 id="orgc993dd7"><a href="../stack.html#of6hyht0oik0">In the Beginning&#x2026; Was the Command Line</a></h3>
-<div class="outline-text-3" id="text-orgc993dd7">
-<div class="smth" id="org8574bef">
-<p>
-Mon 24 Mar 2025
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-orgdcdc187" class="outline-3">
-<h3 id="orgdcdc187"><a href="../stack.html#p4pacx81lik0">The reason that makes Apple&rsquo;s software better</a></h3>
-<div class="outline-text-3" id="text-orgdcdc187">
-<div class="smth" id="org4e7acc1">
-<p>
-Sat 22 Mar 2025
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-org3184475" class="outline-3">
-<h3 id="org3184475"><a href="../stack.html#gffg0lh0bek0">Extract https://www.kotobee.com/</a></h3>
-<div class="outline-text-3" id="text-org3184475">
-<div class="smth" id="orgb3e87bc">
-<p>
-Sun 24 Nov 2024
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-org4afc4e6" class="outline-3">
-<h3 id="org4afc4e6"><a href="../stack.html#06f35v80xck0">Fix: (org-ql-view.el) Adjust priority for agenda elements by anpandey</a></h3>
-<div class="outline-text-3" id="text-org4afc4e6">
-<div class="smth" id="orga288603">
+<div id="outline-container-org67f95fd" class="outline-3">
+<h3 id="org67f95fd"><a href="../stack.html#06f35v80xck0">Fix: (org-ql-view.el) Adjust priority for agenda elements by anpandey</a></h3>
+<div class="outline-text-3" id="text-org67f95fd">
+<div class="smth" id="org3ea9f4f">
 <p>
 Thu 17 Oct 2024
 </p>
@@ -292,21 +744,10 @@ Thu 17 Oct 2024
 </div>
 </div>
 </div>
-<div id="outline-container-org63115d7" class="outline-3">
-<h3 id="org63115d7"><a href="../stack.html#kuh0x3t0p9k0">I can&rsquo;t find a Lisp</a></h3>
-<div class="outline-text-3" id="text-org63115d7">
-<div class="smth" id="org3ea1f08">
-<p>
-Mon 22 Jul 2024
-</p>
-
-</div>
-</div>
-</div>
-<div id="outline-container-org1ea28dc" class="outline-3">
-<h3 id="org1ea28dc"><a href="../sh/Dec2023-Feb2024.html#vbl22tf0z3k0">Another killer feature for Go</a></h3>
-<div class="outline-text-3" id="text-org1ea28dc">
-<div class="smth" id="orgcc4a50a">
+<div id="outline-container-org5adc271" class="outline-3">
+<h3 id="org5adc271"><a href="../sh/Dec2023-Feb2024.html#vbl22tf0z3k0">Another killer feature for Go</a></h3>
+<div class="outline-text-3" id="text-org5adc271">
+<div class="smth" id="org3f2ce15">
 <p>
 Fri 16 Feb 2024
 </p>
@@ -314,10 +755,10 @@ Fri 16 Feb 2024
 </div>
 </div>
 </div>
-<div id="outline-container-orgd2cdf2c" class="outline-3">
-<h3 id="orgd2cdf2c"><a href="../sh/Dec2023-Feb2024.html#9rmjr9i0o3k0">Clojure has Go-like channels</a></h3>
-<div class="outline-text-3" id="text-orgd2cdf2c">
-<div class="smth" id="org19fbedb">
+<div id="outline-container-org6c60af3" class="outline-3">
+<h3 id="org6c60af3"><a href="../sh/Dec2023-Feb2024.html#9rmjr9i0o3k0">Clojure has Go-like channels</a></h3>
+<div class="outline-text-3" id="text-org6c60af3">
+<div class="smth" id="org1dc17fc">
 <p>
 Thu 08 Feb 2024
 </p>
@@ -325,10 +766,10 @@ Thu 08 Feb 2024
 </div>
 </div>
 </div>
-<div id="outline-container-org467c1f3" class="outline-3">
-<h3 id="org467c1f3"><a href="../sh/Dec2023-Feb2024.html#gvdlay40j3k0">A thought about Clojure</a></h3>
-<div class="outline-text-3" id="text-org467c1f3">
-<div class="smth" id="org234618d">
+<div id="outline-container-orgda907c9" class="outline-3">
+<h3 id="orgda907c9"><a href="../sh/Dec2023-Feb2024.html#gvdlay40j3k0">A thought about Clojure</a></h3>
+<div class="outline-text-3" id="text-orgda907c9">
+<div class="smth" id="org94d1bd9">
 <p>
 Sun 04 Feb 2024
 </p>
@@ -336,10 +777,10 @@ Sun 04 Feb 2024
 </div>
 </div>
 </div>
-<div id="outline-container-org13a954c" class="outline-3">
-<h3 id="org13a954c"><a href="../sh/Sept2023-Nov2023.html#bkuf5ac0fzj0">Reconsidering SBCL</a></h3>
-<div class="outline-text-3" id="text-org13a954c">
-<div class="smth" id="org4f1937e">
+<div id="outline-container-org0e5d2d8" class="outline-3">
+<h3 id="org0e5d2d8"><a href="../sh/Sept2023-Nov2023.html#bkuf5ac0fzj0">Reconsidering SBCL</a></h3>
+<div class="outline-text-3" id="text-org0e5d2d8">
+<div class="smth" id="orge98bff1">
 <p>
 Sun 15 Oct 2023
 </p>
@@ -347,10 +788,10 @@ Sun 15 Oct 2023
 </div>
 </div>
 </div>
-<div id="outline-container-org4e536b2" class="outline-3">
-<h3 id="org4e536b2"><a href="../sh/Jun2023-August2023.html#bek89831uxj0">Stop naming your libraries.</a></h3>
-<div class="outline-text-3" id="text-org4e536b2">
-<div class="smth" id="orge6e801d">
+<div id="outline-container-orgad4ea97" class="outline-3">
+<h3 id="orgad4ea97"><a href="../sh/Jun2023-August2023.html#bek89831uxj0">Stop naming your libraries.</a></h3>
+<div class="outline-text-3" id="text-orgad4ea97">
+<div class="smth" id="org8162cbb">
 <p>
 Sat 02 Sep 2023
 </p>
@@ -358,10 +799,10 @@ Sat 02 Sep 2023
 </div>
 </div>
 </div>
-<div id="outline-container-org0f547d9" class="outline-3">
-<h3 id="org0f547d9"><a href="../sh/Jun2023-August2023.html#vw1jrno02wj0">Navigating Computing Boundaries</a></h3>
-<div class="outline-text-3" id="text-org0f547d9">
-<div class="smth" id="org503f4dc">
+<div id="outline-container-orge0b71c3" class="outline-3">
+<h3 id="orge0b71c3"><a href="../sh/Jun2023-August2023.html#vw1jrno02wj0">Navigating Computing Boundaries</a></h3>
+<div class="outline-text-3" id="text-orge0b71c3">
+<div class="smth" id="org4216a4e">
 <p>
 Sat 15 Jul 2023
 </p>
@@ -369,10 +810,21 @@ Sat 15 Jul 2023
 </div>
 </div>
 </div>
-<div id="outline-container-org1940926" class="outline-3">
-<h3 id="org1940926"><a href="../sh/Dec2022-Feb2023.html#zhti90o02wj0">What We Lost</a></h3>
-<div class="outline-text-3" id="text-org1940926">
-<div class="smth" id="org1760c78">
+<div id="outline-container-org68eb5a1" class="outline-3">
+<h3 id="org68eb5a1"><a href="../stack.html#x3cceno02wj0">TL;DRs</a></h3>
+<div class="outline-text-3" id="text-org68eb5a1">
+<div class="smth" id="org197b02e">
+<p>
+Sat 15 Jul 2023
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-orgbe64f2b" class="outline-3">
+<h3 id="orgbe64f2b"><a href="../sh/Dec2022-Feb2023.html#zhti90o02wj0">What We Lost</a></h3>
+<div class="outline-text-3" id="text-orgbe64f2b">
+<div class="smth" id="orgf60b4d5">
 <p>
 Sat 15 Jul 2023
 </p>
@@ -387,7 +839,7 @@ Sat 15 Jul 2023
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: . Last build date: 2025-07-11 Fri 00:00.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.34). Written by: Salih Muhammed, by the date of: . Last build date: 2025-09-26 Fri 18:52.</p>
 
 </div>
 </div>

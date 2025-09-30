@@ -25,6 +25,448 @@
 
   <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
   <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+
+<!-- Import LazySizes - State-of-the-art lazy loading library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+
+<!-- Optional: Import plugins for better performance -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js" async></script>
+
+<script>
+// Only run on pages with 'art_paintings_media' in the path
+if (window.location.pathname.includes('art_paintings_media')) {
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    // Configure LazySizes for optimal performance
+    window.lazySizesConfig = window.lazySizesConfig || {};
+    window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
+    window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
+    window.lazySizesConfig.expFactor = 1.5; // Expand loading area
+    window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
+
+    // Add CSS for smooth transitions and collapsible content
+    const style = document.createElement('style');
+    style.textContent = `
+      .lazyload,
+      .lazyloading {
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+      }
+      .lazyloaded {
+        opacity: 1;
+      }
+      .collapsible-content {
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+      .collapsible-content.collapsed {
+        max-height: 0 !important;
+      }
+      .collapsible-content.expanded {
+        max-height: none;
+      }
+      /* Blur effect while loading (optional) */
+      .lazyloading {
+        filter: blur(5px);
+        opacity: 0.7;
+      }
+      .lazyloaded {
+        filter: none;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Find all h3 elements
+    const h3Elements = document.querySelectorAll('h3');
+
+    h3Elements.forEach(function(h3) {
+      // Make h3 clickable and add icon
+      h3.style.position = 'relative';
+      h3.style.cursor = 'pointer';
+      h3.style.paddingLeft = '20px';
+      h3.style.userSelect = 'none';
+
+      // Add the arrow icon
+      const icon = document.createElement('span');
+      icon.innerHTML = '▶';
+      icon.style.position = 'absolute';
+      icon.style.left = '0px';
+      icon.style.top = '50%';
+      icon.style.transform = 'translateY(-50%)';
+      icon.style.transition = 'transform 0.2s';
+      icon.style.fontSize = '0.8em';
+      icon.style.color = 'rgb(102, 102, 102)';
+      icon.style.fontFamily = 'monospace';
+
+      h3.insertBefore(icon, h3.firstChild);
+
+      // Find all content after this h3 until the next h3 or end of parent
+      const contentElements = [];
+      let nextElement = h3.nextElementSibling;
+
+      while (nextElement && nextElement.tagName !== 'H3') {
+        contentElements.push(nextElement);
+        nextElement = nextElement.nextElementSibling;
+      }
+
+      // Create a wrapper for smooth collapsing
+      const wrapper = document.createElement('div');
+      wrapper.className = 'collapsible-content collapsed';
+      wrapper.style.maxHeight = '0';
+
+      // Move content elements into wrapper
+      contentElements.forEach(function(element) {
+        wrapper.appendChild(element);
+      });
+
+      // Insert wrapper after h3
+      h3.parentNode.insertBefore(wrapper, h3.nextSibling);
+
+      // Prepare images for LazySizes lazy loading and make them clickable
+      const prepareImagesForLazyLoading = (container) => {
+        const images = container.querySelectorAll('img');
+        images.forEach(function(img) {
+          // Only process if not already processed
+          if (!img.classList.contains('lazyload') && !img.dataset.processed) {
+            // Store original src in data-src for LazySizes
+            if (img.src && img.src !== '' && !img.src.startsWith('data:')) {
+              img.dataset.src = img.src;
+              // Use a tiny placeholder or low-quality placeholder
+              img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+            }
+
+            // Handle srcset for responsive images
+            if (img.srcset && img.srcset !== '') {
+              img.dataset.srcset = img.srcset;
+              img.srcset = '';
+            }
+
+            // Handle sizes attribute
+            if (img.sizes) {
+              img.dataset.sizes = img.sizes;
+            }
+
+            // Add LazySizes classes
+            img.classList.add('lazyload');
+
+            // Make image clickable - add cursor pointer
+            img.style.cursor = 'pointer';
+
+            // Add click handler to open image in new tab
+            img.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation(); // Prevent triggering h3 collapse
+
+              // Get the actual image URL (either from src or data-src)
+              let imageUrl = this.src;
+              if (this.dataset.src && !this.src.startsWith('data:')) {
+                imageUrl = this.dataset.src;
+              } else if (this.src.startsWith('data:') && this.dataset.src) {
+                imageUrl = this.dataset.src;
+              }
+
+              // Open image in new tab
+              if (imageUrl && !imageUrl.startsWith('data:')) {
+                window.open(imageUrl, '_blank');
+              }
+            });
+
+            // Mark as processed
+            img.dataset.processed = 'true';
+
+            // Maintain aspect ratio to prevent layout shift
+            if (!img.style.aspectRatio && img.width && img.height) {
+              img.style.aspectRatio = img.width + '/' + img.height;
+            }
+          }
+        });
+      };
+
+      // Prepare all images in this section for lazy loading
+      prepareImagesForLazyLoading(wrapper);
+
+      // Track collapsed state
+      let isCollapsed = true;
+      let hasBeenExpanded = false;
+
+      // Add click handler
+      h3.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        if (isCollapsed) {
+          // Expand: show content and activate lazy loading
+          icon.style.transform = 'translateY(-50%) rotate(90deg)';
+          wrapper.classList.remove('collapsed');
+          wrapper.classList.add('expanded');
+          wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+
+          // Only activate LazySizes for this section when first expanded
+          if (!hasBeenExpanded) {
+            // Trigger LazySizes to check for images in this newly visible section
+            if (window.lazySizes) {
+              // Force LazySizes to check all images in this wrapper
+              const lazyImages = wrapper.querySelectorAll('.lazyload');
+              lazyImages.forEach(img => {
+                // Add to LazySizes queue
+                window.lazySizes.loader.unveil(img);
+              });
+            }
+            hasBeenExpanded = true;
+          }
+
+          isCollapsed = false;
+
+          // Recalculate height after images potentially load
+          setTimeout(() => {
+            if (!isCollapsed) {
+              wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+            }
+          }, 100);
+
+        } else {
+          // Collapse: hide content
+          icon.style.transform = 'translateY(-50%) rotate(0deg)';
+          wrapper.classList.remove('expanded');
+          wrapper.classList.add('collapsed');
+          wrapper.style.maxHeight = '0';
+
+          isCollapsed = true;
+        }
+      });
+
+      // Listen for LazySizes events to adjust height dynamically
+      wrapper.addEventListener('lazyloaded', function(e) {
+        if (!isCollapsed) {
+          // Adjust wrapper height when images load
+          setTimeout(() => {
+            wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+          }, 50);
+        }
+      });
+    });
+  });
+}
+</script>
+
+<script>
+
+
+
+  
+// Stack Page Formatter - Apply inline layout to specific pages
+(function() {
+  'use strict';
+  
+  // Check if current page should have the formatting applied
+  function shouldApplyFormatting() {
+    const path = window.location.pathname;
+    
+    // Check if path matches our target patterns
+    return path === '/stack' || 
+           path === '/stack.html' || 
+           path.startsWith('/sh/');
+  }
+  
+  // Only proceed if we're on a target page
+  if (!shouldApplyFormatting()) {
+    return;
+  }
+  
+  // Add CSS styles
+  function addStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+      /* Basic styling for entries */
+      .outline-3 {
+        margin-bottom: 1.5em;
+        line-height: 1.5;
+      }
+
+      /* Style for reconstructed single paragraph */
+      .entry-paragraph {
+        margin: 0;
+        line-height: 1.5;
+        direction: inherit;
+        unicode-bidi: plaintext;
+      }
+
+      /* Style for date - gray and nice */
+      .entry-date {
+        color: #666;
+        font-size: 0.9em;
+        margin-right: 0.5em;
+      }
+
+      /* Style for tag at end - gray and in parentheses */
+      .entry-tag {
+        display: inline !important;
+        color: #666;
+        margin-left: 0.5em;
+      }
+
+      /* Ensure all children stay inline */
+      .entry-tag * {
+        display: inline !important;
+      }
+
+      /* Override any existing tag styles */
+      .entry-tag p,
+      .entry-tag div {
+        display: inline !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      /* Hide block elements that will be moved */
+      .outline-3 .moved-block {
+        display: block;
+        margin: 0.5em 0;
+      }
+
+      /* Ensure proper anchor target visibility */
+      .outline-3[id] {
+        scroll-margin-top: 20px;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  // Extract ID from container div
+  function extractIdFromContainer(entry) {
+    const containerId = entry.id;
+    if (containerId && containerId.startsWith('outline-container-')) {
+      return containerId.replace('outline-container-', '');
+    }
+    return null;
+  }
+  
+  // Apply the formatting transformation
+  function applyFormatting() {
+    // Process each entry
+    const entries = document.querySelectorAll('.outline-3');
+    
+    entries.forEach((entry, index) => {
+      // Extract the anchor ID from the container before transformation
+      const anchorId = extractIdFromContainer(entry);
+      
+      // Extract components
+      const h3 = entry.querySelector('h3');
+      const notes = entry.querySelector('.notes');
+      const outlineText = entry.querySelector('.outline-text-3');
+      const tag = entry.querySelector('.tag');
+      
+      if (!h3 || !outlineText) return;
+      
+      // Get title text (preserve any TODO/DONE prefixes and links)
+      let titleText = h3.innerHTML;
+      
+      // Get timestamp
+      let timestampText = '';
+      if (notes) {
+        const timestamp = notes.querySelector('.timestamp');
+        if (timestamp) {
+          timestampText = timestamp.textContent;
+        }
+      }
+      
+      // Get content paragraphs (excluding notes and tag)
+      const contentParagraphs = [];
+      const blockElements = [];
+      
+      Array.from(outlineText.children).forEach(child => {
+        if (child.classList.contains('notes') || child.classList.contains('tag')) {
+          return; // Skip these
+        }
+        
+        if (child.tagName === 'P') {
+          contentParagraphs.push(child.innerHTML);
+        } else if (child.tagName === 'UL' || child.tagName === 'OL' || 
+                   child.tagName === 'BLOCKQUOTE' || child.tagName === 'PRE' ||
+                   child.tagName === 'DL' || child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        } else if (child.tagName === 'DIV' && child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        }
+      });
+      
+      // Get tag HTML (preserve links and formatting)
+      let tagHtml = '';
+      if (tag) {
+        tagHtml = tag.outerHTML;
+      }
+      
+      // Construct the new single paragraph
+      let newContent = '';
+      
+      // Add date at the start (gray)
+      if (timestampText) {
+        newContent += '<span class="entry-date">' + timestampText + '</span>';
+      }
+      
+      // Add title with emdash
+      newContent += titleText + ' — ';
+      
+      // Add content paragraphs
+      newContent += contentParagraphs.join(' ');
+      
+      // Add tag at the end in parentheses (preserve HTML but force inline)
+      if (tagHtml) {
+        // Extract just the inner content and wrap it properly
+        let tagContent = tag.innerHTML;
+        newContent += ' <span class="entry-tag">(' + tagContent + ')</span>';
+      }
+      
+      // Create new paragraph element
+      const newParagraph = document.createElement('p');
+      newParagraph.className = 'entry-paragraph';
+      newParagraph.innerHTML = newContent;
+      
+      // Clear the entry and add the new paragraph
+      entry.innerHTML = '';
+      entry.appendChild(newParagraph);
+      
+      // Preserve the anchor ID by setting it on the transformed entry
+      if (anchorId) {
+        entry.id = anchorId;
+      }
+      
+      // Add any block elements after the paragraph
+      blockElements.forEach(blockHtml => {
+        const blockDiv = document.createElement('div');
+        blockDiv.className = 'moved-block';
+        blockDiv.innerHTML = blockHtml;
+        entry.appendChild(blockDiv);
+      });
+      
+      // Add separator after each entry (except the last one)
+      if (index < entries.length - 1) {
+        const separator = document.createElement('hr');
+        separator.style.margin = '1em 0';
+        separator.style.border = 'none';
+        separator.style.borderTop = '1px solid #ccc';
+        entry.appendChild(separator);
+      }
+    });
+  }
+  
+  // Initialize when DOM is ready
+  function init() {
+    addStyles();
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', applyFormatting);
+    } else {
+      applyFormatting();
+    }
+  }
+  
+  // Start the initialization
+  init();
+})();
+</script>
+
+
+
 </head>
 <body>
 </body>
@@ -40,8 +482,7 @@
 <h1 class="title" style="
 margin-block-start: auto;
     color: black;
-">لّermontov</h1>
-
+">Hereby, all birds fly</h1>
       </a>
 <hr class="header-divider" style="margin-block-end: -1em;">
   </div>
@@ -66,9 +507,247 @@ p {
 (explanation of this page was moved <a href="whata.html">here</a>)
 </p>
 <hr>
-<div id="outline-container-org6db36d0" class="outline-2">
-<h2 id="org6db36d0">Content</h2>
-<div class="outline-text-2" id="text-org6db36d0">
+<div id="outline-container-org1509745" class="outline-2">
+<h2 id="org1509745">Content</h2>
+<div class="outline-text-2" id="text-org1509745">
+<p>
+وجميع أحداث الدهر وأمور الناس لا تأثير لها في رجل بنيته كمنل بنيتي، وما من تأثير
+تحدثه لي الهموم المستمرة إلا إذا تجددت انطباعاتها لحظة بعد لحظة. لأن الفترات
+التي تنقضي ما بين همّ وهمّ، مهما كانت قصيرة، تكفي لأن ترجعني إلى نفسي. أنا هو
+الذي يرضى الناس ما داموا قادرين على أن يؤثروا في حواسي. فإذا انقضت هذه الفترة،
+أصبحت من جديد ذلك الذي أرادت الطبيعة أن أكون.  هذه هي، مهما أمكنهم أن يعملوا،
+حالتي الأكثر ثباتاً والحالة التي بها أتنوق، رغم أنف القدر، السعادة التي أشعر بأني
+قد خلقت لها. لقد وصفت هذه الحال في ماجس من هواجي، فهي تلازمني جدّ الملازمة، حتى
+إني لا أغني إلا أن تطول مدتها ولا أخشى إلا أن أراها مكدّرة مكرّرة. إن الضرر الذي
+أنزله الناس بي لا يمسني بوجه من الوجوه. فإن خشيتي مما يمكنهم أن ينزلوه بي ضرر هي
+وحدها جديرة بأن تملأ نفسي اضطراباً. ولقد أيقنت بأنهم أصبحوا خلواً من مأخذ جديد
+يتيح لهم أن يؤثروا في بعاطفة مستمرة، ولذلك أستهزئ بجميع دسائسهم، وأتمتع بنفسي
+رغم أنوفهم.
+</p>
+
+
+
+<p>
+<i>Derived from</i> (<a href="#citeproc_bib_item_14">Rousseau, 2015</a>), no. 156. Appeared: 2025-09-02 (16:51)
+</p>
+<hr>
+<p>
+ويبدو أن النباتات قد زرعت بسخاء على الأرض، كما نثرت الكواكب على وجه السماء،
+لتدعو الإنسان، بجاذب من اللذة والفضول، إلى دراسة الطبيعة، ولكن الكواكب نثرت
+بعيداً عنا، فلا بدّ من معارف تمهيدية، ومن أدوات وآلات، ومن مراصد طويلة جدّ الطول
+لنصل إليها ونقرّبها من متناولنا. وأما النباتات فهي بطبيعتها في متناولنا، ثبتت تحت
+أقدامنا بل في أيدينا، وإذا كان صغر أجزائها الجوهرية يُخفيها، أحياناً عن الأنظار،
+فإن الأدوات التي تكبرها وتبرزها للعيان هي أسهل جداً في الاستعمال من أدوات علم
+الفلك.  وعلم النبات هو دراسة عاطل من العمل كسول منفرد بنفسه، فلا حاجة لمحراث هذا
+العلم إلا إلى حدّ وعدسيّة مكبّرة، فهو يتنقّل، حراً هائماً، من غرض إلى آخر ويستعرض كل
+زهرة وفضول، ولا يكاد يبين قوانين تكوينها حتى يتذوّق، في مراقبتها، لذة من دون مشقة
+تعادل تلك اللذة التي يستمتعها بعد تعب. وفي هذه الهواية فتنة لا يشعر بها المرء
+إلا في تمام سكون الشهوات ولكنها تكفي وحدها لجعل الحياة سعيدة حلوة، ولكن ما إن
+يمتزج بهذه الهواية داعٍ مصلحة أو كبرياء، سواء أكان ذلك لمال، وظائف أم لتأليف كتاب
+أم بغية التعلّم لتثقيف الناس أم ليصبح جامع الحشائش مؤلفاً أو أستاذاً، ما إن تمتزج
+هذه الدواعي، حتى تتوارى تلك البهجة العذبة وتزول.
+</p>
+
+<p>
+لذّة هذه الدراسة، لأن المنشغل بها لا يطلب معرفة ولكن تبجّحاً بالمعرفة، وكأنه، وهو
+في الغابات، على مسرح من مسارح المدن، لا همّ له إلا إعجاب الناس به. وهناك أناس
+يكتفون بالاشتغال بعلم النبات في مكاتبهم أو في حدائقهم بدل أن يراقبوا النبات في
+الطبيعة، فلا يرون النبات إلا إلى الأساليب وطرق الترتيب، مما يبعث مواضيع للنقاش
+والنزاع لا نهاية لها، ولكنها لا تلقي النور على نبتة جديدة غير معروفة، ولا على
+التاريخ الطبيعي وعالم النبات. ومن هذا تتولد حروب البغض والحسد التي تثيرها
+المزاحمة على الشهرة في قلوب المنشغلين بعلم النبات أكثر مما تثيرها في قلوب غيرهم
+من العلماء.  ثم إنهم، يتشوّههم هذه الدراسة المستعصبة، ينقلونها إلى وسط المدن
+والمجامع العلمية، حيث يتسرب إليها من الفساد ما لا يقل عما يتسرب إلى النباتات
+الغريبة في الحدائق المعدّة للنباتات النادرة.
+</p>
+
+
+
+<p>
+<i>Derived from</i> (<a href="#citeproc_bib_item_14">Rousseau, 2015</a>), no. 133. Appeared: 2025-09-02 (16:51)
+</p>
+<hr>
+<p>
+أيتها الأزهار الملائكة، طلاء الروح، وأنت أيتها الظلال المنعشة الرطبة والجداول
+والرياض والخضرة! تعالي طهري أخيلتي من الدنس الذي تلطخه به هذه الأمور البشعة. إن
+نفسي التي ماتت في السعي وراء عظام الأمور، أصبحت لا تنفعل إلا بكل ما هو مؤثر. لم
+يبق لي إلا الأحاسيس، وربها وحدها يستطيع الحزن أو السرور أن يصلا إلي في هذه
+الدنيا. وإذا أراني وقد تبنيت الأشياء الضاحكة المحدقة بي، فها إني أمعن النظر
+فيها، وأتأملها وأقابل بينها، وها إني قد أصبحت، على حين فجأة، مشتغلاً بعلم النبات،
+بقدر ما يحتاج إليه من لا يقبل على دراسة علوم الطبيعة إلا ليجد، يوماً بعد يوم،
+دواعي جديدة للإغرام بها.
+</p>
+
+
+
+<p>
+<i>Derived from</i> (<a href="#citeproc_bib_item_14">Rousseau, 2015</a>), no. 132. Appeared: 2025-09-02 (16:51)
+</p>
+<hr>
+<p>
+إن الأشجار والشجيرات والنباتات هي حُلى الطبيعة وكساها. ولا شيء أدعى إلى الكآبة من
+برية عارية جرداء لا تبسط للناظر إلا حجارة وطيناً ورملاً. ولكن إذا بعثت فيها الحياة
+الطبيعة وكستها ثوب عرسها ما بين مجاري المياه وتغريد الطيور، فإن الأرض تعرض على
+الإنسان، في تناسق العوالم الثلاثة منظراً مليئاً بالحياة والسحر ومثيراً للاهتمام،
+وهو، في العالم، المنظر الوحيد الذي لا يمله العين والقلب أبداً.
+</p>
+
+<p>
+وكلما كانت نفس المتأمل مرهفة الإحساس، ازداد استسلاماً إلى الانجذابات الروحية التي
+تجيرها فيه هذا الانسجام، فيستولي على حواسه عند ذاك تخيلات حوله عميقة، ويتيه، وهو
+في نشوة لذيذة، في لا نهاية هذا التنظيم الجميل الذي يُحسُّ أن ذاتيته قد اندمجت فيه،
+وعندئذٍ تختفي أمام عينيه جميع الأشياء الجزئية، فلا يرى شيئاً إلا في الأشياء
+الكلية، ولا يحسُّ شيئاً سواها. ولا بد من ظروف خاصة تضيِّق أفكاره وتطوِّق خياله حتى
+يستطيع أن يمعن النظر، جزءاً فجزءاً، في هذا العالم الذي يحاول أن يحتضنه.
+</p>
+
+<p>
+وطالبت في فترة هذه الاستراحة، استراحة العينين التي، إذا ما خان المرء التوفيق،
+تريح وتسلي وتلهي الذهن، وتتوقف إلى وقت ما الشعور بالهموم. وطبيعة الأشياء تساعد
+على هذا التلاهي جداً المساعدة وتجعله أكثر فتنة. إن الروائح الذكية، والألوان
+الضارخة، والأشكال البالغة الحُسن في الأناقة تبدو وكأنها تتنازع، بجميع قواها، حقَّ
+استرعاء انتباهنا. ولا يقتضي الاستسلام إلى هذه الأحاسيس المتناهية في العذوبة إلا
+الشعور متذوق اللذة، وإذا لم يشعر باللذة جميع من وقعت هذه المناظر تحت أعينهم،
+فلأن بعضهم يعوزه الإحساس الطبيعي، ولأن معظمهم إذا ملكت عليه مشاعره أفكار أخرى،
+لا يستسلم، إلا خلسة، إلى الأشياء التي تؤثر في حواسه.
+</p>
+
+
+
+<p>
+<i>Derived from</i> (<a href="#citeproc_bib_item_14">Rousseau, 2015</a>), no. 123. Appeared: 2025-09-02 (16:51)
+</p>
+<hr>
+<p>
+ولكن الصبر والرفق والتسليم والنزاهة والعدل الذي لا يحابي، هي كلها مقتنى يحمله
+المرء معه، مقتنى يمكن أن يحرز الغنى به من دون انقطاع ومن دون أن يخشى أن يسلبه
+إياه سالب ولو كان الموت.  وسأكرس ما بقي من شيخوختي للقيام بهذه الدراسة النافعة
+وحدها.  وما أسعدني لو أني باستكمالي لفضائل نفسي، أعرف أن أخرج من الحياة لا أحسن
+مما أنا - لاستحالة إمكان هذا - ولكن أكثر فضيلة مني يوم دخلتها.
+</p>
+
+
+
+<p>
+<i>Derived from</i> (<a href="#citeproc_bib_item_14">Rousseau, 2015</a>), no. 63. Appeared: 2025-09-02 (16:51)
+</p>
+<hr>
+<p>
+اعلم أن قابل المدح كمادح نفسه، والمرء جدير أن يكون حبُّه المدحَ هو الذي يحمله على
+ردِّه، فإن الرادَّ له محمود، والقابل له معيب. لتكن حاجتك في الولاية إلى ثلاث خصال:
+رضى ربِّك، ورضى سلطانٍ إن كان فوقك، ورضى صالح من تلي عليه. ولا عليك أن تلهو عن
+المال والذكر، فسيأتيك منهما ما يكفي ويطيب. واجعل الخصال الثلاث بمكانِ ما لا بد لك
+منه، والمال والذكر بمكانِ ما أنت واجدٌ منه بدًّا.
+</p>
+
+<ul class="org-ul">
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-08-08 Fri 21:10]</span></span> Salih Muhammed: Might be related to: <a href="p/eulogy.html#7eskndp02wj0">Nietzsche on Eulogy</a>.</li>
+</ul>
+
+
+
+<p>
+<i>Derived from</i> (<a href="#citeproc_bib_item_18">ibn Al-Muqaffa’a, 2019</a>), no. 17. Appeared: 2025-09-02 (16:46)
+</p>
+<hr>
+<p>
+والنتيجة التي يمكن أن أستخلصها من جميع هذه الاعتبارات هي أني لم أكن قط قابلاً
+للاندماج في المجتمع المدني، حيث تجد كل شيء إزعاجاً وارتباكاً والتزاماً وواجباً ولأن
+طبعي المستقل جعلني دائماً غير قابل لإرغام النفس على اتباع ما تواضع الناس عليه،
+وما لا بد منه لمن أراد أن يعيش معهم. وما دمت أعمل حراً فأنا طيب ولا أعمل إلا
+خيراً، ولكن لا أكاد أشعر بوطأة النير، سواء أكانت من العزم أم من الناس، حتى أصبح
+ثائراً بل جامعاً، وحتى أراني لست شيئاً. وإذا
+اضطررت إلى عمل عكس ما تقضي به إرادتي، امتنع عن العمل أياً كانت غبني هذا الامتناع،
+بل إني لا أعمل بوحي إرادتي نفسها، لأني ضعيف. فامتنع عن العمل لأن كل ضعفي منصب
+على العمل، وكل قوتي هي في الامتناع، وجميع خطاياي هي من الإهمال، ونادراً جداً أن
+تكون من الفعل.
+</p>
+
+<p>
+ولم أعتقد قط أن حرية المرء تقوم على أن يعمل ما يريد، ولكنها تقوم على ألا يعمل
+أبداً ما لا يريده، وهذه هي الحرية التي طالما طالبت بها، وكثيراً ما حرصت عليها وبها
+كنت موضع فضيحة عند معاصري، لأنهم، إذ كانوا ذوي نشاط وطموح وحركة، كانوا يعتدون
+الحرية عند غيرهم، ولا عند أنفسهم؛ إذ لا يريدونها لأنفسهم، شرط أن يعملوا في بعض
+الأحيان، إرادتهم أو بالأحرى أن يسلطوا على حرية غيرهم، قلت ولأنهم يكلفون أنفسهم،
+طول حياتهم، عمل ما يشمئزون منه ولا يترددون عنا به غفلة كي يكونوا آمرين. فجعلتهم
+على لم يكن إذن في تبحثي من المجتمع على أني عضو غير نافع، بل رباعدي عنه من دون
+عاكمة، على أني عضو مفسد؛ وأنا أصرح بأني أقللت من عمل الخير لكني لم أعمل شراً ولا
+غني الشر إرادتي طول حياتي، وأملك أن يكون في العالم رجل قد عمل من الشر في الحقيقة
+والواقع، أقل مما عملت.
+</p>
+
+
+
+<p>
+<i>Derived from</i> (<a href="#citeproc_bib_item_14">Rousseau, 2015</a>), no. 117. Appeared: 2025-08-22 (16:59)
+</p>
+<hr>
+
+<p>
+هناك أنواع من البلايا تسمو بالنفس وتقوّيها كما أن هناك ضروباً أخرى تحطمها وتقضي
+عليها، ومن هذا النوع المصائب التي أصبحت فريسة لها. ولو مزج قليل من الخمير في
+مصيبتي لزاد في اختبارها إلى أقصى حد ولأصبحت هائجاً ثائراً، ولكنها لم تجعلني إلا
+صفراً. وإذ أصبحت عاجزاً عن أن أحسن عملاً يفيدني أو يفيد غيري، فقد امتنعت عن أن
+أعمل، وهذه الحال ليست بحال براءة إلا لأنها تجعلني أجد نوعاً من العذرية أن أستسلم،
+بلا لوم، إلى سجيتي. إني تجاوزت الحد بلا شك، لأنني أتجنب الفرص المواتية للعمل،
+حتى في الحالات التي لا يكون فيها العمل إلا صالحاً، ولكني ليتبقى أنهم لا بتركوني
+أنظر إلى الأشياء كما هي، أمتنع عن الحكم على الظاهر الذي يموهونها به، وعلى ضروب
+المخادعة التي يخفون وراءها الأسباب الدافعة للعمل، ويكفي أن أترك هذه الأسباب في
+متناولي لأكون على يقين أنها خداعة.
+</p>
+
+
+
+<p>
+<i>Derived from</i> (<a href="#citeproc_bib_item_14">Rousseau, 2015</a>), no. 112. Appeared: 2025-08-22 (16:57)
+</p>
+<hr>
+<p>
+وإذا  أنا مطمئن لهذه الاستعدادات، فإني أجد فيها، مع رضاي عن نفسي، الأمل والتعزية
+اللذين أنا في حاجة إليهما في حالي الحاضرة. وليس من الممكن أن عزلة تامة كعزلتي،
+دائمة كل الدوام، مليئة بالحزن والوحشة، وأن العداوة الحساسة كل الإحساس، الدائمة
+العمل، عداوة الجيل الحاضر وما ترميني به من خزي بلا انقطاع - قلت ليس من الممكن
+ألا يلقي به كل هذا في أحضان الخور والانهيار؛ وإذا ما وجدتني مزعزع الأمل، فإن
+الشكوك المثبطة للهمم تعود من وقت إلى وقت إلى تعكير صفاء نفسي تملؤها حزناً وكآبة.
+وعند ذلك، إذ أراني عاجزاً عن ممارسة أعمال الذهن، اللازمة لإدخال الطمأنينة إلى
+نفسي، فإني أشعر بحاجة إلى تذكر ما صممت عليه قديماً، فضروب العناية، والانتباه،
+وإخلاص القلب، كل هذا الذي تكلفته في سبيل ذلك التصميم يعود عندئذ إلى ذاكرتي وبعيد
+إلى ملء نفسي. وهكذا فإني أطرح جميع الفكر الجديدة كما تُطرح الأخطاء المشؤومة التي
+ليس لها إلا مظهر مزين لا تصلح إلا لإقلاق راحتي.
+</p>
+
+
+
+<p>
+<i>Derived from</i> (<a href="#citeproc_bib_item_14">Rousseau, 2015</a>), no. 62. Appeared: 2025-08-22 (16:50)
+</p>
+<hr>
+<p>
+لا تكوننَّ نزِر الكلام والسلام، ولا تُفرِّطنَّ بالهشاشة والبشاشة، فإن إحداهما من الكِبْر، والأخرى من السخف.
+</p>
+
+
+
+<p>
+<i>Derived from</i> (<a href="#citeproc_bib_item_18">ibn Al-Muqaffa’a, 2019</a>), no. 18. Appeared: 2025-08-08 (21:24)
+</p>
+<hr>
+<p>
+اعلم أن رأيك لا يتسع لكل شيء ففَرِّغْه للمهم، وأن مالك لا يغني الناس كلَّهم فاختص به
+ذوي الحقوق، وأن كرامتك لا تطيق العامة فتَوِّجْ بها أهل الفضائل، وأن ليلك ونهارك لا
+يستوعبان حاجاتك وإن دأبت فيهما، وأنه ليس لك إلى أدائهما سبيلٌ مع حاجة جسدك إلى
+نصيبه منهما، فأحسن قسمتهما بين دَعَتِك وعملك. واعلم أنك ما شغلت من رأيك بغير المهم
+أزرى بالمهم، وما صرفت من مالك بالباطل فَقَدْتَه حين تريدُه للحق، وما عدلت به من
+كرامتك إلى أهل النقص أضرُّ بك في العجز عن أهل الفضل، وما شغلت من ليلك ونهارك في
+غير الحاجة أزرى بك في الحاجة.
+</p>
+
+
+
+<p>
+<i>Derived from</i> (<a href="#citeproc_bib_item_18">ibn Al-Muqaffa’a, 2019</a>), no. 18. Appeared: 2025-08-08 (21:15)
+</p>
+<hr>
 <p>
 The social moresh of capitalism have induced the view that virtually every
 subjectively felt need or unhappiness can be eliminated if one can buy more
@@ -508,7 +1187,7 @@ whether I recognized her or not?
 
 
 <p>
-<i>Derived from</i> (<a href="#citeproc_bib_item_15">al-Akbari et al., 1997</a>), no. 109. Appeared: 2025-03-07 (16:13)
+<i>Derived from</i> (<a href="#citeproc_bib_item_16">al-Akbari et al., 1997</a>), no. 109. Appeared: 2025-03-07 (16:13)
 </p>
 <hr>
 <p>
@@ -593,7 +1272,7 @@ been altogether forbidden so far is the truth.
 
 
 <p>
-<i>Derived from</i> (<a href="#citeproc_bib_item_17">ibn Al-Muqaffa’a, 2019</a>), no. 34. Appeared: 2024-08-08 (09:36)
+<i>Derived from</i> (<a href="#citeproc_bib_item_18">ibn Al-Muqaffa’a, 2019</a>), no. 34. Appeared: 2024-08-08 (09:36)
 </p>
 <hr>
 <p>
@@ -604,7 +1283,7 @@ been altogether forbidden so far is the truth.
 
 
 <p>
-<i>Derived from</i> (<a href="#citeproc_bib_item_17">ibn Al-Muqaffa’a, 2019</a>), no. 33. Appeared: 2024-08-08 (09:34)
+<i>Derived from</i> (<a href="#citeproc_bib_item_18">ibn Al-Muqaffa’a, 2019</a>), no. 33. Appeared: 2024-08-08 (09:34)
 </p>
 <hr>
 <p>
@@ -622,7 +1301,7 @@ been altogether forbidden so far is the truth.
 
 
 <p>
-<i>Derived from</i> (<a href="#citeproc_bib_item_17">ibn Al-Muqaffa’a, 2019</a>), no. 33. Appeared: 2024-08-08 (09:32)
+<i>Derived from</i> (<a href="#citeproc_bib_item_18">ibn Al-Muqaffa’a, 2019</a>), no. 33. Appeared: 2024-08-08 (09:32)
 </p>
 <hr>
 <p>
@@ -638,7 +1317,7 @@ been altogether forbidden so far is the truth.
 
 
 <p>
-<i>Derived from</i> (<a href="#citeproc_bib_item_17">ibn Al-Muqaffa’a, 2019</a>), no. 30. Appeared: 2024-08-08 (09:22)
+<i>Derived from</i> (<a href="#citeproc_bib_item_18">ibn Al-Muqaffa’a, 2019</a>), no. 30. Appeared: 2024-08-08 (09:22)
 </p>
 <hr>
 <p>
@@ -900,7 +1579,7 @@ Perhaps this description might be used to answer the nightly self-questioning st
 
 
 <p>
-<i>Derived from</i> (<a href="#citeproc_bib_item_16">al-Ghazali and (editor), 1993</a>), no. 231. Appeared: 2024-03-06 (04:43)
+<i>Derived from</i> (<a href="#citeproc_bib_item_17">al-Ghazali and (editor), 1993</a>), no. 231. Appeared: 2024-03-06 (04:43)
 </p>
 <hr>
 <p>
@@ -1156,7 +1835,7 @@ that I jeer, that I deal in terrible jests.
 
 
 <p>
-<i>Derived from</i> (<a href="#citeproc_bib_item_14">Shariati, 2007</a>), no. 111. Appeared: 2024-01-08 (20:01)
+<i>Derived from</i> (<a href="#citeproc_bib_item_15">Shariati, 2007</a>), no. 111. Appeared: 2024-01-08 (20:01)
 </p>
 <hr>
 <p>
@@ -1183,7 +1862,7 @@ that I jeer, that I deal in terrible jests.
 
 
 <p>
-<i>Derived from</i> (<a href="#citeproc_bib_item_14">Shariati, 2007</a>), no. 70. Appeared: 2024-01-08 (20:01)
+<i>Derived from</i> (<a href="#citeproc_bib_item_15">Shariati, 2007</a>), no. 70. Appeared: 2024-01-08 (20:01)
 </p>
 <hr>
 <div class="notes"> <p>
@@ -1344,14 +2023,14 @@ must of necessity be unhappy.
 
 
 <p>
-<i>Derived from</i> (<a href="#citeproc_bib_item_14">Shariati, 2007</a>), no. 68. Appeared: 2024-01-08 (19:59)
+<i>Derived from</i> (<a href="#citeproc_bib_item_15">Shariati, 2007</a>), no. 68. Appeared: 2024-01-08 (19:59)
 </p>
 <hr>
 </div>
 </div>
-<div id="outline-container-org46b7e11" class="outline-2">
-<h2 id="org46b7e11">Bibliography</h2>
-<div class="outline-text-2" id="text-org46b7e11">
+<div id="outline-container-org5bda506" class="outline-2">
+<h2 id="org5bda506">Bibliography</h2>
+<div class="outline-text-2" id="text-org5bda506">
 <style>.csl-entry{text-indent: -1.5em; margin-left: 1.5em;}</style><div class="csl-bib-body">
   <div class="csl-entry"><a id="citeproc_bib_item_1"></a>Aurelius, M., 2012. <a href="https://libgen.li/file.php?md5=1169f89cf3cb237fa6b11a8acad7ea9a">The thoughts of marcus aurelius</a>. Duke Classics.</div>
   <div class="csl-entry"><a id="citeproc_bib_item_2"></a>Caputo, J.D., Critchley, S., 2008. <a href="http://gen.lib.rus.ec/book/index.php?md5=6b2b51bd1ced94aca081bd78fdad10fc">How to read kierkegaard</a>, 1st American ed. ed, How to read. W. W. Norton &#38; Co.</div>
@@ -1366,10 +2045,11 @@ must of necessity be unhappy.
   <div class="csl-entry"><a id="citeproc_bib_item_11"></a>Nietzsche, F.W., 2007. Thus spoke zarathustra history of philosophy friedrich nietzsche. Al-Kamel Verlag.</div>
   <div class="csl-entry"><a id="citeproc_bib_item_12"></a>Nietzsche, F.W., 1998. The dawn of day. Dover Publications.</div>
   <div class="csl-entry"><a id="citeproc_bib_item_13"></a>Quignard, P., 2019. Sex and terror. Seagull Books.</div>
-  <div class="csl-entry"><a id="citeproc_bib_item_14"></a>Shariati, A., 2007. Al-nanahaah and al-estehmar, Complete wroks. Dar al-Amir, Lebanon.</div>
-  <div class="csl-entry"><a id="citeproc_bib_item_15"></a>al-Akbari, A.a.-B., al-Saqa, M., al-Ibiari, I., Shalabi, A., 1997. Al-tibyan fi sharh al-diwan. Dar al-Ma’rifah, Lebanon.</div>
-  <div class="csl-entry"><a id="citeproc_bib_item_16"></a>al-Ghazali, A.H., (editor), I.A., 1993. Majmu’at rasail al-imam al-ghazali. Al-Maktaba Al-Tawfiqiyya, Cairo, Egypt.</div>
-  <div class="csl-entry"><a id="citeproc_bib_item_17"></a>ibn Al-Muqaffa’a, A., 2019. Al-durrah al-yateemah. Hindawi.</div>
+  <div class="csl-entry"><a id="citeproc_bib_item_14"></a>Rousseau, J.-J., 2015. Reveries of the solitary walker, First. ed. Arab Organization for Translation, Beirut.</div>
+  <div class="csl-entry"><a id="citeproc_bib_item_15"></a>Shariati, A., 2007. Al-nanahaah and al-estehmar, Complete wroks. Dar al-Amir, Lebanon.</div>
+  <div class="csl-entry"><a id="citeproc_bib_item_16"></a>al-Akbari, A.a.-B., al-Saqa, M., al-Ibiari, I., Shalabi, A., 1997. Al-tibyan fi sharh al-diwan. Dar al-Ma’rifah, Lebanon.</div>
+  <div class="csl-entry"><a id="citeproc_bib_item_17"></a>al-Ghazali, A.H., (editor), I.A., 1993. Majmu’at rasail al-imam al-ghazali. Al-Maktaba Al-Tawfiqiyya, Cairo, Egypt.</div>
+  <div class="csl-entry"><a id="citeproc_bib_item_18"></a>ibn Al-Muqaffa’a, A., 2019. Al-durrah al-yateemah. Hindawi.</div>
 </div>
 </div>
 </div>
@@ -1377,16 +2057,16 @@ must of necessity be unhappy.
 <h2 class="footnotes">Footnotes: </h2>
 <div id="text-footnotes">
 
-<div class="footdef"><sup><a id="fn.-10-1" class="footnum" href="#fnr.-10-1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.-11-1" class="footnum" href="#fnr.-11-1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Perhaps this description might be used to answer the nightly self-questioning states; who I am? who I want to be? what do I admire?
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.-13-2" class="footnum" href="#fnr.-13-2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.-14-2" class="footnum" href="#fnr.-14-2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 It&rsquo;s incredible how Nietzsche sounds like he knew about René Girard&rsquo;s
 theory.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.-13-1" class="footnum" href="#fnr.-13-1" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.-14-1" class="footnum" href="#fnr.-14-1" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 Zarathustra always rejected his followers: &ldquo;&#x2026; and only when you have
 all denied me will I return to you. Indeed, with different eyes, my brothers,
 will I then seek my lost ones; with a different love will I love you
@@ -1412,7 +2092,7 @@ because you have it!</p></div></div>
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: 2024-01-07 Sun 12:25. Last build date: 2025-06-28 Sat 18:37.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.34). Written by: Salih Muhammed, by the date of: 2024-01-07 Sun 12:25. Last build date: 2025-07-25 Fri 00:00.</p>
 
 </div>
 </div>

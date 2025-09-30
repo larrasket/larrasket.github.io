@@ -25,6 +25,448 @@
 
   <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
   <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+
+<!-- Import LazySizes - State-of-the-art lazy loading library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+
+<!-- Optional: Import plugins for better performance -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js" async></script>
+
+<script>
+// Only run on pages with 'art_paintings_media' in the path
+if (window.location.pathname.includes('art_paintings_media')) {
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    // Configure LazySizes for optimal performance
+    window.lazySizesConfig = window.lazySizesConfig || {};
+    window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
+    window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
+    window.lazySizesConfig.expFactor = 1.5; // Expand loading area
+    window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
+
+    // Add CSS for smooth transitions and collapsible content
+    const style = document.createElement('style');
+    style.textContent = `
+      .lazyload,
+      .lazyloading {
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+      }
+      .lazyloaded {
+        opacity: 1;
+      }
+      .collapsible-content {
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+      .collapsible-content.collapsed {
+        max-height: 0 !important;
+      }
+      .collapsible-content.expanded {
+        max-height: none;
+      }
+      /* Blur effect while loading (optional) */
+      .lazyloading {
+        filter: blur(5px);
+        opacity: 0.7;
+      }
+      .lazyloaded {
+        filter: none;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Find all h3 elements
+    const h3Elements = document.querySelectorAll('h3');
+
+    h3Elements.forEach(function(h3) {
+      // Make h3 clickable and add icon
+      h3.style.position = 'relative';
+      h3.style.cursor = 'pointer';
+      h3.style.paddingLeft = '20px';
+      h3.style.userSelect = 'none';
+
+      // Add the arrow icon
+      const icon = document.createElement('span');
+      icon.innerHTML = '▶';
+      icon.style.position = 'absolute';
+      icon.style.left = '0px';
+      icon.style.top = '50%';
+      icon.style.transform = 'translateY(-50%)';
+      icon.style.transition = 'transform 0.2s';
+      icon.style.fontSize = '0.8em';
+      icon.style.color = 'rgb(102, 102, 102)';
+      icon.style.fontFamily = 'monospace';
+
+      h3.insertBefore(icon, h3.firstChild);
+
+      // Find all content after this h3 until the next h3 or end of parent
+      const contentElements = [];
+      let nextElement = h3.nextElementSibling;
+
+      while (nextElement && nextElement.tagName !== 'H3') {
+        contentElements.push(nextElement);
+        nextElement = nextElement.nextElementSibling;
+      }
+
+      // Create a wrapper for smooth collapsing
+      const wrapper = document.createElement('div');
+      wrapper.className = 'collapsible-content collapsed';
+      wrapper.style.maxHeight = '0';
+
+      // Move content elements into wrapper
+      contentElements.forEach(function(element) {
+        wrapper.appendChild(element);
+      });
+
+      // Insert wrapper after h3
+      h3.parentNode.insertBefore(wrapper, h3.nextSibling);
+
+      // Prepare images for LazySizes lazy loading and make them clickable
+      const prepareImagesForLazyLoading = (container) => {
+        const images = container.querySelectorAll('img');
+        images.forEach(function(img) {
+          // Only process if not already processed
+          if (!img.classList.contains('lazyload') && !img.dataset.processed) {
+            // Store original src in data-src for LazySizes
+            if (img.src && img.src !== '' && !img.src.startsWith('data:')) {
+              img.dataset.src = img.src;
+              // Use a tiny placeholder or low-quality placeholder
+              img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+            }
+
+            // Handle srcset for responsive images
+            if (img.srcset && img.srcset !== '') {
+              img.dataset.srcset = img.srcset;
+              img.srcset = '';
+            }
+
+            // Handle sizes attribute
+            if (img.sizes) {
+              img.dataset.sizes = img.sizes;
+            }
+
+            // Add LazySizes classes
+            img.classList.add('lazyload');
+
+            // Make image clickable - add cursor pointer
+            img.style.cursor = 'pointer';
+
+            // Add click handler to open image in new tab
+            img.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation(); // Prevent triggering h3 collapse
+
+              // Get the actual image URL (either from src or data-src)
+              let imageUrl = this.src;
+              if (this.dataset.src && !this.src.startsWith('data:')) {
+                imageUrl = this.dataset.src;
+              } else if (this.src.startsWith('data:') && this.dataset.src) {
+                imageUrl = this.dataset.src;
+              }
+
+              // Open image in new tab
+              if (imageUrl && !imageUrl.startsWith('data:')) {
+                window.open(imageUrl, '_blank');
+              }
+            });
+
+            // Mark as processed
+            img.dataset.processed = 'true';
+
+            // Maintain aspect ratio to prevent layout shift
+            if (!img.style.aspectRatio && img.width && img.height) {
+              img.style.aspectRatio = img.width + '/' + img.height;
+            }
+          }
+        });
+      };
+
+      // Prepare all images in this section for lazy loading
+      prepareImagesForLazyLoading(wrapper);
+
+      // Track collapsed state
+      let isCollapsed = true;
+      let hasBeenExpanded = false;
+
+      // Add click handler
+      h3.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        if (isCollapsed) {
+          // Expand: show content and activate lazy loading
+          icon.style.transform = 'translateY(-50%) rotate(90deg)';
+          wrapper.classList.remove('collapsed');
+          wrapper.classList.add('expanded');
+          wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+
+          // Only activate LazySizes for this section when first expanded
+          if (!hasBeenExpanded) {
+            // Trigger LazySizes to check for images in this newly visible section
+            if (window.lazySizes) {
+              // Force LazySizes to check all images in this wrapper
+              const lazyImages = wrapper.querySelectorAll('.lazyload');
+              lazyImages.forEach(img => {
+                // Add to LazySizes queue
+                window.lazySizes.loader.unveil(img);
+              });
+            }
+            hasBeenExpanded = true;
+          }
+
+          isCollapsed = false;
+
+          // Recalculate height after images potentially load
+          setTimeout(() => {
+            if (!isCollapsed) {
+              wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+            }
+          }, 100);
+
+        } else {
+          // Collapse: hide content
+          icon.style.transform = 'translateY(-50%) rotate(0deg)';
+          wrapper.classList.remove('expanded');
+          wrapper.classList.add('collapsed');
+          wrapper.style.maxHeight = '0';
+
+          isCollapsed = true;
+        }
+      });
+
+      // Listen for LazySizes events to adjust height dynamically
+      wrapper.addEventListener('lazyloaded', function(e) {
+        if (!isCollapsed) {
+          // Adjust wrapper height when images load
+          setTimeout(() => {
+            wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+          }, 50);
+        }
+      });
+    });
+  });
+}
+</script>
+
+<script>
+
+
+
+  
+// Stack Page Formatter - Apply inline layout to specific pages
+(function() {
+  'use strict';
+  
+  // Check if current page should have the formatting applied
+  function shouldApplyFormatting() {
+    const path = window.location.pathname;
+    
+    // Check if path matches our target patterns
+    return path === '/stack' || 
+           path === '/stack.html' || 
+           path.startsWith('/sh/');
+  }
+  
+  // Only proceed if we're on a target page
+  if (!shouldApplyFormatting()) {
+    return;
+  }
+  
+  // Add CSS styles
+  function addStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+      /* Basic styling for entries */
+      .outline-3 {
+        margin-bottom: 1.5em;
+        line-height: 1.5;
+      }
+
+      /* Style for reconstructed single paragraph */
+      .entry-paragraph {
+        margin: 0;
+        line-height: 1.5;
+        direction: inherit;
+        unicode-bidi: plaintext;
+      }
+
+      /* Style for date - gray and nice */
+      .entry-date {
+        color: #666;
+        font-size: 0.9em;
+        margin-right: 0.5em;
+      }
+
+      /* Style for tag at end - gray and in parentheses */
+      .entry-tag {
+        display: inline !important;
+        color: #666;
+        margin-left: 0.5em;
+      }
+
+      /* Ensure all children stay inline */
+      .entry-tag * {
+        display: inline !important;
+      }
+
+      /* Override any existing tag styles */
+      .entry-tag p,
+      .entry-tag div {
+        display: inline !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      /* Hide block elements that will be moved */
+      .outline-3 .moved-block {
+        display: block;
+        margin: 0.5em 0;
+      }
+
+      /* Ensure proper anchor target visibility */
+      .outline-3[id] {
+        scroll-margin-top: 20px;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  // Extract ID from container div
+  function extractIdFromContainer(entry) {
+    const containerId = entry.id;
+    if (containerId && containerId.startsWith('outline-container-')) {
+      return containerId.replace('outline-container-', '');
+    }
+    return null;
+  }
+  
+  // Apply the formatting transformation
+  function applyFormatting() {
+    // Process each entry
+    const entries = document.querySelectorAll('.outline-3');
+    
+    entries.forEach((entry, index) => {
+      // Extract the anchor ID from the container before transformation
+      const anchorId = extractIdFromContainer(entry);
+      
+      // Extract components
+      const h3 = entry.querySelector('h3');
+      const notes = entry.querySelector('.notes');
+      const outlineText = entry.querySelector('.outline-text-3');
+      const tag = entry.querySelector('.tag');
+      
+      if (!h3 || !outlineText) return;
+      
+      // Get title text (preserve any TODO/DONE prefixes and links)
+      let titleText = h3.innerHTML;
+      
+      // Get timestamp
+      let timestampText = '';
+      if (notes) {
+        const timestamp = notes.querySelector('.timestamp');
+        if (timestamp) {
+          timestampText = timestamp.textContent;
+        }
+      }
+      
+      // Get content paragraphs (excluding notes and tag)
+      const contentParagraphs = [];
+      const blockElements = [];
+      
+      Array.from(outlineText.children).forEach(child => {
+        if (child.classList.contains('notes') || child.classList.contains('tag')) {
+          return; // Skip these
+        }
+        
+        if (child.tagName === 'P') {
+          contentParagraphs.push(child.innerHTML);
+        } else if (child.tagName === 'UL' || child.tagName === 'OL' || 
+                   child.tagName === 'BLOCKQUOTE' || child.tagName === 'PRE' ||
+                   child.tagName === 'DL' || child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        } else if (child.tagName === 'DIV' && child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        }
+      });
+      
+      // Get tag HTML (preserve links and formatting)
+      let tagHtml = '';
+      if (tag) {
+        tagHtml = tag.outerHTML;
+      }
+      
+      // Construct the new single paragraph
+      let newContent = '';
+      
+      // Add date at the start (gray)
+      if (timestampText) {
+        newContent += '<span class="entry-date">' + timestampText + '</span>';
+      }
+      
+      // Add title with emdash
+      newContent += titleText + ' — ';
+      
+      // Add content paragraphs
+      newContent += contentParagraphs.join(' ');
+      
+      // Add tag at the end in parentheses (preserve HTML but force inline)
+      if (tagHtml) {
+        // Extract just the inner content and wrap it properly
+        let tagContent = tag.innerHTML;
+        newContent += ' <span class="entry-tag">(' + tagContent + ')</span>';
+      }
+      
+      // Create new paragraph element
+      const newParagraph = document.createElement('p');
+      newParagraph.className = 'entry-paragraph';
+      newParagraph.innerHTML = newContent;
+      
+      // Clear the entry and add the new paragraph
+      entry.innerHTML = '';
+      entry.appendChild(newParagraph);
+      
+      // Preserve the anchor ID by setting it on the transformed entry
+      if (anchorId) {
+        entry.id = anchorId;
+      }
+      
+      // Add any block elements after the paragraph
+      blockElements.forEach(blockHtml => {
+        const blockDiv = document.createElement('div');
+        blockDiv.className = 'moved-block';
+        blockDiv.innerHTML = blockHtml;
+        entry.appendChild(blockDiv);
+      });
+      
+      // Add separator after each entry (except the last one)
+      if (index < entries.length - 1) {
+        const separator = document.createElement('hr');
+        separator.style.margin = '1em 0';
+        separator.style.border = 'none';
+        separator.style.borderTop = '1px solid #ccc';
+        entry.appendChild(separator);
+      }
+    });
+  }
+  
+  // Initialize when DOM is ready
+  function init() {
+    addStyles();
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', applyFormatting);
+    } else {
+      applyFormatting();
+    }
+  }
+  
+  // Start the initialization
+  init();
+})();
+</script>
+
+
+
 </head>
 <body>
 </body>
@@ -72,8 +514,7 @@
 <h1 class="title" style="
 margin-block-start: auto;
     color: black;
-">لّermontov</h1>
-
+">Hereby, all birds fly</h1>
       </a>
 <hr class="header-divider" style="margin-block-end: -1em;">
   </div>
@@ -86,35 +527,35 @@ margin-block-start: auto;
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org91c353f">Terminology</a></li>
+<li><a href="#org4f96a5e">Terminology</a></li>
 <li><a href="#directed">Direction Relationships</a></li>
 <li><a href="#adjacency">Adjacency Matrix vs. Adjacency List</a></li>
-<li><a href="#org37c5fa8">Multigraph (Multi-edges graph)</a></li>
-<li><a href="#org2f385c4">Weighted Graph</a></li>
+<li><a href="#org40f7680">Multigraph (Multi-edges graph)</a></li>
+<li><a href="#org0134187">Weighted Graph</a></li>
 <li><a href="#transpose">Transpose Graph</a></li>
 <li><a href="#sheet">Definition Sheet</a></li>
-<li><a href="#org72b5dff">Graph Traversal</a></li>
+<li><a href="#org6294cb4">Graph Traversal</a></li>
 <li><a href="#8d3gj8e10lk0">Detecting Cycles In Graphs</a></li>
 <li><a href="#biconnected">Biconnected Components</a></li>
-<li><a href="#org87540b7">Union-Find (Disjoint Set)</a></li>
-<li><a href="#orgfe2d230">Reach The Mother Vertex</a></li>
-<li><a href="#orga95ed13"><span class="done KILL">KILL</span> Bellman-Ford&rsquo;s Shortest Path&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></a></li>
-<li><a href="#org399c2af">Balanced Trees</a></li>
-<li><a href="#orgc25b551">Binary Tree Traversal</a></li>
-<li><a href="#org4f86ea5">Counting</a></li>
-<li><a href="#orgc388bf6">Height of a Binary Tree</a></li>
+<li><a href="#org9fd04b8">Union-Find (Disjoint Set)</a></li>
+<li><a href="#org2bde9bb">Reach The Mother Vertex</a></li>
+<li><a href="#org9f05d7a"><span class="done KILL">KILL</span> Bellman-Ford&rsquo;s Shortest Path&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></a></li>
+<li><a href="#orgc239821">Balanced Trees</a></li>
+<li><a href="#org2616849">Binary Tree Traversal</a></li>
+<li><a href="#org531ff3e">Counting</a></li>
+<li><a href="#org64dd87a">Height of a Binary Tree</a></li>
 </ul>
 </div>
 </nav>
-<div class="propert" id="org25f58d8">
+<div class="propert" id="org15c606d">
 <p>
 Part of a series on <a href="../cs/g.html#13122uo02wj0">Exploring Computational Geometry</a>
 </p>
 
 </div>
-<div id="outline-container-org91c353f" class="outline-2">
-<h2 id="org91c353f">Terminology</h2>
-<div class="outline-text-2" id="text-org91c353f">
+<div id="outline-container-org4f96a5e" class="outline-2">
+<h2 id="org4f96a5e">Terminology</h2>
+<div class="outline-text-2" id="text-org4f96a5e">
 <p>
 A graph \(G = (V, E)\) consists of a set of vertices \(V\) and a set of edges \(E\), such that each edge
 in \(E\) is a connection between a pair of vertices in \(V\)  The number of vertices is
@@ -125,12 +566,12 @@ edges is called dense. A graph containing all possible edges is said to be compl
 
 
 
-<figure id="orgb3f314b">
+<figure id="orgfd17eae">
 <img src="../i/old/2022-01-03_18-06-48_screenshot.png" alt="2022-01-03_18-06-48_screenshot.png">
 
 </figure>
 
-<div class="PREVIEW" id="org9fb751b">
+<div class="PREVIEW" id="orgc23d04a">
 <p>
 A graph with edges directed from one vertex to another is called a directed graph or
 digraph. A graph whose edges are not directed is called an undirected graph.
@@ -159,7 +600,7 @@ the path is simple, except for the first and last vertices being the same.
 
 
 
-<figure id="org7cb269a">
+<figure id="org3d963c9">
 <img src="../i/old/2022-01-03_18-10-42_screenshot.png" alt="2022-01-03_18-10-42_screenshot.png">
 
 </figure>
@@ -202,7 +643,7 @@ matrix are \(O (|V|^2)\).
 </p>
 
 
-<figure id="orgcb3ccec">
+<figure id="orga96e17a">
 <img src="../i/old/2022-01-03_18-30-11_screenshot.png" alt="2022-01-03_18-30-11_screenshot.png">
 
 </figure>
@@ -237,7 +678,7 @@ like:
 </p>
 
 
-<figure id="orgf1ecf69">
+<figure id="orgec3587d">
 <img src="../i/old/2022-01-03_19-11-01_screenshot.png" alt="2022-01-03_19-11-01_screenshot.png">
 
 </figure>
@@ -250,7 +691,7 @@ linked to the other one:
 </p>
 
 
-<figure id="orgfd6b11d">
+<figure id="org62b7317">
 <img src="../i/old/2022-01-03_19-16-44_screenshot.png" alt="2022-01-03_19-16-44_screenshot.png">
 
 </figure>
@@ -260,109 +701,109 @@ linked to the other one:
 An un-directed graph in C(++), using array as an adjacency matrix, looks like the following:
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">class</span> <span style="color: #f470df;">Graph</span> {
+<pre class="code"><code>class Graph {
 
-<span style="color: #ef80bf; font-weight: bold;">private</span>:
-&#9474;   &#9474;
-&#9474;   &#9474; <span style="color: #f470df;">bool</span>** <span style="color: #df7fff;">adjacencyMatrix</span>;
-&#9474;   &#9474;
-&#9474;   &#9474; <span style="color: #f470df;">int</span> <span style="color: #df7fff;">vertexCount</span>;
-&#9474;   &#9474;
-<span style="color: #ef80bf; font-weight: bold;">public</span>:
-&#9474;   &#9474;
-&#9474;   &#9474; <span style="color: #f59280;">Graph</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">vertexCount</span>) {
-&#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">this</span>-&gt;vertexCount = vertexCount;
-&#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   adjacencyMatrix = <span style="color: #ef80bf; font-weight: bold;">new</span> <span style="color: #f470df;">bool</span>*[<span style="color: #ff78aa;">vertexCount</span>];
-&#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #f470df;">int</span> <span style="color: #df7fff;">i</span> = 0; i &lt; vertexCount; i++) {
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474; adjacencyMatrix[i] = <span style="color: #ef80bf; font-weight: bold;">new</span> <span style="color: #f470df;">bool</span>[vertexCount];
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474; <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #f470df;">int</span> <span style="color: #df7fff;">j</span> = 0; j &lt; vertexCount; j++)
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   &#9474;   adjacencyMatrix[i][j] = <span style="color: #ff78aa;">false</span>;
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   }
-&#9474;   &#9474;   &#9474;
-&#9474;   &#9474; }
-&#9474;   &#9474;
-&#9474;   &#9474; <span style="color: #f470df;">void</span> <span style="color: #f59280;">addEdge</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">i</span>, <span style="color: #f470df;">int</span> <span style="color: #df7fff;">j</span>) {
-&#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (i &gt;= 0 &amp;&amp; <span style="color: #f470df;">i</span> &lt; <span style="color: #f470df;">vertexCount</span> &amp;&amp; <span style="color: #df7fff;">j</span> &gt; 0 &amp;&amp; j &lt; vertexCount) {
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474; adjacencyMatrix[i][j] = <span style="color: #ff78aa;">true</span>;
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474; adjacencyMatrix[j][i] = <span style="color: #ff78aa;">true</span>;
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   }
-&#9474;   &#9474;   &#9474;
-&#9474;   &#9474; }
-&#9474;   &#9474;
-&#9474;   &#9474; <span style="color: #f470df;">void</span> <span style="color: #f59280;">removeEdge</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">i</span>, <span style="color: #f470df;">int</span> <span style="color: #df7fff;">j</span>) {
-&#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (i &gt;= 0 &amp;&amp; <span style="color: #f470df;">i</span> &lt; <span style="color: #f470df;">vertexCount</span> &amp;&amp; <span style="color: #df7fff;">j</span> &gt; 0 &amp;&amp; j &lt; vertexCount) {
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474; adjacencyMatrix[i][j] = <span style="color: #ff78aa;">false</span>;
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474; adjacencyMatrix[j][i] = <span style="color: #ff78aa;">false</span>;
-&#9474;   &#9474;   &#9474;   }
-&#9474;   &#9474;   &#9474;
-&#9474;   &#9474; }
-&#9474;   &#9474; <span style="color: #f470df;">bool</span> <span style="color: #f59280;">isEdge</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">i</span>, <span style="color: #f470df;">int</span> <span style="color: #df7fff;">j</span>) {
-&#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (i &gt;= 0 &amp;&amp; <span style="color: #f470df;">i</span> &lt; <span style="color: #f470df;">vertexCount</span> &amp;&amp; <span style="color: #df7fff;">j</span> &gt; 0 &amp;&amp; j &lt; vertexCount)
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474; <span style="color: #ef80bf; font-weight: bold;">return</span> adjacencyMatrix[i][j];
-&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">else</span>
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474; <span style="color: #ef80bf; font-weight: bold;">return</span> <span style="color: #ff78aa;">false</span>;
-&#9474;   &#9474; }
-&#9474;   &#9474; ~<span style="color: #f59280;">Graph</span>() {
-&#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #f470df;">int</span> <span style="color: #df7fff;">i</span> = 0; i &lt; vertexCount; i++)
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474; <span style="color: #ef80bf; font-weight: bold;">delete</span>[] adjacencyMatrix[i];
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">delete</span>[] adjacencyMatrix;
-&#9474;   &#9474;   &#9474;
-&#9474;   &#9474; }
+private:
+
+      bool** adjacencyMatrix;
+
+      int vertexCount;
+
+public:
+
+      Graph(int vertexCount) {
+
+            this-&gt;vertexCount = vertexCount;
+
+            adjacencyMatrix = new bool*[vertexCount];
+
+            for (int i = 0; i &lt; vertexCount; i++) {
+
+                  adjacencyMatrix[i] = new bool[vertexCount];
+
+                  for (int j = 0; j &lt; vertexCount; j++)
+
+                        adjacencyMatrix[i][j] = false;
+
+            }
+
+      }
+
+      void addEdge(int i, int j) {
+
+            if (i &gt;= 0 &amp;&amp; i &lt; vertexCount &amp;&amp; j &gt; 0 &amp;&amp; j &lt; vertexCount) {
+
+                  adjacencyMatrix[i][j] = true;
+
+                  adjacencyMatrix[j][i] = true;
+
+            }
+
+      }
+
+      void removeEdge(int i, int j) {
+
+            if (i &gt;= 0 &amp;&amp; i &lt; vertexCount &amp;&amp; j &gt; 0 &amp;&amp; j &lt; vertexCount) {
+
+                  adjacencyMatrix[i][j] = false;
+
+                  adjacencyMatrix[j][i] = false;
+            }
+
+      }
+      bool isEdge(int i, int j) {
+
+            if (i &gt;= 0 &amp;&amp; i &lt; vertexCount &amp;&amp; j &gt; 0 &amp;&amp; j &lt; vertexCount)
+
+                  return adjacencyMatrix[i][j];
+            else
+                  return false;
+      }
+      ~Graph() {
+
+            for (int i = 0; i &lt; vertexCount; i++)
+
+                  delete[] adjacencyMatrix[i];
+
+            delete[] adjacencyMatrix;
+
+      }
 };
 </code></pre>
 <p>
 More minimal representation, using vectors as an adjacency list:
 </p>
 
-<pre class="code"><code><span style="color: #8fbaef;">#include</span><span style="color: #e5b76f;">&lt;bits/stdc++.h&gt;</span>
-<span style="color: #ef80bf; font-weight: bold;">using</span> <span style="color: #ef80bf; font-weight: bold;">namespace</span> <span style="color: #ff78aa;">std</span>;
-<span style="color: #f470df;">void</span> <span style="color: #f59280;">addEdge</span>(<span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt; <span style="color: #df7fff;">adj</span>[], <span style="color: #f470df;">int</span> <span style="color: #df7fff;">u</span>, <span style="color: #f470df;">int</span> <span style="color: #df7fff;">v</span>)
+<pre class="code"><code>#include&lt;bits/stdc++.h&gt;
+using namespace std;
+void addEdge(vector&lt;int&gt; adj[], int u, int v)
 {
-    adj[u].push_back(v);
-    adj[v].push_back(u);
+	adj[u].push_back(v);
+	adj[v].push_back(u);
 }
-<span style="color: #f470df;">void</span> <span style="color: #f59280;">printGraph</span>(<span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt; <span style="color: #df7fff;">adj</span>[], <span style="color: #f470df;">int</span> <span style="color: #df7fff;">V</span>) {
-    <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #f470df;">int</span> <span style="color: #df7fff;">v</span> = 0; v &lt; V; ++v)
-    {
-        cout &lt;&lt; <span style="color: #e5b76f;">"\n Adjacency list of vertex "</span>
-            &lt;&lt; v &lt;&lt; <span style="color: #e5b76f;">"\n head "</span>;
-        <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #ef80bf; font-weight: bold;">auto</span> <span style="color: #df7fff;">x</span> : adj[v])
-        cout &lt;&lt; <span style="color: #e5b76f;">"-&gt; "</span> &lt;&lt; x;
-        printf(<span style="color: #e5b76f;">"\n"</span>);
-    }
+void printGraph(vector&lt;int&gt; adj[], int V) {
+	for (int v = 0; v &lt; V; ++v)
+	{
+		cout &lt;&lt; "\n Adjacency list of vertex "
+			&lt;&lt; v &lt;&lt; "\n head ";
+		for (auto x : adj[v])
+		cout &lt;&lt; "-&gt; " &lt;&lt; x;
+		printf("\n");
+	}
 }
 
-<span style="color: #f470df;">int</span> <span style="color: #f59280;">main</span>() {
-    <span style="color: #f470df;">int</span> <span style="color: #df7fff;">V</span> = 5;
-    <span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt; <span style="color: #df7fff;">adj</span>[V];
-    addEdge(adj, 0, 1);
-    addEdge(adj, 0, 4);
-    addEdge(adj, 1, 2);
-    addEdge(adj, 1, 3);
-    addEdge(adj, 1, 4);
-    addEdge(adj, 2, 3);
-    addEdge(adj, 3, 4);
-    printGraph(adj, V);
-    <span style="color: #ef80bf; font-weight: bold;">return</span> 0;
+int main() {
+	int V = 5;
+	vector&lt;int&gt; adj[V];
+	addEdge(adj, 0, 1);
+	addEdge(adj, 0, 4);
+	addEdge(adj, 1, 2);
+	addEdge(adj, 1, 3);
+	addEdge(adj, 1, 4);
+	addEdge(adj, 2, 3);
+	addEdge(adj, 3, 4);
+	printGraph(adj, V);
+	return 0;
 }
 </code></pre>
 
@@ -386,7 +827,7 @@ edge, it looks like this in memory:
 </p>
 
 
-<figure id="orgc244d9e">
+<figure id="org8b0dbc6">
 <img src="../i/old/2022-01-03_20-25-56_screenshot.png" alt="2022-01-03_20-25-56_screenshot.png">
 
 </figure>
@@ -407,7 +848,7 @@ In the other hand, the adjacency matrix represent looks like this:
 </p>
 
 
-<figure id="org1d85ef3">
+<figure id="org9dd36a0">
 <img src="../i/old/2022-01-03_20-31-26_screenshot.png" alt="2022-01-03_20-31-26_screenshot.png">
 
 </figure>
@@ -472,9 +913,9 @@ Here&rsquo;s a comparison between each representation:
 </table>
 </div>
 </div>
-<div id="outline-container-org37c5fa8" class="outline-2">
-<h2 id="org37c5fa8">Multigraph (Multi-edges graph)</h2>
-<div class="outline-text-2" id="text-org37c5fa8">
+<div id="outline-container-org40f7680" class="outline-2">
+<h2 id="org40f7680">Multigraph (Multi-edges graph)</h2>
+<div class="outline-text-2" id="text-org40f7680">
 <p>
 Multigraph is an obscure data structure, since it can be represented in some other ways
 using complex forms of regular undirected graph, however it is not hard to implement. In
@@ -483,7 +924,7 @@ than one roads therefore we have to have this roads recorded within an adjacency
 </p>
 
 
-<figure id="orgb62a402">
+<figure id="org86573ef">
 <img src="../i/old/2022-01-03_20-14-47_screenshot.png" alt="2022-01-03_20-14-47_screenshot.png">
 
 </figure>
@@ -493,18 +934,18 @@ than one roads therefore we have to have this roads recorded within an adjacency
 An appropriate node to represent this:
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">struct</span> <span style="color: #f470df;">Link</span>;
+<pre class="code"><code>struct Link;
 
-<span style="color: #ef80bf; font-weight: bold;">struct</span> <span style="color: #f470df;">Node</span> {
-&#9474;   <span style="color: #f470df;">Link</span> *<span style="color: #df7fff;">firstIn</span>, *<span style="color: #df7fff;">lastIn</span>, *<span style="color: #df7fff;">firstOut</span>, *<span style="color: #df7fff;">lastOut</span>;
-&#9474;   ... node data ...
+struct Node {
+    Link *firstIn, *lastIn, *firstOut, *lastOut;
+    ... node data ...
 };
 
-<span style="color: #ef80bf; font-weight: bold;">struct</span> <span style="color: #f470df;">Link</span>
+struct Link
 {
-&#9474;   <span style="color: #f470df;">Node</span> *<span style="color: #df7fff;">from</span>, *<span style="color: #df7fff;">to</span>;
-&#9474;   <span style="color: #f470df;">Link</span> *<span style="color: #df7fff;">prevInFrom</span>, *<span style="color: #df7fff;">nextInFrom</span>, *<span style="color: #df7fff;">prevInTo</span>, *<span style="color: #df7fff;">nextInTo</span>;
-&#9474;   ... link data ...
+    Node *from, *to;
+    Link *prevInFrom, *nextInFrom, *prevInTo, *nextInTo;
+    ... link data ...
 };
 </code></pre>
 
@@ -516,9 +957,9 @@ list in the &ldquo;to&rdquo; node).
 </p>
 </div>
 </div>
-<div id="outline-container-org2f385c4" class="outline-2">
-<h2 id="org2f385c4">Weighted Graph</h2>
-<div class="outline-text-2" id="text-org2f385c4">
+<div id="outline-container-org0134187" class="outline-2">
+<h2 id="org0134187">Weighted Graph</h2>
+<div class="outline-text-2" id="text-org0134187">
 <p>
 We can consider all of the last implementations as an unweghted graph representations, we
 don&rsquo;t really care about the specifications of an edge between two nodes. However, in a lot
@@ -533,41 +974,41 @@ Something like that shouldn&rsquo;t be hard to implement, we just need to map ea
 value:
 </p>
 
-<pre class="code"><code><span style="color: #8fbaef;">#include</span> <span style="color: #e5b76f;">&lt;bits/stdc++.h&gt;</span>
-<span style="color: #ef80bf; font-weight: bold;">using</span> <span style="color: #ef80bf; font-weight: bold;">namespace</span> <span style="color: #ff78aa;">std</span>;
-<span style="color: #f470df;">void</span> <span style="color: #f59280;">addEdge</span>(<span style="color: #f470df;">vector</span> &lt;<span style="color: #f470df;">pair</span>&lt;<span style="color: #f470df;">int</span>, <span style="color: #f470df;">int</span>&gt; &gt; <span style="color: #df7fff;">adj</span>[], <span style="color: #f470df;">int</span> <span style="color: #df7fff;">u</span>, <span style="color: #f470df;">int</span> <span style="color: #df7fff;">v</span>, <span style="color: #f470df;">int</span> <span style="color: #df7fff;">wt</span>) {
-    adj[u].push_back(make_pair(v, wt));
-    adj[v].push_back(make_pair(u, wt));
+<pre class="code"><code>#include &lt;bits/stdc++.h&gt;
+using namespace std;
+void addEdge(vector &lt;pair&lt;int, int&gt; &gt; adj[], int u, int v, int wt) {
+	adj[u].push_back(make_pair(v, wt));
+	adj[v].push_back(make_pair(u, wt));
 }
-<span style="color: #f470df;">void</span> <span style="color: #f59280;">printGraph</span>(<span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">pair</span>&lt;<span style="color: #f470df;">int</span>,<span style="color: #f470df;">int</span>&gt; &gt; <span style="color: #df7fff;">adj</span>[], <span style="color: #f470df;">int</span> <span style="color: #df7fff;">V</span>) {
-    <span style="color: #f470df;">int</span> <span style="color: #df7fff;">v</span>, <span style="color: #df7fff;">w</span>;
-    <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #f470df;">int</span> <span style="color: #df7fff;">u</span> = 0; u &lt; V; u++)
-    {
-        cout &lt;&lt; <span style="color: #e5b76f;">"Node "</span> &lt;&lt; u &lt;&lt; <span style="color: #e5b76f;">" makes an edge with \n"</span>;
-        <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #ef80bf; font-weight: bold;">auto</span> <span style="color: #df7fff;">it</span> = adj[u].begin(); it!=adj[u].end(); it++)
-        {
-            v = it-&gt;first;
-            w = it-&gt;second;
-            cout &lt;&lt; <span style="color: #e5b76f;">"\tNode "</span> &lt;&lt; v &lt;&lt; <span style="color: #e5b76f;">" with edge weight ="</span>
-                &lt;&lt; w &lt;&lt; <span style="color: #e5b76f;">"\n"</span>;
-        }
-        cout &lt;&lt; <span style="color: #e5b76f;">"\n"</span>;
-    }
+void printGraph(vector&lt;pair&lt;int,int&gt; &gt; adj[], int V) {
+	int v, w;
+	for (int u = 0; u &lt; V; u++)
+	{
+		cout &lt;&lt; "Node " &lt;&lt; u &lt;&lt; " makes an edge with \n";
+		for (auto it = adj[u].begin(); it!=adj[u].end(); it++)
+		{
+			v = it-&gt;first;
+			w = it-&gt;second;
+			cout &lt;&lt; "\tNode " &lt;&lt; v &lt;&lt; " with edge weight ="
+				&lt;&lt; w &lt;&lt; "\n";
+		}
+		cout &lt;&lt; "\n";
+	}
 }
 
-<span style="color: #f470df;">int</span> <span style="color: #f59280;">main</span>()
+int main()
 {
-    <span style="color: #f470df;">int</span> <span style="color: #df7fff;">V</span> = 5;
-    <span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">pair</span>&lt;<span style="color: #f470df;">int</span>, <span style="color: #f470df;">int</span>&gt; &gt; <span style="color: #df7fff;">adj</span>[V];
-    addEdge(adj, 0, 1, 10);
-    addEdge(adj, 0, 4, 20);
-    addEdge(adj, 1, 2, 30);
-    addEdge(adj, 1, 3, 40);
-    addEdge(adj, 1, 4, 50);
-    addEdge(adj, 2, 3, 60);
-    addEdge(adj, 3, 4, 70);
-    printGraph(adj, V);
-    <span style="color: #ef80bf; font-weight: bold;">return</span> 0;
+	int V = 5;
+	vector&lt;pair&lt;int, int&gt; &gt; adj[V];
+	addEdge(adj, 0, 1, 10);
+	addEdge(adj, 0, 4, 20);
+	addEdge(adj, 1, 2, 30);
+	addEdge(adj, 1, 3, 40);
+	addEdge(adj, 1, 4, 50);
+	addEdge(adj, 2, 3, 60);
+	addEdge(adj, 3, 4, 70);
+	printGraph(adj, V);
+	return 0;
 }
 
 </code></pre>
@@ -585,7 +1026,7 @@ Consider the following figure:
 </p>
 
 
-<figure id="orgc6f514c">
+<figure id="org5b868c8">
 <img src="../i/old/2022-01-06_14-45-44_screenshot.png" alt="2022-01-06_14-45-44_screenshot.png">
 
 </figure>
@@ -596,42 +1037,42 @@ in the adjacency list of vertex u which indicates an edge from \(u\) to \(v\) in
 add an edge from \(v\) to \(u\) in the transpose graph.
 </p>
 
-<pre class="code"><code><span style="color: #8fbaef;">#include</span> <span style="color: #e5b76f;">&lt;bits/stdc++.h&gt;</span>
-<span style="color: #ef80bf; font-weight: bold;">using</span> <span style="color: #ef80bf; font-weight: bold;">namespace</span> <span style="color: #ff78aa;">std</span>;
-<span style="color: #f470df;">void</span> <span style="color: #f59280;">addEdge</span>(<span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt; <span style="color: #df7fff;">adj</span>[], <span style="color: #f470df;">int</span> <span style="color: #df7fff;">src</span>, <span style="color: #f470df;">int</span> <span style="color: #df7fff;">dest</span>) {
-    adj[src].push_back(dest);
+<pre class="code"><code>#include &lt;bits/stdc++.h&gt;
+using namespace std;
+void addEdge(vector&lt;int&gt; adj[], int src, int dest) {
+	adj[src].push_back(dest);
 }
 
-<span style="color: #f470df;">void</span> <span style="color: #f59280;">displayGraph</span>(<span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt; <span style="color: #df7fff;">adj</span>[], <span style="color: #f470df;">int</span> <span style="color: #df7fff;">v</span>) {
-    <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #f470df;">int</span> <span style="color: #df7fff;">i</span> = 0; i &lt; v; i++) {
-        cout &lt;&lt; i &lt;&lt; <span style="color: #e5b76f;">"--&gt; "</span>;
-        <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #f470df;">int</span> <span style="color: #df7fff;">j</span> = 0; j &lt; adj[i].size(); j++)
-            cout &lt;&lt; adj[i][j] &lt;&lt; <span style="color: #e5b76f;">" "</span>;
-        cout &lt;&lt; <span style="color: #e5b76f;">"\n"</span>;
-    }
+void displayGraph(vector&lt;int&gt; adj[], int v) {
+	for (int i = 0; i &lt; v; i++) {
+		cout &lt;&lt; i &lt;&lt; "--&gt; ";
+		for (int j = 0; j &lt; adj[i].size(); j++)
+			cout &lt;&lt; adj[i][j] &lt;&lt; " ";
+		cout &lt;&lt; "\n";
+	}
 }
 
-<span style="color: #f470df;">void</span> <span style="color: #f59280;">transposeGraph</span>(<span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt; <span style="color: #df7fff;">adj</span>[], <span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt; <span style="color: #df7fff;">transpose</span>[], <span style="color: #f470df;">int</span> <span style="color: #df7fff;">v</span>) {
-    <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #f470df;">int</span> <span style="color: #df7fff;">i</span> = 0; i &lt; v; i++)
-        <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #f470df;">int</span> <span style="color: #df7fff;">j</span> = 0; j &lt; adj[i].size(); j++)
-            addEdge(transpose, adj[i][j], i);
+void transposeGraph(vector&lt;int&gt; adj[], vector&lt;int&gt; transpose[], int v) {
+	for (int i = 0; i &lt; v; i++)
+		for (int j = 0; j &lt; adj[i].size(); j++)
+			addEdge(transpose, adj[i][j], i);
 }
 
-<span style="color: #f470df;">int</span> <span style="color: #f59280;">main</span>() {
-    <span style="color: #f470df;">int</span> <span style="color: #df7fff;">v</span> = 5;
-    <span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt; <span style="color: #df7fff;">adj</span>[v];
-    addEdge(adj, 0, 1);
-    addEdge(adj, 0, 4);
-    addEdge(adj, 0, 3);
-    addEdge(adj, 2, 0);
-    addEdge(adj, 3, 2);
-    addEdge(adj, 4, 1);
-    addEdge(adj, 4, 3);
-&#9474;
-    <span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt; <span style="color: #df7fff;">transpose</span>[v];
-    transposeGraph(adj, transpose, v);
-    displayGraph(transpose, v);
-    <span style="color: #ef80bf; font-weight: bold;">return</span> 0;
+int main() {
+	int v = 5;
+	vector&lt;int&gt; adj[v];
+	addEdge(adj, 0, 1);
+	addEdge(adj, 0, 4);
+	addEdge(adj, 0, 3);
+	addEdge(adj, 2, 0);
+	addEdge(adj, 3, 2);
+	addEdge(adj, 4, 1);
+	addEdge(adj, 4, 3);
+
+	vector&lt;int&gt; transpose[v];
+	transposeGraph(adj, transpose, v);
+	displayGraph(transpose, v);
+	return 0;
 }
 
 </code></pre>
@@ -639,11 +1080,11 @@ add an edge from \(v\) to \(u\) in the transpose graph.
 <p>
 In the case of dealing with adjacency matrix, we just have to reverse the matrix.
 </p>
-<pre class="code"><code><span style="color: #f470df;">void</span> <span style="color: #f59280;">transpose</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">A</span>[][N], <span style="color: #f470df;">int</span> <span style="color: #df7fff;">B</span>[][N]) {
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">i</span>, <span style="color: #df7fff;">j</span>;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> (i = 0; i &lt; N; i++)
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> (j = 0; j &lt; N; j++)
-&#9474;   &#9474;   &#9474;   B[i][j] = A[j][i];
+<pre class="code"><code>void transpose(int A[][N], int B[][N]) {
+    int i, j;
+    for (i = 0; i &lt; N; i++)
+        for (j = 0; j &lt; N; j++)
+            B[i][j] = A[j][i];
 }
 </code></pre>
 </div>
@@ -769,9 +1210,9 @@ graphs, in the case of ambiguity you can backtrack the definitions from here.
 </table>
 </div>
 </div>
-<div id="outline-container-org72b5dff" class="outline-2">
-<h2 id="org72b5dff">Graph Traversal</h2>
-<div class="outline-text-2" id="text-org72b5dff">
+<div id="outline-container-org6294cb4" class="outline-2">
+<h2 id="org6294cb4">Graph Traversal</h2>
+<div class="outline-text-2" id="text-org6294cb4">
 <p>
 Given any starting vertex, we can find all the reachable vertices from the start point,
 there are many algorithms that can do this, the simplest of which is depth-frist search.
@@ -798,13 +1239,13 @@ The algorithm takes an input a start vertex \(s\), be default it shouldn&rsquo;t
 anything, you can make it return the timestamp of finishing the traversing process.
 </p>
 
-<pre class="code"><code><span style="color: #f470df;">void</span> <span style="color: #f59280;">DFS</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">v</span>) {
-&#9474;   visited[v] = <span style="color: #ff78aa;">true</span>;
-&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Do somtmeting here</span>
-&#9474;   <span style="color: #ff78aa;">list</span>&lt;<span style="color: #f470df;">int</span>&gt;::<span style="color: #f470df;">iterator</span> <span style="color: #df7fff;">i</span>;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> (i = adj[v].begin(); i != adj[v].end(); ++i)
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (<span style="font-weight: bold;">!</span>visited[*i])
-&#9474;   &#9474;   &#9474;   <span style="color: #ff78aa;">DFS</span>(*i);
+<pre class="code"><code>void DFS(int v) {
+    visited[v] = true;
+    // Do somtmeting here
+    list&lt;int&gt;::iterator i;
+    for (i = adj[v].begin(); i != adj[v].end(); ++i)
+        if (!visited[*i])
+            DFS(*i);
 }
 </code></pre>
 
@@ -820,27 +1261,27 @@ In the recursive approach: You handle each node when you see it. Thus the first 
 handle is the first child:
 </p>
 
-<pre class="code"><code><span style="color: #f470df;">void</span> <span style="color: #ff78aa;">Graph</span>::<span style="color: #f59280;">DFS</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">s</span>)
+<pre class="code"><code>void Graph::DFS(int s)
 {
-&#9474;   <span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">bool</span>&gt; <span style="color: #df7fff;">visited</span>(V, <span style="color: #ff78aa;">false</span>);
-&#9474;
-&#9474;   <span style="color: #f470df;">stack</span>&lt;<span style="color: #f470df;">int</span>&gt; <span style="color: #df7fff;">stack</span>;
-&#9474;
-&#9474;   stack.push(s);
-&#9474;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">while</span> (<span style="font-weight: bold;">!</span>stack.empty()) {
-&#9474;   &#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">s</span> = stack.top();
-&#9474;   &#9474;   stack.pop();
-&#9474;   &#9474;
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (<span style="font-weight: bold;">!</span>visited[s]) {
-&#9474;   &#9474;   &#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Do somthing here</span>
-&#9474;   &#9474;   &#9474;   visited[s] = <span style="color: #ff78aa;">true</span>;
-&#9474;   &#9474;   }
-&#9474;   &#9474;
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #ef80bf; font-weight: bold;">auto</span> <span style="color: #df7fff;">i</span> = adj[s].begin(); i != adj[s].end(); ++i)
-&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (<span style="font-weight: bold;">!</span>visited[*i])
-&#9474;   &#9474;   &#9474;   &#9474;   stack.push(*i);
-&#9474;   }
+    vector&lt;bool&gt; visited(V, false);
+
+    stack&lt;int&gt; stack;
+
+    stack.push(s);
+
+    while (!stack.empty()) {
+        int s = stack.top();
+        stack.pop();
+
+        if (!visited[s]) {
+            // Do somthing here
+            visited[s] = true;
+        }
+
+        for (auto i = adj[s].begin(); i != adj[s].end(); ++i)
+            if (!visited[*i])
+                stack.push(*i);
+    }
 }
 </code></pre>
 
@@ -862,13 +1303,13 @@ The algorithm takes an input a start vertex \(s\), be default it shouldn&rsquo;t
 anything, you can make it return the timestamp of finishing the traversing process.
 </p>
 
-<pre class="code"><code><span style="color: #f470df;">void</span> <span style="color: #f59280;">DFS</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">v</span>) {
-&#9474;   visited[v] = <span style="color: #ff78aa;">true</span>;
-&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Do somtmeting here</span>
-&#9474;   <span style="color: #ff78aa;">list</span>&lt;<span style="color: #f470df;">int</span>&gt;::<span style="color: #f470df;">iterator</span> <span style="color: #df7fff;">i</span>;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> (i = adj[v].begin(); i != adj[v].end(); ++i)
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (<span style="font-weight: bold;">!</span>visited[*i])
-&#9474;   &#9474;   &#9474;   <span style="color: #ff78aa;">DFS</span>(*i);
+<pre class="code"><code>void DFS(int v) {
+    visited[v] = true;
+    // Do somtmeting here
+    list&lt;int&gt;::iterator i;
+    for (i = adj[v].begin(); i != adj[v].end(); ++i)
+        if (!visited[*i])
+            DFS(*i);
 }
 </code></pre>
 
@@ -884,27 +1325,27 @@ In the recursive approach: You handle each node when you see it. Thus the first 
 handle is the first child:
 </p>
 
-<pre class="code"><code><span style="color: #f470df;">void</span> <span style="color: #ff78aa;">Graph</span>::<span style="color: #f59280;">DFS</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">s</span>)
+<pre class="code"><code>void Graph::DFS(int s)
 {
-&#9474;   <span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">bool</span>&gt; <span style="color: #df7fff;">visited</span>(V, <span style="color: #ff78aa;">false</span>);
-&#9474;
-&#9474;   <span style="color: #f470df;">stack</span>&lt;<span style="color: #f470df;">int</span>&gt; <span style="color: #df7fff;">stack</span>;
-&#9474;
-&#9474;   stack.push(s);
-&#9474;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">while</span> (<span style="font-weight: bold;">!</span>stack.empty()) {
-&#9474;   &#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">s</span> = stack.top();
-&#9474;   &#9474;   stack.pop();
-&#9474;   &#9474;
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (<span style="font-weight: bold;">!</span>visited[s]) {
-&#9474;   &#9474;   &#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Do somthing here</span>
-&#9474;   &#9474;   &#9474;   visited[s] = <span style="color: #ff78aa;">true</span>;
-&#9474;   &#9474;   }
-&#9474;   &#9474;
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #ef80bf; font-weight: bold;">auto</span> <span style="color: #df7fff;">i</span> = adj[s].begin(); i != adj[s].end(); ++i)
-&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (<span style="font-weight: bold;">!</span>visited[*i])
-&#9474;   &#9474;   &#9474;   &#9474;   stack.push(*i);
-&#9474;   }
+    vector&lt;bool&gt; visited(V, false);
+
+    stack&lt;int&gt; stack;
+
+    stack.push(s);
+
+    while (!stack.empty()) {
+        int s = stack.top();
+        stack.pop();
+
+        if (!visited[s]) {
+            // Do somthing here
+            visited[s] = true;
+        }
+
+        for (auto i = adj[s].begin(); i != adj[s].end(); ++i)
+            if (!visited[*i])
+                stack.push(*i);
+    }
 }
 </code></pre>
 </div>
@@ -951,61 +1392,61 @@ For proof, tracing and more info, See <a href="https://www.personal.kent.edu/~rm
 <p>
 Implementations in C(++):
 </p>
-<pre class="code"><code><span style="color: #f470df;">void</span> <span style="color: #f59280;">DFS</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">v</span>, <span style="color: #f470df;">bool</span> <span style="color: #df7fff;">visited</span>[]);
+<pre class="code"><code>void DFS(int v, bool visited[]);
 
-<span style="color: #f470df;">Graph</span> <span style="color: #f59280;">getTranspose</span>() {
-&#9474;   <span style="color: #f470df;">Graph</span> <span style="color: #df7fff;">g</span>(V);
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #f470df;">int</span> <span style="color: #df7fff;">v</span> = 0; v &lt; V; v++)
-&#9474;   {
-&#9474;   &#9474;   <span style="color: #ff78aa;">list</span>&lt;<span style="color: #f470df;">int</span>&gt;::<span style="color: #f470df;">iterator</span> <span style="color: #df7fff;">i</span>;
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span>(i = adj[v].begin(); i != adj[v].end(); ++i)
-&#9474;   &#9474;   {
-&#9474;   &#9474;   &#9474;   g.adj[*i].push_back(v);
-&#9474;   &#9474;   }
-&#9474;   }
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> g;
+Graph getTranspose() {
+    Graph g(V);
+    for (int v = 0; v &lt; V; v++)
+    {
+        list&lt;int&gt;::iterator i;
+        for(i = adj[v].begin(); i != adj[v].end(); ++i)
+        {
+            g.adj[*i].push_back(v);
+        }
+    }
+    return g;
 }
 
 
-<span style="color: #f470df;">void</span> <span style="color: #f59280;">fillOrder</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">v</span>, <span style="color: #f470df;">bool</span> <span style="color: #df7fff;">visited</span>[], <span style="color: #f470df;">stack</span>&lt;<span style="color: #f470df;">int</span>&gt; &amp;<span style="color: #df7fff;">Stack</span>) {
-&#9474;   visited[v] = <span style="color: #ff78aa;">true</span>;
-&#9474;   <span style="color: #ff78aa;">list</span>&lt;<span style="color: #f470df;">int</span>&gt;::<span style="color: #f470df;">iterator</span> <span style="color: #df7fff;">i</span>;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span>(i = adj[v].begin(); i != adj[v].end(); ++i)
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span>(<span style="font-weight: bold;">!</span>visited[*i])
-&#9474;   &#9474;   &#9474;   fillOrder(*i, visited, Stack);
-&#9474;   Stack.push(v);
+void fillOrder(int v, bool visited[], stack&lt;int&gt; &amp;Stack) {
+    visited[v] = true;
+    list&lt;int&gt;::iterator i;
+    for(i = adj[v].begin(); i != adj[v].end(); ++i)
+        if(!visited[*i])
+            fillOrder(*i, visited, Stack);
+    Stack.push(v);
 }
 
-<span style="color: #f470df;">void</span> <span style="color: #f59280;">printSCCs</span>() {
-&#9474;   <span style="color: #f470df;">stack</span>&lt;<span style="color: #f470df;">int</span>&gt; <span style="color: #df7fff;">Stack</span>;
-&#9474;   <span style="color: #f470df;">bool</span> *<span style="color: #df7fff;">visited</span> = <span style="color: #ef80bf; font-weight: bold;">new</span> <span style="color: #f470df;">bool</span>[V];
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">i</span> = 0; i &lt; V; i++)
-&#9474;   &#9474;   visited[i] = <span style="color: #ff78aa;">false</span>;
-&#9474;   &#9474;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">i</span> = 0; i &lt; V; i++)
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span>(visited[i] == <span style="color: #ff78aa;">false</span>)
-&#9474;   &#9474;   &#9474;   fillOrder(i, visited, Stack);
-&#9474;   &#9474;   &#9474;
-&#9474;   <span style="color: #f470df;">Graph</span> <span style="color: #df7fff;">gr</span> = getTranspose();
-&#9474;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">i</span> = 0; i &lt; V; i++)
-&#9474;   &#9474;   visited[i] = <span style="color: #ff78aa;">false</span>;
-&#9474;   &#9474;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">while</span> (Stack.empty() == <span style="color: #ff78aa;">false</span>)
-&#9474;   {
-&#9474;   &#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">v</span> = Stack.top();
-&#9474;   &#9474;   Stack.pop();
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (visited[v] == <span style="color: #ff78aa;">false</span>) {
-&#9474;   &#9474;   &#9474;   <span style="color: #ff78aa;">DFS</span>(v, visited);
-&#9474;   &#9474;   &#9474;   cout &lt;&lt; endl;
-&#9474;   &#9474;   }
-&#9474;   }
+void printSCCs() {
+    stack&lt;int&gt; Stack;
+    bool *visited = new bool[V];
+    for(int i = 0; i &lt; V; i++)
+        visited[i] = false;
+
+    for(int i = 0; i &lt; V; i++)
+        if(visited[i] == false)
+            fillOrder(i, visited, Stack);
+
+    Graph gr = getTranspose();
+
+    for(int i = 0; i &lt; V; i++)
+        visited[i] = false;
+
+    while (Stack.empty() == false)
+    {
+        int v = Stack.top();
+        Stack.pop();
+        if (visited[v] == false) {
+            DFS(v, visited);
+            cout &lt;&lt; endl;
+        }
+    }
 }
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org4ad8179" class="outline-4">
-<h4 id="org4ad8179"><span class="done KILL">KILL</span> Tarjan&rsquo;s Algorithm&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h4>
+<div id="outline-container-orgfd3f11a" class="outline-4">
+<h4 id="orgfd3f11a"><span class="done KILL">KILL</span> Tarjan&rsquo;s Algorithm&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h4>
 </div>
 </div>
 </div>
@@ -1016,9 +1457,9 @@ Implementations in C(++):
 <i>Hint: Review cycle definition in the <a href="#sheet">definition sheet</a> above</i>
 </p>
 </div>
-<div id="outline-container-orga2a2f5e" class="outline-3">
-<h3 id="orga2a2f5e">Using <a href="#rz5728e10lk0">Depth First Search (DFS)</a></h3>
-<div class="outline-text-3" id="text-orga2a2f5e">
+<div id="outline-container-orgea8a88d" class="outline-3">
+<h3 id="orgea8a88d">Using <a href="#rz5728e10lk0">Depth First Search (DFS)</a></h3>
+<div class="outline-text-3" id="text-orgea8a88d">
 <p>
 We can detect cycles in directed graphs using DFS. This is based on the fact that there is a
 cycle in a graph only if there is a back edge present in the graph. A back edge is an edge
@@ -1049,58 +1490,58 @@ Hence cycle is present.</li>
 present in white</li>
 </ol>
 
-<pre class="code"><code><span style="color: #8fbaef;">#include</span><span style="color: #e5b76f;">&lt;bits/stdc++.h&gt;</span>
-<span style="color: #ef80bf; font-weight: bold;">using</span> <span style="color: #ef80bf; font-weight: bold;">namespace</span> <span style="color: #ff78aa;">std</span>;
-<span style="color: #f470df;">set</span>&lt;<span style="color: #f470df;">int</span>&gt;<span style="color: #df7fff;">white</span>;
-<span style="color: #f470df;">set</span>&lt;<span style="color: #f470df;">int</span>&gt;<span style="color: #df7fff;">grey</span>;
-<span style="color: #f470df;">set</span>&lt;<span style="color: #f470df;">int</span>&gt;<span style="color: #df7fff;">black</span>;
-<span style="color: #f470df;">int</span> <span style="color: #df7fff;">flag</span>=0;
+<pre class="code"><code>#include&lt;bits/stdc++.h&gt;
+using namespace std;
+set&lt;int&gt;white;
+set&lt;int&gt;grey;
+set&lt;int&gt;black;
+int flag=0;
 
-<span style="color: #f470df;">void</span> <span style="color: #f59280;">edge</span>(<span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt;<span style="color: #df7fff;">adj</span>[],<span style="color: #f470df;">int</span> <span style="color: #df7fff;">u</span>,<span style="color: #f470df;">int</span> <span style="color: #df7fff;">v</span>){
-&#9474; adj[u].push_back(v);
+void edge(vector&lt;int&gt;adj[],int u,int v){
+  adj[u].push_back(v);
 }
 
-<span style="color: #f470df;">void</span> <span style="color: #f59280;">CycleDetect</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">u</span>,<span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt;<span style="color: #df7fff;">adj</span>[]){
-&#9474;   white.erase(u);
-&#9474;   grey.insert(u);
-&#9474;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">i</span>=0;i&lt;adj[u].size();i++){
-&#9474;   &#9474; <span style="color: #ef80bf; font-weight: bold;">if</span>(white.find(adj[u][i])!=white.end()) {
-&#9474;   &#9474;
-&#9474;   &#9474; CycleDetect(adj[u][i],adj);
-&#9474;   &#9474;
-&#9474;   &#9474;   }
-&#9474;   &#9474; <span style="color: #ef80bf; font-weight: bold;">if</span>(grey.find(adj[u][i])!=grey.end()){ <span style="color: #bf9f8f; font-style: italic;">//</span><span style="color: #bf9f8f; font-style: italic;">check if its is present or not in grey set</span>
-&#9474;   &#9474;
-&#9474;   &#9474;   flag=1;
-&#9474;   &#9474;
-&#9474;   &#9474; }
-&#9474;   &#9474;
-&#9474;   }
-&#9474;   black.insert(u);<span style="color: #bf9f8f; font-style: italic;">//</span><span style="color: #bf9f8f; font-style: italic;">put into the black set</span>
-&#9474;
-&#9474;   grey.erase(u);<span style="color: #bf9f8f; font-style: italic;">//</span><span style="color: #bf9f8f; font-style: italic;">remove from the grey set</span>
+void CycleDetect(int u,vector&lt;int&gt;adj[]){
+    white.erase(u);
+    grey.insert(u);
+
+    for(int i=0;i&lt;adj[u].size();i++){
+      if(white.find(adj[u][i])!=white.end()) {
+
+      CycleDetect(adj[u][i],adj);
+
+        }
+      if(grey.find(adj[u][i])!=grey.end()){ //check if its is present or not in grey set
+
+        flag=1;
+
+      }
+
+    }
+    black.insert(u);//put into the black set
+
+    grey.erase(u);//remove from the grey set
 }
 
-<span style="color: #f470df;">int</span> <span style="color: #f59280;">main</span>(){
-&#9474; <span style="color: #f470df;">vector</span>&lt;<span style="color: #f470df;">int</span>&gt;<span style="color: #df7fff;">adj</span>[5];<span style="color: #bf9f8f; font-style: italic;">//</span><span style="color: #bf9f8f; font-style: italic;">vector of array to store the graph</span>
-&#9474;
-&#9474; <span style="color: #bf9f8f; font-style: italic;">//</span><span style="color: #bf9f8f; font-style: italic;">input for edges</span>
-&#9474; edge(adj,0,2);
-&#9474; edge(adj,0,1);
-&#9474; edge(adj,1,3);
-&#9474; edge(adj,2,0);
-&#9474; edge(adj,3,3);
-&#9474; edge(adj,2,3);
-&#9474; edge(adj,2,4);
-&#9474; <span style="color: #ef80bf; font-weight: bold;">for</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">i</span>=0;i&lt;5;i++){
-&#9474;   white.insert(i);
-&#9474; }
-&#9474; CycleDetect(0,adj);
-&#9474; <span style="color: #ef80bf; font-weight: bold;">if</span>(flag==0)cout&lt;&lt;<span style="color: #e5b76f;">"Graph does not contain cycle"</span>&lt;&lt;endl;
-&#9474; <span style="color: #ef80bf; font-weight: bold;">else</span>
-&#9474; cout&lt;&lt;<span style="color: #e5b76f;">"Graph contain cycle"</span>&lt;&lt;endl;
-&#9474; <span style="color: #ef80bf; font-weight: bold;">return</span> 0;
+int main(){
+  vector&lt;int&gt;adj[5];//vector of array to store the graph
+
+  //input for edges
+  edge(adj,0,2);
+  edge(adj,0,1);
+  edge(adj,1,3);
+  edge(adj,2,0);
+  edge(adj,3,3);
+  edge(adj,2,3);
+  edge(adj,2,4);
+  for(int i=0;i&lt;5;i++){
+    white.insert(i);
+  }
+  CycleDetect(0,adj);
+  if(flag==0)cout&lt;&lt;"Graph does not contain cycle"&lt;&lt;endl;
+  else
+  cout&lt;&lt;"Graph contain cycle"&lt;&lt;endl;
+  return 0;
 }
 </code></pre>
 </div>
@@ -1124,7 +1565,7 @@ points, vertices 1,3,5, and 7.
 </p>
 
 
-<figure id="org4c95660">
+<figure id="org72933cd">
 <img src="../i/old/2022-04-08_07-58-38_screenshot.png" alt="2022-04-08_07-58-38_screenshot.png">
 
 </figure>
@@ -1158,7 +1599,7 @@ the graph of the last graph produces the spanning tree of the following figure:
 </p>
 
 
-<figure id="org15ed9dd">
+<figure id="orgfc6adb1">
 <img src="../i/old/2022-04-08_08-06-21_screenshot.png" alt="2022-04-08_08-06-21_screenshot.png">
 
 </figure>
@@ -1168,7 +1609,7 @@ If redrawn the tree in the following figure:
 </p>
 
 
-<figure id="org0e6d546">
+<figure id="orge96281e">
 <img src="../i/old/2022-04-08_08-07-57_screenshot.png" alt="2022-04-08_08-07-57_screenshot.png">
 
 </figure>
@@ -1192,7 +1633,7 @@ using a path of descendants followed by at most one back edge:
 </p>
 
 
-<figure id="org8ed5217">
+<figure id="org04c850d">
 <img src="../i/old/2022-04-08_08-23-12_screenshot.png" alt="2022-04-08_08-23-12_screenshot.png">
 
 </figure>
@@ -1205,7 +1646,7 @@ example:
 </p>
 
 
-<figure id="orgb80e05a">
+<figure id="org198005c">
 <img src="../i/old/2022-04-08_08-28-50_screenshot.png" alt="2022-04-08_08-28-50_screenshot.png">
 
 </figure>
@@ -1219,156 +1660,156 @@ vertex 3, is an articulation point because it has more than one child.
 
 
 <pre class="code"><code>
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">A C++ program to find biconnected components in a given undirected graph</span>
-<span style="color: #8fbaef;">#include</span> <span style="color: #e5b76f;">&lt;iostream&gt;</span>
-<span style="color: #8fbaef;">#include</span> <span style="color: #e5b76f;">&lt;list&gt;</span>
-<span style="color: #8fbaef;">#include</span> <span style="color: #e5b76f;">&lt;stack&gt;</span>
-<span style="color: #8fbaef;">#define</span> <span style="color: #df7fff;">NIL</span> -1
-<span style="color: #ef80bf; font-weight: bold;">using</span> <span style="color: #ef80bf; font-weight: bold;">namespace</span> <span style="color: #ff78aa;">std</span>;
-<span style="color: #f470df;">int</span> <span style="color: #df7fff;">count</span> = 0;
-<span style="color: #ef80bf; font-weight: bold;">class</span> <span style="color: #f470df;">Edge</span> {
-<span style="color: #ef80bf; font-weight: bold;">public</span>:
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">u</span>;
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">v</span>;
-&#9474;   <span style="color: #f59280;">Edge</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">u</span>, <span style="color: #f470df;">int</span> <span style="color: #df7fff;">v</span>);
+// A C++ program to find biconnected components in a given undirected graph
+#include &lt;iostream&gt;
+#include &lt;list&gt;
+#include &lt;stack&gt;
+#define NIL -1
+using namespace std;
+int count = 0;
+class Edge {
+public:
+    int u;
+    int v;
+    Edge(int u, int v);
 };
-<span style="color: #ff78aa;">Edge</span>::<span style="color: #f59280;">Edge</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">u</span>, <span style="color: #f470df;">int</span> <span style="color: #df7fff;">v</span>)
+Edge::Edge(int u, int v)
 {
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">this</span>-&gt;u = u;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">this</span>-&gt;v = v;
+    this-&gt;u = u;
+    this-&gt;v = v;
 }
 
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">A class that represents an directed graph</span>
-<span style="color: #ef80bf; font-weight: bold;">class</span> <span style="color: #f470df;">Graph</span> {
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">V</span>; <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">No. of vertices</span>
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">E</span>; <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">No. of edges</span>
-&#9474;   <span style="color: #f470df;">list</span>&lt;<span style="color: #f470df;">int</span>&gt;* <span style="color: #df7fff;">adj</span>; <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">A dynamic array of adjacency lists</span>
-&#9474;
-&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">A Recursive DFS based function used by BCC()</span>
-&#9474;   <span style="color: #f470df;">void</span> <span style="color: #f59280;">BCCUtil</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">u</span>, <span style="color: #f470df;">int</span> <span style="color: #df7fff;">disc</span>[], <span style="color: #f470df;">int</span> <span style="color: #df7fff;">low</span>[],
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;<span style="color: #f470df;">list</span>&lt;<span style="color: #f470df;">Edge</span>&gt;* <span style="color: #df7fff;">st</span>, <span style="color: #f470df;">int</span> <span style="color: #df7fff;">parent</span>[]);
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;
-<span style="color: #ef80bf; font-weight: bold;">public</span>:
-&#9474;   <span style="color: #f59280;">Graph</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">V</span>); <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Constructor</span>
-&#9474;   <span style="color: #f470df;">void</span> <span style="color: #f59280;">addEdge</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">v</span>, <span style="color: #f470df;">int</span> <span style="color: #df7fff;">w</span>); <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">function to add an edge to graph</span>
-&#9474;   <span style="color: #f470df;">void</span> <span style="color: #f59280;">BCC</span>(); <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">prints strongly connected components</span>
+// A class that represents an directed graph
+class Graph {
+    int V; // No. of vertices
+    int E; // No. of edges
+    list&lt;int&gt;* adj; // A dynamic array of adjacency lists
+
+    // A Recursive DFS based function used by BCC()
+    void BCCUtil(int u, int disc[], int low[],
+                 list&lt;Edge&gt;* st, int parent[]);
+
+public:
+    Graph(int V); // Constructor
+    void addEdge(int v, int w); // function to add an edge to graph
+    void BCC(); // prints strongly connected components
 };
 
-<span style="color: #ff78aa;">Graph</span>::<span style="color: #f59280;">Graph</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">V</span>)
+Graph::Graph(int V)
 {
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">this</span>-&gt;V = V;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">this</span>-&gt;E = 0;
-&#9474;   adj = <span style="color: #ef80bf; font-weight: bold;">new</span> <span style="color: #f470df;">list</span>&lt;<span style="color: #f470df;">int</span>&gt;[<span style="color: #ff78aa;">V</span>];
+    this-&gt;V = V;
+    this-&gt;E = 0;
+    adj = new list&lt;int&gt;[V];
 }
 
-<span style="color: #f470df;">void</span> <span style="color: #ff78aa;">Graph</span>::<span style="color: #f59280;">addEdge</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">v</span>, <span style="color: #f470df;">int</span> <span style="color: #df7fff;">w</span>)
+void Graph::addEdge(int v, int w)
 {
-&#9474;   adj[v].push_back(w);
-&#9474;   E++;
+    adj[v].push_back(w);
+    E++;
 }
 
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">A recursive function that finds and prints strongly connected</span>
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">components using DFS traversal</span>
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">u --&gt; The vertex to be visited next</span>
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">disc[] --&gt; Stores discovery times of visited vertices</span>
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">low[] -- &gt;&gt; earliest visited vertex (the vertex with minimum</span>
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">discovery time) that can be reached from subtree</span>
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">rooted with current vertex</span>
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">*st -- &gt;&gt; To store visited edges</span>
-<span style="color: #f470df;">void</span> <span style="color: #ff78aa;">Graph</span>::<span style="color: #f59280;">BCCUtil</span>(<span style="color: #f470df;">int</span> <span style="color: #df7fff;">u</span>, <span style="color: #f470df;">int</span> <span style="color: #df7fff;">disc</span>[], <span style="color: #f470df;">int</span> <span style="color: #df7fff;">low</span>[], <span style="color: #f470df;">list</span>&lt;<span style="color: #f470df;">Edge</span>&gt;* <span style="color: #df7fff;">st</span>,
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">parent</span>[])
+// A recursive function that finds and prints strongly connected
+// components using DFS traversal
+// u --&gt; The vertex to be visited next
+// disc[] --&gt; Stores discovery times of visited vertices
+// low[] -- &gt;&gt; earliest visited vertex (the vertex with minimum
+// discovery time) that can be reached from subtree
+// rooted with current vertex
+// *st -- &gt;&gt; To store visited edges
+void Graph::BCCUtil(int u, int disc[], int low[], list&lt;Edge&gt;* st,
+                    int parent[])
 {
-&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">A static variable is used for simplicity, we can avoid use</span>
-&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">of static variable by passing a pointer.</span>
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">static</span> <span style="color: #f470df;">int</span> <span style="color: #df7fff;">time</span> = 0;
-&#9474;
-&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Initialize discovery time and low value</span>
-&#9474;   disc[u] = low[u] = ++time;
-&#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">children</span> = 0;
-&#9474;
-&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Go through all vertices adjacent to this</span>
-&#9474;   <span style="color: #ff78aa;">list</span>&lt;<span style="color: #f470df;">int</span>&gt;::<span style="color: #f470df;">iterator</span> <span style="color: #df7fff;">i</span>;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> (i = adj[u].begin(); i != adj[u].end(); ++i) {
-&#9474;   &#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">v</span> = *i; <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">v is current adjacent of 'u'</span>
-&#9474;   &#9474;
-&#9474;   &#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">If v is not visited yet, then recur for it</span>
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (disc[v] == -1) {
-&#9474;   &#9474;   &#9474;   children++;
-&#9474;   &#9474;   &#9474;   parent[v] = u;
-&#9474;   &#9474;   &#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">store the edge in stack</span>
-&#9474;   &#9474;   &#9474;   st-&gt;push_back(Edge(u, v));
-&#9474;   &#9474;   &#9474;   BCCUtil(v, disc, low, st, parent);
-&#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Check if the subtree rooted with 'v' has a</span>
-&#9474;   &#9474;   &#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">connection to one of the ancestors of 'u'</span>
-&#9474;   &#9474;   &#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Case 1 -- per Strongly Connected Components Article</span>
-&#9474;   &#9474;   &#9474;   low[u] = min(low[u], low[v]);
-&#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   &#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">If u is an articulation point,</span>
-&#9474;   &#9474;   &#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">pop all edges from stack till u -- v</span>
-&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> ((disc[u] == 1 &amp;&amp; children &gt; 1) || (disc[u] &gt; 1 &amp;&amp; low[v] &gt;= disc[u])) {
-&#9474;   &#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">while</span> (st-&gt;back().u != u || st-&gt;back().v != v) {
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   cout &lt;&lt; st-&gt;back().u &lt;&lt; <span style="color: #e5b76f;">"--"</span> &lt;&lt; st-&gt;back().v &lt;&lt; <span style="color: #e5b76f;">" "</span>;
-&#9474;   &#9474;   &#9474;   &#9474;   &#9474;   st-&gt;pop_back();
-&#9474;   &#9474;   &#9474;   &#9474;   }
-&#9474;   &#9474;   &#9474;   &#9474;   cout &lt;&lt; st-&gt;back().u &lt;&lt; <span style="color: #e5b76f;">"--"</span> &lt;&lt; st-&gt;back().v;
-&#9474;   &#9474;   &#9474;   &#9474;   st-&gt;pop_back();
-&#9474;   &#9474;   &#9474;   &#9474;   cout &lt;&lt; endl;
-&#9474;   &#9474;   &#9474;   &#9474;   count++;
-&#9474;   &#9474;   &#9474;   }
-&#9474;   &#9474;   }
-&#9474;   &#9474;
-&#9474;   &#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Update low value of 'u' only of 'v' is still in stack</span>
-&#9474;   &#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">(i.e. it's a back edge, not cross edge).</span>
-&#9474;   &#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Case 2 -- per Strongly Connected Components Article</span>
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">else</span> <span style="color: #ef80bf; font-weight: bold;">if</span> (v != parent[u]) {
-&#9474;   &#9474;   &#9474;   low[u] = min(low[u], disc[v]);
-&#9474;   &#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (disc[v] &lt; disc[u]) {
-&#9474;   &#9474;   &#9474;   &#9474;   st-&gt;push_back(Edge(u, v));
-&#9474;   &#9474;   &#9474;   }
-&#9474;   &#9474;   }
-&#9474;   }
+    // A static variable is used for simplicity, we can avoid use
+    // of static variable by passing a pointer.
+    static int time = 0;
+
+    // Initialize discovery time and low value
+    disc[u] = low[u] = ++time;
+    int children = 0;
+
+    // Go through all vertices adjacent to this
+    list&lt;int&gt;::iterator i;
+    for (i = adj[u].begin(); i != adj[u].end(); ++i) {
+        int v = *i; // v is current adjacent of 'u'
+
+        // If v is not visited yet, then recur for it
+        if (disc[v] == -1) {
+            children++;
+            parent[v] = u;
+            // store the edge in stack
+            st-&gt;push_back(Edge(u, v));
+            BCCUtil(v, disc, low, st, parent);
+
+            // Check if the subtree rooted with 'v' has a
+            // connection to one of the ancestors of 'u'
+            // Case 1 -- per Strongly Connected Components Article
+            low[u] = min(low[u], low[v]);
+
+            // If u is an articulation point,
+            // pop all edges from stack till u -- v
+            if ((disc[u] == 1 &amp;&amp; children &gt; 1) || (disc[u] &gt; 1 &amp;&amp; low[v] &gt;= disc[u])) {
+                while (st-&gt;back().u != u || st-&gt;back().v != v) {
+                    cout &lt;&lt; st-&gt;back().u &lt;&lt; "--" &lt;&lt; st-&gt;back().v &lt;&lt; " ";
+                    st-&gt;pop_back();
+                }
+                cout &lt;&lt; st-&gt;back().u &lt;&lt; "--" &lt;&lt; st-&gt;back().v;
+                st-&gt;pop_back();
+                cout &lt;&lt; endl;
+                count++;
+            }
+        }
+
+        // Update low value of 'u' only of 'v' is still in stack
+        // (i.e. it's a back edge, not cross edge).
+        // Case 2 -- per Strongly Connected Components Article
+        else if (v != parent[u]) {
+            low[u] = min(low[u], disc[v]);
+            if (disc[v] &lt; disc[u]) {
+                st-&gt;push_back(Edge(u, v));
+            }
+        }
+    }
 }
 
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">The function to do DFS traversal. It uses BCCUtil()</span>
-<span style="color: #f470df;">void</span> <span style="color: #ff78aa;">Graph</span>::<span style="color: #f59280;">BCC</span>()
+// The function to do DFS traversal. It uses BCCUtil()
+void Graph::BCC()
 {
-&#9474;   <span style="color: #f470df;">int</span>* <span style="color: #df7fff;">disc</span> = <span style="color: #ef80bf; font-weight: bold;">new</span> <span style="color: #f470df;">int</span>[V];
-&#9474;   <span style="color: #f470df;">int</span>* <span style="color: #df7fff;">low</span> = <span style="color: #ef80bf; font-weight: bold;">new</span> <span style="color: #f470df;">int</span>[V];
-&#9474;   <span style="color: #f470df;">int</span>* <span style="color: #df7fff;">parent</span> = <span style="color: #ef80bf; font-weight: bold;">new</span> <span style="color: #f470df;">int</span>[V];
-&#9474;   <span style="color: #f470df;">list</span>&lt;<span style="color: #f470df;">Edge</span>&gt;* <span style="color: #df7fff;">st</span> = <span style="color: #ef80bf; font-weight: bold;">new</span> <span style="color: #f470df;">list</span>&lt;<span style="color: #f470df;">Edge</span>&gt;[<span style="color: #ff78aa;">E</span>];
-&#9474;
-&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Initialize disc and low, and parent arrays</span>
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #f470df;">int</span> <span style="color: #df7fff;">i</span> = 0; i &lt; V; i++) {
-&#9474;   &#9474;   disc[i] = <span style="color: #ff78aa;">NIL</span>;
-&#9474;   &#9474;   low[i] = <span style="color: #ff78aa;">NIL</span>;
-&#9474;   &#9474;   parent[i] = <span style="color: #ff78aa;">NIL</span>;
-&#9474;   }
-&#9474;
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #f470df;">int</span> <span style="color: #df7fff;">i</span> = 0; i &lt; V; i++) {
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (disc[i] == <span style="color: #ff78aa;">NIL</span>)
-&#9474;   &#9474;   &#9474;   BCCUtil(i, disc, low, st, parent);
-&#9474;   &#9474;   &#9474;
-&#9474;   &#9474;   <span style="color: #f470df;">int</span> <span style="color: #df7fff;">j</span> = 0;
-&#9474;   &#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">If stack is not empty, pop all edges from stack</span>
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">while</span> (st-&gt;size() &gt; 0) {
-&#9474;   &#9474;   &#9474;   j = 1;
-&#9474;   &#9474;   &#9474;   cout &lt;&lt; st-&gt;back().u &lt;&lt; <span style="color: #e5b76f;">"--"</span> &lt;&lt; st-&gt;back().v &lt;&lt; <span style="color: #e5b76f;">" "</span>;
-&#9474;   &#9474;   &#9474;   st-&gt;pop_back();
-&#9474;   &#9474;   }
-&#9474;   &#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> (j == 1) {
-&#9474;   &#9474;   &#9474;   cout &lt;&lt; endl;
-&#9474;   &#9474;   &#9474;   count++;
-&#9474;   &#9474;   }
-&#9474;   }
+    int* disc = new int[V];
+    int* low = new int[V];
+    int* parent = new int[V];
+    list&lt;Edge&gt;* st = new list&lt;Edge&gt;[E];
+
+    // Initialize disc and low, and parent arrays
+    for (int i = 0; i &lt; V; i++) {
+        disc[i] = NIL;
+        low[i] = NIL;
+        parent[i] = NIL;
+    }
+
+    for (int i = 0; i &lt; V; i++) {
+        if (disc[i] == NIL)
+            BCCUtil(i, disc, low, st, parent);
+
+        int j = 0;
+        // If stack is not empty, pop all edges from stack
+        while (st-&gt;size() &gt; 0) {
+            j = 1;
+            cout &lt;&lt; st-&gt;back().u &lt;&lt; "--" &lt;&lt; st-&gt;back().v &lt;&lt; " ";
+            st-&gt;pop_back();
+        }
+        if (j == 1) {
+            cout &lt;&lt; endl;
+            count++;
+        }
+    }
 }
 
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org87540b7" class="outline-2">
-<h2 id="org87540b7">Union-Find (Disjoint Set)</h2>
-<div class="outline-text-2" id="text-org87540b7">
+<div id="outline-container-org9fd04b8" class="outline-2">
+<h2 id="org9fd04b8">Union-Find (Disjoint Set)</h2>
+<div class="outline-text-2" id="text-org9fd04b8">
 <p>
 A union-find algorithm is an algorithm that performs two useful operations on such a data
 structure:
@@ -1398,9 +1839,9 @@ then they form a cycle. Otherwise, perform union to merge the subsets together.
 </blockquote></div>
 </div>
 </div>
-<div id="outline-container-orgfe2d230" class="outline-2">
-<h2 id="orgfe2d230">Reach The Mother Vertex</h2>
-<div class="outline-text-2" id="text-orgfe2d230">
+<div id="outline-container-org2bde9bb" class="outline-2">
+<h2 id="org2bde9bb">Reach The Mother Vertex</h2>
+<div class="outline-text-2" id="text-org2bde9bb">
 <p>
 <i>Hint: Review the Mother Vertex in the <a href="#sheet">definition sheet</a> above</i>
 The mother vertex in the following graph is <code>[1, 3, 4]</code>:
@@ -1432,40 +1873,40 @@ strongly connected components, mother vertices are always vertices of source com
 component graph.
 </p>
 
-<pre class="code"><code><span style="color: #f59280;">findMother</span>() {
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">visited[] is used for DFS. Initially all are</span>
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">initialized as not visited</span>
-<span style="color: #f470df;">vector</span> &lt;<span style="color: #f470df;">bool</span>&gt; <span style="color: #df7fff;">visited</span>(V, <span style="color: #ff78aa;">false</span>);
+<pre class="code"><code>findMother() {
+// visited[] is used for DFS. Initially all are
+// initialized as not visited
+vector &lt;bool&gt; visited(V, false);
 
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">To store last finished vertex (or mother vertex)</span>
-<span style="color: #f470df;">int</span> <span style="color: #df7fff;">v</span> = 0;
+// To store last finished vertex (or mother vertex)
+int v = 0;
 
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Do a DFS traversal and find the last finished</span>
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">vertex</span>
-<span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #f470df;">int</span> <span style="color: #df7fff;">i</span> = 0; i &lt; V; i++) {
-    <span style="color: #ef80bf; font-weight: bold;">if</span> (visited[i] == <span style="color: #ff78aa;">false</span>)
-    {
-        DFSUtil(i, visited);
-        v = i;
-    }
+// Do a DFS traversal and find the last finished
+// vertex
+for (int i = 0; i &lt; V; i++) {
+	if (visited[i] == false)
+	{
+		DFSUtil(i, visited);
+		v = i;
+	}
 }
 
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">If there exist mother vertex (or vertices) in given</span>
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">graph, then v must be one (or one of them)</span>
+// If there exist mother vertex (or vertices) in given
+// graph, then v must be one (or one of them)
 
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Now check if v is actually a mother vertex (or graph</span>
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">has a mother vertex). We basically check if every vertex</span>
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">is reachable from v or not.</span>
+// Now check if v is actually a mother vertex (or graph
+// has a mother vertex). We basically check if every vertex
+// is reachable from v or not.
 
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Reset all values in visited[] as false and do</span>
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">DFS beginning from v to check if all vertices are</span>
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">reachable from it or not.</span>
-fill(visited.begin(), visited.end(), <span style="color: #ff78aa;">false</span>);
+// Reset all values in visited[] as false and do
+// DFS beginning from v to check if all vertices are
+// reachable from it or not.
+fill(visited.begin(), visited.end(), false);
 DFSUtil(v, visited);
-<span style="color: #ef80bf; font-weight: bold;">for</span> (<span style="color: #f470df;">int</span> <span style="color: #df7fff;">i</span>=0; i&lt;V; i++)
-    <span style="color: #ef80bf; font-weight: bold;">if</span> (visited[i] == <span style="color: #ff78aa;">false</span>)
-        <span style="color: #ef80bf; font-weight: bold;">return</span> -1;
-<span style="color: #ef80bf; font-weight: bold;">return</span> v;
+for (int i=0; i&lt;V; i++)
+	if (visited[i] == false)
+		return -1;
+return v;
 
 </code></pre>
 
@@ -1476,9 +1917,9 @@ them.
 </p>
 </div>
 </div>
-<div id="outline-container-orga95ed13" class="outline-2">
-<h2 id="orga95ed13"><span class="done KILL">KILL</span> Bellman-Ford&rsquo;s Shortest Path&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h2>
-<div class="outline-text-2" id="text-orga95ed13">
+<div id="outline-container-org9f05d7a" class="outline-2">
+<h2 id="org9f05d7a"><span class="done KILL">KILL</span> Bellman-Ford&rsquo;s Shortest Path&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h2>
+<div class="outline-text-2" id="text-org9f05d7a">
 <p>
 The Bellman-Ford algorithm is a way to find single source shortest paths in a graph ith
 negative edge weights (but no negative cycles). The second for loop in this algorithm also
@@ -1499,9 +1940,9 @@ Overall, the algorithm takes \(O(m \cdot n)\) time
 </ul>
 </div>
 </div>
-<div id="outline-container-org399c2af" class="outline-2">
-<h2 id="org399c2af">Balanced Trees</h2>
-<div class="outline-text-2" id="text-org399c2af">
+<div id="outline-container-orgc239821" class="outline-2">
+<h2 id="orgc239821">Balanced Trees</h2>
+<div class="outline-text-2" id="text-orgc239821">
 <p>
 We call a tree binary if each node in it has at most two children. A node’s left child with
 descendants forms the node’s left sub-tree. The definition of the right sub-tree is similar.
@@ -1518,7 +1959,7 @@ tree:
 </p>
 
 
-<figure id="orgbd1d858">
+<figure id="org4ea8e8c">
 <img src="../i/old/2022-07-29_09-50-33_screenshot.png" alt="2022-07-29_09-50-33_screenshot.png">
 
 </figure>
@@ -1546,7 +1987,7 @@ the nodes in the \(\boldsymbol{x}\)‘s right sub-tree are \(\boldsymbol{\geq x}
 
 
 
-<figure id="orgc80b9af">
+<figure id="orga4db558">
 <img src="../i/old/2022-07-29_09-52-24_screenshot.png" alt="2022-07-29_09-52-24_screenshot.png">
 
 </figure>
@@ -1561,7 +2002,7 @@ the right, which speeds up the search. This is how we find 9 in the above search
 
 
 
-<figure id="org207f7b8">
+<figure id="org02fe9b2">
 <img src="../i/old/2022-07-29_09-53-07_screenshot.png" alt="2022-07-29_09-53-07_screenshot.png">
 
 </figure>
@@ -1597,9 +2038,9 @@ There are several types of such trees. They require all their nodes to be balanc
 notion of balance differs from type to type.
 </p>
 </div>
-<div id="outline-container-org6a59d15" class="outline-3">
-<h3 id="org6a59d15">AVL Trees</h3>
-<div class="outline-text-3" id="text-org6a59d15">
+<div id="outline-container-org4bfb7f6" class="outline-3">
+<h3 id="org4bfb7f6">AVL Trees</h3>
+<div class="outline-text-3" id="text-org4bfb7f6">
 <p>
 In an AVL tree, we call a node balanced if the heights of its left and right sub-trees
 differ at most by 1. So, a search tree with root x is an AVL tree if all its nodes are
@@ -1613,7 +2054,7 @@ AVL(x) \iff \left|height(x.left) - height(x.right)\right| \leq 1           \text
 
 
 
-<figure id="orge57db0a">
+<figure id="org4863ad0">
 <img src="../i/old/2022-07-29_09-57-36_screenshot.png" alt="2022-07-29_09-57-36_screenshot.png">
 
 </figure>
@@ -1644,7 +2085,7 @@ unbalanced node, call it S, there are 4 cases:
 </p>
 
 
-<figure id="org6a2d440">
+<figure id="org79b1e59">
 <img src="../i/old/2022-07-29_10-35-29_screenshot.png" alt="2022-07-29_10-35-29_screenshot.png">
 
 </figure>
@@ -1666,7 +2107,7 @@ operations known as <b>rotations</b>.
 
 
 
-<figure id="orgef9514d">
+<figure id="org1e030de">
 <img src="../i/old/2022-07-29_10-49-03_screenshot.png" alt="2022-07-29_10-49-03_screenshot.png">
 
 <figcaption><span class="figure-number">Figure 1: </span>A single rotation in an AVL tree. This operation occurs when the excess node (in subtree A) is in the left child of the left child of the unbalanced node labeled S. By rearranging the nodes as shown, we preserve the BST property, as well as re-balance the tree to preserve the AVL tree balance property. The case where the excess node is in the right child of the right child of the unbalanced node is handled in the same way.</figcaption>
@@ -1674,7 +2115,7 @@ operations known as <b>rotations</b>.
 
 
 
-<figure id="org57a0564">
+<figure id="org6ffd141">
 <img src="../i/old/2022-07-29_10-50-12_screenshot.png" alt="2022-07-29_10-50-12_screenshot.png">
 
 <figcaption><span class="figure-number">Figure 2: </span>A double rotation in an AVL tree. This operation occurs when the excess node (in subtree B) is in the right child of the left child of the unbalanced node labeled S. By rearranging the nodes as shown, we preserve the BST property, as well as re-balance the tree to preserve the AVL tree balance property. The case where the excess node is in the left child of the right child of S is handled in the same way</figcaption>
@@ -1686,58 +2127,58 @@ be fixed using a double rotation, as shown in last figure.
 </p>
 
 
-<pre class="code"><code><span style="color: #f470df;">avl</span> *<span style="color: #ff78aa;">avl_tree</span>::<span style="color: #f59280;">rr_rotat</span>(<span style="color: #f470df;">avl</span> *<span style="color: #df7fff;">parent</span>) {
-&#9474;  <span style="color: #f470df;">avl</span> *<span style="color: #df7fff;">t</span>;
-&#9474;  t = parent-&gt;r;
-&#9474;  parent-&gt;r = t-&gt;l;
-&#9474;  t-&gt;l = parent;
-&#9474;  cout&lt;&lt;<span style="color: #e5b76f;">"Right-Right Rotation"</span>;
-&#9474;  <span style="color: #ef80bf; font-weight: bold;">return</span> t;
+<pre class="code"><code>avl *avl_tree::rr_rotat(avl *parent) {
+   avl *t;
+   t = parent-&gt;r;
+   parent-&gt;r = t-&gt;l;
+   t-&gt;l = parent;
+   cout&lt;&lt;"Right-Right Rotation";
+   return t;
 }
-<span style="color: #f470df;">avl</span> *<span style="color: #ff78aa;">avl_tree</span>::<span style="color: #f59280;">ll_rotat</span>(<span style="color: #f470df;">avl</span> *<span style="color: #df7fff;">parent</span>) {
-&#9474;  <span style="color: #f470df;">avl</span> *<span style="color: #df7fff;">t</span>;
-&#9474;  t = parent-&gt;l;
-&#9474;  parent-&gt;l = t-&gt;r;
-&#9474;  t-&gt;r = parent;
-&#9474;  cout&lt;&lt;<span style="color: #e5b76f;">"Left-Left Rotation"</span>;
-&#9474;  <span style="color: #ef80bf; font-weight: bold;">return</span> t;
+avl *avl_tree::ll_rotat(avl *parent) {
+   avl *t;
+   t = parent-&gt;l;
+   parent-&gt;l = t-&gt;r;
+   t-&gt;r = parent;
+   cout&lt;&lt;"Left-Left Rotation";
+   return t;
 }
-<span style="color: #f470df;">avl</span> *<span style="color: #ff78aa;">avl_tree</span>::<span style="color: #f59280;">lr_rotat</span>(<span style="color: #f470df;">avl</span> *<span style="color: #df7fff;">parent</span>) {
-&#9474;  <span style="color: #f470df;">avl</span> *<span style="color: #df7fff;">t</span>;
-&#9474;  t = parent-&gt;l;
-&#9474;  parent-&gt;l = rr_rotat(t);
-&#9474;  cout&lt;&lt;<span style="color: #e5b76f;">"Left-Right Rotation"</span>;
-&#9474;  <span style="color: #ef80bf; font-weight: bold;">return</span> ll_rotat(parent);
+avl *avl_tree::lr_rotat(avl *parent) {
+   avl *t;
+   t = parent-&gt;l;
+   parent-&gt;l = rr_rotat(t);
+   cout&lt;&lt;"Left-Right Rotation";
+   return ll_rotat(parent);
 }
-<span style="color: #f470df;">avl</span> *<span style="color: #ff78aa;">avl_tree</span>::<span style="color: #f59280;">rl_rotat</span>(<span style="color: #f470df;">avl</span> *<span style="color: #df7fff;">parent</span>) {
-&#9474;  <span style="color: #f470df;">avl</span> *<span style="color: #df7fff;">t</span>;
-&#9474;  t = parent-&gt;r;
-&#9474;  parent-&gt;r = ll_rotat(t);
-&#9474;  cout&lt;&lt;<span style="color: #e5b76f;">"Right-Left Rotation"</span>;
-&#9474;  <span style="color: #ef80bf; font-weight: bold;">return</span> rr_rotat(parent);
+avl *avl_tree::rl_rotat(avl *parent) {
+   avl *t;
+   t = parent-&gt;r;
+   parent-&gt;r = ll_rotat(t);
+   cout&lt;&lt;"Right-Left Rotation";
+   return rr_rotat(parent);
 }
-<span style="color: #f470df;">avl</span> *<span style="color: #ff78aa;">avl_tree</span>::<span style="color: #f59280;">balance</span>(<span style="color: #f470df;">avl</span> *<span style="color: #df7fff;">t</span>) {
-&#9474;  <span style="color: #f470df;">int</span> <span style="color: #df7fff;">bal_factor</span> = difference(t);
-&#9474;  <span style="color: #ef80bf; font-weight: bold;">if</span> (bal_factor &gt; 1) {
-&#9474;   &#9474; <span style="color: #ef80bf; font-weight: bold;">if</span> (difference(t-&gt;l) &gt; 0)
-&#9474;   &#9474;   &#9474;t = ll_rotat(t);
-&#9474;   &#9474; <span style="color: #ef80bf; font-weight: bold;">else</span>
-&#9474;   &#9474;   &#9474;t = lr_rotat(t);
-&#9474;  } <span style="color: #ef80bf; font-weight: bold;">else</span> <span style="color: #ef80bf; font-weight: bold;">if</span> (bal_factor &lt; -1) {
-&#9474;   &#9474; <span style="color: #ef80bf; font-weight: bold;">if</span> (difference(t-&gt;r) &gt; 0)
-&#9474;   &#9474;   &#9474;t = rl_rotat(t);
-&#9474;   &#9474; <span style="color: #ef80bf; font-weight: bold;">else</span>
-&#9474;   &#9474;   &#9474;t = rr_rotat(t);
-&#9474;  }
-&#9474;  <span style="color: #ef80bf; font-weight: bold;">return</span> t;
+avl *avl_tree::balance(avl *t) {
+   int bal_factor = difference(t);
+   if (bal_factor &gt; 1) {
+      if (difference(t-&gt;l) &gt; 0)
+         t = ll_rotat(t);
+      else
+         t = lr_rotat(t);
+   } else if (bal_factor &lt; -1) {
+      if (difference(t-&gt;r) &gt; 0)
+         t = rl_rotat(t);
+      else
+         t = rr_rotat(t);
+   }
+   return t;
 }
 
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orga5a023a" class="outline-3">
-<h3 id="orga5a023a">Day–Stout–Warren algorithm</h3>
-<div class="outline-text-3" id="text-orga5a023a">
+<div id="outline-container-orgddb9a51" class="outline-3">
+<h3 id="orgddb9a51">Day–Stout–Warren algorithm</h3>
+<div class="outline-text-3" id="text-orgddb9a51">
 <p>
 The Day–Stout–Warren (DSW) algorithm is a method for efficiently balancing binary search
 trees – that is, decreasing their height to O(log n) nodes, where n is the total number of
@@ -1777,39 +2218,39 @@ is given by
 Call tree-to-vine with the pseudo-root as its argument.
 </p>
 <pre class="code"><code>routine tree-to-vine(root)
-&#9474; &#9474; // Convert tree to a <span style="color: #e5b76f;">"vine"</span>, i.e., a sorted linked list,
-&#9474; &#9474; // using the right pointers to point to the next node in the list
-&#9474; &#9474; tail &#8592; root
-&#9474; &#9474; rest &#8592; tail.right
-&#9474; &#9474; while rest &#8800; nil
-&#9474; &#9474; &#9474; &#9474; if rest.left = nil
-&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; tail &#8592; rest
-&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; rest &#8592; rest.right
-&#9474; &#9474; &#9474; &#9474; else
-&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; temp &#8592; rest.left
-&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; rest.left &#8592; temp.right
-&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; temp.right &#8592; rest
-&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; rest &#8592; temp
-&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; tail.right &#8592; temp
+    // Convert tree to a "vine", i.e., a sorted linked list,
+    // using the right pointers to point to the next node in the list
+    tail ← root
+    rest ← tail.right
+    while rest ≠ nil
+        if rest.left = nil
+            tail ← rest
+            rest ← rest.right
+        else
+            temp ← rest.left
+            rest.left ← temp.right
+            temp.right ← rest
+            rest ← temp
+            tail.right ← temp
 </code></pre></li>
 <li><p>
 Call vine-to-tree on the pseudo-root and the size (number of elements) of the tree.
 </p>
 <pre class="code"><code>routine vine-to-tree(root, size)
-&#9474; &#9474; leaves &#8592; size + 1 &#8722; 2&#8970;log2(size + 1))<span style="color: #ea9955;">&#8971;</span>
-&#9474; &#9474; compress(root, leaves)
-&#9474; &#9474; size &#8592; size &#8722; leaves
-&#9474; &#9474; while size &gt; 1
-&#9474; &#9474; &#9474; &#9474; compress(root, &#8970;size / 2&#8971;)
-&#9474; &#9474; &#9474; &#9474; size &#8592; &#8970;size / 2&#8971;
+    leaves ← size + 1 − 2⌊log2(size + 1))⌋
+    compress(root, leaves)
+    size ← size − leaves
+    while size &gt; 1
+        compress(root, ⌊size / 2⌋)
+        size ← ⌊size / 2⌋
 routine compress(root, count)
-&#9474; &#9474; scanner &#8592; roo   t
-&#9474; &#9474; for i &#8592; 1 to count
-&#9474; &#9474; &#9474; &#9474; child &#8592; scanner.right
-&#9474; &#9474; &#9474; &#9474; scanner.right &#8592; child.right
-&#9474; &#9474; &#9474; &#9474; scanner &#8592; scanner.right
-&#9474; &#9474; &#9474; &#9474; child.right &#8592; scanner.left
-&#9474; &#9474; &#9474; &#9474; scanner.left &#8592; child
+    scanner ← roo   t
+    for i ← 1 to count
+        child ← scanner.right
+        scanner.right ← child.right
+        scanner ← scanner.right
+        child.right ← scanner.left
+        scanner.left ← child
 
 </code></pre></li>
 <li>Make the tree&rsquo;s actual root equal to the pseudo-root&rsquo;s right child.</li>
@@ -1818,13 +2259,13 @@ routine compress(root, count)
 </div>
 </div>
 </div>
-<div id="outline-container-orgc25b551" class="outline-2">
-<h2 id="orgc25b551">Binary Tree Traversal</h2>
-<div class="outline-text-2" id="text-orgc25b551">
+<div id="outline-container-org2616849" class="outline-2">
+<h2 id="org2616849">Binary Tree Traversal</h2>
+<div class="outline-text-2" id="text-org2616849">
 </div>
-<div id="outline-container-org8ddae10" class="outline-3">
-<h3 id="org8ddae10">DFS</h3>
-<div class="outline-text-3" id="text-org8ddae10">
+<div id="outline-container-orgc264b9f" class="outline-3">
+<h3 id="orgc264b9f">DFS</h3>
+<div class="outline-text-3" id="text-orgc264b9f">
 <p>
 Often we wish to process a binary tree by “visiting” each of its nodes, each time
 performing a specific action such as printing the contents of the node. Any process
@@ -1847,11 +2288,11 @@ fies that root be visited before its children. This can easily be implemented as
 follows.
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">template</span> &lt;<span style="color: #ef80bf; font-weight: bold;">typename</span> <span style="color: #f470df;">E</span>&gt;
-<span style="color: #f470df;">void</span> <span style="color: #f59280;">preorder</span>(<span style="color: #f470df;">BinNode</span>&lt;<span style="color: #f470df;">E</span>&gt;* <span style="color: #df7fff;">root</span>) {
-<span style="color: #ef80bf; font-weight: bold;">if</span> (root == <span style="color: #ff78aa;">NULL</span>) <span style="color: #ef80bf; font-weight: bold;">return</span>; <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Empty subtree, do nothing</span>
+<pre class="code"><code>template &lt;typename E&gt;
+void preorder(BinNode&lt;E&gt;* root) {
+if (root == NULL) return; // Empty subtree, do nothing
 visit(root);
-<span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Perform desired action</span>
+// Perform desired action
 preorder(root-&gt;left());
 preorder(root-&gt;right());
 </code></pre>
@@ -1876,11 +2317,11 @@ left and right pointers of the current node are checked so that the recursive ca
 made only on non-empty children. Such a design typically looks as follows:
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">template</span> &lt;<span style="color: #ef80bf; font-weight: bold;">typename</span> <span style="color: #f470df;">E</span>&gt;
-<span style="color: #f470df;">void</span> <span style="color: #f59280;">preorder2</span>(<span style="color: #f470df;">BinNode</span>&lt;<span style="color: #f470df;">E</span>&gt;* <span style="color: #df7fff;">root</span>) {
-visit(root); <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Perform whatever action is desired</span>
-<span style="color: #ef80bf; font-weight: bold;">if</span> (root-&gt;left() != <span style="color: #ff78aa;">NULL</span>) preorder2(root-&gt;left());
-<span style="color: #ef80bf; font-weight: bold;">if</span> (root-&gt;right() != <span style="color: #ff78aa;">NULL</span>) preorder2(root-&gt;right());
+<pre class="code"><code>template &lt;typename E&gt;
+void preorder2(BinNode&lt;E&gt;* root) {
+visit(root); // Perform whatever action is desired
+if (root-&gt;left() != NULL) preorder2(root-&gt;left());
+if (root-&gt;right() != NULL) preorder2(root-&gt;right());
 </code></pre>
 
 <p>
@@ -1917,25 +2358,25 @@ access to the BinNode class.
 </p>
 </div>
 </div>
-<div id="outline-container-org43f25c9" class="outline-3">
-<h3 id="org43f25c9">BFS</h3>
-<div class="outline-text-3" id="text-org43f25c9">
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">while</span> (q.empty() == <span style="color: #ff78aa;">false</span>) {
-&#9474;  <span style="color: #f470df;">Node</span> *<span style="color: #df7fff;">node</span> = q.front();
-&#9474;  cout &lt;&lt; node-&gt;data &lt;&lt; <span style="color: #e5b76f;">" "</span>; <span style="color: #bf9f8f; font-style: italic;">//</span><span style="color: #bf9f8f; font-style: italic;">whatever operation</span>
-&#9474;  q.pop();
-&#9474;  <span style="color: #ef80bf; font-weight: bold;">if</span> (node-&gt;left != <span style="color: #ff78aa;">NULL</span>)
-&#9474;   &#9474; q.push(node-&gt;left);
-&#9474;  <span style="color: #ef80bf; font-weight: bold;">if</span> (node-&gt;right != <span style="color: #ff78aa;">NULL</span>)
-&#9474;   &#9474; q.push(node-&gt;right);
+<div id="outline-container-org4ed08e7" class="outline-3">
+<h3 id="org4ed08e7">BFS</h3>
+<div class="outline-text-3" id="text-org4ed08e7">
+<pre class="code"><code>while (q.empty() == false) {
+   Node *node = q.front();
+   cout &lt;&lt; node-&gt;data &lt;&lt; " "; //whatever operation
+   q.pop();
+   if (node-&gt;left != NULL)
+      q.push(node-&gt;left);
+   if (node-&gt;right != NULL)
+      q.push(node-&gt;right);
 }
 </code></pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org4f86ea5" class="outline-2">
-<h2 id="org4f86ea5">Counting</h2>
-<div class="outline-text-2" id="text-org4f86ea5">
+<div id="outline-container-org531ff3e" class="outline-2">
+<h2 id="org531ff3e">Counting</h2>
+<div class="outline-text-2" id="text-org531ff3e">
 <p>
 If we wish to count the number of nodes in a binary tree. The
 key insight is that the total count for any (non-empty) subtree is one for the
@@ -1944,17 +2385,17 @@ subtree counts come from? Calls to function count on the subtrees will
 compute this for us. Thus, we can implement count as follows.
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">template</span> &lt;<span style="color: #ef80bf; font-weight: bold;">typename</span> <span style="color: #f470df;">E</span>&gt;
-<span style="color: #f470df;">int</span> <span style="color: #f59280;">count</span>(<span style="color: #f470df;">BinNode</span>&lt;<span style="color: #f470df;">E</span>&gt;* <span style="color: #df7fff;">root</span>) {
-<span style="color: #ef80bf; font-weight: bold;">if</span> (root == <span style="color: #ff78aa;">NULL</span>) <span style="color: #ef80bf; font-weight: bold;">return</span> 0; <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">Nothing to count</span>
-<span style="color: #ef80bf; font-weight: bold;">return</span> 1 + count(root-&gt;left()) + count(root-&gt;right());
+<pre class="code"><code>template &lt;typename E&gt;
+int count(BinNode&lt;E&gt;* root) {
+if (root == NULL) return 0; // Nothing to count
+return 1 + count(root-&gt;left()) + count(root-&gt;right());
 }
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgc388bf6" class="outline-2">
-<h2 id="orgc388bf6">Height of a Binary Tree</h2>
-<div class="outline-text-2" id="text-orgc388bf6">
+<div id="outline-container-org64dd87a" class="outline-2">
+<h2 id="org64dd87a">Height of a Binary Tree</h2>
+<div class="outline-text-2" id="text-org64dd87a">
 <p>
 The height of a node in a binary tree is the largest number of edges in a path from a leaf
 node to a target node. If the target node doesn’t have any other nodes connected to it, the
@@ -2009,7 +2450,7 @@ Therefore, the depth of the binary tree is \(\mathbf{3}\).
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: 2020-01-04 Sat 00:00. Last build date: 2025-06-28 Sat 18:37.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: 2020-01-04 Sat 00:00. Last build date: 2025-07-25 Fri 00:00.</p>
 
 </div>
 </div>

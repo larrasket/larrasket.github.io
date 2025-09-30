@@ -1,181 +1,497 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <meta name="author" content="Salih Muhammed" />
-  <title>An Introduction to the Fragments of Self</title>
-  <style>
-    html {
-      color: #1a1a1a;
-      background-color: #fdfdfd;
-    }
-    body {
-      margin: 0 auto;
-      max-width: 36em;
-      padding-left: 50px;
-      padding-right: 50px;
-      padding-top: 50px;
-      padding-bottom: 50px;
-      hyphens: auto;
-      overflow-wrap: break-word;
-      text-rendering: optimizeLegibility;
-      font-kerning: normal;
-    }
-    @media (max-width: 600px) {
-      body {
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>An Introduction to the Fragments of Self</title>
+<meta name="author" content="Salih Muhammed" />
+<meta name="generator" content="Org Mode" />
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#ffffff">
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="viewport" content= "width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style/toc.css">
+  <link rel="stylesheet" href="/style/tufte.css">
+  <link rel="stylesheet" href="/style/main.css">
+
+
+
+
+  <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
+  <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+
+<!-- Import LazySizes - State-of-the-art lazy loading library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+
+<!-- Optional: Import plugins for better performance -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js" async></script>
+
+<script>
+// Only run on pages with 'art_paintings_media' in the path
+if (window.location.pathname.includes('art_paintings_media')) {
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    // Configure LazySizes for optimal performance
+    window.lazySizesConfig = window.lazySizesConfig || {};
+    window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
+    window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
+    window.lazySizesConfig.expFactor = 1.5; // Expand loading area
+    window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
+
+    // Add CSS for smooth transitions and collapsible content
+    const style = document.createElement('style');
+    style.textContent = `
+      .lazyload,
+      .lazyloading {
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+      }
+      .lazyloaded {
+        opacity: 1;
+      }
+      .collapsible-content {
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+      .collapsible-content.collapsed {
+        max-height: 0 !important;
+      }
+      .collapsible-content.expanded {
+        max-height: none;
+      }
+      /* Blur effect while loading (optional) */
+      .lazyloading {
+        filter: blur(5px);
+        opacity: 0.7;
+      }
+      .lazyloaded {
+        filter: none;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Find all h3 elements
+    const h3Elements = document.querySelectorAll('h3');
+
+    h3Elements.forEach(function(h3) {
+      // Make h3 clickable and add icon
+      h3.style.position = 'relative';
+      h3.style.cursor = 'pointer';
+      h3.style.paddingLeft = '20px';
+      h3.style.userSelect = 'none';
+
+      // Add the arrow icon
+      const icon = document.createElement('span');
+      icon.innerHTML = '▶';
+      icon.style.position = 'absolute';
+      icon.style.left = '0px';
+      icon.style.top = '50%';
+      icon.style.transform = 'translateY(-50%)';
+      icon.style.transition = 'transform 0.2s';
+      icon.style.fontSize = '0.8em';
+      icon.style.color = 'rgb(102, 102, 102)';
+      icon.style.fontFamily = 'monospace';
+
+      h3.insertBefore(icon, h3.firstChild);
+
+      // Find all content after this h3 until the next h3 or end of parent
+      const contentElements = [];
+      let nextElement = h3.nextElementSibling;
+
+      while (nextElement && nextElement.tagName !== 'H3') {
+        contentElements.push(nextElement);
+        nextElement = nextElement.nextElementSibling;
+      }
+
+      // Create a wrapper for smooth collapsing
+      const wrapper = document.createElement('div');
+      wrapper.className = 'collapsible-content collapsed';
+      wrapper.style.maxHeight = '0';
+
+      // Move content elements into wrapper
+      contentElements.forEach(function(element) {
+        wrapper.appendChild(element);
+      });
+
+      // Insert wrapper after h3
+      h3.parentNode.insertBefore(wrapper, h3.nextSibling);
+
+      // Prepare images for LazySizes lazy loading and make them clickable
+      const prepareImagesForLazyLoading = (container) => {
+        const images = container.querySelectorAll('img');
+        images.forEach(function(img) {
+          // Only process if not already processed
+          if (!img.classList.contains('lazyload') && !img.dataset.processed) {
+            // Store original src in data-src for LazySizes
+            if (img.src && img.src !== '' && !img.src.startsWith('data:')) {
+              img.dataset.src = img.src;
+              // Use a tiny placeholder or low-quality placeholder
+              img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+            }
+
+            // Handle srcset for responsive images
+            if (img.srcset && img.srcset !== '') {
+              img.dataset.srcset = img.srcset;
+              img.srcset = '';
+            }
+
+            // Handle sizes attribute
+            if (img.sizes) {
+              img.dataset.sizes = img.sizes;
+            }
+
+            // Add LazySizes classes
+            img.classList.add('lazyload');
+
+            // Make image clickable - add cursor pointer
+            img.style.cursor = 'pointer';
+
+            // Add click handler to open image in new tab
+            img.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation(); // Prevent triggering h3 collapse
+
+              // Get the actual image URL (either from src or data-src)
+              let imageUrl = this.src;
+              if (this.dataset.src && !this.src.startsWith('data:')) {
+                imageUrl = this.dataset.src;
+              } else if (this.src.startsWith('data:') && this.dataset.src) {
+                imageUrl = this.dataset.src;
+              }
+
+              // Open image in new tab
+              if (imageUrl && !imageUrl.startsWith('data:')) {
+                window.open(imageUrl, '_blank');
+              }
+            });
+
+            // Mark as processed
+            img.dataset.processed = 'true';
+
+            // Maintain aspect ratio to prevent layout shift
+            if (!img.style.aspectRatio && img.width && img.height) {
+              img.style.aspectRatio = img.width + '/' + img.height;
+            }
+          }
+        });
+      };
+
+      // Prepare all images in this section for lazy loading
+      prepareImagesForLazyLoading(wrapper);
+
+      // Track collapsed state
+      let isCollapsed = true;
+      let hasBeenExpanded = false;
+
+      // Add click handler
+      h3.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        if (isCollapsed) {
+          // Expand: show content and activate lazy loading
+          icon.style.transform = 'translateY(-50%) rotate(90deg)';
+          wrapper.classList.remove('collapsed');
+          wrapper.classList.add('expanded');
+          wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+
+          // Only activate LazySizes for this section when first expanded
+          if (!hasBeenExpanded) {
+            // Trigger LazySizes to check for images in this newly visible section
+            if (window.lazySizes) {
+              // Force LazySizes to check all images in this wrapper
+              const lazyImages = wrapper.querySelectorAll('.lazyload');
+              lazyImages.forEach(img => {
+                // Add to LazySizes queue
+                window.lazySizes.loader.unveil(img);
+              });
+            }
+            hasBeenExpanded = true;
+          }
+
+          isCollapsed = false;
+
+          // Recalculate height after images potentially load
+          setTimeout(() => {
+            if (!isCollapsed) {
+              wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+            }
+          }, 100);
+
+        } else {
+          // Collapse: hide content
+          icon.style.transform = 'translateY(-50%) rotate(0deg)';
+          wrapper.classList.remove('expanded');
+          wrapper.classList.add('collapsed');
+          wrapper.style.maxHeight = '0';
+
+          isCollapsed = true;
+        }
+      });
+
+      // Listen for LazySizes events to adjust height dynamically
+      wrapper.addEventListener('lazyloaded', function(e) {
+        if (!isCollapsed) {
+          // Adjust wrapper height when images load
+          setTimeout(() => {
+            wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+          }, 50);
+        }
+      });
+    });
+  });
+}
+</script>
+
+<script>
+
+
+
+  
+// Stack Page Formatter - Apply inline layout to specific pages
+(function() {
+  'use strict';
+  
+  // Check if current page should have the formatting applied
+  function shouldApplyFormatting() {
+    const path = window.location.pathname;
+    
+    // Check if path matches our target patterns
+    return path === '/stack' || 
+           path === '/stack.html' || 
+           path.startsWith('/sh/');
+  }
+  
+  // Only proceed if we're on a target page
+  if (!shouldApplyFormatting()) {
+    return;
+  }
+  
+  // Add CSS styles
+  function addStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+      /* Basic styling for entries */
+      .outline-3 {
+        margin-bottom: 1.5em;
+        line-height: 1.5;
+      }
+
+      /* Style for reconstructed single paragraph */
+      .entry-paragraph {
+        margin: 0;
+        line-height: 1.5;
+        direction: inherit;
+        unicode-bidi: plaintext;
+      }
+
+      /* Style for date - gray and nice */
+      .entry-date {
+        color: #666;
         font-size: 0.9em;
-        padding: 12px;
+        margin-right: 0.5em;
       }
-      h1 {
-        font-size: 1.8em;
+
+      /* Style for tag at end - gray and in parentheses */
+      .entry-tag {
+        display: inline !important;
+        color: #666;
+        margin-left: 0.5em;
       }
-    }
-    @media print {
-      html {
-        background-color: white;
+
+      /* Ensure all children stay inline */
+      .entry-tag * {
+        display: inline !important;
       }
-      body {
-        background-color: transparent;
-        color: black;
-        font-size: 12pt;
+
+      /* Override any existing tag styles */
+      .entry-tag p,
+      .entry-tag div {
+        display: inline !important;
+        margin: 0 !important;
+        padding: 0 !important;
       }
-      p, h2, h3 {
-        orphans: 3;
-        widows: 3;
+
+      /* Hide block elements that will be moved */
+      .outline-3 .moved-block {
+        display: block;
+        margin: 0.5em 0;
       }
-      h2, h3, h4 {
-        page-break-after: avoid;
+
+      /* Ensure proper anchor target visibility */
+      .outline-3[id] {
+        scroll-margin-top: 20px;
       }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  // Extract ID from container div
+  function extractIdFromContainer(entry) {
+    const containerId = entry.id;
+    if (containerId && containerId.startsWith('outline-container-')) {
+      return containerId.replace('outline-container-', '');
     }
-    p {
-      margin: 1em 0;
+    return null;
+  }
+  
+  // Apply the formatting transformation
+  function applyFormatting() {
+    // Process each entry
+    const entries = document.querySelectorAll('.outline-3');
+    
+    entries.forEach((entry, index) => {
+      // Extract the anchor ID from the container before transformation
+      const anchorId = extractIdFromContainer(entry);
+      
+      // Extract components
+      const h3 = entry.querySelector('h3');
+      const notes = entry.querySelector('.notes');
+      const outlineText = entry.querySelector('.outline-text-3');
+      const tag = entry.querySelector('.tag');
+      
+      if (!h3 || !outlineText) return;
+      
+      // Get title text (preserve any TODO/DONE prefixes and links)
+      let titleText = h3.innerHTML;
+      
+      // Get timestamp
+      let timestampText = '';
+      if (notes) {
+        const timestamp = notes.querySelector('.timestamp');
+        if (timestamp) {
+          timestampText = timestamp.textContent;
+        }
+      }
+      
+      // Get content paragraphs (excluding notes and tag)
+      const contentParagraphs = [];
+      const blockElements = [];
+      
+      Array.from(outlineText.children).forEach(child => {
+        if (child.classList.contains('notes') || child.classList.contains('tag')) {
+          return; // Skip these
+        }
+        
+        if (child.tagName === 'P') {
+          contentParagraphs.push(child.innerHTML);
+        } else if (child.tagName === 'UL' || child.tagName === 'OL' || 
+                   child.tagName === 'BLOCKQUOTE' || child.tagName === 'PRE' ||
+                   child.tagName === 'DL' || child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        } else if (child.tagName === 'DIV' && child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        }
+      });
+      
+      // Get tag HTML (preserve links and formatting)
+      let tagHtml = '';
+      if (tag) {
+        tagHtml = tag.outerHTML;
+      }
+      
+      // Construct the new single paragraph
+      let newContent = '';
+      
+      // Add date at the start (gray)
+      if (timestampText) {
+        newContent += '<span class="entry-date">' + timestampText + '</span>';
+      }
+      
+      // Add title with emdash
+      newContent += titleText + ' — ';
+      
+      // Add content paragraphs
+      newContent += contentParagraphs.join(' ');
+      
+      // Add tag at the end in parentheses (preserve HTML but force inline)
+      if (tagHtml) {
+        // Extract just the inner content and wrap it properly
+        let tagContent = tag.innerHTML;
+        newContent += ' <span class="entry-tag">(' + tagContent + ')</span>';
+      }
+      
+      // Create new paragraph element
+      const newParagraph = document.createElement('p');
+      newParagraph.className = 'entry-paragraph';
+      newParagraph.innerHTML = newContent;
+      
+      // Clear the entry and add the new paragraph
+      entry.innerHTML = '';
+      entry.appendChild(newParagraph);
+      
+      // Preserve the anchor ID by setting it on the transformed entry
+      if (anchorId) {
+        entry.id = anchorId;
+      }
+      
+      // Add any block elements after the paragraph
+      blockElements.forEach(blockHtml => {
+        const blockDiv = document.createElement('div');
+        blockDiv.className = 'moved-block';
+        blockDiv.innerHTML = blockHtml;
+        entry.appendChild(blockDiv);
+      });
+      
+      // Add separator after each entry (except the last one)
+      if (index < entries.length - 1) {
+        const separator = document.createElement('hr');
+        separator.style.margin = '1em 0';
+        separator.style.border = 'none';
+        separator.style.borderTop = '1px solid #ccc';
+        entry.appendChild(separator);
+      }
+    });
+  }
+  
+  // Initialize when DOM is ready
+  function init() {
+    addStyles();
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', applyFormatting);
+    } else {
+      applyFormatting();
     }
-    a {
-      color: #1a1a1a;
-    }
-    a:visited {
-      color: #1a1a1a;
-    }
-    img {
-      max-width: 100%;
-    }
-    svg {
-      height: auto;
-      max-width: 100%;
-    }
-    h1, h2, h3, h4, h5, h6 {
-      margin-top: 1.4em;
-    }
-    h5, h6 {
-      font-size: 1em;
-      font-style: italic;
-    }
-    h6 {
-      font-weight: normal;
-    }
-    ol, ul {
-      padding-left: 1.7em;
-      margin-top: 1em;
-    }
-    li > ol, li > ul {
-      margin-top: 0;
-    }
-    blockquote {
-      margin: 1em 0 1em 1.7em;
-      padding-left: 1em;
-      border-left: 2px solid #e6e6e6;
-      color: #606060;
-    }
-    code {
-      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
-      font-size: 85%;
-      margin: 0;
-      hyphens: manual;
-    }
-    pre {
-      margin: 1em 0;
-      overflow: auto;
-    }
-    pre code {
-      padding: 0;
-      overflow: visible;
-      overflow-wrap: normal;
-    }
-    .sourceCode {
-     background-color: transparent;
-     overflow: visible;
-    }
-    hr {
-      background-color: #1a1a1a;
-      border: none;
-      height: 1px;
-      margin: 1em 0;
-    }
-    table {
-      margin: 1em 0;
-      border-collapse: collapse;
-      width: 100%;
-      overflow-x: auto;
-      display: block;
-      font-variant-numeric: lining-nums tabular-nums;
-    }
-    table caption {
-      margin-bottom: 0.75em;
-    }
-    tbody {
-      margin-top: 0.5em;
-      border-top: 1px solid #1a1a1a;
-      border-bottom: 1px solid #1a1a1a;
-    }
-    th {
-      border-top: 1px solid #1a1a1a;
-      padding: 0.25em 0.5em 0.25em 0.5em;
-    }
-    td {
-      padding: 0.125em 0.5em 0.25em 0.5em;
-    }
-    header {
-      margin-bottom: 4em;
-      text-align: center;
-    }
-    #TOC li {
-      list-style: none;
-    }
-    #TOC ul {
-      padding-left: 1.3em;
-    }
-    #TOC > ul {
-      padding-left: 0;
-    }
-    #TOC a:not(:hover) {
-      text-decoration: none;
-    }
-    code{white-space: pre-wrap;}
-    span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    /* The extra [class] is a hack that increases specificity enough to
-       override a similar rule in reveal.js */
-    ul.task-list[class]{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      font-size: inherit;
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1.6em;
-      vertical-align: middle;
-    }
-    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
-  </style>
+  }
+  
+  // Start the initialization
+  init();
+})();
+</script>
+
+
+
 </head>
 <body>
-<header id="title-block-header">
+</body>
+</html>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="preamble" class="status">
+  <div class="header" style="
+    display: block !important;!i;!;
+">
+<a href="/">
+<h1 class="title" style="
+margin-block-start: auto;
+    color: black;
+">Hereby, all birds fly</h1>
+      </a>
+<hr class="header-divider" style="margin-block-end: -1em;">
+  </div>
+</div>
+</div>
+<div id="content" class="content">
+<header>
 <h1 class="title">An Introduction to the Fragments of Self</h1>
-<p class="author">Salih Muhammed</p>
-<p class="date">&lt;2023-06-22 Thu 13:00&gt;</p>
-</header>
-<figure class="resright"><img src="/i/me.jpg" title="Salih M." style="
+</header><figure class="resright"><img src="/i/me.jpg" title="Salih M." style="
     width: 130px;
     clip-path: circle();
 ">
@@ -190,118 +506,173 @@
 
 </figure>
 
-<p>I don't usually post many stuff about myself online, I will try to
-set this page as a way of making up for this. I don't like the aspect in
-general to have a virtual life, this was why I didn't care much to post
-details about me online. However, this tended to make people presume
-things about. I hope that this page will help reducing the severity of
-unsupported thoughts about me.</p>
-<h1 id="occupation">Occupation</h1>
-<p>I'm not currently certain about listing my profession, despite it
-being self-explanatory from many posts here and my general online
-activity, however, I do not like to be defined by it at all, and any
-other professions in which I may get involved forthcoming.</p>
-<p>This to imply to you my view of what is 'professional', if I ever had
-the opportunity of being financially independent I'd definitely be. I'm
-not the kind of "I love my job" people<a href="#fn1"
-class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>,
-however, I do love my job, but it's a love that means to an end: not to
-starve to death<a href="#fn2" class="footnote-ref" id="fnref2"
-role="doc-noteref"><sup>2</sup></a>. (although as of [2025-02-09 Sun
-21:57] I acknowledge that I got the opportunity to work with a set of a
-very smart people that I enjoy being surrounded by and having them as a
-company. I might need to write about this era of my life someday)</p>
-<p>This is also to say that I don't like spending my time out of work
-doing, thinking, reading, discussing, or —God forbid— studying anything
-that is related to my profession. I've many other <a
-href="#Interests">4</a> to spend my time on rather than whatever I do to
-make money.</p>
-<h1 id="religion"><span class="todo TODO">TODO</span> Religion <span
-class="tag" data-tag-name="@write"><span
-class="smallcaps">@write</span></span></h1>
-<p>I'm Muslim. I do I disagree with the mainstream definition of Islamic
-faith, this includes my views of the early history of Islam, caliphate
-and Shiism. I plan to write about that soon on this website.</p>
-<h1 id="music">Music <span class="tag" data-tag-name="@write"><span
-class="smallcaps">@write</span></span></h1>
-<ul>
-<li>[2025-06-28 Sat 18:32]:<br />
-cs</li>
+<p>
+I don&rsquo;t usually post many stuff about myself online, I will try to set this page
+as a way of making up for this. I don&rsquo;t like the aspect in general to have a
+virtual life, this was why I didn&rsquo;t care much to post details about me online.
+However, this tended to make people presume things about. I hope that this page
+will help reducing the severity of unsupported thoughts about me.
+</p>
+<div id="outline-container-org738c9e9" class="outline-2">
+<h2 id="org738c9e9">Occupation</h2>
+<div class="outline-text-2" id="text-org738c9e9">
+<p>
+I&rsquo;m not currently certain about listing my profession, despite it being self-explanatory
+from many posts here and my general online activity, however, I do not like to be defined
+by it at all, and any other professions in which I may get involved forthcoming.
+</p>
+
+<p>
+This to imply to you my view of what is &rsquo;professional&rsquo;, if I ever had the opportunity of
+being financially independent I&rsquo;d definitely be. I&rsquo;m not the kind of &ldquo;I love my job&rdquo;
+people<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle"/><span class="sidenote">
+I might have to say that I also dislike this kind of lifestyle.
+</span>, however, I do love my job, but it&rsquo;s a love that means to an end: not to
+starve to death<label for="2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="2" class="margin-toggle"/><span class="sidenote">
+I&rsquo;ve always thought about how obvious this should be, unfortunately my field is one
+of the most domains that get people who are &ldquo;in love&rdquo; with their job or what they&rsquo;re
+doing, that&rsquo;s why I thought I needed to put this clear.
+</span>. (although as of <span class="timestamp-wrapper"><span class="timestamp">[2025-02-09 Sun 21:57]</span></span> I acknowledge that
+I got the opportunity to work with a set of a very smart people that I enjoy
+being surrounded by and having them as a company. I might need to write about
+this era of my life someday)
+</p>
+
+<p>
+This is also to say that I don&rsquo;t like spending my time out of work doing, thinking,
+reading, discussing, or —God forbid— studying anything that is related to my profession.
+I&rsquo;ve many other <a href="#org6ab30ce">Interests</a> to spend my time on rather than whatever I do to make money.
+</p>
+</div>
+</div>
+<div id="outline-container-orgd5214bb" class="outline-2">
+<h2 id="orgd5214bb"><span class="todo TODO">TODO</span> Religion&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h2>
+<div class="outline-text-2" id="text-orgd5214bb">
+<p>
+I&rsquo;m Muslim. I do I disagree with the mainstream definition of Islamic faith, this includes
+my views of the early history of Islam, caliphate and Shiism. I plan to write about that
+soon on this website.
+</p>
+</div>
+</div>
+<div id="outline-container-lfoaq730yck0" class="outline-2">
+<h2 id="lfoaq730yck0"><span class="todo TODO">TODO</span> Music&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h2>
+<div class="outline-text-2" id="text-org9a5df95">
+<ul class="org-ul">
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-06-28 Sat 18:38]</span></span> As of now, some of the following information might be outdated. I plan to
+update this. I have a last.fm account under my username (larrasket) you can
+check it.</li>
 </ul>
-<p>I used a proprietary music tracker for a while, which informed me
-that my top music artists are:</p>
-<ul>
-<li><p>[2025-05-02 Fri 00:04] as of today, this list is very outdated.
-See my last.fm reports for insights about my music: <a
-href="https://www.last.fm/user/larrasket">https://www.last.fm/user/larrasket</a></p></li>
-<li><p>Matt Elliot</p></li>
-<li><p>Leonard Cohen</p></li>
-<li><p>Death In June</p></li>
-<li><p>Fairuz</p></li>
-<li><p>Johan Sebastlan Bach</p></li>
-<li><p>Black Hill</p></li>
-<li><p>Elliot Smith</p></li>
-<li><p>Stranger On a Train</p></li>
+
+<p>
+I used a proprietary music tracker for a while, which informed me that my top
+music artists are:
+</p>
+
+<ul class="org-ul">
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-05-02 Fri 00:04]</span></span> as of today, this list is very outdated. See my last.fm
+reports for insights about my music: <a href="https://www.last.fm/user/larrasket">https://www.last.fm/user/larrasket</a></li>
+
+<li>Matt Elliot</li>
+<li>Leonard Cohen</li>
+<li>Death In June</li>
+<li>Fairuz</li>
+<li>Johan Sebastlan Bach</li>
+<li>Black Hill</li>
+<li>Elliot Smith</li>
+<li>Stranger On a Train</li>
 </ul>
-<p>I enjoy classics. These are my favorite pieces:</p>
-<p>From Bach:</p>
-<pre class="example"><code>Johann Sebastian Bach - (1704-1750) Toccata and Fugue in D minor, BWV 565.mp3
+
+<p>
+I enjoy classics. These are my favorite pieces:
+</p>
+
+<p>
+From Bach:
+</p>
+<pre class="example" id="org1cce424">
+Johann Sebastian Bach - (1704-1750) Toccata and Fugue in D minor, BWV 565.mp3
 Johann Sebastian Bach - (1704-1750) Air on the G String.mp3
 Johann Sebastian Bach - (1704-1750) Brandenburg Concerto No. 3 in G Major, BWV 1048 (Allegro moderato).mp3
-</code></pre>
-<p>From Mozart:</p>
-<pre class="example"><code>Wolfgang Amadeus Mozart - (1785) Piano Concerto No. 21 KV.467 (II.Andante).mp3
-</code></pre>
-<p>From others:</p>
-<pre class="example"><code>Ludwig van Beethoven - (1801) Sonata No. 14 in C-sharp minor for Piano Op. 27 (No. 2 Moonlight; Adagio sostenuto).mp3
-Ludwig van Beethoven - (1810) Fur Elise Bagatelle No.25.mp3
-Ludwig van Beethoven - (1824) Symphony No. 9 In D Minor, Op. 125 Choral (II. Molto vivace; Presto).mp3
-Gioachino Rossini - (1828) William Tell Overture (excerpt).mp3
-Johann Strauss - (1864) Marche Persanne, Op. 289.mp3
-Gabriel Fauré - (1887) Pavane, Op. 50.mp3
-Nikolai Rimsky-Korsakov - (1899) Flight of the Bumblebee.mp3
-Francisco Tarrega - (1908) Recuerdos de la Alhambra.mp3
-Antonín DVOŘÁK - (1893) Symphony No.9 in E Minor, Op. 95 (From The New World, IV. Allegro con fuoco).mp3
-</code></pre>
-<p>I rarely enjoy opera;</p>
-<pre class="example"><code>Léo Delibes                             3. (1883) Lakmé (Flower Duet)
-</code></pre>
-<p><a href="https://youtu.be/F9dBl_pLc3g">TSU! - Prince of Gumbay</a>
-For me, this is the most peaceful piece of music I've ever heard.</p>
-<p>I do not use Spotify or any other music proprietary platforms. I
-download and stream music offline on my computer machine. <a
-href="https://en.wikipedia.org/wiki/Cmus">cmus</a> is my music player.
-See <a href="#Planned">7.1</a> for my plans for building a music
-player.</p>
-<p>Currently, I'm not interested in exploring any new types of music, I
-prefer to stick to the collection I already have.</p>
-<h2 id="leonard-cohen">Leonard Cohen</h2>
-<blockquote>
-There’s truth that lives<br />
-And truth that dies<br />
-I don’t know which<br />
-So nevermind<br />
+</pre>
+<p>
+From Mozart:
+</p>
+<pre class="example" id="orgdf21947">
+Wolfgang Amadeus Mozart - (1785) Piano Concerto No. 21 KV.467 (II.Andante).mp3
+</pre>
+<p>
+From others:
+</p>
+<pre class="example" id="org2ee1093">
+ Ludwig van Beethoven - (1801) Sonata No. 14 in C-sharp minor for Piano Op. 27 (No. 2 Moonlight; Adagio sostenuto).mp3
+ Ludwig van Beethoven - (1810) Fur Elise Bagatelle No.25.mp3
+ Ludwig van Beethoven - (1824) Symphony No. 9 In D Minor, Op. 125 Choral (II. Molto vivace; Presto).mp3
+ Gioachino Rossini - (1828) William Tell Overture (excerpt).mp3
+ Johann Strauss - (1864) Marche Persanne, Op. 289.mp3
+ Gabriel Fauré - (1887) Pavane, Op. 50.mp3
+ Nikolai Rimsky-Korsakov - (1899) Flight of the Bumblebee.mp3
+ Francisco Tarrega - (1908) Recuerdos de la Alhambra.mp3
+ Antonín DVOŘÁK - (1893) Symphony No.9 in E Minor, Op. 95 (From The New World, IV. Allegro con fuoco).mp3
+</pre>
+<p>
+I rarely enjoy opera;
+</p>
+<pre class="example" id="orgbd0c6f1">
+Léo Delibes                             3. (1883) Lakmé (Flower Duet)
+</pre>
 
-</blockquote>
-<p>My first time of experiencing Cohen's music was from opening one of
-my colleagues Spotify accounts, I was in high school back then, when I
-listened to the music, which was Sing Another Song, Boys, the seventh
-song from Songs Of Love And Hate (my ever favorite album of his by now),
-I didn't like it initially, but I felt that it was very different from
-anything I've ever listened to (and I still believe that it's indeed a
-unique work of music).</p>
-<p>I remember that I spent days listening to it, I was back then
-possessing some interest in pursuing a biotechnology degree and I was
-studying a biochemistry textbook; I still get some intrusive chemical
-formulas into my head every time I play the song, because I used to
-study that book while listening to it on repeat, though I do not mind it
-at all.</p>
-<p>I didn't play any other songs by him since that, so I can say that
-the real time for me to learn about Cohen was from the movie <a
-href="https://youtu.be/TXwCCWHl5Ak">Exotica (1994)</a>, since then I
-fell in love with his songwritings, following are my favorite works from
-him (not sorted):</p>
-<ul>
+<p>
+<a href="https://youtu.be/F9dBl_pLc3g">TSU! - Prince of Gumbay</a> For me, this is the most peaceful piece of music I&rsquo;ve
+ever heard.
+</p>
+
+<p>
+I do not use Spotify or any other music proprietary platforms. I download and stream music
+offline on my computer machine. <a href="https://en.wikipedia.org/wiki/Cmus">cmus</a> is my music player. See <a href="#org55b3a70">Planned</a> for my plans for
+building a music player.
+</p>
+
+<p>
+Currently, I&rsquo;m not interested in exploring any new types of music, I prefer to stick to
+the collection I already have.
+</p>
+</div>
+<div id="outline-container-sqw4olv04xj0" class="outline-3">
+<h3 id="sqw4olv04xj0">Leonard Cohen</h3>
+<div class="outline-text-3" id="text-org0c21914">
+<div class="epigraph"><blockquote>
+<p>
+There’s truth that lives <br>
+And truth that dies <br>
+I don’t know which <br>
+So nevermind <br>
+</p>
+
+</blockquote></div>
+<p>
+My first time of experiencing Cohen&rsquo;s music was from opening one of my colleagues Spotify
+accounts, I was in high school back then, when I listened to the music, which was Sing
+Another Song, Boys, the seventh song from Songs Of Love And Hate (my ever favorite album
+of his by now), I didn&rsquo;t like it initially, but I felt that it was very different from
+anything I&rsquo;ve ever listened to (and I still believe that it&rsquo;s indeed a unique work of
+music).
+</p>
+
+<p>
+I remember that I spent days listening to it, I was back then possessing some interest in
+pursuing a biotechnology degree and I was studying a biochemistry textbook; I still get
+some intrusive chemical formulas into my head every time I play the song, because I used
+to study that book while listening to it on repeat, though I do not mind it at all.
+</p>
+
+<p>
+I didn&rsquo;t play any other songs by him since that, so I can say that the real time
+for me to learn about Cohen was from the movie <a href="https://youtu.be/TXwCCWHl5Ak">Exotica (1994)</a>, since then I fell
+in love with his songwritings, following are my favorite works from him (not sorted):
+</p>
+
+<ul class="org-ul">
 <li>Songs Of Love And Hate - 7. Sing Another Song, Boys</li>
 <li>Leonard Cohen - Thanks for the Dance - 6. The Goal</li>
 <li>Thanks for the Dance - 1. Happens to the Heart</li>
@@ -309,227 +680,304 @@ him (not sorted):</p>
 <li>Cohen Live - 9. Who By Fire? - Live in Austin, 1988</li>
 <li>Live In Dublin - 8. Amen - Live in Dublin</li>
 <li>Various Positions - 6. The Captain</li>
-<li>Death Of A Ladies' Man - 1. True Love Leaves No Traces</li>
+<li>Death Of A Ladies&rsquo; Man - 1. True Love Leaves No Traces</li>
 <li>Songs Of Leonard Cohen - 9. Teachers</li>
-<li>I'm Your Man - 3. Everybody Knows</li>
+<li>I&rsquo;m Your Man - 3. Everybody Knows</li>
 <li>Ten New Songs - 4. Here It Is</li>
 <li>Recent Songs - 2. Humbled in Love</li>
 <li>Recent Songs - 10. Ballad of the Absent Mare - Longer Version</li>
 <li>Songs Of Love And Hate - 1. Avalanche</li>
 </ul>
-<h2 id="matt-elliot"><span class="todo TODO">TODO</span> Matt Elliot
-<span class="tag" data-tag-name="@write"><span
-class="smallcaps">@write</span></span> <span class="tag"
-data-tag-name="@later"><span class="smallcaps">@later</span></span></h2>
-<p>My Matt Elliot story is as just as special to me as <a
-href="id:sqw4olv04xj0">Leonard Cohen</a>'s, but it's still ongoing.
-Someday, I will write about it. I hope it will be soon.</p>
-<h2 id="nostalgical-music">Nostalgical Music</h2>
-<p>I'm easily stirred by music that brings nostalgic melody. I don't
-dislike it, but it extremely affects my mood<a href="#fn3"
-class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.
-Thus I tend to avoid having or listening to any of this genre. Some
-songs that gives me this kind of vibes are:<a href="#fn4"
-class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
-<ul>
-<li>Ya Waadi Aal Ayame, Ahmed Mounib<a href="#fn5" class="footnote-ref"
-id="fnref5" role="doc-noteref"><sup>5</sup></a></li>
+</div>
+</div>
+<div id="outline-container-orgc49829c" class="outline-3">
+<h3 id="orgc49829c"><span class="todo TODO">TODO</span> Matt Elliot&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span>&#xa0;<span class="_later">@later</span></span></h3>
+<div class="outline-text-3" id="text-orgc49829c">
+<p>
+My Matt Elliot story is as just as special to me as <a href="#sqw4olv04xj0">Leonard Cohen</a>&rsquo;s, but it&rsquo;s still
+ongoing. Someday, I will write about it. I hope it will be soon.
+</p>
+</div>
+</div>
+<div id="outline-container-rsrkab418ck0" class="outline-3">
+<h3 id="rsrkab418ck0">Nostalgical Music</h3>
+<div class="outline-text-3" id="text-orga639c4b">
+<p>
+I&rsquo;m easily stirred by music that brings nostalgic melody. I don&rsquo;t dislike it, but it
+extremely affects my mood<label for="3" class="margin-toggle sidenote-number"></label><input type="checkbox" id="3" class="margin-toggle"/><span class="sidenote">
+I was told that I&rsquo;ve a nostalgia issue and that I usually
+suffer from nostalgic depression, which might be related to my mild Plyushkin&rsquo;s disorder.
+Related: <a href="../p/nosalgic_bib.html#jene6a516ak0">Nostalgic Bibliography</a>.
+</span>. Thus I tend to avoid having or listening to any of this
+genre.  Some songs that gives me this kind of vibes are:<label for="4" class="margin-toggle sidenote-number"></label><input type="checkbox" id="4" class="margin-toggle"/><span class="sidenote">
+Perhaps every Ahmed Mounib and Hamid El Shaeri songs are qualified here.
+</span>
+</p>
+<ul class="org-ul">
+<li>Ya Waadi Aal Ayame, Ahmed Mounib<label for="5" class="margin-toggle sidenote-number"></label><input type="checkbox" id="5" class="margin-toggle"/><span class="sidenote">
+Which made me write this list. As of  <span class="timestamp-wrapper"><span class="timestamp">[2024-09-28 Sat 00:14]</span></span>
+</span></li>
 <li>Dayret El Rehla, Ahmed Mounib</li>
 <li>Eh fi amal, Fayrouz</li>
 <li>Bageelek, Hamid El Shaeri</li>
 <li>Ouda, Hamid El Shaeri</li>
 <li>Hamid El Shaeri</li>
-<li>رماد حلمَك | مرثية لـ نجيب سرور<a href="#fn6" class="footnote-ref"
-id="fnref6" role="doc-noteref"><sup>6</sup></a></li>
+<li>رماد حلمَك | مرثية لـ نجيب سرور<label for="6" class="margin-toggle sidenote-number"></label><input type="checkbox" id="6" class="margin-toggle"/><span class="sidenote">
+I&rsquo;m not sure of the author: <a href="https://soundcloud.com/johnny-singer-81">https://soundcloud.com/johnny-singer-81</a>
+</span></li>
 <li>Ahmed Mounib, Salma</li>
 <li>shbbet thaw al thkryat, Omar</li>
-<li>مع السلامة لو نويت تروح - من تراث السّويداء<a href="#fn7"
-class="footnote-ref" id="fnref7"
-role="doc-noteref"><sup>7</sup></a></li>
+<li>مع السلامة لو نويت تروح - من تراث السّويداء<label for="7" class="margin-toggle sidenote-number"></label><input type="checkbox" id="7" class="margin-toggle"/><span class="sidenote">
+<a href="https://soundcloud.com/user-645622529/xotaoghzb0fh">https://soundcloud.com/user-645622529/xotaoghzb0fh</a>
+</span></li>
 <li>Nesmet Saba, Hamid el-Shaeri</li>
 <li>Long Long Time Ago, Javier Navarrete</li>
 <li>Ana Raga Ashofak, Talal Maddah</li>
 <li>A Vava Inouva, Idir</li>
 <li>Bektob esmak ya habibi, Fairouz</li>
-<li>[2024-10-30 Wed 19:20] No Clear Mind - Dream is Destiny - 8. a new
-sun</li>
+<li><span class="timestamp-wrapper"><span class="timestamp">[2024-10-30 Wed 19:20]</span></span> No Clear Mind - Dream is Destiny - 8. a new sun</li>
 </ul>
-<h2 id="piotr-ilich-tchaikovskys-1812-overture-finale.">Piotr Ilich
-Tchaikovsky's "1812 Overture Finale".</h2>
-<p>This piece is a one of my very few specials. I remember learning
-about it for the first time from the movie V for Vendetta (2005), which
-is one of my ever favorites, but I didn't pay much attention back then,
-and I think I only learnt about it by the 2022 Russian invasion of
-Ukraine. It affects me very much, and it gives me vibes from <a
-href="https://youtu.be/p3pfJukO5QU">Shadows of Forgotten Ancestors
-(Sergei Parajanov, 1965)</a>. I only listen to / play both in special
-occasions, due to their great effect on me.</p>
-<h1 id="interests">Interests</h1>
-<p>I'm interested in the following fields: computer programming,
-cognitive science, linguistics, history, scientific socialism,
-propaganda and media studies, moral philosophy and <del>philosophy of
-mind</del>, Islamic philosophy, Islamic biographical evaluation and
-modern Takhrij studies. I've developed a growing interest in the
-following fields: chemistry and economics.</p>
-<p>Other interests are implied in my <a href="id:omy9ejo02wj0">Books</a>
-list.</p>
-<p>I consider myself to be an intermediate chess player, my peak rating
-(<a
-href="https://en.wikipedia.org/wiki/Glicko_rating_system">Glicko</a>)
-was 1950, my current rating on my only active account is 1808 (after a
-long strike of losing). For my thoughts on chess, see the post <a
-href="id:b8u34341owj0">Thoughts on Chess</a>.</p>
-<p>Generally I think chess is one of the few games that I'd like to play
-(I think gaming is a great waste of time in general), the game GO seems
-interesting too.</p>
-<p>What I like about this kind of games that it is free of anything but
-the free will of one's decisions. See more on that on <a
-href="id:mp56qej0fzj0">A View on Chess</a>.</p>
-<h1 id="personal-preferences">Personal preferences</h1>
-<p>Olive is my favorite food, most of my favorite recipes contain olive.
-There is no -generally speaking- any kind of food that I would refuse to
-eat, however I do refuse to consume any food that contains any form of
-artificial sweeteners (raw sugar, refined white sugar, etc..).</p>
-<p>My favorite drink is tea. I do consume lemonade regularly too. My
-consumption of coffee is high as well, however I do not really prefer it
-and I only drink it for my need of caffeine. If I can find someday a
-caffeine substitute (that is comparable to ground coffee) I will quit
-coffee. I drink only ground coffee. I try to avoid manufactured instant
-coffee for health concerns (also most instance coffee products do not
-have approximate amount of caffeine that ground coffee posses).</p>
-<h1 id="on-the-web">On the web</h1>
-<p>I exist in other places on the web. I'm on Stack Exchange network.
-Especially: <a
-href="https://skeptics.stackexchange.com/users/69248/">Skeptics SE</a>
-and <a href="https://islam.stackexchange.com/users/56455/">Islam SE</a>.
-I also exist on <a
-href="https://news.ycombinator.com/user?id=lr0">HN</a>. I don't use
-social media to connect with people. Even when I do, I do not appreciate
-people who I don't know in person communicating with me there.</p>
-<h2 id="if-you-want-to-know-me">If you want to know me</h2>
-<p>This gets me to another point. Some people think I'm avoidant for new
-people. I'm not at all, if you find that we share interests, I'd be glad
-to know more about you. The best way to communicate with me can be found
-on the footer of the home page.</p>
-<h1 id="projects">Projects</h1>
-<ul>
-<li><del><a href="https://sr.ht/~lr0/statusless/">statusless</a>. A
-dynamic, programmable, user-defined status bar for dwm</del> (and other
-window managers that use xroot) that follows suckless philosophy. -
-[2025-05-07 Wed 04:00] I moved to MacOS.</li>
-<li><del><a href="https://sr.ht/~lr0/bo/">bo</a>. Bin organizer using
-trash-cli as a backend.</del> [2024-11-03 Sun 23:47] I stopped
+</div>
+</div>
+<div id="outline-container-jqmep830yck0" class="outline-3">
+<h3 id="jqmep830yck0">Piotr Ilich Tchaikovsky&rsquo;s &ldquo;1812 Overture Finale&rdquo;.</h3>
+<div class="outline-text-3" id="text-org438b654">
+<p>
+This piece is a one of my very few specials. I remember learning about it for the first time
+from the movie V for Vendetta (2005), which is one of my ever favorites, but I didn&rsquo;t pay
+much attention back then, and I think I only learnt about it by the 2022 Russian invasion
+of Ukraine. It affects me very much, and it gives me vibes from <a href="https://youtu.be/p3pfJukO5QU">Shadows of Forgotten
+Ancestors (Sergei Parajanov, 1965)</a>. I only listen to / play both in special occasions, due
+to their great effect on me.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org6ab30ce" class="outline-2">
+<h2 id="org6ab30ce">Interests</h2>
+<div class="outline-text-2" id="text-org6ab30ce">
+<p>
+I&rsquo;m interested in the following fields: computer programming, cognitive science,
+linguistics, history, scientific socialism, propaganda and media studies, moral
+philosophy and <del>philosophy of mind</del>, Islamic philosophy, Islamic biographical
+evaluation and modern Takhrij studies. I&rsquo;ve developed a growing interest in the
+following fields: chemistry and economics.
+</p>
+
+<p>
+Other interests are implied in my <a href="../fullbooks.html#omy9ejo02wj0">Books</a> list.
+</p>
+
+<p>
+I consider myself to be an intermediate chess player, my peak rating (<a href="https://en.wikipedia.org/wiki/Glicko_rating_system">Glicko</a>) was 1950, my
+current rating on my only active account is 1808 (after a long strike of losing). For my
+thoughts on chess, see the post <a href="../d/chess2.html#b8u34341owj0">Thoughts on Chess</a>.
+</p>
+
+<p>
+Generally I think chess is one of the few games that I&rsquo;d like to play (I think gaming is a
+great waste of time in general), the game GO seems interesting too.
+</p>
+
+<p>
+What I like about this kind of games that it is free of anything but the free will of
+one&rsquo;s decisions. See more on that on <a href="../d/chess2.html#mp56qej0fzj0">A View on Chess</a>.
+</p>
+</div>
+</div>
+<div id="outline-container-orgdf06d87" class="outline-2">
+<h2 id="orgdf06d87">Personal preferences</h2>
+<div class="outline-text-2" id="text-orgdf06d87">
+<p>
+Olive is my favorite food, most of my favorite recipes contain olive. There is no
+-generally speaking- any kind of food that I would refuse to eat, however I do
+refuse to consume any food that contains any form of artificial sweeteners (raw
+sugar, refined white sugar, etc..).
+</p>
+
+<p>
+My favorite drink is tea. I do consume lemonade regularly too. My consumption of
+coffee is high as well, however I do not really prefer it and I only drink it
+for my need of caffeine. If I can find someday a caffeine substitute (that is
+comparable to ground coffee) I will quit coffee. I drink only ground coffee. I
+try to avoid manufactured instant coffee for health concerns (also most instance
+coffee products do not have approximate amount of caffeine that ground coffee
+posses).
+</p>
+</div>
+</div>
+<div id="outline-container-org1991df3" class="outline-2">
+<h2 id="org1991df3">On the web</h2>
+<div class="outline-text-2" id="text-org1991df3">
+<p>
+I exist in other places on the web. I&rsquo;m on Stack Exchange network. Especially: <a href="https://skeptics.stackexchange.com/users/69248/">Skeptics SE</a>
+and <a href="https://islam.stackexchange.com/users/56455/">Islam SE</a>. I also exist on <a href="https://news.ycombinator.com/user?id=lr0">HN</a>. I don&rsquo;t use social media to connect with people. Even
+when I do, I do not appreciate people who I don&rsquo;t know in person communicating with me
+there.
+</p>
+</div>
+<div id="outline-container-orge54b54c" class="outline-3">
+<h3 id="orge54b54c">If you want to know me</h3>
+<div class="outline-text-3" id="text-orge54b54c">
+<p>
+This gets me to another point. Some people think I&rsquo;m avoidant for new people. I&rsquo;m not at
+all, if you find that we share interests, I&rsquo;d be glad to know more about you. The best way
+to communicate with me can be found on the footer of the home page.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-ixhffy31d8k0" class="outline-2">
+<h2 id="ixhffy31d8k0">Projects</h2>
+<div class="outline-text-2" id="text-orgc3c63e0">
+<ul class="org-ul">
+<li><del><a href="https://sr.ht/~lr0/statusless/">statusless</a>. A dynamic, programmable, user-defined status bar for dwm</del> (and
+other window managers that use xroot) that follows suckless philosophy. -
+<span class="timestamp-wrapper"><span class="timestamp">[2025-05-07 Wed 04:00]</span></span> I moved to MacOS.</li>
+<li><del><a href="https://sr.ht/~lr0/bo/">bo</a>. Bin organizer using trash-cli as a backend.</del> <span class="timestamp-wrapper"><span class="timestamp">[2024-11-03 Sun 23:47]</span></span> I stopped
 using/maintining bo</li>
-<li><a href="https://git.sr.ht/~lr0/euler">euler</a>. solving project
-euler.</li>
+<li><a href="https://git.sr.ht/~lr0/euler">euler</a>. solving project euler.</li>
 <li><a href="https://sr.ht/~lr0/ps/">ps</a>. other problem solving.</li>
-<li><a href="https://sr.ht/~lr0/tadwin.el/">tadwin.el</a>. Emacs
-publishing blog system (tightly coupled to my org-roam setup) using
-org-mode. It's used to make this website.</li>
-<li><del><a
-href="https://sr.ht/~lr0/agenda-notifier.go/">agenda-notifier.go</a>.
-agenda-notifier.̶e̶l̶ go is a basic notification daemon for org-mode
-agenda</del>. Last time I used it was years ago.</li>
-<li><a href="https://sr.ht/~lr0/rssc/">rssc</a>. real-time,
-self-hostable regex-oriented customization service for atom, rss and
-json feeds. Many people are using it, but I stopped using it and moved
-to r2e eventually.</li>
-<li><a href="https://sr.ht/~lr0/RedditorDump/">RedditorDump</a>. An
-open-source intelligence tool to get all the subreddits a reddit user
-was involved in.</li>
+<li><a href="https://sr.ht/~lr0/tadwin.el/">tadwin.el</a>. Emacs publishing blog system (tightly coupled to my org-roam setup)
+using org-mode. It&rsquo;s used to make this website.</li>
+<li><del><a href="https://sr.ht/~lr0/agenda-notifier.go/">agenda-notifier.go</a>. agenda-notifier.̶e̶l̶ go is a basic notification daemon for
+org-mode agenda</del>. Last time I used it was years ago.</li>
+<li><a href="https://sr.ht/~lr0/rssc/">rssc</a>. real-time, self-hostable regex-oriented customization service for atom, rss and
+json feeds. Many people are using it, but I stopped using it and moved to r2e
+eventually.</li>
+<li><a href="https://sr.ht/~lr0/RedditorDump/">RedditorDump</a>. An open-source intelligence tool to get all the subreddits a
+reddit user was involved in.</li>
 </ul>
-<h2 id="planned"><span class="todo TODO">TODO</span> Planned <span
-class="tag" data-tag-name="@idea"><span
-class="smallcaps">@idea</span></span></h2>
-<p>Projects that I'm considering to get into next.</p>
-<ul>
-<li><p><del>musql</del>. I'd love a queryable music player that would
-support generating sets of music using a complex tagging system. Let's
-say that you have a playlist for sad songs and another one for you when
-you feel proud. What if you feel both? like a success depression. A
-possible solution would be creating a new list that includes both.
-However, what if you need a list that contains only the sad songs that
-are not about love? It will be impossible with that linear system to do
-it without manual intervention.</p>
-<p>But if you were able to tag each song as "sad, love", and you had a
-DSL language for querying (let it be even just SQL), such scenario is
-very feasible.</p>
-<p>I've been thinking about this idea for a fairly long time. But I'm
-horrible at designing/implementing UI ends. If you can help, contact
-me.</p>
-<ul>
-<li>[2025-03-29 Sat 21:50] Just found out that Apple Music has this
-feature. I'm canceling this project. See more <a
-href="id:p4pacx81lik0">The reason that makes Apple's software
-better</a>.</li>
+</div>
+<div id="outline-container-org55b3a70" class="outline-3">
+<h3 id="org55b3a70"><span class="todo TODO">TODO</span> Planned&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_idea">@idea</span></span></h3>
+<div class="outline-text-3" id="text-org55b3a70">
+<p>
+Projects that I&rsquo;m considering to get into next.
+</p>
+
+<ul class="org-ul">
+<li><p>
+<del>musql</del>. I&rsquo;d love a queryable music player that would support generating sets of
+music using a complex tagging system. Let&rsquo;s say that you have a playlist for
+sad songs and another one for you when you feel proud. What if you feel both?
+like a success depression. A possible solution would be creating a new list
+that includes both. However, what if you need a list that contains only the
+sad songs that are not about love? It will be impossible with that linear
+system to do it without manual intervention.
+</p>
+
+<p>
+But if you were able to tag each song as &ldquo;sad, love&rdquo;, and you had a DSL
+language for querying (let it be even just SQL), such scenario is very
+feasible.
+</p>
+
+<p>
+I&rsquo;ve been thinking about this idea for a fairly long time. But I&rsquo;m horrible at
+designing/implementing UI ends. If you can help, contact me.
+</p>
+
+<ul class="org-ul">
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-03-29 Sat 21:50]</span></span> Just found out that Apple Music has this feature. I&rsquo;m
+canceling this project. See more <a href="../d/apple.html#p4pacx81lik0">The reason that makes Apple&rsquo;s software better</a>.</li>
 </ul></li>
-<li><p>(as of [2024-10-17 Thu 18:15], I'm no longer interested in this)
-<a href="https://sr.ht/~lr0/cblocks/">cblocks</a>. I started this
-project as an exercise for my C fluency and because I needed an
-alternative for the dwm bar I'm using, with more flexibility. This
-project was successful (it reads a compiled C module, load, evaluate it
-and update the status bar with the evaluated string), however, I wanted
-to add concurrency which is an essential feature for me. Sadly I totally
-forgot how hard was it to work with concurrency in C. I think I might
-rewrite it in Go, but I'm not sure who to implement the dynamism in
-Go.</p></li>
-<li><p>Chronological art browser.</p></li>
-<li><p>Gustave Doré Arabic Divine Comedy. Basically something that shows
-Doré's work on the divine comedy, with verses in Arabic, showing various
-translations.</p></li>
+
+<li>(as of <span class="timestamp-wrapper"><span class="timestamp">[2024-10-17 Thu 18:15]</span></span>, I&rsquo;m no longer interested in this)  <a href="https://sr.ht/~lr0/cblocks/">cblocks</a>. I started
+this project as an exercise for my C fluency and because I needed an alternative for the
+dwm bar I&rsquo;m using, with more flexibility. This project was successful (it reads a
+compiled C module, load, evaluate it and update the status bar with the evaluated
+string), however, I wanted to add concurrency which is an essential feature for me.
+Sadly I totally forgot how hard was it to work with concurrency in C. I think I might
+rewrite it in Go, but I&rsquo;m not sure who to implement the dynamism in Go.</li>
+
+<li>Chronological art browser.</li>
+<li>Gustave Doré Arabic Divine Comedy. Basically something that shows Doré&rsquo;s work on the
+divine comedy, with verses in Arabic, showing various translations.</li>
 </ul>
-<h1 id="my-favorite-animals">My favorite animals</h1>
-<blockquote>
-<p>واعلم أن الحيوان هو آية الكون وسِحره؛ وإنّما أنتَ استثناء. — عباس
-ابراهام.</p>
-</blockquote>
-<p>I like to read and study animal behavior. We humans have many
-intersection points with them, you can notice that while contemplating
-other mammals behavior. <a href="id:5yu8gy0083k0">Desmond Morris</a> was
-the first one to get me interested in reading about animal behavior,
-after I finished his magnum opus (the naked ape) I was looking for more
-by the same author. I like these animals because I admire some of their
-manners: <a href="../i/2024-01-26_21-34-41_screenshot.png">Hare</a>, <a
-href="../i/2024-01-26_21-35-00_screenshot.png">Python</a>, <a
-href="../i/2024-01-26_21-35-12_screenshot.png">Jugar</a> and <a
-href="../i/2024-01-26_21-35-28_screenshot.png">Greyish eagle-owl</a>. I
-never owned a pet.</p>
-<h1 id="languages">Languages</h1>
-<p>I speak Arabic and English. As my course of learning linguistics, I'm
-learning another language, it's supposed to be German (as of [2024-02-29
-Thu 01:05]) but I'm considering moving to French. - [2025-05-07 Wed
-04:02] Update: my language course was paused due to other projects and
-interests.</p>
-<section id="footnotes" class="footnotes footnotes-end-of-document"
-role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1"><p>I might have to say that I also dislike this kind of
-lifestyle.<a href="#fnref1" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>I've always thought about how obvious this should be,
-unfortunately my field is one of the most domains that get people who
-are "in love" with their job or what they're doing, that's why I thought
-I needed to put this clear.<a href="#fnref2" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>I was told that I've a nostalgia issue and that I
-usually suffer from nostalgic depression, which might be related to my
-mild Plyushkin's disorder. Related: <a href="id:jene6a516ak0">Nostalgic
-Bibliography</a>.<a href="#fnref3" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>Perhaps every Ahmed Mounib and Hamid El Shaeri songs are
-qualified here.<a href="#fnref4" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>Which made me write this list. As of [2024-09-28 Sat
-00:14]<a href="#fnref5" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>I'm not sure of the author: <a
-href="https://soundcloud.com/johnny-singer-81">https://soundcloud.com/johnny-singer-81</a><a
-href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn7"><p><a
-href="https://soundcloud.com/user-645622529/xotaoghzb0fh">https://soundcloud.com/user-645622529/xotaoghzb0fh</a><a
-href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section>
+</div>
+</div>
+</div>
+<div id="outline-container-org6fa9b3e" class="outline-2">
+<h2 id="org6fa9b3e">My favorite animals</h2>
+<div class="outline-text-2" id="text-org6fa9b3e">
+<div class="epigraph"><blockquote>
+<p>
+واعلم أن الحيوان هو آية الكون وسِحره؛ وإنّما أنتَ استثناء.
+— عباس ابراهام.
+</p>
+
+</blockquote></div>
+<p>
+I like to read and study animal behavior. We humans have many intersection
+points with them, you can notice that while contemplating other mammals
+behavior.  Desmond Morris was the first one to get me interested in reading
+about animal behavior, after I finished his magnum opus (the naked ape) I was
+looking for more by the same author. I like these animals because I admire some
+of their manners: <a href="../i/2024-01-26_21-34-41_screenshot.png">Hare</a>, <a href="../i/2024-01-26_21-35-00_screenshot.png">Python</a>, <a href="../i/2024-01-26_21-35-12_screenshot.png">Jugar</a> and <a href="../i/2024-01-26_21-35-28_screenshot.png">Greyish eagle-owl</a>. I never owned a pet.
+</p>
+</div>
+</div>
+<div id="outline-container-orga9dfe32" class="outline-2">
+<h2 id="orga9dfe32">Languages</h2>
+<div class="outline-text-2" id="text-orga9dfe32">
+<p>
+I speak Arabic and English. As my course of learning linguistics, I&rsquo;m learning
+another language, it&rsquo;s supposed to be German (as of <span class="timestamp-wrapper"><span class="timestamp">[2024-02-29 Thu 01:05]</span></span>) but
+I&rsquo;m considering moving to French. - <span class="timestamp-wrapper"><span class="timestamp">[2025-05-07 Wed 04:02]</span></span> Update: my language
+course was paused due to other projects and interests.
+</p>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+I might have to say that I also dislike this kind of lifestyle.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+I&rsquo;ve always thought about how obvious this should be, unfortunately my field is one
+of the most domains that get people who are &ldquo;in love&rdquo; with their job or what they&rsquo;re
+doing, that&rsquo;s why I thought I needed to put this clear.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+I was told that I&rsquo;ve a nostalgia issue and that I usually
+suffer from nostalgic depression, which might be related to my mild Plyushkin&rsquo;s disorder.
+Related: <a href="../p/nosalgic_bib.html#jene6a516ak0">Nostalgic Bibliography</a>.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Perhaps every Ahmed Mounib and Hamid El Shaeri songs are qualified here.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Which made me write this list. As of  <span class="timestamp-wrapper"><span class="timestamp">[2024-09-28 Sat 00:14]</span></span>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+I&rsquo;m not sure of the author: <a href="https://soundcloud.com/johnny-singer-81">https://soundcloud.com/johnny-singer-81</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.7" class="footnum" href="#fnr.7" role="doc-backlink">7</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="https://soundcloud.com/user-645622529/xotaoghzb0fh">https://soundcloud.com/user-645622529/xotaoghzb0fh</a>
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr style="
+    clear: both;
+">
+
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: 2023-06-22 Thu 13:00. Last build date: 2025-07-25 Fri 00:00.</p>
+
+</div>
+</div>
+</div>
 </body>
 </html>

@@ -25,6 +25,448 @@
 
   <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
   <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+
+<!-- Import LazySizes - State-of-the-art lazy loading library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+
+<!-- Optional: Import plugins for better performance -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js" async></script>
+
+<script>
+// Only run on pages with 'art_paintings_media' in the path
+if (window.location.pathname.includes('art_paintings_media')) {
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    // Configure LazySizes for optimal performance
+    window.lazySizesConfig = window.lazySizesConfig || {};
+    window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
+    window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
+    window.lazySizesConfig.expFactor = 1.5; // Expand loading area
+    window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
+
+    // Add CSS for smooth transitions and collapsible content
+    const style = document.createElement('style');
+    style.textContent = `
+      .lazyload,
+      .lazyloading {
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+      }
+      .lazyloaded {
+        opacity: 1;
+      }
+      .collapsible-content {
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+      .collapsible-content.collapsed {
+        max-height: 0 !important;
+      }
+      .collapsible-content.expanded {
+        max-height: none;
+      }
+      /* Blur effect while loading (optional) */
+      .lazyloading {
+        filter: blur(5px);
+        opacity: 0.7;
+      }
+      .lazyloaded {
+        filter: none;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Find all h3 elements
+    const h3Elements = document.querySelectorAll('h3');
+
+    h3Elements.forEach(function(h3) {
+      // Make h3 clickable and add icon
+      h3.style.position = 'relative';
+      h3.style.cursor = 'pointer';
+      h3.style.paddingLeft = '20px';
+      h3.style.userSelect = 'none';
+
+      // Add the arrow icon
+      const icon = document.createElement('span');
+      icon.innerHTML = '▶';
+      icon.style.position = 'absolute';
+      icon.style.left = '0px';
+      icon.style.top = '50%';
+      icon.style.transform = 'translateY(-50%)';
+      icon.style.transition = 'transform 0.2s';
+      icon.style.fontSize = '0.8em';
+      icon.style.color = 'rgb(102, 102, 102)';
+      icon.style.fontFamily = 'monospace';
+
+      h3.insertBefore(icon, h3.firstChild);
+
+      // Find all content after this h3 until the next h3 or end of parent
+      const contentElements = [];
+      let nextElement = h3.nextElementSibling;
+
+      while (nextElement && nextElement.tagName !== 'H3') {
+        contentElements.push(nextElement);
+        nextElement = nextElement.nextElementSibling;
+      }
+
+      // Create a wrapper for smooth collapsing
+      const wrapper = document.createElement('div');
+      wrapper.className = 'collapsible-content collapsed';
+      wrapper.style.maxHeight = '0';
+
+      // Move content elements into wrapper
+      contentElements.forEach(function(element) {
+        wrapper.appendChild(element);
+      });
+
+      // Insert wrapper after h3
+      h3.parentNode.insertBefore(wrapper, h3.nextSibling);
+
+      // Prepare images for LazySizes lazy loading and make them clickable
+      const prepareImagesForLazyLoading = (container) => {
+        const images = container.querySelectorAll('img');
+        images.forEach(function(img) {
+          // Only process if not already processed
+          if (!img.classList.contains('lazyload') && !img.dataset.processed) {
+            // Store original src in data-src for LazySizes
+            if (img.src && img.src !== '' && !img.src.startsWith('data:')) {
+              img.dataset.src = img.src;
+              // Use a tiny placeholder or low-quality placeholder
+              img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+            }
+
+            // Handle srcset for responsive images
+            if (img.srcset && img.srcset !== '') {
+              img.dataset.srcset = img.srcset;
+              img.srcset = '';
+            }
+
+            // Handle sizes attribute
+            if (img.sizes) {
+              img.dataset.sizes = img.sizes;
+            }
+
+            // Add LazySizes classes
+            img.classList.add('lazyload');
+
+            // Make image clickable - add cursor pointer
+            img.style.cursor = 'pointer';
+
+            // Add click handler to open image in new tab
+            img.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation(); // Prevent triggering h3 collapse
+
+              // Get the actual image URL (either from src or data-src)
+              let imageUrl = this.src;
+              if (this.dataset.src && !this.src.startsWith('data:')) {
+                imageUrl = this.dataset.src;
+              } else if (this.src.startsWith('data:') && this.dataset.src) {
+                imageUrl = this.dataset.src;
+              }
+
+              // Open image in new tab
+              if (imageUrl && !imageUrl.startsWith('data:')) {
+                window.open(imageUrl, '_blank');
+              }
+            });
+
+            // Mark as processed
+            img.dataset.processed = 'true';
+
+            // Maintain aspect ratio to prevent layout shift
+            if (!img.style.aspectRatio && img.width && img.height) {
+              img.style.aspectRatio = img.width + '/' + img.height;
+            }
+          }
+        });
+      };
+
+      // Prepare all images in this section for lazy loading
+      prepareImagesForLazyLoading(wrapper);
+
+      // Track collapsed state
+      let isCollapsed = true;
+      let hasBeenExpanded = false;
+
+      // Add click handler
+      h3.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        if (isCollapsed) {
+          // Expand: show content and activate lazy loading
+          icon.style.transform = 'translateY(-50%) rotate(90deg)';
+          wrapper.classList.remove('collapsed');
+          wrapper.classList.add('expanded');
+          wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+
+          // Only activate LazySizes for this section when first expanded
+          if (!hasBeenExpanded) {
+            // Trigger LazySizes to check for images in this newly visible section
+            if (window.lazySizes) {
+              // Force LazySizes to check all images in this wrapper
+              const lazyImages = wrapper.querySelectorAll('.lazyload');
+              lazyImages.forEach(img => {
+                // Add to LazySizes queue
+                window.lazySizes.loader.unveil(img);
+              });
+            }
+            hasBeenExpanded = true;
+          }
+
+          isCollapsed = false;
+
+          // Recalculate height after images potentially load
+          setTimeout(() => {
+            if (!isCollapsed) {
+              wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+            }
+          }, 100);
+
+        } else {
+          // Collapse: hide content
+          icon.style.transform = 'translateY(-50%) rotate(0deg)';
+          wrapper.classList.remove('expanded');
+          wrapper.classList.add('collapsed');
+          wrapper.style.maxHeight = '0';
+
+          isCollapsed = true;
+        }
+      });
+
+      // Listen for LazySizes events to adjust height dynamically
+      wrapper.addEventListener('lazyloaded', function(e) {
+        if (!isCollapsed) {
+          // Adjust wrapper height when images load
+          setTimeout(() => {
+            wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+          }, 50);
+        }
+      });
+    });
+  });
+}
+</script>
+
+<script>
+
+
+
+  
+// Stack Page Formatter - Apply inline layout to specific pages
+(function() {
+  'use strict';
+  
+  // Check if current page should have the formatting applied
+  function shouldApplyFormatting() {
+    const path = window.location.pathname;
+    
+    // Check if path matches our target patterns
+    return path === '/stack' || 
+           path === '/stack.html' || 
+           path.startsWith('/sh/');
+  }
+  
+  // Only proceed if we're on a target page
+  if (!shouldApplyFormatting()) {
+    return;
+  }
+  
+  // Add CSS styles
+  function addStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+      /* Basic styling for entries */
+      .outline-3 {
+        margin-bottom: 1.5em;
+        line-height: 1.5;
+      }
+
+      /* Style for reconstructed single paragraph */
+      .entry-paragraph {
+        margin: 0;
+        line-height: 1.5;
+        direction: inherit;
+        unicode-bidi: plaintext;
+      }
+
+      /* Style for date - gray and nice */
+      .entry-date {
+        color: #666;
+        font-size: 0.9em;
+        margin-right: 0.5em;
+      }
+
+      /* Style for tag at end - gray and in parentheses */
+      .entry-tag {
+        display: inline !important;
+        color: #666;
+        margin-left: 0.5em;
+      }
+
+      /* Ensure all children stay inline */
+      .entry-tag * {
+        display: inline !important;
+      }
+
+      /* Override any existing tag styles */
+      .entry-tag p,
+      .entry-tag div {
+        display: inline !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      /* Hide block elements that will be moved */
+      .outline-3 .moved-block {
+        display: block;
+        margin: 0.5em 0;
+      }
+
+      /* Ensure proper anchor target visibility */
+      .outline-3[id] {
+        scroll-margin-top: 20px;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  // Extract ID from container div
+  function extractIdFromContainer(entry) {
+    const containerId = entry.id;
+    if (containerId && containerId.startsWith('outline-container-')) {
+      return containerId.replace('outline-container-', '');
+    }
+    return null;
+  }
+  
+  // Apply the formatting transformation
+  function applyFormatting() {
+    // Process each entry
+    const entries = document.querySelectorAll('.outline-3');
+    
+    entries.forEach((entry, index) => {
+      // Extract the anchor ID from the container before transformation
+      const anchorId = extractIdFromContainer(entry);
+      
+      // Extract components
+      const h3 = entry.querySelector('h3');
+      const notes = entry.querySelector('.notes');
+      const outlineText = entry.querySelector('.outline-text-3');
+      const tag = entry.querySelector('.tag');
+      
+      if (!h3 || !outlineText) return;
+      
+      // Get title text (preserve any TODO/DONE prefixes and links)
+      let titleText = h3.innerHTML;
+      
+      // Get timestamp
+      let timestampText = '';
+      if (notes) {
+        const timestamp = notes.querySelector('.timestamp');
+        if (timestamp) {
+          timestampText = timestamp.textContent;
+        }
+      }
+      
+      // Get content paragraphs (excluding notes and tag)
+      const contentParagraphs = [];
+      const blockElements = [];
+      
+      Array.from(outlineText.children).forEach(child => {
+        if (child.classList.contains('notes') || child.classList.contains('tag')) {
+          return; // Skip these
+        }
+        
+        if (child.tagName === 'P') {
+          contentParagraphs.push(child.innerHTML);
+        } else if (child.tagName === 'UL' || child.tagName === 'OL' || 
+                   child.tagName === 'BLOCKQUOTE' || child.tagName === 'PRE' ||
+                   child.tagName === 'DL' || child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        } else if (child.tagName === 'DIV' && child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        }
+      });
+      
+      // Get tag HTML (preserve links and formatting)
+      let tagHtml = '';
+      if (tag) {
+        tagHtml = tag.outerHTML;
+      }
+      
+      // Construct the new single paragraph
+      let newContent = '';
+      
+      // Add date at the start (gray)
+      if (timestampText) {
+        newContent += '<span class="entry-date">' + timestampText + '</span>';
+      }
+      
+      // Add title with emdash
+      newContent += titleText + ' — ';
+      
+      // Add content paragraphs
+      newContent += contentParagraphs.join(' ');
+      
+      // Add tag at the end in parentheses (preserve HTML but force inline)
+      if (tagHtml) {
+        // Extract just the inner content and wrap it properly
+        let tagContent = tag.innerHTML;
+        newContent += ' <span class="entry-tag">(' + tagContent + ')</span>';
+      }
+      
+      // Create new paragraph element
+      const newParagraph = document.createElement('p');
+      newParagraph.className = 'entry-paragraph';
+      newParagraph.innerHTML = newContent;
+      
+      // Clear the entry and add the new paragraph
+      entry.innerHTML = '';
+      entry.appendChild(newParagraph);
+      
+      // Preserve the anchor ID by setting it on the transformed entry
+      if (anchorId) {
+        entry.id = anchorId;
+      }
+      
+      // Add any block elements after the paragraph
+      blockElements.forEach(blockHtml => {
+        const blockDiv = document.createElement('div');
+        blockDiv.className = 'moved-block';
+        blockDiv.innerHTML = blockHtml;
+        entry.appendChild(blockDiv);
+      });
+      
+      // Add separator after each entry (except the last one)
+      if (index < entries.length - 1) {
+        const separator = document.createElement('hr');
+        separator.style.margin = '1em 0';
+        separator.style.border = 'none';
+        separator.style.borderTop = '1px solid #ccc';
+        entry.appendChild(separator);
+      }
+    });
+  }
+  
+  // Initialize when DOM is ready
+  function init() {
+    addStyles();
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', applyFormatting);
+    } else {
+      applyFormatting();
+    }
+  }
+  
+  // Start the initialization
+  init();
+})();
+</script>
+
+
+
 </head>
 <body>
 </body>
@@ -40,8 +482,7 @@
 <h1 class="title" style="
 margin-block-start: auto;
     color: black;
-">لّermontov</h1>
-
+">Hereby, all birds fly</h1>
       </a>
 <hr class="header-divider" style="margin-block-end: -1em;">
   </div>
@@ -50,7 +491,7 @@ margin-block-start: auto;
 <div id="content" class="content">
 <header>
 <h1 class="title">Effective Go: A Conclusion</h1>
-</header><div class="propert" id="orgeb282f6">
+</header><div class="propert" id="org1fe8daa">
 <p>
 Part of a series on <a href="../cs/go.html#lvkhzyo02wj0">The Go Programming Language</a>
 </p>
@@ -58,7 +499,7 @@ Part of a series on <a href="../cs/go.html#lvkhzyo02wj0">The Go Programming Lang
 </div>
 
 
-<div class="PREVIEW" id="org9f36c15">
+<div class="PREVIEW" id="orgdd2642f">
 <p>
 Reading the effective Go document.
 </p>
@@ -88,9 +529,9 @@ References are used for non-td;lr that might be intersting for nerds.<label for=
 I also might use <a href="https://github.com/golang/go/wiki/CodeReview">https://github.com/golang/go/wiki/CodeReview</a>
 </span>
 </p>
-<div id="outline-container-org9b7465c" class="outline-2">
-<h2 id="org9b7465c">Naming</h2>
-<div class="outline-text-2" id="text-org9b7465c">
+<div id="outline-container-org14c13fc" class="outline-2">
+<h2 id="org14c13fc">Naming</h2>
+<div class="outline-text-2" id="text-org14c13fc">
 <p>
 Names are as important in Go as in any other language. They even have semantic effect: the
 visibility of a name outside a package is determined by whether its first character is upper
@@ -98,9 +539,9 @@ case. It&rsquo;s therefore worth spending a little time talking about naming con
 programs.
 </p>
 </div>
-<div id="outline-container-org298fb74" class="outline-3">
-<h3 id="org298fb74">Packages</h3>
-<div class="outline-text-3" id="text-org298fb74">
+<div id="outline-container-org4eb1b56" class="outline-3">
+<h3 id="org4eb1b56">Packages</h3>
+<div class="outline-text-3" id="text-org4eb1b56">
 <p>
 package in <code>src/pkg/encoding/base64</code> is imported as &ldquo;<code>encoding/base64</code>&rdquo; but has name <code>base64</code>,
 <b>not</b> <code>encoding_base64</code> and not <code>encodingBase64</code>. The importer of a package will use the name to
@@ -108,9 +549,9 @@ refer to its contents (the import . notation is
 </p>
 </div>
 </div>
-<div id="outline-container-orgbd05668" class="outline-3">
-<h3 id="orgbd05668">Getters</h3>
-<div class="outline-text-3" id="text-orgbd05668">
+<div id="outline-container-org39aa29a" class="outline-3">
+<h3 id="org39aa29a">Getters</h3>
+<div class="outline-text-3" id="text-org39aa29a">
 <p>
 Go doesn&rsquo;t provide automatic support for getters and setters. There&rsquo;s nothing wrong with
 providing getters and setters yourself, and it&rsquo;s often appropriate to do so, but it&rsquo;s
@@ -122,7 +563,7 @@ discriminate the field from the method. A setter function, if needed, will likel
 </p>
 
 
-<pre class="example" id="orgcd2ee44">
+<pre class="example" id="org8790c6c">
 owner := obj.Owner()
 if owner != user {
     obj.SetOwner(user)
@@ -130,9 +571,9 @@ if owner != user {
 </pre>
 </div>
 </div>
-<div id="outline-container-org9c7cd96" class="outline-3">
-<h3 id="org9c7cd96">Interface (single-method)</h3>
-<div class="outline-text-3" id="text-org9c7cd96">
+<div id="outline-container-orgc91378d" class="outline-3">
+<h3 id="orgc91378d">Interface (single-method)</h3>
+<div class="outline-text-3" id="text-orgc91378d">
 <p>
 By convention, one-method interfaces are named by the method name plus an -er suffix or
 similar modification to construct an agent noun: <code>Reader</code>, <code>Writer</code>, <code>Formatter</code>,
@@ -149,9 +590,9 @@ call your string-converter method <code>String</code> not <code>ToString</code>.
 </p>
 </div>
 </div>
-<div id="outline-container-org4b5a439" class="outline-3">
-<h3 id="org4b5a439">MixedCaps</h3>
-<div class="outline-text-3" id="text-org4b5a439">
+<div id="outline-container-org7092f79" class="outline-3">
+<h3 id="org7092f79">MixedCaps</h3>
+<div class="outline-text-3" id="text-org7092f79">
 <p>
 Finally, the convention in Go is to use <code>MixedCaps</code> or <code>mixedCaps</code> rather than underscores
 to write multiword names.
@@ -159,9 +600,9 @@ to write multiword names.
 </div>
 </div>
 </div>
-<div id="outline-container-org1ffcda4" class="outline-2">
-<h2 id="org1ffcda4">Comments</h2>
-<div class="outline-text-2" id="text-org1ffcda4">
+<div id="outline-container-orga7a57a3" class="outline-2">
+<h2 id="orga7a57a3">Comments</h2>
+<div class="outline-text-2" id="text-orga7a57a3">
 <p>
 “Doc comments” are comments that appear immediately before top-level package, const, func,
 type, and var declarations with no intervening newlines. Every exported (capitalized) name
@@ -172,9 +613,9 @@ should have a doc comment.
 For syntax, read: <a href="https://go.dev/doc/comment#Syntax">https://go.dev/doc/comment#Syntax</a>
 </p>
 </div>
-<div id="outline-container-orgff4d17e" class="outline-3">
-<h3 id="orgff4d17e">Inside packages</h3>
-<div class="outline-text-3" id="text-orgff4d17e">
+<div id="outline-container-orgadf823c" class="outline-3">
+<h3 id="orgadf823c">Inside packages</h3>
+<div class="outline-text-3" id="text-orgadf823c">
 <p>
 Every package should have a package comment introducing the package. It provides information relevant to the package as a whole and generally sets expectations for the package. Especially in large packages, it can be helpful for the package comment to give a brief overview of the most important parts of the API, linking to other doc comments as needed.
 </p>
@@ -183,7 +624,7 @@ Every package should have a package comment introducing the package. It provides
 If the package is simple, the package comment can be brief. For example:
 </p>
 
-<pre class="example" id="orge785d8a">
+<pre class="example" id="orgabe33a5">
 // Package path implements utility routines for manipulating slash-separated
 // paths.
 //
@@ -195,18 +636,18 @@ package path
 </pre>
 </div>
 </div>
-<div id="outline-container-org02ced16" class="outline-3">
-<h3 id="org02ced16"><span class="done KILL">KILL</span> Commands</h3>
+<div id="outline-container-org0a197e7" class="outline-3">
+<h3 id="org0a197e7"><span class="done KILL">KILL</span> Commands</h3>
 </div>
-<div id="outline-container-org752f230" class="outline-3">
-<h3 id="org752f230"><code>type</code></h3>
-<div class="outline-text-3" id="text-org752f230">
+<div id="outline-container-orgc70c12e" class="outline-3">
+<h3 id="orgc70c12e"><code>type</code></h3>
+<div class="outline-text-3" id="text-orgc70c12e">
 <p>
 A type&rsquo;s doc comment should explain what each instance of that type represents or provides.
 If the API is simple, the doc comment can be quite short. For example:
 </p>
 
-<pre class="example" id="org1db5b82">
+<pre class="example" id="org5ef7338">
 package zip
 
 // A Reader serves content from a ZIP archive.
@@ -224,7 +665,7 @@ example:
 </p>
 
 
-<pre class="example" id="org0976315">
+<pre class="example" id="orgc8e4581">
 package regexp
 
 // Regexp is the representation of a compiled regular expression.
@@ -243,7 +684,7 @@ explain the meaning of each exported field. For example, this type&rsquo;s doc c
 the fields:
 </p>
 
-<pre class="example" id="orgfd465f0">
+<pre class="example" id="org9cb2c32">
  package io
 
 // A LimitedReader reads from R but limits the amount of
@@ -263,9 +704,9 @@ and it makes the text easier to search, whether on a web page or a command line.
 </p>
 </div>
 </div>
-<div id="outline-container-org18c9943" class="outline-3">
-<h3 id="org18c9943"><code>func</code></h3>
-<div class="outline-text-3" id="text-org18c9943">
+<div id="outline-container-org9f40ff6" class="outline-3">
+<h3 id="org9f40ff6"><code>func</code></h3>
+<div class="outline-text-3" id="text-org9f40ff6">
 <p>
 A func&rsquo;s doc comment should explain what the function returns or, for functions called for
 side effects, what it does. Named arguments or results can be referred to directly in the
@@ -275,7 +716,7 @@ example:
 </p>
 
 
-<pre class="example" id="orga67e4c6">
+<pre class="example" id="orgd8fc415">
  package strconv
 
 // Quote returns a double-quoted Go string literal representing s.
@@ -287,22 +728,22 @@ func Quote(s string) string {
 </pre>
 </div>
 </div>
-<div id="outline-container-org4de297a" class="outline-3">
-<h3 id="org4de297a"><code>const</code></h3>
-<div class="outline-text-3" id="text-org4de297a">
+<div id="outline-container-orgf7f84d0" class="outline-3">
+<h3 id="orgf7f84d0"><code>const</code></h3>
+<div class="outline-text-3" id="text-orgf7f84d0">
 <p>
 Go&rsquo;s declaration syntax allows grouping of declarations, in which case a single doc comment
 can introduce a group of related constants, with individual constants only documented by
 short end-of-line comments. For example:
 </p>
-<pre class="code"><code><span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">The result of Scan is one of these tokens or a Unicode character.</span>
-<span style="color: #ef80bf; font-weight: bold;">const</span> (
-&#9474;   <span style="color: #ff78aa;">EOF</span> = -(<span style="color: #ff78aa;">iota</span> + 1)
-&#9474;   <span style="color: #ff78aa;">Ident</span>
-&#9474;   <span style="color: #ff78aa;">Int</span>
-&#9474;   <span style="color: #ff78aa;">Float</span>
-&#9474;   <span style="color: #ff78aa;">Char</span>
-&#9474;   ...
+<pre class="code"><code>// The result of Scan is one of these tokens or a Unicode character.
+const (
+    EOF = -(iota + 1)
+    Ident
+    Int
+    Float
+    Char
+    ...
 )
 </code></pre>
 
@@ -311,7 +752,7 @@ short end-of-line comments. For example:
 Sometimes the group needs no doc comment at all. For example:
 </p>
 
-<pre class="example" id="org654663e">
+<pre class="example" id="orgf5bb79b">
  package unicode // import "unicode"
 
 const (
@@ -328,7 +769,7 @@ const (
 On the other hand, ungrouped constants typically warrant a full doc comment starting with a complete sentence. For example:
 </p>
 
-<pre class="example" id="orge990600">
+<pre class="example" id="org9c87b73">
  package unicode
 
 // Version is the Unicode edition from which the tables are derived.
@@ -336,17 +777,17 @@ const Version = "13.0.0"
 </pre>
 </div>
 </div>
-<div id="outline-container-org6e7c58a" class="outline-3">
-<h3 id="org6e7c58a"><code>var</code></h3>
+<div id="outline-container-orgd9a8ccc" class="outline-3">
+<h3 id="orgd9a8ccc"><code>var</code></h3>
 </div>
 </div>
-<div id="outline-container-org6cbfab4" class="outline-2">
-<h2 id="org6cbfab4">CHECK Errors</h2>
-<div class="outline-text-2" id="text-org6cbfab4">
+<div id="outline-container-orgd19bd09" class="outline-2">
+<h2 id="orgd19bd09">CHECK Errors</h2>
+<div class="outline-text-2" id="text-orgd19bd09">
 </div>
-<div id="outline-container-orgf67e07d" class="outline-3">
-<h3 id="orgf67e07d">Error Strings</h3>
-<div class="outline-text-3" id="text-orgf67e07d">
+<div id="outline-container-org7d23c5f" class="outline-3">
+<h3 id="org7d23c5f">Error Strings</h3>
+<div class="outline-text-3" id="text-org7d23c5f">
 <p>
 Error strings should not be capitalized (unless beginning with proper nouns or acronyms) or
 end with punctuation, since they are usually printed following other context. That is, use
@@ -357,13 +798,13 @@ apply to logging, which is implicitly line-oriented and not combined inside othe
 </div>
 </div>
 </div>
-<div id="outline-container-org83d38dd" class="outline-2">
-<h2 id="org83d38dd">Other</h2>
-<div class="outline-text-2" id="text-org83d38dd">
+<div id="outline-container-org784f848" class="outline-2">
+<h2 id="org784f848">Other</h2>
+<div class="outline-text-2" id="text-org784f848">
 </div>
-<div id="outline-container-org7f5b0db" class="outline-3">
-<h3 id="org7f5b0db">Semicolons</h3>
-<div class="outline-text-3" id="text-org7f5b0db">
+<div id="outline-container-org527d5f3" class="outline-3">
+<h3 id="org527d5f3">Semicolons</h3>
+<div class="outline-text-3" id="text-org527d5f3">
 <p>
 Idiomatic Go programs have semicolons only in places such as <code>for</code> loop clauses, to separate
 the initializer, condition, and continuation elements. They are also necessary to separate
@@ -393,9 +834,9 @@ if i &lt; f()  // wrong!
 </p>
 </div>
 </div>
-<div id="outline-container-org9d91d4a" class="outline-3">
-<h3 id="org9d91d4a">Declaring Variables</h3>
-<div class="outline-text-3" id="text-org9d91d4a">
+<div id="outline-container-org03643ca" class="outline-3">
+<h3 id="org03643ca">Declaring Variables</h3>
+<div class="outline-text-3" id="text-org03643ca">
 <ul class="org-ul">
 <li>When declaring —but not initializing— a variable, <b>use the keyword <code>var</code></b></li>
 <li>When declaring and initializing in the same time, use the short declaration form: <code>:=</code></li>
@@ -404,12 +845,12 @@ if i &lt; f()  // wrong!
 <p>
 When declaring an empty slice, prefer
 </p>
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">var</span> <span style="color: #df7fff;">t</span> []<span style="color: #f470df;">string</span>
+<pre class="code"><code>var t []string
 </code></pre>
 <p>
 over
 </p>
-<pre class="code"><code><span style="color: #df7fff;">t</span> := []<span style="color: #f470df;">string</span>{}
+<pre class="code"><code>t := []string{}
 </code></pre>
 
 <p>
@@ -431,9 +872,9 @@ zero-length slice, as this can lead to subtle programming errors.
 </p>
 </div>
 </div>
-<div id="outline-container-org6e87de8" class="outline-3">
-<h3 id="org6e87de8">Context</h3>
-<div class="outline-text-3" id="text-org6e87de8">
+<div id="outline-container-org346e8bb" class="outline-3">
+<h3 id="org346e8bb">Context</h3>
+<div class="outline-text-3" id="text-org346e8bb">
 <p>
 Values of the context.Context type carry security credentials, tracing information,
 deadlines, and cancellation signals across API and process boundaries. Go programs pass
@@ -445,7 +886,7 @@ requests to outgoing requests.
 <b>Most functions that use a Context should accept it as their first parameter:</b>
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">func</span> <span style="color: #f59280;">F</span>(<span style="color: #df7fff;">ctx</span> <span style="color: #f470df;">context.Context</span>, <span style="color: #bf9f8f; font-style: italic;">/* </span><span style="color: #bf9f8f; font-style: italic;">other arguments */</span>) {}
+<pre class="code"><code>func F(ctx context.Context, /* other arguments */) {}
 </code></pre>
 
 <p>
@@ -477,9 +918,9 @@ same deadline, cancellation signal, credentials, parent trace, etc.
 </p>
 </div>
 </div>
-<div id="outline-container-orgd2ea2a3" class="outline-3">
-<h3 id="orgd2ea2a3">Rand</h3>
-<div class="outline-text-3" id="text-orgd2ea2a3">
+<div id="outline-container-orgd11526d" class="outline-3">
+<h3 id="orgd11526d">Rand</h3>
+<div class="outline-text-3" id="text-orgd11526d">
 <p>
 Do not use package <code>math/rand</code> to generate keys, even throwaway ones. Unseeded, the generator
 is completely predictable. Seeded with <code>time.Nanoseconds()</code>, there are just a few bits of
@@ -487,55 +928,55 @@ entropy. Instead, use <code>crypto/rand</code>&rsquo;s Reader, and if you need t
 <code>base64</code>:
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">import</span> (
-&#9474;   <span style="color: #e5b76f;">"crypto/rand"</span>
-&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">"encoding/base64"</span>
-&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">"encoding/hex"</span>
-&#9474;   <span style="color: #e5b76f;">"fmt"</span>
+<pre class="code"><code>import (
+	"crypto/rand"
+	// "encoding/base64"
+	// "encoding/hex"
+	"fmt"
 )
 
-<span style="color: #ef80bf; font-weight: bold;">func</span> <span style="color: #f59280;">Key</span>() <span style="color: #f470df;">string</span> {
-&#9474;   <span style="color: #df7fff;">buf</span> := <span style="color: #a897ef; font-weight: bold;">make</span>([]<span style="color: #f470df;">byte</span>, 16)
-&#9474;   <span style="color: #df7fff;">_</span>, <span style="color: #df7fff;">err</span> := rand.<span style="color: #f59280;">Read</span>(buf)
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">if</span> err != <span style="color: #ff78aa;">nil</span> {
-&#9474;   &#9474;   <span style="color: #a897ef; font-weight: bold;">panic</span>(err)  <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">out of randomness, should never happen</span>
-&#9474;   }
-&#9474;   <span style="color: #ef80bf; font-weight: bold;">return</span> fmt.<span style="color: #f59280;">Sprintf</span>(<span style="color: #e5b76f;">"%x"</span>, buf)
-&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">or hex.EncodeToString(buf)</span>
-&#9474;   <span style="color: #bf9f8f; font-style: italic;">// </span><span style="color: #bf9f8f; font-style: italic;">or base64.StdEncoding.EncodeToString(buf)</span>
+func Key() string {
+	buf := make([]byte, 16)
+	_, err := rand.Read(buf)
+	if err != nil {
+		panic(err)  // out of randomness, should never happen
+	}
+	return fmt.Sprintf("%x", buf)
+	// or hex.EncodeToString(buf)
+	// or base64.StdEncoding.EncodeToString(buf)
 }
 
-<span style="color: #ef80bf; font-weight: bold;">func</span> <span style="color: #f59280;">main</span>() {
-&#9474;   fmt.<span style="color: #f59280;">Print</span>(<span style="color: #f59280;">Key</span>())
-&#9474;   &#9474;   }
+func main() {
+	fmt.Print(Key())
+		}
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org05e4ade" class="outline-3">
-<h3 id="org05e4ade">Import Blank</h3>
-<div class="outline-text-3" id="text-org05e4ade">
+<div id="outline-container-orgc9a9190" class="outline-3">
+<h3 id="orgc9a9190">Import Blank</h3>
+<div class="outline-text-3" id="text-orgc9a9190">
 <p>
 Packages that are imported only for their side effects (using the syntax <code>import _ "pkg"</code>)
 should only be imported in the main package of a program, or in tests that require them.
 </p>
 </div>
 </div>
-<div id="outline-container-orgf08a1f2" class="outline-3">
-<h3 id="orgf08a1f2">Named Result Parameters</h3>
-<div class="outline-text-3" id="text-orgf08a1f2">
+<div id="outline-container-orgd33fd12" class="outline-3">
+<h3 id="orgd33fd12">Named Result Parameters</h3>
+<div class="outline-text-3" id="text-orgd33fd12">
 <p>
 Consider what it will look like in godoc. Named result parameters like:
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">func</span> (<span style="color: #df7fff;">n</span> *<span style="color: #f470df;">Node</span>) <span style="color: #f59280;">Parent1</span>() (<span style="color: #df7fff;">node</span> *<span style="color: #f470df;">Node</span>) {}
-<span style="color: #ef80bf; font-weight: bold;">func</span> (<span style="color: #df7fff;">n</span> *<span style="color: #f470df;">Node</span>) <span style="color: #f59280;">Parent2</span>() (<span style="color: #df7fff;">node</span> *<span style="color: #f470df;">Node</span>, <span style="color: #df7fff;">err</span> <span style="color: #f470df;">error</span>) {}
+<pre class="code"><code>func (n *Node) Parent1() (node *Node) {}
+func (n *Node) Parent2() (node *Node, err error) {}
 </code></pre>
 <p>
 will be repetitive in godoc; better to use:
 </p>
 
-<pre class="code"><code><span style="color: #ef80bf; font-weight: bold;">func</span> (<span style="color: #df7fff;">n</span> *<span style="color: #f470df;">Node</span>) <span style="color: #f59280;">Parent1</span>() *<span style="color: #f470df;">Node</span> {}
-<span style="color: #ef80bf; font-weight: bold;">func</span> (<span style="color: #df7fff;">n</span> *<span style="color: #f470df;">Node</span>) <span style="color: #f59280;">Parent2</span>() (*<span style="color: #f470df;">Node</span>, <span style="color: #f470df;">error</span>) {}
+<pre class="code"><code>func (n *Node) Parent1() *Node {}
+func (n *Node) Parent2() (*Node, error) {}
 </code></pre>
 
 <p>
@@ -546,9 +987,9 @@ off a minor implementation brevity at the cost of unnecessary API verbosity.</b>
 </p>
 </div>
 </div>
-<div id="outline-container-org3b46955" class="outline-3">
-<h3 id="org3b46955">Return Values</h3>
-<div class="outline-text-3" id="text-org3b46955">
+<div id="outline-container-org326545a" class="outline-3">
+<h3 id="org326545a">Return Values</h3>
+<div class="outline-text-3" id="text-org326545a">
 <ul class="org-ul">
 <li>If the receiver is a <code>map</code>, <code>func</code> or <code>chan</code>, don&rsquo;t use a pointer to them. If the receiver is a
 slice and the method doesn&rsquo;t reslice or reallocate the slice, don&rsquo;t use a pointer to it.</li>
@@ -586,9 +1027,9 @@ methods.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org07c283a" class="outline-3">
-<h3 id="org07c283a"><span class="done KILL">KILL</span> Interfaces</h3>
-<div class="outline-text-3" id="text-org07c283a">
+<div id="outline-container-orge9968c4" class="outline-3">
+<h3 id="orge9968c4"><span class="done KILL">KILL</span> Interfaces</h3>
+<div class="outline-text-3" id="text-orge9968c4">
 <p>
 Go interfaces generally belong in the package that uses values of the interface type, not
 the package that implements those values. The implementing package should return concrete
@@ -613,7 +1054,7 @@ semicolon will be inserted before the brace, which could cause unwanted effects.
 like this
 </p>
 
-<pre class="example" id="org2c6cd6d">
+<pre class="example" id="orge2b37ee">
 if i &lt; f() {
     g()
 }
@@ -623,7 +1064,7 @@ if i &lt; f() {
 not like this
 </p>
 
-<pre class="example" id="org81bd801">
+<pre class="example" id="org640005a">
 if i &lt; f()  // wrong!
 {           // wrong!
     g()
@@ -639,7 +1080,7 @@ if i &lt; f()  // wrong!
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: 2022-09-20 Tue 03:20. Last build date: 2025-06-28 Sat 18:37.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: 2022-09-20 Tue 03:20. Last build date: 2025-07-25 Fri 00:00.</p>
 
 </div>
 </div>
