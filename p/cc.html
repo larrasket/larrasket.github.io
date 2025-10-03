@@ -491,8 +491,18 @@ margin-block-start: auto;
 <div id="content" class="content">
 <header>
 <h1 class="title">Conventional Commits considered harmful</h1>
-</header><p>
-I could only see two use-cases of using the <a href="https://www.conventionalcommits.org/en/v1.0.0/">Conventional Commits</a> v.1.0.0 &ldquo;convention&rdquo; when I&rsquo;ve heard of it for the first time;
+</header><div class="tag" id="org7f5d406">
+<p>
+This section was labeled under, or is related to <a href="../t/programming.html#4u5664n02wj0">Programming</a>
+</p>
+
+</div>
+
+
+<p>
+I could only see two use cases<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle"/><span class="sidenote">
+The maintainers promise that using Conventional Commits will enable some other things that I totally fail to comprehend, like: &ldquo;Communicating the nature of changes to teammates, the public, and other stakeholders&rdquo;. and how this differs from showing just descriptive commits. And who the hell shows commits to stakeholders anyway?
+</span> of using the <a href="https://www.conventionalcommits.org/en/v1.0.0/">Conventional Commits</a> v.1.0.0 &ldquo;convention&rdquo; when I&rsquo;ve heard of it for the first time;
 </p>
 
 <ul class="org-ul">
@@ -528,15 +538,15 @@ Something tells me the authors are hard at work solving a problem nobody needs s
 </blockquote></div>
 
 <p>
-This &ldquo;future&rdquo;<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle"/><span class="sidenote">
+This &ldquo;future&rdquo;<label for="2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="2" class="margin-toggle"/><span class="sidenote">
 There are even so many tools that will help you transfer your plain English into syntactically correct conventional commits, just like how the comment describes it (<a href="https://generateconventionalcommit.com ">example</a>), nowadays people are using LLMs for that purpose too
-</span> happened to me last night when I was trying to support a new feature in Doom Emacs, an Emacs distribution that I&rsquo;ve been using, however, upon trying to commit my work I noticed that git is failing to make the commits. Upon investigating I found out that (literally) the linter was not passing my commits<label for="2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="2" class="margin-toggle"/><span class="sidenote">
+</span> happened to me last night when I was trying to support a new feature in Doom Emacs, an Emacs distribution that I&rsquo;ve been using, however, upon trying to commit my work I noticed that git is failing to make the commits. Upon investigating I found out that (literally) the linter was not passing my commits<label for="3" class="margin-toggle sidenote-number"></label><input type="checkbox" id="3" class="margin-toggle"/><span class="sidenote">
 As you can see my commit is actually complying to the conventional commits style as well as to the Doom Emacs defined modules, my scope was not invalid. My guess is that it was complaining about the empty description, a bug in the linter probably, but you can get now why it is useless overhead from the first place to have a linter to check your commits.
 </span>:
 </p>
 
 
-<pre class="example" id="orgeb670de">
+<pre class="example" id="org801a412">
   1 git … commit --all --
 hint: Waiting for your editor to close the file...
 Waiting for Emacs...
@@ -568,7 +578,7 @@ In fact, almost all of the information that would be added in a &ldquo;conventio
 What about CI/CD triggers from your commits? While this is really useful, it could be totally replaced by much easier checks, in a project I worked in we used to trigger them with GitHub comments in the PR, another quicker way would be to watch certain packages in the CI/CD. For example consider this commit:
 </p>
 
-<pre class="example" id="org30470af">
+<pre class="example" id="org2f61050">
 fix(keyboard): something was not working
 </pre>
 
@@ -583,9 +593,9 @@ Overall this style is just like the many other <a href="https://xkcd.com/927/">s
 <p>
 If you still prefer it you can squeeze a PR commits into a single one that follows your preferred style, but please do not ask contributors to learn unuseful and unportable knowledge.
 </p>
-<div id="outline-container-org7fe185c" class="outline-2">
-<h2 id="org7fe185c">Related Reads:</h2>
-<div class="outline-text-2" id="text-org7fe185c">
+<div id="outline-container-org10fcaa4" class="outline-2">
+<h2 id="org10fcaa4">Related reads:</h2>
+<div class="outline-text-2" id="text-org10fcaa4">
 <ul class="org-ul">
 <li><a href="https://beyermatthias.de/i-hate-conventional-commits">I hate Conventional Commits — musicmatzes blog</a></li>
 <li><a href="https://srazkvt.codeberg.page/posts/2025-07-06-conventional-commits-makes-me-sad.html">Conventional Commits makes me sad</a> (<a href="https://lobste.rs/s/phfy8a/conventional_commits_makes_me_sad">comments</a>)</li>
@@ -598,10 +608,14 @@ If you still prefer it you can squeeze a PR commits into a single one that follo
 <div id="text-footnotes">
 
 <div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-There are even so many tools that will help you transfer your plain English into syntactically correct conventional commits, just like how the comment describes it (<a href="https://generateconventionalcommit.com ">example</a>), nowadays people are using LLMs for that purpose too
+The maintainers promise that using Conventional Commits will enable some other things that I totally fail to comprehend, like: &ldquo;Communicating the nature of changes to teammates, the public, and other stakeholders&rdquo;. and how this differs from showing just descriptive commits. And who the hell shows commits to stakeholders anyway?
 </p></div></div>
 
 <div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+There are even so many tools that will help you transfer your plain English into syntactically correct conventional commits, just like how the comment describes it (<a href="https://generateconventionalcommit.com ">example</a>), nowadays people are using LLMs for that purpose too
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 As you can see my commit is actually complying to the conventional commits style as well as to the Doom Emacs defined modules, my scope was not invalid. My guess is that it was complaining about the empty description, a bug in the linter probably, but you can get now why it is useless overhead from the first place to have a linter to check your commits.
 </p></div></div>
 
@@ -614,7 +628,7 @@ As you can see my commit is actually complying to the conventional commits style
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.34). Written by: Salih Muhammed, by the date of: 2025-09-30 Tue 02:16. Last build date: 2025-09-30 Tue 03:23.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.34). Written by: Salih Muhammed, by the date of: 2025-09-30 Tue 02:16. Last build date: 2025-09-30 Tue 03:58.</p>
 
 </div>
 </div>
