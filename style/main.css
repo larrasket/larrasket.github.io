@@ -7,15 +7,8 @@ h7,
 h8 {
   font-weight: 300;
   font-style: italic;
-  color: #4a3329;
+  color: #5d4037;
   margin-top: 2em;
-  letter-spacing: 0.3px;
-}
-
-h2 {
-  border-bottom: 1px solid rgba(141, 110, 99, 0.12);
-  padding-bottom: 0.5em;
-  margin-bottom: 1em;
 }
 
 a:link,
@@ -55,16 +48,12 @@ a:active {
 
 .tag a:after {
   color: #a1887f;
-  content: " ✤";
-  font-size: 0.75em;
-  opacity: 0.7;
+  content: " •";
 }
 
 .tag a:before {
   color: #a1887f;
-  content: "✤ ";
-  font-size: 0.75em;
-  opacity: 0.7;
+  content: "• ";
 }
 
 a {
@@ -74,40 +63,30 @@ a {
 
 body {
   font-family: "Georgia", "Amiri", serif;
-  background: #faf8f3;
+  background: #fcfaf6;
   color: #2c1810;
-  line-height: 1.75;
-  position: relative;
-  background-image: 
-    radial-gradient(circle at 20% 80%, rgba(141, 110, 99, 0.025) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(141, 110, 99, 0.025) 0%, transparent 50%);
-  background-attachment: fixed;
-}
-
-/* Skeleton decoration behind first h1 only */
-#content > h1:first-of-type {
+  line-height: 1.7;
   position: relative;
 }
 
-#content > h1:first-of-type::before {
+body::before {
   content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 240px;
-  height: 240px;
+  position: fixed;
+  top: 10%;
+  right: 5%;
+  width: 150px;
+  height: 150px;
   background-image: url('/style/svg/Skeleton Hand Flower 01.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  filter: grayscale(50%) opacity(0.15);
+  filter: grayscale(60%) opacity(0.12);
   pointer-events: none;
   z-index: -1;
 }
 
 @media screen and (max-width: 768px) {
-  #content > h1:first-of-type::before {
+  body::before {
     display: none;
   }
 }
@@ -172,6 +151,11 @@ ul {
   }
 }
 
+@media screen and (min-width: 1090px) {
+  html {
+  }
+}
+
 pre.src {
   position: relative;
   word-wrap: normal;
@@ -189,13 +173,13 @@ pre.src::after {
   position: absolute;
   bottom: 5px;
   right: 5px;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   background-image: url('/style/svg/-222.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  filter: grayscale(100%) opacity(0.08);
+  filter: grayscale(100%) opacity(0.04);
   pointer-events: none;
 }
 
@@ -206,8 +190,6 @@ pre.src::after {
   figcaption {
     margin-top: 5%;
     margin-left: 10%;
-    font-style: italic;
-    color: #6d4c41;
     /* width: 40%; */
   }
   .figure-number {
@@ -242,17 +224,15 @@ div.hanging-indent {
 
 blockquote {
   border: none !important;
-  padding: 2.5em 3em;
-  margin: 2.5em 0;
+  padding: 3em 0;
+  margin: 3em 0;
   font-style: italic;
   color: #5d4037;
   text-align: center;
-  font-size: 1.05em;
-  line-height: 1.7;
+  font-size: 1.1em;
+  line-height: 1.6;
   position: relative;
-  background: rgba(252, 250, 246, 0.5);
-  border-left: 3px solid #d7ccc8;
-  border-right: 3px solid #d7ccc8;
+  background: none;
 }
 
 blockquote::before {
@@ -261,13 +241,13 @@ blockquote::before {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 280px;
-  height: 280px;
+  width: 250px;
+  height: 250px;
   background-image: url('/style/svg/-236.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  filter: grayscale(75%) brightness(0.6) opacity(0.12);
+  filter: grayscale(80%) brightness(0.5) opacity(0.08);
   z-index: -1;
 }
 
@@ -300,13 +280,13 @@ div.epigraph::before {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 220px;
-  height: 220px;
+  width: 180px;
+  height: 180px;
   background-image: url('/style/svg/-1-watw8z.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  filter: grayscale(60%) contrast(1.1) opacity(0.12);
+  filter: grayscale(70%) contrast(1.2) opacity(0.08);
   z-index: -1;
 }
 
@@ -525,7 +505,7 @@ span.tag::before {
 }
 
 .propert a {
-  color: #795548;
+  color: blue;
   /* font-weight: bold; */
 }
 
@@ -540,52 +520,9 @@ span.tag::before {
 }
 
 .postscript a {
-  color: #795548;
+  color: blue;
   /* text-transform: lowercase; */
   /* font-weight: bold; */
-}
-
-/* Fix footnote colors to match site */
-.sidenote-number,
-.sidenote-number:after {
-  color: #8d6e63 !important;
-}
-
-.footpara a,
-.sidenote a,
-.marginnote a {
-  color: #795548;
-}
-
-.footnotes,
-.footdef {
-  color: #2c1810;
-}
-
-.footnotes a {
-  color: #795548;
-}
-
-/* Decorative styling for footnotes section */
-.footnotes {
-  margin-top: 3em;
-  padding-top: 2em;
-  position: relative;
-}
-
-.footnotes::before {
-  content: "";
-  position: absolute;
-  top: -30px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 60px;
-  background-image: url('/style/svg/-1-watw8z.svg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  filter: grayscale(100%) opacity(0.06);
 }
 
 .inlinetask {
@@ -615,32 +552,6 @@ li:has(> a:target) {
 
 .notes {
   margin-top: -15px;
-}
-
-/* Decorative horizontal rule */
-hr {
-  border: none;
-  height: 1px;
-  margin: 3em auto;
-  max-width: 800px;
-  position: relative;
-  overflow: visible;
-}
-
-hr::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 180px;
-  height: 180px;
-  background-image: url('/style/svg/-236.svg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  filter: grayscale(100%) opacity(0.08);
-  pointer-events: none;
 }
 
 .recents-2 {
@@ -741,10 +652,7 @@ h1 {
   text-align: center;
   font-style: italic;
   margin: 1.5em;
-  letter-spacing: 0.5px;
 }
-
-
 
 a {
   word-wrap: break-word;
