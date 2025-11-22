@@ -6,47 +6,69 @@
 <title>The Status of Arabic Stemming Algorithms</title>
 <meta name="author" content="S. Muhammed, M. Samy and M. Rady" />
 <meta name="generator" content="Org Mode" />
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-  <meta name="theme-color" content="#ffffff">
-  <meta charset="utf-8">
-  <meta name="theme-color" content="#ffffff">
-  <meta name="viewport" content= "width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/style/toc.css">
-  <link rel="stylesheet" href="/style/tufte.css">
-  <link rel="stylesheet" href="/style/main.css">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta charset="utf-8" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/style/toc.css?v=20250120" />
+    <link rel="stylesheet" href="/style/tufte.css?v=20250120" />
+    <link rel="stylesheet" href="/style/main.css?v=20250201" />
 
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const p = document.querySelector("#content > p:first-of-type");
+        if (p && /^[\u0600-\u06FF]/.test(p.textContent.trim())) {
+          p.classList.add("arabic");
+        }
+      });
+    </script>
 
+    <script async data-id="101390423" src="//static.getclicky.com/js"></script>
+    <noscript>
+      <p>
+        <img
+          alt="Clicky"
+          width="1"
+          height="1"
+          src="//in.getclicky.com/101390423ns.gif"
+        /></p
+    ></noscript>
 
+    <!-- Import LazySizes - State-of-the-art lazy loading library -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js"
+      async
+    ></script>
 
-  <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
-  <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+    <!-- Optional: Import plugins for better performance -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js"
+      async
+    ></script>
 
-<!-- Import LazySizes - State-of-the-art lazy loading library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+    <script>
+      // Only run on pages with 'art_paintings_media' in the path
+      if (window.location.pathname.includes("art_paintings_media")) {
+        document.addEventListener("DOMContentLoaded", function () {
+          // Configure LazySizes for optimal performance
+          window.lazySizesConfig = window.lazySizesConfig || {};
+          window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
+          window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
+          window.lazySizesConfig.expFactor = 1.5; // Expand loading area
+          window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
 
-<!-- Optional: Import plugins for better performance -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js" async></script>
-
-<script>
-// Only run on pages with 'art_paintings_media' in the path
-if (window.location.pathname.includes('art_paintings_media')) {
-  document.addEventListener('DOMContentLoaded', function() {
-    
-    // Configure LazySizes for optimal performance
-    window.lazySizesConfig = window.lazySizesConfig || {};
-    window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
-    window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
-    window.lazySizesConfig.expFactor = 1.5; // Expand loading area
-    window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
-
-    // Add CSS for smooth transitions and collapsible content
-    const style = document.createElement('style');
-    style.textContent = `
+          // Add CSS for smooth transitions and collapsible content
+          const style = document.createElement("style");
+          style.textContent = `
       .lazyload,
       .lazyloading {
         opacity: 0;
@@ -74,208 +96,215 @@ if (window.location.pathname.includes('art_paintings_media')) {
         filter: none;
       }
     `;
-    document.head.appendChild(style);
+          document.head.appendChild(style);
 
-    // Find all h3 elements
-    const h3Elements = document.querySelectorAll('h3');
+          // Find all h3 elements
+          const h3Elements = document.querySelectorAll("h3");
 
-    h3Elements.forEach(function(h3) {
-      // Make h3 clickable and add icon
-      h3.style.position = 'relative';
-      h3.style.cursor = 'pointer';
-      h3.style.paddingLeft = '20px';
-      h3.style.userSelect = 'none';
+          h3Elements.forEach(function (h3) {
+            // Make h3 clickable and add icon
+            h3.style.position = "relative";
+            h3.style.cursor = "pointer";
+            h3.style.paddingLeft = "20px";
+            h3.style.userSelect = "none";
 
-      // Add the arrow icon
-      const icon = document.createElement('span');
-      icon.innerHTML = '▶';
-      icon.style.position = 'absolute';
-      icon.style.left = '0px';
-      icon.style.top = '50%';
-      icon.style.transform = 'translateY(-50%)';
-      icon.style.transition = 'transform 0.2s';
-      icon.style.fontSize = '0.8em';
-      icon.style.color = 'rgb(102, 102, 102)';
-      icon.style.fontFamily = 'monospace';
+            // Add the arrow icon
+            const icon = document.createElement("span");
+            icon.innerHTML = "▶";
+            icon.style.position = "absolute";
+            icon.style.left = "0px";
+            icon.style.top = "50%";
+            icon.style.transform = "translateY(-50%)";
+            icon.style.transition = "transform 0.2s";
+            icon.style.fontSize = "0.8em";
+            icon.style.color = "rgb(102, 102, 102)";
+            icon.style.fontFamily = "monospace";
 
-      h3.insertBefore(icon, h3.firstChild);
+            h3.insertBefore(icon, h3.firstChild);
 
-      // Find all content after this h3 until the next h3 or end of parent
-      const contentElements = [];
-      let nextElement = h3.nextElementSibling;
+            // Find all content after this h3 until the next h3 or end of parent
+            const contentElements = [];
+            let nextElement = h3.nextElementSibling;
 
-      while (nextElement && nextElement.tagName !== 'H3') {
-        contentElements.push(nextElement);
-        nextElement = nextElement.nextElementSibling;
-      }
-
-      // Create a wrapper for smooth collapsing
-      const wrapper = document.createElement('div');
-      wrapper.className = 'collapsible-content collapsed';
-      wrapper.style.maxHeight = '0';
-
-      // Move content elements into wrapper
-      contentElements.forEach(function(element) {
-        wrapper.appendChild(element);
-      });
-
-      // Insert wrapper after h3
-      h3.parentNode.insertBefore(wrapper, h3.nextSibling);
-
-      // Prepare images for LazySizes lazy loading and make them clickable
-      const prepareImagesForLazyLoading = (container) => {
-        const images = container.querySelectorAll('img');
-        images.forEach(function(img) {
-          // Only process if not already processed
-          if (!img.classList.contains('lazyload') && !img.dataset.processed) {
-            // Store original src in data-src for LazySizes
-            if (img.src && img.src !== '' && !img.src.startsWith('data:')) {
-              img.dataset.src = img.src;
-              // Use a tiny placeholder or low-quality placeholder
-              img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+            while (nextElement && nextElement.tagName !== "H3") {
+              contentElements.push(nextElement);
+              nextElement = nextElement.nextElementSibling;
             }
 
-            // Handle srcset for responsive images
-            if (img.srcset && img.srcset !== '') {
-              img.dataset.srcset = img.srcset;
-              img.srcset = '';
-            }
+            // Create a wrapper for smooth collapsing
+            const wrapper = document.createElement("div");
+            wrapper.className = "collapsible-content collapsed";
+            wrapper.style.maxHeight = "0";
 
-            // Handle sizes attribute
-            if (img.sizes) {
-              img.dataset.sizes = img.sizes;
-            }
+            // Move content elements into wrapper
+            contentElements.forEach(function (element) {
+              wrapper.appendChild(element);
+            });
 
-            // Add LazySizes classes
-            img.classList.add('lazyload');
+            // Insert wrapper after h3
+            h3.parentNode.insertBefore(wrapper, h3.nextSibling);
 
-            // Make image clickable - add cursor pointer
-            img.style.cursor = 'pointer';
+            // Prepare images for LazySizes lazy loading and make them clickable
+            const prepareImagesForLazyLoading = (container) => {
+              const images = container.querySelectorAll("img");
+              images.forEach(function (img) {
+                // Only process if not already processed
+                if (
+                  !img.classList.contains("lazyload") &&
+                  !img.dataset.processed
+                ) {
+                  // Store original src in data-src for LazySizes
+                  if (
+                    img.src &&
+                    img.src !== "" &&
+                    !img.src.startsWith("data:")
+                  ) {
+                    img.dataset.src = img.src;
+                    // Use a tiny placeholder or low-quality placeholder
+                    img.src =
+                      'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+                  }
 
-            // Add click handler to open image in new tab
-            img.addEventListener('click', function(e) {
+                  // Handle srcset for responsive images
+                  if (img.srcset && img.srcset !== "") {
+                    img.dataset.srcset = img.srcset;
+                    img.srcset = "";
+                  }
+
+                  // Handle sizes attribute
+                  if (img.sizes) {
+                    img.dataset.sizes = img.sizes;
+                  }
+
+                  // Add LazySizes classes
+                  img.classList.add("lazyload");
+
+                  // Make image clickable - add cursor pointer
+                  img.style.cursor = "pointer";
+
+                  // Add click handler to open image in new tab
+                  img.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    e.stopPropagation(); // Prevent triggering h3 collapse
+
+                    // Get the actual image URL (either from src or data-src)
+                    let imageUrl = this.src;
+                    if (this.dataset.src && !this.src.startsWith("data:")) {
+                      imageUrl = this.dataset.src;
+                    } else if (
+                      this.src.startsWith("data:") &&
+                      this.dataset.src
+                    ) {
+                      imageUrl = this.dataset.src;
+                    }
+
+                    // Open image in new tab
+                    if (imageUrl && !imageUrl.startsWith("data:")) {
+                      window.open(imageUrl, "_blank");
+                    }
+                  });
+
+                  // Mark as processed
+                  img.dataset.processed = "true";
+
+                  // Maintain aspect ratio to prevent layout shift
+                  if (!img.style.aspectRatio && img.width && img.height) {
+                    img.style.aspectRatio = img.width + "/" + img.height;
+                  }
+                }
+              });
+            };
+
+            // Prepare all images in this section for lazy loading
+            prepareImagesForLazyLoading(wrapper);
+
+            // Track collapsed state
+            let isCollapsed = true;
+            let hasBeenExpanded = false;
+
+            // Add click handler
+            h3.addEventListener("click", function (e) {
               e.preventDefault();
-              e.stopPropagation(); // Prevent triggering h3 collapse
 
-              // Get the actual image URL (either from src or data-src)
-              let imageUrl = this.src;
-              if (this.dataset.src && !this.src.startsWith('data:')) {
-                imageUrl = this.dataset.src;
-              } else if (this.src.startsWith('data:') && this.dataset.src) {
-                imageUrl = this.dataset.src;
-              }
+              if (isCollapsed) {
+                // Expand: show content and activate lazy loading
+                icon.style.transform = "translateY(-50%) rotate(90deg)";
+                wrapper.classList.remove("collapsed");
+                wrapper.classList.add("expanded");
+                wrapper.style.maxHeight = wrapper.scrollHeight + "px";
 
-              // Open image in new tab
-              if (imageUrl && !imageUrl.startsWith('data:')) {
-                window.open(imageUrl, '_blank');
+                // Only activate LazySizes for this section when first expanded
+                if (!hasBeenExpanded) {
+                  // Trigger LazySizes to check for images in this newly visible section
+                  if (window.lazySizes) {
+                    // Force LazySizes to check all images in this wrapper
+                    const lazyImages = wrapper.querySelectorAll(".lazyload");
+                    lazyImages.forEach((img) => {
+                      // Add to LazySizes queue
+                      window.lazySizes.loader.unveil(img);
+                    });
+                  }
+                  hasBeenExpanded = true;
+                }
+
+                isCollapsed = false;
+
+                // Recalculate height after images potentially load
+                setTimeout(() => {
+                  if (!isCollapsed) {
+                    wrapper.style.maxHeight = wrapper.scrollHeight + "px";
+                  }
+                }, 100);
+              } else {
+                // Collapse: hide content
+                icon.style.transform = "translateY(-50%) rotate(0deg)";
+                wrapper.classList.remove("expanded");
+                wrapper.classList.add("collapsed");
+                wrapper.style.maxHeight = "0";
+
+                isCollapsed = true;
               }
             });
 
-            // Mark as processed
-            img.dataset.processed = 'true';
-
-            // Maintain aspect ratio to prevent layout shift
-            if (!img.style.aspectRatio && img.width && img.height) {
-              img.style.aspectRatio = img.width + '/' + img.height;
-            }
-          }
+            // Listen for LazySizes events to adjust height dynamically
+            wrapper.addEventListener("lazyloaded", function (e) {
+              if (!isCollapsed) {
+                // Adjust wrapper height when images load
+                setTimeout(() => {
+                  wrapper.style.maxHeight = wrapper.scrollHeight + "px";
+                }, 50);
+              }
+            });
+          });
         });
-      };
+      }
+    </script>
 
-      // Prepare all images in this section for lazy loading
-      prepareImagesForLazyLoading(wrapper);
+    <script>
+      (function () {
+        "use strict";
 
-      // Track collapsed state
-      let isCollapsed = true;
-      let hasBeenExpanded = false;
+        // Check if current page should have the formatting applied
+        function shouldApplyFormatting() {
+          const path = window.location.pathname;
 
-      // Add click handler
-      h3.addEventListener('click', function(e) {
-        e.preventDefault();
-
-        if (isCollapsed) {
-          // Expand: show content and activate lazy loading
-          icon.style.transform = 'translateY(-50%) rotate(90deg)';
-          wrapper.classList.remove('collapsed');
-          wrapper.classList.add('expanded');
-          wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
-
-          // Only activate LazySizes for this section when first expanded
-          if (!hasBeenExpanded) {
-            // Trigger LazySizes to check for images in this newly visible section
-            if (window.lazySizes) {
-              // Force LazySizes to check all images in this wrapper
-              const lazyImages = wrapper.querySelectorAll('.lazyload');
-              lazyImages.forEach(img => {
-                // Add to LazySizes queue
-                window.lazySizes.loader.unveil(img);
-              });
-            }
-            hasBeenExpanded = true;
-          }
-
-          isCollapsed = false;
-
-          // Recalculate height after images potentially load
-          setTimeout(() => {
-            if (!isCollapsed) {
-              wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
-            }
-          }, 100);
-
-        } else {
-          // Collapse: hide content
-          icon.style.transform = 'translateY(-50%) rotate(0deg)';
-          wrapper.classList.remove('expanded');
-          wrapper.classList.add('collapsed');
-          wrapper.style.maxHeight = '0';
-
-          isCollapsed = true;
+          // Check if path matches our target patterns
+          return (
+            path === "/stack" ||
+            path === "/stack.html" ||
+            path.startsWith("/sh/")
+          );
         }
-      });
 
-      // Listen for LazySizes events to adjust height dynamically
-      wrapper.addEventListener('lazyloaded', function(e) {
-        if (!isCollapsed) {
-          // Adjust wrapper height when images load
-          setTimeout(() => {
-            wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
-          }, 50);
+        // Only proceed if we're on a target page
+        if (!shouldApplyFormatting()) {
+          return;
         }
-      });
-    });
-  });
-}
-</script>
 
-<script>
-
-
-
-  
-// Stack Page Formatter - Apply inline layout to specific pages
-(function() {
-  'use strict';
-  
-  // Check if current page should have the formatting applied
-  function shouldApplyFormatting() {
-    const path = window.location.pathname;
-    
-    // Check if path matches our target patterns
-    return path === '/stack' || 
-           path === '/stack.html' || 
-           path.startsWith('/sh/');
-  }
-  
-  // Only proceed if we're on a target page
-  if (!shouldApplyFormatting()) {
-    return;
-  }
-  
-  // Add CSS styles
-  function addStyles() {
-    const style = document.createElement('style');
-    style.textContent = `
+        // Add CSS styles
+        function addStyles() {
+          const style = document.createElement("style");
+          style.textContent = `
       /* Basic styling for entries */
       .outline-3 {
         margin-bottom: 1.5em;
@@ -317,6 +346,7 @@ if (window.location.pathname.includes('art_paintings_media')) {
         padding: 0 !important;
       }
 
+
       /* Hide block elements that will be moved */
       .outline-3 .moved-block {
         display: block;
@@ -328,148 +358,166 @@ if (window.location.pathname.includes('art_paintings_media')) {
         scroll-margin-top: 20px;
       }
     `;
-    document.head.appendChild(style);
-  }
-  
-  // Extract ID from container div
-  function extractIdFromContainer(entry) {
-    const containerId = entry.id;
-    if (containerId && containerId.startsWith('outline-container-')) {
-      return containerId.replace('outline-container-', '');
-    }
-    return null;
-  }
-  
-  // Apply the formatting transformation
-  function applyFormatting() {
-    // Process each entry
-    const entries = document.querySelectorAll('.outline-3');
-    
-    entries.forEach((entry, index) => {
-      // Extract the anchor ID from the container before transformation
-      const anchorId = extractIdFromContainer(entry);
-      
-      // Extract components
-      const h3 = entry.querySelector('h3');
-      const notes = entry.querySelector('.notes');
-      const outlineText = entry.querySelector('.outline-text-3');
-      const tag = entry.querySelector('.tag');
-      
-      if (!h3 || !outlineText) return;
-      
-      // Get title text (preserve any TODO/DONE prefixes and links)
-      let titleText = h3.innerHTML;
-      
-      // Get timestamp
-      let timestampText = '';
-      if (notes) {
-        const timestamp = notes.querySelector('.timestamp');
-        if (timestamp) {
-          timestampText = timestamp.textContent;
+          document.head.appendChild(style);
         }
-      }
-      
-      // Get content paragraphs (excluding notes and tag)
-      const contentParagraphs = [];
-      const blockElements = [];
-      
-      Array.from(outlineText.children).forEach(child => {
-        if (child.classList.contains('notes') || child.classList.contains('tag')) {
-          return; // Skip these
+
+        // Extract ID from container div
+        function extractIdFromContainer(entry) {
+          const containerId = entry.id;
+          if (containerId && containerId.startsWith("outline-container-")) {
+            return containerId.replace("outline-container-", "");
+          }
+          return null;
         }
-        
-        if (child.tagName === 'P') {
-          contentParagraphs.push(child.innerHTML);
-        } else if (child.tagName === 'UL' || child.tagName === 'OL' || 
-                   child.tagName === 'BLOCKQUOTE' || child.tagName === 'PRE' ||
-                   child.tagName === 'DL' || child.classList.contains('epigraph')) {
-          blockElements.push(child.outerHTML);
-        } else if (child.tagName === 'DIV' && child.classList.contains('epigraph')) {
-          blockElements.push(child.outerHTML);
+
+        // Apply the formatting transformation
+        function applyFormatting() {
+          // Process each entry
+          const entries = document.querySelectorAll(".outline-3");
+
+          entries.forEach((entry, index) => {
+            // Extract the anchor ID from the container before transformation
+            const anchorId = extractIdFromContainer(entry);
+
+            // Extract components
+            const h3 = entry.querySelector("h3");
+            const notes = entry.querySelector(".notes");
+            const outlineText = entry.querySelector(".outline-text-3");
+            const tag = entry.querySelector(".tag");
+
+            if (!h3 || !outlineText) return;
+
+            // Get title text (preserve any TODO/DONE prefixes and links)
+            let titleText = h3.innerHTML;
+
+            // Get timestamp
+            let timestampText = "";
+            if (notes) {
+              const timestamp = notes.querySelector(".timestamp");
+              if (timestamp) {
+                timestampText = timestamp.textContent;
+              }
+            }
+
+            // Get content paragraphs (excluding notes, tag, and backlinks)
+            const contentParagraphs = [];
+            const blockElements = [];
+            const backlinks = entry.querySelector(".BACKLINKS");
+
+            Array.from(outlineText.children).forEach((child) => {
+              if (
+                child.classList.contains("notes") ||
+                child.classList.contains("tag") ||
+                child.classList.contains("BACKLINKS")
+              ) {
+                return; // Skip these - they'll be handled separately
+              }
+
+              if (child.tagName === "P") {
+                contentParagraphs.push(child.innerHTML);
+              } else if (
+                child.tagName === "UL" ||
+                child.tagName === "OL" ||
+                child.tagName === "BLOCKQUOTE" ||
+                child.tagName === "PRE" ||
+                child.tagName === "DL" ||
+                child.classList.contains("epigraph")
+              ) {
+                blockElements.push(child.outerHTML);
+              } else if (
+                child.tagName === "DIV" &&
+                child.classList.contains("epigraph")
+              ) {
+                blockElements.push(child.outerHTML);
+              }
+            });
+
+            // Get tag HTML (preserve links and formatting)
+            let tagHtml = "";
+            if (tag) {
+              tagHtml = tag.outerHTML;
+            }
+
+            // Construct the new single paragraph
+            let newContent = "";
+
+            // Add date at the start (gray)
+            if (timestampText) {
+              newContent +=
+                '<span class="entry-date">' + timestampText + "</span>";
+            }
+
+            // Add title with emdash
+            newContent += titleText + " — ";
+
+            // Add content paragraphs
+            newContent += contentParagraphs.join(" ");
+
+            // Add tag at the end in parentheses (preserve HTML but force inline)
+            if (tagHtml) {
+              // Extract just the inner content and wrap it properly
+              let tagContent = tag.innerHTML;
+              newContent +=
+                ' <span class="entry-tag">(' + tagContent + ")</span>";
+            }
+
+            // Create new paragraph element
+            const newParagraph = document.createElement("p");
+            newParagraph.className = "entry-paragraph";
+            newParagraph.innerHTML = newContent;
+
+            // Clear the entry
+            entry.innerHTML = "";
+
+            // Preserve the anchor ID by setting it on the transformed entry
+            if (anchorId) {
+              entry.id = anchorId;
+            }
+
+            // Add backlinks FIRST so they can float to the right
+            if (backlinks) {
+              entry.appendChild(backlinks.cloneNode(true));
+            }
+
+            // Then add the main paragraph
+            entry.appendChild(newParagraph);
+
+            // Add any block elements after the paragraph
+            blockElements.forEach((blockHtml) => {
+              const blockDiv = document.createElement("div");
+              blockDiv.className = "moved-block";
+              blockDiv.innerHTML = blockHtml;
+              entry.appendChild(blockDiv);
+            });
+
+            // Add separator after each entry (except the last one)
+            if (index < entries.length - 1) {
+              const separator = document.createElement("hr");
+              separator.style.margin = "1em 0";
+              separator.style.border = "none";
+              separator.style.borderTop = "1px solid #ccc";
+              entry.appendChild(separator);
+            }
+          });
         }
-      });
-      
-      // Get tag HTML (preserve links and formatting)
-      let tagHtml = '';
-      if (tag) {
-        tagHtml = tag.outerHTML;
-      }
-      
-      // Construct the new single paragraph
-      let newContent = '';
-      
-      // Add date at the start (gray)
-      if (timestampText) {
-        newContent += '<span class="entry-date">' + timestampText + '</span>';
-      }
-      
-      // Add title with emdash
-      newContent += titleText + ' — ';
-      
-      // Add content paragraphs
-      newContent += contentParagraphs.join(' ');
-      
-      // Add tag at the end in parentheses (preserve HTML but force inline)
-      if (tagHtml) {
-        // Extract just the inner content and wrap it properly
-        let tagContent = tag.innerHTML;
-        newContent += ' <span class="entry-tag">(' + tagContent + ')</span>';
-      }
-      
-      // Create new paragraph element
-      const newParagraph = document.createElement('p');
-      newParagraph.className = 'entry-paragraph';
-      newParagraph.innerHTML = newContent;
-      
-      // Clear the entry and add the new paragraph
-      entry.innerHTML = '';
-      entry.appendChild(newParagraph);
-      
-      // Preserve the anchor ID by setting it on the transformed entry
-      if (anchorId) {
-        entry.id = anchorId;
-      }
-      
-      // Add any block elements after the paragraph
-      blockElements.forEach(blockHtml => {
-        const blockDiv = document.createElement('div');
-        blockDiv.className = 'moved-block';
-        blockDiv.innerHTML = blockHtml;
-        entry.appendChild(blockDiv);
-      });
-      
-      // Add separator after each entry (except the last one)
-      if (index < entries.length - 1) {
-        const separator = document.createElement('hr');
-        separator.style.margin = '1em 0';
-        separator.style.border = 'none';
-        separator.style.borderTop = '1px solid #ccc';
-        entry.appendChild(separator);
-      }
-    });
-  }
-  
-  // Initialize when DOM is ready
-  function init() {
-    addStyles();
-    
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', applyFormatting);
-    } else {
-      applyFormatting();
-    }
-  }
-  
-  // Start the initialization
-  init();
-})();
-</script>
 
+        // Initialize when DOM is ready
+        function init() {
+          addStyles();
 
+          if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", applyFormatting);
+          } else {
+            applyFormatting();
+          }
+        }
 
-</head>
-<body>
-</body>
+        // Start the initialization
+        init();
+      })();
+    </script>
+  </head>
+  <body></body>
 </html>
 </head>
 <body>
@@ -484,6 +532,19 @@ margin-block-start: auto;
     color: black;
 ">Hereby, all birds fly</h1>
       </a>
+      <nav class="site-nav">
+        <a href="/p/">all posts</a>
+        <span>•</span>
+        <a href="/stack.html">short posts</a>
+        <span>•</span>
+        <a href="/fullbooks.html">books</a>
+        <span>•</span>
+        <a href="/a.html#2ar8en10n2k0">anthology</a>
+        <span>•</span>
+        <a href="/pgp.html">PGP key</a>
+        <span>•</span>
+        <a href="https://www.admonymous.co/larrasket">leave a message</a>
+      </nav>
 <hr class="header-divider" style="margin-block-end: -1em;">
   </div>
 </div>
@@ -491,27 +552,7 @@ margin-block-start: auto;
 <div id="content" class="content">
 <header>
 <h1 class="title">The Status of Arabic Stemming Algorithms</h1>
-</header><nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents" role="doc-toc">
-<ul>
-<li><a href="#orgad4e1e7">Introduction</a></li>
-<li><a href="#orgb0b90a7">Methodology</a></li>
-<li><a href="#org837a6c4">Testing</a>
-<ul>
-<li><a href="#orga6539cc">(<a href="#citeproc_bib_item_4">Eldesouki, 2017</a>)</a></li>
-<li><a href="#orgb9959f4">(<a href="#citeproc_bib_item_7">Taghva et al., 2005</a>)</a></li>
-<li><a href="#orgffd8618">(<a href="#citeproc_bib_item_3">Chelli, 2018</a>)</a></li>
-<li><a href="#org73489d5">(<a href="#citeproc_bib_item_2">Boudlal and Lakhouaja, 2010</a>)</a></li>
-<li><a href="#org60cd674">(<a href="#citeproc_bib_item_5">Khoja, 1999</a>) and (<a href="#citeproc_bib_item_1">Al-Shalabi et al., 2003</a>)</a></li>
-</ul>
-</li>
-<li><a href="#org9622207">Conclusion</a></li>
-<li><a href="#org3a377b5">References</a></li>
-</ul>
-</div>
-</nav>
-<div class="PREVIEW" id="org2f3a948">
+</header><div class="PREVIEW" id="org0f20367">
 <p>
 This article presents a comprehensive report on the current landscape of
 open-source Arabic language stemming algorithms and services.
@@ -519,252 +560,9 @@ open-source Arabic language stemming algorithms and services.
 
 </div>
 
-
-<p>
-Stemming, a fundamental task in natural language processing, involves reducing
-Arabic words to their root forms, thereby enabling efficient information
-retrieval, text analysis, and machine learning applications. The study evaluates
-five different stemming algorithms, each developed by independent researchers
-and communities.  The aim of this research is to compare and analyze the
-performance of these stemmers in terms of accuracy, computational efficiency,
-and language coverage.  The evaluation includes a diverse set of Arabic texts,
-encompassing various domains and genres. The results highlight the strengths and
-weaknesses of each algorithm, shedding light on their applicability to different
-scenarios. The findings contribute to the Arabic NLP community by offering an
-in-depth analysis of open-source stemming tools and facilitating informed
-decision-making for researchers, developers, and practitioners.
-</p>
-<div id="outline-container-orgad4e1e7" class="outline-2">
-<h2 id="orgad4e1e7">Introduction</h2>
-<div class="outline-text-2" id="text-orgad4e1e7">
-<p>
-Arabic, with its rich linguistic heritage and diverse dialects, poses unique
-challenges for natural language processing (NLP) tasks, including stemming.
-Stemming plays a vital role in various NLP applications, such as information
-retrieval, text analysis, and machine learning. By reducing Arabic words to
-their root forms, stemming enables efficient indexing, search, and analysis of
-textual data. As the demand for Arabic language processing continues to grow,
-the availability of accurate and reliable open-source stemming algorithms
-becomes crucial.
-</p>
-
-<p>
-This article aims to address the specific needs of a dictionary project by
-conducting a comprehensive study on the current available open-source Arabic
-language stemming algorithms and services. The dictionary project, focused on
-Arabic language, necessitates a stemmer that can accurately identify the root
-forms of words, while considering the intricacies of the Arabic language&rsquo;s
-morphology and orthography.
-</p>
-
-<p>
-To fulfill this objective, we evaluate five distinct Arabic stemming algorithms,
-the study considers the language coverage of each algorithm to determine their
-applicability to various domains and genres typically encountered in a
-dictionary project.
-</p>
-
-<p>
-Integration of a stemmer into a dictionary project requires ease of use,
-scalability, and well-documented resources. Assessing the suitability of these
-services is an essential aspect of our analysis, as it provides insights into
-their practicality and usability within the context of a dictionary project.
-</p>
-
-<p>
-By presenting a detailed report on the strengths and weaknesses of each stemmer,
-along with an examination of available services, this article aims to assist
-researchers, developers, and practitioners in making informed decisions
-regarding the selection of a suitable Arabic language stemming algorithm for
-their dictionary projects. The findings of this study contribute to the growing
-body of knowledge in Arabic NLP and serve as a valuable resource for those
-working on Arabic language processing and related applications.
-</p>
-
-<p>
-The studied algorithms/implementations are (<a href="#citeproc_bib_item_2">Boudlal and Lakhouaja, 2010</a>), (<a href="#citeproc_bib_item_4">Eldesouki, 2017</a>),
-(<a href="#citeproc_bib_item_3">Chelli, 2018</a>), (<a href="#citeproc_bib_item_7">Taghva et al., 2005</a>). We also made a use of an older report of
-(<a href="#citeproc_bib_item_6">Sawalha and Atwell, 2008</a>) which studied the performance of other majors stemmers,
-including (<a href="#citeproc_bib_item_5">Khoja, 1999</a>), (<a href="#citeproc_bib_item_1">Al-Shalabi et al., 2003</a>) and other
-analyzers, however, only the final results of these are used for the purpose of
-consolidating the argument about the status of modern Arabic stemmers.
-</p>
-</div>
-</div>
-<div id="outline-container-orgb0b90a7" class="outline-2">
-<h2 id="orgb0b90a7">Methodology</h2>
-<div class="outline-text-2" id="text-orgb0b90a7">
-<p>
-Rather than investing time in deeply testing each algorithm weak points; the
-test make use of a randomly chosen set of verbs and known morphological balance,
-this way we can easily have an insight of the falls of each algorithm and its
-overall accuracy. (<a href="https://github.com/lugha/balaa">github</a>)
-</p>
-
-<p>
-All the algorithms are tested as vendored by their main developers, wrapped in a
-generic Common Lisp solution (<a href="https://github.com/lugha/balaa/blob/900fae98ea660ca3accc432fa6839386c5d8ea8a/balaa.l">code on github</a>) which gather the
-required data about the elapsed running time, accuracy and return values.
-</p>
-
-<p>
-On the track of that; the results are plotted using a simple GnuPlot script  to
-demonstrate them. The test program separates each morphological root test set.
-</p>
-</div>
-</div>
-<div id="outline-container-org837a6c4" class="outline-2">
-<h2 id="org837a6c4">Testing</h2>
-<div class="outline-text-2" id="text-org837a6c4">
-<p>
-This section presents the findings and analysis of the evaluation conducted on
-the algorithms and services. The results provide insights into the performance,
-accuracy, computational efficiency, and language coverage of each stemmer,
-shedding light on their suitability for integration into a dictionary project.
-</p>
-</div>
-<div id="outline-container-orga6539cc" class="outline-3">
-<h3 id="orga6539cc">(<a href="#citeproc_bib_item_4">Eldesouki, 2017</a>)</h3>
-<div class="outline-text-3" id="text-orga6539cc">
-<p>
-The first tested was developed in 2017, it uses a simple trivial approach of
-eliminating articles from words and normalize them to their root.
-</p>
-
-<pre class="code"><code>for article in Light10stemmer.larkey_defarticles:
-    length = len(article)
-    if (wordlen &gt; length + 1) and (token[:length] == article):
-        token = token[length:]
-        break
-
-if len(token) &gt; 2:
-    wordlen = len(token)
-    for suffix in Light10stemmer.larkey_suffixes:
-        suflen = len(suffix)
-        if (wordlen &gt; len(suffix) + 1) and token.endswith(suffix):
-            token = token[:wordlen - suflen]
-            wordlen = len(token)
-</code></pre>
-
-<p>
-Which is very intuitive approach, however it performs the worst between the
-other stemmers we got, it was only able to pass 1 test case.
-</p>
-</div>
-</div>
-<div id="outline-container-orgb9959f4" class="outline-3">
-<h3 id="orgb9959f4">(<a href="#citeproc_bib_item_7">Taghva et al., 2005</a>)</h3>
-<div class="outline-text-3" id="text-orgb9959f4">
-<p>
-The ISRI Arabic Stemmer is a Natural Language Toolkit (NLTK) algorithm that was
-developed at University of Nevada by a set of researchers. The algorithm works
-much better (compared to most of its other non-root dictionary implementations)
-in rooting words and it works using a pattern recognition to morphological
-patterns. It implements 25 balances. It was able to pass 17 out of 35 testcases.
-</p>
-
-
-<pre class="code"><code>def pro_w53(self, word):
-    """process length five patterns and extract length three roots"""
-    if word[2] in self.pr53[0] and word[0] == "\u0627":
-        word = word[1] + word[3:]
-    elif word[4] == "\u0629" and word[1] == "\u0627":
-        word = word[0] + word[2:4]
-            .............................
-            .............................
-    elif word[4] == "\u064a" and word[2] == "\u0627":
-        word = word[:2] + word[3]
-</code></pre>
-</div>
-</div>
-<div id="outline-container-orgffd8618" class="outline-3">
-<h3 id="orgffd8618">(<a href="#citeproc_bib_item_3">Chelli, 2018</a>)</h3>
-<div class="outline-text-3" id="text-orgffd8618">
-<p>
-Assem&rsquo;s Arabic Light Stemmer authored by Assem Chelli is a stemmer that makes
-use of Snowball stemming framework, it implements the renowned algorithm for the
-Arabic script, trained by set of data. It performs just as the ISRI&rsquo;s; however
-it is about 200% faster than it. It was able to pass 17 out of 35 testcases.
-</p>
-</div>
-</div>
-<div id="outline-container-org73489d5" class="outline-3">
-<h3 id="org73489d5">(<a href="#citeproc_bib_item_2">Boudlal and Lakhouaja, 2010</a>)</h3>
-<div class="outline-text-3" id="text-org73489d5">
-<p>
-The Natural Language Processing Team in Computer Science Laboratory developed
-one of the most accurate &rsquo;systems&rsquo; so far for stemming in Arabic; they are using
-a brute-force-like approach solving the problem, or as they describe in their
-publication:
-</p>
-<div class="epigraph"><blockquote>
-<p>
-&ldquo;Our approach is based on modelling a very large set of Arabic
-morphological rules, and also on integrating linguistic resources, such as the
-root database, vocalized patterns associated with roots, and proclitic and
-enclitic tables&rdquo;.
-</p>
-
-</blockquote></div>
-
-<p>
-Which leads to the main issue with the stemmer, not only it&rsquo;s far from being
-lightweight (compared to other known Latin stemmers) since it depends on a large
-database system, but 1. it&rsquo;s profoundly unintelligent in searching the word
-dictionary it owns, for example if the diacritic differs it will not give any
-results. 2. it does not contain any results for words that were not recorded it
-its database, which leaves it with only solution which is to have each word in
-the language recorded.
-</p>
-</div>
-</div>
-<div id="outline-container-org60cd674" class="outline-3">
-<h3 id="org60cd674">(<a href="#citeproc_bib_item_5">Khoja, 1999</a>) and (<a href="#citeproc_bib_item_1">Al-Shalabi et al., 2003</a>)</h3>
-<div class="outline-text-3" id="text-org60cd674">
-<p>
-Both of (<a href="#citeproc_bib_item_5">Khoja, 1999</a>) and (<a href="#citeproc_bib_item_1">Al-Shalabi et al., 2003</a>) was not tested in
-this study, however, a comparative study (<a href="#citeproc_bib_item_6">Sawalha and Atwell, 2008</a>) concluded the
-following results using the Qur&rsquo;an Gold Standards:
-</p>
-</div>
-</div>
-</div>
-<div id="outline-container-org9622207" class="outline-2">
-<h2 id="org9622207">Conclusion</h2>
-<div class="outline-text-2" id="text-org9622207">
-<p>
-In conclusion, this article conducted a comprehensive analysis of open-source
-Arabic language stemming algorithms and services. Stemming is a vital task in
-natural language processing, enabling efficient information retrieval, text
-analysis, and machine learning applications. The evaluation of five different
-stemming algorithms revealed their respective strengths and weaknesses.
-</p>
-
-<p>
-Among the tested stemmers, the &ldquo;Eldesouki 2017&rdquo; algorithm performed poorly,
-while the &ldquo;Taghva, Elkhoury, and Coombs 2005&rdquo; and &ldquo;Chelli 2018&rdquo; stemmers showed
-better results, passing a significant number of test cases. However, it is
-important to note that even the most accurate stemmer achieved only around 60%
-accuracy, indicating room for improvement in the field. Further research and
-development are needed to enhance the accuracy and effectiveness of Arabic
-stemming algorithms.
-</p>
-</div>
-</div>
-<div id="outline-container-org3a377b5" class="outline-2">
-<h2 id="org3a377b5">References</h2>
-<div class="outline-text-2" id="text-org3a377b5">
-<style>.csl-entry{text-indent: -1.5em; margin-left: 1.5em;}</style><div class="csl-bib-body">
-  <div class="csl-entry"><a id="citeproc_bib_item_1"></a>Al-Shalabi, R., Kanaan, G., Al-Serhan, H., 2003. New approach for extracting arabic roots, in: Proceedings of the International Arab Conference on Information Technology (Acit’2003). Egypt.</div>
-  <div class="csl-entry"><a id="citeproc_bib_item_2"></a>Boudlal, A., Lakhouaja, A., 2010. Alkhalil morpho sys1: A morphosyntactic analysis system for arabic texts. Int. arab conf. inf. technol 1–6.</div>
-  <div class="csl-entry"><a id="citeproc_bib_item_3"></a>Chelli, A., 2018. Assem’s Arabic Stemmer. <a href="https://doi.org/10.6084/m9.figshare.7295690.v1">https://doi.org/10.6084/m9.figshare.7295690.v1</a></div>
-  <div class="csl-entry"><a id="citeproc_bib_item_4"></a>Eldesouki, M., 2017. <a href="https://github.com/disooqi/ArabicProcessingCog">Arabicprocessingcog</a>. Github repository.</div>
-  <div class="csl-entry"><a id="citeproc_bib_item_5"></a>Khoja, S., 1999. <a href="http://zeus.cs.pacificu.edu/shereen/research.htm">Stemming arabic text</a>.</div>
-  <div class="csl-entry"><a id="citeproc_bib_item_6"></a>Sawalha, M., Atwell, E., 2008. Comparative evaluation of arabic language morphological analysers and stemmers. 107–110.</div>
-  <div class="csl-entry"><a id="citeproc_bib_item_7"></a>Taghva, K., Elkhoury, R., Coombs, J., 2005. Arabic stemming without a root dictionary 152–157 Vol. 1. <a href="https://doi.org/10.1109/ITCC.2005.90">https://doi.org/10.1109/ITCC.2005.90</a></div>
-</div>
-</div>
-</div>
+<ul class="org-ul">
+<li><span class="timestamp-wrapper"><span class="timestamp">[2025-10-18 Sat 18:06]</span></span> Disabling access for this article, for a while.</li>
+</ul>
 </div>
 <div id="postamble" class="status">
 <div id="postamble" class="status">
@@ -772,9 +570,108 @@ stemming algorithms.
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: S. Muhammed, M. Samy and M. Rady, by the date of: 2023-05-30 Tue 00:00. Last build date: 2025-07-25 Fri 00:00.</p>
+  <div class="book-covers" style="margin: 1em 0; padding: 0 10px;">
+    <p style="margin: 0.5em 0; font-style: italic; color: #555;">Some works I recommend engaging with:</p>
+    <div id="books-container" style="display: flex; flex-wrap: wrap; gap: 8px; max-width: 100%;"></div>
+  </div>
 
-</div>
+
+  <script>
+    const path = window.location.pathname;
+    if (path !== '/' && path !== '/index.html') {
+      const allBooks = [
+        {title: 'The Computational Beauty of Nature', author: 'Gary William Flake'},
+        {title: 'Group Psychology', author: 'Sigmund Freud'},
+        {title: 'Logic', author: 'Nicholas Smith'},
+        {title: 'Structure and Interpretation of Computer Programs', author: 'Harold Abelson'},
+        {title: 'The C Programming Language', author: 'Brian Kernighan'},
+        {title: 'Out of Bounds: Academic Freedom and the Question of Palestine', author: 'M. Abraham'},
+        {title: 'Understanding Power: The Indispensable Chomsky', author: 'Noam Chomsky'},
+        {title: 'Who Rules the World?', author: 'Noam Chomsky'},
+        {title: 'Manufacturing Consent: The Political Economy of the Mass Media', author: 'Noam Chomsky'},
+        {title: 'A People History of The World', author: 'Chris Harman'},
+        {title: 'The Arabs: A History', author: 'Eugene Rogan'},
+        {title: 'State of Terror', author: 'Y. Suarez'},
+        {title: 'A People History of The United States', author: 'Howard Zinn'},
+        {title: 'Killing Hope', author: 'William Blum'},
+        {title: 'Deliverance From Error', author: 'Al-Ghazali'},
+        {title: 'The Dawn of The Day', author: 'Friedrich Nietzsche'},
+        {title: 'Islam and The Destiny of Man', author: 'Gai Eaton'},
+        {title: 'The Polymath', author: 'Waqas Ahmed'},
+        {title: 'Twilight of The Idols', author: 'Friedrich Nietzsche'},
+        {title: 'Manfred', author: 'Lord Byron'},
+        {title: 'Marx in Soho', author: 'Howard Zinn'}
+      ];
+
+      const shuffled = allBooks.sort(() => 0.5 - Math.random());
+      const container = document.getElementById('books-container');
+      let displayedBooks = 0;
+      let bookIndex = 0;
+
+      async function tryNextBook() {
+        if (displayedBooks >= 2 || bookIndex >= shuffled.length) return;
+
+        const book = shuffled[bookIndex];
+        bookIndex++;
+
+        try {
+          const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=intitle:${encodeURIComponent(book.title)}+inauthor:${encodeURIComponent(book.author)}&maxResults=1`);
+          const data = await res.json();
+
+          if (data.items && data.items[0]) {
+            const volumeInfo = data.items[0].volumeInfo;
+            if (volumeInfo.imageLinks) {
+              const link = document.createElement('a');
+              link.style.display = 'none';
+              link.style.lineHeight = '0';
+              link.target = '_blank';
+              if (volumeInfo.infoLink) {
+                link.href = volumeInfo.infoLink;
+              }
+
+              const img = document.createElement('img');
+              img.style.cssText = 'height: 140px; border: 1px dotted #666; background: transparent;';
+              img.src = volumeInfo.imageLinks.thumbnail;
+              img.onload = () => {
+                link.style.display = 'inline-block';
+              };
+
+              link.appendChild(img);
+              container.appendChild(link);
+              displayedBooks++;
+              
+              if (displayedBooks < 2) {
+                tryNextBook();
+              }
+            } else {
+              console.log(`Cannot find book cover for: ${book.title} by ${book.author}`);
+              tryNextBook();
+            }
+          } else {
+            console.log(`Cannot find book: ${book.title} by ${book.author}`);
+            tryNextBook();
+          }
+        } catch (err) {
+          console.log(`Error fetching book: ${book.title} by ${book.author}`, err);
+          tryNextBook();
+        }
+      }
+
+      tryNextBook();
+    } else {
+      document.querySelector('.book-covers').style.display = 'none';
+    }
+  </script>
+
+  </div>
+
+
+
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.34). Written by: S. Muhammed, M. Samy and M. Rady, by the date of: 2023-05-30 Tue 00:00. Last build date: 2025-10-18 Sat 18:06.</p>
+
+
+
+
 </div>
 </div>
 </body>

@@ -3,51 +3,73 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Go Incomplete Guide</title>
+<title>[draft][don't take it seriously] Go Incomplete Guide</title>
 <meta name="author" content="Salih Muhammed" />
 <meta name="description" content="GO Notebook" />
 <meta name="generator" content="Org Mode" />
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-  <meta name="theme-color" content="#ffffff">
-  <meta charset="utf-8">
-  <meta name="theme-color" content="#ffffff">
-  <meta name="viewport" content= "width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/style/toc.css">
-  <link rel="stylesheet" href="/style/tufte.css">
-  <link rel="stylesheet" href="/style/main.css">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta charset="utf-8" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/style/toc.css?v=20250120" />
+    <link rel="stylesheet" href="/style/tufte.css?v=20250120" />
+    <link rel="stylesheet" href="/style/main.css?v=20250201" />
 
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const p = document.querySelector("#content > p:first-of-type");
+        if (p && /^[\u0600-\u06FF]/.test(p.textContent.trim())) {
+          p.classList.add("arabic");
+        }
+      });
+    </script>
 
+    <script async data-id="101390423" src="//static.getclicky.com/js"></script>
+    <noscript>
+      <p>
+        <img
+          alt="Clicky"
+          width="1"
+          height="1"
+          src="//in.getclicky.com/101390423ns.gif"
+        /></p
+    ></noscript>
 
+    <!-- Import LazySizes - State-of-the-art lazy loading library -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js"
+      async
+    ></script>
 
-  <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
-  <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+    <!-- Optional: Import plugins for better performance -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js"
+      async
+    ></script>
 
-<!-- Import LazySizes - State-of-the-art lazy loading library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+    <script>
+      // Only run on pages with 'art_paintings_media' in the path
+      if (window.location.pathname.includes("art_paintings_media")) {
+        document.addEventListener("DOMContentLoaded", function () {
+          // Configure LazySizes for optimal performance
+          window.lazySizesConfig = window.lazySizesConfig || {};
+          window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
+          window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
+          window.lazySizesConfig.expFactor = 1.5; // Expand loading area
+          window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
 
-<!-- Optional: Import plugins for better performance -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js" async></script>
-
-<script>
-// Only run on pages with 'art_paintings_media' in the path
-if (window.location.pathname.includes('art_paintings_media')) {
-  document.addEventListener('DOMContentLoaded', function() {
-    
-    // Configure LazySizes for optimal performance
-    window.lazySizesConfig = window.lazySizesConfig || {};
-    window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
-    window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
-    window.lazySizesConfig.expFactor = 1.5; // Expand loading area
-    window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
-
-    // Add CSS for smooth transitions and collapsible content
-    const style = document.createElement('style');
-    style.textContent = `
+          // Add CSS for smooth transitions and collapsible content
+          const style = document.createElement("style");
+          style.textContent = `
       .lazyload,
       .lazyloading {
         opacity: 0;
@@ -75,208 +97,215 @@ if (window.location.pathname.includes('art_paintings_media')) {
         filter: none;
       }
     `;
-    document.head.appendChild(style);
+          document.head.appendChild(style);
 
-    // Find all h3 elements
-    const h3Elements = document.querySelectorAll('h3');
+          // Find all h3 elements
+          const h3Elements = document.querySelectorAll("h3");
 
-    h3Elements.forEach(function(h3) {
-      // Make h3 clickable and add icon
-      h3.style.position = 'relative';
-      h3.style.cursor = 'pointer';
-      h3.style.paddingLeft = '20px';
-      h3.style.userSelect = 'none';
+          h3Elements.forEach(function (h3) {
+            // Make h3 clickable and add icon
+            h3.style.position = "relative";
+            h3.style.cursor = "pointer";
+            h3.style.paddingLeft = "20px";
+            h3.style.userSelect = "none";
 
-      // Add the arrow icon
-      const icon = document.createElement('span');
-      icon.innerHTML = '▶';
-      icon.style.position = 'absolute';
-      icon.style.left = '0px';
-      icon.style.top = '50%';
-      icon.style.transform = 'translateY(-50%)';
-      icon.style.transition = 'transform 0.2s';
-      icon.style.fontSize = '0.8em';
-      icon.style.color = 'rgb(102, 102, 102)';
-      icon.style.fontFamily = 'monospace';
+            // Add the arrow icon
+            const icon = document.createElement("span");
+            icon.innerHTML = "▶";
+            icon.style.position = "absolute";
+            icon.style.left = "0px";
+            icon.style.top = "50%";
+            icon.style.transform = "translateY(-50%)";
+            icon.style.transition = "transform 0.2s";
+            icon.style.fontSize = "0.8em";
+            icon.style.color = "rgb(102, 102, 102)";
+            icon.style.fontFamily = "monospace";
 
-      h3.insertBefore(icon, h3.firstChild);
+            h3.insertBefore(icon, h3.firstChild);
 
-      // Find all content after this h3 until the next h3 or end of parent
-      const contentElements = [];
-      let nextElement = h3.nextElementSibling;
+            // Find all content after this h3 until the next h3 or end of parent
+            const contentElements = [];
+            let nextElement = h3.nextElementSibling;
 
-      while (nextElement && nextElement.tagName !== 'H3') {
-        contentElements.push(nextElement);
-        nextElement = nextElement.nextElementSibling;
-      }
-
-      // Create a wrapper for smooth collapsing
-      const wrapper = document.createElement('div');
-      wrapper.className = 'collapsible-content collapsed';
-      wrapper.style.maxHeight = '0';
-
-      // Move content elements into wrapper
-      contentElements.forEach(function(element) {
-        wrapper.appendChild(element);
-      });
-
-      // Insert wrapper after h3
-      h3.parentNode.insertBefore(wrapper, h3.nextSibling);
-
-      // Prepare images for LazySizes lazy loading and make them clickable
-      const prepareImagesForLazyLoading = (container) => {
-        const images = container.querySelectorAll('img');
-        images.forEach(function(img) {
-          // Only process if not already processed
-          if (!img.classList.contains('lazyload') && !img.dataset.processed) {
-            // Store original src in data-src for LazySizes
-            if (img.src && img.src !== '' && !img.src.startsWith('data:')) {
-              img.dataset.src = img.src;
-              // Use a tiny placeholder or low-quality placeholder
-              img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+            while (nextElement && nextElement.tagName !== "H3") {
+              contentElements.push(nextElement);
+              nextElement = nextElement.nextElementSibling;
             }
 
-            // Handle srcset for responsive images
-            if (img.srcset && img.srcset !== '') {
-              img.dataset.srcset = img.srcset;
-              img.srcset = '';
-            }
+            // Create a wrapper for smooth collapsing
+            const wrapper = document.createElement("div");
+            wrapper.className = "collapsible-content collapsed";
+            wrapper.style.maxHeight = "0";
 
-            // Handle sizes attribute
-            if (img.sizes) {
-              img.dataset.sizes = img.sizes;
-            }
+            // Move content elements into wrapper
+            contentElements.forEach(function (element) {
+              wrapper.appendChild(element);
+            });
 
-            // Add LazySizes classes
-            img.classList.add('lazyload');
+            // Insert wrapper after h3
+            h3.parentNode.insertBefore(wrapper, h3.nextSibling);
 
-            // Make image clickable - add cursor pointer
-            img.style.cursor = 'pointer';
+            // Prepare images for LazySizes lazy loading and make them clickable
+            const prepareImagesForLazyLoading = (container) => {
+              const images = container.querySelectorAll("img");
+              images.forEach(function (img) {
+                // Only process if not already processed
+                if (
+                  !img.classList.contains("lazyload") &&
+                  !img.dataset.processed
+                ) {
+                  // Store original src in data-src for LazySizes
+                  if (
+                    img.src &&
+                    img.src !== "" &&
+                    !img.src.startsWith("data:")
+                  ) {
+                    img.dataset.src = img.src;
+                    // Use a tiny placeholder or low-quality placeholder
+                    img.src =
+                      'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+                  }
 
-            // Add click handler to open image in new tab
-            img.addEventListener('click', function(e) {
+                  // Handle srcset for responsive images
+                  if (img.srcset && img.srcset !== "") {
+                    img.dataset.srcset = img.srcset;
+                    img.srcset = "";
+                  }
+
+                  // Handle sizes attribute
+                  if (img.sizes) {
+                    img.dataset.sizes = img.sizes;
+                  }
+
+                  // Add LazySizes classes
+                  img.classList.add("lazyload");
+
+                  // Make image clickable - add cursor pointer
+                  img.style.cursor = "pointer";
+
+                  // Add click handler to open image in new tab
+                  img.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    e.stopPropagation(); // Prevent triggering h3 collapse
+
+                    // Get the actual image URL (either from src or data-src)
+                    let imageUrl = this.src;
+                    if (this.dataset.src && !this.src.startsWith("data:")) {
+                      imageUrl = this.dataset.src;
+                    } else if (
+                      this.src.startsWith("data:") &&
+                      this.dataset.src
+                    ) {
+                      imageUrl = this.dataset.src;
+                    }
+
+                    // Open image in new tab
+                    if (imageUrl && !imageUrl.startsWith("data:")) {
+                      window.open(imageUrl, "_blank");
+                    }
+                  });
+
+                  // Mark as processed
+                  img.dataset.processed = "true";
+
+                  // Maintain aspect ratio to prevent layout shift
+                  if (!img.style.aspectRatio && img.width && img.height) {
+                    img.style.aspectRatio = img.width + "/" + img.height;
+                  }
+                }
+              });
+            };
+
+            // Prepare all images in this section for lazy loading
+            prepareImagesForLazyLoading(wrapper);
+
+            // Track collapsed state
+            let isCollapsed = true;
+            let hasBeenExpanded = false;
+
+            // Add click handler
+            h3.addEventListener("click", function (e) {
               e.preventDefault();
-              e.stopPropagation(); // Prevent triggering h3 collapse
 
-              // Get the actual image URL (either from src or data-src)
-              let imageUrl = this.src;
-              if (this.dataset.src && !this.src.startsWith('data:')) {
-                imageUrl = this.dataset.src;
-              } else if (this.src.startsWith('data:') && this.dataset.src) {
-                imageUrl = this.dataset.src;
-              }
+              if (isCollapsed) {
+                // Expand: show content and activate lazy loading
+                icon.style.transform = "translateY(-50%) rotate(90deg)";
+                wrapper.classList.remove("collapsed");
+                wrapper.classList.add("expanded");
+                wrapper.style.maxHeight = wrapper.scrollHeight + "px";
 
-              // Open image in new tab
-              if (imageUrl && !imageUrl.startsWith('data:')) {
-                window.open(imageUrl, '_blank');
+                // Only activate LazySizes for this section when first expanded
+                if (!hasBeenExpanded) {
+                  // Trigger LazySizes to check for images in this newly visible section
+                  if (window.lazySizes) {
+                    // Force LazySizes to check all images in this wrapper
+                    const lazyImages = wrapper.querySelectorAll(".lazyload");
+                    lazyImages.forEach((img) => {
+                      // Add to LazySizes queue
+                      window.lazySizes.loader.unveil(img);
+                    });
+                  }
+                  hasBeenExpanded = true;
+                }
+
+                isCollapsed = false;
+
+                // Recalculate height after images potentially load
+                setTimeout(() => {
+                  if (!isCollapsed) {
+                    wrapper.style.maxHeight = wrapper.scrollHeight + "px";
+                  }
+                }, 100);
+              } else {
+                // Collapse: hide content
+                icon.style.transform = "translateY(-50%) rotate(0deg)";
+                wrapper.classList.remove("expanded");
+                wrapper.classList.add("collapsed");
+                wrapper.style.maxHeight = "0";
+
+                isCollapsed = true;
               }
             });
 
-            // Mark as processed
-            img.dataset.processed = 'true';
-
-            // Maintain aspect ratio to prevent layout shift
-            if (!img.style.aspectRatio && img.width && img.height) {
-              img.style.aspectRatio = img.width + '/' + img.height;
-            }
-          }
+            // Listen for LazySizes events to adjust height dynamically
+            wrapper.addEventListener("lazyloaded", function (e) {
+              if (!isCollapsed) {
+                // Adjust wrapper height when images load
+                setTimeout(() => {
+                  wrapper.style.maxHeight = wrapper.scrollHeight + "px";
+                }, 50);
+              }
+            });
+          });
         });
-      };
+      }
+    </script>
 
-      // Prepare all images in this section for lazy loading
-      prepareImagesForLazyLoading(wrapper);
+    <script>
+      (function () {
+        "use strict";
 
-      // Track collapsed state
-      let isCollapsed = true;
-      let hasBeenExpanded = false;
+        // Check if current page should have the formatting applied
+        function shouldApplyFormatting() {
+          const path = window.location.pathname;
 
-      // Add click handler
-      h3.addEventListener('click', function(e) {
-        e.preventDefault();
-
-        if (isCollapsed) {
-          // Expand: show content and activate lazy loading
-          icon.style.transform = 'translateY(-50%) rotate(90deg)';
-          wrapper.classList.remove('collapsed');
-          wrapper.classList.add('expanded');
-          wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
-
-          // Only activate LazySizes for this section when first expanded
-          if (!hasBeenExpanded) {
-            // Trigger LazySizes to check for images in this newly visible section
-            if (window.lazySizes) {
-              // Force LazySizes to check all images in this wrapper
-              const lazyImages = wrapper.querySelectorAll('.lazyload');
-              lazyImages.forEach(img => {
-                // Add to LazySizes queue
-                window.lazySizes.loader.unveil(img);
-              });
-            }
-            hasBeenExpanded = true;
-          }
-
-          isCollapsed = false;
-
-          // Recalculate height after images potentially load
-          setTimeout(() => {
-            if (!isCollapsed) {
-              wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
-            }
-          }, 100);
-
-        } else {
-          // Collapse: hide content
-          icon.style.transform = 'translateY(-50%) rotate(0deg)';
-          wrapper.classList.remove('expanded');
-          wrapper.classList.add('collapsed');
-          wrapper.style.maxHeight = '0';
-
-          isCollapsed = true;
+          // Check if path matches our target patterns
+          return (
+            path === "/stack" ||
+            path === "/stack.html" ||
+            path.startsWith("/sh/")
+          );
         }
-      });
 
-      // Listen for LazySizes events to adjust height dynamically
-      wrapper.addEventListener('lazyloaded', function(e) {
-        if (!isCollapsed) {
-          // Adjust wrapper height when images load
-          setTimeout(() => {
-            wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
-          }, 50);
+        // Only proceed if we're on a target page
+        if (!shouldApplyFormatting()) {
+          return;
         }
-      });
-    });
-  });
-}
-</script>
 
-<script>
-
-
-
-  
-// Stack Page Formatter - Apply inline layout to specific pages
-(function() {
-  'use strict';
-  
-  // Check if current page should have the formatting applied
-  function shouldApplyFormatting() {
-    const path = window.location.pathname;
-    
-    // Check if path matches our target patterns
-    return path === '/stack' || 
-           path === '/stack.html' || 
-           path.startsWith('/sh/');
-  }
-  
-  // Only proceed if we're on a target page
-  if (!shouldApplyFormatting()) {
-    return;
-  }
-  
-  // Add CSS styles
-  function addStyles() {
-    const style = document.createElement('style');
-    style.textContent = `
+        // Add CSS styles
+        function addStyles() {
+          const style = document.createElement("style");
+          style.textContent = `
       /* Basic styling for entries */
       .outline-3 {
         margin-bottom: 1.5em;
@@ -318,6 +347,7 @@ if (window.location.pathname.includes('art_paintings_media')) {
         padding: 0 !important;
       }
 
+
       /* Hide block elements that will be moved */
       .outline-3 .moved-block {
         display: block;
@@ -329,148 +359,166 @@ if (window.location.pathname.includes('art_paintings_media')) {
         scroll-margin-top: 20px;
       }
     `;
-    document.head.appendChild(style);
-  }
-  
-  // Extract ID from container div
-  function extractIdFromContainer(entry) {
-    const containerId = entry.id;
-    if (containerId && containerId.startsWith('outline-container-')) {
-      return containerId.replace('outline-container-', '');
-    }
-    return null;
-  }
-  
-  // Apply the formatting transformation
-  function applyFormatting() {
-    // Process each entry
-    const entries = document.querySelectorAll('.outline-3');
-    
-    entries.forEach((entry, index) => {
-      // Extract the anchor ID from the container before transformation
-      const anchorId = extractIdFromContainer(entry);
-      
-      // Extract components
-      const h3 = entry.querySelector('h3');
-      const notes = entry.querySelector('.notes');
-      const outlineText = entry.querySelector('.outline-text-3');
-      const tag = entry.querySelector('.tag');
-      
-      if (!h3 || !outlineText) return;
-      
-      // Get title text (preserve any TODO/DONE prefixes and links)
-      let titleText = h3.innerHTML;
-      
-      // Get timestamp
-      let timestampText = '';
-      if (notes) {
-        const timestamp = notes.querySelector('.timestamp');
-        if (timestamp) {
-          timestampText = timestamp.textContent;
+          document.head.appendChild(style);
         }
-      }
-      
-      // Get content paragraphs (excluding notes and tag)
-      const contentParagraphs = [];
-      const blockElements = [];
-      
-      Array.from(outlineText.children).forEach(child => {
-        if (child.classList.contains('notes') || child.classList.contains('tag')) {
-          return; // Skip these
+
+        // Extract ID from container div
+        function extractIdFromContainer(entry) {
+          const containerId = entry.id;
+          if (containerId && containerId.startsWith("outline-container-")) {
+            return containerId.replace("outline-container-", "");
+          }
+          return null;
         }
-        
-        if (child.tagName === 'P') {
-          contentParagraphs.push(child.innerHTML);
-        } else if (child.tagName === 'UL' || child.tagName === 'OL' || 
-                   child.tagName === 'BLOCKQUOTE' || child.tagName === 'PRE' ||
-                   child.tagName === 'DL' || child.classList.contains('epigraph')) {
-          blockElements.push(child.outerHTML);
-        } else if (child.tagName === 'DIV' && child.classList.contains('epigraph')) {
-          blockElements.push(child.outerHTML);
+
+        // Apply the formatting transformation
+        function applyFormatting() {
+          // Process each entry
+          const entries = document.querySelectorAll(".outline-3");
+
+          entries.forEach((entry, index) => {
+            // Extract the anchor ID from the container before transformation
+            const anchorId = extractIdFromContainer(entry);
+
+            // Extract components
+            const h3 = entry.querySelector("h3");
+            const notes = entry.querySelector(".notes");
+            const outlineText = entry.querySelector(".outline-text-3");
+            const tag = entry.querySelector(".tag");
+
+            if (!h3 || !outlineText) return;
+
+            // Get title text (preserve any TODO/DONE prefixes and links)
+            let titleText = h3.innerHTML;
+
+            // Get timestamp
+            let timestampText = "";
+            if (notes) {
+              const timestamp = notes.querySelector(".timestamp");
+              if (timestamp) {
+                timestampText = timestamp.textContent;
+              }
+            }
+
+            // Get content paragraphs (excluding notes, tag, and backlinks)
+            const contentParagraphs = [];
+            const blockElements = [];
+            const backlinks = entry.querySelector(".BACKLINKS");
+
+            Array.from(outlineText.children).forEach((child) => {
+              if (
+                child.classList.contains("notes") ||
+                child.classList.contains("tag") ||
+                child.classList.contains("BACKLINKS")
+              ) {
+                return; // Skip these - they'll be handled separately
+              }
+
+              if (child.tagName === "P") {
+                contentParagraphs.push(child.innerHTML);
+              } else if (
+                child.tagName === "UL" ||
+                child.tagName === "OL" ||
+                child.tagName === "BLOCKQUOTE" ||
+                child.tagName === "PRE" ||
+                child.tagName === "DL" ||
+                child.classList.contains("epigraph")
+              ) {
+                blockElements.push(child.outerHTML);
+              } else if (
+                child.tagName === "DIV" &&
+                child.classList.contains("epigraph")
+              ) {
+                blockElements.push(child.outerHTML);
+              }
+            });
+
+            // Get tag HTML (preserve links and formatting)
+            let tagHtml = "";
+            if (tag) {
+              tagHtml = tag.outerHTML;
+            }
+
+            // Construct the new single paragraph
+            let newContent = "";
+
+            // Add date at the start (gray)
+            if (timestampText) {
+              newContent +=
+                '<span class="entry-date">' + timestampText + "</span>";
+            }
+
+            // Add title with emdash
+            newContent += titleText + " — ";
+
+            // Add content paragraphs
+            newContent += contentParagraphs.join(" ");
+
+            // Add tag at the end in parentheses (preserve HTML but force inline)
+            if (tagHtml) {
+              // Extract just the inner content and wrap it properly
+              let tagContent = tag.innerHTML;
+              newContent +=
+                ' <span class="entry-tag">(' + tagContent + ")</span>";
+            }
+
+            // Create new paragraph element
+            const newParagraph = document.createElement("p");
+            newParagraph.className = "entry-paragraph";
+            newParagraph.innerHTML = newContent;
+
+            // Clear the entry
+            entry.innerHTML = "";
+
+            // Preserve the anchor ID by setting it on the transformed entry
+            if (anchorId) {
+              entry.id = anchorId;
+            }
+
+            // Add backlinks FIRST so they can float to the right
+            if (backlinks) {
+              entry.appendChild(backlinks.cloneNode(true));
+            }
+
+            // Then add the main paragraph
+            entry.appendChild(newParagraph);
+
+            // Add any block elements after the paragraph
+            blockElements.forEach((blockHtml) => {
+              const blockDiv = document.createElement("div");
+              blockDiv.className = "moved-block";
+              blockDiv.innerHTML = blockHtml;
+              entry.appendChild(blockDiv);
+            });
+
+            // Add separator after each entry (except the last one)
+            if (index < entries.length - 1) {
+              const separator = document.createElement("hr");
+              separator.style.margin = "1em 0";
+              separator.style.border = "none";
+              separator.style.borderTop = "1px solid #ccc";
+              entry.appendChild(separator);
+            }
+          });
         }
-      });
-      
-      // Get tag HTML (preserve links and formatting)
-      let tagHtml = '';
-      if (tag) {
-        tagHtml = tag.outerHTML;
-      }
-      
-      // Construct the new single paragraph
-      let newContent = '';
-      
-      // Add date at the start (gray)
-      if (timestampText) {
-        newContent += '<span class="entry-date">' + timestampText + '</span>';
-      }
-      
-      // Add title with emdash
-      newContent += titleText + ' — ';
-      
-      // Add content paragraphs
-      newContent += contentParagraphs.join(' ');
-      
-      // Add tag at the end in parentheses (preserve HTML but force inline)
-      if (tagHtml) {
-        // Extract just the inner content and wrap it properly
-        let tagContent = tag.innerHTML;
-        newContent += ' <span class="entry-tag">(' + tagContent + ')</span>';
-      }
-      
-      // Create new paragraph element
-      const newParagraph = document.createElement('p');
-      newParagraph.className = 'entry-paragraph';
-      newParagraph.innerHTML = newContent;
-      
-      // Clear the entry and add the new paragraph
-      entry.innerHTML = '';
-      entry.appendChild(newParagraph);
-      
-      // Preserve the anchor ID by setting it on the transformed entry
-      if (anchorId) {
-        entry.id = anchorId;
-      }
-      
-      // Add any block elements after the paragraph
-      blockElements.forEach(blockHtml => {
-        const blockDiv = document.createElement('div');
-        blockDiv.className = 'moved-block';
-        blockDiv.innerHTML = blockHtml;
-        entry.appendChild(blockDiv);
-      });
-      
-      // Add separator after each entry (except the last one)
-      if (index < entries.length - 1) {
-        const separator = document.createElement('hr');
-        separator.style.margin = '1em 0';
-        separator.style.border = 'none';
-        separator.style.borderTop = '1px solid #ccc';
-        entry.appendChild(separator);
-      }
-    });
-  }
-  
-  // Initialize when DOM is ready
-  function init() {
-    addStyles();
-    
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', applyFormatting);
-    } else {
-      applyFormatting();
-    }
-  }
-  
-  // Start the initialization
-  init();
-})();
-</script>
 
+        // Initialize when DOM is ready
+        function init() {
+          addStyles();
 
+          if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", applyFormatting);
+          } else {
+            applyFormatting();
+          }
+        }
 
-</head>
-<body>
-</body>
+        // Start the initialization
+        init();
+      })();
+    </script>
+  </head>
+  <body></body>
 </html>
 </head>
 <body>
@@ -485,23 +533,498 @@ margin-block-start: auto;
     color: black;
 ">Hereby, all birds fly</h1>
       </a>
+      <nav class="site-nav">
+        <a href="/p/">all posts</a>
+        <span>•</span>
+        <a href="/stack.html">short posts</a>
+        <span>•</span>
+        <a href="/fullbooks.html">books</a>
+        <span>•</span>
+        <a href="/a.html#2ar8en10n2k0">anthology</a>
+        <span>•</span>
+        <a href="/pgp.html">PGP key</a>
+        <span>•</span>
+        <a href="https://www.admonymous.co/larrasket">leave a message</a>
+      </nav>
 <hr class="header-divider" style="margin-block-end: -1em;">
   </div>
 </div>
 </div>
 <div id="content" class="content">
 <header>
-<h1 class="title">Go Incomplete Guide</h1>
-</header><div class="propert" id="orgc689533">
+<h1 class="title">[draft][don&rsquo;t take it seriously] Go Incomplete Guide</h1>
+</header><div class="propert" id="org9ce0531">
 <p>
 Part of a series on <a href="../cs/go.html#lvkhzyo02wj0">The Go Programming Language</a>
 </p>
 
 </div>
-<div id="outline-container-org9c462bf" class="outline-2">
-<h2 id="org9c462bf">Introduction</h2>
-<div class="outline-text-2" id="text-org9c462bf">
-<div class="PREVIEW" id="org00da701">
+<div id="outline-container-org6f54e3b" class="outline-2">
+<h2 id="org6f54e3b">Misc</h2>
+<div class="outline-text-2" id="text-org6f54e3b">
+</div>
+<div id="outline-container-org32179c3" class="outline-3">
+<h3 id="org32179c3">Notes</h3>
+<div class="outline-text-3" id="text-org32179c3">
+<ul class="org-ul">
+<li>Reading from a nil channel would result in blocking forever.</li>
+<li>Writing to a nil map will cause a panic.</li>
+<li>Ranging over a nil slice will result in 0 iterations.</li>
+<li><p>
+First is a type alias. Second is a new type.
+</p>
+<pre class="example" id="org7151dba">
+type MyInt int
+type YourInt = int
+</pre></li>
+<li>iota resets per const block. When you manually assign (C = 5), it doesn’t stop iota from incrementing in the background.</li>
+
+<li>byte is an alias for uint8. rune is an alias for int32 (Unicode code point). string is a read-only slice of bytes, UTF-8 encoded. Iterating a string with for range gives runes, not bytes. But indexing a string with [i] gives bytes.</li>
+
+<li><p>
+Here:
+</p>
+<pre class="code"><code>for i := 0; i &lt; 3; i++ {
+    defer func() { println(i) }()
+}
+</code></pre>
+
+<p>
+This prints 3 3 3. Because i is captured by reference not by value.
+</p></li>
+
+<li><p>
+<code>defer</code> might not be always useful inside a loop:
+</p>
+
+<figure id="orgfcefbae">
+<img src="../../media/Misc/2025-11-06_21-28-58_screenshot.png" alt="2025-11-06_21-28-58_screenshot.png">
+
+</figure></li>
+
+<li>Go will try to store values in the stack, however, for long-lived variables, they will be stored in the heap. <a href="https://youtu.be/US3TGA-Dpqo?si=I6Hz_QN4oKU66T42&amp;t=236">https://youtu.be/US3TGA-Dpqo?si=I6Hz_QN4oKU66T42&amp;t=236</a></li>
+
+<li>Closures in Go are lexically scoped. This means that any variables referenced within the closure from the &ldquo;outer&rdquo; scope are not a copy but are in fact a reference. A for loop actually reuses the same variable multiple times, so you&rsquo;re introducing a race condition between the read/write of the s variable. In general, it is a best practice to pass in any arguments you want so that you don&rsquo;t have references.</li>
+
+<li><p>
+Closures capture variables, not values:
+</p>
+<pre class="code"><code>    funcs := []func(){}
+    for i := 0; i &lt; 3; i++ {
+        funcs = append(funcs, func() { println(i) })
+    }
+    for _, f := range funcs {
+        f()
+    }
+</code></pre>
+<p>
+However; proposal #60078 changed loop variables to be per-iteration instead of per-loop.
+</p></li>
+
+<li><a href="https://youtu.be/K1hwpNnCJgY?si=bpv9n89CFbfF6m_o">https://youtu.be/K1hwpNnCJgY?si=bpv9n89CFbfF6m_o</a> You need to keep locking/unlocking in the same order.</li>
+
+<li><p>
+Do not forget the decision tree for using primitives vs. channels.
+</p>
+
+<figure id="org3b8d1ae">
+<img src="../../media/Misc/2025-11-07_20-38-51_screenshot.png" alt="2025-11-07_20-38-51_screenshot.png">
+
+</figure></li>
+
+<li><p>
+cond. Observe the example:
+</p>
+<pre class="code"><code>package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+type JobQueue struct {
+	mu   sync.Mutex
+	jobs []string
+	cond *sync.Cond
+}
+
+func NewJobQueue() *JobQueue {
+	q := &amp;JobQueue{}
+	q.cond = sync.NewCond(&amp;q.mu)
+	return q
+}
+
+func (q *JobQueue) Add(job string) {
+	q.mu.Lock()
+	defer q.mu.Unlock()
+
+	q.jobs = append(q.jobs, job)
+	q.cond.Signal() // wake up one waiting worker
+}
+
+func (q *JobQueue) Get() string {
+	q.mu.Lock()
+	defer q.mu.Unlock()
+
+	// Wait until a job becomes available
+	for len(q.jobs) == 0 {
+		q.cond.Wait()
+	}
+	job := q.jobs[0]
+	q.jobs = q.jobs[1:]
+	return job
+}
+
+func main() {
+	q := NewJobQueue()
+
+	// worker
+	go func() {
+		for {
+			job := q.Get()
+			fmt.Println("Processing:", job)
+			time.Sleep(time.Second)
+		}
+	}()
+
+	// producer
+	for i := 1; i &lt;= 5; i++ {
+		time.Sleep(time.Millisecond * 500)
+		q.Add(fmt.Sprintf("job-%d", i))
+	}
+}
+</code></pre></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgeb63a50" class="outline-3">
+<h3 id="orgeb63a50"><code>omitempty</code></h3>
+<div class="outline-text-3" id="text-orgeb63a50">
+<p>
+If you’ve worked with Go for sometime, you have probably encountered the <code>omitempty</code> tag,
+when trying to encode a struct to JSON.
+</p>
+
+<p>
+When using Go to build web applications, or HTTP servers, there will eventually come a time
+when we need to encode some data as JSON. The problem here is that the JSON representation
+does not exactly match the way Go handles data.
+</p>
+
+<p>
+One key difference, is that in a struct, there are always clearly defined fields, while in
+JSON there are not. For example, consider describing a dog as a struct in Go:
+</p>
+
+<pre class="code"><code>type Dog struct {
+	Breed string
+	WeightKg int
+}
+</code></pre>
+
+
+<p>
+Now, if we were to initialize, encode to JSON, and print a sample dog :
+</p>
+<pre class="code"><code>func main() {
+	d := Dog{
+		Breed:    "dalmation",
+		WeightKg: 45,
+	}
+	b, _ := json.Marshal(d)
+	fmt.Println(string(b))
+}
+</code></pre>
+
+
+<p>
+We would get the output: <code>{"Breed":"dalmation","WeightKg":45}</code>
+</p>
+
+<p>
+Now, a dog for whom we do not have the weight, would be slightly awkward to deal with:
+</p>
+
+
+<pre class="code"><code>func main() {
+	d := Dog{
+		Breed:    "pug",
+	}
+	b, _ := json.Marshal(d)
+	fmt.Println(string(b))
+}
+</code></pre>
+
+
+
+<p>
+This prints <code>{"Breed":"pug","WeightKg":0}</code>, even though the weight of of pug was unknown. A
+better option would be to print <code>"WeightKg":null</code>, or to not have the WeightKg key at all.
+</p>
+
+
+<p>
+This is where the omitempty tag helps us. Let’s add the <code>omitempty</code> tag to our Dog struct:
+</p>
+
+<pre class="code"><code>type Dog struct {
+	Breed    string
+	// The first comma below is to separate the name tag from the omitempty tag
+	WeightKg int `json:",omitempty"`
+}
+</code></pre>
+
+
+<p>
+Now, if <code>WeightKg</code> is set to it’s default value (which is 0 for the int type), the key
+itself will be omitted from the JSON object.
+</p>
+
+<p>
+The same will happen if a string is empty &ldquo;&rdquo;, or if a pointer is nil, or if a slice has zero
+elements in it.
+</p>
+
+<p>
+In cases where an empty value does not exist, omitempty is of no use. An embedded struct,
+for example, does not have an empty value:
+</p>
+
+<pre class="code"><code>
+import (
+	"encoding/json"
+	"fmt"
+)
+
+type dimension struct {
+	Height int
+	Width int
+	}
+
+type Dog struct {
+	Breed    string
+	WeightKg int
+	Size dimension `json:",omitempty"`
+}
+
+func main() {
+	d := Dog{
+		Breed: "pug",
+	}
+	b, _ := json.Marshal(d)
+	fmt.Println(string(b))
+}
+
+</code></pre>
+
+
+<p>
+In this case, even though we never set the value of the Size attribute, and set its
+<code>omitempty</code> tag, it still appears in the output. This is because structs do not have any empty
+value in Go. To solve this, use a struct pointer instead :
+</p>
+
+
+<pre class="code"><code>type Dog struct {
+	Breed    string
+	WeightKg int
+	// Now `Size` is a pointer to a `dimension` instance
+	Size *dimension `json:",omitempty"`
+}
+</code></pre>
+</div>
+</div>
+<div id="outline-container-org4d65efd" class="outline-3">
+<h3 id="org4d65efd">Custom Sort</h3>
+<div class="outline-text-3" id="text-org4d65efd">
+<p>
+To sort a slice in reverse order, you can use the <code>Reverse()</code> function along with <code>StringSlice</code>,
+<code>IntSlice</code>, and <code>Float64Slice</code> types. These types implement the Interface for comparision and
+swap defined in the sort package.
+</p>
+
+<p>
+The <code>Reverse()</code> function returns the reverse order of data. Let’s look at an example of
+sorting a slice of strings, integers, and floats in reverse order:
+</p>
+
+<pre class="code"><code>package main
+
+import (
+	"fmt"
+	"sort"
+)
+
+func main() {
+	// Sorting a slice of Strings
+	strs := []string{"quick", "brown", "fox", "jumps"}
+	sort.Sort(sort.Reverse(sort.StringSlice(strs)))
+	fmt.Println("Sorted strings in reverse order: ", strs)
+
+	// Sorting a slice of Integers
+	ints := []int{56, 19, 78, 67, 14, 25}
+	sort.Sort(sort.Reverse(sort.IntSlice(ints)))
+	fmt.Println("Sorted integers in reverse order: ", ints)
+
+	// Sorting a slice of Floats
+	floats := []float64{176.8, 19.5, 20.8, 57.4}
+	sort.Sort(sort.Reverse(sort.Float64Slice(floats)))
+	fmt.Println("Sorted floats in reverse order: ", floats)
+}
+
+</code></pre>
+
+
+<p>
+Many times, you would want to sort a collection by something other than its natural order.
+For example, you would want to sort a slice of strings by their length, or you would want to
+sort a slice of users by their age.
+</p>
+
+<p>
+For these usecases, you can use the <code>Slice()</code> and <code>SliceStable()</code> functions provided by the sort
+package. These are higher order functions that accept a less function as an argument:
+</p>
+
+
+<pre class="code"><code>package main
+
+import (
+	"fmt"
+	"sort"
+)
+
+func main() {
+	// Sorting a slice of strings by length
+	strs := []string{"United States", "India", "France", "United Kingdom", "Spain"}
+	sort.Slice(strs, func(i, j int) bool {
+		return len(strs[i]) &lt; len(strs[j])
+	})
+	fmt.Println("Sorted strings by length: ", strs)
+
+	// Stable sort
+	sort.SliceStable(strs, func(i, j int) bool {
+		return len(strs[i]) &lt; len(strs[j])
+	})
+	fmt.Println("[Stable] Sorted strings by length: ", strs)
+
+	// Sorting a slice of strings in the reverse order of length
+	sort.SliceStable(strs, func(i, j int) bool {
+		return len(strs[j]) &lt; len(strs[i])
+	})
+	fmt.Println("[Stable] Sorted strings by reverse order of length: ", strs)
+}
+</code></pre>
+</div>
+</div>
+<div id="outline-container-lhoctcz0twj0" class="outline-3">
+<h3 id="lhoctcz0twj0">Integer Values</h3>
+<div class="outline-text-3" id="text-orgcda47e1">
+<pre class="example" id="org72c12bc">
+uint8  : 0 to 255
+uint16 : 0 to 65535
+uint32 : 0 to 4294967295
+uint64 : 0 to 18446744073709551615
+int8   : -128 to 127
+int16  : -32768 to 32767
+int32  : -2147483648 to 2147483647
+int64  : -9223372036854775808 to 9223372036854775807
+</pre>
+</div>
+</div>
+<div id="outline-container-vdali1i0z3k0" class="outline-3">
+<h3 id="vdali1i0z3k0">Check if file exists</h3>
+<div class="outline-text-3" id="text-org1299c75">
+<pre class="code"><code>if _, err := os.Stat("/path/to/whatever"); errors.Is(err, os.ErrNotExist) {
+  // path/to/whatever does not exist
+}
+</code></pre>
+</div>
+</div>
+<div id="outline-container-pxc3h8o0z3k0" class="outline-3">
+<h3 id="pxc3h8o0z3k0">Example for flag</h3>
+<div class="outline-text-3" id="text-org9807c4d">
+<pre class="code"><code>package main
+
+import (
+    "flag"
+    "fmt"
+)
+
+func main() {
+
+    wordPtr := flag.String("word", "foo", "a string")
+
+    numbPtr := flag.Int("numb", 42, "an int")
+    forkPtr := flag.Bool("fork", false, "a bool")
+
+    var svar string
+    flag.StringVar(&amp;svar, "svar", "bar", "a string var")
+
+    flag.Parse()
+
+    fmt.Println("word:", *wordPtr)
+    fmt.Println("numb:", *numbPtr)
+    fmt.Println("fork:", *forkPtr)
+    fmt.Println("svar:", svar)
+    fmt.Println("tail:", flag.Args())
+}
+</code></pre>
+</div>
+</div>
+<div id="outline-container-gnb2dda146k0" class="outline-3">
+<h3 id="gnb2dda146k0">Properly print errors</h3>
+<div class="outline-text-3" id="text-org276a415">
+<pre class="example" id="org24f0dc9">
+TL;DR; Neither. Use %w in 99.99% of cases. In the other 0.001% of cases, %v and
+%s probably "should" behave the same, except when the error value is nil, but
+there are no guarantees. The friendlier output of %v for nil errors may be
+reason to prefer %v (see below).
+</pre>
+
+<p>
+From <a href="https://stackoverflow.com/a/61287626">https://stackoverflow.com/a/61287626</a>
+</p>
+</div>
+</div>
+<div id="outline-container-yt" class="outline-3">
+<h3 id="yt"><a href="../yt.html#6ed1b62f-0992-46dc-aefd-40c471ae0b66">YouTube Channels</a></h3>
+<div class="outline-text-3" id="text-yt">
+<ul class="org-ul">
+<li><a href="https://www.youtube.com/@mattkdvb5154">Matt KØDVB</a></li>
+<li><a href="https://www.youtube.com/@GolangCafe">Golang Cafe</a></li>
+<li><a href="https://www.youtube.com/@JustForFunc">justforfunc: Programming in Go</a></li>
+<li><a href="https://www.youtube.com/@NicJackson">Nic Jackson</a></li>
+<li><a href="https://www.youtube.com/@anthonygg_">Anthony GG </a></li>
+<li><a href="https://www.youtube.com/@MarioCarrion">Mario Carrion</a></li>
+<li><a href="https://www.youtube.com/@rscgolang">Russ Cox</a></li>
+<li><a href="https://www.youtube.com/@GopherAcademy">Gopher Academy</a></li>
+<li><a href="https://www.youtube.com/@GopherConUK">GopherCon UK</a></li>
+<li><a href="https://www.youtube.com/@gojax">Go Jax</a></li>
+<li><a href="https://www.youtube.com/@DonaldFeury">Donald Feury</a></li>
+<li><a href="https://www.youtube.com/@NerdCademyDev">NerdCademy</a></li>
+<li><a href="https://www.youtube.com/@boldlygo">Boldly Go </a></li>
+<li><a href="https://www.youtube.com/@joncalhoun">Jon Calhoun</a></li>
+<li><a href="https://www.youtube.com/@Tutorialedge">TutorialEdge</a></li>
+<li><a href="https://www.youtube.com/@TECHSCHOOLGURU">TECH SCHOOL</a></li>
+<li><a href="https://www.youtube.com/@GolangDojo">Golang Dojo</a> (Worst)</li>
+<li><a href="https://www.youtube.com/@mathisve">Mathis Van Eetvelde</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orga7d4835" class="outline-2">
+<h2 id="orga7d4835">Old</h2>
+<div class="outline-text-2" id="text-orga7d4835">
+<p>
+These are notes I wrote when I was still learning Go.
+</p>
+</div>
+<div id="outline-container-orgc973e60" class="outline-3">
+<h3 id="orgc973e60">Introduction</h3>
+<div class="outline-text-3" id="text-orgc973e60">
+<div class="PREVIEW" id="orgf863edb">
 <p>
 Go programming language notes. Based on Adam Freeman&rsquo;s Pro Go, some <a href="https://go.dev/blog/">https://go.dev/blog/</a>
 articles, and other online resources.
@@ -510,9 +1033,9 @@ articles, and other online resources.
 </div>
 </div>
 </div>
-<div id="outline-container-orgc958a7b" class="outline-2">
-<h2 id="orgc958a7b">get-go</h2>
-<div class="outline-text-2" id="text-orgc958a7b">
+<div id="outline-container-org2f47d94" class="outline-3">
+<h3 id="org2f47d94">[basics] get-go</h3>
+<div class="outline-text-3" id="text-org2f47d94">
 <p>
 Open a command prompt, navigate to a convenient location, and create a folder named
 partyinvites.  Navigate to the partyinvites folder and run the command shown in Listing 1-2
@@ -577,9 +1100,9 @@ tasks in one step. The application produces the following output:
 <pre class="code"><code>TODO: add some features
 </code></pre>
 </div>
-<div id="outline-container-org89458ed" class="outline-3">
-<h3 id="org89458ed">Define a Data Type</h3>
-<div class="outline-text-3" id="text-org89458ed">
+<div id="outline-container-org73be8f2" class="outline-4">
+<h4 id="org73be8f2">Define a Data Type</h4>
+<div class="outline-text-4" id="text-org73be8f2">
 <p>
 The next step is to create a custom data type that will represent the RSVP responses, as
 shown:
@@ -668,9 +1191,9 @@ it.
 </p>
 </div>
 </div>
-<div id="outline-container-org96db7c0" class="outline-3">
-<h3 id="org96db7c0">Using The Go Tools</h3>
-<div class="outline-text-3" id="text-org96db7c0">
+<div id="outline-container-org38d8404" class="outline-4">
+<h4 id="org38d8404">Using Go Tools</h4>
+<div class="outline-text-4" id="text-org38d8404">
 <p>
 The go command provides access to all the features needed to compile and execute Go code and
 is used throughout this book. The argument used with the go command specifies the operation
@@ -747,9 +1270,9 @@ most useful ones
 </tbody>
 </table>
 </div>
-<div id="outline-container-orgb7ec1ce" class="outline-4">
-<h4 id="orgb7ec1ce">Creating a Go Project</h4>
-<div class="outline-text-4" id="text-orgb7ec1ce">
+<div id="outline-container-org643b4ff" class="outline-5">
+<h5 id="org643b4ff">Creating a Go Project</h5>
+<div class="outline-text-5" id="text-org643b4ff">
 <p>
 Go projects don’t have an elaborate structure and are quick to set up. Open a new command
 prompt and create a folder named tools in a convenient location. Add a file named main.go to
@@ -785,9 +1308,9 @@ execution begins in a command-line application
 </p>
 </div>
 </div>
-<div id="outline-container-org3d88d87" class="outline-4">
-<h4 id="org3d88d87">Semicolons and Errors in Go Code</h4>
-<div class="outline-text-4" id="text-org3d88d87">
+<div id="outline-container-org3cb7476" class="outline-5">
+<h5 id="org3cb7476">Semicolons and Errors in Go Code</h5>
+<div class="outline-text-5" id="text-org3cb7476">
 <p>
 You may have noticed that I didn&rsquo;t append a semicolon in the previous code.
 Go has an unusual approach to semicolons: they are required to terminate code statements, but they
@@ -839,9 +1362,9 @@ remove semicolons and adjust other formatting issues.
 </p>
 </div>
 </div>
-<div id="outline-container-orgb3e7151" class="outline-4">
-<h4 id="orgb3e7151">Defining a Module</h4>
-<div class="outline-text-4" id="text-orgb3e7151">
+<div id="outline-container-org67600af" class="outline-5">
+<h5 id="org67600af">Defining a Module</h5>
+<div class="outline-text-5" id="text-org67600af">
 <p>
 The previous section demonstrated that you can get `tarted just by creating a code file, but
 a more common approach is to create a Go module, which is the conventional first step when
@@ -859,9 +1382,9 @@ the project can be built and executed using a period, indicating the project in 
 </p>
 </div>
 </div>
-<div id="outline-container-org4eb1941" class="outline-4">
-<h4 id="org4eb1941">Linting Go Code</h4>
-<div class="outline-text-4" id="text-org4eb1941">
+<div id="outline-container-orgf94cdb7" class="outline-5">
+<h5 id="orgf94cdb7">Linting Go Code</h5>
+<div class="outline-text-5" id="text-orgf94cdb7">
 <p>
 A linter is a tool that checks code files using a set of rules that describe problems that
 cause confusion, produce unexpected results, or reduce the readability of the code. The most
@@ -882,9 +1405,9 @@ the command shown:
 <pre class="code"><code>go install github.com/mgechev/revive@latest
 </code></pre>
 </div>
-<div id="outline-container-orgfb33a13" class="outline-5">
-<h5 id="orgfb33a13">On Linting</h5>
-<div class="outline-text-5" id="text-orgfb33a13">
+<div id="outline-container-org99fbf07" class="outline-6">
+<h6 id="org99fbf07">On Linting</h6>
+<div class="outline-text-6" id="text-org99fbf07">
 <p>
 Linters can be a powerful tool for good, especially in a development team with mixed levels of skill and
 experience. Linters can detect common problems and subtle errors that lead to unexpected behavior
@@ -914,9 +1437,9 @@ productivity is not achieved by slavishly enforcing arbitrary rules, however wel
 </p>
 </div>
 </div>
-<div id="outline-container-orgd9fdebe" class="outline-5">
-<h5 id="orgd9fdebe">Using the Linter</h5>
-<div class="outline-text-5" id="text-orgd9fdebe">
+<div id="outline-container-org4dfcb9d" class="outline-6">
+<h6 id="org4dfcb9d">Using the Linter</h6>
+<div class="outline-text-6" id="text-org4dfcb9d">
 <p>
 The main.go file is so simple that it doesn’t have any problems for the linter to highlight.
 Add the following statements, which are legal Go code that does not comply with
@@ -978,9 +1501,9 @@ func PrintNumber(number int) {
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org9c9a0f4" class="outline-5">
-<h5 id="org9c9a0f4">Disabling Linter Rules</h5>
-<div class="outline-text-5" id="text-org9c9a0f4">
+<div id="outline-container-org88959d1" class="outline-6">
+<h6 id="org88959d1">Disabling Linter Rules</h6>
+<div class="outline-text-6" id="text-org88959d1">
 <p>
 The revive package can be configured using comments in code files, disabling one or more
 rules for sections of code. I have used comments to disable the rule that causes the warning
@@ -1058,9 +1581,9 @@ character before the entry that enables the exported rule.
 </div>
 </div>
 </div>
-<div id="outline-container-orgd47f468" class="outline-4">
-<h4 id="orgd47f468">Fixing Common Problems in Go</h4>
-<div class="outline-text-4" id="text-orgd47f468">
+<div id="outline-container-org7e21dfd" class="outline-5">
+<h5 id="org7e21dfd">Fixing Common Problems in Go</h5>
+<div class="outline-text-5" id="text-org7e21dfd">
 <p>
 The go vet command identifies statements likely to be mistakes. Unlike a linter, which will
 often focus on style issues, the go vet command finds code that compiles but that probably
@@ -1138,9 +1661,9 @@ which analyzer is responsible for a warning, run the command:
 </div>
 </div>
 </div>
-<div id="outline-container-org3ba2b15" class="outline-3">
-<h3 id="org3ba2b15">Types, Values, Pointers</h3>
-<div class="outline-text-3" id="text-org3ba2b15">
+<div id="outline-container-org3ae2762" class="outline-4">
+<h4 id="org3ae2762">Types, Values, Pointers</h4>
+<div class="outline-text-4" id="text-org3ae2762">
 <p>
 The folloing table puts the basic Go features in context.
 </p>
@@ -1221,9 +1744,9 @@ The code in the main.go file will be compiled and executed, producing the follow
 The output from the code will always be the same value.
 </p>
 </div>
-<div id="outline-container-org82d0b5f" class="outline-4">
-<h4 id="org82d0b5f">Basic Data Types</h4>
-<div class="outline-text-4" id="text-org82d0b5f">
+<div id="outline-container-org6600124" class="outline-5">
+<h5 id="org6600124">Basic Data Types</h5>
+<div class="outline-text-5" id="text-org6600124">
 <p>
 Go provides a set of basic data types, which are described in the table.
 These types are the foundation of Go development, and many of
@@ -1385,9 +1908,9 @@ func main() {
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgc0b0214" class="outline-4">
-<h4 id="orgc0b0214">Variables</h4>
-<div class="outline-text-4" id="text-orgc0b0214">
+<div id="outline-container-org0caa752" class="outline-5">
+<h5 id="org0caa752">Variables</h5>
+<div class="outline-text-5" id="text-org0caa752">
 <p>
 Variables are defined using the var keyword, and, unlike constants, the value assigned to a
 variable can be changed, as shown:
@@ -1436,9 +1959,9 @@ func main() {
 }
 </code></pre>
 </div>
-<div id="outline-container-org9d29b0a" class="outline-5">
-<h5 id="org9d29b0a">Short Variable Declaration Syntax</h5>
-<div class="outline-text-5" id="text-org9d29b0a">
+<div id="outline-container-org145b3cc" class="outline-6">
+<h6 id="org145b3cc">Short Variable Declaration Syntax</h6>
+<div class="outline-text-6" id="text-org145b3cc">
 <p>
 The short variable declaration provides a shorthand for declaring variables, as shown:
 </p>
@@ -1507,9 +2030,9 @@ func main() {
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgc94017e" class="outline-5">
-<h5 id="orgc94017e">Blank Declaration</h5>
-<div class="outline-text-5" id="text-orgc94017e">
+<div id="outline-container-org03bf037" class="outline-6">
+<h6 id="org03bf037">Blank Declaration</h6>
+<div class="outline-text-6" id="text-org03bf037">
 <p>
 It is illegal in Go to define a variable and not use it:
 </p>
@@ -1561,9 +2084,9 @@ func f() (int, int, int) {
 </div>
 </div>
 </div>
-<div id="outline-container-org760d3cf" class="outline-4">
-<h4 id="org760d3cf">Pointers</h4>
-<div class="outline-text-4" id="text-org760d3cf">
+<div id="outline-container-org6278d37" class="outline-5">
+<h5 id="org6278d37">Pointers</h5>
+<div class="outline-text-5" id="text-org6278d37">
 <p>
 Pointers are often misunderstood, especially if you have come to Go from a language such as
 Java or C#, where pointers are used behind the scenes but carefully hidden from the
@@ -1611,9 +2134,9 @@ read the adjacent value. This can be useful but can cause unexpected results, su
 to access the wrong location or a location outside of the memory allocated to the program.
 </p>
 </div>
-<div id="outline-container-orgac436c9" class="outline-5">
-<h5 id="orgac436c9">Some Operators</h5>
-<div class="outline-text-5" id="text-orgac436c9">
+<div id="outline-container-org3159c53" class="outline-6">
+<h6 id="org3159c53">Some Operators</h6>
+<div class="outline-text-6" id="text-org3159c53">
 <p>
 Go doesn’t allow types to be mixed in operations and will not automatically convert types,
 except in the case of untyped constants. To show how the compiler responds to mixed data
@@ -1673,9 +2196,9 @@ combinations, such as converting int values to bool values, are not supported.
 </div>
 </div>
 </div>
-<div id="outline-container-org1d57478" class="outline-4">
-<h4 id="org1d57478">Flow Control</h4>
-<div class="outline-text-4" id="text-org1d57478">
+<div id="outline-container-org17a994e" class="outline-5">
+<h5 id="org17a994e">Flow Control</h5>
+<div class="outline-text-5" id="text-org17a994e">
 <p>
 The flow of execution in a Go application is simple to understand, especially when the
 application is as simple as the example. The statements defined in the special main
@@ -1714,9 +2237,9 @@ func main() {
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org984cf1b" class="outline-4">
-<h4 id="org984cf1b">Loops</h4>
-<div class="outline-text-4" id="text-org984cf1b">
+<div id="outline-container-org320df3d" class="outline-5">
+<h5 id="org320df3d">Loops</h5>
+<div class="outline-text-5" id="text-org320df3d">
 <ul class="org-ul">
 <li><p>
 <b>Three-component loop</b>
@@ -1749,9 +2272,9 @@ for i, s := range strings {
 </div>
 </div>
 </div>
-<div id="outline-container-org01cbb9d" class="outline-3">
-<h3 id="org01cbb9d">Collection Types</h3>
-<div class="outline-text-3" id="text-org01cbb9d">
+<div id="outline-container-orgd251153" class="outline-4">
+<h4 id="orgd251153">Collection Types</h4>
+<div class="outline-text-4" id="text-orgd251153">
 <p>
 Go arrays are a fixed length and contain elements of a single type, which are accessed by
 index,
@@ -1822,9 +2345,9 @@ func main() {
 }
 </code></pre>
 </div>
-<div id="outline-container-orgfb82830" class="outline-4">
-<h4 id="orgfb82830">Slices</h4>
-<div class="outline-text-4" id="text-orgfb82830">
+<div id="outline-container-org5dc86c5" class="outline-5">
+<h5 id="org5dc86c5">Slices</h5>
+<div class="outline-text-5" id="text-org5dc86c5">
 <p>
 The best way to think of slices is as a variable-length array because they are useful when
 you don’t know how many values you need to store or when the number changes over time. One
@@ -1927,9 +2450,9 @@ fmt.Println("allNames", allNames)
 }
 </code></pre>
 </div>
-<div id="outline-container-org16696f7" class="outline-5">
-<h5 id="org16696f7">The Copy Function</h5>
-<div class="outline-text-5" id="text-org16696f7">
+<div id="outline-container-org3e6befe" class="outline-6">
+<h6 id="org3e6befe">The Copy Function</h6>
+<div class="outline-text-6" id="text-org3e6befe">
 <pre class="code"><code>package main
 import "fmt"
 func main() {
@@ -1945,9 +2468,9 @@ func main() {
 </div>
 </div>
 </div>
-<div id="outline-container-org899ac21" class="outline-3">
-<h3 id="org899ac21">Functions</h3>
-<div class="outline-text-3" id="text-org899ac21">
+<div id="outline-container-org56e265c" class="outline-4">
+<h4 id="org56e265c">Functions</h4>
+<div class="outline-text-4" id="text-org56e265c">
 <p>
 Functions are groups of statements that can be used and reused as a single action. To get started
 define a simple function:
@@ -1966,9 +2489,9 @@ func main() {
 }
 </code></pre>
 </div>
-<div id="outline-container-org5076d76" class="outline-4">
-<h4 id="org5076d76"><code>defer</code></h4>
-<div class="outline-text-4" id="text-org5076d76">
+<div id="outline-container-org11d807b" class="outline-5">
+<h5 id="org11d807b"><code>defer</code></h5>
+<div class="outline-text-5" id="text-org11d807b">
 <p>
 The defer keyword is used to schedule a function call that will be performed immediately before the current
 function returns, as shown
@@ -1998,9 +2521,9 @@ func main() {
 </div>
 </div>
 </div>
-<div id="outline-container-orgebfc1ca" class="outline-3">
-<h3 id="orgebfc1ca">Struct</h3>
-<div class="outline-text-3" id="text-orgebfc1ca">
+<div id="outline-container-orgc110aec" class="outline-4">
+<h4 id="orgc110aec">Struct</h4>
+<div class="outline-text-4" id="text-orgc110aec">
 <p>
 Custom data types are defined using the Go structs feature:
 </p>
@@ -2034,9 +2557,9 @@ choice during coding. Neither approach is better, and the results are essentiall
 </p>
 </div>
 </div>
-<div id="outline-container-org077386f" class="outline-3">
-<h3 id="org077386f">Interfaces</h3>
-<div class="outline-text-3" id="text-org077386f">
+<div id="outline-container-org6161eb7" class="outline-4">
+<h4 id="org6161eb7">Interfaces</h4>
+<div class="outline-text-4" id="text-org6161eb7">
 <p>
 All the types we&rsquo;ve looked at so far have been concrete types. A concrete type specifies the
 exact representation of its values and exposes the intrinsic operations of that
@@ -2054,17 +2577,17 @@ or more precisely, what behaviors are provided by its methods.
 </p>
 </div>
 </div>
-<div id="outline-container-orgbccbfb8" class="outline-3">
-<h3 id="orgbccbfb8">Closures</h3>
-<div class="outline-text-3" id="text-orgbccbfb8">
+<div id="outline-container-org847773a" class="outline-4">
+<h4 id="org847773a">Closures</h4>
+<div class="outline-text-4" id="text-org847773a">
 <p>
 <a href="https://youtu.be/US3TGA-Dpqo?list=PLoILbKo9rG3skRCj37Kn5Zj803hhiuRK6">https://youtu.be/US3TGA-Dpqo?list=PLoILbKo9rG3skRCj37Kn5Zj803hhiuRK6</a>
 </p>
 </div>
 </div>
-<div id="outline-container-orgc218723" class="outline-3">
-<h3 id="orgc218723">Packages</h3>
-<div class="outline-text-3" id="text-orgc218723">
+<div id="outline-container-orgdf78c54" class="outline-4">
+<h4 id="orgdf78c54">Packages</h4>
+<div class="outline-text-4" id="text-orgdf78c54">
 <p>
 The first step for all the example projects in this book has been to create a module file,
 which was done with the command:
@@ -2178,9 +2701,9 @@ func (taxRate *taxRate) calcTax(product *Product) float64 {
 ...
 </code></pre>
 </div>
-<div id="outline-container-org1c0a4d1" class="outline-4">
-<h4 id="org1c0a4d1">Package Conflicts</h4>
-<div class="outline-text-4" id="text-org1c0a4d1">
+<div id="outline-container-org8d02cca" class="outline-5">
+<h5 id="org8d02cca">Package Conflicts</h5>
+<div class="outline-text-5" id="text-org8d02cca">
 <p>
 When a package is imported, the combination of the module name and package name ensures that
 the package is uniquely identified. But only the package name is used when accessing the
@@ -2243,9 +2766,9 @@ func main() {
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orga0ac4db" class="outline-4">
-<h4 id="orga0ac4db">Package Initialization</h4>
-<div class="outline-text-4" id="text-orga0ac4db">
+<div id="outline-container-orgb23b592" class="outline-5">
+<h5 id="orgb23b592">Package Initialization</h5>
+<div class="outline-text-5" id="text-orgb23b592">
 <p>
 Each code file can contain an initialization function that is executed only when all
 packages have been loaded and all other initialization—such as defining constants and
@@ -2285,9 +2808,9 @@ func (taxRate *taxRate) calcTax(product *Product) (price float64) {
 }
 </code></pre>
 </div>
-<div id="outline-container-org90d169a" class="outline-5">
-<h5 id="org90d169a">Import Package For Intialization</h5>
-<div class="outline-text-5" id="text-org90d169a">
+<div id="outline-container-org8200a58" class="outline-6">
+<h6 id="org8200a58">Import Package For Intialization</h6>
+<div class="outline-text-6" id="text-org8200a58">
 <p>
 Go prevents packages from being imported but not used, which can be a problem if you rely on
 the effect of an initialization function but don’t need to use any of the features the
@@ -2333,9 +2856,9 @@ func main() {
 </div>
 </div>
 </div>
-<div id="outline-container-org02db340" class="outline-3">
-<h3 id="org02db340">Interface Composition</h3>
-<div class="outline-text-3" id="text-org02db340">
+<div id="outline-container-org868d532" class="outline-4">
+<h4 id="org868d532">Interface Composition</h4>
+<div class="outline-text-4" id="text-org868d532">
 <p>
 If you are used to languages such as C# or Java, then you will have created a base class and
 created subclasses to add more specific features. The subclasses inherit functionality from
@@ -2422,9 +2945,9 @@ type Boat struct {
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgf76d639" class="outline-3">
-<h3 id="orgf76d639"><span class="done KILL">KILL</span> Concurrency</h3>
-<div class="outline-text-3" id="text-orgf76d639">
+<div id="outline-container-org0b2eb46" class="outline-4">
+<h4 id="org0b2eb46"><span class="done KILL">KILL</span> Concurrency</h4>
+<div class="outline-text-4" id="text-org0b2eb46">
 <p>
 &ldquo;Execution happens in some non-deterministic order&rdquo;, &ldquo;Undefined out-of-order execution&rdquo;,
 &ldquo;Non-sequential execution&rdquo;, &ldquo;Parts of a program excute out-of-order or in partial order&rdquo;.
@@ -2432,9 +2955,9 @@ All of those are valid definitions of concurrency.
 See <a href="deep_concurrency_in_go.html#03ogh2p02wj0">Concurrency Patterns in Go</a>
 </p>
 </div>
-<div id="outline-container-org3fbed3f" class="outline-4">
-<h4 id="org3fbed3f">Goroutines</h4>
-<div class="outline-text-4" id="text-org3fbed3f">
+<div id="outline-container-org45cb9df" class="outline-5">
+<h5 id="org45cb9df">Goroutines</h5>
+<div class="outline-text-5" id="text-org45cb9df">
 <p>
 Go has excellent support for writing concurrent applications, using features that are
 simpler and more intuitive than any other language I have used. In this chapter, I describe
@@ -2735,9 +3258,9 @@ channel. The direction of the arrow for a channel specifies the direction of flo
 <li><code>&lt;- chan</code>  :only reading from channel (input channel)</li>
 </ul>
 </div>
-<div id="outline-container-org7ee5d10" class="outline-5">
-<h5 id="org7ee5d10">Receiving Without Blocking</h5>
-<div class="outline-text-5" id="text-org7ee5d10">
+<div id="outline-container-orgb07a890" class="outline-6">
+<h6 id="orgb07a890">Receiving Without Blocking</h6>
+<div class="outline-text-6" id="text-orgb07a890">
 <p>
 The simplest use for select statements is to receive from a channel without blocking,
 ensuring that a goroutine won’t have to wait when the channel is empty.
@@ -2782,9 +3305,9 @@ func main() {
 </div>
 </div>
 </div>
-<div id="outline-container-org7421111" class="outline-3">
-<h3 id="org7421111">Error Handling</h3>
-<div class="outline-text-3" id="text-org7421111">
+<div id="outline-container-orgc47871e" class="outline-4">
+<h4 id="orgc47871e">Error Handling</h4>
+<div class="outline-text-4" id="text-orgc47871e">
 <p>
 This file defines a custom type named Product, an alias for a slice of *Product values, and
 a slice populated using the literal syntax. I have also defined a function to format float64
@@ -2848,9 +3371,9 @@ statements that produce a problematic response from the <code>TotalPrice</code> 
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgfb5d597" class="outline-3">
-<h3 id="orgfb5d597"><span class="done KILL">KILL</span> Go Modules</h3>
-<div class="outline-text-3" id="text-orgfb5d597">
+<div id="outline-container-org998ce9c" class="outline-4">
+<h4 id="org998ce9c"><span class="done KILL">KILL</span> Go Modules</h4>
+<div class="outline-text-4" id="text-org998ce9c">
 <p>
 A module is a collection of Go packages stored in a file tree with a go.mod file at its
 root. The go.mod file defines the module’s module path, which is also the import path used
@@ -2867,9 +3390,9 @@ if a go.mod is found. See the go command documentation for details.) Starting in
 module mode will be the default for all development.
 </p>
 </div>
-<div id="outline-container-org6450166" class="outline-4">
-<h4 id="org6450166">Creating a New Module</h4>
-<div class="outline-text-4" id="text-org6450166">
+<div id="outline-container-org87d3a1e" class="outline-5">
+<h5 id="org87d3a1e">Creating a New Module</h5>
+<div class="outline-text-5" id="text-org87d3a1e">
 <p>
 Create a new, empty directory somewhere outside $GOPATH/src, cd into that directory, and
 then create a new source file, hello.go:
@@ -2921,13 +3444,13 @@ adding a dependency on) code written by other developers.
 </div>
 </div>
 </div>
-<div id="outline-container-orgad89856" class="outline-2">
-<h2 id="orgad89856">Go Standard Library</h2>
-<div class="outline-text-2" id="text-orgad89856">
+<div id="outline-container-orga8b48bf" class="outline-3">
+<h3 id="orga8b48bf">Go Standard Library</h3>
+<div class="outline-text-3" id="text-orga8b48bf">
 </div>
-<div id="outline-container-org3fe2714" class="outline-3">
-<h3 id="org3fe2714"><span class="done DONE">DONE</span> Go <code>fstream</code></h3>
-<div class="outline-text-3" id="text-org3fe2714">
+<div id="outline-container-orgee534ff" class="outline-4">
+<h4 id="orgee534ff"><span class="done DONE">DONE</span> Go <code>fstream</code></h4>
+<div class="outline-text-4" id="text-orgee534ff">
 <p>
 To work with files in Go, we use the <code>os</code> and ~ioutil~packages.
 </p>
@@ -2936,13 +3459,13 @@ To work with files in Go, we use the <code>os</code> and ~ioutil~packages.
 The os.Stat function returns the <code>FileInfo</code> structure describing the file.
 </p>
 </div>
-<div id="outline-container-org1359cd3" class="outline-4">
-<h4 id="org1359cd3">Operate on Files</h4>
-<div class="outline-text-4" id="text-org1359cd3">
+<div id="outline-container-org1df1897" class="outline-5">
+<h5 id="org1df1897">Operate on Files</h5>
+<div class="outline-text-5" id="text-org1df1897">
 </div>
-<div id="outline-container-org782cb07" class="outline-5">
-<h5 id="org782cb07">Checking if a File Exists</h5>
-<div class="outline-text-5" id="text-org782cb07">
+<div id="outline-container-orgbc6724c" class="outline-6">
+<h6 id="orgbc6724c">Checking if a File Exists</h6>
+<div class="outline-text-6" id="text-orgbc6724c">
 <p>
 In the following example, we check if the given file exists:
 </p>
@@ -2976,9 +3499,9 @@ the file does not exist.
 </p>
 </div>
 </div>
-<div id="outline-container-orgf01cffb" class="outline-5">
-<h5 id="orgf01cffb">Creating a File</h5>
-<div class="outline-text-5" id="text-orgf01cffb">
+<div id="outline-container-org8b00d94" class="outline-6">
+<h6 id="org8b00d94">Creating a File</h6>
+<div class="outline-text-6" id="text-org8b00d94">
 <pre class="code"><code>package main
 
 import (
@@ -3002,9 +3525,9 @@ func main() {
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgd3b8ebb" class="outline-5">
-<h5 id="orgd3b8ebb">Delete a File</h5>
-<div class="outline-text-5" id="text-orgd3b8ebb">
+<div id="outline-container-orgcfd046b" class="outline-6">
+<h6 id="orgcfd046b">Delete a File</h6>
+<div class="outline-text-6" id="text-orgcfd046b">
 <pre class="code"><code>package main
 
 import (
@@ -3027,9 +3550,9 @@ func main() {
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org55f4d37" class="outline-5">
-<h5 id="org55f4d37">Go File Size</h5>
-<div class="outline-text-5" id="text-org55f4d37">
+<div id="outline-container-org0424e13" class="outline-6">
+<h6 id="org0424e13">Go File Size</h6>
+<div class="outline-text-6" id="text-org0424e13">
 <pre class="code"><code>package main
 
 import (
@@ -3055,9 +3578,9 @@ func main() {
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgc833274" class="outline-5">
-<h5 id="orgc833274">Read File</h5>
-<div class="outline-text-5" id="text-orgc833274">
+<div id="outline-container-org901865e" class="outline-6">
+<h6 id="org901865e">Read File</h6>
+<div class="outline-text-6" id="text-org901865e">
 <pre class="code"><code>package main
 
 import (
@@ -3079,9 +3602,9 @@ func main() {
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgb2b04df" class="outline-5">
-<h5 id="orgb2b04df">List Files</h5>
-<div class="outline-text-5" id="text-orgb2b04df">
+<div id="outline-container-org987d394" class="outline-6">
+<h6 id="org987d394">List Files</h6>
+<div class="outline-text-6" id="text-org987d394">
 <pre class="code"><code>package main
 
 import (
@@ -3125,18 +3648,18 @@ func main() {
 </div>
 </div>
 </div>
-<div id="outline-container-orgeb67ce5" class="outline-3">
-<h3 id="orgeb67ce5"><span class="done DONE">DONE</span> String</h3>
-<div class="outline-text-3" id="text-orgeb67ce5">
+<div id="outline-container-org92576ce" class="outline-4">
+<h4 id="org92576ce"><span class="done DONE">DONE</span> String</h4>
+<div class="outline-text-4" id="text-org92576ce">
 <p>
 The strings package provides a set of functions for processing strings. In the sections that
 follow, I describe the most useful features of the strings package and demonstrate their
 use.
 </p>
 </div>
-<div id="outline-container-org1c90be0" class="outline-4">
-<h4 id="org1c90be0">Compare Strings</h4>
-<div class="outline-text-4" id="text-org1c90be0">
+<div id="outline-container-orgadbcb15" class="outline-5">
+<h5 id="orgadbcb15">Compare Strings</h5>
+<div class="outline-text-5" id="text-orgadbcb15">
 <p>
 The <code>strings</code> packages provides comparison functions;
 </p>
@@ -3189,9 +3712,9 @@ The <code>strings</code> packages provides comparison functions;
 </table>
 </div>
 </div>
-<div id="outline-container-org070da28" class="outline-4">
-<h4 id="org070da28">Builder</h4>
-<div class="outline-text-4" id="text-org070da28">
+<div id="outline-container-org277794b" class="outline-5">
+<h5 id="org277794b">Builder</h5>
+<div class="outline-text-5" id="text-org277794b">
 <pre class="code"><code>type Builder struct {
 	// contains filtered or unexported fields
 }
@@ -3227,9 +3750,9 @@ func main() {
 </p>
 </div>
 </div>
-<div id="outline-container-org3c0faa0" class="outline-4">
-<h4 id="org3c0faa0">Editing a String</h4>
-<div class="outline-text-4" id="text-org3c0faa0">
+<div id="outline-container-orgbe07fc7" class="outline-5">
+<h5 id="orgbe07fc7">Editing a String</h5>
+<div class="outline-text-5" id="text-orgbe07fc7">
 <p>
 Strings are immutable in Go, you have to convert it to runes then modify it then convert it
 back to a string.
@@ -3242,9 +3765,9 @@ back to a string.
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org2226d7e" class="outline-4">
-<h4 id="org2226d7e">String Mapping</h4>
-<div class="outline-text-4" id="text-org2226d7e">
+<div id="outline-container-orgcaff8ac" class="outline-5">
+<h5 id="orgcaff8ac">String Mapping</h5>
+<div class="outline-text-5" id="text-orgcaff8ac">
 <pre class="code"><code>package main
 
 import (
@@ -3273,9 +3796,9 @@ func main() {
 </div>
 </div>
 </div>
-<div id="outline-container-orgf1c2c39" class="outline-3">
-<h3 id="orgf1c2c39"><span class="done DONE">DONE</span> Errors</h3>
-<div class="outline-text-3" id="text-orgf1c2c39">
+<div id="outline-container-org511f667" class="outline-4">
+<h4 id="org511f667"><span class="done DONE">DONE</span> Errors</h4>
+<div class="outline-text-4" id="text-org511f667">
 <p>
 An error is an abnormal, unexpected condition which occurs in the program. In programming,
 errors are often called bugs. The process of finding and resolving bugs is called debugging.
@@ -3332,9 +3855,9 @@ execution of a program. A panic is Go prints the stack trace to the console, ass
 debugging.
 </p>
 </div>
-<div id="outline-container-org36a2e73" class="outline-4">
-<h4 id="org36a2e73">Implementing Errors</h4>
-<div class="outline-text-4" id="text-org36a2e73">
+<div id="outline-container-org086c287" class="outline-5">
+<h5 id="org086c287">Implementing Errors</h5>
+<div class="outline-text-5" id="text-org086c287">
 <p>
 To define a custom error, we implement the error interface.
 </p>
@@ -3387,9 +3910,9 @@ func main() {
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org446ec97" class="outline-4">
-<h4 id="org446ec97">Comparing Errors</h4>
-<div class="outline-text-4" id="text-org446ec97">
+<div id="outline-container-orgf28d250" class="outline-5">
+<h5 id="orgf28d250">Comparing Errors</h5>
+<div class="outline-text-5" id="text-orgf28d250">
 <p>
 Declaring an error, and comparing it with <code>'==' (as in err == myPkg.ErrTokenExpired)</code> is no
 longer the best practice with Go 1.13 (Q3 2019).
@@ -3403,9 +3926,9 @@ The right way is:
 </div>
 </div>
 </div>
-<div id="outline-container-org891410e" class="outline-3">
-<h3 id="org891410e"><span class="done DONE">DONE</span> JSON</h3>
-<div class="outline-text-3" id="text-org891410e">
+<div id="outline-container-org2365aab" class="outline-4">
+<h4 id="org2365aab"><span class="done DONE">DONE</span> JSON</h4>
+<div class="outline-text-4" id="text-org2365aab">
 <p>
 <code>JSON</code> is a lightweight data-interchange format. It is easily read and written by humans and
 parsed and generated by machines. The application/json is the official Internet media type
@@ -3475,27 +3998,27 @@ We decode a JSON string into a Go struct and a slice of structs.
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org0d3f460" class="outline-3">
-<h3 id="org0d3f460"><span class="done DONE">DONE</span> Object-Relational Mapper</h3>
-<div class="outline-text-3" id="text-org0d3f460">
+<div id="outline-container-org0d77397" class="outline-4">
+<h4 id="org0d77397"><span class="done DONE">DONE</span> Object-Relational Mapper</h4>
+<div class="outline-text-4" id="text-org0d77397">
 <p>
 <b>I decided that ORMs suck, I&rsquo;m going raw SQL, or using SQLBoiler.</b>
 </p>
 </div>
 </div>
-<div id="outline-container-orgfe6df58" class="outline-3">
-<h3 id="orgfe6df58"><span class="done KILL">KILL</span> Compiler Options</h3>
+<div id="outline-container-org272793c" class="outline-4">
+<h4 id="org272793c"><span class="done KILL">KILL</span> Compiler Options</h4>
 </div>
-<div id="outline-container-org2f21e0f" class="outline-3">
-<h3 id="org2f21e0f"><span class="done KILL">KILL</span> Logging</h3>
+<div id="outline-container-orgf1fef88" class="outline-4">
+<h4 id="orgf1fef88"><span class="done KILL">KILL</span> Logging</h4>
 </div>
-<div id="outline-container-orga4e2a2f" class="outline-3">
-<h3 id="orga4e2a2f"><span class="done KILL">KILL</span> Testing</h3>
+<div id="outline-container-orgcc4f6b0" class="outline-4">
+<h4 id="orgcc4f6b0"><span class="done KILL">KILL</span> Testing</h4>
 </div>
 </div>
-<div id="outline-container-org359d128" class="outline-2">
-<h2 id="org359d128">Go Project Structure</h2>
-<div class="outline-text-2" id="text-org359d128">
+<div id="outline-container-org617f6df" class="outline-3">
+<h3 id="org617f6df">Go Project Structure</h3>
+<div class="outline-text-3" id="text-org617f6df">
 <p>
 If you are trying to learn Go or if you are building a PoC or a simple project for yourself
 this project layout is an overkill. Start with something really simple instead (a single
@@ -3511,9 +4034,9 @@ None of these patterns are used in every single project. Even the vendor pattern
 universal.
 </p>
 </div>
-<div id="outline-container-orgfb509f4" class="outline-3">
-<h3 id="orgfb509f4"><code>/cmd</code></h3>
-<div class="outline-text-3" id="text-orgfb509f4">
+<div id="outline-container-org19ff980" class="outline-4">
+<h4 id="org19ff980"><code>/cmd</code></h4>
+<div class="outline-text-4" id="text-org19ff980">
 <p>
 Main applications for this project.
 </p>
@@ -3531,9 +4054,9 @@ You&rsquo;ll be surprised what others will do, so be explicit about your intenti
 </p>
 </div>
 </div>
-<div id="outline-container-org854201e" class="outline-3">
-<h3 id="org854201e"><code>/internal</code></h3>
-<div class="outline-text-3" id="text-org854201e">
+<div id="outline-container-org167448b" class="outline-4">
+<h4 id="org167448b"><code>/internal</code></h4>
+<div class="outline-text-4" id="text-org167448b">
 <p>
 Private application and library code. This is the code you don&rsquo;t want others importing in
 their applications or libraries. Note that this layout pattern is enforced by the Go
@@ -3543,9 +4066,9 @@ at any level of your project tree.
 </p>
 </div>
 </div>
-<div id="outline-container-orgfa3fe79" class="outline-3">
-<h3 id="orgfa3fe79"><code>/pkg</code></h3>
-<div class="outline-text-3" id="text-orgfa3fe79">
+<div id="outline-container-org1afe689" class="outline-4">
+<h4 id="org1afe689"><code>/pkg</code></h4>
+<div class="outline-text-4" id="text-org1afe689">
 <p>
 Library code that&rsquo;s ok to use by external applications (e.g., /pkg/mypubliclib). Other
 projects will import these libraries expecting them to work, so think twice before you put
@@ -3557,327 +4080,8 @@ and internal directories and when it might make sense to use them.
 </p>
 </div>
 </div>
-<div id="outline-container-org74f7449" class="outline-3">
-<h3 id="org74f7449"><span class="done KILL">KILL</span> <code>/vendor</code></h3>
-</div>
-</div>
-<div id="outline-container-org6c42c1e" class="outline-2">
-<h2 id="org6c42c1e">Misc</h2>
-<div class="outline-text-2" id="text-org6c42c1e">
-</div>
-<div id="outline-container-orge8ec95e" class="outline-3">
-<h3 id="orge8ec95e"><code>omitempty</code></h3>
-<div class="outline-text-3" id="text-orge8ec95e">
-<p>
-If you’ve worked with Go for sometime, you have probably encountered the <code>omitempty</code> tag,
-when trying to encode a struct to JSON.
-</p>
-
-<p>
-When using Go to build web applications, or HTTP servers, there will eventually come a time
-when we need to encode some data as JSON. The problem here is that the JSON representation
-does not exactly match the way Go handles data.
-</p>
-
-<p>
-One key difference, is that in a struct, there are always clearly defined fields, while in
-JSON there are not. For example, consider describing a dog as a struct in Go:
-</p>
-
-<pre class="code"><code>type Dog struct {
-	Breed string
-	WeightKg int
-}
-</code></pre>
-
-
-<p>
-Now, if we were to initialize, encode to JSON, and print a sample dog :
-</p>
-<pre class="code"><code>func main() {
-	d := Dog{
-		Breed:    "dalmation",
-		WeightKg: 45,
-	}
-	b, _ := json.Marshal(d)
-	fmt.Println(string(b))
-}
-</code></pre>
-
-
-<p>
-We would get the output: <code>{"Breed":"dalmation","WeightKg":45}</code>
-</p>
-
-<p>
-Now, a dog for whom we do not have the weight, would be slightly awkward to deal with:
-</p>
-
-
-<pre class="code"><code>func main() {
-	d := Dog{
-		Breed:    "pug",
-	}
-	b, _ := json.Marshal(d)
-	fmt.Println(string(b))
-}
-</code></pre>
-
-
-
-<p>
-This prints <code>{"Breed":"pug","WeightKg":0}</code>, even though the weight of of pug was unknown. A
-better option would be to print <code>"WeightKg":null</code>, or to not have the WeightKg key at all.
-</p>
-
-
-<p>
-This is where the omitempty tag helps us. Let’s add the <code>omitempty</code> tag to our Dog struct:
-</p>
-
-<pre class="code"><code>type Dog struct {
-	Breed    string
-	// The first comma below is to separate the name tag from the omitempty tag
-	WeightKg int `json:",omitempty"`
-}
-</code></pre>
-
-
-<p>
-Now, if <code>WeightKg</code> is set to it’s default value (which is 0 for the int type), the key
-itself will be omitted from the JSON object.
-</p>
-
-<p>
-The same will happen if a string is empty &ldquo;&rdquo;, or if a pointer is nil, or if a slice has zero
-elements in it.
-</p>
-
-<p>
-In cases where an empty value does not exist, omitempty is of no use. An embedded struct,
-for example, does not have an empty value:
-</p>
-
-<pre class="code"><code>
-import (
-	"encoding/json"
-	"fmt"
-)
-
-type dimension struct {
-	Height int
-	Width int
-	}
-
-type Dog struct {
-	Breed    string
-	WeightKg int
-	Size dimension `json:",omitempty"`
-}
-
-func main() {
-	d := Dog{
-		Breed: "pug",
-	}
-	b, _ := json.Marshal(d)
-	fmt.Println(string(b))
-}
-
-</code></pre>
-
-
-<p>
-In this case, even though we never set the value of the Size attribute, and set its
-<code>omitempty</code> tag, it still appears in the output. This is because structs do not have any empty
-value in Go. To solve this, use a struct pointer instead :
-</p>
-
-
-<pre class="code"><code>type Dog struct {
-	Breed    string
-	WeightKg int
-	// Now `Size` is a pointer to a `dimension` instance
-	Size *dimension `json:",omitempty"`
-}
-</code></pre>
-</div>
-</div>
-<div id="outline-container-orgf241bce" class="outline-3">
-<h3 id="orgf241bce">Custom Sort</h3>
-<div class="outline-text-3" id="text-orgf241bce">
-<p>
-To sort a slice in reverse order, you can use the <code>Reverse()</code> function along with <code>StringSlice</code>,
-<code>IntSlice</code>, and <code>Float64Slice</code> types. These types implement the Interface for comparision and
-swap defined in the sort package.
-</p>
-
-<p>
-The <code>Reverse()</code> function returns the reverse order of data. Let’s look at an example of
-sorting a slice of strings, integers, and floats in reverse order:
-</p>
-
-<pre class="code"><code>package main
-
-import (
-	"fmt"
-	"sort"
-)
-
-func main() {
-	// Sorting a slice of Strings
-	strs := []string{"quick", "brown", "fox", "jumps"}
-	sort.Sort(sort.Reverse(sort.StringSlice(strs)))
-	fmt.Println("Sorted strings in reverse order: ", strs)
-
-	// Sorting a slice of Integers
-	ints := []int{56, 19, 78, 67, 14, 25}
-	sort.Sort(sort.Reverse(sort.IntSlice(ints)))
-	fmt.Println("Sorted integers in reverse order: ", ints)
-
-	// Sorting a slice of Floats
-	floats := []float64{176.8, 19.5, 20.8, 57.4}
-	sort.Sort(sort.Reverse(sort.Float64Slice(floats)))
-	fmt.Println("Sorted floats in reverse order: ", floats)
-}
-
-</code></pre>
-
-
-<p>
-Many times, you would want to sort a collection by something other than its natural order.
-For example, you would want to sort a slice of strings by their length, or you would want to
-sort a slice of users by their age.
-</p>
-
-<p>
-For these usecases, you can use the <code>Slice()</code> and <code>SliceStable()</code> functions provided by the sort
-package. These are higher order functions that accept a less function as an argument:
-</p>
-
-
-<pre class="code"><code>package main
-
-import (
-	"fmt"
-	"sort"
-)
-
-func main() {
-	// Sorting a slice of strings by length
-	strs := []string{"United States", "India", "France", "United Kingdom", "Spain"}
-	sort.Slice(strs, func(i, j int) bool {
-		return len(strs[i]) &lt; len(strs[j])
-	})
-	fmt.Println("Sorted strings by length: ", strs)
-
-	// Stable sort
-	sort.SliceStable(strs, func(i, j int) bool {
-		return len(strs[i]) &lt; len(strs[j])
-	})
-	fmt.Println("[Stable] Sorted strings by length: ", strs)
-
-	// Sorting a slice of strings in the reverse order of length
-	sort.SliceStable(strs, func(i, j int) bool {
-		return len(strs[j]) &lt; len(strs[i])
-	})
-	fmt.Println("[Stable] Sorted strings by reverse order of length: ", strs)
-}
-</code></pre>
-</div>
-</div>
-<div id="outline-container-lhoctcz0twj0" class="outline-3">
-<h3 id="lhoctcz0twj0">Integer Values</h3>
-<div class="outline-text-3" id="text-orga711060">
-<pre class="example" id="orgd5e7690">
-uint8  : 0 to 255
-uint16 : 0 to 65535
-uint32 : 0 to 4294967295
-uint64 : 0 to 18446744073709551615
-int8   : -128 to 127
-int16  : -32768 to 32767
-int32  : -2147483648 to 2147483647
-int64  : -9223372036854775808 to 9223372036854775807
-</pre>
-</div>
-</div>
-<div id="outline-container-vdali1i0z3k0" class="outline-3">
-<h3 id="vdali1i0z3k0">Check if file exists</h3>
-<div class="outline-text-3" id="text-org40ec160">
-<pre class="code"><code>if _, err := os.Stat("/path/to/whatever"); errors.Is(err, os.ErrNotExist) {
-  // path/to/whatever does not exist
-}
-</code></pre>
-</div>
-</div>
-<div id="outline-container-pxc3h8o0z3k0" class="outline-3">
-<h3 id="pxc3h8o0z3k0">Example for flag</h3>
-<div class="outline-text-3" id="text-orgbc01f86">
-<pre class="code"><code>package main
-
-import (
-    "flag"
-    "fmt"
-)
-
-func main() {
-
-    wordPtr := flag.String("word", "foo", "a string")
-
-    numbPtr := flag.Int("numb", 42, "an int")
-    forkPtr := flag.Bool("fork", false, "a bool")
-
-    var svar string
-    flag.StringVar(&amp;svar, "svar", "bar", "a string var")
-
-    flag.Parse()
-
-    fmt.Println("word:", *wordPtr)
-    fmt.Println("numb:", *numbPtr)
-    fmt.Println("fork:", *forkPtr)
-    fmt.Println("svar:", svar)
-    fmt.Println("tail:", flag.Args())
-}
-</code></pre>
-</div>
-</div>
-<div id="outline-container-gnb2dda146k0" class="outline-3">
-<h3 id="gnb2dda146k0">Properly print errors</h3>
-<div class="outline-text-3" id="text-org7d02ded">
-<pre class="example" id="org011fbfe">
-TL;DR; Neither. Use %w in 99.99% of cases. In the other 0.001% of cases, %v and
-%s probably "should" behave the same, except when the error value is nil, but
-there are no guarantees. The friendlier output of %v for nil errors may be
-reason to prefer %v (see below).
-</pre>
-
-<p>
-From <a href="https://stackoverflow.com/a/61287626">https://stackoverflow.com/a/61287626</a>
-</p>
-</div>
-</div>
-<div id="outline-container-yt" class="outline-3">
-<h3 id="yt"><a href="../yt.html#6ed1b62f-0992-46dc-aefd-40c471ae0b66">YouTube Channels</a></h3>
-<div class="outline-text-3" id="text-yt">
-<ul class="org-ul">
-<li><a href="https://www.youtube.com/@mattkdvb5154">Matt KØDVB</a></li>
-<li><a href="https://www.youtube.com/@GolangCafe">Golang Cafe</a></li>
-<li><a href="https://www.youtube.com/@JustForFunc">justforfunc: Programming in Go</a></li>
-<li><a href="https://www.youtube.com/@NicJackson">Nic Jackson</a></li>
-<li><a href="https://www.youtube.com/@anthonygg_">Anthony GG </a></li>
-<li><a href="https://www.youtube.com/@MarioCarrion">Mario Carrion</a></li>
-<li><a href="https://www.youtube.com/@rscgolang">Russ Cox</a></li>
-<li><a href="https://www.youtube.com/@GopherAcademy">Gopher Academy</a></li>
-<li><a href="https://www.youtube.com/@GopherConUK">GopherCon UK</a></li>
-<li><a href="https://www.youtube.com/@gojax">Go Jax</a></li>
-<li><a href="https://www.youtube.com/@DonaldFeury">Donald Feury</a></li>
-<li><a href="https://www.youtube.com/@NerdCademyDev">NerdCademy</a></li>
-<li><a href="https://www.youtube.com/@boldlygo">Boldly Go </a></li>
-<li><a href="https://www.youtube.com/@joncalhoun">Jon Calhoun</a></li>
-<li><a href="https://www.youtube.com/@Tutorialedge">TutorialEdge</a></li>
-<li><a href="https://www.youtube.com/@TECHSCHOOLGURU">TECH SCHOOL</a></li>
-<li><a href="https://www.youtube.com/@GolangDojo">Golang Dojo</a> (Worst)</li>
-<li><a href="https://www.youtube.com/@mathisve">Mathis Van Eetvelde</a></li>
-</ul>
+<div id="outline-container-orgba0da22" class="outline-4">
+<h4 id="orgba0da22"><span class="done KILL">KILL</span> <code>/vendor</code></h4>
 </div>
 </div>
 </div>
@@ -3888,9 +4092,108 @@ From <a href="https://stackoverflow.com/a/61287626">https://stackoverflow.com/a/
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: 2022-01-09 Sun 18:51. Last build date: 2025-07-25 Fri 00:00.</p>
+  <div class="book-covers" style="margin: 1em 0; padding: 0 10px;">
+    <p style="margin: 0.5em 0; font-style: italic; color: #555;">Some works I recommend engaging with:</p>
+    <div id="books-container" style="display: flex; flex-wrap: wrap; gap: 8px; max-width: 100%;"></div>
+  </div>
 
-</div>
+
+  <script>
+    const path = window.location.pathname;
+    if (path !== '/' && path !== '/index.html') {
+      const allBooks = [
+        {title: 'The Computational Beauty of Nature', author: 'Gary William Flake'},
+        {title: 'Group Psychology', author: 'Sigmund Freud'},
+        {title: 'Logic', author: 'Nicholas Smith'},
+        {title: 'Structure and Interpretation of Computer Programs', author: 'Harold Abelson'},
+        {title: 'The C Programming Language', author: 'Brian Kernighan'},
+        {title: 'Out of Bounds: Academic Freedom and the Question of Palestine', author: 'M. Abraham'},
+        {title: 'Understanding Power: The Indispensable Chomsky', author: 'Noam Chomsky'},
+        {title: 'Who Rules the World?', author: 'Noam Chomsky'},
+        {title: 'Manufacturing Consent: The Political Economy of the Mass Media', author: 'Noam Chomsky'},
+        {title: 'A People History of The World', author: 'Chris Harman'},
+        {title: 'The Arabs: A History', author: 'Eugene Rogan'},
+        {title: 'State of Terror', author: 'Y. Suarez'},
+        {title: 'A People History of The United States', author: 'Howard Zinn'},
+        {title: 'Killing Hope', author: 'William Blum'},
+        {title: 'Deliverance From Error', author: 'Al-Ghazali'},
+        {title: 'The Dawn of The Day', author: 'Friedrich Nietzsche'},
+        {title: 'Islam and The Destiny of Man', author: 'Gai Eaton'},
+        {title: 'The Polymath', author: 'Waqas Ahmed'},
+        {title: 'Twilight of The Idols', author: 'Friedrich Nietzsche'},
+        {title: 'Manfred', author: 'Lord Byron'},
+        {title: 'Marx in Soho', author: 'Howard Zinn'}
+      ];
+
+      const shuffled = allBooks.sort(() => 0.5 - Math.random());
+      const container = document.getElementById('books-container');
+      let displayedBooks = 0;
+      let bookIndex = 0;
+
+      async function tryNextBook() {
+        if (displayedBooks >= 2 || bookIndex >= shuffled.length) return;
+
+        const book = shuffled[bookIndex];
+        bookIndex++;
+
+        try {
+          const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=intitle:${encodeURIComponent(book.title)}+inauthor:${encodeURIComponent(book.author)}&maxResults=1`);
+          const data = await res.json();
+
+          if (data.items && data.items[0]) {
+            const volumeInfo = data.items[0].volumeInfo;
+            if (volumeInfo.imageLinks) {
+              const link = document.createElement('a');
+              link.style.display = 'none';
+              link.style.lineHeight = '0';
+              link.target = '_blank';
+              if (volumeInfo.infoLink) {
+                link.href = volumeInfo.infoLink;
+              }
+
+              const img = document.createElement('img');
+              img.style.cssText = 'height: 140px; border: 1px dotted #666; background: transparent;';
+              img.src = volumeInfo.imageLinks.thumbnail;
+              img.onload = () => {
+                link.style.display = 'inline-block';
+              };
+
+              link.appendChild(img);
+              container.appendChild(link);
+              displayedBooks++;
+              
+              if (displayedBooks < 2) {
+                tryNextBook();
+              }
+            } else {
+              console.log(`Cannot find book cover for: ${book.title} by ${book.author}`);
+              tryNextBook();
+            }
+          } else {
+            console.log(`Cannot find book: ${book.title} by ${book.author}`);
+            tryNextBook();
+          }
+        } catch (err) {
+          console.log(`Error fetching book: ${book.title} by ${book.author}`, err);
+          tryNextBook();
+        }
+      }
+
+      tryNextBook();
+    } else {
+      document.querySelector('.book-covers').style.display = 'none';
+    }
+  </script>
+
+  </div>
+
+
+
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.34). Written by: Salih Muhammed, by the date of: 2022-01-09 Sun 18:51. Last build date: 2025-11-08 Sat 13:18.</p>
+
+
+
+
 </div>
 </div>
 </body>

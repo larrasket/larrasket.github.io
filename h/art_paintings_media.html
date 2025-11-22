@@ -6,47 +6,69 @@
 <title>Art</title>
 <meta name="author" content="Salih Muhammed" />
 <meta name="generator" content="Org Mode" />
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-  <meta name="theme-color" content="#ffffff">
-  <meta charset="utf-8">
-  <meta name="theme-color" content="#ffffff">
-  <meta name="viewport" content= "width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/style/toc.css">
-  <link rel="stylesheet" href="/style/tufte.css">
-  <link rel="stylesheet" href="/style/main.css">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta charset="utf-8" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/style/toc.css?v=20250120" />
+    <link rel="stylesheet" href="/style/tufte.css?v=20250120" />
+    <link rel="stylesheet" href="/style/main.css?v=20250201" />
 
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const p = document.querySelector("#content > p:first-of-type");
+        if (p && /^[\u0600-\u06FF]/.test(p.textContent.trim())) {
+          p.classList.add("arabic");
+        }
+      });
+    </script>
 
+    <script async data-id="101390423" src="//static.getclicky.com/js"></script>
+    <noscript>
+      <p>
+        <img
+          alt="Clicky"
+          width="1"
+          height="1"
+          src="//in.getclicky.com/101390423ns.gif"
+        /></p
+    ></noscript>
 
+    <!-- Import LazySizes - State-of-the-art lazy loading library -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js"
+      async
+    ></script>
 
-  <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
-  <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+    <!-- Optional: Import plugins for better performance -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js"
+      async
+    ></script>
 
-<!-- Import LazySizes - State-of-the-art lazy loading library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+    <script>
+      // Only run on pages with 'art_paintings_media' in the path
+      if (window.location.pathname.includes("art_paintings_media")) {
+        document.addEventListener("DOMContentLoaded", function () {
+          // Configure LazySizes for optimal performance
+          window.lazySizesConfig = window.lazySizesConfig || {};
+          window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
+          window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
+          window.lazySizesConfig.expFactor = 1.5; // Expand loading area
+          window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
 
-<!-- Optional: Import plugins for better performance -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js" async></script>
-
-<script>
-// Only run on pages with 'art_paintings_media' in the path
-if (window.location.pathname.includes('art_paintings_media')) {
-  document.addEventListener('DOMContentLoaded', function() {
-    
-    // Configure LazySizes for optimal performance
-    window.lazySizesConfig = window.lazySizesConfig || {};
-    window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
-    window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
-    window.lazySizesConfig.expFactor = 1.5; // Expand loading area
-    window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
-
-    // Add CSS for smooth transitions and collapsible content
-    const style = document.createElement('style');
-    style.textContent = `
+          // Add CSS for smooth transitions and collapsible content
+          const style = document.createElement("style");
+          style.textContent = `
       .lazyload,
       .lazyloading {
         opacity: 0;
@@ -74,208 +96,215 @@ if (window.location.pathname.includes('art_paintings_media')) {
         filter: none;
       }
     `;
-    document.head.appendChild(style);
+          document.head.appendChild(style);
 
-    // Find all h3 elements
-    const h3Elements = document.querySelectorAll('h3');
+          // Find all h3 elements
+          const h3Elements = document.querySelectorAll("h3");
 
-    h3Elements.forEach(function(h3) {
-      // Make h3 clickable and add icon
-      h3.style.position = 'relative';
-      h3.style.cursor = 'pointer';
-      h3.style.paddingLeft = '20px';
-      h3.style.userSelect = 'none';
+          h3Elements.forEach(function (h3) {
+            // Make h3 clickable and add icon
+            h3.style.position = "relative";
+            h3.style.cursor = "pointer";
+            h3.style.paddingLeft = "20px";
+            h3.style.userSelect = "none";
 
-      // Add the arrow icon
-      const icon = document.createElement('span');
-      icon.innerHTML = '▶';
-      icon.style.position = 'absolute';
-      icon.style.left = '0px';
-      icon.style.top = '50%';
-      icon.style.transform = 'translateY(-50%)';
-      icon.style.transition = 'transform 0.2s';
-      icon.style.fontSize = '0.8em';
-      icon.style.color = 'rgb(102, 102, 102)';
-      icon.style.fontFamily = 'monospace';
+            // Add the arrow icon
+            const icon = document.createElement("span");
+            icon.innerHTML = "▶";
+            icon.style.position = "absolute";
+            icon.style.left = "0px";
+            icon.style.top = "50%";
+            icon.style.transform = "translateY(-50%)";
+            icon.style.transition = "transform 0.2s";
+            icon.style.fontSize = "0.8em";
+            icon.style.color = "rgb(102, 102, 102)";
+            icon.style.fontFamily = "monospace";
 
-      h3.insertBefore(icon, h3.firstChild);
+            h3.insertBefore(icon, h3.firstChild);
 
-      // Find all content after this h3 until the next h3 or end of parent
-      const contentElements = [];
-      let nextElement = h3.nextElementSibling;
+            // Find all content after this h3 until the next h3 or end of parent
+            const contentElements = [];
+            let nextElement = h3.nextElementSibling;
 
-      while (nextElement && nextElement.tagName !== 'H3') {
-        contentElements.push(nextElement);
-        nextElement = nextElement.nextElementSibling;
-      }
-
-      // Create a wrapper for smooth collapsing
-      const wrapper = document.createElement('div');
-      wrapper.className = 'collapsible-content collapsed';
-      wrapper.style.maxHeight = '0';
-
-      // Move content elements into wrapper
-      contentElements.forEach(function(element) {
-        wrapper.appendChild(element);
-      });
-
-      // Insert wrapper after h3
-      h3.parentNode.insertBefore(wrapper, h3.nextSibling);
-
-      // Prepare images for LazySizes lazy loading and make them clickable
-      const prepareImagesForLazyLoading = (container) => {
-        const images = container.querySelectorAll('img');
-        images.forEach(function(img) {
-          // Only process if not already processed
-          if (!img.classList.contains('lazyload') && !img.dataset.processed) {
-            // Store original src in data-src for LazySizes
-            if (img.src && img.src !== '' && !img.src.startsWith('data:')) {
-              img.dataset.src = img.src;
-              // Use a tiny placeholder or low-quality placeholder
-              img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+            while (nextElement && nextElement.tagName !== "H3") {
+              contentElements.push(nextElement);
+              nextElement = nextElement.nextElementSibling;
             }
 
-            // Handle srcset for responsive images
-            if (img.srcset && img.srcset !== '') {
-              img.dataset.srcset = img.srcset;
-              img.srcset = '';
-            }
+            // Create a wrapper for smooth collapsing
+            const wrapper = document.createElement("div");
+            wrapper.className = "collapsible-content collapsed";
+            wrapper.style.maxHeight = "0";
 
-            // Handle sizes attribute
-            if (img.sizes) {
-              img.dataset.sizes = img.sizes;
-            }
+            // Move content elements into wrapper
+            contentElements.forEach(function (element) {
+              wrapper.appendChild(element);
+            });
 
-            // Add LazySizes classes
-            img.classList.add('lazyload');
+            // Insert wrapper after h3
+            h3.parentNode.insertBefore(wrapper, h3.nextSibling);
 
-            // Make image clickable - add cursor pointer
-            img.style.cursor = 'pointer';
+            // Prepare images for LazySizes lazy loading and make them clickable
+            const prepareImagesForLazyLoading = (container) => {
+              const images = container.querySelectorAll("img");
+              images.forEach(function (img) {
+                // Only process if not already processed
+                if (
+                  !img.classList.contains("lazyload") &&
+                  !img.dataset.processed
+                ) {
+                  // Store original src in data-src for LazySizes
+                  if (
+                    img.src &&
+                    img.src !== "" &&
+                    !img.src.startsWith("data:")
+                  ) {
+                    img.dataset.src = img.src;
+                    // Use a tiny placeholder or low-quality placeholder
+                    img.src =
+                      'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+                  }
 
-            // Add click handler to open image in new tab
-            img.addEventListener('click', function(e) {
+                  // Handle srcset for responsive images
+                  if (img.srcset && img.srcset !== "") {
+                    img.dataset.srcset = img.srcset;
+                    img.srcset = "";
+                  }
+
+                  // Handle sizes attribute
+                  if (img.sizes) {
+                    img.dataset.sizes = img.sizes;
+                  }
+
+                  // Add LazySizes classes
+                  img.classList.add("lazyload");
+
+                  // Make image clickable - add cursor pointer
+                  img.style.cursor = "pointer";
+
+                  // Add click handler to open image in new tab
+                  img.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    e.stopPropagation(); // Prevent triggering h3 collapse
+
+                    // Get the actual image URL (either from src or data-src)
+                    let imageUrl = this.src;
+                    if (this.dataset.src && !this.src.startsWith("data:")) {
+                      imageUrl = this.dataset.src;
+                    } else if (
+                      this.src.startsWith("data:") &&
+                      this.dataset.src
+                    ) {
+                      imageUrl = this.dataset.src;
+                    }
+
+                    // Open image in new tab
+                    if (imageUrl && !imageUrl.startsWith("data:")) {
+                      window.open(imageUrl, "_blank");
+                    }
+                  });
+
+                  // Mark as processed
+                  img.dataset.processed = "true";
+
+                  // Maintain aspect ratio to prevent layout shift
+                  if (!img.style.aspectRatio && img.width && img.height) {
+                    img.style.aspectRatio = img.width + "/" + img.height;
+                  }
+                }
+              });
+            };
+
+            // Prepare all images in this section for lazy loading
+            prepareImagesForLazyLoading(wrapper);
+
+            // Track collapsed state
+            let isCollapsed = true;
+            let hasBeenExpanded = false;
+
+            // Add click handler
+            h3.addEventListener("click", function (e) {
               e.preventDefault();
-              e.stopPropagation(); // Prevent triggering h3 collapse
 
-              // Get the actual image URL (either from src or data-src)
-              let imageUrl = this.src;
-              if (this.dataset.src && !this.src.startsWith('data:')) {
-                imageUrl = this.dataset.src;
-              } else if (this.src.startsWith('data:') && this.dataset.src) {
-                imageUrl = this.dataset.src;
-              }
+              if (isCollapsed) {
+                // Expand: show content and activate lazy loading
+                icon.style.transform = "translateY(-50%) rotate(90deg)";
+                wrapper.classList.remove("collapsed");
+                wrapper.classList.add("expanded");
+                wrapper.style.maxHeight = wrapper.scrollHeight + "px";
 
-              // Open image in new tab
-              if (imageUrl && !imageUrl.startsWith('data:')) {
-                window.open(imageUrl, '_blank');
+                // Only activate LazySizes for this section when first expanded
+                if (!hasBeenExpanded) {
+                  // Trigger LazySizes to check for images in this newly visible section
+                  if (window.lazySizes) {
+                    // Force LazySizes to check all images in this wrapper
+                    const lazyImages = wrapper.querySelectorAll(".lazyload");
+                    lazyImages.forEach((img) => {
+                      // Add to LazySizes queue
+                      window.lazySizes.loader.unveil(img);
+                    });
+                  }
+                  hasBeenExpanded = true;
+                }
+
+                isCollapsed = false;
+
+                // Recalculate height after images potentially load
+                setTimeout(() => {
+                  if (!isCollapsed) {
+                    wrapper.style.maxHeight = wrapper.scrollHeight + "px";
+                  }
+                }, 100);
+              } else {
+                // Collapse: hide content
+                icon.style.transform = "translateY(-50%) rotate(0deg)";
+                wrapper.classList.remove("expanded");
+                wrapper.classList.add("collapsed");
+                wrapper.style.maxHeight = "0";
+
+                isCollapsed = true;
               }
             });
 
-            // Mark as processed
-            img.dataset.processed = 'true';
-
-            // Maintain aspect ratio to prevent layout shift
-            if (!img.style.aspectRatio && img.width && img.height) {
-              img.style.aspectRatio = img.width + '/' + img.height;
-            }
-          }
+            // Listen for LazySizes events to adjust height dynamically
+            wrapper.addEventListener("lazyloaded", function (e) {
+              if (!isCollapsed) {
+                // Adjust wrapper height when images load
+                setTimeout(() => {
+                  wrapper.style.maxHeight = wrapper.scrollHeight + "px";
+                }, 50);
+              }
+            });
+          });
         });
-      };
+      }
+    </script>
 
-      // Prepare all images in this section for lazy loading
-      prepareImagesForLazyLoading(wrapper);
+    <script>
+      (function () {
+        "use strict";
 
-      // Track collapsed state
-      let isCollapsed = true;
-      let hasBeenExpanded = false;
+        // Check if current page should have the formatting applied
+        function shouldApplyFormatting() {
+          const path = window.location.pathname;
 
-      // Add click handler
-      h3.addEventListener('click', function(e) {
-        e.preventDefault();
-
-        if (isCollapsed) {
-          // Expand: show content and activate lazy loading
-          icon.style.transform = 'translateY(-50%) rotate(90deg)';
-          wrapper.classList.remove('collapsed');
-          wrapper.classList.add('expanded');
-          wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
-
-          // Only activate LazySizes for this section when first expanded
-          if (!hasBeenExpanded) {
-            // Trigger LazySizes to check for images in this newly visible section
-            if (window.lazySizes) {
-              // Force LazySizes to check all images in this wrapper
-              const lazyImages = wrapper.querySelectorAll('.lazyload');
-              lazyImages.forEach(img => {
-                // Add to LazySizes queue
-                window.lazySizes.loader.unveil(img);
-              });
-            }
-            hasBeenExpanded = true;
-          }
-
-          isCollapsed = false;
-
-          // Recalculate height after images potentially load
-          setTimeout(() => {
-            if (!isCollapsed) {
-              wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
-            }
-          }, 100);
-
-        } else {
-          // Collapse: hide content
-          icon.style.transform = 'translateY(-50%) rotate(0deg)';
-          wrapper.classList.remove('expanded');
-          wrapper.classList.add('collapsed');
-          wrapper.style.maxHeight = '0';
-
-          isCollapsed = true;
+          // Check if path matches our target patterns
+          return (
+            path === "/stack" ||
+            path === "/stack.html" ||
+            path.startsWith("/sh/")
+          );
         }
-      });
 
-      // Listen for LazySizes events to adjust height dynamically
-      wrapper.addEventListener('lazyloaded', function(e) {
-        if (!isCollapsed) {
-          // Adjust wrapper height when images load
-          setTimeout(() => {
-            wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
-          }, 50);
+        // Only proceed if we're on a target page
+        if (!shouldApplyFormatting()) {
+          return;
         }
-      });
-    });
-  });
-}
-</script>
 
-<script>
-
-
-
-  
-// Stack Page Formatter - Apply inline layout to specific pages
-(function() {
-  'use strict';
-  
-  // Check if current page should have the formatting applied
-  function shouldApplyFormatting() {
-    const path = window.location.pathname;
-    
-    // Check if path matches our target patterns
-    return path === '/stack' || 
-           path === '/stack.html' || 
-           path.startsWith('/sh/');
-  }
-  
-  // Only proceed if we're on a target page
-  if (!shouldApplyFormatting()) {
-    return;
-  }
-  
-  // Add CSS styles
-  function addStyles() {
-    const style = document.createElement('style');
-    style.textContent = `
+        // Add CSS styles
+        function addStyles() {
+          const style = document.createElement("style");
+          style.textContent = `
       /* Basic styling for entries */
       .outline-3 {
         margin-bottom: 1.5em;
@@ -317,6 +346,7 @@ if (window.location.pathname.includes('art_paintings_media')) {
         padding: 0 !important;
       }
 
+
       /* Hide block elements that will be moved */
       .outline-3 .moved-block {
         display: block;
@@ -328,148 +358,166 @@ if (window.location.pathname.includes('art_paintings_media')) {
         scroll-margin-top: 20px;
       }
     `;
-    document.head.appendChild(style);
-  }
-  
-  // Extract ID from container div
-  function extractIdFromContainer(entry) {
-    const containerId = entry.id;
-    if (containerId && containerId.startsWith('outline-container-')) {
-      return containerId.replace('outline-container-', '');
-    }
-    return null;
-  }
-  
-  // Apply the formatting transformation
-  function applyFormatting() {
-    // Process each entry
-    const entries = document.querySelectorAll('.outline-3');
-    
-    entries.forEach((entry, index) => {
-      // Extract the anchor ID from the container before transformation
-      const anchorId = extractIdFromContainer(entry);
-      
-      // Extract components
-      const h3 = entry.querySelector('h3');
-      const notes = entry.querySelector('.notes');
-      const outlineText = entry.querySelector('.outline-text-3');
-      const tag = entry.querySelector('.tag');
-      
-      if (!h3 || !outlineText) return;
-      
-      // Get title text (preserve any TODO/DONE prefixes and links)
-      let titleText = h3.innerHTML;
-      
-      // Get timestamp
-      let timestampText = '';
-      if (notes) {
-        const timestamp = notes.querySelector('.timestamp');
-        if (timestamp) {
-          timestampText = timestamp.textContent;
+          document.head.appendChild(style);
         }
-      }
-      
-      // Get content paragraphs (excluding notes and tag)
-      const contentParagraphs = [];
-      const blockElements = [];
-      
-      Array.from(outlineText.children).forEach(child => {
-        if (child.classList.contains('notes') || child.classList.contains('tag')) {
-          return; // Skip these
+
+        // Extract ID from container div
+        function extractIdFromContainer(entry) {
+          const containerId = entry.id;
+          if (containerId && containerId.startsWith("outline-container-")) {
+            return containerId.replace("outline-container-", "");
+          }
+          return null;
         }
-        
-        if (child.tagName === 'P') {
-          contentParagraphs.push(child.innerHTML);
-        } else if (child.tagName === 'UL' || child.tagName === 'OL' || 
-                   child.tagName === 'BLOCKQUOTE' || child.tagName === 'PRE' ||
-                   child.tagName === 'DL' || child.classList.contains('epigraph')) {
-          blockElements.push(child.outerHTML);
-        } else if (child.tagName === 'DIV' && child.classList.contains('epigraph')) {
-          blockElements.push(child.outerHTML);
+
+        // Apply the formatting transformation
+        function applyFormatting() {
+          // Process each entry
+          const entries = document.querySelectorAll(".outline-3");
+
+          entries.forEach((entry, index) => {
+            // Extract the anchor ID from the container before transformation
+            const anchorId = extractIdFromContainer(entry);
+
+            // Extract components
+            const h3 = entry.querySelector("h3");
+            const notes = entry.querySelector(".notes");
+            const outlineText = entry.querySelector(".outline-text-3");
+            const tag = entry.querySelector(".tag");
+
+            if (!h3 || !outlineText) return;
+
+            // Get title text (preserve any TODO/DONE prefixes and links)
+            let titleText = h3.innerHTML;
+
+            // Get timestamp
+            let timestampText = "";
+            if (notes) {
+              const timestamp = notes.querySelector(".timestamp");
+              if (timestamp) {
+                timestampText = timestamp.textContent;
+              }
+            }
+
+            // Get content paragraphs (excluding notes, tag, and backlinks)
+            const contentParagraphs = [];
+            const blockElements = [];
+            const backlinks = entry.querySelector(".BACKLINKS");
+
+            Array.from(outlineText.children).forEach((child) => {
+              if (
+                child.classList.contains("notes") ||
+                child.classList.contains("tag") ||
+                child.classList.contains("BACKLINKS")
+              ) {
+                return; // Skip these - they'll be handled separately
+              }
+
+              if (child.tagName === "P") {
+                contentParagraphs.push(child.innerHTML);
+              } else if (
+                child.tagName === "UL" ||
+                child.tagName === "OL" ||
+                child.tagName === "BLOCKQUOTE" ||
+                child.tagName === "PRE" ||
+                child.tagName === "DL" ||
+                child.classList.contains("epigraph")
+              ) {
+                blockElements.push(child.outerHTML);
+              } else if (
+                child.tagName === "DIV" &&
+                child.classList.contains("epigraph")
+              ) {
+                blockElements.push(child.outerHTML);
+              }
+            });
+
+            // Get tag HTML (preserve links and formatting)
+            let tagHtml = "";
+            if (tag) {
+              tagHtml = tag.outerHTML;
+            }
+
+            // Construct the new single paragraph
+            let newContent = "";
+
+            // Add date at the start (gray)
+            if (timestampText) {
+              newContent +=
+                '<span class="entry-date">' + timestampText + "</span>";
+            }
+
+            // Add title with emdash
+            newContent += titleText + " — ";
+
+            // Add content paragraphs
+            newContent += contentParagraphs.join(" ");
+
+            // Add tag at the end in parentheses (preserve HTML but force inline)
+            if (tagHtml) {
+              // Extract just the inner content and wrap it properly
+              let tagContent = tag.innerHTML;
+              newContent +=
+                ' <span class="entry-tag">(' + tagContent + ")</span>";
+            }
+
+            // Create new paragraph element
+            const newParagraph = document.createElement("p");
+            newParagraph.className = "entry-paragraph";
+            newParagraph.innerHTML = newContent;
+
+            // Clear the entry
+            entry.innerHTML = "";
+
+            // Preserve the anchor ID by setting it on the transformed entry
+            if (anchorId) {
+              entry.id = anchorId;
+            }
+
+            // Add backlinks FIRST so they can float to the right
+            if (backlinks) {
+              entry.appendChild(backlinks.cloneNode(true));
+            }
+
+            // Then add the main paragraph
+            entry.appendChild(newParagraph);
+
+            // Add any block elements after the paragraph
+            blockElements.forEach((blockHtml) => {
+              const blockDiv = document.createElement("div");
+              blockDiv.className = "moved-block";
+              blockDiv.innerHTML = blockHtml;
+              entry.appendChild(blockDiv);
+            });
+
+            // Add separator after each entry (except the last one)
+            if (index < entries.length - 1) {
+              const separator = document.createElement("hr");
+              separator.style.margin = "1em 0";
+              separator.style.border = "none";
+              separator.style.borderTop = "1px solid #ccc";
+              entry.appendChild(separator);
+            }
+          });
         }
-      });
-      
-      // Get tag HTML (preserve links and formatting)
-      let tagHtml = '';
-      if (tag) {
-        tagHtml = tag.outerHTML;
-      }
-      
-      // Construct the new single paragraph
-      let newContent = '';
-      
-      // Add date at the start (gray)
-      if (timestampText) {
-        newContent += '<span class="entry-date">' + timestampText + '</span>';
-      }
-      
-      // Add title with emdash
-      newContent += titleText + ' — ';
-      
-      // Add content paragraphs
-      newContent += contentParagraphs.join(' ');
-      
-      // Add tag at the end in parentheses (preserve HTML but force inline)
-      if (tagHtml) {
-        // Extract just the inner content and wrap it properly
-        let tagContent = tag.innerHTML;
-        newContent += ' <span class="entry-tag">(' + tagContent + ')</span>';
-      }
-      
-      // Create new paragraph element
-      const newParagraph = document.createElement('p');
-      newParagraph.className = 'entry-paragraph';
-      newParagraph.innerHTML = newContent;
-      
-      // Clear the entry and add the new paragraph
-      entry.innerHTML = '';
-      entry.appendChild(newParagraph);
-      
-      // Preserve the anchor ID by setting it on the transformed entry
-      if (anchorId) {
-        entry.id = anchorId;
-      }
-      
-      // Add any block elements after the paragraph
-      blockElements.forEach(blockHtml => {
-        const blockDiv = document.createElement('div');
-        blockDiv.className = 'moved-block';
-        blockDiv.innerHTML = blockHtml;
-        entry.appendChild(blockDiv);
-      });
-      
-      // Add separator after each entry (except the last one)
-      if (index < entries.length - 1) {
-        const separator = document.createElement('hr');
-        separator.style.margin = '1em 0';
-        separator.style.border = 'none';
-        separator.style.borderTop = '1px solid #ccc';
-        entry.appendChild(separator);
-      }
-    });
-  }
-  
-  // Initialize when DOM is ready
-  function init() {
-    addStyles();
-    
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', applyFormatting);
-    } else {
-      applyFormatting();
-    }
-  }
-  
-  // Start the initialization
-  init();
-})();
-</script>
 
+        // Initialize when DOM is ready
+        function init() {
+          addStyles();
 
+          if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", applyFormatting);
+          } else {
+            applyFormatting();
+          }
+        }
 
-</head>
-<body>
-</body>
+        // Start the initialization
+        init();
+      })();
+    </script>
+  </head>
+  <body></body>
 </html>
 </head>
 <body>
@@ -484,6 +532,19 @@ margin-block-start: auto;
     color: black;
 ">Hereby, all birds fly</h1>
       </a>
+      <nav class="site-nav">
+        <a href="/p/">all posts</a>
+        <span>•</span>
+        <a href="/stack.html">short posts</a>
+        <span>•</span>
+        <a href="/fullbooks.html">books</a>
+        <span>•</span>
+        <a href="/a.html#2ar8en10n2k0">anthology</a>
+        <span>•</span>
+        <a href="/pgp.html">PGP key</a>
+        <span>•</span>
+        <a href="https://www.admonymous.co/larrasket">leave a message</a>
+      </nav>
 <hr class="header-divider" style="margin-block-end: -1em;">
   </div>
 </div>
@@ -491,7 +552,14 @@ margin-block-start: auto;
 <div id="content" class="content">
 <header>
 <h1 class="title">Art</h1>
-</header><ul class="org-ul">
+</header><div class="BACKLINKS" id="orgcde7c36">
+<p>
+This section was referenced in <a href="../stack.html#1xh6igp0bok0">The Return, by Thomas Cole</a>, <a href="../stack.html#4zt6gc716qk0">The Return of Hajar by Pietro da Cortona</a>, <a href="../stack.html#8518m5z0fqk0">Loving Walk and Spring Idyll</a>, <a href="../stack.html#98ckxai06nk0">View of the Pont au Change from Quai de Gesvres by Jean-Baptiste Camille Corot</a>, <a href="../stack.html#9f3cyn90xlk0">Caravaggio</a>, <a href="../stack.html#9pwhrlo01mk0">Cimabue and Cima da Conegliano</a>, <a href="../stack.html#9rhar4o0dkk0">Skies in Alexey Bogolyubov works</a>, <a href="../stack.html#beyd3x21tik0">Giuseppe Abbati Paintings</a>, <a href="../stack.html#dchk6n80xlk0">Portrait of a North African (1870)</a>, <a href="../stack.html#ejh1rtw05kk0">The Massacre of the Monks of Tamond by Sir Lawrence Alma-Tadema origins</a>, <a href="../stack.html#g180s3g0kpk0">The Romans in their Decadence</a>, <a href="../stack.html#gpp2spb0rlk0">William Bradford</a>, <a href="../stack.html#gxzffkh0glk0">A Young Girl and Eros</a>, <a href="../stack.html#hhikuax0ekk0">Works of Carl Aagaard</a>, <a href="../stack.html#hpyfnfg0dqk0">On the barn by Pellizza da Volpedo</a>, <a href="../stack.html#l5v2j4k0aqk0">The Triumph of Divine Providence by Pietro da Cortona</a>, <a href="../stack.html#obm0ls01hpk0">The Fountain of the Sweet Waters of Asia</a>, <a href="../stack.html#qvz6ot50hqk0">The life of Pellizza da Volpedo</a>, <a href="../stack.html#up1dphm0qnk0">View on the Catskill, Early Autumn</a>, <a href="../stack.html#uxfk6va0npk0">La Belle Dame sans Merci</a>, <a href="../stack.html#yqe6drb1bqk0">A thought about Realism in Art</a>, <a href="../stack.html#yti352w0ipk0">Adam Et Eve</a>, and <a href="../stack.html#zoq1kz80xlk0">Lilla Cabot Perry</a>, and in 5 other private notes.
+</p>
+
+</div>
+
+<ul class="org-ul">
 <li><span class="timestamp-wrapper"><span class="timestamp">[2025-08-08 Fri 01:16]</span></span> Disabling this page again. Sorry if you were redirected
 from an art-related link, but that&rsquo;s just too messy to host on my small
 website. If I ever have the time, I will work on making it exportable.</li>
@@ -541,118 +609,262 @@ but for managing my art collections. By now, I&rsquo;m considering just maintain
 them on this node. Thus, here you can find my favorite paintings and my notes
 on them.</li>
 </ul>
-<div id="outline-container-org5e54375" class="outline-2">
-<h2 id="org5e54375">People</h2>
-<div class="outline-text-2" id="text-org5e54375">
+<div id="outline-container-org19cb735" class="outline-2">
+<h2 id="org19cb735">People</h2>
+<div class="outline-text-2" id="text-org19cb735">
 </div>
 <div id="outline-container-2lq0ch91vik0" class="outline-3">
 <h3 id="2lq0ch91vik0">Ivan Aivazovsky</h3>
 <div class="outline-text-3" id="text-2lq0ch91vik0">
+<div class="BACKLINKS" id="orgef16578">
+<p>
+This section was referenced in <a href="art_paintings_media.html#2h594wa0yik0">Night in the Crimea, Ivan Aivazovsky</a>, <a href="art_paintings_media.html#2ja4j3b1ajk0">The Ninth Wave, Ivan Aivazovsky</a>, <a href="art_paintings_media.html#5aqgceh0yik0">Night in Amalfi, Ivan Aivazovsky</a>, <a href="art_paintings_media.html#67y0k8h0yik0">Lunar night on the Crimean coast, Ivan Aivazovsky</a>, <a href="art_paintings_media.html#9hzd3ta1vik0">Russian squadron on the raid of Sevastopol, Ivan Aivazovsky</a>, <a href="art_paintings_media.html#bdck5h413kk0">Moonlit night near Yalta, Ivan Aivazovsky</a>, <a href="art_paintings_media.html#c6ecyca1vik0">The Bay of Naples at Moonlight Night, Ivan Aivazovsky</a>, <a href="../stack.html#gpp2spb0rlk0">William Bradford</a>, <a href="art_paintings_media.html#lyl5m2h0yik0">Morning, Ivan Aivazovsky</a>, <a href="art_paintings_media.html#nxsg2cs01kk0">Darial Gorge, Ivan Aivazovsky</a>, <a href="art_paintings_media.html#put6rha1vik0">Azure Grotto. Naples, Ivan Aivazovsky</a>, <a href="art_paintings_media.html#qrl15i91vik0">View of a Fountain and Peterhof Palacel, Ivan Aivazovsky</a>, <a href="art_paintings_media.html#r9genu91vik0">Frigate Under Sails, Ivan Aivazovsky</a>, <a href="art_paintings_media.html#smmcf9913kk0">The Black Sea, Ivan Aivazovsky</a>, <a href="art_paintings_media.html#usm1zwa1vik0">Evening in the Crimea, Ivan Aivazovsky</a>, <a href="art_paintings_media.html#uy18az91vik0">Moonlit Night on the Crimea, Ivan Aivazovsky</a>, and <a href="art_paintings_media.html#z9x9bd805kk0">A Rocky Coastal Landscape in the Aegean, Ivan Aivazovsky</a>.
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-rp705yc0erk0" class="outline-3">
+<h3 id="rp705yc0erk0">Benjamin West</h3>
+<div class="outline-text-3" id="text-rp705yc0erk0">
+<div class="BACKLINKS" id="org5e024cb">
+<p>
+This section was referenced in <a href="art_paintings_media.html#6zk3zyc0erk0">“Cicero Discovering the Tomb of Archimedes”, Benjamin West</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-ajviyf616mk0" class="outline-3">
 <h3 id="ajviyf616mk0">Emile Claus</h3>
 <div class="outline-text-3" id="text-ajviyf616mk0">
+<div class="BACKLINKS" id="org957edfc">
+<p>
+This section was referenced in <a href="art_paintings_media.html#z322hg616mk0">Afternoon Along The River, Emile Claus</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-mp208ei0ymk0" class="outline-3">
 <h3 id="mp208ei0ymk0">John Constable</h3>
 <div class="outline-text-3" id="text-mp208ei0ymk0">
+<div class="BACKLINKS" id="orgf5efd93">
+<p>
+This section was referenced in <a href="art_paintings_media.html#2nc7rb51zmk0">A Cloud Study, John Constable</a> and <a href="art_paintings_media.html#2o07pji0ymk0">Wooded Landscape, John Constable</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-2jo4pwg0lkk0" class="outline-3">
 <h3 id="2jo4pwg0lkk0">William Ashford</h3>
 <div class="outline-text-3" id="text-2jo4pwg0lkk0">
+<div class="BACKLINKS" id="org701667e">
+<p>
+This section was referenced in <a href="art_paintings_media.html#7ef5v0h0lkk0">A View of Dublin from Chapelizod, William Ashford</a>, <a href="art_paintings_media.html#g3siw4h0lkk0">Mount Kennedy, County Wicklow, William Ashford</a>, <a href="art_paintings_media.html#logeznh0lkk0">View of Killarney, William Ashford</a>, <a href="art_paintings_media.html#mvk9gc7014k0">Art</a>, and <a href="art_paintings_media.html#r7p77yg0lkk0">View in Mount Merrion Park, William Ashford</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-akcl6pw0ekk0" class="outline-3">
 <h3 id="akcl6pw0ekk0">Carl Aagaard</h3>
 <div class="outline-text-3" id="text-akcl6pw0ekk0">
+<div class="BACKLINKS" id="org9de1e31">
+<p>
+This section was referenced in <a href="art_paintings_media.html#et16c8x0ekk0">View from Jægersborg Dyrehave. Mild daylight, Carl Aagaard</a>, <a href="../stack.html#hhikuax0ekk0">Works of Carl Aagaard</a>, <a href="art_paintings_media.html#m5k91pw0ekk0">The Rose Garden, Carl Aagaard</a>, and <a href="art_paintings_media.html#qnvaxyw0ekk0">Landscape, Carl Aagaard</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-zgec92i0dkk0" class="outline-3">
 <h3 id="zgec92i0dkk0">Alexey Bogolyubov</h3>
 <div class="outline-text-3" id="text-zgec92i0dkk0">
+<div class="BACKLINKS" id="org28af88f">
+<p>
+This section was referenced in <a href="art_paintings_media.html#1y0immi0dkk0">Castel Sant&rsquo;Angelo, Alexey Bogolyubov</a>, <a href="art_paintings_media.html#4z30nji0dkk0">Moonlit night. Grand Canal (Venice), Alexey Bogolyubov</a>, <a href="art_paintings_media.html#9cg8nfi0dkk0">Smolny as seen from Bolshaya Okhta, Alexey Bogolyubov</a>, <a href="art_paintings_media.html#eaegmli0dkk0">Italian Coast, Alexey Bogolyubov</a>, <a href="art_paintings_media.html#fl9bgoi0dkk0">Moonlit evening in Constantinople, Alexey Bogolyubov</a>, <a href="art_paintings_media.html#hqybz2i0dkk0">Mosque in Istanbul, Alexey Bogolyubov</a>, <a href="art_paintings_media.html#jviicdi0dkk0">View of the Smolny Convent from Bolshaya Okhta, Alexey Bogolyubov</a>, <a href="art_paintings_media.html#rmvi6bi0dkk0">St. Petersburg at Sunset, Alexey Bogolyubov</a>, <a href="art_paintings_media.html#uvbfxai0dkk0">St. Petersburg. Sledging on the Neva, Alexey Bogolyubov</a>, and <a href="art_paintings_media.html#vyldeni0dkk0">The seashore, Alexey Bogolyubov</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-xymdew71bkk0" class="outline-3">
 <h3 id="xymdew71bkk0">Jean-Joseph-Xavier Bidauld</h3>
 <div class="outline-text-3" id="text-xymdew71bkk0">
+<div class="BACKLINKS" id="orgf86bc26">
+<p>
+This section was referenced in <a href="art_paintings_media.html#mvk9gc7014k0">Art</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-9o1eac80nik0" class="outline-3">
 <h3 id="9o1eac80nik0">Peter Paul Rubens</h3>
 <div class="outline-text-3" id="text-9o1eac80nik0">
+<div class="BACKLINKS" id="org608b2e5">
+<p>
+This section was referenced in <a href="art_paintings_media.html#eom7zf80nik0">The Judgement of Paris, Peter Paul Rubens</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-c893dc71bkk0" class="outline-3">
 <h3 id="c893dc71bkk0">Knud Baade</h3>
 <div class="outline-text-3" id="text-c893dc71bkk0">
+<div class="BACKLINKS" id="org439d044">
+<p>
+This section was referenced in <a href="art_paintings_media.html#mvk9gc7014k0">Art</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-5bmjog80nik0" class="outline-3">
 <h3 id="5bmjog80nik0">Gustav Pope</h3>
 <div class="outline-text-3" id="text-5bmjog80nik0">
+<div class="BACKLINKS" id="org12b06b6">
+<p>
+This section was referenced in <a href="art_paintings_media.html#uyqhph80nik0">The Judgement of Paris, Gustav Pope</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-j201sk80nik0" class="outline-3">
 <h3 id="j201sk80nik0">Jacques Clement Wagrez</h3>
 <div class="outline-text-3" id="text-j201sk80nik0">
+<div class="BACKLINKS" id="org4080f2a">
+<p>
+This section was referenced in <a href="art_paintings_media.html#oqq8gl80nik0">The Judgement of Paris, Jacques Clement Wagrez</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-hd8csm80nik0" class="outline-3">
 <h3 id="hd8csm80nik0">Walter Crane</h3>
 <div class="outline-text-3" id="text-hd8csm80nik0">
+<div class="BACKLINKS" id="org1aba7d5">
+<p>
+This section was referenced in <a href="art_paintings_media.html#yv1i7n80nik0">The Judgement of Paris, Walter Crane</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-dud71p80nik0" class="outline-3">
 <h3 id="dud71p80nik0">Francesco Albani</h3>
 <div class="outline-text-3" id="text-dud71p80nik0">
+<div class="BACKLINKS" id="org816df40">
+<p>
+This section was referenced in <a href="art_paintings_media.html#5dd6lo80nik0">The Judgement of Paris, Francesco Albani</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-0xygoq80nik0" class="outline-3">
 <h3 id="0xygoq80nik0">Jacques Stella</h3>
 <div class="outline-text-3" id="text-0xygoq80nik0">
+<div class="BACKLINKS" id="org2ef498c">
+<p>
+This section was referenced in <a href="art_paintings_media.html#eab86q80nik0">The Judgement of Paris, Jacques Stella</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-ec4fas80nik0" class="outline-3">
 <h3 id="ec4fas80nik0">Joachim Wtewael</h3>
 <div class="outline-text-3" id="text-ec4fas80nik0">
+<div class="BACKLINKS" id="org909ce34">
+<p>
+This section was referenced in <a href="art_paintings_media.html#4uvbmr80nik0">The Judgement of Paris, Joachim Wtewael</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-9vwjys80nik0" class="outline-3">
 <h3 id="9vwjys80nik0">Anselm Feuerbach</h3>
 <div class="outline-text-3" id="text-9vwjys80nik0">
+<div class="BACKLINKS" id="org5109625">
+<p>
+This section was referenced in <a href="art_paintings_media.html#ufe6ju80nik0">The Judgement of Paris, Anselm Feuerbach</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-2hl40590nik0" class="outline-3">
 <h3 id="2hl40590nik0">Joseph Hauber</h3>
 <div class="outline-text-3" id="text-2hl40590nik0">
+<div class="BACKLINKS" id="org706f3d4">
+<p>
+This section was referenced in <a href="art_paintings_media.html#mvk9gc7014k0">Art</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-2z6a49d0nik0" class="outline-3">
 <h3 id="2z6a49d0nik0">Mattia Preti</h3>
 <div class="outline-text-3" id="text-2z6a49d0nik0">
+<div class="BACKLINKS" id="orgbb6bad6">
+<p>
+This section was referenced in <a href="art_paintings_media.html#lcq3y9d0nik0">Martyrdom of Saint Sebastian, Mattia Preti</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-733kzdd0nik0" class="outline-3">
 <h3 id="733kzdd0nik0">Battistello Caracciolo</h3>
 <div class="outline-text-3" id="text-733kzdd0nik0">
+<div class="BACKLINKS" id="orgf251062">
+<p>
+This section was referenced in <a href="art_paintings_media.html#ulvcsed0nik0">Martyrdom of Saint Sebastian, Battistello Caracciolo</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-twl4pfd0nik0" class="outline-3">
 <h3 id="twl4pfd0nik0">Guido Reni</h3>
 <div class="outline-text-3" id="text-twl4pfd0nik0">
+<div class="BACKLINKS" id="orgc22c76e">
+<p>
+This section was referenced in <a href="art_paintings_media.html#6rm27gd0nik0">Martyrdom of Saint Sebastian, Guido Reni</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-oo5jig01tik0" class="outline-3">
 <h3 id="oo5jig01tik0">Domingos Sequeira</h3>
 <div class="outline-text-3" id="text-oo5jig01tik0">
+<div class="BACKLINKS" id="orgcfa3eeb">
+<p>
+This section was referenced in <a href="art_paintings_media.html#cfb5vk11tik0">Coronation of the Virgin, Domingos Sequeira</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-prygzj11tik0" class="outline-3">
 <h3 id="prygzj11tik0">Giulio Cesare Procaccini</h3>
 <div class="outline-text-3" id="text-prygzj11tik0">
+<div class="BACKLINKS" id="org835aa20">
+<p>
+This section was referenced in <a href="art_paintings_media.html#2ej3wk11tik0">Coronation of the Virgin, Giulio Cesare Procaccini</a>.
+</p>
+
+</div>
+
 <p>
 Giulio Cesare Procaccini was an Italian painter and sculptor of the early
 Baroque era in Milan.
@@ -662,26 +874,56 @@ Baroque era in Milan.
 <div id="outline-container-2jke0h21tik0" class="outline-3">
 <h3 id="2jke0h21tik0">Reza Abbasi</h3>
 <div class="outline-text-3" id="text-2jke0h21tik0">
+<div class="BACKLINKS" id="org7704920">
+<p>
+This section was referenced in <a href="art_paintings_media.html#2ko23k21tik0">Two Lovers, Reza Abbasi</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-bc7b4p21tik0" class="outline-3">
 <h3 id="bc7b4p21tik0">Giuseppe Abbati</h3>
 <div class="outline-text-3" id="text-bc7b4p21tik0">
+<div class="BACKLINKS" id="orgf8218fb">
+<p>
+This section was referenced in <a href="art_paintings_media.html#a88dqt21tik0">Marina in Castiglioncello, Giuseppe Abbati</a>, <a href="art_paintings_media.html#aap3io21tik0">Country Road with Cypresses, Giuseppe Abbati</a>, and <a href="../stack.html#beyd3x21tik0">Giuseppe Abbati Paintings</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-7x6isa31tik0" class="outline-3">
 <h3 id="7x6isa31tik0">Edwin Austin Abbey</h3>
 <div class="outline-text-3" id="text-7x6isa31tik0">
+<div class="BACKLINKS" id="orgeaff03b">
+<p>
+This section was referenced in <a href="art_paintings_media.html#f4w8jc31tik0">O mistress mine, where are you roaming, Edwin Austin Abbey</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-nmx2lf41tik0" class="outline-3">
 <h3 id="nmx2lf41tik0">Oswald Achenbach</h3>
 <div class="outline-text-3" id="text-nmx2lf41tik0">
+<div class="BACKLINKS" id="org5b5e978">
+<p>
+This section was referenced in <a href="art_paintings_media.html#x4la6g41tik0">Morning, Oswald Achenbach</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-bjl0v3x0uik0" class="outline-3">
 <h3 id="bjl0v3x0uik0">Eduard Quitton</h3>
 <div class="outline-text-3" id="text-bjl0v3x0uik0">
+<div class="BACKLINKS" id="org5b2fc17">
+<p>
+This section was referenced in <a href="art_paintings_media.html#laxao6x0uik0">First Love Letter, Eduard Quitton</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-res62a71vik0" class="outline-3">
@@ -695,51 +937,111 @@ His paintings make me want to play Assassin&rsquo;s Creed again.
 <div id="outline-container-b5o5tpw05kk0" class="outline-3">
 <h3 id="b5o5tpw05kk0">Sir Lawrence Alma-Tadema</h3>
 <div class="outline-text-3" id="text-b5o5tpw05kk0">
+<div class="BACKLINKS" id="org840f286">
+<p>
+This section was referenced in <a href="art_paintings_media.html#04rd65908kk0">Pleading, Sir Lawrence Alma-Tadema</a>, <a href="art_paintings_media.html#2m761qw05kk0">The Massacre of the Monks of Tamond, Sir Lawrence Alma-Tadema</a>, <a href="art_paintings_media.html#4qi0dq416kk0">Ask Me No more, Sir Lawrence Alma-Tadema</a>, <a href="art_paintings_media.html#cmu84l908kk0">A Declaration, Sir Lawrence Alma-Tadema</a>, <a href="art_paintings_media.html#muj0lsw0akk0">Expectations, Sir Lawrence Alma-Tadema</a>, and <a href="art_paintings_media.html#mvk9gc7014k0">Art</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-xe6f8nh0dkk0" class="outline-3">
 <h3 id="xe6f8nh0dkk0">Arnold Böcklin</h3>
 <div class="outline-text-3" id="text-xe6f8nh0dkk0">
+<div class="BACKLINKS" id="org3ecc93c">
+<p>
+This section was referenced in <a href="art_paintings_media.html#9macjth0dkk0">Villa am Meer I, Arnold Böcklin</a>, <a href="art_paintings_media.html#pcl4gvh0dkk0">Villa am Meer II, Arnold Böcklin</a>, and <a href="art_paintings_media.html#q11i1bi0dkk0">Der Gang nach Emmaus, Arnold Böcklin</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-i0jf8l21fkk0" class="outline-3">
 <h3 id="i0jf8l21fkk0">Nicolai Abildgaard</h3>
 <div class="outline-text-3" id="text-i0jf8l21fkk0">
+<div class="BACKLINKS" id="org27d3ea3">
+<p>
+This section was referenced in <a href="art_paintings_media.html#8lf0kl21fkk0">The Prayers of the Potuans at the Feast of the Unfathomable God, Nicolai Abildgaard</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-dcjcb680hkk0" class="outline-3">
 <h3 id="dcjcb680hkk0">Jacques-Laurent Agasse</h3>
 <div class="outline-text-3" id="text-dcjcb680hkk0">
+<div class="BACKLINKS" id="org2066d8f">
+<p>
+This section was referenced in <a href="art_paintings_media.html#99b1h880hkk0">The Playground, Jacques-Laurent Agasse</a> and <a href="art_paintings_media.html#wcb7a780hkk0">The Nubian Giraffe, Jacques-Laurent Agasse</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-2um0gc80hkk0" class="outline-3">
 <h3 id="2um0gc80hkk0">Mariotto Albertinelli</h3>
 <div class="outline-text-3" id="text-2um0gc80hkk0">
+<div class="BACKLINKS" id="orgfd56e75">
+<p>
+This section was referenced in <a href="art_paintings_media.html#fc83ge80hkk0">Visitation, Mariotto Albertinelli</a> and <a href="art_paintings_media.html#ifc3sq80hkk0">Visitation II, Mariotto Albertinelli</a>, and in 1 other private note.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-1dq2tj80hkk0" class="outline-3">
 <h3 id="1dq2tj80hkk0">Domenico Ghirlandaio</h3>
 <div class="outline-text-3" id="text-1dq2tj80hkk0">
+<div class="BACKLINKS" id="org31901a9">
+<p>
+This section was referenced in <a href="art_paintings_media.html#ft813l80hkk0">Visitation, Domenico Ghirlandaio</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-nhf6ul80hkk0" class="outline-3">
 <h3 id="nhf6ul80hkk0">Carmignano Visitation</h3>
 <div class="outline-text-3" id="text-nhf6ul80hkk0">
+<div class="BACKLINKS" id="orgf2177bd">
+<p>
+This section was referenced in <a href="art_paintings_media.html#mvk9gc7014k0">Art</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-9p5dy1r0ikk0" class="outline-3">
 <h3 id="9p5dy1r0ikk0">Denis van Alsloot</h3>
 <div class="outline-text-3" id="text-9p5dy1r0ikk0">
+<div class="BACKLINKS" id="orgea688a9">
+<p>
+This section was referenced in <a href="art_paintings_media.html#n8g286r0ikk0">Winter Landscape, Denis van Alsloot</a> and <a href="art_paintings_media.html#z58cc8r0ikk0">Winter Landscape II, Denis van Alsloot</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-3ryipgr0ikk0" class="outline-3">
 <h3 id="3ryipgr0ikk0">Jurriaan Andriessen</h3>
 <div class="outline-text-3" id="text-3ryipgr0ikk0">
+<div class="BACKLINKS" id="orge097ddd">
+<p>
+This section was referenced in <a href="art_paintings_media.html#18yh7hr0ikk0">Arcadian Landscape, Jurriaan Andriessen</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-ujv0blg0lkk0" class="outline-3">
 <h3 id="ujv0blg0lkk0">Alexandre Antigna</h3>
 <div class="outline-text-3" id="text-ujv0blg0lkk0">
+<div class="BACKLINKS" id="org32dec4e">
+<p>
+This section was referenced in <a href="art_paintings_media.html#p2sjomg0lkk0">The Lighting, Alexandre Antigna</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-e2d6e3z0nkk0" class="outline-3">
@@ -750,10 +1052,22 @@ His paintings make me want to play Assassin&rsquo;s Creed again.
 <div id="outline-container-23mfma60wkk0" class="outline-3">
 <h3 id="23mfma60wkk0">William-Adolphe Bouguereau</h3>
 <div class="outline-text-3" id="text-23mfma60wkk0">
+<div class="BACKLINKS" id="org6db4807">
+<p>
+This section was referenced in <a href="art_paintings_media.html#15t9dm01jlk0">Ladmiration, William-Adolphe Bouguereau</a>, <a href="art_paintings_media.html#388le010olk0">Innocence, William-Adolphe Bouguereau</a>, <a href="#54micc60wkk0">William-Adolphe Bouguereau Motherhood Paintings</a>, <a href="art_paintings_media.html#73w095n08lk0">Rest at Harvest, William-Adolphe Bouguereau</a>, <a href="art_paintings_media.html#cbv0qjh0glk0">A Young Girl Defending Herself Against  Eros, William-Adolphe Bouguereau</a>, <a href="art_paintings_media.html#eu755co0glk0">A Little Coaxing, William-Adolphe Bouguereau</a>, <a href="art_paintings_media.html#nc1ltnn0glk0">The Virgin with Angels, William-Adolphe Bouguereau</a>, <a href="art_paintings_media.html#twm55be0elk0">Pieta, William-Adolphe Bouguereau</a>, and <a href="art_paintings_media.html#ya364s00olk0">Elegy, William-Adolphe Bouguereau</a>, and in 1 other private note.
+</p>
+
+</div>
 </div>
 <div id="outline-container-54micc60wkk0" class="outline-4">
 <h4 id="54micc60wkk0"><a href="#23mfma60wkk0">William-Adolphe Bouguereau</a> Motherhood Paintings</h4>
 <div class="outline-text-4" id="text-54micc60wkk0">
+<div class="BACKLINKS" id="org4a805a3">
+<p>
+This section was referenced in <a href="art_paintings_media.html#068bpg60wkk0">The Kiss, William-Adolphe Bouguereau Motherhood Paintings</a>, <a href="art_paintings_media.html#1fgdog60wkk0">Sleep, William-Adolphe Bouguereau Motherhood Paintings</a>, <a href="art_paintings_media.html#6cd12xb1dlk0">Maternal Admiration, William-Adolphe Bouguereau Motherhood Paintings</a>, <a href="art_paintings_media.html#8vf3gm60wkk0">Charity or The Indigent Family, William-Adolphe Bouguereau Motherhood Paintings</a>, <a href="art_paintings_media.html#9mrbfpd0elk0">The Bunch Of Grapes, William-Adolphe Bouguereau Motherhood Paintings</a>, <a href="art_paintings_media.html#acejlxd1ilk0">Pleasant Burden, William-Adolphe Bouguereau Motherhood Paintings</a>, <a href="art_paintings_media.html#ej6kqh60wkk0">Raising her up, William-Adolphe Bouguereau Motherhood Paintings</a>, <a href="art_paintings_media.html#i707wz70glk0">A Girl with a Child, William-Adolphe Bouguereau Motherhood Paintings</a>, <a href="art_paintings_media.html#mvk9gc7014k0">Art</a>, <a href="art_paintings_media.html#nbjjhi60wkk0">The Orange, William-Adolphe Bouguereau Motherhood Paintings</a>, <a href="art_paintings_media.html#okbaxz70glk0">Charity, William-Adolphe Bouguereau Motherhood Paintings</a>, <a href="art_paintings_media.html#r50b9sd0elk0">Young Mother Gazing At Her Child, William-Adolphe Bouguereau Motherhood Paintings</a>, and <a href="art_paintings_media.html#twycng60wkk0">The Elder Sister, William-Adolphe Bouguereau Motherhood Paintings</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-aq08zp10olk0" class="outline-4">
@@ -771,21 +1085,46 @@ compared to his peers who were full-time students.</li>
 <div id="outline-container-qse5o7c0rlk0" class="outline-3">
 <h3 id="qse5o7c0rlk0">Frederic William Burton</h3>
 <div class="outline-text-3" id="text-qse5o7c0rlk0">
+<div class="BACKLINKS" id="orgf632af3">
+<p>
+This section was referenced in <a href="art_paintings_media.html#mhm2g8c0rlk0">The Meeting on the Turret Stairs, Frederic William Burton</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-eaphdi80xlk0" class="outline-3">
 <h3 id="eaphdi80xlk0">Alexandre Cabanel</h3>
 <div class="outline-text-3" id="text-eaphdi80xlk0">
+<div class="BACKLINKS" id="org5ffcdc1">
+<p>
+This section was referenced in <a href="../stack.html#dchk6n80xlk0">Portrait of a North African (1870)</a> and <a href="art_paintings_media.html#ym36dj80xlk0">The Fallen Angel, Alexandre Cabanel</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-ig8cxhp01mk0" class="outline-3">
 <h3 id="ig8cxhp01mk0">Frederic Edwin Church</h3>
 <div class="outline-text-3" id="text-ig8cxhp01mk0">
+<div class="BACKLINKS" id="orgcaff557">
+<p>
+This section was referenced in <a href="art_paintings_media.html#o9yhcrp01mk0">Faro, Mount Desert Island, Frederic Edwin Church</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-34feald0fmk0" class="outline-3">
 <h3 id="34feald0fmk0"><span class="done DONE">DONE</span> Thomas Cole&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_check">@check</span></span></h3>
 <div class="outline-text-3" id="text-34feald0fmk0">
+<div class="BACKLINKS" id="org172b5b3">
+<p>
+This section was referenced in <a href="art_paintings_media.html#0ablccm0qnk0">View on the Catskill, Early Autumn, Thomas Cole</a>, <a href="../stack.html#1xh6igp0bok0">The Return, by Thomas Cole</a>, <a href="art_paintings_media.html#38f8zt20zok0">Mount Aetna from Taormina, Thomas Cole</a>, <a href="art_paintings_media.html#5v697ht0kok0">The Architect Dream, Thomas Cole</a>, <a href="art_paintings_media.html#70i91s206ok0">View of Florence from San Miniato, Thomas Cole</a>, <a href="art_paintings_media.html#97q8yd01gmk0">Expulsion. Moon and Firelight, Thomas Cole</a>, <a href="art_paintings_media.html#994dfrq0gok0">View of the Arno, Thomas Cole</a>, <a href="art_paintings_media.html#9ppcg8s03ok0">Sunset of the Arno, Thomas Cole</a>, <a href="art_paintings_media.html#crnateg07ok0">Italian Coast Scene with Ruined Tower, Thomas Cole</a>, <a href="art_paintings_media.html#fch9f381cok0">Schroon, Thomas Cole</a>, <a href="art_paintings_media.html#k5ie5l01vmk0">Distant View of Niagara Falls, Thomas Cole</a>, <a href="art_paintings_media.html#ket9qkd1snk0">Moonlight, Thomas Cole</a>, <a href="art_paintings_media.html#kkfenud0fmk0">Landscape with Figures A Scene from The Last of the Mohicans, Thomas Cole</a>, <a href="art_paintings_media.html#kzr6ylc08ok0">Schroon Mountain, Adirondacks, Thomas Cole</a>, <a href="art_paintings_media.html#mvk9gc7014k0">Art</a>, <a href="art_paintings_media.html#paqfq981xok0">An Evening in Arcadia, Thomas Cole</a>, <a href="art_paintings_media.html#poe2xsk04pk0">River in the Catskills, Thomas Cole</a>, <a href="art_paintings_media.html#pt79j5y09ok0">The Present, Thomas Cole</a>, <a href="art_paintings_media.html#q518iq10smk0">View of L`Esperance on the Schoharie River, Thomas Cole</a>, <a href="art_paintings_media.html#rt7bnld0fmk0">Kaaterskill Falls, Thomas Cole</a>, <a href="art_paintings_media.html#wjgg6fp0bok0">The Return, Thomas Cole</a>, and <a href="art_paintings_media.html#x4na1s902ok0">Summer TWilight, Thomas Cole</a>.
+</p>
+
+</div>
+
 <ul class="org-ul">
 <li><span class="timestamp-wrapper"><span class="timestamp">[2025-07-16 Wed 17:48]</span></span> I need to schedule meditating his works for a full day.</li>
 </ul>
@@ -794,36 +1133,191 @@ compared to his peers who were full-time students.</li>
 <div id="outline-container-48iifil01nk0" class="outline-3">
 <h3 id="48iifil01nk0">Jean-Baptiste Camille Corot</h3>
 <div class="outline-text-3" id="text-48iifil01nk0">
+<div class="BACKLINKS" id="orga7d0aae">
+<p>
+This section was referenced in <a href="art_paintings_media.html#31b9ee70pnk0">Souvenir de Mortefontaine, Jean-Baptiste Camille Corot</a>, <a href="../stack.html#98ckxai06nk0">View of the Pont au Change from Quai de Gesvres by Jean-Baptiste Camille Corot</a>, <a href="art_paintings_media.html#eq5bh3g0mnk0">Saint Sebastian in a Landscape, Jean-Baptiste Camille Corot</a>, <a href="art_paintings_media.html#mvk9gc7014k0">Art</a>, <a href="art_paintings_media.html#p181fdq02nk0">View of the Forest of Fontainebleau, Jean-Baptiste Camille Corot</a>, <a href="art_paintings_media.html#r666kfg0mnk0">Fisherman Boating along a Wooded Landscape, Jean-Baptiste Camille Corot</a>, <a href="art_paintings_media.html#tnqaesi06nk0">Democritus and the Abderiti, Jean-Baptiste Camille Corot</a>, <a href="art_paintings_media.html#vjycq8y0ink0">The Italian Goatherd, Jean-Baptiste Camille Corot</a>, and <a href="art_paintings_media.html#w7skvrd1pnk0">Moonlit Landscape, Jean-Baptiste Camille Corot</a>.
+</p>
+
 </div>
 </div>
-<div id="outline-container-org0635503" class="outline-3">
-<h3 id="org0635503"><span class="todo TODO">TODO</span> <a href="https://en.wikipedia.org/wiki/Gustave_Courbet">https://en.wikipedia.org/wiki/Gustave_Courbet</a></h3>
 </div>
-<div id="outline-container-org07427fc" class="outline-3">
-<h3 id="org07427fc"><span class="todo TODO">TODO</span> <a href="https://en.wikipedia.org/wiki/Antonio_da_Correggio">https://en.wikipedia.org/wiki/Antonio_da_Correggio</a></h3>
+<div id="outline-container-orge4a8548" class="outline-3">
+<h3 id="orge4a8548"><span class="todo TODO">TODO</span> <a href="https://en.wikipedia.org/wiki/Gustave_Courbet">https://en.wikipedia.org/wiki/Gustave_Courbet</a></h3>
 </div>
-<div id="outline-container-org58c6153" class="outline-3">
-<h3 id="org58c6153"><span class="todo TODO">TODO</span> <a href="https://www.wikiart.org/en/jan-cossiers">https://www.wikiart.org/en/jan-cossiers</a></h3>
+<div id="outline-container-orgd115981" class="outline-3">
+<h3 id="orgd115981"><span class="todo TODO">TODO</span> <a href="https://en.wikipedia.org/wiki/Antonio_da_Correggio">https://en.wikipedia.org/wiki/Antonio_da_Correggio</a></h3>
+</div>
+<div id="outline-container-org692eecd" class="outline-3">
+<h3 id="org692eecd"><span class="todo TODO">TODO</span> <a href="https://www.wikiart.org/en/jan-cossiers">https://www.wikiart.org/en/jan-cossiers</a></h3>
 </div>
 <div id="outline-container-hnuhbcd0cpk0" class="outline-3">
 <h3 id="hnuhbcd0cpk0">Hermann David Salomon Corrodi</h3>
 <div class="outline-text-3" id="text-hnuhbcd0cpk0">
+<div class="BACKLINKS" id="orgbd061ad">
+<p>
+This section was referenced in <a href="art_paintings_media.html#bzh7sa20fpk0">Camel Train in a Sandstorm, Hermann David Salomon Corrodi</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-qz32hxv0ipk0" class="outline-3">
 <h3 id="qz32hxv0ipk0">Gustave-Claude-Etienne Courtois</h3>
 <div class="outline-text-3" id="text-qz32hxv0ipk0">
+<div class="BACKLINKS" id="org6753ca6">
+<p>
+This section was referenced in <a href="art_paintings_media.html#fzsf1xv0ipk0">Adam Et Eve, Gustave-Claude-Etienne Courtois</a>.
+</p>
+
+</div>
 </div>
 </div>
 <div id="outline-container-7guc32g0kpk0" class="outline-3">
 <h3 id="7guc32g0kpk0">Thomas Couture</h3>
 <div class="outline-text-3" id="text-7guc32g0kpk0">
+<div class="BACKLINKS" id="org94690df">
+<p>
+This section was referenced in <a href="art_paintings_media.html#3xifm2g0kpk0">The Romans in their Decadence, Thomas Couture</a>.
+</p>
+
 </div>
 </div>
 </div>
-<div id="outline-container-org094d35a" class="outline-2">
-<h2 id="org094d35a"><span class="todo TODO">TODO</span> Everyday, a beautiful painting.&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_general">@general</span></span></h2>
-<div class="outline-text-2" id="text-org094d35a">
+<div id="outline-container-782jrqa0npk0" class="outline-3">
+<h3 id="782jrqa0npk0">Frank Cadogan Cowper</h3>
+<div class="outline-text-3" id="text-782jrqa0npk0">
+<div class="BACKLINKS" id="org170b990">
+<p>
+This section was referenced in <a href="art_paintings_media.html#34e0lua0npk0">La Belle Dame sans Merci, Frank Cadogan Cowper</a> and <a href="../stack.html#uxfk6va0npk0">La Belle Dame sans Merci</a>.
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-fli4avf0opk0" class="outline-3">
+<h3 id="fli4avf0opk0"><span class="todo TODO">TODO</span> Louis-Philippe Crépin</h3>
+<div class="outline-text-3" id="text-fli4avf0opk0">
+</div>
+</div>
+<div id="outline-container-kglj7vf0opk0" class="outline-3">
+<h3 id="kglj7vf0opk0">Jasper Francis Cropsey</h3>
+<div class="outline-text-3" id="text-kglj7vf0opk0">
+<div class="BACKLINKS" id="orgef6167a">
+<p>
+This section was referenced in <a href="art_paintings_media.html#gtzgnzt0ppk0">Warwick Castle, England, Jasper Francis Cropsey</a>, <a href="art_paintings_media.html#v1ucp950wpk0">Autumn on the Hudson, Jasper Francis Cropsey</a>, and <a href="art_paintings_media.html#vjnbhwf0opk0">The Coast of Genoa, Jasper Francis Cropsey</a>.
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-xohgxop01qk0" class="outline-3">
+<h3 id="xohgxop01qk0">Charles Courtney Curran</h3>
+<div class="outline-text-3" id="text-xohgxop01qk0">
+<div class="BACKLINKS" id="org70f4111">
+<p>
+This section was referenced in <a href="art_paintings_media.html#a82fv5s01qk0">Green Lattice, Charles Courtney Curran</a>, <a href="art_paintings_media.html#hzhg8vr01qk0">Hollyhocks and Sunlight, Charles Courtney Curran</a>, <a href="art_paintings_media.html#j4vafyq01qk0">Lady with a Bouquet, Charles Courtney Curran</a>, and <a href="art_paintings_media.html#tje75zr01qk0">Peonies, Charles Courtney Curran</a>.
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-73l48b716qk0" class="outline-3">
+<h3 id="73l48b716qk0">Pietro da Cortona</h3>
+<div class="outline-text-3" id="text-73l48b716qk0">
+<div class="BACKLINKS" id="orge59ab4b">
+<p>
+This section was referenced in <a href="art_paintings_media.html#50fllvj0aqk0">The Triumph of Divine Providence, Pietro da Cortona</a> and <a href="art_paintings_media.html#gvy5r9716qk0">The Return of Hajar, Pietro da Cortona</a>.
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-ied5qr60aqk0" class="outline-3">
+<h3 id="ied5qr60aqk0">Gustav Klimt</h3>
+<div class="outline-text-3" id="text-ied5qr60aqk0">
+<div class="BACKLINKS" id="orgcc38e8f">
+<p>
+This section was referenced in <a href="art_paintings_media.html#fiyams60aqk0">Shakespeare&rsquo;s Globe Theatre, Gustav Klimt</a>.
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-0zif2xf0dqk0" class="outline-3">
+<h3 id="0zif2xf0dqk0">Pellizza da Volpedo</h3>
+<div class="outline-text-3" id="text-0zif2xf0dqk0">
+<div class="BACKLINKS" id="org7acb8e0">
+<p>
+This section was referenced in <a href="art_paintings_media.html#5i7jlfl0eqk0">The mirror of life (And what one does, and the others do), Pellizza da Volpedo</a>, <a href="art_paintings_media.html#7wwkjfl0eqk0">Figure study for Spring Idyll, Pellizza da Volpedo</a>, <a href="art_paintings_media.html#bhu5k2z0fqk0">Loving Walk, Pellizza da Volpedo</a>, <a href="../stack.html#qvz6ot50hqk0">The life of Pellizza da Volpedo</a>, <a href="art_paintings_media.html#rch8nfl0eqk0">Spring Idyll, Pellizza da Volpedo</a>, and <a href="art_paintings_media.html#upg5uyf0dqk0">On the barn, Pellizza da Volpedo</a>.
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-n93cgz50hqk0" class="outline-3">
+<h3 id="n93cgz50hqk0"><span class="todo TODO">TODO</span> Giovanni Segantini</h3>
+<div class="outline-text-3" id="text-n93cgz50hqk0">
+<div class="BACKLINKS" id="org49012ff">
+<p>
+This section was referenced in <a href="../stack.html#qvz6ot50hqk0">The life of Pellizza da Volpedo</a> and <a href="art_paintings_media.html#xtwfop60hqk0">Love at the Fountain of Life, Giovanni Segantini</a>.
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-kojhh1x0iqk0" class="outline-3">
+<h3 id="kojhh1x0iqk0">Johan Christian Dahl</h3>
+<div class="outline-text-3" id="text-kojhh1x0iqk0">
+<div class="BACKLINKS" id="orgf4ed40b">
+<p>
+This section was referenced in <a href="art_paintings_media.html#qd4eihx0iqk0">Winter at the Sognefjord, Johan Christian Dahl</a>.
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-xcm06ix0iqk0" class="outline-3">
+<h3 id="xcm06ix0iqk0">Charles-Francois Daubigny</h3>
+<div class="outline-text-3" id="text-xcm06ix0iqk0">
+<div class="BACKLINKS" id="orgde38001">
+<p>
+This section was referenced in <a href="art_paintings_media.html#2ns7bt31jqk0">The Park at St. Cloud, Charles-Francois Daubigny</a> and <a href="art_paintings_media.html#mvk9gc7014k0">Art</a>.
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-0t121id1kqk0" class="outline-3">
+<h3 id="0t121id1kqk0">Jacques-Louis David</h3>
+<div class="outline-text-3" id="text-0t121id1kqk0">
+<div class="BACKLINKS" id="orgf8f0687">
+<p>
+This section was referenced in <a href="art_paintings_media.html#aor7kn10pqk0">The Death of Socrates, Jacques-Louis David</a>, <a href="art_paintings_media.html#m2c9psg0mqk0">The Illness of Antiochus, Jacques-Louis David</a>, and <a href="art_paintings_media.html#vay9gkd1kqk0">Belisarius Begging for Alms, Jacques-Louis David</a>.
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-5tp1r081vqk0" class="outline-3">
+<h3 id="5tp1r081vqk0">Nicolas Poussin</h3>
+<div class="outline-text-3" id="text-5tp1r081vqk0">
+</div>
+</div>
+<div id="outline-container-38phjra0ark0" class="outline-3">
+<h3 id="38phjra0ark0">Pierre-Henri de Valenciennes</h3>
+<div class="outline-text-3" id="text-38phjra0ark0">
+<div class="BACKLINKS" id="org8147ff7">
+<p>
+This section was referenced in <a href="art_paintings_media.html#jt943nn0brk0">View of Rome, Pierre-Henri de Valenciennes</a>, <a href="art_paintings_media.html#tce3wwj0frk0">Classical Landscape with Figures Drinking by a Fountain, Pierre-Henri de Valenciennes</a>, <a href="art_paintings_media.html#v2mg82w0crk0">The Ancient City of Agrigento, Pierre-Henri de Valenciennes</a>, <a href="art_paintings_media.html#vd58bxc0erk0">“Cicero Discovering the Tomb of Archimedes”, Pierre-Henri de Valenciennes</a>, and <a href="art_paintings_media.html#yxd14va0ark0">Study of Clouds, Pierre-Henri de Valenciennes</a>.
+</p>
+
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orga140eaf" class="outline-2">
+<h2 id="orga140eaf"><span class="todo TODO">TODO</span> Everyday, a beautiful painting.&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_general">@general</span></span></h2>
+<div class="outline-text-2" id="text-orga140eaf">
 <ul class="org-ul">
 <li><span class="timestamp-wrapper"><span class="timestamp">[2025-08-03 Sun 03:37]</span></span> I will probably stop adding notes like &ldquo;next is&rdquo;. My
 new browse can pin the tab for good, so tracking where I stopped is no longer
@@ -853,6 +1347,30 @@ William-Adolphe Bouguereau 141 / 430</li>
 <li><span class="timestamp-wrapper"><span class="timestamp">[2025-05-02 Fri 00:17]</span></span> At 374, Ivan</li>
 </ul>
 <div class="notes"> <ul class="org-ul">
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-11-17 Mon 20:09]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-11-16 Sun 23:28]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-11-15 Sat 19:23]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-11-14 Fri 20:43]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-11-13 Thu 21:53]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-11-03 Mon 00:47]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-10-28 Tue 22:25]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-10-26 Sun 20:07]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-10-25 Sat 20:33]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-10-24 Fri 21:46]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-10-24 Fri 01:18]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-10-24 Fri 01:18]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-10-22 Wed 21:27]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-10-21 Tue 19:19]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-10-20 Mon 20:33]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-10-20 Mon 00:09]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-10-19 Sun 01:31]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-10-17 Fri 18:51]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-10-15 Wed 02:24]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-10-11 Sat 02:01]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-10-06 Mon 22:38]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-10-02 Thu 00:10]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-10-01 Wed 00:56]</span></span></li>
+<li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-09-30 Tue 05:02]</span></span></li>
 <li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-09-28 Sun 00:07]</span></span></li>
 <li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-09-26 Fri 17:43]</span></span></li>
 <li>State &ldquo;DONE&rdquo;       from &ldquo;TODO&rdquo;       <span class="timestamp-wrapper"><span class="timestamp">[2025-09-26 Fri 00:58]</span></span></li>
@@ -932,6 +1450,126 @@ William-Adolphe Bouguereau 141 / 430</li>
 </ul>
  </div>
 <div class="notes"> <p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-11-17 Mon 20:00]--[2025-11-17 Mon 20:09] </span> <span class="timestamp">(0:09)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-11-16 Sun 23:12]--[2025-11-16 Sun 23:28] </span> <span class="timestamp">(0:16)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-11-15 Sat 14:44]--[2025-11-15 Sat 14:48] </span> <span class="timestamp">(0:04)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-11-14 Fri 20:39]--[2025-11-14 Fri 20:43] </span> <span class="timestamp">(0:04)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-11-13 Thu 21:29]--[2025-11-13 Thu 21:53] </span> <span class="timestamp">(0:24)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-11-03 Mon 00:37]--[2025-11-03 Mon 00:47] </span> <span class="timestamp">(0:10)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-11-02 Sun 03:00]--[2025-11-02 Sun 03:17] </span> <span class="timestamp">(0:17)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-10-28 Tue 21:10]--[2025-10-28 Tue 22:25] </span> <span class="timestamp">(1:15)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-10-26 Sun 19:57]--[2025-10-26 Sun 20:07] </span> <span class="timestamp">(0:10)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-10-25 Sat 19:12]--[2025-10-25 Sat 19:51] </span> <span class="timestamp">(0:39)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-10-24 Fri 21:35]--[2025-10-24 Fri 21:46] </span> <span class="timestamp">(0:11)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-10-24 Fri 00:38]--[2025-10-24 Fri 01:18] </span> <span class="timestamp">(0:40)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-10-22 Wed 20:59]--[2025-10-22 Wed 21:27] </span> <span class="timestamp">(0:28)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-10-21 Tue 18:53]--[2025-10-21 Tue 19:19] </span> <span class="timestamp">(0:26)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-10-20 Mon 19:57]--[2025-10-20 Mon 20:33] </span> <span class="timestamp">(0:36)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-10-19 Sun 23:50]--[2025-10-20 Mon 00:09] </span> <span class="timestamp">(0:19)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-10-18 Sat 23:59]--[2025-10-19 Sun 01:31] </span> <span class="timestamp">(1:32)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-10-17 Fri 18:41]--[2025-10-17 Fri 18:51] </span> <span class="timestamp">(0:10)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-10-15 Wed 01:44]--[2025-10-15 Wed 02:24] </span> <span class="timestamp">(0:40)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-10-11 Sat 00:57]--[2025-10-11 Sat 02:01] </span> <span class="timestamp">(1:04)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-10-06 Mon 22:15]--[2025-10-06 Mon 22:38] </span> <span class="timestamp">(0:23)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-10-02 Thu 00:03]--[2025-10-02 Thu 00:10] </span> <span class="timestamp">(0:07)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-10-01 Wed 00:17]--[2025-10-01 Wed 00:56] </span> <span class="timestamp">(0:39)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-09-30 Tue 04:04]--[2025-09-30 Tue 05:02] </span> <span class="timestamp">(0:58)</span>
+</span>
+</p>
+<p>
 <span class="timestamp-wrapper">
 <span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-09-28 Sun 22:03]--[2025-09-29 Mon 15:59] </span> <span class="timestamp">(17:56)</span>
 </span>
@@ -1374,12 +2012,12 @@ William-Adolphe Bouguereau 141 / 430</li>
  </div>
 </div>
 </div>
-<div id="outline-container-orgd439c51" class="outline-2">
-<h2 id="orgd439c51"><span class="todo TODO">TODO</span> Parable of the Good Samaritan next Robert Bateman&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_check">@check</span>&#xa0;<span class="_later">@later</span></span></h2>
+<div id="outline-container-orgc6593ee" class="outline-2">
+<h2 id="orgc6593ee"><span class="todo TODO">TODO</span> Parable of the Good Samaritan next Robert Bateman&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_check">@check</span>&#xa0;<span class="_later">@later</span></span></h2>
 </div>
-<div id="outline-container-org4b15f7a" class="outline-2">
-<h2 id="org4b15f7a"><span class="todo TODO">TODO</span> Read&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_read">@read</span></span></h2>
-<div class="outline-text-2" id="text-org4b15f7a">
+<div id="outline-container-orgb777b5b" class="outline-2">
+<h2 id="orgb777b5b"><span class="todo TODO">TODO</span> Read&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_read">@read</span></span></h2>
+<div class="outline-text-2" id="text-orgb777b5b">
 <div class="notes"> <p>
 <span class="timestamp-wrapper">
 <span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-05-04 Sun 05:09]--[2025-05-04 Sun 05:17] </span> <span class="timestamp">(0:08)</span>
@@ -1401,7 +2039,7 @@ The Death of Hippolytus (1860)
 </div>
 </div>
 <div id="outline-container-spk1y380omk0" class="outline-2">
-<h2 id="spk1y380omk0"><span class="todo TODO">TODO</span> <a href="msgid:20250608144113.3.eca9b1a1beb41c88@mg-d0.substack.com">How Christianity Shaped Art</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_read">@read</span>&#xa0;<span class="_general">@general</span></span></h2>
+<h2 id="spk1y380omk0"><span class="todo TODO">TODO</span> <a href="msgid:20250608144113.3.eca9b1a1beb41c88@mg-d0.substack.com">How Christianity Shaped Art</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_read">@read</span></span></h2>
 <div class="outline-text-2" id="text-spk1y380omk0">
 <ul class="org-ul">
 <li><span class="timestamp-wrapper"><span class="timestamp">[2025-09-13 Sat 01:33]</span></span> <br>
@@ -1423,13 +2061,16 @@ sswda</li>
 <p>
 <span class="timestamp-wrapper"><span class="timestamp">[2025-06-08 Sun 22:43]</span></span>
 </p>
-<div class="tag" id="orgcab2404">
+<div class="tag" id="org044a276">
 <p>
 This section was labeled under, or is related to <a href="art_paintings_media.html#r98aze11tik0">Christian Art</a>
 </p>
 
 </div>
 </div>
+</div>
+<div id="outline-container-org06faf69" class="outline-2">
+<h2 id="org06faf69"><span class="todo TODO">TODO</span> <a href="https://en.wikipedia.org/wiki/History_painting">History painting - Wikipedia</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_idea">@idea</span></span></h2>
 </div>
 </div>
 <div id="postamble" class="status">
@@ -1438,9 +2079,108 @@ This section was labeled under, or is related to <a href="art_paintings_media.ht
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.34). Written by: Salih Muhammed, by the date of: . Last build date: 2025-09-29 Mon 16:13.</p>
+  <div class="book-covers" style="margin: 1em 0; padding: 0 10px;">
+    <p style="margin: 0.5em 0; font-style: italic; color: #555;">Some works I recommend engaging with:</p>
+    <div id="books-container" style="display: flex; flex-wrap: wrap; gap: 8px; max-width: 100%;"></div>
+  </div>
 
-</div>
+
+  <script>
+    const path = window.location.pathname;
+    if (path !== '/' && path !== '/index.html') {
+      const allBooks = [
+        {title: 'The Computational Beauty of Nature', author: 'Gary William Flake'},
+        {title: 'Group Psychology', author: 'Sigmund Freud'},
+        {title: 'Logic', author: 'Nicholas Smith'},
+        {title: 'Structure and Interpretation of Computer Programs', author: 'Harold Abelson'},
+        {title: 'The C Programming Language', author: 'Brian Kernighan'},
+        {title: 'Out of Bounds: Academic Freedom and the Question of Palestine', author: 'M. Abraham'},
+        {title: 'Understanding Power: The Indispensable Chomsky', author: 'Noam Chomsky'},
+        {title: 'Who Rules the World?', author: 'Noam Chomsky'},
+        {title: 'Manufacturing Consent: The Political Economy of the Mass Media', author: 'Noam Chomsky'},
+        {title: 'A People History of The World', author: 'Chris Harman'},
+        {title: 'The Arabs: A History', author: 'Eugene Rogan'},
+        {title: 'State of Terror', author: 'Y. Suarez'},
+        {title: 'A People History of The United States', author: 'Howard Zinn'},
+        {title: 'Killing Hope', author: 'William Blum'},
+        {title: 'Deliverance From Error', author: 'Al-Ghazali'},
+        {title: 'The Dawn of The Day', author: 'Friedrich Nietzsche'},
+        {title: 'Islam and The Destiny of Man', author: 'Gai Eaton'},
+        {title: 'The Polymath', author: 'Waqas Ahmed'},
+        {title: 'Twilight of The Idols', author: 'Friedrich Nietzsche'},
+        {title: 'Manfred', author: 'Lord Byron'},
+        {title: 'Marx in Soho', author: 'Howard Zinn'}
+      ];
+
+      const shuffled = allBooks.sort(() => 0.5 - Math.random());
+      const container = document.getElementById('books-container');
+      let displayedBooks = 0;
+      let bookIndex = 0;
+
+      async function tryNextBook() {
+        if (displayedBooks >= 2 || bookIndex >= shuffled.length) return;
+
+        const book = shuffled[bookIndex];
+        bookIndex++;
+
+        try {
+          const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=intitle:${encodeURIComponent(book.title)}+inauthor:${encodeURIComponent(book.author)}&maxResults=1`);
+          const data = await res.json();
+
+          if (data.items && data.items[0]) {
+            const volumeInfo = data.items[0].volumeInfo;
+            if (volumeInfo.imageLinks) {
+              const link = document.createElement('a');
+              link.style.display = 'none';
+              link.style.lineHeight = '0';
+              link.target = '_blank';
+              if (volumeInfo.infoLink) {
+                link.href = volumeInfo.infoLink;
+              }
+
+              const img = document.createElement('img');
+              img.style.cssText = 'height: 140px; border: 1px dotted #666; background: transparent;';
+              img.src = volumeInfo.imageLinks.thumbnail;
+              img.onload = () => {
+                link.style.display = 'inline-block';
+              };
+
+              link.appendChild(img);
+              container.appendChild(link);
+              displayedBooks++;
+              
+              if (displayedBooks < 2) {
+                tryNextBook();
+              }
+            } else {
+              console.log(`Cannot find book cover for: ${book.title} by ${book.author}`);
+              tryNextBook();
+            }
+          } else {
+            console.log(`Cannot find book: ${book.title} by ${book.author}`);
+            tryNextBook();
+          }
+        } catch (err) {
+          console.log(`Error fetching book: ${book.title} by ${book.author}`, err);
+          tryNextBook();
+        }
+      }
+
+      tryNextBook();
+    } else {
+      document.querySelector('.book-covers').style.display = 'none';
+    }
+  </script>
+
+  </div>
+
+
+
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.34). Written by: Salih Muhammed, by the date of: . Last build date: 2025-11-21 Fri 14:42.</p>
+
+
+
+
 </div>
 </div>
 </body>

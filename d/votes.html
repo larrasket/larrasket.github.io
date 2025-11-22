@@ -21,6 +21,15 @@
   <link rel="stylesheet" href="/style/main.css">
 
 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const p = document.querySelector('#content > p:first-of-type');
+  if (p && /^[\u0600-\u06FF]/.test(p.textContent.trim())) {
+    p.classList.add('arabic');
+  }
+});
+</script>
+
 
 
   <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
@@ -248,30 +257,26 @@ if (window.location.pathname.includes('art_paintings_media')) {
 }
 </script>
 
+
 <script>
-
-
-
-  
-// Stack Page Formatter - Apply inline layout to specific pages
 (function() {
   'use strict';
-  
+
   // Check if current page should have the formatting applied
   function shouldApplyFormatting() {
     const path = window.location.pathname;
-    
+
     // Check if path matches our target patterns
-    return path === '/stack' || 
-           path === '/stack.html' || 
+    return path === '/stack' ||
+           path === '/stack.html' ||
            path.startsWith('/sh/');
   }
-  
+
   // Only proceed if we're on a target page
   if (!shouldApplyFormatting()) {
     return;
   }
-  
+
   // Add CSS styles
   function addStyles() {
     const style = document.createElement('style');
@@ -317,6 +322,7 @@ if (window.location.pathname.includes('art_paintings_media')) {
         padding: 0 !important;
       }
 
+
       /* Hide block elements that will be moved */
       .outline-3 .moved-block {
         display: block;
@@ -330,7 +336,7 @@ if (window.location.pathname.includes('art_paintings_media')) {
     `;
     document.head.appendChild(style);
   }
-  
+
   // Extract ID from container div
   function extractIdFromContainer(entry) {
     const containerId = entry.id;
@@ -339,27 +345,27 @@ if (window.location.pathname.includes('art_paintings_media')) {
     }
     return null;
   }
-  
+
   // Apply the formatting transformation
   function applyFormatting() {
     // Process each entry
     const entries = document.querySelectorAll('.outline-3');
-    
+
     entries.forEach((entry, index) => {
       // Extract the anchor ID from the container before transformation
       const anchorId = extractIdFromContainer(entry);
-      
+
       // Extract components
       const h3 = entry.querySelector('h3');
       const notes = entry.querySelector('.notes');
       const outlineText = entry.querySelector('.outline-text-3');
       const tag = entry.querySelector('.tag');
-      
+
       if (!h3 || !outlineText) return;
-      
+
       // Get title text (preserve any TODO/DONE prefixes and links)
       let titleText = h3.innerHTML;
-      
+
       // Get timestamp
       let timestampText = '';
       if (notes) {
@@ -368,19 +374,22 @@ if (window.location.pathname.includes('art_paintings_media')) {
           timestampText = timestamp.textContent;
         }
       }
-      
-      // Get content paragraphs (excluding notes and tag)
+
+      // Get content paragraphs (excluding notes, tag, and backlinks)
       const contentParagraphs = [];
       const blockElements = [];
-      
+      const backlinks = entry.querySelector('.BACKLINKS');
+
       Array.from(outlineText.children).forEach(child => {
-        if (child.classList.contains('notes') || child.classList.contains('tag')) {
-          return; // Skip these
+        if (child.classList.contains('notes') ||
+            child.classList.contains('tag') ||
+            child.classList.contains('BACKLINKS')) {
+          return; // Skip these - they'll be handled separately
         }
-        
+
         if (child.tagName === 'P') {
           contentParagraphs.push(child.innerHTML);
-        } else if (child.tagName === 'UL' || child.tagName === 'OL' || 
+        } else if (child.tagName === 'UL' || child.tagName === 'OL' ||
                    child.tagName === 'BLOCKQUOTE' || child.tagName === 'PRE' ||
                    child.tagName === 'DL' || child.classList.contains('epigraph')) {
           blockElements.push(child.outerHTML);
@@ -388,48 +397,55 @@ if (window.location.pathname.includes('art_paintings_media')) {
           blockElements.push(child.outerHTML);
         }
       });
-      
+
       // Get tag HTML (preserve links and formatting)
       let tagHtml = '';
       if (tag) {
         tagHtml = tag.outerHTML;
       }
-      
+
       // Construct the new single paragraph
       let newContent = '';
-      
+
       // Add date at the start (gray)
       if (timestampText) {
         newContent += '<span class="entry-date">' + timestampText + '</span>';
       }
-      
+
       // Add title with emdash
       newContent += titleText + ' — ';
-      
+
       // Add content paragraphs
       newContent += contentParagraphs.join(' ');
-      
+
       // Add tag at the end in parentheses (preserve HTML but force inline)
       if (tagHtml) {
         // Extract just the inner content and wrap it properly
         let tagContent = tag.innerHTML;
         newContent += ' <span class="entry-tag">(' + tagContent + ')</span>';
       }
-      
+
       // Create new paragraph element
       const newParagraph = document.createElement('p');
       newParagraph.className = 'entry-paragraph';
       newParagraph.innerHTML = newContent;
-      
-      // Clear the entry and add the new paragraph
+
+      // Clear the entry
       entry.innerHTML = '';
-      entry.appendChild(newParagraph);
-      
+
       // Preserve the anchor ID by setting it on the transformed entry
       if (anchorId) {
         entry.id = anchorId;
       }
-      
+
+      // Add backlinks FIRST so they can float to the right
+      if (backlinks) {
+        entry.appendChild(backlinks.cloneNode(true));
+      }
+
+      // Then add the main paragraph
+      entry.appendChild(newParagraph);
+
       // Add any block elements after the paragraph
       blockElements.forEach(blockHtml => {
         const blockDiv = document.createElement('div');
@@ -437,7 +453,7 @@ if (window.location.pathname.includes('art_paintings_media')) {
         blockDiv.innerHTML = blockHtml;
         entry.appendChild(blockDiv);
       });
-      
+
       // Add separator after each entry (except the last one)
       if (index < entries.length - 1) {
         const separator = document.createElement('hr');
@@ -448,21 +464,21 @@ if (window.location.pathname.includes('art_paintings_media')) {
       }
     });
   }
-  
+
   // Initialize when DOM is ready
   function init() {
     addStyles();
-    
+
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', applyFormatting);
     } else {
       applyFormatting();
     }
   }
-  
+
   // Start the initialization
   init();
-})();
+})()
 </script>
 
 
@@ -484,6 +500,19 @@ margin-block-start: auto;
     color: black;
 ">Hereby, all birds fly</h1>
       </a>
+      <nav class="site-nav">
+        <a href="/p/">all posts</a>
+        <span>•</span>
+        <a href="/stack.html">short posts</a>
+        <span>•</span>
+        <a href="/fullbooks.html">books</a>
+        <span>•</span>
+        <a href="/a.html#2ar8en10n2k0">anthology</a>
+        <span>•</span>
+        <a href="/pgp.html">PGP key</a>
+        <span>•</span>
+        <a href="https://www.admonymous.co/larrasket">leave a message</a>
+      </nav>
 <hr class="header-divider" style="margin-block-end: -1em;">
   </div>
 </div>
@@ -491,7 +520,7 @@ margin-block-start: auto;
 <div id="content" class="content">
 <header>
 <h1 class="title">Buying Votes</h1>
-</header><div class="tag" id="orgea3d6bb">
+</header><div class="tag" id="org912ff73">
 <p>
 This section was labeled under, or is related to <a href="../t/political.html#thc4j6p02wj0">Politics</a>
 </p>
@@ -547,7 +576,7 @@ term. <a href="https://www.jpost.com/middle-east/iran-news/article-826211">^{13}
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: 2024-11-12 Tue 04:49. Last build date: 2025-07-25 Fri 00:00.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.34). Written by: Salih Muhammed, by the date of: 2024-11-12 Tue 04:49. Last build date: 2025-07-25 Fri 00:00.</p>
 
 </div>
 </div>

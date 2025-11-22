@@ -6,47 +6,69 @@
 <title>Mathematics</title>
 <meta name="author" content="Salih Muhammed" />
 <meta name="generator" content="Org Mode" />
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-  <meta name="theme-color" content="#ffffff">
-  <meta charset="utf-8">
-  <meta name="theme-color" content="#ffffff">
-  <meta name="viewport" content= "width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/style/toc.css">
-  <link rel="stylesheet" href="/style/tufte.css">
-  <link rel="stylesheet" href="/style/main.css">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta charset="utf-8" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/style/toc.css?v=20250120" />
+    <link rel="stylesheet" href="/style/tufte.css?v=20250120" />
+    <link rel="stylesheet" href="/style/main.css?v=20250201" />
 
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const p = document.querySelector("#content > p:first-of-type");
+        if (p && /^[\u0600-\u06FF]/.test(p.textContent.trim())) {
+          p.classList.add("arabic");
+        }
+      });
+    </script>
 
+    <script async data-id="101390423" src="//static.getclicky.com/js"></script>
+    <noscript>
+      <p>
+        <img
+          alt="Clicky"
+          width="1"
+          height="1"
+          src="//in.getclicky.com/101390423ns.gif"
+        /></p
+    ></noscript>
 
+    <!-- Import LazySizes - State-of-the-art lazy loading library -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js"
+      async
+    ></script>
 
-  <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
-  <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+    <!-- Optional: Import plugins for better performance -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js"
+      async
+    ></script>
 
-<!-- Import LazySizes - State-of-the-art lazy loading library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+    <script>
+      // Only run on pages with 'art_paintings_media' in the path
+      if (window.location.pathname.includes("art_paintings_media")) {
+        document.addEventListener("DOMContentLoaded", function () {
+          // Configure LazySizes for optimal performance
+          window.lazySizesConfig = window.lazySizesConfig || {};
+          window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
+          window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
+          window.lazySizesConfig.expFactor = 1.5; // Expand loading area
+          window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
 
-<!-- Optional: Import plugins for better performance -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js" async></script>
-
-<script>
-// Only run on pages with 'art_paintings_media' in the path
-if (window.location.pathname.includes('art_paintings_media')) {
-  document.addEventListener('DOMContentLoaded', function() {
-    
-    // Configure LazySizes for optimal performance
-    window.lazySizesConfig = window.lazySizesConfig || {};
-    window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
-    window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
-    window.lazySizesConfig.expFactor = 1.5; // Expand loading area
-    window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
-
-    // Add CSS for smooth transitions and collapsible content
-    const style = document.createElement('style');
-    style.textContent = `
+          // Add CSS for smooth transitions and collapsible content
+          const style = document.createElement("style");
+          style.textContent = `
       .lazyload,
       .lazyloading {
         opacity: 0;
@@ -74,208 +96,215 @@ if (window.location.pathname.includes('art_paintings_media')) {
         filter: none;
       }
     `;
-    document.head.appendChild(style);
+          document.head.appendChild(style);
 
-    // Find all h3 elements
-    const h3Elements = document.querySelectorAll('h3');
+          // Find all h3 elements
+          const h3Elements = document.querySelectorAll("h3");
 
-    h3Elements.forEach(function(h3) {
-      // Make h3 clickable and add icon
-      h3.style.position = 'relative';
-      h3.style.cursor = 'pointer';
-      h3.style.paddingLeft = '20px';
-      h3.style.userSelect = 'none';
+          h3Elements.forEach(function (h3) {
+            // Make h3 clickable and add icon
+            h3.style.position = "relative";
+            h3.style.cursor = "pointer";
+            h3.style.paddingLeft = "20px";
+            h3.style.userSelect = "none";
 
-      // Add the arrow icon
-      const icon = document.createElement('span');
-      icon.innerHTML = '▶';
-      icon.style.position = 'absolute';
-      icon.style.left = '0px';
-      icon.style.top = '50%';
-      icon.style.transform = 'translateY(-50%)';
-      icon.style.transition = 'transform 0.2s';
-      icon.style.fontSize = '0.8em';
-      icon.style.color = 'rgb(102, 102, 102)';
-      icon.style.fontFamily = 'monospace';
+            // Add the arrow icon
+            const icon = document.createElement("span");
+            icon.innerHTML = "▶";
+            icon.style.position = "absolute";
+            icon.style.left = "0px";
+            icon.style.top = "50%";
+            icon.style.transform = "translateY(-50%)";
+            icon.style.transition = "transform 0.2s";
+            icon.style.fontSize = "0.8em";
+            icon.style.color = "rgb(102, 102, 102)";
+            icon.style.fontFamily = "monospace";
 
-      h3.insertBefore(icon, h3.firstChild);
+            h3.insertBefore(icon, h3.firstChild);
 
-      // Find all content after this h3 until the next h3 or end of parent
-      const contentElements = [];
-      let nextElement = h3.nextElementSibling;
+            // Find all content after this h3 until the next h3 or end of parent
+            const contentElements = [];
+            let nextElement = h3.nextElementSibling;
 
-      while (nextElement && nextElement.tagName !== 'H3') {
-        contentElements.push(nextElement);
-        nextElement = nextElement.nextElementSibling;
-      }
-
-      // Create a wrapper for smooth collapsing
-      const wrapper = document.createElement('div');
-      wrapper.className = 'collapsible-content collapsed';
-      wrapper.style.maxHeight = '0';
-
-      // Move content elements into wrapper
-      contentElements.forEach(function(element) {
-        wrapper.appendChild(element);
-      });
-
-      // Insert wrapper after h3
-      h3.parentNode.insertBefore(wrapper, h3.nextSibling);
-
-      // Prepare images for LazySizes lazy loading and make them clickable
-      const prepareImagesForLazyLoading = (container) => {
-        const images = container.querySelectorAll('img');
-        images.forEach(function(img) {
-          // Only process if not already processed
-          if (!img.classList.contains('lazyload') && !img.dataset.processed) {
-            // Store original src in data-src for LazySizes
-            if (img.src && img.src !== '' && !img.src.startsWith('data:')) {
-              img.dataset.src = img.src;
-              // Use a tiny placeholder or low-quality placeholder
-              img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+            while (nextElement && nextElement.tagName !== "H3") {
+              contentElements.push(nextElement);
+              nextElement = nextElement.nextElementSibling;
             }
 
-            // Handle srcset for responsive images
-            if (img.srcset && img.srcset !== '') {
-              img.dataset.srcset = img.srcset;
-              img.srcset = '';
-            }
+            // Create a wrapper for smooth collapsing
+            const wrapper = document.createElement("div");
+            wrapper.className = "collapsible-content collapsed";
+            wrapper.style.maxHeight = "0";
 
-            // Handle sizes attribute
-            if (img.sizes) {
-              img.dataset.sizes = img.sizes;
-            }
+            // Move content elements into wrapper
+            contentElements.forEach(function (element) {
+              wrapper.appendChild(element);
+            });
 
-            // Add LazySizes classes
-            img.classList.add('lazyload');
+            // Insert wrapper after h3
+            h3.parentNode.insertBefore(wrapper, h3.nextSibling);
 
-            // Make image clickable - add cursor pointer
-            img.style.cursor = 'pointer';
+            // Prepare images for LazySizes lazy loading and make them clickable
+            const prepareImagesForLazyLoading = (container) => {
+              const images = container.querySelectorAll("img");
+              images.forEach(function (img) {
+                // Only process if not already processed
+                if (
+                  !img.classList.contains("lazyload") &&
+                  !img.dataset.processed
+                ) {
+                  // Store original src in data-src for LazySizes
+                  if (
+                    img.src &&
+                    img.src !== "" &&
+                    !img.src.startsWith("data:")
+                  ) {
+                    img.dataset.src = img.src;
+                    // Use a tiny placeholder or low-quality placeholder
+                    img.src =
+                      'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+                  }
 
-            // Add click handler to open image in new tab
-            img.addEventListener('click', function(e) {
+                  // Handle srcset for responsive images
+                  if (img.srcset && img.srcset !== "") {
+                    img.dataset.srcset = img.srcset;
+                    img.srcset = "";
+                  }
+
+                  // Handle sizes attribute
+                  if (img.sizes) {
+                    img.dataset.sizes = img.sizes;
+                  }
+
+                  // Add LazySizes classes
+                  img.classList.add("lazyload");
+
+                  // Make image clickable - add cursor pointer
+                  img.style.cursor = "pointer";
+
+                  // Add click handler to open image in new tab
+                  img.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    e.stopPropagation(); // Prevent triggering h3 collapse
+
+                    // Get the actual image URL (either from src or data-src)
+                    let imageUrl = this.src;
+                    if (this.dataset.src && !this.src.startsWith("data:")) {
+                      imageUrl = this.dataset.src;
+                    } else if (
+                      this.src.startsWith("data:") &&
+                      this.dataset.src
+                    ) {
+                      imageUrl = this.dataset.src;
+                    }
+
+                    // Open image in new tab
+                    if (imageUrl && !imageUrl.startsWith("data:")) {
+                      window.open(imageUrl, "_blank");
+                    }
+                  });
+
+                  // Mark as processed
+                  img.dataset.processed = "true";
+
+                  // Maintain aspect ratio to prevent layout shift
+                  if (!img.style.aspectRatio && img.width && img.height) {
+                    img.style.aspectRatio = img.width + "/" + img.height;
+                  }
+                }
+              });
+            };
+
+            // Prepare all images in this section for lazy loading
+            prepareImagesForLazyLoading(wrapper);
+
+            // Track collapsed state
+            let isCollapsed = true;
+            let hasBeenExpanded = false;
+
+            // Add click handler
+            h3.addEventListener("click", function (e) {
               e.preventDefault();
-              e.stopPropagation(); // Prevent triggering h3 collapse
 
-              // Get the actual image URL (either from src or data-src)
-              let imageUrl = this.src;
-              if (this.dataset.src && !this.src.startsWith('data:')) {
-                imageUrl = this.dataset.src;
-              } else if (this.src.startsWith('data:') && this.dataset.src) {
-                imageUrl = this.dataset.src;
-              }
+              if (isCollapsed) {
+                // Expand: show content and activate lazy loading
+                icon.style.transform = "translateY(-50%) rotate(90deg)";
+                wrapper.classList.remove("collapsed");
+                wrapper.classList.add("expanded");
+                wrapper.style.maxHeight = wrapper.scrollHeight + "px";
 
-              // Open image in new tab
-              if (imageUrl && !imageUrl.startsWith('data:')) {
-                window.open(imageUrl, '_blank');
+                // Only activate LazySizes for this section when first expanded
+                if (!hasBeenExpanded) {
+                  // Trigger LazySizes to check for images in this newly visible section
+                  if (window.lazySizes) {
+                    // Force LazySizes to check all images in this wrapper
+                    const lazyImages = wrapper.querySelectorAll(".lazyload");
+                    lazyImages.forEach((img) => {
+                      // Add to LazySizes queue
+                      window.lazySizes.loader.unveil(img);
+                    });
+                  }
+                  hasBeenExpanded = true;
+                }
+
+                isCollapsed = false;
+
+                // Recalculate height after images potentially load
+                setTimeout(() => {
+                  if (!isCollapsed) {
+                    wrapper.style.maxHeight = wrapper.scrollHeight + "px";
+                  }
+                }, 100);
+              } else {
+                // Collapse: hide content
+                icon.style.transform = "translateY(-50%) rotate(0deg)";
+                wrapper.classList.remove("expanded");
+                wrapper.classList.add("collapsed");
+                wrapper.style.maxHeight = "0";
+
+                isCollapsed = true;
               }
             });
 
-            // Mark as processed
-            img.dataset.processed = 'true';
-
-            // Maintain aspect ratio to prevent layout shift
-            if (!img.style.aspectRatio && img.width && img.height) {
-              img.style.aspectRatio = img.width + '/' + img.height;
-            }
-          }
+            // Listen for LazySizes events to adjust height dynamically
+            wrapper.addEventListener("lazyloaded", function (e) {
+              if (!isCollapsed) {
+                // Adjust wrapper height when images load
+                setTimeout(() => {
+                  wrapper.style.maxHeight = wrapper.scrollHeight + "px";
+                }, 50);
+              }
+            });
+          });
         });
-      };
+      }
+    </script>
 
-      // Prepare all images in this section for lazy loading
-      prepareImagesForLazyLoading(wrapper);
+    <script>
+      (function () {
+        "use strict";
 
-      // Track collapsed state
-      let isCollapsed = true;
-      let hasBeenExpanded = false;
+        // Check if current page should have the formatting applied
+        function shouldApplyFormatting() {
+          const path = window.location.pathname;
 
-      // Add click handler
-      h3.addEventListener('click', function(e) {
-        e.preventDefault();
-
-        if (isCollapsed) {
-          // Expand: show content and activate lazy loading
-          icon.style.transform = 'translateY(-50%) rotate(90deg)';
-          wrapper.classList.remove('collapsed');
-          wrapper.classList.add('expanded');
-          wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
-
-          // Only activate LazySizes for this section when first expanded
-          if (!hasBeenExpanded) {
-            // Trigger LazySizes to check for images in this newly visible section
-            if (window.lazySizes) {
-              // Force LazySizes to check all images in this wrapper
-              const lazyImages = wrapper.querySelectorAll('.lazyload');
-              lazyImages.forEach(img => {
-                // Add to LazySizes queue
-                window.lazySizes.loader.unveil(img);
-              });
-            }
-            hasBeenExpanded = true;
-          }
-
-          isCollapsed = false;
-
-          // Recalculate height after images potentially load
-          setTimeout(() => {
-            if (!isCollapsed) {
-              wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
-            }
-          }, 100);
-
-        } else {
-          // Collapse: hide content
-          icon.style.transform = 'translateY(-50%) rotate(0deg)';
-          wrapper.classList.remove('expanded');
-          wrapper.classList.add('collapsed');
-          wrapper.style.maxHeight = '0';
-
-          isCollapsed = true;
+          // Check if path matches our target patterns
+          return (
+            path === "/stack" ||
+            path === "/stack.html" ||
+            path.startsWith("/sh/")
+          );
         }
-      });
 
-      // Listen for LazySizes events to adjust height dynamically
-      wrapper.addEventListener('lazyloaded', function(e) {
-        if (!isCollapsed) {
-          // Adjust wrapper height when images load
-          setTimeout(() => {
-            wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
-          }, 50);
+        // Only proceed if we're on a target page
+        if (!shouldApplyFormatting()) {
+          return;
         }
-      });
-    });
-  });
-}
-</script>
 
-<script>
-
-
-
-  
-// Stack Page Formatter - Apply inline layout to specific pages
-(function() {
-  'use strict';
-  
-  // Check if current page should have the formatting applied
-  function shouldApplyFormatting() {
-    const path = window.location.pathname;
-    
-    // Check if path matches our target patterns
-    return path === '/stack' || 
-           path === '/stack.html' || 
-           path.startsWith('/sh/');
-  }
-  
-  // Only proceed if we're on a target page
-  if (!shouldApplyFormatting()) {
-    return;
-  }
-  
-  // Add CSS styles
-  function addStyles() {
-    const style = document.createElement('style');
-    style.textContent = `
+        // Add CSS styles
+        function addStyles() {
+          const style = document.createElement("style");
+          style.textContent = `
       /* Basic styling for entries */
       .outline-3 {
         margin-bottom: 1.5em;
@@ -317,6 +346,7 @@ if (window.location.pathname.includes('art_paintings_media')) {
         padding: 0 !important;
       }
 
+
       /* Hide block elements that will be moved */
       .outline-3 .moved-block {
         display: block;
@@ -328,149 +358,199 @@ if (window.location.pathname.includes('art_paintings_media')) {
         scroll-margin-top: 20px;
       }
     `;
-    document.head.appendChild(style);
-  }
-  
-  // Extract ID from container div
-  function extractIdFromContainer(entry) {
-    const containerId = entry.id;
-    if (containerId && containerId.startsWith('outline-container-')) {
-      return containerId.replace('outline-container-', '');
+          document.head.appendChild(style);
+        }
+
+        // Extract ID from container div
+        function extractIdFromContainer(entry) {
+          const containerId = entry.id;
+          if (containerId && containerId.startsWith("outline-container-")) {
+            return containerId.replace("outline-container-", "");
+          }
+          return null;
+        }
+
+        // Apply the formatting transformation
+        function applyFormatting() {
+          // Process each entry
+          const entries = document.querySelectorAll(".outline-3");
+
+          entries.forEach((entry, index) => {
+            // Extract the anchor ID from the container before transformation
+            const anchorId = extractIdFromContainer(entry);
+
+            // Extract components
+            const h3 = entry.querySelector("h3");
+            const notes = entry.querySelector(".notes");
+            const outlineText = entry.querySelector(".outline-text-3");
+            const tag = entry.querySelector(".tag");
+
+            if (!h3 || !outlineText) return;
+
+            // Get title text (preserve any TODO/DONE prefixes and links)
+            let titleText = h3.innerHTML;
+
+            // Get timestamp
+            let timestampText = "";
+            if (notes) {
+              const timestamp = notes.querySelector(".timestamp");
+              if (timestamp) {
+                timestampText = timestamp.textContent;
+              }
+            }
+
+            // Get content paragraphs (excluding notes, tag, and backlinks)
+            const contentParagraphs = [];
+            const blockElements = [];
+            const backlinks = entry.querySelector(".BACKLINKS");
+
+            Array.from(outlineText.children).forEach((child) => {
+              if (
+                child.classList.contains("notes") ||
+                child.classList.contains("tag") ||
+                child.classList.contains("BACKLINKS")
+              ) {
+                return; // Skip these - they'll be handled separately
+              }
+
+              if (child.tagName === "P") {
+                contentParagraphs.push(child.innerHTML);
+              } else if (
+                child.tagName === "UL" ||
+                child.tagName === "OL" ||
+                child.tagName === "BLOCKQUOTE" ||
+                child.tagName === "PRE" ||
+                child.tagName === "DL" ||
+                child.classList.contains("epigraph")
+              ) {
+                blockElements.push(child.outerHTML);
+              } else if (
+                child.tagName === "DIV" &&
+                child.classList.contains("epigraph")
+              ) {
+                blockElements.push(child.outerHTML);
+              }
+            });
+
+            // Get tag HTML (preserve links and formatting)
+            let tagHtml = "";
+            if (tag) {
+              tagHtml = tag.outerHTML;
+            }
+
+            // Construct the new single paragraph
+            let newContent = "";
+
+            // Add date at the start (gray)
+            if (timestampText) {
+              newContent +=
+                '<span class="entry-date">' + timestampText + "</span>";
+            }
+
+            // Add title with emdash
+            newContent += titleText + " — ";
+
+            // Add content paragraphs
+            newContent += contentParagraphs.join(" ");
+
+            // Add tag at the end in parentheses (preserve HTML but force inline)
+            if (tagHtml) {
+              // Extract just the inner content and wrap it properly
+              let tagContent = tag.innerHTML;
+              newContent +=
+                ' <span class="entry-tag">(' + tagContent + ")</span>";
+            }
+
+            // Create new paragraph element
+            const newParagraph = document.createElement("p");
+            newParagraph.className = "entry-paragraph";
+            newParagraph.innerHTML = newContent;
+
+            // Clear the entry
+            entry.innerHTML = "";
+
+            // Preserve the anchor ID by setting it on the transformed entry
+            if (anchorId) {
+              entry.id = anchorId;
+            }
+
+            // Add backlinks FIRST so they can float to the right
+            if (backlinks) {
+              entry.appendChild(backlinks.cloneNode(true));
+            }
+
+            // Then add the main paragraph
+            entry.appendChild(newParagraph);
+
+            // Add any block elements after the paragraph
+            blockElements.forEach((blockHtml) => {
+              const blockDiv = document.createElement("div");
+              blockDiv.className = "moved-block";
+              blockDiv.innerHTML = blockHtml;
+              entry.appendChild(blockDiv);
+            });
+
+            // Add separator after each entry (except the last one)
+            if (index < entries.length - 1) {
+              const separator = document.createElement("hr");
+              separator.style.margin = "1em 0";
+              separator.style.border = "none";
+              separator.style.borderTop = "1px solid #ccc";
+              entry.appendChild(separator);
+            }
+          });
+        }
+
+        // Initialize when DOM is ready
+        function init() {
+          addStyles();
+
+          if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", applyFormatting);
+          } else {
+            applyFormatting();
+          }
+        }
+
+        // Start the initialization
+        init();
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
     }
-    return null;
-  }
-  
-  // Apply the formatting transformation
-  function applyFormatting() {
-    // Process each entry
-    const entries = document.querySelectorAll('.outline-3');
-    
-    entries.forEach((entry, index) => {
-      // Extract the anchor ID from the container before transformation
-      const anchorId = extractIdFromContainer(entry);
-      
-      // Extract components
-      const h3 = entry.querySelector('h3');
-      const notes = entry.querySelector('.notes');
-      const outlineText = entry.querySelector('.outline-text-3');
-      const tag = entry.querySelector('.tag');
-      
-      if (!h3 || !outlineText) return;
-      
-      // Get title text (preserve any TODO/DONE prefixes and links)
-      let titleText = h3.innerHTML;
-      
-      // Get timestamp
-      let timestampText = '';
-      if (notes) {
-        const timestamp = notes.querySelector('.timestamp');
-        if (timestamp) {
-          timestampText = timestamp.textContent;
-        }
-      }
-      
-      // Get content paragraphs (excluding notes and tag)
-      const contentParagraphs = [];
-      const blockElements = [];
-      
-      Array.from(outlineText.children).forEach(child => {
-        if (child.classList.contains('notes') || child.classList.contains('tag')) {
-          return; // Skip these
-        }
-        
-        if (child.tagName === 'P') {
-          contentParagraphs.push(child.innerHTML);
-        } else if (child.tagName === 'UL' || child.tagName === 'OL' || 
-                   child.tagName === 'BLOCKQUOTE' || child.tagName === 'PRE' ||
-                   child.tagName === 'DL' || child.classList.contains('epigraph')) {
-          blockElements.push(child.outerHTML);
-        } else if (child.tagName === 'DIV' && child.classList.contains('epigraph')) {
-          blockElements.push(child.outerHTML);
-        }
-      });
-      
-      // Get tag HTML (preserve links and formatting)
-      let tagHtml = '';
-      if (tag) {
-        tagHtml = tag.outerHTML;
-      }
-      
-      // Construct the new single paragraph
-      let newContent = '';
-      
-      // Add date at the start (gray)
-      if (timestampText) {
-        newContent += '<span class="entry-date">' + timestampText + '</span>';
-      }
-      
-      // Add title with emdash
-      newContent += titleText + ' — ';
-      
-      // Add content paragraphs
-      newContent += contentParagraphs.join(' ');
-      
-      // Add tag at the end in parentheses (preserve HTML but force inline)
-      if (tagHtml) {
-        // Extract just the inner content and wrap it properly
-        let tagContent = tag.innerHTML;
-        newContent += ' <span class="entry-tag">(' + tagContent + ')</span>';
-      }
-      
-      // Create new paragraph element
-      const newParagraph = document.createElement('p');
-      newParagraph.className = 'entry-paragraph';
-      newParagraph.innerHTML = newContent;
-      
-      // Clear the entry and add the new paragraph
-      entry.innerHTML = '';
-      entry.appendChild(newParagraph);
-      
-      // Preserve the anchor ID by setting it on the transformed entry
-      if (anchorId) {
-        entry.id = anchorId;
-      }
-      
-      // Add any block elements after the paragraph
-      blockElements.forEach(blockHtml => {
-        const blockDiv = document.createElement('div');
-        blockDiv.className = 'moved-block';
-        blockDiv.innerHTML = blockHtml;
-        entry.appendChild(blockDiv);
-      });
-      
-      // Add separator after each entry (except the last one)
-      if (index < entries.length - 1) {
-        const separator = document.createElement('hr');
-        separator.style.margin = '1em 0';
-        separator.style.border = 'none';
-        separator.style.borderTop = '1px solid #ccc';
-        entry.appendChild(separator);
-      }
-    });
-  }
-  
-  // Initialize when DOM is ready
-  function init() {
-    addStyles();
-    
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', applyFormatting);
-    } else {
-      applyFormatting();
-    }
-  }
-  
-  // Start the initialization
-  init();
-})();
+  };
 </script>
 
-
-
-</head>
-<body>
-</body>
-</html>
+<script
+  id="MathJax-script"
+  async
+  src="https://fastly.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -484,6 +564,19 @@ margin-block-start: auto;
     color: black;
 ">Hereby, all birds fly</h1>
       </a>
+      <nav class="site-nav">
+        <a href="/p/">all posts</a>
+        <span>•</span>
+        <a href="/stack.html">short posts</a>
+        <span>•</span>
+        <a href="/fullbooks.html">books</a>
+        <span>•</span>
+        <a href="/a.html#2ar8en10n2k0">anthology</a>
+        <span>•</span>
+        <a href="/pgp.html">PGP key</a>
+        <span>•</span>
+        <a href="https://www.admonymous.co/larrasket">leave a message</a>
+      </nav>
 <hr class="header-divider" style="margin-block-end: -1em;">
   </div>
 </div>
@@ -492,7 +585,7 @@ margin-block-start: auto;
 <header>
 <h1 class="title">Mathematics</h1>
 </header>
-<figure id="org83a890d">
+<figure id="orgc8614ec">
 <img src="../i/pr.jpg" alt="pr.jpg">
 
 <figcaption><span class="figure-number">Figure 1: </span>True Golden Spiral: the length of the side of a larger square to the next smaller square is in the ‘Golden Ratio’.</figcaption>
@@ -530,11 +623,22 @@ h1:not(#preamble h1):before {
 
 
 h1 b, h2 b, h3 b, h4 b {
-    background: teal;
-    padding: 1px 9px;
-    font-weight: bold;
-    color: white;
-    font-size: small;
+background: rgba(38, 38, 38, 0.64);
+padding: 0.1em 0.7em;
+color: white;
+font-size: 0.6em;
+}
+
+
+
+h2,
+h3,
+h4,
+h5,
+h6,
+h7,
+h8 {
+  font-style: normal !important;
 }
 
 
@@ -578,10 +682,10 @@ h2,h3,h4,h5,h6,h7,h8 {
 </style>
 </head>
 <hr>
-<div id="outline-container-org2bfb471" class="outline-2">
-<h2 id="org2bfb471"><a href="../p/prelude.html#8ay4irp02wj0">A Prelude Over Mathematics</a></h2>
-<div class="outline-text-2" id="text-org2bfb471">
-<div class="smth" id="orged6d2ce">
+<div id="outline-container-org39be658" class="outline-2">
+<h2 id="org39be658"><a href="../p/prelude.html#8ay4irp02wj0">A Prelude Over Mathematics</a></h2>
+<div class="outline-text-2" id="text-org39be658">
+<div class="smth" id="orgcd59598">
 <p>
 Fri 24 Mar 2023
 </p>
@@ -589,14 +693,458 @@ Fri 24 Mar 2023
 </div>
 </div>
 </div>
-<div id="outline-container-org1cec79d" class="outline-2">
-<h2 id="org1cec79d"><a href="../cs/g.html#13122uo02wj0">Exploring Computational Geometry</a></h2>
-<div class="outline-text-2" id="text-org1cec79d">
-<div class="smth" id="org0922ef4">
+<div id="outline-container-orgae5a571" class="outline-2">
+<h2 id="orgae5a571"><a href="../cs/g.html#13122uo02wj0">Exploring Computational Geometry</a></h2>
+<div class="outline-text-2" id="text-orgae5a571">
+<div class="smth" id="orge612178">
 <p>
 Sat 18 Dec 2021
 </p>
 
+</div>
+</div>
+</div>
+<div id="outline-container-orge36c1be" class="outline-2">
+<h2 id="orge36c1be">Notes</h2>
+<div class="outline-text-2" id="text-orge36c1be">
+</div>
+<div id="outline-container-org1a1cd55" class="outline-3">
+<h3 id="org1a1cd55"><span class="todo TODO">TODO</span> Project Euler</h3>
+<div class="outline-text-3" id="text-org1a1cd55">
+<div class="notes"> <p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2024-06-30 Sun 15:20]--[2024-06-30 Sun 15:48] </span> <span class="timestamp">(0:28)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2024-07-01 Mon 13:47]--[2024-07-01 Mon 14:10] </span> <span class="timestamp">(0:23)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2024-07-01 Mon 12:32]--[2024-07-01 Mon 13:10] </span> <span class="timestamp">(0:38)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2024-07-01 Mon 11:48]--[2024-07-01 Mon 12:08] </span> <span class="timestamp">(0:20)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2024-07-01 Mon 10:48]--[2024-07-01 Mon 10:49] </span> <span class="timestamp">(0:01)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2024-07-03 Wed 14:32]--[2024-07-03 Wed 15:26] </span> <span class="timestamp">(0:54)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2024-06-23 Sun 07:23]--[2024-06-23 Sun 10:29] </span> <span class="timestamp">(3:06)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2024-01-15 Mon 03:39]--[2024-01-15 Mon 03:58] </span> <span class="timestamp">(0:19)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2023-07-28 Fri 02:51]--[2023-07-28 Fri 03:04] </span> <span class="timestamp">(0:13)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2023-07-26 Wed 17:26]--[2023-07-26 Wed 18:31] </span> <span class="timestamp">(1:05)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2023-07-25 Tue 21:28]--[2023-07-25 Tue 21:29] </span> <span class="timestamp">(0:01)</span>
+</span>
+</p>
+<p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2023-07-20 Thu 15:03]--[2023-07-20 Thu 16:55] </span> <span class="timestamp">(1:52)</span>
+</span>
+</p>
+ </div>
+</div>
+<div id="outline-container-orgeed3408" class="outline-4">
+<h4 id="orgeed3408"><span class="done DONE">DONE</span> <a href="https://en.wikipedia.org/wiki/Catalan_number">Catalan number - Wikipedia</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_read">@read</span></span></h4>
+<div class="outline-text-4" id="text-orgeed3408">
+<div class="notes"> <p>
+<span class="timestamp-wrapper">
+<span class="timestamp-kwd">CLOCK:</span> <span class="timestamp">[2025-10-17 Fri 15:12]--[2025-10-17 Fri 16:03] </span> <span class="timestamp">(0:51)</span>
+</span>
+</p>
+ </div>
+<p>
+Related to <a href="https://projecteuler.net/problem=15">#15 Lattice Paths</a>
+<a href="https://stackoverflow.com/a/3308585">s</a>
+</p>
+</div>
+</div>
+<div id="outline-container-org51adda0" class="outline-4">
+<h4 id="org51adda0"><span class="done KILL">KILL</span> <a href="https://www.topcoder.com/thrive/articles/Prime%20Numbers,%20Factorization%20and%20Euler%20Function">Prime Numbers, Factorization and Euler Function</a>&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_read">@read</span></span></h4>
+</div>
+</div>
+<div id="outline-container-8anghp402ak0" class="outline-3">
+<h3 id="8anghp402ak0">Birthday Paradox</h3>
+<div class="outline-text-3" id="text-orgeeabdc0">
+<p>
+In Mathematics, The birthday paradox states that  In a room of just 23 people
+there’s a 50-50 chance of at least two people having the same birthday. In a
+room of 75 there’s a 99.9% chance of at least two people matching.
+</p>
+
+<p>
+The reason behind it looks anomalous and paradoxical to us is because we tend to
+think about probabilistic
+<img src="../../media/plot.png" alt="plot.png">
+</p>
+</div>
+</div>
+<div id="outline-container-ymgijkz0n8k0" class="outline-3">
+<h3 id="ymgijkz0n8k0">Sieve&rsquo;s Algorithm</h3>
+<div class="outline-text-3" id="text-org636703e">
+<div class="epigraph"><blockquote>
+<p>
+To find all the prime numbers less than or equal to a given integer n by Eratosthenes&rsquo; method:
+</p>
+
+<ol class="org-ol">
+<li>Create a list of consecutive integers from 2 through n: (2, 3, 4, &#x2026;, n).</li>
+<li>Initially, let p equal 2, the smallest prime number.</li>
+<li>Enumerate the multiples of p by counting in increments of p from 2p to n, and
+mark them in the list (these will be 2p, 3p, 4p, &#x2026;; the p itself should not
+be marked).</li>
+<li>Find the smallest number in the list greater than p that is not marked. If
+there was no such number, stop. Otherwise, let p now equal this new number
+(which is the next prime), and repeat from step 3.</li>
+<li>When the algorithm terminates, the numbers remaining not marked in the list
+are all the primes below n.</li>
+</ol>
+
+</blockquote></div>
+</div>
+</div>
+<div id="outline-container-zgjcnsh0x8k0" class="outline-3">
+<h3 id="zgjcnsh0x8k0">Zeno&rsquo;s Paradox of Achilles and the Tortoise</h3>
+<div class="outline-text-3" id="text-orgf860cee">
+<p>
+Sometime around the fifth century B.C., the Greek philosopher Zeno posed a
+paradox that now bears his name. Suppose that Achilles and a tortoise are to run
+a footrace. Let’s assume that Achilles is exactly twice as fast as the tortoise.
+(Our tortoise is obviously a veritable Hercules among his kind.) To make things
+fair, the tortoise will get a head start of 1000 meters. After the start of the
+race, by the time Achilles runs 1000 meters, the tortoise is still ahead by 500
+meters. However, Achilles is a far superior athlete, so he easily covers the
+next 500 meters. During this time, the tortoise has managed to go another 250
+meters. We can repeat the process for an infinite number of time slices while
+always finding the tortoise just a bit ahead of Achilles. Will Achilles ever
+catch up to the tortoise?
+</p>
+
+<p>
+In other words, what this paradox is actually questioning is whether an infinite
+number of \(x\) (in this case, time slices) can even occur when thinking of it
+mathematically. Zeno has structured the same paradox in another way, assume that
+you are moving an object from \(p_1\) to $p_24, at some point the object has
+reached half the distance to \(p_2\) then one-third to \(p_2\), then one to the
+forth of \(p_2\) and so to infinite number of the fractions to which the object
+will reach \(p_2\), we know that&rsquo;s impossible to reach the end of something that
+has the attribute of infinitude, so will even \(p_2\) be reached?
+</p>
+
+<p>
+\[
+\sum_{i=1}^{\infty} \frac{1}{2^i} = \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \cdots
+\]
+</p>
+
+<p>
+And the answer to this paradox is fairly simple in modern algebra, as we know
+that having something that has the attribute of infinitude, does not imply that
+this thing has an infinite sum. Take for example this box:
+</p>
+
+
+<figure id="org99102f0">
+<img src="../../media/Notes/2024-06-30_16-25-56_screenshot.png" alt="2024-06-30_16-25-56_screenshot.png">
+
+</figure>
+
+<p>
+We can see that the right portion of the box is exactly equal to its left, we
+note too that the right portion has an infinite continuation of division,
+however we know too that this infinite division will sum up to \(0.5\) no matter
+what.
+</p>
+</div>
+</div>
+<div id="outline-container-rjh37zn0y8k0" class="outline-3">
+<h3 id="rjh37zn0y8k0">Prime Numbers</h3>
+<div class="outline-text-3" id="text-org653c76d">
+<p>
+A prime number is a positive integer, which is divisible on 1 and itself. The
+other integers, greater than 1, are composite. Coprime integers are a set of
+integers that have no common divisor other than 1 or -1.
+</p>
+</div>
+<div id="outline-container-hosg3qo0y8k0" class="outline-4">
+<h4 id="hosg3qo0y8k0">Euclid’s theorem</h4>
+<div class="outline-text-4" id="text-orgcf0942f">
+<p>
+There is no largest prime number.
+</p>
+
+<p>
+To prove this, let’s consider only n prime numbers: \(p_1\), \(p_2\), …, \(p_n\). But no prime
+\(p_i\) divides the number
+</p>
+
+<p>
+N = p1 * p2 * … * pn + 1,
+</p>
+
+<p>
+so N cannot be composite. This contradicts the fact that the set of primes is
+finite.
+</p>
+</div>
+</div>
+<div id="outline-container-1f616qo0y8k0" class="outline-4">
+<h4 id="1f616qo0y8k0">Sieve of Eratosthenes</h4>
+<div class="outline-text-4" id="text-org6d21602">
+<p>
+The most efficient way to find all small primes was proposed by the Greek
+mathematician Eratosthenes. His idea was to make a list of positive integers not
+greater than n and sequentially strike out the multiples of primes less than or
+equal to the square root of n. After this procedure only primes are left in the
+list.
+</p>
+
+<p>
+Here&rsquo;s a Julia implementation:
+</p>
+
+<pre class="code"><code>function sieve_of_eratosthenes(limit)
+    is_prime = trues(limit)
+    is_prime[1] = false  # 1 is not a prime number
+
+    for i in 2:sqrt(limit)
+        if is_prime[i]
+            for j in i^2:i:limit
+                is_prime[j] = false
+            end
+        end
+    end
+
+    primes = []
+    for i in 2:limit
+        if is_prime[i]
+            push!(primes, i)
+        end
+    end
+
+    return primes
+end
+</code></pre>
+</div>
+</div>
+<div id="outline-container-g58jq4r0y8k0" class="outline-4">
+<h4 id="g58jq4r0y8k0">Prime Numbers Theorem</h4>
+<div class="outline-text-4" id="text-org9bc3db8">
+<p>
+The prime number theorem (PNT) describes the asymptotic distribution of the
+prime numbers among the positive integers. It formalizes the intuitive idea that
+primes become less common as they become larger by precisely quantifying the
+rate at which this occurs.
+</p>
+
+<p>
+The first such distribution found is π(N) ~ N / log(N) , where π(N) is the
+prime-counting function (the number of primes less than or equal to N) and
+log(N) is the natural logarithm of N. This means that for large enough N, the
+probability that a random integer not greater than N is prime is very close to 1
+/ log(N).
+</p>
+</div>
+</div>
+<div id="outline-container-9wq8t9r0y8k0" class="outline-4">
+<h4 id="9wq8t9r0y8k0">Goldbach’s Conjecture</h4>
+<div class="outline-text-4" id="text-org70ad9d3">
+<p>
+It&rsquo;s one of the famous non-proven conjectures so far. For any integer n (n ≥ 4)
+there exist two prime numbers p1 and p2 such that p1 + p2 = n.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-59m80xb009k0" class="outline-3">
+<h3 id="59m80xb009k0">Kaprekar&rsquo;s constant</h3>
+<div class="outline-text-3" id="text-org0b97cfd">
+<p>
+The number 6174 is known as Kaprekar&rsquo;s constant after the Indian mathematician D. R. Kaprekar. This number is renowned for the following rule:
+</p>
+
+<ol class="org-ol">
+<li>Take any four-digit number, using at least two different digits (leading zeros are allowed).</li>
+<li>Arrange the digits in descending and then in ascending order to get two four-digit numbers, adding leading zeros if necessary.</li>
+<li>Subtract the smaller number from the bigger number.</li>
+<li>Go back to step 2 and repeat.</li>
+</ol>
+
+<p>
+The above process, known as Kaprekar&rsquo;s routine, will always reach its fixed
+point, 6174, in at most 7 iterations.[4] Once 6174 is reached, the process will
+continue yielding 7641 – 1467 = 6174. For example, choose 1459:
+</p>
+
+<p>
+9541 – 1459 = 8082
+8820 – 0288 = 8532
+8532 – 2358 = 6174
+7641 – 1467 = 6174
+</p>
+</div>
+</div>
+<div id="outline-container-fy80cm9049k0" class="outline-3">
+<h3 id="fy80cm9049k0">Prefect Numbers</h3>
+<div class="outline-text-3" id="text-org3e42c28">
+<p>
+In number theory, a perfect number is a positive integer that is equal to the
+sum of its positive proper divisors, that is, divisors excluding the number
+itself. For instance, 6 has proper divisors 1, 2 and 3, and 1 + 2 + 3 = 6, so 6
+is a perfect number. The next perfect number is 28, since 1 + 2 + 4 + 7 + 14
+= 28.
+</p>
+</div>
+</div>
+<div id="outline-container-u9qear9049k0" class="outline-3">
+<h3 id="u9qear9049k0">Mersenne Primes</h3>
+<div class="outline-text-3" id="text-orga4c1f4e">
+<p>
+In mathematics, a <b>Mersenne prime</b> is a prime number that is one less than a
+power of two. That is, it is a prime number of the form <i>M _{n}</i> = 2 ^{<i>n</i>} − 1
+for some integer <i>n</i>. They are named after Marin Mersenne, a French Minim friar,
+who studied them in the early 17th century. If <i>n</i> is a composite number then so
+is 2 ^{<i>n</i>} − 1. Therefore, an equivalent definition of the Mersenne primes is
+that they are the prime numbers of the form <i>M _{p}</i> = 2 ^{<i>p</i>} − 1 for some
+prime <i>p</i>.
+</p>
+
+<p>
+Mersenne primes Mp are closely connected to <a href="#fy80cm9049k0">Prefect Numbers</a>. In the 4th century
+BC, Euclid proved that if 2p − 1 is prime, then 2^p − 1(2^p − 1) is a perfect
+number.
+</p>
+
+
+
+<figure id="org42ac485">
+<img src="../../media/Notes/2024-09-21_00-23-43_screenshot.png" alt="2024-09-21_00-23-43_screenshot.png">
+
+</figure>
+</div>
+</div>
+<div id="outline-container-w3sch1o0k9k0" class="outline-3">
+<h3 id="w3sch1o0k9k0">Pronic number</h3>
+<div class="outline-text-3" id="text-org16d79ce">
+<p>
+A pronic number is a number that is the product of two consecutive integers, that is, a
+number of the form. The study of these numbers dates back to Aristotle.
+</p>
+</div>
+</div>
+<div id="outline-container-bfo2fy10f9k0" class="outline-3">
+<h3 id="bfo2fy10f9k0">Googol and GoogolPlex</h3>
+<div class="outline-text-3" id="text-orgcfd3d33">
+<p>
+A googol is the large number 10^100. In decimal notation, it is written as the
+digit 1 followed by one hundred zeroes. A googol is a very big number, more than
+humans can imagine. For example if you think of how many grains of sand you can
+fit in a big room,  well not that big, it will be around in the range of 30-100
+billion. Not that big. Less that a Googol. What about the number of all
+particles in the universe, that&rsquo;s about 10^80, this is still less than a Googol.
+Okay how about a universe filled of grains of sand? that will be about 10^90,
+which is still less than a Googol. A Googolplex is a 10^(Googol). It&rsquo;s a very
+big number that if we use every particular in the universe to write one of its
+zeros, we won&rsquo;t be able to write it all down.
+</p>
+</div>
+</div>
+<div id="outline-container-712luj00qak0" class="outline-3">
+<h3 id="712luj00qak0">Poincaré conjecture and Grigori Perelman</h3>
+<div class="outline-text-3" id="text-orgc0b9894">
+<p>
+Grigori Perelmans solved the Poincaré conjecture but declined the prizes for it. From
+wikipeda:
+</p>
+
+<div class="epigraph"><blockquote>
+<p>
+However, Perelman declined to accept the prize. Sir John Ball, president of the
+International Mathematical Union, approached Perelman in Saint Petersburg in June 2006 to
+persuade him to accept the prize. After 10 hours of attempted persuasion over two days,
+Ball gave up. Two weeks later, Perelman summed up the conversation as follows: &ldquo;He
+proposed to me three alternatives: accept and come; accept and don&rsquo;t come, and we will
+send you the medal later; third, I don&rsquo;t accept the prize. From the very beginning, I told
+him I have chosen the third one &#x2026; [the prize] was completely irrelevant for me.
+Everybody understood that if the proof is correct, then no other recognition is
+needed.&rdquo; He was quoted as saying, "&rsquo;I&rsquo;m not interested in money or fame, I don&rsquo;t want
+to be on display like an animal in a zoo. I&rsquo;m not a hero of mathematics. I&rsquo;m not even that
+successful; that is why I don&rsquo;t want to have everybody looking at me.&rsquo;
+</p>
+
+</blockquote></div>
+</div>
+</div>
+<div id="outline-container-bi85cia14ak0" class="outline-3">
+<h3 id="bi85cia14ak0">Philosophy of Numbers</h3>
+<div class="outline-text-3" id="text-orgf348af7">
+<p>
+Philosophy of mathematics is the branch of philosophy that deals with the nature of mathematics and its relationship with other human activities.
+</p>
+</div>
+<div id="outline-container-orga4d89bd" class="outline-4">
+<h4 id="orga4d89bd">Platnoism Numbers</h4>
+<div class="outline-text-4" id="text-orga4d89bd">
+<p>
+Mathematical Platonism is the form of realism that suggests that mathematical entities are
+abstract, have no spatiotemporal or causal properties, and are eternal and unchanging.
+This is often claimed to be the view most people have of numbers. The term Platonism is
+used because such a view is seen to parallel Plato&rsquo;s Theory of Forms and a &ldquo;World of
+Ideas&rdquo; (Greek: eidos (εἶδος)) described in Plato&rsquo;s allegory of the cave: the everyday
+world can only imperfectly approximate an unchanging, ultimate reality. Both Plato&rsquo;s cave
+and Platonism have meaningful, not just superficial connections, because Plato&rsquo;s ideas
+were preceded and probably influenced by the hugely popular Pythagoreans of ancient
+Greece, who believed that the world was, quite literally, generated by numbers.
+</p>
+</div>
+</div>
+<div id="outline-container-org4554f3c" class="outline-4">
+<h4 id="org4554f3c">fictionalism</h4>
+<div class="outline-text-4" id="text-org4554f3c">
+<p>
+Mathematical fictionalism was brought to fame in 1980 when Hartry Field published Science
+Without Numbers,[57] which rejected and in fact reversed Quine&rsquo;s indispensability
+argument. Where Quine suggested that mathematics was indispensable for our best scientific
+theories, and therefore should be accepted as a body of truths talking about independently
+existing entities, Field suggested that mathematics was dispensable, and therefore should
+be considered as a body of falsehoods not talking about anything real. He did this by
+giving a complete axiomatization of Newtonian mechanics with no reference to numbers or
+functions at all. He started with the &ldquo;betweenness&rdquo; of Hilbert&rsquo;s axioms to characterize
+space without coordinatizing it, and then added extra relations between points to do the
+work formerly done by vector fields. Hilbert&rsquo;s geometry is mathematical, because it talks
+about abstract points, but in Field&rsquo;s theory, these points are the concrete points of
+physical space, so no special mathematical objects at all are needed.
+</p>
+</div>
 </div>
 </div>
 </div>
@@ -607,9 +1155,108 @@ Sat 18 Dec 2021
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: . Last build date: 2025-08-21 Thu 01:12.</p>
+  <div class="book-covers" style="margin: 1em 0; padding: 0 10px;">
+    <p style="margin: 0.5em 0; font-style: italic; color: #555;">Some works I recommend engaging with:</p>
+    <div id="books-container" style="display: flex; flex-wrap: wrap; gap: 8px; max-width: 100%;"></div>
+  </div>
 
-</div>
+
+  <script>
+    const path = window.location.pathname;
+    if (path !== '/' && path !== '/index.html') {
+      const allBooks = [
+        {title: 'The Computational Beauty of Nature', author: 'Gary William Flake'},
+        {title: 'Group Psychology', author: 'Sigmund Freud'},
+        {title: 'Logic', author: 'Nicholas Smith'},
+        {title: 'Structure and Interpretation of Computer Programs', author: 'Harold Abelson'},
+        {title: 'The C Programming Language', author: 'Brian Kernighan'},
+        {title: 'Out of Bounds: Academic Freedom and the Question of Palestine', author: 'M. Abraham'},
+        {title: 'Understanding Power: The Indispensable Chomsky', author: 'Noam Chomsky'},
+        {title: 'Who Rules the World?', author: 'Noam Chomsky'},
+        {title: 'Manufacturing Consent: The Political Economy of the Mass Media', author: 'Noam Chomsky'},
+        {title: 'A People History of The World', author: 'Chris Harman'},
+        {title: 'The Arabs: A History', author: 'Eugene Rogan'},
+        {title: 'State of Terror', author: 'Y. Suarez'},
+        {title: 'A People History of The United States', author: 'Howard Zinn'},
+        {title: 'Killing Hope', author: 'William Blum'},
+        {title: 'Deliverance From Error', author: 'Al-Ghazali'},
+        {title: 'The Dawn of The Day', author: 'Friedrich Nietzsche'},
+        {title: 'Islam and The Destiny of Man', author: 'Gai Eaton'},
+        {title: 'The Polymath', author: 'Waqas Ahmed'},
+        {title: 'Twilight of The Idols', author: 'Friedrich Nietzsche'},
+        {title: 'Manfred', author: 'Lord Byron'},
+        {title: 'Marx in Soho', author: 'Howard Zinn'}
+      ];
+
+      const shuffled = allBooks.sort(() => 0.5 - Math.random());
+      const container = document.getElementById('books-container');
+      let displayedBooks = 0;
+      let bookIndex = 0;
+
+      async function tryNextBook() {
+        if (displayedBooks >= 2 || bookIndex >= shuffled.length) return;
+
+        const book = shuffled[bookIndex];
+        bookIndex++;
+
+        try {
+          const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=intitle:${encodeURIComponent(book.title)}+inauthor:${encodeURIComponent(book.author)}&maxResults=1`);
+          const data = await res.json();
+
+          if (data.items && data.items[0]) {
+            const volumeInfo = data.items[0].volumeInfo;
+            if (volumeInfo.imageLinks) {
+              const link = document.createElement('a');
+              link.style.display = 'none';
+              link.style.lineHeight = '0';
+              link.target = '_blank';
+              if (volumeInfo.infoLink) {
+                link.href = volumeInfo.infoLink;
+              }
+
+              const img = document.createElement('img');
+              img.style.cssText = 'height: 140px; border: 1px dotted #666; background: transparent;';
+              img.src = volumeInfo.imageLinks.thumbnail;
+              img.onload = () => {
+                link.style.display = 'inline-block';
+              };
+
+              link.appendChild(img);
+              container.appendChild(link);
+              displayedBooks++;
+              
+              if (displayedBooks < 2) {
+                tryNextBook();
+              }
+            } else {
+              console.log(`Cannot find book cover for: ${book.title} by ${book.author}`);
+              tryNextBook();
+            }
+          } else {
+            console.log(`Cannot find book: ${book.title} by ${book.author}`);
+            tryNextBook();
+          }
+        } catch (err) {
+          console.log(`Error fetching book: ${book.title} by ${book.author}`, err);
+          tryNextBook();
+        }
+      }
+
+      tryNextBook();
+    } else {
+      document.querySelector('.book-covers').style.display = 'none';
+    }
+  </script>
+
+  </div>
+
+
+
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.34). Written by: Salih Muhammed, by the date of: . Last build date: 2025-11-21 Fri 20:08.</p>
+
+
+
+
 </div>
 </div>
 </body>

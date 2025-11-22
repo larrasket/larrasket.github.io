@@ -1,0 +1,27 @@
+diff a/style/tufte.css b/style/tufte.css	(rejected hunks)
+@@ -140,7 +140,7 @@ a:link,
+ 
+ a:link::selection,
+ a:link::-moz-selection {
+-  background: #b4d5fe;
++  background: #e8dcd0;
+ }
+ 
+ /* Sidenotes, margin notes, figures, captions */
+@@ -151,6 +151,7 @@ img {
+ .sidenote,
+ .marginnote {
+   float: right;
++  font-size: smaller;
+   clear: right;
+   margin-right: -45%;
+   width: 40%;
+@@ -179,7 +180,7 @@ img {
+   font-size: 0.7rem;
+   top: -0.5rem;
+   left: 0.1rem;
+-  color: blue;
++  color: #8d6e63;
+ }
+ 
+ .sidenote:before {

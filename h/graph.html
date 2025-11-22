@@ -6,47 +6,69 @@
 <title>Representations and Implementations of Graphs</title>
 <meta name="author" content="Salih Muhammed" />
 <meta name="generator" content="Org Mode" />
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-  <meta name="theme-color" content="#ffffff">
-  <meta charset="utf-8">
-  <meta name="theme-color" content="#ffffff">
-  <meta name="viewport" content= "width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/style/toc.css">
-  <link rel="stylesheet" href="/style/tufte.css">
-  <link rel="stylesheet" href="/style/main.css">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta charset="utf-8" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/style/toc.css?v=20250120" />
+    <link rel="stylesheet" href="/style/tufte.css?v=20250120" />
+    <link rel="stylesheet" href="/style/main.css?v=20250201" />
 
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const p = document.querySelector("#content > p:first-of-type");
+        if (p && /^[\u0600-\u06FF]/.test(p.textContent.trim())) {
+          p.classList.add("arabic");
+        }
+      });
+    </script>
 
+    <script async data-id="101390423" src="//static.getclicky.com/js"></script>
+    <noscript>
+      <p>
+        <img
+          alt="Clicky"
+          width="1"
+          height="1"
+          src="//in.getclicky.com/101390423ns.gif"
+        /></p
+    ></noscript>
 
+    <!-- Import LazySizes - State-of-the-art lazy loading library -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js"
+      async
+    ></script>
 
-  <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
-  <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+    <!-- Optional: Import plugins for better performance -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js"
+      async
+    ></script>
 
-<!-- Import LazySizes - State-of-the-art lazy loading library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+    <script>
+      // Only run on pages with 'art_paintings_media' in the path
+      if (window.location.pathname.includes("art_paintings_media")) {
+        document.addEventListener("DOMContentLoaded", function () {
+          // Configure LazySizes for optimal performance
+          window.lazySizesConfig = window.lazySizesConfig || {};
+          window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
+          window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
+          window.lazySizesConfig.expFactor = 1.5; // Expand loading area
+          window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
 
-<!-- Optional: Import plugins for better performance -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js" async></script>
-
-<script>
-// Only run on pages with 'art_paintings_media' in the path
-if (window.location.pathname.includes('art_paintings_media')) {
-  document.addEventListener('DOMContentLoaded', function() {
-    
-    // Configure LazySizes for optimal performance
-    window.lazySizesConfig = window.lazySizesConfig || {};
-    window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
-    window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
-    window.lazySizesConfig.expFactor = 1.5; // Expand loading area
-    window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
-
-    // Add CSS for smooth transitions and collapsible content
-    const style = document.createElement('style');
-    style.textContent = `
+          // Add CSS for smooth transitions and collapsible content
+          const style = document.createElement("style");
+          style.textContent = `
       .lazyload,
       .lazyloading {
         opacity: 0;
@@ -74,208 +96,215 @@ if (window.location.pathname.includes('art_paintings_media')) {
         filter: none;
       }
     `;
-    document.head.appendChild(style);
+          document.head.appendChild(style);
 
-    // Find all h3 elements
-    const h3Elements = document.querySelectorAll('h3');
+          // Find all h3 elements
+          const h3Elements = document.querySelectorAll("h3");
 
-    h3Elements.forEach(function(h3) {
-      // Make h3 clickable and add icon
-      h3.style.position = 'relative';
-      h3.style.cursor = 'pointer';
-      h3.style.paddingLeft = '20px';
-      h3.style.userSelect = 'none';
+          h3Elements.forEach(function (h3) {
+            // Make h3 clickable and add icon
+            h3.style.position = "relative";
+            h3.style.cursor = "pointer";
+            h3.style.paddingLeft = "20px";
+            h3.style.userSelect = "none";
 
-      // Add the arrow icon
-      const icon = document.createElement('span');
-      icon.innerHTML = '▶';
-      icon.style.position = 'absolute';
-      icon.style.left = '0px';
-      icon.style.top = '50%';
-      icon.style.transform = 'translateY(-50%)';
-      icon.style.transition = 'transform 0.2s';
-      icon.style.fontSize = '0.8em';
-      icon.style.color = 'rgb(102, 102, 102)';
-      icon.style.fontFamily = 'monospace';
+            // Add the arrow icon
+            const icon = document.createElement("span");
+            icon.innerHTML = "▶";
+            icon.style.position = "absolute";
+            icon.style.left = "0px";
+            icon.style.top = "50%";
+            icon.style.transform = "translateY(-50%)";
+            icon.style.transition = "transform 0.2s";
+            icon.style.fontSize = "0.8em";
+            icon.style.color = "rgb(102, 102, 102)";
+            icon.style.fontFamily = "monospace";
 
-      h3.insertBefore(icon, h3.firstChild);
+            h3.insertBefore(icon, h3.firstChild);
 
-      // Find all content after this h3 until the next h3 or end of parent
-      const contentElements = [];
-      let nextElement = h3.nextElementSibling;
+            // Find all content after this h3 until the next h3 or end of parent
+            const contentElements = [];
+            let nextElement = h3.nextElementSibling;
 
-      while (nextElement && nextElement.tagName !== 'H3') {
-        contentElements.push(nextElement);
-        nextElement = nextElement.nextElementSibling;
-      }
-
-      // Create a wrapper for smooth collapsing
-      const wrapper = document.createElement('div');
-      wrapper.className = 'collapsible-content collapsed';
-      wrapper.style.maxHeight = '0';
-
-      // Move content elements into wrapper
-      contentElements.forEach(function(element) {
-        wrapper.appendChild(element);
-      });
-
-      // Insert wrapper after h3
-      h3.parentNode.insertBefore(wrapper, h3.nextSibling);
-
-      // Prepare images for LazySizes lazy loading and make them clickable
-      const prepareImagesForLazyLoading = (container) => {
-        const images = container.querySelectorAll('img');
-        images.forEach(function(img) {
-          // Only process if not already processed
-          if (!img.classList.contains('lazyload') && !img.dataset.processed) {
-            // Store original src in data-src for LazySizes
-            if (img.src && img.src !== '' && !img.src.startsWith('data:')) {
-              img.dataset.src = img.src;
-              // Use a tiny placeholder or low-quality placeholder
-              img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+            while (nextElement && nextElement.tagName !== "H3") {
+              contentElements.push(nextElement);
+              nextElement = nextElement.nextElementSibling;
             }
 
-            // Handle srcset for responsive images
-            if (img.srcset && img.srcset !== '') {
-              img.dataset.srcset = img.srcset;
-              img.srcset = '';
-            }
+            // Create a wrapper for smooth collapsing
+            const wrapper = document.createElement("div");
+            wrapper.className = "collapsible-content collapsed";
+            wrapper.style.maxHeight = "0";
 
-            // Handle sizes attribute
-            if (img.sizes) {
-              img.dataset.sizes = img.sizes;
-            }
+            // Move content elements into wrapper
+            contentElements.forEach(function (element) {
+              wrapper.appendChild(element);
+            });
 
-            // Add LazySizes classes
-            img.classList.add('lazyload');
+            // Insert wrapper after h3
+            h3.parentNode.insertBefore(wrapper, h3.nextSibling);
 
-            // Make image clickable - add cursor pointer
-            img.style.cursor = 'pointer';
+            // Prepare images for LazySizes lazy loading and make them clickable
+            const prepareImagesForLazyLoading = (container) => {
+              const images = container.querySelectorAll("img");
+              images.forEach(function (img) {
+                // Only process if not already processed
+                if (
+                  !img.classList.contains("lazyload") &&
+                  !img.dataset.processed
+                ) {
+                  // Store original src in data-src for LazySizes
+                  if (
+                    img.src &&
+                    img.src !== "" &&
+                    !img.src.startsWith("data:")
+                  ) {
+                    img.dataset.src = img.src;
+                    // Use a tiny placeholder or low-quality placeholder
+                    img.src =
+                      'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+                  }
 
-            // Add click handler to open image in new tab
-            img.addEventListener('click', function(e) {
+                  // Handle srcset for responsive images
+                  if (img.srcset && img.srcset !== "") {
+                    img.dataset.srcset = img.srcset;
+                    img.srcset = "";
+                  }
+
+                  // Handle sizes attribute
+                  if (img.sizes) {
+                    img.dataset.sizes = img.sizes;
+                  }
+
+                  // Add LazySizes classes
+                  img.classList.add("lazyload");
+
+                  // Make image clickable - add cursor pointer
+                  img.style.cursor = "pointer";
+
+                  // Add click handler to open image in new tab
+                  img.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    e.stopPropagation(); // Prevent triggering h3 collapse
+
+                    // Get the actual image URL (either from src or data-src)
+                    let imageUrl = this.src;
+                    if (this.dataset.src && !this.src.startsWith("data:")) {
+                      imageUrl = this.dataset.src;
+                    } else if (
+                      this.src.startsWith("data:") &&
+                      this.dataset.src
+                    ) {
+                      imageUrl = this.dataset.src;
+                    }
+
+                    // Open image in new tab
+                    if (imageUrl && !imageUrl.startsWith("data:")) {
+                      window.open(imageUrl, "_blank");
+                    }
+                  });
+
+                  // Mark as processed
+                  img.dataset.processed = "true";
+
+                  // Maintain aspect ratio to prevent layout shift
+                  if (!img.style.aspectRatio && img.width && img.height) {
+                    img.style.aspectRatio = img.width + "/" + img.height;
+                  }
+                }
+              });
+            };
+
+            // Prepare all images in this section for lazy loading
+            prepareImagesForLazyLoading(wrapper);
+
+            // Track collapsed state
+            let isCollapsed = true;
+            let hasBeenExpanded = false;
+
+            // Add click handler
+            h3.addEventListener("click", function (e) {
               e.preventDefault();
-              e.stopPropagation(); // Prevent triggering h3 collapse
 
-              // Get the actual image URL (either from src or data-src)
-              let imageUrl = this.src;
-              if (this.dataset.src && !this.src.startsWith('data:')) {
-                imageUrl = this.dataset.src;
-              } else if (this.src.startsWith('data:') && this.dataset.src) {
-                imageUrl = this.dataset.src;
-              }
+              if (isCollapsed) {
+                // Expand: show content and activate lazy loading
+                icon.style.transform = "translateY(-50%) rotate(90deg)";
+                wrapper.classList.remove("collapsed");
+                wrapper.classList.add("expanded");
+                wrapper.style.maxHeight = wrapper.scrollHeight + "px";
 
-              // Open image in new tab
-              if (imageUrl && !imageUrl.startsWith('data:')) {
-                window.open(imageUrl, '_blank');
+                // Only activate LazySizes for this section when first expanded
+                if (!hasBeenExpanded) {
+                  // Trigger LazySizes to check for images in this newly visible section
+                  if (window.lazySizes) {
+                    // Force LazySizes to check all images in this wrapper
+                    const lazyImages = wrapper.querySelectorAll(".lazyload");
+                    lazyImages.forEach((img) => {
+                      // Add to LazySizes queue
+                      window.lazySizes.loader.unveil(img);
+                    });
+                  }
+                  hasBeenExpanded = true;
+                }
+
+                isCollapsed = false;
+
+                // Recalculate height after images potentially load
+                setTimeout(() => {
+                  if (!isCollapsed) {
+                    wrapper.style.maxHeight = wrapper.scrollHeight + "px";
+                  }
+                }, 100);
+              } else {
+                // Collapse: hide content
+                icon.style.transform = "translateY(-50%) rotate(0deg)";
+                wrapper.classList.remove("expanded");
+                wrapper.classList.add("collapsed");
+                wrapper.style.maxHeight = "0";
+
+                isCollapsed = true;
               }
             });
 
-            // Mark as processed
-            img.dataset.processed = 'true';
-
-            // Maintain aspect ratio to prevent layout shift
-            if (!img.style.aspectRatio && img.width && img.height) {
-              img.style.aspectRatio = img.width + '/' + img.height;
-            }
-          }
+            // Listen for LazySizes events to adjust height dynamically
+            wrapper.addEventListener("lazyloaded", function (e) {
+              if (!isCollapsed) {
+                // Adjust wrapper height when images load
+                setTimeout(() => {
+                  wrapper.style.maxHeight = wrapper.scrollHeight + "px";
+                }, 50);
+              }
+            });
+          });
         });
-      };
+      }
+    </script>
 
-      // Prepare all images in this section for lazy loading
-      prepareImagesForLazyLoading(wrapper);
+    <script>
+      (function () {
+        "use strict";
 
-      // Track collapsed state
-      let isCollapsed = true;
-      let hasBeenExpanded = false;
+        // Check if current page should have the formatting applied
+        function shouldApplyFormatting() {
+          const path = window.location.pathname;
 
-      // Add click handler
-      h3.addEventListener('click', function(e) {
-        e.preventDefault();
-
-        if (isCollapsed) {
-          // Expand: show content and activate lazy loading
-          icon.style.transform = 'translateY(-50%) rotate(90deg)';
-          wrapper.classList.remove('collapsed');
-          wrapper.classList.add('expanded');
-          wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
-
-          // Only activate LazySizes for this section when first expanded
-          if (!hasBeenExpanded) {
-            // Trigger LazySizes to check for images in this newly visible section
-            if (window.lazySizes) {
-              // Force LazySizes to check all images in this wrapper
-              const lazyImages = wrapper.querySelectorAll('.lazyload');
-              lazyImages.forEach(img => {
-                // Add to LazySizes queue
-                window.lazySizes.loader.unveil(img);
-              });
-            }
-            hasBeenExpanded = true;
-          }
-
-          isCollapsed = false;
-
-          // Recalculate height after images potentially load
-          setTimeout(() => {
-            if (!isCollapsed) {
-              wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
-            }
-          }, 100);
-
-        } else {
-          // Collapse: hide content
-          icon.style.transform = 'translateY(-50%) rotate(0deg)';
-          wrapper.classList.remove('expanded');
-          wrapper.classList.add('collapsed');
-          wrapper.style.maxHeight = '0';
-
-          isCollapsed = true;
+          // Check if path matches our target patterns
+          return (
+            path === "/stack" ||
+            path === "/stack.html" ||
+            path.startsWith("/sh/")
+          );
         }
-      });
 
-      // Listen for LazySizes events to adjust height dynamically
-      wrapper.addEventListener('lazyloaded', function(e) {
-        if (!isCollapsed) {
-          // Adjust wrapper height when images load
-          setTimeout(() => {
-            wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
-          }, 50);
+        // Only proceed if we're on a target page
+        if (!shouldApplyFormatting()) {
+          return;
         }
-      });
-    });
-  });
-}
-</script>
 
-<script>
-
-
-
-  
-// Stack Page Formatter - Apply inline layout to specific pages
-(function() {
-  'use strict';
-  
-  // Check if current page should have the formatting applied
-  function shouldApplyFormatting() {
-    const path = window.location.pathname;
-    
-    // Check if path matches our target patterns
-    return path === '/stack' || 
-           path === '/stack.html' || 
-           path.startsWith('/sh/');
-  }
-  
-  // Only proceed if we're on a target page
-  if (!shouldApplyFormatting()) {
-    return;
-  }
-  
-  // Add CSS styles
-  function addStyles() {
-    const style = document.createElement('style');
-    style.textContent = `
+        // Add CSS styles
+        function addStyles() {
+          const style = document.createElement("style");
+          style.textContent = `
       /* Basic styling for entries */
       .outline-3 {
         margin-bottom: 1.5em;
@@ -317,6 +346,7 @@ if (window.location.pathname.includes('art_paintings_media')) {
         padding: 0 !important;
       }
 
+
       /* Hide block elements that will be moved */
       .outline-3 .moved-block {
         display: block;
@@ -328,148 +358,166 @@ if (window.location.pathname.includes('art_paintings_media')) {
         scroll-margin-top: 20px;
       }
     `;
-    document.head.appendChild(style);
-  }
-  
-  // Extract ID from container div
-  function extractIdFromContainer(entry) {
-    const containerId = entry.id;
-    if (containerId && containerId.startsWith('outline-container-')) {
-      return containerId.replace('outline-container-', '');
-    }
-    return null;
-  }
-  
-  // Apply the formatting transformation
-  function applyFormatting() {
-    // Process each entry
-    const entries = document.querySelectorAll('.outline-3');
-    
-    entries.forEach((entry, index) => {
-      // Extract the anchor ID from the container before transformation
-      const anchorId = extractIdFromContainer(entry);
-      
-      // Extract components
-      const h3 = entry.querySelector('h3');
-      const notes = entry.querySelector('.notes');
-      const outlineText = entry.querySelector('.outline-text-3');
-      const tag = entry.querySelector('.tag');
-      
-      if (!h3 || !outlineText) return;
-      
-      // Get title text (preserve any TODO/DONE prefixes and links)
-      let titleText = h3.innerHTML;
-      
-      // Get timestamp
-      let timestampText = '';
-      if (notes) {
-        const timestamp = notes.querySelector('.timestamp');
-        if (timestamp) {
-          timestampText = timestamp.textContent;
+          document.head.appendChild(style);
         }
-      }
-      
-      // Get content paragraphs (excluding notes and tag)
-      const contentParagraphs = [];
-      const blockElements = [];
-      
-      Array.from(outlineText.children).forEach(child => {
-        if (child.classList.contains('notes') || child.classList.contains('tag')) {
-          return; // Skip these
+
+        // Extract ID from container div
+        function extractIdFromContainer(entry) {
+          const containerId = entry.id;
+          if (containerId && containerId.startsWith("outline-container-")) {
+            return containerId.replace("outline-container-", "");
+          }
+          return null;
         }
-        
-        if (child.tagName === 'P') {
-          contentParagraphs.push(child.innerHTML);
-        } else if (child.tagName === 'UL' || child.tagName === 'OL' || 
-                   child.tagName === 'BLOCKQUOTE' || child.tagName === 'PRE' ||
-                   child.tagName === 'DL' || child.classList.contains('epigraph')) {
-          blockElements.push(child.outerHTML);
-        } else if (child.tagName === 'DIV' && child.classList.contains('epigraph')) {
-          blockElements.push(child.outerHTML);
+
+        // Apply the formatting transformation
+        function applyFormatting() {
+          // Process each entry
+          const entries = document.querySelectorAll(".outline-3");
+
+          entries.forEach((entry, index) => {
+            // Extract the anchor ID from the container before transformation
+            const anchorId = extractIdFromContainer(entry);
+
+            // Extract components
+            const h3 = entry.querySelector("h3");
+            const notes = entry.querySelector(".notes");
+            const outlineText = entry.querySelector(".outline-text-3");
+            const tag = entry.querySelector(".tag");
+
+            if (!h3 || !outlineText) return;
+
+            // Get title text (preserve any TODO/DONE prefixes and links)
+            let titleText = h3.innerHTML;
+
+            // Get timestamp
+            let timestampText = "";
+            if (notes) {
+              const timestamp = notes.querySelector(".timestamp");
+              if (timestamp) {
+                timestampText = timestamp.textContent;
+              }
+            }
+
+            // Get content paragraphs (excluding notes, tag, and backlinks)
+            const contentParagraphs = [];
+            const blockElements = [];
+            const backlinks = entry.querySelector(".BACKLINKS");
+
+            Array.from(outlineText.children).forEach((child) => {
+              if (
+                child.classList.contains("notes") ||
+                child.classList.contains("tag") ||
+                child.classList.contains("BACKLINKS")
+              ) {
+                return; // Skip these - they'll be handled separately
+              }
+
+              if (child.tagName === "P") {
+                contentParagraphs.push(child.innerHTML);
+              } else if (
+                child.tagName === "UL" ||
+                child.tagName === "OL" ||
+                child.tagName === "BLOCKQUOTE" ||
+                child.tagName === "PRE" ||
+                child.tagName === "DL" ||
+                child.classList.contains("epigraph")
+              ) {
+                blockElements.push(child.outerHTML);
+              } else if (
+                child.tagName === "DIV" &&
+                child.classList.contains("epigraph")
+              ) {
+                blockElements.push(child.outerHTML);
+              }
+            });
+
+            // Get tag HTML (preserve links and formatting)
+            let tagHtml = "";
+            if (tag) {
+              tagHtml = tag.outerHTML;
+            }
+
+            // Construct the new single paragraph
+            let newContent = "";
+
+            // Add date at the start (gray)
+            if (timestampText) {
+              newContent +=
+                '<span class="entry-date">' + timestampText + "</span>";
+            }
+
+            // Add title with emdash
+            newContent += titleText + " — ";
+
+            // Add content paragraphs
+            newContent += contentParagraphs.join(" ");
+
+            // Add tag at the end in parentheses (preserve HTML but force inline)
+            if (tagHtml) {
+              // Extract just the inner content and wrap it properly
+              let tagContent = tag.innerHTML;
+              newContent +=
+                ' <span class="entry-tag">(' + tagContent + ")</span>";
+            }
+
+            // Create new paragraph element
+            const newParagraph = document.createElement("p");
+            newParagraph.className = "entry-paragraph";
+            newParagraph.innerHTML = newContent;
+
+            // Clear the entry
+            entry.innerHTML = "";
+
+            // Preserve the anchor ID by setting it on the transformed entry
+            if (anchorId) {
+              entry.id = anchorId;
+            }
+
+            // Add backlinks FIRST so they can float to the right
+            if (backlinks) {
+              entry.appendChild(backlinks.cloneNode(true));
+            }
+
+            // Then add the main paragraph
+            entry.appendChild(newParagraph);
+
+            // Add any block elements after the paragraph
+            blockElements.forEach((blockHtml) => {
+              const blockDiv = document.createElement("div");
+              blockDiv.className = "moved-block";
+              blockDiv.innerHTML = blockHtml;
+              entry.appendChild(blockDiv);
+            });
+
+            // Add separator after each entry (except the last one)
+            if (index < entries.length - 1) {
+              const separator = document.createElement("hr");
+              separator.style.margin = "1em 0";
+              separator.style.border = "none";
+              separator.style.borderTop = "1px solid #ccc";
+              entry.appendChild(separator);
+            }
+          });
         }
-      });
-      
-      // Get tag HTML (preserve links and formatting)
-      let tagHtml = '';
-      if (tag) {
-        tagHtml = tag.outerHTML;
-      }
-      
-      // Construct the new single paragraph
-      let newContent = '';
-      
-      // Add date at the start (gray)
-      if (timestampText) {
-        newContent += '<span class="entry-date">' + timestampText + '</span>';
-      }
-      
-      // Add title with emdash
-      newContent += titleText + ' — ';
-      
-      // Add content paragraphs
-      newContent += contentParagraphs.join(' ');
-      
-      // Add tag at the end in parentheses (preserve HTML but force inline)
-      if (tagHtml) {
-        // Extract just the inner content and wrap it properly
-        let tagContent = tag.innerHTML;
-        newContent += ' <span class="entry-tag">(' + tagContent + ')</span>';
-      }
-      
-      // Create new paragraph element
-      const newParagraph = document.createElement('p');
-      newParagraph.className = 'entry-paragraph';
-      newParagraph.innerHTML = newContent;
-      
-      // Clear the entry and add the new paragraph
-      entry.innerHTML = '';
-      entry.appendChild(newParagraph);
-      
-      // Preserve the anchor ID by setting it on the transformed entry
-      if (anchorId) {
-        entry.id = anchorId;
-      }
-      
-      // Add any block elements after the paragraph
-      blockElements.forEach(blockHtml => {
-        const blockDiv = document.createElement('div');
-        blockDiv.className = 'moved-block';
-        blockDiv.innerHTML = blockHtml;
-        entry.appendChild(blockDiv);
-      });
-      
-      // Add separator after each entry (except the last one)
-      if (index < entries.length - 1) {
-        const separator = document.createElement('hr');
-        separator.style.margin = '1em 0';
-        separator.style.border = 'none';
-        separator.style.borderTop = '1px solid #ccc';
-        entry.appendChild(separator);
-      }
-    });
-  }
-  
-  // Initialize when DOM is ready
-  function init() {
-    addStyles();
-    
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', applyFormatting);
-    } else {
-      applyFormatting();
-    }
-  }
-  
-  // Start the initialization
-  init();
-})();
-</script>
 
+        // Initialize when DOM is ready
+        function init() {
+          addStyles();
 
+          if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", applyFormatting);
+          } else {
+            applyFormatting();
+          }
+        }
 
-</head>
-<body>
-</body>
+        // Start the initialization
+        init();
+      })();
+    </script>
+  </head>
+  <body></body>
 </html>
 <script>
   window.MathJax = {
@@ -516,6 +564,19 @@ margin-block-start: auto;
     color: black;
 ">Hereby, all birds fly</h1>
       </a>
+      <nav class="site-nav">
+        <a href="/p/">all posts</a>
+        <span>•</span>
+        <a href="/stack.html">short posts</a>
+        <span>•</span>
+        <a href="/fullbooks.html">books</a>
+        <span>•</span>
+        <a href="/a.html#2ar8en10n2k0">anthology</a>
+        <span>•</span>
+        <a href="/pgp.html">PGP key</a>
+        <span>•</span>
+        <a href="https://www.admonymous.co/larrasket">leave a message</a>
+      </nav>
 <hr class="header-divider" style="margin-block-end: -1em;">
   </div>
 </div>
@@ -527,35 +588,42 @@ margin-block-start: auto;
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org4f96a5e">Terminology</a></li>
+<li><a href="#org7dfcba1">Terminology</a></li>
 <li><a href="#directed">Direction Relationships</a></li>
 <li><a href="#adjacency">Adjacency Matrix vs. Adjacency List</a></li>
-<li><a href="#org40f7680">Multigraph (Multi-edges graph)</a></li>
-<li><a href="#org0134187">Weighted Graph</a></li>
+<li><a href="#org3cb0e9b">Multigraph (Multi-edges graph)</a></li>
+<li><a href="#org7155ef1">Weighted Graph</a></li>
 <li><a href="#transpose">Transpose Graph</a></li>
 <li><a href="#sheet">Definition Sheet</a></li>
-<li><a href="#org6294cb4">Graph Traversal</a></li>
+<li><a href="#org8cbbbe8">Graph Traversal</a></li>
 <li><a href="#8d3gj8e10lk0">Detecting Cycles In Graphs</a></li>
 <li><a href="#biconnected">Biconnected Components</a></li>
-<li><a href="#org9fd04b8">Union-Find (Disjoint Set)</a></li>
-<li><a href="#org2bde9bb">Reach The Mother Vertex</a></li>
-<li><a href="#org9f05d7a"><span class="done KILL">KILL</span> Bellman-Ford&rsquo;s Shortest Path&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></a></li>
-<li><a href="#orgc239821">Balanced Trees</a></li>
-<li><a href="#org2616849">Binary Tree Traversal</a></li>
-<li><a href="#org531ff3e">Counting</a></li>
-<li><a href="#org64dd87a">Height of a Binary Tree</a></li>
+<li><a href="#org056d3dd">Union-Find (Disjoint Set)</a></li>
+<li><a href="#org7f5f7d9">Reach The Mother Vertex</a></li>
+<li><a href="#org76c6d30"><span class="done KILL">KILL</span> Bellman-Ford&rsquo;s Shortest Path&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></a></li>
+<li><a href="#org7296ec6">Balanced Trees</a></li>
+<li><a href="#orgf7117c3">Binary Tree Traversal</a></li>
+<li><a href="#org692da9f">Counting</a></li>
+<li><a href="#org83827de">Height of a Binary Tree</a></li>
 </ul>
 </div>
 </nav>
-<div class="propert" id="org15c606d">
+<div class="BACKLINKS" id="org7cec564">
+<p>
+This section was referenced in <a href="../stack.html#jvne8ie10lk0">Floyd&rsquo;s tortoise and hare</a>.
+</p>
+
+</div>
+
+<div class="propert" id="orgaf4d879">
 <p>
 Part of a series on <a href="../cs/g.html#13122uo02wj0">Exploring Computational Geometry</a>
 </p>
 
 </div>
-<div id="outline-container-org4f96a5e" class="outline-2">
-<h2 id="org4f96a5e">Terminology</h2>
-<div class="outline-text-2" id="text-org4f96a5e">
+<div id="outline-container-org7dfcba1" class="outline-2">
+<h2 id="org7dfcba1">Terminology</h2>
+<div class="outline-text-2" id="text-org7dfcba1">
 <p>
 A graph \(G = (V, E)\) consists of a set of vertices \(V\) and a set of edges \(E\), such that each edge
 in \(E\) is a connection between a pair of vertices in \(V\)  The number of vertices is
@@ -566,12 +634,12 @@ edges is called dense. A graph containing all possible edges is said to be compl
 
 
 
-<figure id="orgfd17eae">
+<figure id="org803b1d6">
 <img src="../i/old/2022-01-03_18-06-48_screenshot.png" alt="2022-01-03_18-06-48_screenshot.png">
 
 </figure>
 
-<div class="PREVIEW" id="orgc23d04a">
+<div class="PREVIEW" id="org35f1617">
 <p>
 A graph with edges directed from one vertex to another is called a directed graph or
 digraph. A graph whose edges are not directed is called an undirected graph.
@@ -600,7 +668,7 @@ the path is simple, except for the first and last vertices being the same.
 
 
 
-<figure id="org3d963c9">
+<figure id="org3bbff2e">
 <img src="../i/old/2022-01-03_18-10-42_screenshot.png" alt="2022-01-03_18-10-42_screenshot.png">
 
 </figure>
@@ -643,7 +711,7 @@ matrix are \(O (|V|^2)\).
 </p>
 
 
-<figure id="orga96e17a">
+<figure id="org88be3db">
 <img src="../i/old/2022-01-03_18-30-11_screenshot.png" alt="2022-01-03_18-30-11_screenshot.png">
 
 </figure>
@@ -678,7 +746,7 @@ like:
 </p>
 
 
-<figure id="orgec3587d">
+<figure id="orga90b394">
 <img src="../i/old/2022-01-03_19-11-01_screenshot.png" alt="2022-01-03_19-11-01_screenshot.png">
 
 </figure>
@@ -691,7 +759,7 @@ linked to the other one:
 </p>
 
 
-<figure id="org62b7317">
+<figure id="orgc223a83">
 <img src="../i/old/2022-01-03_19-16-44_screenshot.png" alt="2022-01-03_19-16-44_screenshot.png">
 
 </figure>
@@ -827,7 +895,7 @@ edge, it looks like this in memory:
 </p>
 
 
-<figure id="org8b0dbc6">
+<figure id="orgb860c4e">
 <img src="../i/old/2022-01-03_20-25-56_screenshot.png" alt="2022-01-03_20-25-56_screenshot.png">
 
 </figure>
@@ -848,7 +916,7 @@ In the other hand, the adjacency matrix represent looks like this:
 </p>
 
 
-<figure id="org9dd36a0">
+<figure id="org88c18e0">
 <img src="../i/old/2022-01-03_20-31-26_screenshot.png" alt="2022-01-03_20-31-26_screenshot.png">
 
 </figure>
@@ -913,9 +981,9 @@ Here&rsquo;s a comparison between each representation:
 </table>
 </div>
 </div>
-<div id="outline-container-org40f7680" class="outline-2">
-<h2 id="org40f7680">Multigraph (Multi-edges graph)</h2>
-<div class="outline-text-2" id="text-org40f7680">
+<div id="outline-container-org3cb0e9b" class="outline-2">
+<h2 id="org3cb0e9b">Multigraph (Multi-edges graph)</h2>
+<div class="outline-text-2" id="text-org3cb0e9b">
 <p>
 Multigraph is an obscure data structure, since it can be represented in some other ways
 using complex forms of regular undirected graph, however it is not hard to implement. In
@@ -924,7 +992,7 @@ than one roads therefore we have to have this roads recorded within an adjacency
 </p>
 
 
-<figure id="org86573ef">
+<figure id="org622d01e">
 <img src="../i/old/2022-01-03_20-14-47_screenshot.png" alt="2022-01-03_20-14-47_screenshot.png">
 
 </figure>
@@ -957,9 +1025,9 @@ list in the &ldquo;to&rdquo; node).
 </p>
 </div>
 </div>
-<div id="outline-container-org0134187" class="outline-2">
-<h2 id="org0134187">Weighted Graph</h2>
-<div class="outline-text-2" id="text-org0134187">
+<div id="outline-container-org7155ef1" class="outline-2">
+<h2 id="org7155ef1">Weighted Graph</h2>
+<div class="outline-text-2" id="text-org7155ef1">
 <p>
 We can consider all of the last implementations as an unweghted graph representations, we
 don&rsquo;t really care about the specifications of an edge between two nodes. However, in a lot
@@ -1026,7 +1094,7 @@ Consider the following figure:
 </p>
 
 
-<figure id="org5b868c8">
+<figure id="org6b0802d">
 <img src="../i/old/2022-01-06_14-45-44_screenshot.png" alt="2022-01-06_14-45-44_screenshot.png">
 
 </figure>
@@ -1210,9 +1278,9 @@ graphs, in the case of ambiguity you can backtrack the definitions from here.
 </table>
 </div>
 </div>
-<div id="outline-container-org6294cb4" class="outline-2">
-<h2 id="org6294cb4">Graph Traversal</h2>
-<div class="outline-text-2" id="text-org6294cb4">
+<div id="outline-container-org8cbbbe8" class="outline-2">
+<h2 id="org8cbbbe8">Graph Traversal</h2>
+<div class="outline-text-2" id="text-org8cbbbe8">
 <p>
 Given any starting vertex, we can find all the reachable vertices from the start point,
 there are many algorithms that can do this, the simplest of which is depth-frist search.
@@ -1221,6 +1289,13 @@ there are many algorithms that can do this, the simplest of which is depth-frist
 <div id="outline-container-rz5728e10lk0" class="outline-3">
 <h3 id="rz5728e10lk0">Depth First Search (DFS)</h3>
 <div class="outline-text-3" id="text-rz5728e10lk0">
+<div class="BACKLINKS" id="orged39aa1">
+<p>
+This section was referenced in <a href="#8d3gj8e10lk0">Detecting Cycles In Graphs</a>.
+</p>
+
+</div>
+
 <p>
 As the name implies, DFS enumerate the deepest paths and only backtracking when it reaches a
 dead end or an already-visited section of the graph. We can simplify the process of the
@@ -1445,8 +1520,8 @@ void printSCCs() {
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgfd3f11a" class="outline-4">
-<h4 id="orgfd3f11a"><span class="done KILL">KILL</span> Tarjan&rsquo;s Algorithm&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h4>
+<div id="outline-container-orgb0b91f5" class="outline-4">
+<h4 id="orgb0b91f5"><span class="done KILL">KILL</span> Tarjan&rsquo;s Algorithm&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h4>
 </div>
 </div>
 </div>
@@ -1457,9 +1532,9 @@ void printSCCs() {
 <i>Hint: Review cycle definition in the <a href="#sheet">definition sheet</a> above</i>
 </p>
 </div>
-<div id="outline-container-orgea8a88d" class="outline-3">
-<h3 id="orgea8a88d">Using <a href="#rz5728e10lk0">Depth First Search (DFS)</a></h3>
-<div class="outline-text-3" id="text-orgea8a88d">
+<div id="outline-container-orgbb0c409" class="outline-3">
+<h3 id="orgbb0c409">Using <a href="#rz5728e10lk0">Depth First Search (DFS)</a></h3>
+<div class="outline-text-3" id="text-orgbb0c409">
 <p>
 We can detect cycles in directed graphs using DFS. This is based on the fact that there is a
 cycle in a graph only if there is a back edge present in the graph. A back edge is an edge
@@ -1565,7 +1640,7 @@ points, vertices 1,3,5, and 7.
 </p>
 
 
-<figure id="org72933cd">
+<figure id="org0b61d4c">
 <img src="../i/old/2022-04-08_07-58-38_screenshot.png" alt="2022-04-08_07-58-38_screenshot.png">
 
 </figure>
@@ -1599,7 +1674,7 @@ the graph of the last graph produces the spanning tree of the following figure:
 </p>
 
 
-<figure id="orgfc6adb1">
+<figure id="org782a5e8">
 <img src="../i/old/2022-04-08_08-06-21_screenshot.png" alt="2022-04-08_08-06-21_screenshot.png">
 
 </figure>
@@ -1609,7 +1684,7 @@ If redrawn the tree in the following figure:
 </p>
 
 
-<figure id="orge96281e">
+<figure id="org16aa5c3">
 <img src="../i/old/2022-04-08_08-07-57_screenshot.png" alt="2022-04-08_08-07-57_screenshot.png">
 
 </figure>
@@ -1633,7 +1708,7 @@ using a path of descendants followed by at most one back edge:
 </p>
 
 
-<figure id="org04c850d">
+<figure id="org5129b2e">
 <img src="../i/old/2022-04-08_08-23-12_screenshot.png" alt="2022-04-08_08-23-12_screenshot.png">
 
 </figure>
@@ -1646,7 +1721,7 @@ example:
 </p>
 
 
-<figure id="org198005c">
+<figure id="org4cd5d12">
 <img src="../i/old/2022-04-08_08-28-50_screenshot.png" alt="2022-04-08_08-28-50_screenshot.png">
 
 </figure>
@@ -1807,9 +1882,9 @@ void Graph::BCC()
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org9fd04b8" class="outline-2">
-<h2 id="org9fd04b8">Union-Find (Disjoint Set)</h2>
-<div class="outline-text-2" id="text-org9fd04b8">
+<div id="outline-container-org056d3dd" class="outline-2">
+<h2 id="org056d3dd">Union-Find (Disjoint Set)</h2>
+<div class="outline-text-2" id="text-org056d3dd">
 <p>
 A union-find algorithm is an algorithm that performs two useful operations on such a data
 structure:
@@ -1839,9 +1914,9 @@ then they form a cycle. Otherwise, perform union to merge the subsets together.
 </blockquote></div>
 </div>
 </div>
-<div id="outline-container-org2bde9bb" class="outline-2">
-<h2 id="org2bde9bb">Reach The Mother Vertex</h2>
-<div class="outline-text-2" id="text-org2bde9bb">
+<div id="outline-container-org7f5f7d9" class="outline-2">
+<h2 id="org7f5f7d9">Reach The Mother Vertex</h2>
+<div class="outline-text-2" id="text-org7f5f7d9">
 <p>
 <i>Hint: Review the Mother Vertex in the <a href="#sheet">definition sheet</a> above</i>
 The mother vertex in the following graph is <code>[1, 3, 4]</code>:
@@ -1917,9 +1992,9 @@ them.
 </p>
 </div>
 </div>
-<div id="outline-container-org9f05d7a" class="outline-2">
-<h2 id="org9f05d7a"><span class="done KILL">KILL</span> Bellman-Ford&rsquo;s Shortest Path&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h2>
-<div class="outline-text-2" id="text-org9f05d7a">
+<div id="outline-container-org76c6d30" class="outline-2">
+<h2 id="org76c6d30"><span class="done KILL">KILL</span> Bellman-Ford&rsquo;s Shortest Path&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h2>
+<div class="outline-text-2" id="text-org76c6d30">
 <p>
 The Bellman-Ford algorithm is a way to find single source shortest paths in a graph ith
 negative edge weights (but no negative cycles). The second for loop in this algorithm also
@@ -1940,9 +2015,9 @@ Overall, the algorithm takes \(O(m \cdot n)\) time
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc239821" class="outline-2">
-<h2 id="orgc239821">Balanced Trees</h2>
-<div class="outline-text-2" id="text-orgc239821">
+<div id="outline-container-org7296ec6" class="outline-2">
+<h2 id="org7296ec6">Balanced Trees</h2>
+<div class="outline-text-2" id="text-org7296ec6">
 <p>
 We call a tree binary if each node in it has at most two children. A node’s left child with
 descendants forms the node’s left sub-tree. The definition of the right sub-tree is similar.
@@ -1959,7 +2034,7 @@ tree:
 </p>
 
 
-<figure id="org4ea8e8c">
+<figure id="org2539885">
 <img src="../i/old/2022-07-29_09-50-33_screenshot.png" alt="2022-07-29_09-50-33_screenshot.png">
 
 </figure>
@@ -1987,7 +2062,7 @@ the nodes in the \(\boldsymbol{x}\)‘s right sub-tree are \(\boldsymbol{\geq x}
 
 
 
-<figure id="orga4db558">
+<figure id="org0d73b74">
 <img src="../i/old/2022-07-29_09-52-24_screenshot.png" alt="2022-07-29_09-52-24_screenshot.png">
 
 </figure>
@@ -2002,7 +2077,7 @@ the right, which speeds up the search. This is how we find 9 in the above search
 
 
 
-<figure id="org02fe9b2">
+<figure id="org924c8f6">
 <img src="../i/old/2022-07-29_09-53-07_screenshot.png" alt="2022-07-29_09-53-07_screenshot.png">
 
 </figure>
@@ -2038,9 +2113,9 @@ There are several types of such trees. They require all their nodes to be balanc
 notion of balance differs from type to type.
 </p>
 </div>
-<div id="outline-container-org4bfb7f6" class="outline-3">
-<h3 id="org4bfb7f6">AVL Trees</h3>
-<div class="outline-text-3" id="text-org4bfb7f6">
+<div id="outline-container-orgdbf953b" class="outline-3">
+<h3 id="orgdbf953b">AVL Trees</h3>
+<div class="outline-text-3" id="text-orgdbf953b">
 <p>
 In an AVL tree, we call a node balanced if the heights of its left and right sub-trees
 differ at most by 1. So, a search tree with root x is an AVL tree if all its nodes are
@@ -2054,7 +2129,7 @@ AVL(x) \iff \left|height(x.left) - height(x.right)\right| \leq 1           \text
 
 
 
-<figure id="org4863ad0">
+<figure id="org9b97247">
 <img src="../i/old/2022-07-29_09-57-36_screenshot.png" alt="2022-07-29_09-57-36_screenshot.png">
 
 </figure>
@@ -2085,7 +2160,7 @@ unbalanced node, call it S, there are 4 cases:
 </p>
 
 
-<figure id="org79b1e59">
+<figure id="org305ac57">
 <img src="../i/old/2022-07-29_10-35-29_screenshot.png" alt="2022-07-29_10-35-29_screenshot.png">
 
 </figure>
@@ -2107,7 +2182,7 @@ operations known as <b>rotations</b>.
 
 
 
-<figure id="org1e030de">
+<figure id="orge4d1f4d">
 <img src="../i/old/2022-07-29_10-49-03_screenshot.png" alt="2022-07-29_10-49-03_screenshot.png">
 
 <figcaption><span class="figure-number">Figure 1: </span>A single rotation in an AVL tree. This operation occurs when the excess node (in subtree A) is in the left child of the left child of the unbalanced node labeled S. By rearranging the nodes as shown, we preserve the BST property, as well as re-balance the tree to preserve the AVL tree balance property. The case where the excess node is in the right child of the right child of the unbalanced node is handled in the same way.</figcaption>
@@ -2115,7 +2190,7 @@ operations known as <b>rotations</b>.
 
 
 
-<figure id="org6ffd141">
+<figure id="org63741a4">
 <img src="../i/old/2022-07-29_10-50-12_screenshot.png" alt="2022-07-29_10-50-12_screenshot.png">
 
 <figcaption><span class="figure-number">Figure 2: </span>A double rotation in an AVL tree. This operation occurs when the excess node (in subtree B) is in the right child of the left child of the unbalanced node labeled S. By rearranging the nodes as shown, we preserve the BST property, as well as re-balance the tree to preserve the AVL tree balance property. The case where the excess node is in the left child of the right child of S is handled in the same way</figcaption>
@@ -2176,9 +2251,9 @@ avl *avl_tree::balance(avl *t) {
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgddb9a51" class="outline-3">
-<h3 id="orgddb9a51">Day–Stout–Warren algorithm</h3>
-<div class="outline-text-3" id="text-orgddb9a51">
+<div id="outline-container-org9100616" class="outline-3">
+<h3 id="org9100616">Day–Stout–Warren algorithm</h3>
+<div class="outline-text-3" id="text-org9100616">
 <p>
 The Day–Stout–Warren (DSW) algorithm is a method for efficiently balancing binary search
 trees – that is, decreasing their height to O(log n) nodes, where n is the total number of
@@ -2259,13 +2334,13 @@ routine compress(root, count)
 </div>
 </div>
 </div>
-<div id="outline-container-org2616849" class="outline-2">
-<h2 id="org2616849">Binary Tree Traversal</h2>
-<div class="outline-text-2" id="text-org2616849">
+<div id="outline-container-orgf7117c3" class="outline-2">
+<h2 id="orgf7117c3">Binary Tree Traversal</h2>
+<div class="outline-text-2" id="text-orgf7117c3">
 </div>
-<div id="outline-container-orgc264b9f" class="outline-3">
-<h3 id="orgc264b9f">DFS</h3>
-<div class="outline-text-3" id="text-orgc264b9f">
+<div id="outline-container-orge81fd6c" class="outline-3">
+<h3 id="orge81fd6c">DFS</h3>
+<div class="outline-text-3" id="text-orge81fd6c">
 <p>
 Often we wish to process a binary tree by “visiting” each of its nodes, each time
 performing a specific action such as printing the contents of the node. Any process
@@ -2358,9 +2433,9 @@ access to the BinNode class.
 </p>
 </div>
 </div>
-<div id="outline-container-org4ed08e7" class="outline-3">
-<h3 id="org4ed08e7">BFS</h3>
-<div class="outline-text-3" id="text-org4ed08e7">
+<div id="outline-container-org019cd25" class="outline-3">
+<h3 id="org019cd25">BFS</h3>
+<div class="outline-text-3" id="text-org019cd25">
 <pre class="code"><code>while (q.empty() == false) {
    Node *node = q.front();
    cout &lt;&lt; node-&gt;data &lt;&lt; " "; //whatever operation
@@ -2374,9 +2449,9 @@ access to the BinNode class.
 </div>
 </div>
 </div>
-<div id="outline-container-org531ff3e" class="outline-2">
-<h2 id="org531ff3e">Counting</h2>
-<div class="outline-text-2" id="text-org531ff3e">
+<div id="outline-container-org692da9f" class="outline-2">
+<h2 id="org692da9f">Counting</h2>
+<div class="outline-text-2" id="text-org692da9f">
 <p>
 If we wish to count the number of nodes in a binary tree. The
 key insight is that the total count for any (non-empty) subtree is one for the
@@ -2393,9 +2468,9 @@ return 1 + count(root-&gt;left()) + count(root-&gt;right());
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org64dd87a" class="outline-2">
-<h2 id="org64dd87a">Height of a Binary Tree</h2>
-<div class="outline-text-2" id="text-org64dd87a">
+<div id="outline-container-org83827de" class="outline-2">
+<h2 id="org83827de">Height of a Binary Tree</h2>
+<div class="outline-text-2" id="text-org83827de">
 <p>
 The height of a node in a binary tree is the largest number of edges in a path from a leaf
 node to a target node. If the target node doesn’t have any other nodes connected to it, the
@@ -2450,9 +2525,108 @@ Therefore, the depth of the binary tree is \(\mathbf{3}\).
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: 2020-01-04 Sat 00:00. Last build date: 2025-07-25 Fri 00:00.</p>
+  <div class="book-covers" style="margin: 1em 0; padding: 0 10px;">
+    <p style="margin: 0.5em 0; font-style: italic; color: #555;">Some works I recommend engaging with:</p>
+    <div id="books-container" style="display: flex; flex-wrap: wrap; gap: 8px; max-width: 100%;"></div>
+  </div>
 
-</div>
+
+  <script>
+    const path = window.location.pathname;
+    if (path !== '/' && path !== '/index.html') {
+      const allBooks = [
+        {title: 'The Computational Beauty of Nature', author: 'Gary William Flake'},
+        {title: 'Group Psychology', author: 'Sigmund Freud'},
+        {title: 'Logic', author: 'Nicholas Smith'},
+        {title: 'Structure and Interpretation of Computer Programs', author: 'Harold Abelson'},
+        {title: 'The C Programming Language', author: 'Brian Kernighan'},
+        {title: 'Out of Bounds: Academic Freedom and the Question of Palestine', author: 'M. Abraham'},
+        {title: 'Understanding Power: The Indispensable Chomsky', author: 'Noam Chomsky'},
+        {title: 'Who Rules the World?', author: 'Noam Chomsky'},
+        {title: 'Manufacturing Consent: The Political Economy of the Mass Media', author: 'Noam Chomsky'},
+        {title: 'A People History of The World', author: 'Chris Harman'},
+        {title: 'The Arabs: A History', author: 'Eugene Rogan'},
+        {title: 'State of Terror', author: 'Y. Suarez'},
+        {title: 'A People History of The United States', author: 'Howard Zinn'},
+        {title: 'Killing Hope', author: 'William Blum'},
+        {title: 'Deliverance From Error', author: 'Al-Ghazali'},
+        {title: 'The Dawn of The Day', author: 'Friedrich Nietzsche'},
+        {title: 'Islam and The Destiny of Man', author: 'Gai Eaton'},
+        {title: 'The Polymath', author: 'Waqas Ahmed'},
+        {title: 'Twilight of The Idols', author: 'Friedrich Nietzsche'},
+        {title: 'Manfred', author: 'Lord Byron'},
+        {title: 'Marx in Soho', author: 'Howard Zinn'}
+      ];
+
+      const shuffled = allBooks.sort(() => 0.5 - Math.random());
+      const container = document.getElementById('books-container');
+      let displayedBooks = 0;
+      let bookIndex = 0;
+
+      async function tryNextBook() {
+        if (displayedBooks >= 2 || bookIndex >= shuffled.length) return;
+
+        const book = shuffled[bookIndex];
+        bookIndex++;
+
+        try {
+          const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=intitle:${encodeURIComponent(book.title)}+inauthor:${encodeURIComponent(book.author)}&maxResults=1`);
+          const data = await res.json();
+
+          if (data.items && data.items[0]) {
+            const volumeInfo = data.items[0].volumeInfo;
+            if (volumeInfo.imageLinks) {
+              const link = document.createElement('a');
+              link.style.display = 'none';
+              link.style.lineHeight = '0';
+              link.target = '_blank';
+              if (volumeInfo.infoLink) {
+                link.href = volumeInfo.infoLink;
+              }
+
+              const img = document.createElement('img');
+              img.style.cssText = 'height: 140px; border: 1px dotted #666; background: transparent;';
+              img.src = volumeInfo.imageLinks.thumbnail;
+              img.onload = () => {
+                link.style.display = 'inline-block';
+              };
+
+              link.appendChild(img);
+              container.appendChild(link);
+              displayedBooks++;
+              
+              if (displayedBooks < 2) {
+                tryNextBook();
+              }
+            } else {
+              console.log(`Cannot find book cover for: ${book.title} by ${book.author}`);
+              tryNextBook();
+            }
+          } else {
+            console.log(`Cannot find book: ${book.title} by ${book.author}`);
+            tryNextBook();
+          }
+        } catch (err) {
+          console.log(`Error fetching book: ${book.title} by ${book.author}`, err);
+          tryNextBook();
+        }
+      }
+
+      tryNextBook();
+    } else {
+      document.querySelector('.book-covers').style.display = 'none';
+    }
+  </script>
+
+  </div>
+
+
+
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.34). Written by: Salih Muhammed, by the date of: 2020-01-04 Sat 00:00. Last build date: 2025-11-15 Sat 22:36.</p>
+
+
+
+
 </div>
 </div>
 </body>

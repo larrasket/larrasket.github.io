@@ -6,47 +6,69 @@
 <title>Reading List</title>
 <meta name="author" content="Salih Muhammed" />
 <meta name="generator" content="Org Mode" />
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-  <meta name="theme-color" content="#ffffff">
-  <meta charset="utf-8">
-  <meta name="theme-color" content="#ffffff">
-  <meta name="viewport" content= "width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/style/toc.css">
-  <link rel="stylesheet" href="/style/tufte.css">
-  <link rel="stylesheet" href="/style/main.css">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta charset="utf-8" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/style/toc.css?v=20250120" />
+    <link rel="stylesheet" href="/style/tufte.css?v=20250120" />
+    <link rel="stylesheet" href="/style/main.css?v=20250201" />
 
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const p = document.querySelector("#content > p:first-of-type");
+        if (p && /^[\u0600-\u06FF]/.test(p.textContent.trim())) {
+          p.classList.add("arabic");
+        }
+      });
+    </script>
 
+    <script async data-id="101390423" src="//static.getclicky.com/js"></script>
+    <noscript>
+      <p>
+        <img
+          alt="Clicky"
+          width="1"
+          height="1"
+          src="//in.getclicky.com/101390423ns.gif"
+        /></p
+    ></noscript>
 
+    <!-- Import LazySizes - State-of-the-art lazy loading library -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js"
+      async
+    ></script>
 
-  <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
-  <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+    <!-- Optional: Import plugins for better performance -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js"
+      async
+    ></script>
 
-<!-- Import LazySizes - State-of-the-art lazy loading library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+    <script>
+      // Only run on pages with 'art_paintings_media' in the path
+      if (window.location.pathname.includes("art_paintings_media")) {
+        document.addEventListener("DOMContentLoaded", function () {
+          // Configure LazySizes for optimal performance
+          window.lazySizesConfig = window.lazySizesConfig || {};
+          window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
+          window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
+          window.lazySizesConfig.expFactor = 1.5; // Expand loading area
+          window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
 
-<!-- Optional: Import plugins for better performance -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js" async></script>
-
-<script>
-// Only run on pages with 'art_paintings_media' in the path
-if (window.location.pathname.includes('art_paintings_media')) {
-  document.addEventListener('DOMContentLoaded', function() {
-    
-    // Configure LazySizes for optimal performance
-    window.lazySizesConfig = window.lazySizesConfig || {};
-    window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
-    window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
-    window.lazySizesConfig.expFactor = 1.5; // Expand loading area
-    window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
-
-    // Add CSS for smooth transitions and collapsible content
-    const style = document.createElement('style');
-    style.textContent = `
+          // Add CSS for smooth transitions and collapsible content
+          const style = document.createElement("style");
+          style.textContent = `
       .lazyload,
       .lazyloading {
         opacity: 0;
@@ -74,208 +96,215 @@ if (window.location.pathname.includes('art_paintings_media')) {
         filter: none;
       }
     `;
-    document.head.appendChild(style);
+          document.head.appendChild(style);
 
-    // Find all h3 elements
-    const h3Elements = document.querySelectorAll('h3');
+          // Find all h3 elements
+          const h3Elements = document.querySelectorAll("h3");
 
-    h3Elements.forEach(function(h3) {
-      // Make h3 clickable and add icon
-      h3.style.position = 'relative';
-      h3.style.cursor = 'pointer';
-      h3.style.paddingLeft = '20px';
-      h3.style.userSelect = 'none';
+          h3Elements.forEach(function (h3) {
+            // Make h3 clickable and add icon
+            h3.style.position = "relative";
+            h3.style.cursor = "pointer";
+            h3.style.paddingLeft = "20px";
+            h3.style.userSelect = "none";
 
-      // Add the arrow icon
-      const icon = document.createElement('span');
-      icon.innerHTML = '▶';
-      icon.style.position = 'absolute';
-      icon.style.left = '0px';
-      icon.style.top = '50%';
-      icon.style.transform = 'translateY(-50%)';
-      icon.style.transition = 'transform 0.2s';
-      icon.style.fontSize = '0.8em';
-      icon.style.color = 'rgb(102, 102, 102)';
-      icon.style.fontFamily = 'monospace';
+            // Add the arrow icon
+            const icon = document.createElement("span");
+            icon.innerHTML = "▶";
+            icon.style.position = "absolute";
+            icon.style.left = "0px";
+            icon.style.top = "50%";
+            icon.style.transform = "translateY(-50%)";
+            icon.style.transition = "transform 0.2s";
+            icon.style.fontSize = "0.8em";
+            icon.style.color = "rgb(102, 102, 102)";
+            icon.style.fontFamily = "monospace";
 
-      h3.insertBefore(icon, h3.firstChild);
+            h3.insertBefore(icon, h3.firstChild);
 
-      // Find all content after this h3 until the next h3 or end of parent
-      const contentElements = [];
-      let nextElement = h3.nextElementSibling;
+            // Find all content after this h3 until the next h3 or end of parent
+            const contentElements = [];
+            let nextElement = h3.nextElementSibling;
 
-      while (nextElement && nextElement.tagName !== 'H3') {
-        contentElements.push(nextElement);
-        nextElement = nextElement.nextElementSibling;
-      }
-
-      // Create a wrapper for smooth collapsing
-      const wrapper = document.createElement('div');
-      wrapper.className = 'collapsible-content collapsed';
-      wrapper.style.maxHeight = '0';
-
-      // Move content elements into wrapper
-      contentElements.forEach(function(element) {
-        wrapper.appendChild(element);
-      });
-
-      // Insert wrapper after h3
-      h3.parentNode.insertBefore(wrapper, h3.nextSibling);
-
-      // Prepare images for LazySizes lazy loading and make them clickable
-      const prepareImagesForLazyLoading = (container) => {
-        const images = container.querySelectorAll('img');
-        images.forEach(function(img) {
-          // Only process if not already processed
-          if (!img.classList.contains('lazyload') && !img.dataset.processed) {
-            // Store original src in data-src for LazySizes
-            if (img.src && img.src !== '' && !img.src.startsWith('data:')) {
-              img.dataset.src = img.src;
-              // Use a tiny placeholder or low-quality placeholder
-              img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+            while (nextElement && nextElement.tagName !== "H3") {
+              contentElements.push(nextElement);
+              nextElement = nextElement.nextElementSibling;
             }
 
-            // Handle srcset for responsive images
-            if (img.srcset && img.srcset !== '') {
-              img.dataset.srcset = img.srcset;
-              img.srcset = '';
-            }
+            // Create a wrapper for smooth collapsing
+            const wrapper = document.createElement("div");
+            wrapper.className = "collapsible-content collapsed";
+            wrapper.style.maxHeight = "0";
 
-            // Handle sizes attribute
-            if (img.sizes) {
-              img.dataset.sizes = img.sizes;
-            }
+            // Move content elements into wrapper
+            contentElements.forEach(function (element) {
+              wrapper.appendChild(element);
+            });
 
-            // Add LazySizes classes
-            img.classList.add('lazyload');
+            // Insert wrapper after h3
+            h3.parentNode.insertBefore(wrapper, h3.nextSibling);
 
-            // Make image clickable - add cursor pointer
-            img.style.cursor = 'pointer';
+            // Prepare images for LazySizes lazy loading and make them clickable
+            const prepareImagesForLazyLoading = (container) => {
+              const images = container.querySelectorAll("img");
+              images.forEach(function (img) {
+                // Only process if not already processed
+                if (
+                  !img.classList.contains("lazyload") &&
+                  !img.dataset.processed
+                ) {
+                  // Store original src in data-src for LazySizes
+                  if (
+                    img.src &&
+                    img.src !== "" &&
+                    !img.src.startsWith("data:")
+                  ) {
+                    img.dataset.src = img.src;
+                    // Use a tiny placeholder or low-quality placeholder
+                    img.src =
+                      'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+                  }
 
-            // Add click handler to open image in new tab
-            img.addEventListener('click', function(e) {
+                  // Handle srcset for responsive images
+                  if (img.srcset && img.srcset !== "") {
+                    img.dataset.srcset = img.srcset;
+                    img.srcset = "";
+                  }
+
+                  // Handle sizes attribute
+                  if (img.sizes) {
+                    img.dataset.sizes = img.sizes;
+                  }
+
+                  // Add LazySizes classes
+                  img.classList.add("lazyload");
+
+                  // Make image clickable - add cursor pointer
+                  img.style.cursor = "pointer";
+
+                  // Add click handler to open image in new tab
+                  img.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    e.stopPropagation(); // Prevent triggering h3 collapse
+
+                    // Get the actual image URL (either from src or data-src)
+                    let imageUrl = this.src;
+                    if (this.dataset.src && !this.src.startsWith("data:")) {
+                      imageUrl = this.dataset.src;
+                    } else if (
+                      this.src.startsWith("data:") &&
+                      this.dataset.src
+                    ) {
+                      imageUrl = this.dataset.src;
+                    }
+
+                    // Open image in new tab
+                    if (imageUrl && !imageUrl.startsWith("data:")) {
+                      window.open(imageUrl, "_blank");
+                    }
+                  });
+
+                  // Mark as processed
+                  img.dataset.processed = "true";
+
+                  // Maintain aspect ratio to prevent layout shift
+                  if (!img.style.aspectRatio && img.width && img.height) {
+                    img.style.aspectRatio = img.width + "/" + img.height;
+                  }
+                }
+              });
+            };
+
+            // Prepare all images in this section for lazy loading
+            prepareImagesForLazyLoading(wrapper);
+
+            // Track collapsed state
+            let isCollapsed = true;
+            let hasBeenExpanded = false;
+
+            // Add click handler
+            h3.addEventListener("click", function (e) {
               e.preventDefault();
-              e.stopPropagation(); // Prevent triggering h3 collapse
 
-              // Get the actual image URL (either from src or data-src)
-              let imageUrl = this.src;
-              if (this.dataset.src && !this.src.startsWith('data:')) {
-                imageUrl = this.dataset.src;
-              } else if (this.src.startsWith('data:') && this.dataset.src) {
-                imageUrl = this.dataset.src;
-              }
+              if (isCollapsed) {
+                // Expand: show content and activate lazy loading
+                icon.style.transform = "translateY(-50%) rotate(90deg)";
+                wrapper.classList.remove("collapsed");
+                wrapper.classList.add("expanded");
+                wrapper.style.maxHeight = wrapper.scrollHeight + "px";
 
-              // Open image in new tab
-              if (imageUrl && !imageUrl.startsWith('data:')) {
-                window.open(imageUrl, '_blank');
+                // Only activate LazySizes for this section when first expanded
+                if (!hasBeenExpanded) {
+                  // Trigger LazySizes to check for images in this newly visible section
+                  if (window.lazySizes) {
+                    // Force LazySizes to check all images in this wrapper
+                    const lazyImages = wrapper.querySelectorAll(".lazyload");
+                    lazyImages.forEach((img) => {
+                      // Add to LazySizes queue
+                      window.lazySizes.loader.unveil(img);
+                    });
+                  }
+                  hasBeenExpanded = true;
+                }
+
+                isCollapsed = false;
+
+                // Recalculate height after images potentially load
+                setTimeout(() => {
+                  if (!isCollapsed) {
+                    wrapper.style.maxHeight = wrapper.scrollHeight + "px";
+                  }
+                }, 100);
+              } else {
+                // Collapse: hide content
+                icon.style.transform = "translateY(-50%) rotate(0deg)";
+                wrapper.classList.remove("expanded");
+                wrapper.classList.add("collapsed");
+                wrapper.style.maxHeight = "0";
+
+                isCollapsed = true;
               }
             });
 
-            // Mark as processed
-            img.dataset.processed = 'true';
-
-            // Maintain aspect ratio to prevent layout shift
-            if (!img.style.aspectRatio && img.width && img.height) {
-              img.style.aspectRatio = img.width + '/' + img.height;
-            }
-          }
+            // Listen for LazySizes events to adjust height dynamically
+            wrapper.addEventListener("lazyloaded", function (e) {
+              if (!isCollapsed) {
+                // Adjust wrapper height when images load
+                setTimeout(() => {
+                  wrapper.style.maxHeight = wrapper.scrollHeight + "px";
+                }, 50);
+              }
+            });
+          });
         });
-      };
+      }
+    </script>
 
-      // Prepare all images in this section for lazy loading
-      prepareImagesForLazyLoading(wrapper);
+    <script>
+      (function () {
+        "use strict";
 
-      // Track collapsed state
-      let isCollapsed = true;
-      let hasBeenExpanded = false;
+        // Check if current page should have the formatting applied
+        function shouldApplyFormatting() {
+          const path = window.location.pathname;
 
-      // Add click handler
-      h3.addEventListener('click', function(e) {
-        e.preventDefault();
-
-        if (isCollapsed) {
-          // Expand: show content and activate lazy loading
-          icon.style.transform = 'translateY(-50%) rotate(90deg)';
-          wrapper.classList.remove('collapsed');
-          wrapper.classList.add('expanded');
-          wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
-
-          // Only activate LazySizes for this section when first expanded
-          if (!hasBeenExpanded) {
-            // Trigger LazySizes to check for images in this newly visible section
-            if (window.lazySizes) {
-              // Force LazySizes to check all images in this wrapper
-              const lazyImages = wrapper.querySelectorAll('.lazyload');
-              lazyImages.forEach(img => {
-                // Add to LazySizes queue
-                window.lazySizes.loader.unveil(img);
-              });
-            }
-            hasBeenExpanded = true;
-          }
-
-          isCollapsed = false;
-
-          // Recalculate height after images potentially load
-          setTimeout(() => {
-            if (!isCollapsed) {
-              wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
-            }
-          }, 100);
-
-        } else {
-          // Collapse: hide content
-          icon.style.transform = 'translateY(-50%) rotate(0deg)';
-          wrapper.classList.remove('expanded');
-          wrapper.classList.add('collapsed');
-          wrapper.style.maxHeight = '0';
-
-          isCollapsed = true;
+          // Check if path matches our target patterns
+          return (
+            path === "/stack" ||
+            path === "/stack.html" ||
+            path.startsWith("/sh/")
+          );
         }
-      });
 
-      // Listen for LazySizes events to adjust height dynamically
-      wrapper.addEventListener('lazyloaded', function(e) {
-        if (!isCollapsed) {
-          // Adjust wrapper height when images load
-          setTimeout(() => {
-            wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
-          }, 50);
+        // Only proceed if we're on a target page
+        if (!shouldApplyFormatting()) {
+          return;
         }
-      });
-    });
-  });
-}
-</script>
 
-<script>
-
-
-
-  
-// Stack Page Formatter - Apply inline layout to specific pages
-(function() {
-  'use strict';
-  
-  // Check if current page should have the formatting applied
-  function shouldApplyFormatting() {
-    const path = window.location.pathname;
-    
-    // Check if path matches our target patterns
-    return path === '/stack' || 
-           path === '/stack.html' || 
-           path.startsWith('/sh/');
-  }
-  
-  // Only proceed if we're on a target page
-  if (!shouldApplyFormatting()) {
-    return;
-  }
-  
-  // Add CSS styles
-  function addStyles() {
-    const style = document.createElement('style');
-    style.textContent = `
+        // Add CSS styles
+        function addStyles() {
+          const style = document.createElement("style");
+          style.textContent = `
       /* Basic styling for entries */
       .outline-3 {
         margin-bottom: 1.5em;
@@ -317,6 +346,7 @@ if (window.location.pathname.includes('art_paintings_media')) {
         padding: 0 !important;
       }
 
+
       /* Hide block elements that will be moved */
       .outline-3 .moved-block {
         display: block;
@@ -328,148 +358,166 @@ if (window.location.pathname.includes('art_paintings_media')) {
         scroll-margin-top: 20px;
       }
     `;
-    document.head.appendChild(style);
-  }
-  
-  // Extract ID from container div
-  function extractIdFromContainer(entry) {
-    const containerId = entry.id;
-    if (containerId && containerId.startsWith('outline-container-')) {
-      return containerId.replace('outline-container-', '');
-    }
-    return null;
-  }
-  
-  // Apply the formatting transformation
-  function applyFormatting() {
-    // Process each entry
-    const entries = document.querySelectorAll('.outline-3');
-    
-    entries.forEach((entry, index) => {
-      // Extract the anchor ID from the container before transformation
-      const anchorId = extractIdFromContainer(entry);
-      
-      // Extract components
-      const h3 = entry.querySelector('h3');
-      const notes = entry.querySelector('.notes');
-      const outlineText = entry.querySelector('.outline-text-3');
-      const tag = entry.querySelector('.tag');
-      
-      if (!h3 || !outlineText) return;
-      
-      // Get title text (preserve any TODO/DONE prefixes and links)
-      let titleText = h3.innerHTML;
-      
-      // Get timestamp
-      let timestampText = '';
-      if (notes) {
-        const timestamp = notes.querySelector('.timestamp');
-        if (timestamp) {
-          timestampText = timestamp.textContent;
+          document.head.appendChild(style);
         }
-      }
-      
-      // Get content paragraphs (excluding notes and tag)
-      const contentParagraphs = [];
-      const blockElements = [];
-      
-      Array.from(outlineText.children).forEach(child => {
-        if (child.classList.contains('notes') || child.classList.contains('tag')) {
-          return; // Skip these
+
+        // Extract ID from container div
+        function extractIdFromContainer(entry) {
+          const containerId = entry.id;
+          if (containerId && containerId.startsWith("outline-container-")) {
+            return containerId.replace("outline-container-", "");
+          }
+          return null;
         }
-        
-        if (child.tagName === 'P') {
-          contentParagraphs.push(child.innerHTML);
-        } else if (child.tagName === 'UL' || child.tagName === 'OL' || 
-                   child.tagName === 'BLOCKQUOTE' || child.tagName === 'PRE' ||
-                   child.tagName === 'DL' || child.classList.contains('epigraph')) {
-          blockElements.push(child.outerHTML);
-        } else if (child.tagName === 'DIV' && child.classList.contains('epigraph')) {
-          blockElements.push(child.outerHTML);
+
+        // Apply the formatting transformation
+        function applyFormatting() {
+          // Process each entry
+          const entries = document.querySelectorAll(".outline-3");
+
+          entries.forEach((entry, index) => {
+            // Extract the anchor ID from the container before transformation
+            const anchorId = extractIdFromContainer(entry);
+
+            // Extract components
+            const h3 = entry.querySelector("h3");
+            const notes = entry.querySelector(".notes");
+            const outlineText = entry.querySelector(".outline-text-3");
+            const tag = entry.querySelector(".tag");
+
+            if (!h3 || !outlineText) return;
+
+            // Get title text (preserve any TODO/DONE prefixes and links)
+            let titleText = h3.innerHTML;
+
+            // Get timestamp
+            let timestampText = "";
+            if (notes) {
+              const timestamp = notes.querySelector(".timestamp");
+              if (timestamp) {
+                timestampText = timestamp.textContent;
+              }
+            }
+
+            // Get content paragraphs (excluding notes, tag, and backlinks)
+            const contentParagraphs = [];
+            const blockElements = [];
+            const backlinks = entry.querySelector(".BACKLINKS");
+
+            Array.from(outlineText.children).forEach((child) => {
+              if (
+                child.classList.contains("notes") ||
+                child.classList.contains("tag") ||
+                child.classList.contains("BACKLINKS")
+              ) {
+                return; // Skip these - they'll be handled separately
+              }
+
+              if (child.tagName === "P") {
+                contentParagraphs.push(child.innerHTML);
+              } else if (
+                child.tagName === "UL" ||
+                child.tagName === "OL" ||
+                child.tagName === "BLOCKQUOTE" ||
+                child.tagName === "PRE" ||
+                child.tagName === "DL" ||
+                child.classList.contains("epigraph")
+              ) {
+                blockElements.push(child.outerHTML);
+              } else if (
+                child.tagName === "DIV" &&
+                child.classList.contains("epigraph")
+              ) {
+                blockElements.push(child.outerHTML);
+              }
+            });
+
+            // Get tag HTML (preserve links and formatting)
+            let tagHtml = "";
+            if (tag) {
+              tagHtml = tag.outerHTML;
+            }
+
+            // Construct the new single paragraph
+            let newContent = "";
+
+            // Add date at the start (gray)
+            if (timestampText) {
+              newContent +=
+                '<span class="entry-date">' + timestampText + "</span>";
+            }
+
+            // Add title with emdash
+            newContent += titleText + " — ";
+
+            // Add content paragraphs
+            newContent += contentParagraphs.join(" ");
+
+            // Add tag at the end in parentheses (preserve HTML but force inline)
+            if (tagHtml) {
+              // Extract just the inner content and wrap it properly
+              let tagContent = tag.innerHTML;
+              newContent +=
+                ' <span class="entry-tag">(' + tagContent + ")</span>";
+            }
+
+            // Create new paragraph element
+            const newParagraph = document.createElement("p");
+            newParagraph.className = "entry-paragraph";
+            newParagraph.innerHTML = newContent;
+
+            // Clear the entry
+            entry.innerHTML = "";
+
+            // Preserve the anchor ID by setting it on the transformed entry
+            if (anchorId) {
+              entry.id = anchorId;
+            }
+
+            // Add backlinks FIRST so they can float to the right
+            if (backlinks) {
+              entry.appendChild(backlinks.cloneNode(true));
+            }
+
+            // Then add the main paragraph
+            entry.appendChild(newParagraph);
+
+            // Add any block elements after the paragraph
+            blockElements.forEach((blockHtml) => {
+              const blockDiv = document.createElement("div");
+              blockDiv.className = "moved-block";
+              blockDiv.innerHTML = blockHtml;
+              entry.appendChild(blockDiv);
+            });
+
+            // Add separator after each entry (except the last one)
+            if (index < entries.length - 1) {
+              const separator = document.createElement("hr");
+              separator.style.margin = "1em 0";
+              separator.style.border = "none";
+              separator.style.borderTop = "1px solid #ccc";
+              entry.appendChild(separator);
+            }
+          });
         }
-      });
-      
-      // Get tag HTML (preserve links and formatting)
-      let tagHtml = '';
-      if (tag) {
-        tagHtml = tag.outerHTML;
-      }
-      
-      // Construct the new single paragraph
-      let newContent = '';
-      
-      // Add date at the start (gray)
-      if (timestampText) {
-        newContent += '<span class="entry-date">' + timestampText + '</span>';
-      }
-      
-      // Add title with emdash
-      newContent += titleText + ' — ';
-      
-      // Add content paragraphs
-      newContent += contentParagraphs.join(' ');
-      
-      // Add tag at the end in parentheses (preserve HTML but force inline)
-      if (tagHtml) {
-        // Extract just the inner content and wrap it properly
-        let tagContent = tag.innerHTML;
-        newContent += ' <span class="entry-tag">(' + tagContent + ')</span>';
-      }
-      
-      // Create new paragraph element
-      const newParagraph = document.createElement('p');
-      newParagraph.className = 'entry-paragraph';
-      newParagraph.innerHTML = newContent;
-      
-      // Clear the entry and add the new paragraph
-      entry.innerHTML = '';
-      entry.appendChild(newParagraph);
-      
-      // Preserve the anchor ID by setting it on the transformed entry
-      if (anchorId) {
-        entry.id = anchorId;
-      }
-      
-      // Add any block elements after the paragraph
-      blockElements.forEach(blockHtml => {
-        const blockDiv = document.createElement('div');
-        blockDiv.className = 'moved-block';
-        blockDiv.innerHTML = blockHtml;
-        entry.appendChild(blockDiv);
-      });
-      
-      // Add separator after each entry (except the last one)
-      if (index < entries.length - 1) {
-        const separator = document.createElement('hr');
-        separator.style.margin = '1em 0';
-        separator.style.border = 'none';
-        separator.style.borderTop = '1px solid #ccc';
-        entry.appendChild(separator);
-      }
-    });
-  }
-  
-  // Initialize when DOM is ready
-  function init() {
-    addStyles();
-    
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', applyFormatting);
-    } else {
-      applyFormatting();
-    }
-  }
-  
-  // Start the initialization
-  init();
-})();
-</script>
 
+        // Initialize when DOM is ready
+        function init() {
+          addStyles();
 
+          if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", applyFormatting);
+          } else {
+            applyFormatting();
+          }
+        }
 
-</head>
-<body>
-</body>
+        // Start the initialization
+        init();
+      })();
+    </script>
+  </head>
+  <body></body>
 </html>
 </head>
 <body>
@@ -484,6 +532,19 @@ margin-block-start: auto;
     color: black;
 ">Hereby, all birds fly</h1>
       </a>
+      <nav class="site-nav">
+        <a href="/p/">all posts</a>
+        <span>•</span>
+        <a href="/stack.html">short posts</a>
+        <span>•</span>
+        <a href="/fullbooks.html">books</a>
+        <span>•</span>
+        <a href="/a.html#2ar8en10n2k0">anthology</a>
+        <span>•</span>
+        <a href="/pgp.html">PGP key</a>
+        <span>•</span>
+        <a href="https://www.admonymous.co/larrasket">leave a message</a>
+      </nav>
 <hr class="header-divider" style="margin-block-end: -1em;">
   </div>
 </div>
@@ -495,52 +556,59 @@ margin-block-start: auto;
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org4aec9d5">Canceled</a></li>
-<li><a href="#orgd04647c">Later</a></li>
+<li><a href="#org32e0f54">Canceled</a></li>
+<li><a href="#org66305bb">Later</a></li>
 <li><a href="#history">History</a>
 <ul>
-<li><a href="#org1f0c906">Middle East/ Ummah</a></li>
-<li><a href="#orgbcf819f">Ancient World</a></li>
-<li><a href="#orgbabd7ee">Crusades</a></li>
-<li><a href="#orgd931039">Rome and Ancient Europe</a></li>
-<li><a href="#org074ed3a">The West</a></li>
-<li><a href="#org835365c">Story of a History</a></li>
-<li><a href="#org444aadd">The United States</a></li>
-<li><a href="#org6c4f506">Asian Warfare</a></li>
-<li><a href="#orgcd0bf18">Europe</a></li>
+<li><a href="#orgdeeb118">Middle East/ Ummah</a></li>
+<li><a href="#org185a58e">Ancient World</a></li>
+<li><a href="#org59f878d">Crusades</a></li>
+<li><a href="#orgb5386f3">Rome and Ancient Europe</a></li>
+<li><a href="#org1b1843e">The West</a></li>
+<li><a href="#org8d2aaa0">Story of a History</a></li>
+<li><a href="#org25cd6cb">The United States</a></li>
+<li><a href="#orgf53fac2">Asian Warfare</a></li>
+<li><a href="#orgf589d1d">Europe</a></li>
 </ul>
 </li>
-<li><a href="#orgcedac18">Economics/ Capitalism</a></li>
-<li><a href="#orgbaaf6c9">Marxism</a>
+<li><a href="#org3a25b2b">Economics/ Capitalism</a></li>
+<li><a href="#orgb7fd8d7">Marxism</a>
 <ul>
-<li><a href="#orgfe313b0">Struggle</a></li>
-<li><a href="#org091ef53">Hardcore Capitalism</a></li>
+<li><a href="#orgfe3aeea">Struggle</a></li>
+<li><a href="#org91fcf0d">Hardcore Capitalism</a></li>
 </ul>
 </li>
-<li><a href="#orgffea31b">ʿAqīdah</a></li>
-<li><a href="#org6f52349">Democracy</a></li>
-<li><a href="#org2732428">History of Mathematics</a></li>
-<li><a href="#orga94c870">Greek</a></li>
-<li><a href="#orgb38ee5d">Humanities &amp; Anthropology</a></li>
-<li><a href="#orgd6ed666">Fitness</a></li>
-<li><a href="#org97f8bc5">Social Nationalism</a></li>
-<li><a href="#org83b29e1">Middle East Struggle Related</a>
+<li><a href="#orgd43bee5">ʿAqīdah</a></li>
+<li><a href="#org19886c4">Democracy</a></li>
+<li><a href="#orgc253a4b">History of Mathematics</a></li>
+<li><a href="#org4ab3b0e">Greek</a></li>
+<li><a href="#orgdd75f8a">Humanities &amp; Anthropology</a></li>
+<li><a href="#orgbca40ba">Fitness</a></li>
+<li><a href="#orgc622a1a">Social Nationalism</a></li>
+<li><a href="#orgd189bfb">Middle East Struggle Related</a>
 <ul>
-<li><a href="#org41b1e6e">On The Zionism Movement and The Israeli Occupation in Palestine</a></li>
+<li><a href="#org628f67f">On The Zionism Movement and The Israeli Occupation in Palestine</a></li>
 </ul>
 </li>
-<li><a href="#orgfce805c">Misc Authors</a></li>
-<li><a href="#orgfc42247">Poetry</a></li>
-<li><a href="#org6adaad6">Politics</a></li>
-<li><a href="#org6d7dc55">Science-related</a></li>
-<li><a href="#org1637253">Chess</a></li>
-<li><a href="#orgbb26ece">Heritage</a></li>
-<li><a href="#orgf781d89">Aesthetics</a></li>
-<li><a href="#org5f41ee6">Literature</a></li>
-<li><a href="#org6a589a7">Uncatagorized</a></li>
+<li><a href="#orge706c7b">Misc Authors</a></li>
+<li><a href="#org2a1feaa">Poetry</a></li>
+<li><a href="#orgdb08f72">Politics</a></li>
+<li><a href="#org2d426da">Science-related</a></li>
+<li><a href="#org7e1e268">Chess</a></li>
+<li><a href="#orgd57d5e7">Heritage</a></li>
+<li><a href="#orga855a12">Aesthetics</a></li>
+<li><a href="#org5964515">Literature</a></li>
+<li><a href="#org1109d67">Uncatagorized</a></li>
 </ul>
 </div>
 </nav>
+<div class="BACKLINKS" id="orgd88839f">
+<p>
+This section was referenced in <a href="rlfo.html#p6s5gi81a3k0">Reading List (for others)</a>.
+</p>
+
+</div>
+
 <p>
 Please note: These are neither the books I recommend nor the ones I agree with
 their ideologies; the but a list of the documents/textbooks that I own, with
@@ -556,9 +624,9 @@ List (for others)</a> or <a href="fullbooks.html#omy9ejo02wj0">Bibliography</a><
 <p>
 <b>IMPORTANT: categories are totally messed up here</b>.
 </p>
-<div id="outline-container-org4aec9d5" class="outline-2">
-<h2 id="org4aec9d5">Canceled</h2>
-<div class="outline-text-2" id="text-org4aec9d5">
+<div id="outline-container-org32e0f54" class="outline-2">
+<h2 id="org32e0f54">Canceled</h2>
+<div class="outline-text-2" id="text-org32e0f54">
 <ul class="org-ul">
 <li>Of Popes and Unicorns: Science, Christianity, and How the Conflict Thesis Fooled the World</li>
 <li>Writing with Style: Conversations on the Art of Writing</li>
@@ -567,16 +635,16 @@ List (for others)</a> or <a href="fullbooks.html#omy9ejo02wj0">Bibliography</a><
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd04647c" class="outline-2">
-<h2 id="orgd04647c">Later</h2>
+<div id="outline-container-org66305bb" class="outline-2">
+<h2 id="org66305bb">Later</h2>
 </div>
 <div id="outline-container-history" class="outline-2">
 <h2 id="history">History</h2>
 <div class="outline-text-2" id="text-history">
 </div>
-<div id="outline-container-org1f0c906" class="outline-3">
-<h3 id="org1f0c906">Middle East/ Ummah</h3>
-<div class="outline-text-3" id="text-org1f0c906">
+<div id="outline-container-orgdeeb118" class="outline-3">
+<h3 id="orgdeeb118">Middle East/ Ummah</h3>
+<div class="outline-text-3" id="text-orgdeeb118">
 <ul class="org-ul">
 <li>Social Origins of Dictatorship and Democracy: Lord and Peasant in the Making of the Modern World</li>
 <li>Beyond Chutzpah: On the Misuse of Anti-Semitism and the Abuse of History</li>
@@ -671,9 +739,9 @@ Islam and Racial Capitalism in Algeria
 </ul>
 </div>
 </div>
-<div id="outline-container-orgbcf819f" class="outline-3">
-<h3 id="orgbcf819f">Ancient World</h3>
-<div class="outline-text-3" id="text-orgbcf819f">
+<div id="outline-container-org185a58e" class="outline-3">
+<h3 id="org185a58e">Ancient World</h3>
+<div class="outline-text-3" id="text-org185a58e">
 <ul class="org-ul">
 <li>المدن الفينيقية (مهران)</li>
 <li>المدن الكبرى (مهران)</li>
@@ -684,9 +752,9 @@ Islam and Racial Capitalism in Algeria
 </ul>
 </div>
 </div>
-<div id="outline-container-orgbabd7ee" class="outline-3">
-<h3 id="orgbabd7ee">Crusades</h3>
-<div class="outline-text-3" id="text-orgbabd7ee">
+<div id="outline-container-org59f878d" class="outline-3">
+<h3 id="org59f878d">Crusades</h3>
+<div class="outline-text-3" id="text-org59f878d">
 <ul class="org-ul">
 <li>What were the Crusades? (Riley-Smith)</li>
 <li>Crusades (Jonathan Riley-Smith)</li>
@@ -694,9 +762,9 @@ Islam and Racial Capitalism in Algeria
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd931039" class="outline-3">
-<h3 id="orgd931039">Rome and Ancient Europe</h3>
-<div class="outline-text-3" id="text-orgd931039">
+<div id="outline-container-orgb5386f3" class="outline-3">
+<h3 id="orgb5386f3">Rome and Ancient Europe</h3>
+<div class="outline-text-3" id="text-orgb5386f3">
 <ul class="org-ul">
 <li>الإمبراطورية الرومانية (لورو)</li>
 <li>Europe: A History (Norman Davies)</li>
@@ -710,9 +778,9 @@ Islam and Racial Capitalism in Algeria
 </ul>
 </div>
 </div>
-<div id="outline-container-org074ed3a" class="outline-3">
-<h3 id="org074ed3a">The West</h3>
-<div class="outline-text-3" id="text-org074ed3a">
+<div id="outline-container-org1b1843e" class="outline-3">
+<h3 id="org1b1843e">The West</h3>
+<div class="outline-text-3" id="text-org1b1843e">
 <ul class="org-ul">
 <li>Colonialism and Neocolonialism (Sartre)</li>
 <li>How the Scots Invented the Modern World</li>
@@ -773,9 +841,9 @@ Also A People&rsquo;s History of American Empire (Zinn)
 </ul>
 </div>
 </div>
-<div id="outline-container-org835365c" class="outline-3">
-<h3 id="org835365c">Story of a History</h3>
-<div class="outline-text-3" id="text-org835365c">
+<div id="outline-container-org8d2aaa0" class="outline-3">
+<h3 id="org8d2aaa0">Story of a History</h3>
+<div class="outline-text-3" id="text-org8d2aaa0">
 <ul class="org-ul">
 <li>مختصر تاريخ العالم (غومبريتش)</li>
 <li>Unfamiliar Fishes (Vowell)</li>
@@ -792,9 +860,9 @@ Also A People&rsquo;s History of American Empire (Zinn)
 </ul>
 </div>
 </div>
-<div id="outline-container-org444aadd" class="outline-3">
-<h3 id="org444aadd">The United States</h3>
-<div class="outline-text-3" id="text-org444aadd">
+<div id="outline-container-org25cd6cb" class="outline-3">
+<h3 id="org25cd6cb">The United States</h3>
+<div class="outline-text-3" id="text-org25cd6cb">
 <ul class="org-ul">
 <li>Operation Paperclip<label for="25" class="margin-toggle sidenote-number"></label><input type="checkbox" id="25" class="margin-toggle"/><span class="sidenote">
 The Secret Intelligence Program that Brought Nazi Scientists to America
@@ -818,9 +886,9 @@ A Guide to Pseudo-Events in America
 </ul>
 </div>
 </div>
-<div id="outline-container-org6c4f506" class="outline-3">
-<h3 id="org6c4f506">Asian Warfare</h3>
-<div class="outline-text-3" id="text-org6c4f506">
+<div id="outline-container-orgf53fac2" class="outline-3">
+<h3 id="orgf53fac2">Asian Warfare</h3>
+<div class="outline-text-3" id="text-orgf53fac2">
 <ul class="org-ul">
 <li>Red Capitalism (Howie)<label for="28" class="margin-toggle sidenote-number"></label><input type="checkbox" id="28" class="margin-toggle"/><span class="sidenote">
 The Fragile Financial Foundation of China&rsquo;s Extraordinary Rise
@@ -849,9 +917,9 @@ Vol. 12
 </ul>
 </div>
 </div>
-<div id="outline-container-orgcd0bf18" class="outline-3">
-<h3 id="orgcd0bf18">Europe</h3>
-<div class="outline-text-3" id="text-orgcd0bf18">
+<div id="outline-container-orgf589d1d" class="outline-3">
+<h3 id="orgf589d1d">Europe</h3>
+<div class="outline-text-3" id="text-orgf589d1d">
 <ul class="org-ul">
 <li>النظام القديم والثورة الفرنسية</li>
 <li>Nazi Germany and the Jews (Friedländer)</li>
@@ -878,9 +946,9 @@ Jewish Survival in Europe.
 </div>
 </div>
 </div>
-<div id="outline-container-orgcedac18" class="outline-2">
-<h2 id="orgcedac18">Economics/ Capitalism</h2>
-<div class="outline-text-2" id="text-orgcedac18">
+<div id="outline-container-org3a25b2b" class="outline-2">
+<h2 id="org3a25b2b">Economics/ Capitalism</h2>
+<div class="outline-text-2" id="text-org3a25b2b">
 <ul class="org-ul">
 <li>Basic Economics<label for="36" class="margin-toggle sidenote-number"></label><input type="checkbox" id="36" class="margin-toggle"/><span class="sidenote">
 A Citizen&rsquo;s Guide to the Economy
@@ -914,9 +982,9 @@ The History of a Dangerous Idea
 </ul>
 </div>
 </div>
-<div id="outline-container-orgbaaf6c9" class="outline-2">
-<h2 id="orgbaaf6c9">Marxism</h2>
-<div class="outline-text-2" id="text-orgbaaf6c9">
+<div id="outline-container-orgb7fd8d7" class="outline-2">
+<h2 id="orgb7fd8d7">Marxism</h2>
+<div class="outline-text-2" id="text-orgb7fd8d7">
 <ul class="org-ul">
 <li>The Society of the Spectacle (Debord)</li>
 <li>كارل ماركس (برلين)</li>
@@ -952,9 +1020,9 @@ The History of a Dangerous Idea
 <li>الفكر الحقوقي البرجوازي (تومانوف، ف)</li>
 </ul>
 </div>
-<div id="outline-container-orgfe313b0" class="outline-3">
-<h3 id="orgfe313b0">Struggle</h3>
-<div class="outline-text-3" id="text-orgfe313b0">
+<div id="outline-container-orgfe3aeea" class="outline-3">
+<h3 id="orgfe3aeea">Struggle</h3>
+<div class="outline-text-3" id="text-orgfe3aeea">
 <ul class="org-ul">
 <li>دور العنف (إنجلز)</li>
 <li>النبي المسلح</li>
@@ -965,9 +1033,9 @@ The History of a Dangerous Idea
 </ul>
 </div>
 </div>
-<div id="outline-container-org091ef53" class="outline-3">
-<h3 id="org091ef53">Hardcore Capitalism</h3>
-<div class="outline-text-3" id="text-org091ef53">
+<div id="outline-container-org91fcf0d" class="outline-3">
+<h3 id="org91fcf0d">Hardcore Capitalism</h3>
+<div class="outline-text-3" id="text-org91fcf0d">
 <ul class="org-ul">
 <li>الكتاب الأسود للرأسمالية</li>
 <li>الطب الإمبريالي</li>
@@ -990,9 +1058,9 @@ The History of a Dangerous Idea
 </div>
 </div>
 </div>
-<div id="outline-container-orgffea31b" class="outline-2">
-<h2 id="orgffea31b">ʿAqīdah</h2>
-<div class="outline-text-2" id="text-orgffea31b">
+<div id="outline-container-orgd43bee5" class="outline-2">
+<h2 id="orgd43bee5">ʿAqīdah</h2>
+<div class="outline-text-2" id="text-orgd43bee5">
 <ul class="org-ul">
 <li>قراءة جديدة لحروب الردة</li>
 <li>كتب العلوين المقدسة</li>
@@ -1102,9 +1170,9 @@ The History of a Dangerous Idea
 </ul>
 </div>
 </div>
-<div id="outline-container-org6f52349" class="outline-2">
-<h2 id="org6f52349">Democracy</h2>
-<div class="outline-text-2" id="text-org6f52349">
+<div id="outline-container-org19886c4" class="outline-2">
+<h2 id="org19886c4">Democracy</h2>
+<div class="outline-text-2" id="text-org19886c4">
 <ul class="org-ul">
 <li><span class="underline">ديموقراطيات في خطر (ألفريد ستبيان)</span></li>
 <li>الديموقراطية ونقادها (دال)</li>
@@ -1115,9 +1183,9 @@ The History of a Dangerous Idea
 </ul>
 </div>
 </div>
-<div id="outline-container-org2732428" class="outline-2">
-<h2 id="org2732428">History of Mathematics</h2>
-<div class="outline-text-2" id="text-org2732428">
+<div id="outline-container-orgc253a4b" class="outline-2">
+<h2 id="orgc253a4b">History of Mathematics</h2>
+<div class="outline-text-2" id="text-orgc253a4b">
 <ul class="org-ul">
 <li>Journey through Genius</li>
 <li>Men of Mathematics</li>
@@ -1134,9 +1202,9 @@ The History of a Dangerous Idea
 </ul>
 </div>
 </div>
-<div id="outline-container-orga94c870" class="outline-2">
-<h2 id="orga94c870">Greek</h2>
-<div class="outline-text-2" id="text-orga94c870">
+<div id="outline-container-org4ab3b0e" class="outline-2">
+<h2 id="org4ab3b0e">Greek</h2>
+<div class="outline-text-2" id="text-org4ab3b0e">
 <ul class="org-ul">
 <li>Ancient Greece<label for="48" class="margin-toggle sidenote-number"></label><input type="checkbox" id="48" class="margin-toggle"/><span class="sidenote">
 A political, social, and cultural history
@@ -1148,9 +1216,9 @@ A political, social, and cultural history
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb38ee5d" class="outline-2">
-<h2 id="orgb38ee5d">Humanities &amp; Anthropology</h2>
-<div class="outline-text-2" id="text-orgb38ee5d">
+<div id="outline-container-orgdd75f8a" class="outline-2">
+<h2 id="orgdd75f8a">Humanities &amp; Anthropology</h2>
+<div class="outline-text-2" id="text-orgdd75f8a">
 <ul class="org-ul">
 <li>النفس والجنس والجريمة</li>
 <li>علم الفراسة (زيدان)</li>
@@ -1298,18 +1366,18 @@ universal Secret science of human and natural transformation.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd6ed666" class="outline-2">
-<h2 id="orgd6ed666">Fitness</h2>
-<div class="outline-text-2" id="text-orgd6ed666">
+<div id="outline-container-orgbca40ba" class="outline-2">
+<h2 id="orgbca40ba">Fitness</h2>
+<div class="outline-text-2" id="text-orgbca40ba">
 <ul class="org-ul">
 <li>Science and Practice of Strength Training</li>
 <li>Starting Strength (Rippetoe)</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org97f8bc5" class="outline-2">
-<h2 id="org97f8bc5">Social Nationalism</h2>
-<div class="outline-text-2" id="text-org97f8bc5">
+<div id="outline-container-orgc622a1a" class="outline-2">
+<h2 id="orgc622a1a">Social Nationalism</h2>
+<div class="outline-text-2" id="text-orgc622a1a">
 <ul class="org-ul">
 <li>Facing Total War: German Sucicty, 1914-1918</li>
 <li>Germany after the First World War</li>
@@ -1326,9 +1394,9 @@ universal Secret science of human and natural transformation.
 </ul>
 </div>
 </div>
-<div id="outline-container-org83b29e1" class="outline-2">
-<h2 id="org83b29e1">Middle East Struggle Related</h2>
-<div class="outline-text-2" id="text-org83b29e1">
+<div id="outline-container-orgd189bfb" class="outline-2">
+<h2 id="orgd189bfb">Middle East Struggle Related</h2>
+<div class="outline-text-2" id="text-orgd189bfb">
 <ul class="org-ul">
 <li>Apocalypse in Islam</li>
 <li>From Deep State to Islamic State</li>
@@ -1371,9 +1439,9 @@ Revolution, Failed Transition and Counter-Revolution
 <li>بحوث في التاريخ الاجتماعي والثقافي للجزائر إبان الاحتلال الفرنسي</li>
 </ul>
 </div>
-<div id="outline-container-org41b1e6e" class="outline-3">
-<h3 id="org41b1e6e">On The Zionism Movement and The Israeli Occupation in Palestine</h3>
-<div class="outline-text-3" id="text-org41b1e6e">
+<div id="outline-container-org628f67f" class="outline-3">
+<h3 id="org628f67f">On The Zionism Movement and The Israeli Occupation in Palestine</h3>
+<div class="outline-text-3" id="text-org628f67f">
 <ul class="org-ul">
 <li>Ethnocracy (Yifachel)</li>
 <li>Language They Understand (Thrall)</li>
@@ -1392,9 +1460,9 @@ Revolution, Failed Transition and Counter-Revolution
 </div>
 </div>
 </div>
-<div id="outline-container-orgfce805c" class="outline-2">
-<h2 id="orgfce805c">Misc Authors</h2>
-<div class="outline-text-2" id="text-orgfce805c">
+<div id="outline-container-orge706c7b" class="outline-2">
+<h2 id="orge706c7b">Misc Authors</h2>
+<div class="outline-text-2" id="text-orge706c7b">
 <ul class="org-ul">
 <li>Antony C. Sutton</li>
 <li>Immanuel Wallerstein</li>
@@ -1404,9 +1472,9 @@ Revolution, Failed Transition and Counter-Revolution
 </ul>
 </div>
 </div>
-<div id="outline-container-orgfc42247" class="outline-2">
-<h2 id="orgfc42247">Poetry</h2>
-<div class="outline-text-2" id="text-orgfc42247">
+<div id="outline-container-org2a1feaa" class="outline-2">
+<h2 id="org2a1feaa">Poetry</h2>
+<div class="outline-text-2" id="text-org2a1feaa">
 <ul class="org-ul">
 <li><del>The Canteos (Pound)</del></li>
 <li>Collected Poems (Kipling)</li>
@@ -1416,9 +1484,9 @@ Revolution, Failed Transition and Counter-Revolution
 </ul>
 </div>
 </div>
-<div id="outline-container-org6adaad6" class="outline-2">
-<h2 id="org6adaad6">Politics</h2>
-<div class="outline-text-2" id="text-org6adaad6">
+<div id="outline-container-orgdb08f72" class="outline-2">
+<h2 id="orgdb08f72">Politics</h2>
+<div class="outline-text-2" id="text-orgdb08f72">
 <ul class="org-ul">
 <li><span class="underline">Propaganda and the Public Mind (Chomsky)</span></li>
 <li>The Protestant Ethic (Weber)</li>
@@ -1468,9 +1536,9 @@ Islam, Politics, and Modernity&rsquo;s Moral Predicament
 </ul>
 </div>
 </div>
-<div id="outline-container-org6d7dc55" class="outline-2">
-<h2 id="org6d7dc55">Science-related</h2>
-<div class="outline-text-2" id="text-org6d7dc55">
+<div id="outline-container-org2d426da" class="outline-2">
+<h2 id="org2d426da">Science-related</h2>
+<div class="outline-text-2" id="text-org2d426da">
 <ul class="org-ul">
 <li>Fossils (Thomson)</li>
 <li>The Behaviour of the Domestic Cat</li>
@@ -1484,9 +1552,9 @@ Jay Gould
 </ul>
 </div>
 </div>
-<div id="outline-container-org1637253" class="outline-2">
-<h2 id="org1637253">Chess</h2>
-<div class="outline-text-2" id="text-org1637253">
+<div id="outline-container-org7e1e268" class="outline-2">
+<h2 id="org7e1e268">Chess</h2>
+<div class="outline-text-2" id="text-org7e1e268">
 <ul class="org-ul">
 <li>Amateur to IM (Hawkins)</li>
 <li>Chess for Zebras (Rowson)</li>
@@ -1498,9 +1566,9 @@ Jay Gould
 </ul>
 </div>
 </div>
-<div id="outline-container-orgbb26ece" class="outline-2">
-<h2 id="orgbb26ece">Heritage</h2>
-<div class="outline-text-2" id="text-orgbb26ece">
+<div id="outline-container-orgd57d5e7" class="outline-2">
+<h2 id="orgd57d5e7">Heritage</h2>
+<div class="outline-text-2" id="text-orgd57d5e7">
 <ul class="org-ul">
 <li>تاريخ الحسين</li>
 <li>حديقة الحقيقة</li>
@@ -1517,9 +1585,9 @@ Jay Gould
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf781d89" class="outline-2">
-<h2 id="orgf781d89">Aesthetics</h2>
-<div class="outline-text-2" id="text-orgf781d89">
+<div id="outline-container-orga855a12" class="outline-2">
+<h2 id="orga855a12">Aesthetics</h2>
+<div class="outline-text-2" id="text-orga855a12">
 <ul class="org-ul">
 <li><span class="underline">Culture and Value (Wittgenstein)</span></li>
 <li><span class="underline">Esoterism as Principle and as Way</span></li>
@@ -1541,9 +1609,9 @@ Jay Gould
 </ul>
 </div>
 </div>
-<div id="outline-container-org5f41ee6" class="outline-2">
-<h2 id="org5f41ee6">Literature</h2>
-<div class="outline-text-2" id="text-org5f41ee6">
+<div id="outline-container-org5964515" class="outline-2">
+<h2 id="org5964515">Literature</h2>
+<div class="outline-text-2" id="text-org5964515">
 <ul class="org-ul">
 <li>The Illuminatus! Trilogy (Wilson, R. and Shea, R.)</li>
 <li>Confession (Gorky, M.)</li>
@@ -1566,9 +1634,9 @@ Jay Gould
 </ul>
 </div>
 </div>
-<div id="outline-container-org6a589a7" class="outline-2">
-<h2 id="org6a589a7">Uncatagorized</h2>
-<div class="outline-text-2" id="text-org6a589a7">
+<div id="outline-container-org1109d67" class="outline-2">
+<h2 id="org1109d67">Uncatagorized</h2>
+<div class="outline-text-2" id="text-org1109d67">
 <ul class="org-ul">
 <li><i>Anarchism</i> by Daniel Guerin</li>
 <li><i>Anarcho-Syndicalism: Theory and Practice</i> by Rudolf Rocker</li>
@@ -1975,9 +2043,108 @@ Jay Gould
     clear: both;
 ">
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.1 (<a href="https://orgmode.org">Org</a> mode 9.7.31). Written by: Salih Muhammed, by the date of: . Last build date: 2025-07-25 Fri 00:00.</p>
+  <div class="book-covers" style="margin: 1em 0; padding: 0 10px;">
+    <p style="margin: 0.5em 0; font-style: italic; color: #555;">Some works I recommend engaging with:</p>
+    <div id="books-container" style="display: flex; flex-wrap: wrap; gap: 8px; max-width: 100%;"></div>
+  </div>
 
-</div>
+
+  <script>
+    const path = window.location.pathname;
+    if (path !== '/' && path !== '/index.html') {
+      const allBooks = [
+        {title: 'The Computational Beauty of Nature', author: 'Gary William Flake'},
+        {title: 'Group Psychology', author: 'Sigmund Freud'},
+        {title: 'Logic', author: 'Nicholas Smith'},
+        {title: 'Structure and Interpretation of Computer Programs', author: 'Harold Abelson'},
+        {title: 'The C Programming Language', author: 'Brian Kernighan'},
+        {title: 'Out of Bounds: Academic Freedom and the Question of Palestine', author: 'M. Abraham'},
+        {title: 'Understanding Power: The Indispensable Chomsky', author: 'Noam Chomsky'},
+        {title: 'Who Rules the World?', author: 'Noam Chomsky'},
+        {title: 'Manufacturing Consent: The Political Economy of the Mass Media', author: 'Noam Chomsky'},
+        {title: 'A People History of The World', author: 'Chris Harman'},
+        {title: 'The Arabs: A History', author: 'Eugene Rogan'},
+        {title: 'State of Terror', author: 'Y. Suarez'},
+        {title: 'A People History of The United States', author: 'Howard Zinn'},
+        {title: 'Killing Hope', author: 'William Blum'},
+        {title: 'Deliverance From Error', author: 'Al-Ghazali'},
+        {title: 'The Dawn of The Day', author: 'Friedrich Nietzsche'},
+        {title: 'Islam and The Destiny of Man', author: 'Gai Eaton'},
+        {title: 'The Polymath', author: 'Waqas Ahmed'},
+        {title: 'Twilight of The Idols', author: 'Friedrich Nietzsche'},
+        {title: 'Manfred', author: 'Lord Byron'},
+        {title: 'Marx in Soho', author: 'Howard Zinn'}
+      ];
+
+      const shuffled = allBooks.sort(() => 0.5 - Math.random());
+      const container = document.getElementById('books-container');
+      let displayedBooks = 0;
+      let bookIndex = 0;
+
+      async function tryNextBook() {
+        if (displayedBooks >= 2 || bookIndex >= shuffled.length) return;
+
+        const book = shuffled[bookIndex];
+        bookIndex++;
+
+        try {
+          const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=intitle:${encodeURIComponent(book.title)}+inauthor:${encodeURIComponent(book.author)}&maxResults=1`);
+          const data = await res.json();
+
+          if (data.items && data.items[0]) {
+            const volumeInfo = data.items[0].volumeInfo;
+            if (volumeInfo.imageLinks) {
+              const link = document.createElement('a');
+              link.style.display = 'none';
+              link.style.lineHeight = '0';
+              link.target = '_blank';
+              if (volumeInfo.infoLink) {
+                link.href = volumeInfo.infoLink;
+              }
+
+              const img = document.createElement('img');
+              img.style.cssText = 'height: 140px; border: 1px dotted #666; background: transparent;';
+              img.src = volumeInfo.imageLinks.thumbnail;
+              img.onload = () => {
+                link.style.display = 'inline-block';
+              };
+
+              link.appendChild(img);
+              container.appendChild(link);
+              displayedBooks++;
+              
+              if (displayedBooks < 2) {
+                tryNextBook();
+              }
+            } else {
+              console.log(`Cannot find book cover for: ${book.title} by ${book.author}`);
+              tryNextBook();
+            }
+          } else {
+            console.log(`Cannot find book: ${book.title} by ${book.author}`);
+            tryNextBook();
+          }
+        } catch (err) {
+          console.log(`Error fetching book: ${book.title} by ${book.author}`, err);
+          tryNextBook();
+        }
+      }
+
+      tryNextBook();
+    } else {
+      document.querySelector('.book-covers').style.display = 'none';
+    }
+  </script>
+
+  </div>
+
+
+
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.34). Written by: Salih Muhammed, by the date of: . Last build date: 2025-07-25 Fri 00:00.</p>
+
+
+
+
 </div>
 </div>
 </body>

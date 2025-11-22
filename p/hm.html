@@ -1,0 +1,2548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Org Macros</title>
+<meta name="author" content="Fabrice Niessen" />
+<meta name="keywords" content="org-mode, macro, examples" />
+<meta name="generator" content="Org Mode" />
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#ffffff">
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="viewport" content= "width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style/toc.css">
+  <link rel="stylesheet" href="/style/tufte.css">
+  <link rel="stylesheet" href="/style/main.css">
+
+
+
+
+  <script async data-id="101390423" src= "//static.getclicky.com/js"></script> <noscript>
+  <p><img alt="Clicky" width="1" height="1" src= "//in.getclicky.com/101390423ns.gif"></p></noscript>
+
+<!-- Import LazySizes - State-of-the-art lazy loading library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+
+<!-- Optional: Import plugins for better performance -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/plugins/unveilhooks/ls.unveilhooks.min.js" async></script>
+
+<script>
+// Only run on pages with 'art_paintings_media' in the path
+if (window.location.pathname.includes('art_paintings_media')) {
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    // Configure LazySizes for optimal performance
+    window.lazySizesConfig = window.lazySizesConfig || {};
+    window.lazySizesConfig.loadMode = 1; // Load images one at a time for better performance
+    window.lazySizesConfig.expand = 50; // Load images 50px before they enter viewport
+    window.lazySizesConfig.expFactor = 1.5; // Expand loading area
+    window.lazySizesConfig.hFac = 0.4; // Height factor for loading trigger
+
+    // Add CSS for smooth transitions and collapsible content
+    const style = document.createElement('style');
+    style.textContent = `
+      .lazyload,
+      .lazyloading {
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+      }
+      .lazyloaded {
+        opacity: 1;
+      }
+      .collapsible-content {
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+      .collapsible-content.collapsed {
+        max-height: 0 !important;
+      }
+      .collapsible-content.expanded {
+        max-height: none;
+      }
+      /* Blur effect while loading (optional) */
+      .lazyloading {
+        filter: blur(5px);
+        opacity: 0.7;
+      }
+      .lazyloaded {
+        filter: none;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Find all h3 elements
+    const h3Elements = document.querySelectorAll('h3');
+
+    h3Elements.forEach(function(h3) {
+      // Make h3 clickable and add icon
+      h3.style.position = 'relative';
+      h3.style.cursor = 'pointer';
+      h3.style.paddingLeft = '20px';
+      h3.style.userSelect = 'none';
+
+      // Add the arrow icon
+      const icon = document.createElement('span');
+      icon.innerHTML = '▶';
+      icon.style.position = 'absolute';
+      icon.style.left = '0px';
+      icon.style.top = '50%';
+      icon.style.transform = 'translateY(-50%)';
+      icon.style.transition = 'transform 0.2s';
+      icon.style.fontSize = '0.8em';
+      icon.style.color = 'rgb(102, 102, 102)';
+      icon.style.fontFamily = 'monospace';
+
+      h3.insertBefore(icon, h3.firstChild);
+
+      // Find all content after this h3 until the next h3 or end of parent
+      const contentElements = [];
+      let nextElement = h3.nextElementSibling;
+
+      while (nextElement && nextElement.tagName !== 'H3') {
+        contentElements.push(nextElement);
+        nextElement = nextElement.nextElementSibling;
+      }
+
+      // Create a wrapper for smooth collapsing
+      const wrapper = document.createElement('div');
+      wrapper.className = 'collapsible-content collapsed';
+      wrapper.style.maxHeight = '0';
+
+      // Move content elements into wrapper
+      contentElements.forEach(function(element) {
+        wrapper.appendChild(element);
+      });
+
+      // Insert wrapper after h3
+      h3.parentNode.insertBefore(wrapper, h3.nextSibling);
+
+      // Prepare images for LazySizes lazy loading and make them clickable
+      const prepareImagesForLazyLoading = (container) => {
+        const images = container.querySelectorAll('img');
+        images.forEach(function(img) {
+          // Only process if not already processed
+          if (!img.classList.contains('lazyload') && !img.dataset.processed) {
+            // Store original src in data-src for LazySizes
+            if (img.src && img.src !== '' && !img.src.startsWith('data:')) {
+              img.dataset.src = img.src;
+              // Use a tiny placeholder or low-quality placeholder
+              img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3Crect width="1" height="1" fill="%23f0f0f0"/%3E%3C/svg%3E';
+            }
+
+            // Handle srcset for responsive images
+            if (img.srcset && img.srcset !== '') {
+              img.dataset.srcset = img.srcset;
+              img.srcset = '';
+            }
+
+            // Handle sizes attribute
+            if (img.sizes) {
+              img.dataset.sizes = img.sizes;
+            }
+
+            // Add LazySizes classes
+            img.classList.add('lazyload');
+
+            // Make image clickable - add cursor pointer
+            img.style.cursor = 'pointer';
+
+            // Add click handler to open image in new tab
+            img.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation(); // Prevent triggering h3 collapse
+
+              // Get the actual image URL (either from src or data-src)
+              let imageUrl = this.src;
+              if (this.dataset.src && !this.src.startsWith('data:')) {
+                imageUrl = this.dataset.src;
+              } else if (this.src.startsWith('data:') && this.dataset.src) {
+                imageUrl = this.dataset.src;
+              }
+
+              // Open image in new tab
+              if (imageUrl && !imageUrl.startsWith('data:')) {
+                window.open(imageUrl, '_blank');
+              }
+            });
+
+            // Mark as processed
+            img.dataset.processed = 'true';
+
+            // Maintain aspect ratio to prevent layout shift
+            if (!img.style.aspectRatio && img.width && img.height) {
+              img.style.aspectRatio = img.width + '/' + img.height;
+            }
+          }
+        });
+      };
+
+      // Prepare all images in this section for lazy loading
+      prepareImagesForLazyLoading(wrapper);
+
+      // Track collapsed state
+      let isCollapsed = true;
+      let hasBeenExpanded = false;
+
+      // Add click handler
+      h3.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        if (isCollapsed) {
+          // Expand: show content and activate lazy loading
+          icon.style.transform = 'translateY(-50%) rotate(90deg)';
+          wrapper.classList.remove('collapsed');
+          wrapper.classList.add('expanded');
+          wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+
+          // Only activate LazySizes for this section when first expanded
+          if (!hasBeenExpanded) {
+            // Trigger LazySizes to check for images in this newly visible section
+            if (window.lazySizes) {
+              // Force LazySizes to check all images in this wrapper
+              const lazyImages = wrapper.querySelectorAll('.lazyload');
+              lazyImages.forEach(img => {
+                // Add to LazySizes queue
+                window.lazySizes.loader.unveil(img);
+              });
+            }
+            hasBeenExpanded = true;
+          }
+
+          isCollapsed = false;
+
+          // Recalculate height after images potentially load
+          setTimeout(() => {
+            if (!isCollapsed) {
+              wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+            }
+          }, 100);
+
+        } else {
+          // Collapse: hide content
+          icon.style.transform = 'translateY(-50%) rotate(0deg)';
+          wrapper.classList.remove('expanded');
+          wrapper.classList.add('collapsed');
+          wrapper.style.maxHeight = '0';
+
+          isCollapsed = true;
+        }
+      });
+
+      // Listen for LazySizes events to adjust height dynamically
+      wrapper.addEventListener('lazyloaded', function(e) {
+        if (!isCollapsed) {
+          // Adjust wrapper height when images load
+          setTimeout(() => {
+            wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+          }, 50);
+        }
+      });
+    });
+  });
+}
+</script>
+
+<script>
+
+
+
+  
+// Stack Page Formatter - Apply inline layout to specific pages
+(function() {
+  'use strict';
+  
+  // Check if current page should have the formatting applied
+  function shouldApplyFormatting() {
+    const path = window.location.pathname;
+    
+    // Check if path matches our target patterns
+    return path === '/stack' || 
+           path === '/stack.html' || 
+           path.startsWith('/sh/');
+  }
+  
+  // Only proceed if we're on a target page
+  if (!shouldApplyFormatting()) {
+    return;
+  }
+  
+  // Add CSS styles
+  function addStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+      /* Basic styling for entries */
+      .outline-3 {
+        margin-bottom: 1.5em;
+        line-height: 1.5;
+      }
+
+      /* Style for reconstructed single paragraph */
+      .entry-paragraph {
+        margin: 0;
+        line-height: 1.5;
+        direction: inherit;
+        unicode-bidi: plaintext;
+      }
+
+      /* Style for date - gray and nice */
+      .entry-date {
+        color: #666;
+        font-size: 0.9em;
+        margin-right: 0.5em;
+      }
+
+      /* Style for tag at end - gray and in parentheses */
+      .entry-tag {
+        display: inline !important;
+        color: #666;
+        margin-left: 0.5em;
+      }
+
+      /* Ensure all children stay inline */
+      .entry-tag * {
+        display: inline !important;
+      }
+
+      /* Override any existing tag styles */
+      .entry-tag p,
+      .entry-tag div {
+        display: inline !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      /* Hide block elements that will be moved */
+      .outline-3 .moved-block {
+        display: block;
+        margin: 0.5em 0;
+      }
+
+      /* Ensure proper anchor target visibility */
+      .outline-3[id] {
+        scroll-margin-top: 20px;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  // Extract ID from container div
+  function extractIdFromContainer(entry) {
+    const containerId = entry.id;
+    if (containerId && containerId.startsWith('outline-container-')) {
+      return containerId.replace('outline-container-', '');
+    }
+    return null;
+  }
+  
+  // Apply the formatting transformation
+  function applyFormatting() {
+    // Process each entry
+    const entries = document.querySelectorAll('.outline-3');
+    
+    entries.forEach((entry, index) => {
+      // Extract the anchor ID from the container before transformation
+      const anchorId = extractIdFromContainer(entry);
+      
+      // Extract components
+      const h3 = entry.querySelector('h3');
+      const notes = entry.querySelector('.notes');
+      const outlineText = entry.querySelector('.outline-text-3');
+      const tag = entry.querySelector('.tag');
+      
+      if (!h3 || !outlineText) return;
+      
+      // Get title text (preserve any TODO/DONE prefixes and links)
+      let titleText = h3.innerHTML;
+      
+      // Get timestamp
+      let timestampText = '';
+      if (notes) {
+        const timestamp = notes.querySelector('.timestamp');
+        if (timestamp) {
+          timestampText = timestamp.textContent;
+        }
+      }
+      
+      // Get content paragraphs (excluding notes and tag)
+      const contentParagraphs = [];
+      const blockElements = [];
+      
+      Array.from(outlineText.children).forEach(child => {
+        if (child.classList.contains('notes') || child.classList.contains('tag')) {
+          return; // Skip these
+        }
+        
+        if (child.tagName === 'P') {
+          contentParagraphs.push(child.innerHTML);
+        } else if (child.tagName === 'UL' || child.tagName === 'OL' || 
+                   child.tagName === 'BLOCKQUOTE' || child.tagName === 'PRE' ||
+                   child.tagName === 'DL' || child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        } else if (child.tagName === 'DIV' && child.classList.contains('epigraph')) {
+          blockElements.push(child.outerHTML);
+        }
+      });
+      
+      // Get tag HTML (preserve links and formatting)
+      let tagHtml = '';
+      if (tag) {
+        tagHtml = tag.outerHTML;
+      }
+      
+      // Construct the new single paragraph
+      let newContent = '';
+      
+      // Add date at the start (gray)
+      if (timestampText) {
+        newContent += '<span class="entry-date">' + timestampText + '</span>';
+      }
+      
+      // Add title with emdash
+      newContent += titleText + ' — ';
+      
+      // Add content paragraphs
+      newContent += contentParagraphs.join(' ');
+      
+      // Add tag at the end in parentheses (preserve HTML but force inline)
+      if (tagHtml) {
+        // Extract just the inner content and wrap it properly
+        let tagContent = tag.innerHTML;
+        newContent += ' <span class="entry-tag">(' + tagContent + ')</span>';
+      }
+      
+      // Create new paragraph element
+      const newParagraph = document.createElement('p');
+      newParagraph.className = 'entry-paragraph';
+      newParagraph.innerHTML = newContent;
+      
+      // Clear the entry and add the new paragraph
+      entry.innerHTML = '';
+      entry.appendChild(newParagraph);
+      
+      // Preserve the anchor ID by setting it on the transformed entry
+      if (anchorId) {
+        entry.id = anchorId;
+      }
+      
+      // Add any block elements after the paragraph
+      blockElements.forEach(blockHtml => {
+        const blockDiv = document.createElement('div');
+        blockDiv.className = 'moved-block';
+        blockDiv.innerHTML = blockHtml;
+        entry.appendChild(blockDiv);
+      });
+      
+      // Add separator after each entry (except the last one)
+      if (index < entries.length - 1) {
+        const separator = document.createElement('hr');
+        separator.style.margin = '1em 0';
+        separator.style.border = 'none';
+        separator.style.borderTop = '1px solid #ccc';
+        entry.appendChild(separator);
+      }
+    });
+  }
+  
+  // Initialize when DOM is ready
+  function init() {
+    addStyles();
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', applyFormatting);
+    } else {
+      applyFormatting();
+    }
+  }
+  
+  // Start the initialization
+  init();
+})();
+</script>
+
+
+
+</head>
+<body>
+</body>
+</html>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://fastly.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<div id="preamble" class="status">
+  <div class="header" style="
+    display: block !important;!i;!;
+">
+<a href="/">
+<h1 class="title" style="
+margin-block-start: auto;
+    color: black;
+">Hereby, all birds fly</h1>
+      </a>
+      <nav class="site-nav">
+        <a href="/p/">all posts</a>
+        <span>•</span>
+        <a href="/stack.html">short posts</a>
+        <span>•</span>
+        <a href="/fullbooks.html">books</a>
+        <span>•</span>
+        <a href="/a.html#2ar8en10n2k0">anthology</a>
+        <span>•</span>
+        <a href="/pgp.html">PGP key</a>
+        <span>•</span>
+        <a href="https://www.admonymous.co/larrasket">leave a message</a>
+      </nav>
+<hr class="header-divider" style="margin-block-end: -1em;">
+  </div>
+</div>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Org Macros</h1>
+</header><nav id="table-of-contents-1" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents-1" role="doc-toc">
+<ul>
+<li><a href="#org145c9e0">Overview</a>
+<ul>
+<li><a href="#orga6b1689">Description</a></li>
+<li><a href="#orgc3d5e46">Objectives</a></li>
+<li><a href="#org20321e7">Features</a></li>
+</ul>
+</li>
+<li><a href="#orgcddfbf8">Code</a>
+<ul>
+<li><a href="#org469e194">Checkout</a></li>
+<li><a href="#orgfad10dc">Installation</a></li>
+<li><a href="#org819fbfe">Usage</a></li>
+<li><a href="#orgb5e1c93">Macros</a></li>
+</ul>
+</li>
+<li><a href="#org7f48856">Org built-ins</a>
+<ul>
+<li><a href="#author">Author macro</a></li>
+<li><a href="#date">Date macro</a></li>
+<li><a href="#email">Email macro</a></li>
+<li><a href="#input-file">Input-file macro</a></li>
+<li><a href="#modification-time">Modification-time macro</a></li>
+<li><a href="#property">Property macro</a></li>
+<li><a href="#time">Time macro</a></li>
+<li><a href="#title">Title macro</a></li>
+</ul>
+</li>
+<li><a href="#org1d8b349">Basic formatting</a>
+<ul>
+<li><a href="#bgcolor">BgColor macro</a></li>
+<li><a href="#clearpage">Clearpage macro</a></li>
+<li><a href="#color">Color macro</a></li>
+<li><a href="#lcolor">Lcolor macro</a></li>
+<li><a href="#fixme">Fixme macro</a></li>
+<li><a href="#highlight">Highlight macro</a></li>
+<li><a href="#hl">Hl macro</a></li>
+<li><a href="#loremipsum">LoremIpsum macro</a></li>
+<li><a href="#newline">Newline macro</a></li>
+<li><a href="#redact">Redact macro</a></li>
+<li><a href="#kbd">Kbd macro</a></li>
+</ul>
+</li>
+<li><a href="#org315145f">Advanced</a>
+<ul>
+<li><a href="#dvipng-when-odt">dvipng-when-odt</a></li>
+<li><a href="#if-latex-else">if-latex macro</a></li>
+<li><a href="#style">style</a></li>
+</ul>
+</li>
+<li><a href="#org8119385">Generic</a>
+<ul>
+<li><a href="#image">Image macro</a></li>
+<li><a href="#version-history">Version-history macro</a></li>
+</ul>
+</li>
+<li><a href="#orgdee0ab3">Layout</a>
+<ul>
+<li><a href="#vspace">Vspace macro</a></li>
+<li><a href="#collapse">Collapse macro</a></li>
+<li><a href="#info">Info macro</a></li>
+<li><a href="#minipage">MiniPage macro</a></li>
+<li><a href="#note">Note macro</a></li>
+<li><a href="#panel">Panel macro</a></li>
+<li><a href="#tip">Tip macro</a></li>
+<li><a href="#warning">Warning macro</a></li>
+<li><a href="#orgeec9615">Vertically aligning table row contents</a></li>
+</ul>
+</li>
+<li><a href="#org703b2d5">Navigation and lists</a>
+<ul>
+<li><a href="#toc">Toc macro</a></li>
+<li><a href="#org5a55202">Listing</a></li>
+</ul>
+</li>
+<li><a href="#org06da48f">Dev tools</a>
+<ul>
+<li><a href="#twitter-share-link-button">Twitter &ldquo;Share a link&rdquo;</a></li>
+</ul>
+</li>
+<li><a href="#org6593aa1">Contributing</a>
+<ul>
+<li><a href="#org6a41dba">Issues</a></li>
+<li><a href="#org0bcc28a">Patches</a></li>
+<li><a href="#orgaf76825">Donations</a></li>
+</ul>
+</li>
+<li><a href="#org43938b6">License</a></li>
+</ul>
+</div>
+</nav>
+<div class="html" id="org993eead">
+<p>
+&lt;a href=&ldquo;<a href="http://opensource.org/licenses/GPL-3.0">http://opensource.org/licenses/GPL-3.0</a>&rdquo;&gt;
+  &lt;img src=&ldquo;<img src="http://img.shields.io/:license-gpl-blue.svg" alt=":license-gpl-blue.svg" class="org-svg">&rdquo; alt=&ldquo;:license-gpl-blue.svg&rdquo; /&gt;
+&lt;/a&gt;
+</p>
+
+<p>
+&lt;a href=&ldquo;<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=VCVAS6KPDQ4JC&amp;lc=BE&amp;item_number=org%2dhtml%2dthemes&amp;currency_code=EUR&amp;bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted">https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=VCVAS6KPDQ4JC&amp;lc=BE&amp;item_number=org%2dhtml%2dthemes&amp;currency_code=EUR&amp;bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted</a>&rdquo;&gt;
+  &lt;img src=&ldquo;<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="btn_donate_LG.gif">&rdquo; alt=&ldquo;btn_donate_LG.gif&rdquo; /&gt;
+&lt;/a&gt;
+</p>
+
+</div>
+
+<p>
+#+begin_quote
+[!TIP]
+</p>
+<div id="outline-container-org60518c9" class="outline-4">
+<h4 id="org60518c9">Transform your Emacs experience in Paris from 24 to 28 November 2025!</h4>
+<div class="outline-text-4" id="text-org60518c9">
+<p>
+Unlock unparalleled productivity with my exclusive &ldquo;EmacsBoost&rdquo; course!*
+</p>
+
+<p>
+Are you ready to <i>supercharge your productivity</i> and become an unstoppable Emacs
+ninja?  This is the opportunity you&rsquo;ve been waiting for!
+</p>
+
+<p>
+<b>What you&rsquo;ll learn:</b>
+</p>
+<ul class="org-ul">
+<li>Expertly master Emacs from the ground up to advanced techniques that set you
+apart.</li>
+<li><i>Maximize your editing efficiency</i> and elevate your workflow to new heights.</li>
+<li>Personalize Emacs to perfectly fit your unique style and needs.</li>
+<li>And much more tips and tricks!</li>
+</ul>
+
+<p>
+<b>Who should join:</b>
+</p>
+
+<p>
+This course is designed for everyone passionate about Emacs &#x2013; from curious
+beginners to seasoned users looking to refine their skills.
+</p>
+
+<p>
+<b>Why choose my course?</b>
+</p>
+<ul class="org-ul">
+<li>Learn from an expert instructor with over 26 years of Emacs mastery.</li>
+<li>Engage in <i>dynamic hands-on exercises</i> that reinforce and enhance your learning
+journey.</li>
+<li>Enjoy <i>exclusive networking opportunities</i> with fellow Emacs enthusiasts who
+share your passion.</li>
+<li>Experience personalized guidance tailored just for you.</li>
+</ul>
+
+<p>
+Seize this exceptional opportunity to elevate your Emacs skills to new levels!
+<br>
+</p>
+
+<p>
+Visit <a href="https://emacsboost.com/en/">https://emacsboost.com/en/</a> for more details, course dates and locations,
+and to <i>secure your place today</i>.
+#+end_quote
+</p>
+</div>
+</div>
+<div id="outline-container-org145c9e0" class="outline-2">
+<h2 id="org145c9e0">Overview</h2>
+<div class="outline-text-2" id="text-org145c9e0">
+</div>
+<div id="outline-container-orga6b1689" class="outline-3">
+<h3 id="orga6b1689">Description</h3>
+<div class="outline-text-3" id="text-orga6b1689">
+<p>
+The <b>macros</b> in Org allow you to add text or code to an Org document that will be
+<b>expanded during export</b>: the text between the 3 pairs of accolades is expanded
+so that readers can see it in the exported versions of the document.
+</p>
+
+<p>
+Some people (such as me) use it to construct complex HTML or LaTeX code.
+</p>
+</div>
+</div>
+<div id="outline-container-orgc3d5e46" class="outline-3">
+<h3 id="orgc3d5e46">Objectives</h3>
+<div class="outline-text-3" id="text-orgc3d5e46">
+<p>
+Using macros allows you to <b>insert dynamic content</b> or <b>add extra functionality</b> in
+exports of an Org document.
+</p>
+</div>
+</div>
+<div id="outline-container-org20321e7" class="outline-3">
+<h3 id="org20321e7">Features</h3>
+<div class="outline-text-3" id="text-org20321e7">
+<p>
+These <a href="https://github.com/fniessen/org-macros">Org-macros</a> have been tested for HTML exports.
+</p>
+
+<p>
+FIXME They will be soon made available for PDF exports.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgcddfbf8" class="outline-2">
+<h2 id="orgcddfbf8">Code</h2>
+<div class="outline-text-2" id="text-orgcddfbf8">
+</div>
+<div id="outline-container-org469e194" class="outline-3">
+<h3 id="org469e194">Checkout</h3>
+<div class="outline-text-3" id="text-org469e194">
+<p>
+Use this command to check out the latest source code of the project from the
+Git repository hosted at <a href="https://github.com/fniessen/org-macros">GitHub</a>:
+</p>
+
+<pre class="example">
+git clone https://github.com/fniessen/org-macros
+</pre>
+</div>
+</div>
+<div id="outline-container-orgfad10dc" class="outline-3">
+<h3 id="orgfad10dc">Installation</h3>
+<div class="outline-text-3" id="text-orgfad10dc">
+<pre class="code"><code>#+INCLUDE: /PATH/TO/org/org-macros.setup
+</code></pre>
+
+<div class="info" id="orgf7cfef9">
+<p>
+As there are Babel code blocks inside the <code>org/org-macros.setup</code> file, it needs to
+be loaded via the <code>#+INCLUDE:</code> directive, not via a <code>#+SETUPFILE:</code>!
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-org819fbfe" class="outline-3">
+<h3 id="org819fbfe">Usage</h3>
+<div class="outline-text-3" id="text-org819fbfe">
+<p>
+Once you&rsquo;ve cloned <a href="https://github.com/fniessen/org-macros">Org-macros</a>, many macros will be ready to use within your Org
+files.
+</p>
+
+<p>
+You can invoke macros anywhere in the document (even in code examples).
+</p>
+
+<p>
+Examples:
+</p>
+
+<ul class="org-ul">
+<li><p>
+With no arguments:
+</p>
+
+<pre class="example" id="org02c2aa3">
+  {{{name-of-the-macro}}}
+</pre></li>
+
+<li><p>
+With arguments:
+</p>
+
+<pre class="example" id="org880d3a8">
+  {{{name-of-the-macro(arg1,arg2)}}}
+</pre></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgb5e1c93" class="outline-3">
+<h3 id="orgb5e1c93">Macros</h3>
+<div class="outline-text-3" id="text-orgb5e1c93">
+<p>
+Below is a list of the few macros currently available.
+</p>
+</div>
+<div id="outline-container-org1b52bc8" class="outline-4">
+<h4 id="org1b52bc8">Org built-ins</h4>
+<div class="outline-text-4" id="text-org1b52bc8">
+<ul class="org-ul">
+<li><a href="#author">author</a> macro</li>
+<li><a href="#date">date</a> macro</li>
+<li><a href="#email">email</a> macro</li>
+<li><a href="#input-file">input-file</a> macro</li>
+<li><a href="#modification-time">modification-time</a> macro</li>
+<li><a href="#property">property</a> macro</li>
+<li><a href="#time">time</a> macro</li>
+<li><a href="#title">title</a> macro</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org70a4fa2" class="outline-4">
+<h4 id="org70a4fa2">Basic formatting</h4>
+<div class="outline-text-4" id="text-org70a4fa2">
+<ul class="org-ul">
+<li><a href="#bgcolor">bgcolor</a> macro</li>
+<li><a href="#clearpage">clearpage</a> macro</li>
+<li><a href="#color">color</a> macro</li>
+<li><a href="#lcolor">lcolor</a> macro</li>
+<li><a href="#fixme">fixme</a> macro</li>
+<li><a href="#highlight">highlight</a> macro</li>
+<li><a href="#loremipsum">loremipsum</a> macro</li>
+
+<li><a href="#newline">newline</a> macro</li>
+<li><a href="#redact">redact</a> macro</li>
+<li><a href="#kbd">kbd</a> macro</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orga54d477" class="outline-4">
+<h4 id="orga54d477">Advanced</h4>
+<div class="outline-text-4" id="text-orga54d477">
+<ul class="org-ul">
+<li><a href="#dvipng-when-odt">dvipng-when-odt</a> macro</li>
+<li><a href="#if-latex-else">if-latex-else</a> macro</li>
+<li><a href="#style">style</a> macro</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org9965d06" class="outline-4">
+<h4 id="org9965d06">Generic macros</h4>
+<div class="outline-text-4" id="text-org9965d06">
+<ul class="org-ul">
+<li><a href="#image">image</a> macro</li>
+<li><code>recently-updated</code> macro</li>
+<li><code>tasklist</code> macro</li>
+<li><a href="#version-history">version-history</a> macro</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org398810f" class="outline-4">
+<h4 id="org398810f">Layout</h4>
+<div class="outline-text-4" id="text-org398810f">
+<ul class="org-ul">
+<li><a href="#vspace">vspace</a> macro</li>
+<li><a href="#collapse">collapse</a> macro</li>
+<li><a href="#info">info</a> macro</li>
+<li><a href="#minipage">minipage</a> macro</li>
+<li><a href="#note">note</a> macro</li>
+<li><a href="#panel">panel</a> macro</li>
+<li><a href="#tip">tip</a> macro</li>
+<li><a href="#warning">warning</a> macro</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org183d152" class="outline-4">
+<h4 id="org183d152">Navigation and lists</h4>
+<div class="outline-text-4" id="text-org183d152">
+<ul class="org-ul">
+<li><code>children</code> macro (to display child pages)</li>
+<li><a href="#toc">toc</a> macro</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org49e9371" class="outline-4">
+<h4 id="org49e9371">Dev tools</h4>
+<div class="outline-text-4" id="text-org49e9371">
+<ul class="org-ul">
+<li><a href="#twitter-share-link-button">twitter-share-link-button</a> macro</li>
+</ul>
+
+<hr>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org7f48856" class="outline-2">
+<h2 id="org7f48856">Org built-ins</h2>
+<div class="outline-text-2" id="text-org7f48856">
+</div>
+<div id="outline-container-author" class="outline-3">
+<h3 id="author">Author macro</h3>
+<div class="outline-text-3" id="text-author">
+<p>
+The <code>author</code> macro outputs a list of users who have created or edited the
+document.
+</p>
+</div>
+<div id="outline-container-org2e07438" class="outline-4">
+<h4 id="org2e07438">Parameters</h4>
+<div class="outline-text-4" id="text-org2e07438">
+<p>
+None.
+</p>
+</div>
+</div>
+<div id="outline-container-orgc2fd0e8" class="outline-4">
+<h4 id="orgc2fd0e8">Examples</h4>
+<div class="outline-text-4" id="text-orgc2fd0e8">
+<p>
+People who have created and edited this document: Fabrice Niessen.
+</p>
+</div>
+</div>
+<div id="outline-container-org48353f0" class="outline-4">
+<h4 id="org48353f0">See also</h4>
+<div class="outline-text-4" id="text-org48353f0">
+<p>
+Option <code>#+AUTHOR:</code>.
+</p>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-date" class="outline-3">
+<h3 id="date">Date macro</h3>
+<div class="outline-text-3" id="text-date">
+<p>
+The <code>date</code> macro outputs the <b>date and time</b> specified in the document.
+</p>
+</div>
+<div id="outline-container-org087e393" class="outline-4">
+<h4 id="org087e393">Parameters</h4>
+<div class="outline-text-4" id="text-org087e393">
+<ol class="org-ol">
+<li><b>Format string</b> understood by <code>format-time-string</code>.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org46fd8dc" class="outline-4">
+<h4 id="org46fd8dc">Examples</h4>
+<div class="outline-text-4" id="text-org46fd8dc">
+<p>
+The date of this document is:  or .
+</p>
+</div>
+</div>
+<div id="outline-container-org215fb2e" class="outline-4">
+<h4 id="org215fb2e">See also</h4>
+<div class="outline-text-4" id="text-org215fb2e">
+<ul class="org-ul">
+<li>Option <code>#+DATE:</code> (for the whole document).</li>
+<li>Property <code>:EXPORT_DATE:</code> (for specific subtrees).</li>
+<li><a href="#modification-time">modification-time</a> macro.</li>
+<li><a href="#time">time</a> macro.</li>
+</ul>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-email" class="outline-3">
+<h3 id="email">Email macro</h3>
+<div class="outline-text-3" id="text-email">
+<p>
+The <code>email</code> macro outputs the email of the author(s).
+</p>
+</div>
+<div id="outline-container-orga736b0d" class="outline-4">
+<h4 id="orga736b0d">Parameters</h4>
+<div class="outline-text-4" id="text-orga736b0d">
+<p>
+None.
+</p>
+</div>
+</div>
+<div id="outline-container-orgf4ee730" class="outline-4">
+<h4 id="orgf4ee730">Examples</h4>
+<div class="outline-text-4" id="text-orgf4ee730">
+<p>
+The email of this document is: (concat &ldquo;fniessen&rdquo; at-sign &ldquo;pirilampo.org&rdquo;).
+</p>
+</div>
+</div>
+<div id="outline-container-org39d95c2" class="outline-4">
+<h4 id="org39d95c2">See also</h4>
+<div class="outline-text-4" id="text-org39d95c2">
+<p>
+Option <code>#+EMAIL:</code>.
+</p>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-input-file" class="outline-3">
+<h3 id="input-file">Input-file macro</h3>
+<div class="outline-text-3" id="text-input-file">
+<p>
+The <code>input-file</code> macro displays the name of the input Org file.
+</p>
+</div>
+<div id="outline-container-org322217c" class="outline-4">
+<h4 id="org322217c">Parameters</h4>
+<div class="outline-text-4" id="text-org322217c">
+<p>
+None.
+</p>
+</div>
+</div>
+<div id="outline-container-org56a5ab0" class="outline-4">
+<h4 id="org56a5ab0">Examples</h4>
+<div class="outline-text-4" id="text-org56a5ab0">
+<p>
+The input file name for this document is: hm.org.
+</p>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-modification-time" class="outline-3">
+<h3 id="modification-time">Modification-time macro</h3>
+<div class="outline-text-3" id="text-modification-time">
+<p>
+The <code>modification-time</code> macro outputs the <b>modification date and time</b> <i>of</i> the file
+being exported.
+</p>
+</div>
+<div id="outline-container-org07175e7" class="outline-4">
+<h4 id="org07175e7">Parameters</h4>
+<div class="outline-text-4" id="text-org07175e7">
+<ol class="org-ol">
+<li><b>Format string</b> understood by <code>format-time-string</code>.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org2139b50" class="outline-4">
+<h4 id="org2139b50">Examples</h4>
+<div class="outline-text-4" id="text-org2139b50">
+<p>
+This document was last modified on: 2025-10-18 Sat 00:35.
+</p>
+</div>
+</div>
+<div id="outline-container-orgb9a01d1" class="outline-4">
+<h4 id="orgb9a01d1">See also</h4>
+<div class="outline-text-4" id="text-orgb9a01d1">
+<ul class="org-ul">
+<li><a href="#date">date</a> macro.</li>
+<li><a href="#time">time</a> macro.</li>
+</ul>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-property" class="outline-3">
+<h3 id="property">Property macro</h3>
+<div class="outline-text-3" id="text-property">
+<p>
+The <code>property</code> macro outputs &#x2026;
+</p>
+</div>
+<div id="outline-container-org71af2a6" class="outline-4">
+<h4 id="org71af2a6">Parameters</h4>
+<div class="outline-text-4" id="text-org71af2a6">
+<ol class="org-ol">
+<li>Node property name.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org4b7fbb7" class="outline-4">
+<h4 id="org4b7fbb7">Examples</h4>
+<div class="outline-text-4" id="text-org4b7fbb7">
+<pre class="code"><code>* TODO Do it!
+:PROPERTIES:
+:Effort:   1:00
+:END:
+
+This task should take no more than {{{property(Effort)}}} hours.
+</code></pre>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-time" class="outline-3">
+<h3 id="time">Time macro</h3>
+<div class="outline-text-3" id="text-time">
+<p>
+The <code>time</code> macro outputs the <b>current date and time</b> <i>when</i> the document is being
+exported.
+</p>
+</div>
+<div id="outline-container-orga47d89f" class="outline-4">
+<h4 id="orga47d89f">Parameters</h4>
+<div class="outline-text-4" id="text-orga47d89f">
+<ol class="org-ol">
+<li><b>Format string</b> understood by <code>format-time-string</code>.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org80625bc" class="outline-4">
+<h4 id="org80625bc">Examples</h4>
+<div class="outline-text-4" id="text-org80625bc">
+<p>
+This document was last exported on: 2025-10-18 Sat 00:36.
+</p>
+</div>
+</div>
+<div id="outline-container-org0157ca4" class="outline-4">
+<h4 id="org0157ca4">See also</h4>
+<div class="outline-text-4" id="text-org0157ca4">
+<ul class="org-ul">
+<li><a href="#date">date</a> macro.</li>
+<li><a href="#modification-time">modification-time</a> macro.</li>
+</ul>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-title" class="outline-3">
+<h3 id="title">Title macro</h3>
+<div class="outline-text-3" id="text-title">
+<p>
+The <code>title</code> macro outputs the document title.
+</p>
+</div>
+<div id="outline-container-org36d5a10" class="outline-4">
+<h4 id="org36d5a10">Parameters</h4>
+<div class="outline-text-4" id="text-org36d5a10">
+<p>
+None.
+</p>
+</div>
+</div>
+<div id="outline-container-org0865c0f" class="outline-4">
+<h4 id="org0865c0f">Examples</h4>
+<div class="outline-text-4" id="text-org0865c0f">
+<p>
+The title of this document is: Org Macros.
+</p>
+</div>
+</div>
+<div id="outline-container-org0b0b98e" class="outline-4">
+<h4 id="org0b0b98e">See also</h4>
+<div class="outline-text-4" id="text-org0b0b98e">
+<p>
+Option <code>#+TITLE:</code>.
+</p>
+
+<hr>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org1d8b349" class="outline-2">
+<h2 id="org1d8b349">Basic formatting</h2>
+<div class="outline-text-2" id="text-org1d8b349">
+</div>
+<div id="outline-container-bgcolor" class="outline-3">
+<h3 id="bgcolor">BgColor macro</h3>
+<div class="outline-text-3" id="text-bgcolor">
+<p>
+The <code>bgcolor</code> macro allows you to change the background color of a block of text.
+</p>
+</div>
+<div id="outline-container-org56c08c5" class="outline-4">
+<h4 id="org56c08c5">Code</h4>
+<div class="outline-text-4" id="text-org56c08c5">
+<pre class="code"><code>#+MACRO: bgcolor @@html:&lt;div style="background-color: $1;"&gt;$2&lt;/div&gt;@@
+</code></pre>
+</div>
+</div>
+<div id="outline-container-org8507749" class="outline-4">
+<h4 id="org8507749">Parameters</h4>
+<div class="outline-text-4" id="text-org8507749">
+<ol class="org-ol">
+<li>Color name or hexadecimal code.</li>
+<li>Text you want to color.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgb5edaa4" class="outline-4">
+<h4 id="orgb5edaa4">Examples</h4>
+<div class="outline-text-4" id="text-orgb5edaa4">
+<p>
+<div style="background-color: red;"> This information is important.</div>
+<div style="background-color: #E0E0E0;"> This other isn't.</div>
+</p>
+
+<p>
+Common color names are supported by most Org exporters (HTML, LaTeX):
+</p>
+
+<p>
+<div style="background-color: red;"> red</div>
+<div style="background-color: orange;"> orange</div>
+<div style="background-color: yellow;"> yellow</div>
+<div style="background-color: green;"> green</div>
+<div style="background-color: blue;"> blue</div>
+<div style="background-color: purple;"> purple</div>
+<div style="background-color: violet;"> violet</div>
+</p>
+
+<p>
+You can also use hexadecimal color codes:
+</p>
+
+<p>
+<div style="background-color: #FF0000;"> #FF0000</div>
+<div style="background-color: #00FF00;"> #00FF00</div>
+<div style="background-color: #0000FF;"> #0000FF</div>
+</p>
+</div>
+</div>
+<div id="outline-container-org2bebd75" class="outline-4">
+<h4 id="org2bebd75">See also</h4>
+<div class="outline-text-4" id="text-org2bebd75">
+<ul class="org-ul">
+<li><a href="#color">color</a> macro</li>
+<li><a href="#highlight">highlight</a> macro</li>
+<li><a href="#hl">hl</a> macro</li>
+</ul>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-clearpage" class="outline-3">
+<h3 id="clearpage">Clearpage macro</h3>
+<div class="outline-text-3" id="text-clearpage">
+</div>
+<div id="outline-container-orgdffe01f" class="outline-4">
+<h4 id="orgdffe01f">Code</h4>
+<div class="outline-text-4" id="text-orgdffe01f">
+<pre class="code"><code>#+MACRO: clearpage @@latex:\\clearpage@@@@odt:&lt;text:p text:style-name="PageBreak"/&gt;@@
+</code></pre>
+
+<div class="warning" id="org4b43974">
+<p>
+To see the above example in action in ODT, edit your <code>styles.xml</code> file and add
+a custom style:
+</p>
+
+<pre class="example">
+&lt;style:style style:name="PageBreak" style:family="paragraph"
+style:parent-style-name="Text_20_body"&gt;
+&lt;style:paragraph-properties fo:break-before="page"/&gt;
+&lt;/style:style&gt;
+</pre>
+
+
+<p>
+See
+<a href="https://www.gnu.org/software/emacs/manual/html_node/org/Creating-one_002doff-styles.html">https://www.gnu.org/software/emacs/manual/html_node/org/Creating-one_002doff-styles.html</a>.
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-orgf071fc5" class="outline-4">
+<h4 id="orgf071fc5">Parameters</h4>
+<div class="outline-text-4" id="text-orgf071fc5">
+<p>
+None.
+</p>
+</div>
+</div>
+<div id="outline-container-orgd353deb" class="outline-4">
+<h4 id="orgd353deb">Examples</h4>
+<div class="outline-text-4" id="text-orgd353deb">
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-color" class="outline-3">
+<h3 id="color">Color macro</h3>
+<div class="outline-text-3" id="text-color">
+<p>
+The <code>color</code> macro allows you to change the foreground color of inline text.
+</p>
+</div>
+<div id="outline-container-org657d415" class="outline-4">
+<h4 id="org657d415">Code</h4>
+<div class="outline-text-4" id="text-org657d415">
+<pre class="code"><code>#+MACRO: color @@html:&lt;span style="color: $1"&gt;$2&lt;/span&gt;@@@@latex:\textcolor{$1}{$2}@@@@odt:&lt;text:span text:style-name="$1"&gt;$2&lt;/text:span&gt;@@
+</code></pre>
+
+<div class="warning" id="orgf003180">
+<p>
+To see the above example in action in ODT, edit your <code>styles.xml</code> file and add
+a custom style for each new color.
+</p>
+
+<p>
+See
+<a href="https://www.gnu.org/software/emacs/manual/html_node/org/Creating-one_002doff-styles.html">https://www.gnu.org/software/emacs/manual/html_node/org/Creating-one_002doff-styles.html</a>.
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-orgd2aae33" class="outline-4">
+<h4 id="orgd2aae33">Parameters</h4>
+<div class="outline-text-4" id="text-orgd2aae33">
+<ol class="org-ol">
+<li>Color name or hexadecimal code.</li>
+<li>Text you want to color.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org58e9808" class="outline-4">
+<h4 id="org58e9808">Examples</h4>
+<div class="outline-text-4" id="text-org58e9808">
+<p>
+<span style="color: red"> This information is important.</span>
+<span style="color: #E0E0E0"> This other isn't.</span>
+</p>
+
+<p>
+Common color names are supported by most Org exporters (HTML, LaTeX):
+</p>
+
+<p>
+<span style="color: red"> red</span>
+<span style="color: orange"> orange</span>
+<span style="color: yellow"> yellow</span>
+<span style="color: green"> green</span>
+<span style="color: blue"> blue</span>
+<span style="color: purple"> purple</span>
+<span style="color: violet"> violet</span>
+</p>
+
+<p>
+You can also use hexadecimal color codes:
+</p>
+
+<p>
+<span style="color: #FF0000"> #FF0000</span>
+<span style="color: #00FF00"> #00FF00</span>
+<span style="color: #0000FF"> #0000FF</span>
+</p>
+</div>
+</div>
+<div id="outline-container-org2ed4cb8" class="outline-4">
+<h4 id="org2ed4cb8">See also</h4>
+<div class="outline-text-4" id="text-org2ed4cb8">
+<ul class="org-ul">
+<li><a href="#bgcolor">bgcolor</a> macro</li>
+<li><a href="#highlight">highlight</a> macro</li>
+<li><a href="#hl">hl</a> macro</li>
+</ul>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-lcolor" class="outline-3">
+<h3 id="lcolor">Lcolor macro</h3>
+<div class="outline-text-3" id="text-lcolor">
+<p>
+The <code>lcolor</code> macro is similar to <a href="#color">color</a> macro except (a) it first
+converts org markup to latex and then applies color.
+</p>
+</div>
+<div id="outline-container-org145ff38" class="outline-4">
+<h4 id="org145ff38">Code</h4>
+<div class="outline-text-4" id="text-org145ff38">
+<pre class="code"><code>#+MACRO: lcolor (eval (concat "\n#+BEGIN_EXPORT latex\n {\color{" $1 (format "}{%s}}\n#+END_EXPORT\n" (org-export-string-as $2 'latex t))))
+</code></pre>
+</div>
+</div>
+<div id="outline-container-org2f44b16" class="outline-4">
+<h4 id="org2f44b16">Parameters</h4>
+<div class="outline-text-4" id="text-org2f44b16">
+<ol class="org-ol">
+<li>Color name</li>
+<li>Text you want to color.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org4d9d8f5" class="outline-4">
+<h4 id="org4d9d8f5">Examples</h4>
+<div class="outline-text-4" id="text-org4d9d8f5">
+<p>
+Common color names are supported by most Org exporters (HTML, LaTeX):
+</p>
+
+<p>
+<span style="color: red"> red</span>
+<span style="color: orange"> orange</span>
+<span style="color: yellow"> yellow</span>
+<span style="color: green"> green</span>
+<span style="color: blue"> blue</span>
+<span style="color: purple"> purple</span>
+<span style="color: violet"> violet</span>
+</p>
+</div>
+</div>
+<div id="outline-container-org2920d9e" class="outline-4">
+<h4 id="org2920d9e">See also</h4>
+<div class="outline-text-4" id="text-org2920d9e">
+<ul class="org-ul">
+<li><a href="#bgcolor">bgcolor</a> macro</li>
+<li><a href="#color">color</a> macro</li>
+<li><a href="#highlight">highlight</a> macro</li>
+<li><a href="#hl">hl</a> macro</li>
+</ul>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-fixme" class="outline-3">
+<h3 id="fixme">Fixme macro</h3>
+<div class="outline-text-3" id="text-fixme">
+<p>
+The <code>fixme</code> macro inserts a &ldquo;Fix Me!&rdquo; image (with adequate CSS).
+</p>
+</div>
+<div id="outline-container-org823cec4" class="outline-4">
+<h4 id="org823cec4">Code</h4>
+<div class="outline-text-4" id="text-org823cec4">
+<pre class="code"><code>#+MACRO: fixme @@html:&lt;span class="fixme"&gt;FIXME&lt;/span&gt;@@
+</code></pre>
+
+<p>
+CSS example:
+</p>
+
+<pre class="code"><code>.fixme {
+    background: #FFFF88 url('../images/fixme.png') no-repeat top left;
+    color: #CC0000;
+    display: inline-block;
+    height: 16px;
+    text-indent: -9999px;
+    width: 82px;
+}
+</code></pre>
+</div>
+</div>
+<div id="outline-container-org802af92" class="outline-4">
+<h4 id="org802af92">Parameters</h4>
+<div class="outline-text-4" id="text-org802af92">
+<p>
+None.
+</p>
+</div>
+</div>
+<div id="outline-container-org11fe69d" class="outline-4">
+<h4 id="org11fe69d">Examples</h4>
+<div class="outline-text-4" id="text-org11fe69d">
+<p>
+<span class="fixme">FIXME</span> Delete this&#x2026;
+</p>
+
+<p>
+Testing testing testing testing testing testing testing testing testing testing
+testing testing testing testing testing testing testing testing testing testing
+testing testing testing testing testing <span class="fixme">FIXME</span> testing testing testing
+testing testing testing testing testing testing testing testing testing testing
+testing testing testing testing testing testing testing testing testing testing
+testing testing
+</p>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-highlight" class="outline-3">
+<h3 id="highlight">Highlight macro</h3>
+<div class="outline-text-3" id="text-highlight">
+<p>
+The <code>highlight</code> macro allows you to change the background color of inline text.
+</p>
+</div>
+<div id="outline-container-org9ecc552" class="outline-4">
+<h4 id="org9ecc552">Code</h4>
+<div class="outline-text-4" id="text-org9ecc552">
+<pre class="code"><code>#+MACRO: highlight @@html:&lt;span style="background-color: $1;"&gt;$2&lt;/span&gt;@@
+</code></pre>
+</div>
+</div>
+<div id="outline-container-orgd70349b" class="outline-4">
+<h4 id="orgd70349b">Parameters</h4>
+<div class="outline-text-4" id="text-orgd70349b">
+<ol class="org-ol">
+<li>Color name or hexadecimal code.</li>
+<li>Text you want to color.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgde54c54" class="outline-4">
+<h4 id="orgde54c54">Examples</h4>
+<div class="outline-text-4" id="text-orgde54c54">
+<p>
+<span style="background-color: red;"> Highlighting text is easy in Org mode.</span>
+<span style="background-color: #E0E0E0;"> This text isn't important.</span>
+</p>
+
+<p>
+Common color names are supported by most Org exporters (HTML, LaTeX):
+</p>
+
+<p>
+<span style="background-color: red;"> red</span>
+<span style="background-color: orange;"> orange</span>
+<span style="background-color: yellow;"> yellow</span>
+<span style="background-color: green;"> green</span>
+<span style="background-color: blue;"> blue</span>
+<span style="background-color: purple;"> purple</span>
+<span style="background-color: violet;"> violet</span>
+</p>
+
+<p>
+You can also use hexadecimal color codes:
+</p>
+
+<p>
+<span style="background-color: #FF0000;"> #FF0000</span>
+<span style="background-color: #00FF00;"> #00FF00</span>
+<span style="background-color: #0000FF;"> #0000FF</span>
+</p>
+</div>
+</div>
+<div id="outline-container-org0ba7edb" class="outline-4">
+<h4 id="org0ba7edb">See also</h4>
+<div class="outline-text-4" id="text-org0ba7edb">
+<ul class="org-ul">
+<li><a href="#bgcolor">bgcolor</a> macro</li>
+<li><a href="#color">color</a> macro</li>
+<li><a href="#hl">hl</a> macro</li>
+</ul>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-hl" class="outline-3">
+<h3 id="hl">Hl macro</h3>
+<div class="outline-text-3" id="text-hl">
+<p>
+The <code>hl</code> macro allows you to highlight text with a &ldquo;neon marker&rdquo; effect.
+</p>
+</div>
+<div id="outline-container-orgd5d9552" class="outline-4">
+<h4 id="orgd5d9552">Code</h4>
+<div class="outline-text-4" id="text-orgd5d9552">
+<pre class="code"><code>#+MACRO: hl {{{highlight(#FFFF00,$1)}}}
+</code></pre>
+</div>
+</div>
+<div id="outline-container-orgffdf1c0" class="outline-4">
+<h4 id="orgffdf1c0">Parameters</h4>
+<div class="outline-text-4" id="text-orgffdf1c0">
+<ol class="org-ol">
+<li>Color name or hexadecimal code.</li>
+<li>Text you want to color.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgd74560e" class="outline-4">
+<h4 id="orgd74560e">Examples</h4>
+<div class="outline-text-4" id="text-orgd74560e">
+<p>
+<span style="background-color: #FFFF00;">This information is important.</span>
+</p>
+</div>
+</div>
+<div id="outline-container-orgc7971cc" class="outline-4">
+<h4 id="orgc7971cc">See also</h4>
+<div class="outline-text-4" id="text-orgc7971cc">
+<ul class="org-ul">
+<li><a href="#bgcolor">bgcolor</a> macro</li>
+<li><a href="#color">color</a> macro</li>
+<li><a href="#highlight">highlight</a> macro</li>
+</ul>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-loremipsum" class="outline-3">
+<h3 id="loremipsum">LoremIpsum macro</h3>
+<div class="outline-text-3" id="text-loremipsum">
+<p>
+The <code>loremipsum</code> macro displays one paragraph of meaningless text that you can
+use for demonstration purposes of visual elements such as font, typography or
+layout.
+</p>
+</div>
+<div id="outline-container-org3789c5e" class="outline-4">
+<h4 id="org3789c5e">Code</h4>
+<div class="outline-text-4" id="text-org3789c5e">
+<pre class="code"><code>#+MACRO: loremipsum Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</code></pre>
+</div>
+</div>
+<div id="outline-container-org33e3ca9" class="outline-4">
+<h4 id="org33e3ca9">Parameters</h4>
+<div class="outline-text-4" id="text-org33e3ca9">
+<p>
+None.
+</p>
+</div>
+</div>
+<div id="outline-container-org8fcf922" class="outline-4">
+<h4 id="org8fcf922">Examples</h4>
+<div class="outline-text-4" id="text-org8fcf922">
+<p>
+This is a basic example of the <code>Loremipsum</code> text:
+</p>
+
+<p>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</p>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-newline" class="outline-3">
+<h3 id="newline">Newline macro</h3>
+<div class="outline-text-3" id="text-newline">
+<p>
+<code>\\</code> in headlines doesn&rsquo;t cause a line break, but gets exported in LaTeX to
+<code>$\backslash$</code>.
+</p>
+
+<p>
+You have to put it in a macro.
+</p>
+</div>
+<div id="outline-container-org7f53a36" class="outline-4">
+<h4 id="org7f53a36">Code</h4>
+<div class="outline-text-4" id="text-org7f53a36">
+<pre class="code"><code>#+MACRO: newline @@latex:\hspace{0pt}\\@@ @@html:&lt;br&gt;@@
+</code></pre>
+</div>
+</div>
+<div id="outline-container-org7d7974a" class="outline-4">
+<h4 id="org7d7974a">Parameters</h4>
+<div class="outline-text-4" id="text-org7d7974a">
+<p>
+None.
+</p>
+</div>
+</div>
+<div id="outline-container-org37d4ab7" class="outline-4">
+<h4 id="org37d4ab7">Examples</h4>
+<div class="outline-text-4" id="text-org37d4ab7">
+<pre class="code"><code>#+TITLE: Foo {{{newline}}} bar
+</code></pre>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-redact" class="outline-3">
+<h3 id="redact">Redact macro</h3>
+<div class="outline-text-3" id="text-redact">
+<p>
+Is there any way to completely redact text in HTML export, so it just looks like
+black boxes?
+</p>
+
+<p>
+I&rsquo;m not sure I fully understand, but it this what you are looking for?
+</p>
+
+<p>
+To <span class="redact" style="color:black; background-color:black;">redact</span> or not to <span class="redact" style="color:black; background-color:black;">redact</span> that is the question.
+</p>
+
+<hr>
+</div>
+</div>
+<div id="outline-container-kbd" class="outline-3">
+<h3 id="kbd">Kbd macro</h3>
+<div class="outline-text-3" id="text-kbd">
+</div>
+<div id="outline-container-org4ece0e3" class="outline-4">
+<h4 id="org4ece0e3">Code</h4>
+<div class="outline-text-4" id="text-org4ece0e3">
+<pre class="code"><code>#+MACRO: kbd @@html:&lt;kbd&gt;@@$1@@html:&lt;/kbd&gt;@@
+</code></pre>
+
+<p>
+See <code>menukeys</code> for LaTeX.
+</p>
+</div>
+</div>
+<div id="outline-container-org2e177c2" class="outline-4">
+<h4 id="org2e177c2">Parameters</h4>
+<div class="outline-text-4" id="text-org2e177c2">
+<ol class="org-ol">
+<li>Text to markup.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org4bd679c" class="outline-4">
+<h4 id="org4bd679c">Examples</h4>
+<div class="outline-text-4" id="text-org4bd679c">
+<pre class="code"><code>Use {{{kbd(C-c a a)}}} to launch the agenda.
+</code></pre>
+
+<hr>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org315145f" class="outline-2">
+<h2 id="org315145f">Advanced</h2>
+<div class="outline-text-2" id="text-org315145f">
+</div>
+<div id="outline-container-dvipng-when-odt" class="outline-3">
+<h3 id="dvipng-when-odt">dvipng-when-odt</h3>
+<div class="outline-text-3" id="text-dvipng-when-odt">
+</div>
+<div id="outline-container-orga35cbb4" class="outline-4">
+<h4 id="orga35cbb4">Code</h4>
+<div class="outline-text-4" id="text-orga35cbb4">
+<pre class="code"><code>#+MACRO: dvipng-when-odt (eval (if (org-export-derived-backend-p org-export-current-backend 'odt) "#+OPTIONS: tex:dvipng" ))
+</code></pre>
+</div>
+</div>
+<div id="outline-container-orga629aa4" class="outline-4">
+<h4 id="orga629aa4">Parameters</h4>
+</div>
+
+<div id="outline-container-org5fbf624" class="outline-4">
+<h4 id="org5fbf624">Examples</h4>
+<div class="outline-text-4" id="text-org5fbf624">
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-if-latex-else" class="outline-3">
+<h3 id="if-latex-else">if-latex macro</h3>
+<div class="outline-text-3" id="text-if-latex-else">
+<p>
+XXX
+</p>
+</div>
+<div id="outline-container-orgdaea840" class="outline-4">
+<h4 id="orgdaea840">Code</h4>
+<div class="outline-text-4" id="text-orgdaea840">
+<pre class="code"><code>#+MACRO: if-latex-else (eval (if (org-export-derived-backend-p org-export-current-backend 'latex) "$1" "$2"))
+</code></pre>
+</div>
+</div>
+<div id="outline-container-org5b7ee1d" class="outline-4">
+<h4 id="org5b7ee1d">Parameters</h4>
+<div class="outline-text-4" id="text-org5b7ee1d">
+<ol class="org-ol">
+<li>Code for LaTeX back-end.</li>
+<li>Code for other back-ends.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgdf5f6ff" class="outline-4">
+<h4 id="orgdf5f6ff">Examples</h4>
+<div class="outline-text-4" id="text-orgdf5f6ff">
+<p>
+$2
+</p>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-style" class="outline-3">
+<h3 id="style">style</h3>
+<div class="outline-text-3" id="text-style">
+<p>
+The <code>style</code> macro allows you to add custom style sheets to a page or import from
+an external URL.
+</p>
+</div>
+<div id="outline-container-org7782710" class="outline-4">
+<h4 id="org7782710">Code</h4>
+<div class="outline-text-4" id="text-org7782710">
+<pre class="code"><code>#+MACRO: style (eval (concat "#+HTML_HEAD_EXTRA: &lt;style&gt;&lt;/style&gt;"))
+</code></pre>
+</div>
+</div>
+<div id="outline-container-org5b792fc" class="outline-4">
+<h4 id="org5b792fc">Parameters</h4>
+<div class="outline-text-4" id="text-org5b792fc">
+<p>
+URL to import an external style sheet.
+</p>
+</div>
+</div>
+<div id="outline-container-orgda8640e" class="outline-4">
+<h4 id="orgda8640e">Examples</h4>
+<div class="outline-text-4" id="text-orgda8640e">
+<p>
+&lt;style type=&ldquo;text/css&rdquo;&gt;
+     .atb-sidebar.expanded {display:run-in;}
+     .atb-sidebar.collapsed {display:none;visibility:collapse;}
+ &lt;/style&gt;
+</p>
+
+<p>
+&lt;link type=&ldquo;text/css&rdquo; rel=&ldquo;stylesheet&rdquo; href=&ldquo;<a href="http://whatever.com/mystyle.css">http://whatever.com/mystyle.css</a>&rdquo; media=&ldquo;all&rdquo;&gt;
+</p>
+
+<hr>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org8119385" class="outline-2">
+<h2 id="org8119385">Generic</h2>
+<div class="outline-text-2" id="text-org8119385">
+</div>
+<div id="outline-container-image" class="outline-3">
+<h3 id="image">Image macro</h3>
+<div class="outline-text-3" id="text-image">
+<p>
+The <code>image</code> macro displays an image.
+</p>
+</div>
+<div id="outline-container-org8f9a74c" class="outline-4">
+<h4 id="org8f9a74c">Code</h4>
+<div class="outline-text-4" id="text-org8f9a74c">
+<pre class="code"><code>#+MACRO: image \includegraphics{$1}
+</code></pre>
+</div>
+</div>
+<div id="outline-container-org6031665" class="outline-4">
+<h4 id="org6031665">Parameters</h4>
+<div class="outline-text-4" id="text-org6031665">
+<ol class="org-ol">
+<li>Path to image file.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org0f06648" class="outline-4">
+<h4 id="org0f06648">Examples</h4>
+<div class="outline-text-4" id="text-org0f06648">
+<p>
+\includegraphics{}
+</p>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">\includegraphics{a.png}</td>
+<td class="org-left">\includegraphics{b.png}</td>
+</tr>
+
+<tr>
+<td class="org-left">\includegraphics{c.png}</td>
+<td class="org-left">\includegraphics{d.png}</td>
+</tr>
+</tbody>
+</table>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-version-history" class="outline-3">
+<h3 id="version-history">Version-history macro</h3>
+<div class="outline-text-3" id="text-version-history">
+<p>
+The <code>version-history</code> macro inserts the history of (the last 5) updates made to
+a document: version number, date, author and comment.
+</p>
+
+<p>
+XXX + link to View Changes?
+</p>
+</div>
+<div id="outline-container-orgeb3536c" class="outline-4">
+<h4 id="orgeb3536c">Code</h4>
+<div class="outline-text-4" id="text-orgeb3536c">
+<pre class="code"><code>#+name: version-history
+#+begin_src shell :exports none :results silent :colnames '(Version Date Author Comment)
+git log --pretty=format:"%h%x09%ad%x09%an%x09%s" --date=short | head -n 5
+#+end_src
+
+#+MACRO: version-history call_version-history[:eval yes]()[:eval yes :results table :colnames '(Version Date Author Comment)]
+</code></pre>
+
+<div class="tip" id="org88c2142">
+<p>
+We chose an inline Babel call so that the macro can be used in a paragraph.
+</p>
+
+</div>
+</div>
+</div>
+<div id="outline-container-org379b30c" class="outline-4">
+<h4 id="org379b30c">Parameters</h4>
+<div class="outline-text-4" id="text-org379b30c">
+<p>
+None.
+</p>
+</div>
+</div>
+<div id="outline-container-orgbbbf434" class="outline-4">
+<h4 id="orgbbbf434">Remarks</h4>
+<div class="outline-text-4" id="text-orgbbbf434">
+<p>
+This only will work with <b>Git repositories</b>.
+</p>
+</div>
+</div>
+<div id="outline-container-org591517e" class="outline-4">
+<h4 id="org591517e">Examples</h4>
+<div class="outline-text-4" id="text-org591517e">
+<hr>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgdee0ab3" class="outline-2">
+<h2 id="orgdee0ab3">Layout</h2>
+<div class="outline-text-2" id="text-orgdee0ab3">
+</div>
+<div id="outline-container-vspace" class="outline-3">
+<h3 id="vspace">Vspace macro</h3>
+<div class="outline-text-3" id="text-vspace">
+<p>
+The <code>vspace</code> macro XXX.
+</p>
+</div>
+<div id="outline-container-org9c9c269" class="outline-4">
+<h4 id="org9c9c269">Code</h4>
+<div class="outline-text-4" id="text-org9c9c269">
+<pre class="code"><code>#+MACRO: vspace @@latex:\vspace{10pt}@@@@html:&lt;div style="margin-bottom: 10pt;"&gt;&lt;/div&gt;@@
+</code></pre>
+</div>
+</div>
+<div id="outline-container-orgc87b2f1" class="outline-4">
+<h4 id="orgc87b2f1">Parameters</h4>
+<div class="outline-text-4" id="text-orgc87b2f1">
+<p>
+None.
+</p>
+</div>
+</div>
+<div id="outline-container-orge799969" class="outline-4">
+<h4 id="orge799969">Examples</h4>
+<div class="outline-text-4" id="text-orge799969">
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-collapse" class="outline-3">
+<h3 id="collapse">Collapse macro</h3>
+<div class="outline-text-3" id="text-collapse">
+<p>
+The <code>collapse</code> macro inserts of collapsed block of text.
+</p>
+</div>
+<div id="outline-container-orge1fcc42" class="outline-4">
+<h4 id="orge1fcc42">Code</h4>
+</div>
+
+<div id="outline-container-org0b32b75" class="outline-4">
+<h4 id="org0b32b75">Parameters</h4>
+<div class="outline-text-4" id="text-org0b32b75">
+<p>
+None.
+</p>
+</div>
+</div>
+<div id="outline-container-org29ed698" class="outline-4">
+<h4 id="org29ed698">Examples</h4>
+<div class="outline-text-4" id="text-org29ed698">
+<p>
+{{{collapse(View details&#x2026;)
+This is a block of text that is collapsed by default.
+It can be expanded by clicking a link.
+}}}
+</p>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-info" class="outline-3">
+<h3 id="info">Info macro</h3>
+<div class="outline-text-3" id="text-info">
+<p>
+The <code>info</code> macro is useful for including helpful information.
+</p>
+</div>
+<div id="outline-container-org916878d" class="outline-4">
+<h4 id="org916878d">Code</h4>
+<div class="outline-text-4" id="text-org916878d">
+<pre class="code"><code>#+MACRO: begin_info @@html:&lt;div class="info"&gt;&lt;p&gt;@@
+#+MACRO: end_info @@html:&lt;/p&gt;&lt;/div&gt;@@
+</code></pre>
+</div>
+</div>
+<div id="outline-container-org0dc4968" class="outline-4">
+<h4 id="org0dc4968">Parameters</h4>
+<div class="outline-text-4" id="text-org0dc4968">
+<p>
+None.
+</p>
+</div>
+</div>
+<div id="outline-container-orgf3514b0" class="outline-4">
+<h4 id="orgf3514b0">Examples</h4>
+<div class="outline-text-4" id="text-orgf3514b0">
+<p>
+<div class="info"><p>
+<b>Info example</b> <br>
+Did you know&#x2026;
+</p></div>
+</p>
+</div>
+</div>
+<div id="outline-container-orgc1129ad" class="outline-4">
+<h4 id="orgc1129ad">Remarks</h4>
+<div class="outline-text-4" id="text-orgc1129ad">
+<p>
+You&rsquo;d better use a &ldquo;special block&rdquo;, such as:
+</p>
+
+<pre class="example" id="org5709e02">
+#+begin_info
+*Info example* \\
+Did you know...
+#+end_info
+</pre>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-minipage" class="outline-3">
+<h3 id="minipage">MiniPage macro</h3>
+<div class="outline-text-3" id="text-minipage">
+</div>
+<div id="outline-container-orgf4309be" class="outline-4">
+<h4 id="orgf4309be">Code</h4>
+<div class="outline-text-4" id="text-orgf4309be">
+<pre class="code"><code>#+MACRO: BeginMiniPage @&lt;div style="border:1px solid #aaaaaa;padding:10px;width:780px;margin-left:auto;margin-right:auto;"&gt;
+#+MACRO: EndMiniPage @&lt;/div&gt;
+</code></pre>
+</div>
+</div>
+<div id="outline-container-org802233f" class="outline-4">
+<h4 id="org802233f">Parameters</h4>
+</div>
+
+<div id="outline-container-org9454ed1" class="outline-4">
+<h4 id="org9454ed1">Examples</h4>
+<div class="outline-text-4" id="text-org9454ed1">
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-note" class="outline-3">
+<h3 id="note">Note macro</h3>
+<div class="outline-text-3" id="text-note">
+</div>
+<div id="outline-container-org2c6d583" class="outline-4">
+<h4 id="org2c6d583">Code</h4>
+<div class="outline-text-4" id="text-org2c6d583">
+<pre class="code"><code>#+MACRO: begin_note @@html:&lt;div class="note"&gt;&lt;p&gt;@@
+#+MACRO: end_note @@html:&lt;/p&gt;&lt;/div&gt;@@
+</code></pre>
+</div>
+</div>
+<div id="outline-container-orgade28f2" class="outline-4">
+<h4 id="orgade28f2">Parameters</h4>
+<div class="outline-text-4" id="text-orgade28f2">
+<p>
+None.
+</p>
+</div>
+</div>
+<div id="outline-container-org474959a" class="outline-4">
+<h4 id="org474959a">Examples</h4>
+<div class="outline-text-4" id="text-org474959a">
+<p>
+<div class="note"><p>
+<b>Note example</b> <br>
+This is a useful note&#x2026;
+</p></div>
+</p>
+</div>
+</div>
+<div id="outline-container-orgc076423" class="outline-4">
+<h4 id="orgc076423">Remarks</h4>
+<div class="outline-text-4" id="text-orgc076423">
+<p>
+You&rsquo;d better use a &ldquo;special block&rdquo;, such as:
+</p>
+
+<pre class="example" id="orgcd8a7af">
+#+begin_note
+*Note example* \\
+This is a useful note...
+#+end_note
+</pre>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-panel" class="outline-3">
+<h3 id="panel">Panel macro</h3>
+<div class="outline-text-3" id="text-panel">
+</div>
+<div id="outline-container-org6331180" class="outline-4">
+<h4 id="org6331180">Code</h4>
+<div class="outline-text-4" id="text-org6331180">
+<pre class="code"><code>#+MACRO: begin_panel @@html:&lt;div class="panel"&gt;&lt;p&gt;@@
+#+MACRO: end_panel @@html:&lt;/p&gt;&lt;/div&gt;@@
+</code></pre>
+
+<p>
+XXX PanelHeader + PanelContent
+</p>
+</div>
+</div>
+<div id="outline-container-orgeba8d74" class="outline-4">
+<h4 id="orgeba8d74">Parameters</h4>
+<div class="outline-text-4" id="text-orgeba8d74">
+<p>
+None.
+</p>
+</div>
+</div>
+<div id="outline-container-orgdf5c741" class="outline-4">
+<h4 id="orgdf5c741">Examples</h4>
+<div class="outline-text-4" id="text-orgdf5c741">
+<p>
+<div class="panel"><p>
+<b>Panel example</b> <br>
+This is a formatted block of text&#x2026;
+</p></div>
+</p>
+</div>
+</div>
+<div id="outline-container-orgbe28075" class="outline-4">
+<h4 id="orgbe28075">Remarks</h4>
+<div class="outline-text-4" id="text-orgbe28075">
+<p>
+You&rsquo;d better use a &ldquo;special block&rdquo;, such as:
+</p>
+
+<pre class="example" id="org78f0e47">
+#+begin_panel
+*Panel example* \\
+This is a formatted block of text...
+#+end_panel
+</pre>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-tip" class="outline-3">
+<h3 id="tip">Tip macro</h3>
+<div class="outline-text-3" id="text-tip">
+</div>
+<div id="outline-container-org6b40d4a" class="outline-4">
+<h4 id="org6b40d4a">Code</h4>
+<div class="outline-text-4" id="text-org6b40d4a">
+<pre class="code"><code>#+MACRO: begin_tip @@html:&lt;div class="tip"&gt;&lt;p&gt;@@
+#+MACRO: end_tip @@html:&lt;/p&gt;&lt;/div&gt;@@
+</code></pre>
+</div>
+</div>
+<div id="outline-container-orge2b5fe9" class="outline-4">
+<h4 id="orge2b5fe9">Parameters</h4>
+<div class="outline-text-4" id="text-orge2b5fe9">
+<p>
+None.
+</p>
+</div>
+</div>
+<div id="outline-container-org217ef4d" class="outline-4">
+<h4 id="org217ef4d">Examples</h4>
+<div class="outline-text-4" id="text-org217ef4d">
+<p>
+<div class="tip"><p>
+<b>Tip example</b> <br>
+Try doing it this way&#x2026;
+</p></div>
+</p>
+</div>
+</div>
+<div id="outline-container-orgb1d7051" class="outline-4">
+<h4 id="orgb1d7051">Remarks</h4>
+<div class="outline-text-4" id="text-orgb1d7051">
+<p>
+You&rsquo;d better use a &ldquo;special block&rdquo;, such as:
+</p>
+
+<pre class="example" id="org05c9338">
+#+begin_tip
+*Tip example* \\
+Try doing it this way...
+#+end_tip
+</pre>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-warning" class="outline-3">
+<h3 id="warning">Warning macro</h3>
+<div class="outline-text-3" id="text-warning">
+</div>
+<div id="outline-container-orgd8312af" class="outline-4">
+<h4 id="orgd8312af">Code</h4>
+<div class="outline-text-4" id="text-orgd8312af">
+<pre class="code"><code>#+MACRO: begin_warning @@html:&lt;div class="warning"&gt;&lt;p&gt;@@
+#+MACRO: end_warning @@html:&lt;/p&gt;&lt;/div&gt;@@
+</code></pre>
+</div>
+</div>
+<div id="outline-container-org9d79c59" class="outline-4">
+<h4 id="org9d79c59">Parameters</h4>
+<div class="outline-text-4" id="text-org9d79c59">
+<p>
+None.
+</p>
+</div>
+</div>
+<div id="outline-container-org0d91ba5" class="outline-4">
+<h4 id="org0d91ba5">Examples</h4>
+<div class="outline-text-4" id="text-org0d91ba5">
+<p>
+<div class="warning"><p>
+<b>Warning example</b> <br>
+Be careful! Check that you have&#x2026;
+</p></div>
+</p>
+</div>
+</div>
+<div id="outline-container-org15b1837" class="outline-4">
+<h4 id="org15b1837">Remarks</h4>
+<div class="outline-text-4" id="text-org15b1837">
+<p>
+You&rsquo;d better use a &ldquo;special block&rdquo;, such as:
+</p>
+
+<pre class="example" id="orge937f98">
+#+begin_warning
+*Warning example* \\
+Be careful! Check that you have...
+#+end_warning
+</pre>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-orgeec9615" class="outline-3">
+<h3 id="orgeec9615">Vertically aligning table row contents</h3>
+<div class="outline-text-3" id="text-orgeec9615">
+<p>
+I&rsquo;m trying to create a simple two-column table. The left column will show images
+of symbols used in the document, and the right column will explain what those
+images mean.
+</p>
+
+<table>
+<caption class="t-above"><span class="table-number">Table 1:</span> Document Symbols</caption>
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">This symbol indicates that the associated item is in a <i>normal</i> or <i>successful</i> state.</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">This symbol denotes a state of <i>concern</i> or <i>potential trouble</i> for the associated item.</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">This symbol indicates that the associated item is in a <i>severely troubled</i> or <i>non-functioning</i> state.</td>
+</tr>
+</tbody>
+</table>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-org703b2d5" class="outline-2">
+<h2 id="org703b2d5">Navigation and lists</h2>
+<div class="outline-text-2" id="text-org703b2d5">
+<p>
+FIXME Problem with the tab title.
+</p>
+</div>
+<div id="outline-container-toc" class="outline-3">
+<h3 id="toc">Toc macro</h3>
+<div class="outline-text-3" id="text-toc">
+<p>
+Insert a table of contents.
+</p>
+</div>
+<div id="outline-container-org816e2b0" class="outline-4">
+<h4 id="org816e2b0">Code</h4>
+<div class="outline-text-4" id="text-org816e2b0">
+<pre class="code"><code>#+MACRO: toc #+toc: headlines $1
+</code></pre>
+</div>
+</div>
+<div id="outline-container-org2d26a98" class="outline-4">
+<h4 id="org2d26a98">Parameters</h4>
+<div class="outline-text-4" id="text-org2d26a98">
+<ol class="org-ol">
+<li>Number of headline levels.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org707ea97" class="outline-4">
+<h4 id="org707ea97">Remarks</h4>
+<div class="outline-text-4" id="text-org707ea97">
+<p>
+The <code>toc</code> macro <b>can&rsquo;t be inlined</b> in text.
+</p>
+</div>
+</div>
+<div id="outline-container-orgc0a00ec" class="outline-4">
+<h4 id="orgc0a00ec">Examples</h4>
+<div class="outline-text-4" id="text-orgc0a00ec">
+<p>
+Insert the TOC here, with one headline level:
+</p>
+
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org145c9e0">Overview</a></li>
+<li><a href="#orgcddfbf8">Code</a></li>
+<li><a href="#org7f48856">Org built-ins</a></li>
+<li><a href="#org1d8b349">Basic formatting</a></li>
+<li><a href="#org315145f">Advanced</a></li>
+<li><a href="#org8119385">Generic</a></li>
+<li><a href="#orgdee0ab3">Layout</a></li>
+<li><a href="#org703b2d5">Navigation and lists</a></li>
+<li><a href="#org06da48f">Dev tools</a></li>
+<li><a href="#org6593aa1">Contributing</a></li>
+<li><a href="#org43938b6">License</a></li>
+</ul>
+</div>
+</nav>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-org5a55202" class="outline-3">
+<h3 id="org5a55202">Listing</h3>
+<div class="outline-text-3" id="text-org5a55202">
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-org06da48f" class="outline-2">
+<h2 id="org06da48f">Dev tools</h2>
+<div class="outline-text-2" id="text-org06da48f">
+</div>
+<div id="outline-container-twitter-share-link-button" class="outline-3">
+<h3 id="twitter-share-link-button">Twitter &ldquo;Share a link&rdquo;</h3>
+<div class="outline-text-3" id="text-twitter-share-link-button">
+<p>
+Add a &ldquo;Share a link&rdquo; button to your website.
+</p>
+</div>
+<div id="outline-container-orgbabed76" class="outline-4">
+<h4 id="orgbabed76">Code</h4>
+<div class="outline-text-4" id="text-orgbabed76">
+<pre class="code"><code>#+MACRO: twitter-share-link-button @@html:&lt;script src="http://platform.twitter.com/widgets.js"&gt;&lt;/script&gt;&lt;a href="https://twitter.com/share" class="twitter-share-button" data-via="$1"&gt;Tweet&lt;/a&gt;@@
+</code></pre>
+</div>
+</div>
+<div id="outline-container-org14a448e" class="outline-4">
+<h4 id="org14a448e">Parameters</h4>
+<div class="outline-text-4" id="text-org14a448e">
+<ol class="org-ol">
+<li>Username.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org7728849" class="outline-4">
+<h4 id="org7728849">Examples</h4>
+<div class="outline-text-4" id="text-org7728849">
+<p>
+Insert the Twitter &ldquo;Share a link&rdquo; button here:
+</p>
+
+<p>
+<script src="http://platform.twitter.com/widgets.js"></script><a href="https://twitter.com/share" class="twitter-share-button" data-via="f_niessen">Tweet</a>
+</p>
+
+<hr>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org6593aa1" class="outline-2">
+<h2 id="org6593aa1">Contributing</h2>
+<div class="outline-text-2" id="text-org6593aa1">
+</div>
+<div id="outline-container-org6a41dba" class="outline-3">
+<h3 id="org6a41dba">Issues</h3>
+<div class="outline-text-3" id="text-org6a41dba">
+<p>
+Report issues and suggest features and improvements on the <a href="https://github.com/fniessen/org-macros/issues/new">GitHub issue tracker</a>.
+</p>
+</div>
+</div>
+<div id="outline-container-org0bcc28a" class="outline-3">
+<h3 id="org0bcc28a">Patches</h3>
+<div class="outline-text-3" id="text-org0bcc28a">
+<p>
+I love contributions!  Patches under any form are always welcome!
+</p>
+</div>
+</div>
+<div id="outline-container-orgaf76825" class="outline-3">
+<h3 id="orgaf76825">Donations</h3>
+<div class="outline-text-3" id="text-orgaf76825">
+<p>
+If you use the org-macros project and feel it is making your life better and
+easier, you can show your appreciation and help support future development by
+making today a <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=VCVAS6KPDQ4JC&amp;lc=BE&amp;item_number=org%2dmacros&amp;currency_code=EUR&amp;bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted">donation</a> through PayPal.  Thank you!
+</p>
+
+<p>
+Regardless of the donations, org-macros will always be free both as in beer and
+as in speech.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org43938b6" class="outline-2">
+<h2 id="org43938b6">License</h2>
+<div class="outline-text-2" id="text-org43938b6">
+<p>
+Copyright (C) 2014-2025 Fabrice Niessen. All rights reserved.
+</p>
+
+<p>
+Author: Fabrice Niessen <br>
+Keywords: org-mode macros
+</p>
+
+<p>
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+</p>
+
+<p>
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+</p>
+
+<p>
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+</p>
+
+<div class="html" id="org4977cd8">
+<p>
+&lt;a href=&ldquo;<a href="http://opensource.org/licenses/GPL-3.0">http://opensource.org/licenses/GPL-3.0</a>&rdquo;&gt;
+  &lt;img src=&ldquo;<img src="http://img.shields.io/:license-gpl-blue.svg" alt=":license-gpl-blue.svg" class="org-svg">&rdquo; alt=&ldquo;:license-gpl-blue.svg&rdquo; /&gt;
+&lt;/a&gt;
+</p>
+
+<p>
+&lt;a href=&ldquo;<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=VCVAS6KPDQ4JC&amp;lc=BE&amp;item_number=org%2dhtml%2dthemes&amp;currency_code=EUR&amp;bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted">https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=VCVAS6KPDQ4JC&amp;lc=BE&amp;item_number=org%2dhtml%2dthemes&amp;currency_code=EUR&amp;bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted</a>&rdquo;&gt;
+  &lt;img src=&ldquo;<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="btn_donate_LG.gif">&rdquo; alt=&ldquo;btn_donate_LG.gif&rdquo; /&gt;
+&lt;/a&gt;
+</p>
+
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="postamble" class="status">
+<hr style="
+    clear: both;
+">
+
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.34). Written by: Fabrice Niessen, by the date of: . Last build date: 2025-10-18 Sat 00:35.</p>
+
+</div>
+</div>
+</div>
+</body>
+</html>
