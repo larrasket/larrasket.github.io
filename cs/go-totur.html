@@ -552,12 +552,400 @@ margin-block-start: auto;
 <div id="content" class="content">
 <header>
 <h1 class="title">Go Tutorial</h1>
-</header><div id="outline-container-org4391c02" class="outline-2">
-<h2 id="org4391c02">Archive</h2>
-<div class="outline-text-2" id="text-org4391c02">
+</header><div id="outline-container-orgfce1e9a" class="outline-2">
+<h2 id="orgfce1e9a">Content</h2>
+<div class="outline-text-2" id="text-orgfce1e9a">
 </div>
-<div id="outline-container-orgf36883a" class="outline-3">
-<h3 id="orgf36883a">Concurrency</h3>
+<div id="outline-container-org01ea76e" class="outline-3">
+<h3 id="org01ea76e">Go&rsquo;s Philosophy, Culture, and Constraints</h3>
+</div>
+<div id="outline-container-org575025d" class="outline-3">
+<h3 id="org575025d">Why Go Exists: Origins, Pain Points, and Design Goals*</h3>
+</div>
+<div id="outline-container-episode-2-go-is-simple-but-not-small-philosophy-behind-minimalism" class="outline-3">
+<h3 id="episode-2-go-is-simple-but-not-small-philosophy-behind-minimalism">Go Is “Simple” But Not Small: Philosophy Behind Minimalism</h3>
+<div class="outline-text-3" id="text-episode-2-go-is-simple-but-not-small-philosophy-behind-minimalism">
+<p>
+What simplicity means for readability, maintainability, onboarding, and
+tooling.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-3-the-taste-of-go-what-it-encourages-and-what-it-discourages" class="outline-3">
+<h3 id="episode-3-the-taste-of-go-what-it-encourages-and-what-it-discourages">The Taste of Go: What It Encourages and What It Discourages*</h3>
+<div class="outline-text-3" id="text-episode-3-the-taste-of-go-what-it-encourages-and-what-it-discourages">
+<p>
+Go&rsquo;s cultural aesthetics: explicitness, mechanical sympathy, anti-magic,
+clarity over cleverness.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-4-gos-execution-model-what-happens-from-source-to-binary" class="outline-3">
+<h3 id="episode-4-gos-execution-model-what-happens-from-source-to-binary">Go&rsquo;s Execution Model: What Happens From Source to Binary*</h3>
+<div class="outline-text-3" id="text-episode-4-gos-execution-model-what-happens-from-source-to-binary">
+<p>
+Walk through <code>go build</code>, compilation units, linking, static binaries,
+and why it&rsquo;s so fast.
+</p>
+
+<hr>
+</div>
+</div>
+<div id="outline-container-orgf49dd88" class="outline-3">
+<h3 id="orgf49dd88">Go ACTUAL tutorial</h3>
+</div>
+<div id="outline-container-section-ii-gos-type-system-deep-dive" class="outline-3">
+<h3 id="section-ii-gos-type-system-deep-dive"><b>SECTION II &#x2014; Go&rsquo;s Type System (Deep Dive)</b></h3>
+<div class="outline-text-3" id="text-section-ii-gos-type-system-deep-dive">
+</div>
+<div id="outline-container-episode-5-types-as-contracts-the-go-type-system-in-one-diagram" class="outline-4">
+<h4 id="episode-5-types-as-contracts-the-go-type-system-in-one-diagram"><b>Episode 5 &#x2014; Types as Contracts: The Go Type System in One Diagram</b></h4>
+<div class="outline-text-4" id="text-episode-5-types-as-contracts-the-go-type-system-in-one-diagram">
+<p>
+Nominal vs structural typing, static typing but flexible design.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-6-interfaces-implicit-satisfaction-and-why-it-changes-architecture" class="outline-4">
+<h4 id="episode-6-interfaces-implicit-satisfaction-and-why-it-changes-architecture"><b>Episode 6 &#x2014; Interfaces: Implicit Satisfaction and Why It Changes Architecture</b></h4>
+<div class="outline-text-4" id="text-episode-6-interfaces-implicit-satisfaction-and-why-it-changes-architecture">
+<p>
+Why Go interfaces are <i>satisfied implicitly</i>, examples, and how it
+enables decoupling.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-7-small-interfaces-rule-everything" class="outline-4">
+<h4 id="episode-7-small-interfaces-rule-everything"><b>Episode 7 &#x2014; Small Interfaces Rule Everything</b></h4>
+<div class="outline-text-4" id="text-episode-7-small-interfaces-rule-everything">
+<p>
+Why Go encourages tiny interfaces (“io.Reader-style” design) and how
+this shapes projects.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-8-the-empty-interface-and-reflection-without-confusion" class="outline-4">
+<h4 id="episode-8-the-empty-interface-and-reflection-without-confusion"><b>Episode 8 &#x2014; The Empty Interface and Reflection (Without Confusion)</b></h4>
+<div class="outline-text-4" id="text-episode-8-the-empty-interface-and-reflection-without-confusion">
+<p>
+<code>interface{}</code> vs. generics, runtime type inspection, when to avoid it.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-9-generics-in-go-minimalist-but-powerful-enough" class="outline-4">
+<h4 id="episode-9-generics-in-go-minimalist-but-powerful-enough"><b>Episode 9 &#x2014; Generics in Go: Minimalist but Powerful Enough</b></h4>
+<div class="outline-text-4" id="text-episode-9-generics-in-go-minimalist-but-powerful-enough">
+<p>
+Type parameters, constraints, type inference, and how generics fit the
+Go philosophy.
+</p>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-section-iii-packaging-compilation-modules-and-init-behavior" class="outline-3">
+<h3 id="section-iii-packaging-compilation-modules-and-init-behavior"><b>SECTION III &#x2014; Packaging, Compilation, Modules, and Init Behavior</b></h3>
+<div class="outline-text-3" id="text-section-iii-packaging-compilation-modules-and-init-behavior">
+</div>
+</div>
+<div id="outline-container-episode-10-the-package-system-how-go-organizes-software" class="outline-3">
+<h3 id="episode-10-the-package-system-how-go-organizes-software"><b>Episode 10 &#x2014; The Package System: How Go Organizes Software</b></h3>
+<div class="outline-text-3" id="text-episode-10-the-package-system-how-go-organizes-software">
+<p>
+Import paths, internal packages, package boundaries, avoiding circular
+deps.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-11-module-system-deep-dive-go.mod-sums-versions-replacements" class="outline-3">
+<h3 id="episode-11-module-system-deep-dive-go.mod-sums-versions-replacements"><b>Episode 11 &#x2014; Module System Deep Dive: go.mod, sums, versions, replacements</b></h3>
+<div class="outline-text-3" id="text-episode-11-module-system-deep-dive-go.mod-sums-versions-replacements">
+<p>
+Semver discipline, reproducibility, private modules, vendoring, and
+caching.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-12-the-build-system-build-tags-conditional-compilation-embedding" class="outline-3">
+<h3 id="episode-12-the-build-system-build-tags-conditional-compilation-embedding"><b>Episode 12 &#x2014; The Build System: Build Tags, Conditional Compilation, Embedding</b></h3>
+<div class="outline-text-3" id="text-episode-12-the-build-system-build-tags-conditional-compilation-embedding">
+<p>
+Platform-specific builds, <code>//go:build</code> directives, and compile-time
+switches.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-13-the-init-model-order-of-init-and-var-initialization" class="outline-3">
+<h3 id="episode-13-the-init-model-order-of-init-and-var-initialization"><b>Episode 13 &#x2014; The Init Model: Order of <code>init</code> and <code>var</code> Initialization</b></h3>
+<div class="outline-text-3" id="text-episode-13-the-init-model-order-of-init-and-var-initialization">
+<p>
+Precise rules for variable initialization, dependency-driven init order,
+and anti-patterns.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-14-go-generate-and-code-generation-culture" class="outline-3">
+<h3 id="episode-14-go-generate-and-code-generation-culture"><b>Episode 14 &#x2014; <code>go generate</code> and Code Generation Culture</b></h3>
+<div class="outline-text-3" id="text-episode-14-go-generate-and-code-generation-culture">
+<p>
+How Go encourages codegen for repetitive tasks (sqlc, mocks, Protobuf,
+stringer).
+</p>
+
+<hr>
+</div>
+</div>
+<div id="outline-container-episode-15-csp-vs.-shared-memory-the-mental-shift" class="outline-3">
+<h3 id="episode-15-csp-vs.-shared-memory-the-mental-shift"><b>Episode 15 &#x2014; CSP vs. Shared Memory: The Mental Shift</b></h3>
+<div class="outline-text-3" id="text-episode-15-csp-vs.-shared-memory-the-mental-shift">
+<p>
+Why Go chose channels, how it differs from threads, locks, async/await.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-16-goroutines-scheduling-stacks-lifecycle-costs" class="outline-3">
+<h3 id="episode-16-goroutines-scheduling-stacks-lifecycle-costs"><b>Episode 16 &#x2014; Goroutines: Scheduling, Stacks, Lifecycle, Costs</b></h3>
+<div class="outline-text-3" id="text-episode-16-goroutines-scheduling-stacks-lifecycle-costs">
+<p>
+Stack splitting, blocking behavior, GOMAXPROCS, M:N scheduler basics.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-17-channels-coordination-not-message-queues" class="outline-3">
+<h3 id="episode-17-channels-coordination-not-message-queues"><b>Episode 17 &#x2014; Channels: Coordination, Not Message Queues</b></h3>
+<div class="outline-text-3" id="text-episode-17-channels-coordination-not-message-queues">
+<p>
+Core semantics, unbuffered vs buffered, synchronization patterns,
+pitfalls.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-18-context-the-unspoken-rule-of-modern-go" class="outline-3">
+<h3 id="episode-18-context-the-unspoken-rule-of-modern-go"><b>Episode 18 &#x2014; Context: The Unspoken Rule of Modern Go</b></h3>
+<div class="outline-text-3" id="text-episode-18-context-the-unspoken-rule-of-modern-go">
+<p>
+Propagation, cancellation, deadlines, typical misuse, best practices.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-19-practical-concurrency-patterns" class="outline-3">
+<h3 id="episode-19-practical-concurrency-patterns"><b>Episode 19 &#x2014; Practical Concurrency Patterns</b></h3>
+<div class="outline-text-3" id="text-episode-19-practical-concurrency-patterns">
+<p>
+Worker pools, pipelines, fan-in, fan-out, job dispatchers, rate
+limiting.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-20-avoiding-concurrency-hell" class="outline-3">
+<h3 id="episode-20-avoiding-concurrency-hell"><b>Episode 20 &#x2014; Avoiding Concurrency Hell</b></h3>
+<div class="outline-text-3" id="text-episode-20-avoiding-concurrency-hell">
+<p>
+Goroutine leaks, deadlocks, over-buffering, misuse of mutexes,
+long-lived contexts.
+</p>
+
+<hr>
+</div>
+</div>
+<div id="outline-container-episode-21-escape-analysis-when-variables-leave-the-stack" class="outline-3">
+<h3 id="episode-21-escape-analysis-when-variables-leave-the-stack"><b>Episode 21 &#x2014; Escape Analysis: When Variables Leave the Stack</b></h3>
+<div class="outline-text-3" id="text-episode-21-escape-analysis-when-variables-leave-the-stack">
+<p>
+How Go decides heap vs stack placement and how it impacts performance.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-22-garbage-collector-phases-latency-and-tuning" class="outline-3">
+<h3 id="episode-22-garbage-collector-phases-latency-and-tuning"><b>Episode 22 &#x2014; Garbage Collector: Phases, Latency, and Tuning</b></h3>
+<div class="outline-text-3" id="text-episode-22-garbage-collector-phases-latency-and-tuning">
+<p>
+Concurrency of the GC, pause times, how Go keeps latency low.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-23-value-vs-pointer-semantics-practical-performance-trade-offs" class="outline-3">
+<h3 id="episode-23-value-vs-pointer-semantics-practical-performance-trade-offs"><b>Episode 23 &#x2014; Value vs Pointer Semantics: Practical Performance Trade-Offs</b></h3>
+<div class="outline-text-3" id="text-episode-23-value-vs-pointer-semantics-practical-performance-trade-offs">
+<p>
+When to use pointers, copying structs, zero allocations mindset.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-24-profiling-masterclass-pprof-benchmarks-tracing" class="outline-3">
+<h3 id="episode-24-profiling-masterclass-pprof-benchmarks-tracing"><b>Episode 24 &#x2014; Profiling Masterclass: pprof, Benchmarks, Tracing</b></h3>
+<div class="outline-text-3" id="text-episode-24-profiling-masterclass-pprof-benchmarks-tracing">
+<p>
+cpu/mem profiles, flamegraphs, allocation tracking, benchmark
+methodology.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-25-the-scheduler-deep-dive" class="outline-3">
+<h3 id="episode-25-the-scheduler-deep-dive"><b>Episode 25 &#x2014; The Scheduler Deep Dive</b></h3>
+<div class="outline-text-3" id="text-episode-25-the-scheduler-deep-dive">
+<p>
+The P-M-G model, fairness, timers, syscalls, preemption.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-26-data-structures-and-idiomatic-performance" class="outline-3">
+<h3 id="episode-26-data-structures-and-idiomatic-performance"><b>Episode 26 &#x2014; Data Structures and Idiomatic Performance</b></h3>
+<div class="outline-text-3" id="text-episode-26-data-structures-and-idiomatic-performance">
+<p>
+Slices, maps, sync primitives, sharded maps, avoiding hidden
+allocations.
+</p>
+
+<hr>
+</div>
+</div>
+<div id="outline-container-episode-27-testing-philosophy-table-tests-coverage-and-subtests" class="outline-3">
+<h3 id="episode-27-testing-philosophy-table-tests-coverage-and-subtests"><b>Episode 27 &#x2014; Testing Philosophy: Table Tests, Coverage, and Subtests</b></h3>
+<div class="outline-text-3" id="text-episode-27-testing-philosophy-table-tests-coverage-and-subtests">
+<p>
+Why Go built testing into the toolchain; patterns for maintainable test
+suites.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-28-benchmarking-and-fuzzing-as-part-of-the-build-culture" class="outline-3">
+<h3 id="episode-28-benchmarking-and-fuzzing-as-part-of-the-build-culture"><b>Episode 28 &#x2014; Benchmarking and Fuzzing as Part of the Build Culture</b></h3>
+<div class="outline-text-3" id="text-episode-28-benchmarking-and-fuzzing-as-part-of-the-build-culture">
+<p>
+Microbenchmarks, fuzz tests, race detector, and making performance
+measurable.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-29-linters-staticcheck-golangci-lint" class="outline-3">
+<h3 id="episode-29-linters-staticcheck-golangci-lint"><b>Episode 29 &#x2014; Linters, Staticcheck, golangci-lint</b></h3>
+<div class="outline-text-3" id="text-episode-29-linters-staticcheck-golangci-lint">
+<p>
+The Go community&rsquo;s approach to correctness and style enforcement.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-30-formatting-vetting-and-why-go-loves-uniform-codebases" class="outline-3">
+<h3 id="episode-30-formatting-vetting-and-why-go-loves-uniform-codebases"><b>Episode 30 &#x2014; Formatting, Vetting, and Why Go Loves Uniform Codebases</b></h3>
+<div class="outline-text-3" id="text-episode-30-formatting-vetting-and-why-go-loves-uniform-codebases">
+<p>
+<code>gofmt</code>, <code>go vet</code>, no style arguments, team-wide consistency.
+</p>
+
+<hr>
+</div>
+</div>
+<div id="outline-container-section-vii-architecting-real-go-applications" class="outline-3">
+<h3 id="section-vii-architecting-real-go-applications"><b>SECTION VII &#x2014; Architecting Real Go Applications</b></h3>
+<div class="outline-text-3" id="text-section-vii-architecting-real-go-applications">
+</div>
+<div id="outline-container-episode-31-project-layout-the-go-way-not-the-java-way" class="outline-4">
+<h4 id="episode-31-project-layout-the-go-way-not-the-java-way"><b>Episode 31 &#x2014; Project Layout: The Go Way (Not the Java Way)</b></h4>
+<div class="outline-text-4" id="text-episode-31-project-layout-the-go-way-not-the-java-way">
+<p>
+cmd/, internal/, pkg/, layering, avoiding frameworks.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-32-dependency-injection-without-magic" class="outline-4">
+<h4 id="episode-32-dependency-injection-without-magic"><b>Episode 32 &#x2014; Dependency Injection Without Magic</b></h4>
+<div class="outline-text-4" id="text-episode-32-dependency-injection-without-magic">
+<p>
+Functional options, constructors, wiring modules explicitly.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-33-designing-libraries-and-apis-in-go" class="outline-4">
+<h4 id="episode-33-designing-libraries-and-apis-in-go"><b>Episode 33 &#x2014; Designing Libraries and APIs in Go</b></h4>
+<div class="outline-text-4" id="text-episode-33-designing-libraries-and-apis-in-go">
+<p>
+Error handling, interface exposure, stable APIs, semantic versioning.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-34-http-services-the-go-way" class="outline-4">
+<h4 id="episode-34-http-services-the-go-way"><b>Episode 34 &#x2014; HTTP Services the Go Way</b></h4>
+<div class="outline-text-4" id="text-episode-34-http-services-the-go-way">
+<p>
+<code>net/http</code>, chi, middleware, handlers, graceful shutdown, timeouts
+everywhere.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-35-handling-data-sqlc-raw-sql-gorm-generics-based-repos" class="outline-4">
+<h4 id="episode-35-handling-data-sqlc-raw-sql-gorm-generics-based-repos"><b>Episode 35 &#x2014; Handling Data: sqlc, raw SQL, GORM, generics-based repos</b></h4>
+<div class="outline-text-4" id="text-episode-35-handling-data-sqlc-raw-sql-gorm-generics-based-repos">
+<p>
+Trade-offs: type safety, performance, readability.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-36-building-clis-that-dont-suck" class="outline-4">
+<h4 id="episode-36-building-clis-that-dont-suck"><b>Episode 36 &#x2014; Building CLIs That Don&rsquo;t Suck</b></h4>
+<div class="outline-text-4" id="text-episode-36-building-clis-that-dont-suck">
+<p>
+cobra, urfave/cli, table output, subcommands, structured logs.
+</p>
+
+<hr>
+</div>
+</div>
+</div>
+<div id="outline-container-section-viii-go-in-the-real-world" class="outline-3">
+<h3 id="section-viii-go-in-the-real-world"><b>SECTION VIII &#x2014; Go in the Real World</b></h3>
+<div class="outline-text-3" id="text-section-viii-go-in-the-real-world">
+</div>
+<div id="outline-container-episode-37-grpc-protobuf-and-distributed-systems" class="outline-4">
+<h4 id="episode-37-grpc-protobuf-and-distributed-systems"><b>Episode 37 &#x2014; gRPC, Protobuf, and Distributed Systems</b></h4>
+<div class="outline-text-4" id="text-episode-37-grpc-protobuf-and-distributed-systems">
+<p>
+Client/server codegen, streaming, deadlines, retries, observability.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-38-observability-in-go-logging-metrics-tracing" class="outline-4">
+<h4 id="episode-38-observability-in-go-logging-metrics-tracing"><b>Episode 38 &#x2014; Observability in Go: Logging, Metrics, Tracing</b></h4>
+<div class="outline-text-4" id="text-episode-38-observability-in-go-logging-metrics-tracing">
+<p>
+zap, slog, OpenTelemetry, context propagation across systems.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-39-common-production-anti-patterns-and-their-fixes" class="outline-4">
+<h4 id="episode-39-common-production-anti-patterns-and-their-fixes"><b>Episode 39 &#x2014; Common Production Anti-Patterns (And Their Fixes)</b></h4>
+<div class="outline-text-4" id="text-episode-39-common-production-anti-patterns-and-their-fixes">
+<p>
+Global state, improper error wrapping, blocking I/O, goroutine
+mismanagement.
+</p>
+</div>
+</div>
+<div id="outline-container-episode-40-final-project-a-fully-observable-concurrent-service" class="outline-4">
+<h4 id="episode-40-final-project-a-fully-observable-concurrent-service"><b>Episode 40 &#x2014; Final Project: A Fully Observable Concurrent Service</b></h4>
+<div class="outline-text-4" id="text-episode-40-final-project-a-fully-observable-concurrent-service">
+<p>
+Build a real system:
+</p>
+
+<ul class="org-ul">
+<li>graceful shutdown</li>
+<li>worker pool</li>
+<li>metrics + tracing</li>
+<li>dependency injection</li>
+<li>context cancellation</li>
+<li>clean package boundaries</li>
+<li>zero-magic architecture</li>
+</ul>
+
+<p>
+This episode ties together <i>everything</i> from the series.
+</p>
+
+<hr>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -664,7 +1052,7 @@ margin-block-start: auto;
 
 
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.34). Written by: Salih Muhammed, by the date of: 2025-11-28 Fri 15:47. Last build date: 2025-11-28 Fri 19:37.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.34). Written by: Salih Muhammed, by the date of: 2025-11-28 Fri 15:47. Last build date: 2025-11-30 Sun 16:30.</p>
 
 
 
