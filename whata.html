@@ -564,33 +564,33 @@ keep as a nice excerpt with &ldquo;@anthology&rdquo; tag. Today I thought why no
 those notes together? And here we go:
 </p>
 
-<pre class="code"><code>(defun salih/print-text-nodes-anth ()
-  (let* ((nodes (sort (salih/get-back-nodes "3xedczc0i2k0")
-                      #'salih/compare-org-id))
-         (strings '()))
-    (while nodes (push (salih/mkinclude (car nodes) t)
-                       strings)
-           (setq nodes (cdr nodes)))
-    (mapconcat 'identity strings "")))
+<pre class="code"><code>(<span style="color: #4d9391;">defun</span> <span style="color: #80bcb6;">salih/print-text-nodes-anth</span> ()
+&#9474; (<span style="color: #4d9391;">let*</span> ((nodes (<span style="color: #ab98b5;">sort</span> (<span style="color: #80bcb6;">salih/get-back-nodes</span> <span style="color: #6fb593;">"3xedczc0i2k0"</span>)
+&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; <span style="color: #80bcb6;">#'</span><span style="color: #4d9391;">salih/compare-org-id</span>))
+&#9474; &#9474; &#9474; &#9474; &#9474;(strings <span style="color: #80bcb6;">'</span>()))
+&#9474; &#9474; (<span style="color: #4d9391;">while</span> nodes (<span style="color: #4d9391;">push</span> (<span style="color: #80bcb6;">salih/mkinclude</span> (<span style="color: #ab98b5;">car</span> nodes) t)
+&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474;strings)
+&#9474; &#9474; &#9474; &#9474; &#9474; &#9474;(<span style="color: #4d9391;">setq</span> nodes (<span style="color: #ab98b5;">cdr</span> nodes)))
+&#9474; &#9474; (<span style="color: #ab98b5;">mapconcat</span> <span style="color: #80bcb6;">'</span><span style="color: #4d9391;">identity</span> strings <span style="color: #6fb593;">""</span>)))
 </code></pre>
 
-<pre class="code"><code>(defun salih/mkinclude (node remove-title &amp;optional astr)
-  (unless astr
-    (setq astr "**"))
-  (let* ((id (org-roam-node-id node))
-         (entry (org-roam-node-file (org-roam-node-from-id id)))
-         (cite (file-name-sans-extension (file-name-nondirectory entry))))
-    (if remove-title
-        (format "#+INCLUDE: \"%s::#%s\" :only-contents t\n\n\n \n/Derived from/ [cite:@%s], p. %d. Appeared: %s\n-----\n"
-                entry
-                id
-                cite
-                (first (read (cdr (assoc "NOTER_PAGE" (org-roam-node-properties node)))))
-                (format-time-string "%Y-%m-%d (%H:%M)" (cdr (org-id-decode  (org-roam-node-id node)))))
-
-        (format "#+INCLUDE: \"%s::#%s\" :only-contents nil\n"
-            entry
-            id))))
+<pre class="code"><code>(<span style="color: #4d9391;">defun</span> <span style="color: #80bcb6;">salih/mkinclude</span> (node remove-title <span style="color: #cd9575;">&amp;optional</span> astr)
+&#9474; (<span style="color: #4d9391;">unless</span> astr
+&#9474; &#9474; (<span style="color: #4d9391;">setq</span> astr <span style="color: #6fb593;">"**"</span>))
+&#9474; (<span style="color: #4d9391;">let*</span> ((id (<span style="color: #ab98b5;">org-roam-node-id</span> node))
+&#9474; &#9474; &#9474; &#9474; &#9474;(entry (<span style="color: #ab98b5;">org-roam-node-file</span> (<span style="color: #ab98b5;">org-roam-node-from-id</span> id)))
+&#9474; &#9474; &#9474; &#9474; &#9474;(cite (<span style="color: #ab98b5;">file-name-sans-extension</span> (<span style="color: #ab98b5;">file-name-nondirectory</span> entry))))
+&#9474; &#9474; (<span style="color: #4d9391;">if</span> remove-title
+&#9474; &#9474; &#9474; &#9474; (<span style="color: #ab98b5;">format</span> <span style="color: #6fb593;">"#+INCLUDE: \"%s::#%s\" :only-contents t\n\n\n \n/Derived from/ [cite:@%s], p. %d. Appeared: %s\n-----\n"</span>
+&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; entry
+&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; id
+&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; cite
+&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; (first (<span style="color: #ab98b5;">read</span> (<span style="color: #ab98b5;">cdr</span> (<span style="color: #ab98b5;">assoc</span> <span style="color: #6fb593;">"NOTER_PAGE"</span> (<span style="color: #ab98b5;">org-roam-node-properties</span> node)))))
+&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; (<span style="color: #ab98b5;">format-time-string</span> <span style="color: #6fb593;">"%Y-%m-%d (%H:%M)"</span> (<span style="color: #ab98b5;">cdr</span> (<span style="color: #ab98b5;">org-id-decode</span>  (<span style="color: #ab98b5;">org-roam-node-id</span> node)))))
+&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474; &#9474;
+&#9474; &#9474; &#9474; &#9474; (<span style="color: #ab98b5;">format</span> <span style="color: #6fb593;">"#+INCLUDE: \"%s::#%s\" :only-contents nil\n"</span>
+&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; entry
+&#9474; &#9474; &#9474; &#9474; &#9474; &#9474; id))))
 </code></pre>
 
 <p>

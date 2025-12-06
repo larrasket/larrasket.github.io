@@ -552,7 +552,7 @@ margin-block-start: auto;
 <div id="content" class="content">
 <header>
 <h1 class="title">A useful Git &rsquo;trick&rsquo;</h1>
-</header><div class="tag" id="orgcaf1cd1">
+</header><div class="tag" id="orgce7ecb7">
 <p>
 This section was labeled under, or is related to <a href="../t/programming.html#4u5664n02wj0">Programming</a>
 </p>
@@ -568,33 +568,33 @@ a bit smaller repo).
 </p>
 <div id="outline-container-uv8g13k0cmk0" class="outline-2">
 <h2 id="uv8g13k0cmk0">Git: List all the branches compared to this branch with behind/ahead logs</h2>
-<div class="outline-text-2" id="text-orgde0485d">
-<div class="tag" id="orgd339c8f">
+<div class="outline-text-2" id="text-orge379689">
+<div class="tag" id="org944d311">
 <p>
 This section was labeled under, or is related to Tech Search
 </p>
 
 </div>
-<pre class="code"><code>#!/bin/bash
-current_branch=$(git rev-parse --abbrev-ref HEAD)
-echo "Branch analysis for: $current_branch"
+<pre class="code"><code><span style="color: #545c5e;">#</span><span style="color: #545c5e;">!/bin/</span><span style="color: #4d9391;">bash</span><span style="color: #545c5e;">
+</span><span style="color: #968cc7;">current_branch</span>=$(<span style="color: #eed891;">git rev-parse --abbrev-ref HEAD</span>)
+<span style="color: #cd9575;">echo</span> <span style="color: #6fb593;">"Branch analysis for: </span><span style="color: #ab98b5;">$</span><span style="color: #968cc7;">current_branch</span><span style="color: #6fb593;">"</span>
 
-for branch in $(git for-each-ref --format='%(refname:short)' refs/remotes refs/heads | grep -v "$current_branch" | grep -v "staging-mas"); do
-    if merge_base=$(git merge-base "$branch" HEAD 2&gt;/dev/null); then
-        ahead=$(git rev-list --count "$merge_base..HEAD" 2&gt;/dev/null)
-        behind=$(git rev-list --count "$merge_base..$branch" 2&gt;/dev/null)
-        if [ "$ahead" -gt 0 ]; then
-            echo "$branch: $ahead commits ahead, $behind commits behind"
-        fi
-    fi
-done
+<span style="color: #4d9391;">for</span> branch<span style="color: #4d9391;"> in</span> $(<span style="color: #eed891;">git for-each-ref --format='%(refname:short</span><span style="color: #6fb593;">)'</span> refs/remotes refs/heads | <span style="color: #cd9575;">grep</span> -v <span style="color: #6fb593;">"</span><span style="color: #ab98b5;">$</span><span style="color: #968cc7;">current_branch</span><span style="color: #6fb593;">"</span> | <span style="color: #cd9575;">grep</span> -v <span style="color: #6fb593;">"staging-mas"</span>); <span style="color: #4d9391;">do</span>
+&#9474;   <span style="color: #4d9391;">if</span> <span style="color: #968cc7;">merge_base</span>=$(<span style="color: #eed891;">git merge-base "$branch" HEAD 2&gt;/dev/null</span>); <span style="color: #4d9391;">then</span>
+&#9474;   &#9474;   <span style="color: #968cc7;">ahead</span>=$(<span style="color: #eed891;">git rev-list --count "$merge_base..HEAD" 2&gt;/dev/null</span>)
+&#9474;   &#9474;   <span style="color: #968cc7;">behind</span>=$(<span style="color: #eed891;">git rev-list --count "$merge_base..$branch" 2&gt;/dev/null</span>)
+&#9474;   &#9474;   <span style="color: #4d9391;">if</span> [ <span style="color: #6fb593;">"</span><span style="color: #ab98b5;">$</span><span style="color: #968cc7;">ahead</span><span style="color: #6fb593;">"</span> -gt 0 ]; <span style="color: #4d9391;">then</span>
+&#9474;   &#9474;   &#9474;   <span style="color: #cd9575;">echo</span> <span style="color: #6fb593;">"</span><span style="color: #ab98b5;">$</span><span style="color: #968cc7;">branch</span><span style="color: #6fb593;">: </span><span style="color: #ab98b5;">$</span><span style="color: #968cc7;">ahead</span><span style="color: #6fb593;"> commits ahead, </span><span style="color: #ab98b5;">$</span><span style="color: #968cc7;">behind</span><span style="color: #6fb593;"> commits behind"</span>
+&#9474;   &#9474;   <span style="color: #4d9391;">fi</span>
+&#9474;   <span style="color: #4d9391;">fi</span>
+<span style="color: #4d9391;">done</span>
 </code></pre>
 </div>
 </div>
 <div id="outline-container-kjr773k0cmk0" class="outline-2">
 <h2 id="kjr773k0cmk0">Trying to find only the modified files</h2>
-<div class="outline-text-2" id="text-orga09e345">
-<div class="tag" id="org36ce08a">
+<div class="outline-text-2" id="text-org21e025d">
+<div class="tag" id="org676530d">
 <p>
 This section was labeled under, or is related to Tech Search
 </p>
@@ -606,7 +606,7 @@ be just migrating the files I care about into a separate branch (since there are
 no dependencies in this repo). I needed to get the files that were modified in
 this branch by that person:
 </p>
-<pre class="code"><code>git log main..HEAD --author="The Dude Full Name &lt;TheDudeEmail@smth.edu&gt;" --name-status --pretty=format:
+<pre class="code"><code><span style="color: #cd9575;">git</span> log main..HEAD --author=<span style="color: #6fb593;">"The Dude Full Name <a href="mailto:TheDudeEmail%40smth.edu">&lt;TheDudeEmail@smth.edu&gt;</a>"</span> --name-status --pretty=format:
 </code></pre>
 </div>
 </div>

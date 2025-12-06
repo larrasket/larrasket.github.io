@@ -553,19 +553,19 @@ margin-block-start: auto;
 <div id="content" class="content">
 <header>
 <h1 class="title">[draft][don&rsquo;t take it seriously] Go Incomplete Guide</h1>
-</header><div class="propert" id="org64ac563">
+</header><div class="propert" id="org173ef03">
 <p>
 Part of a series on <a href="../cs/go.html#lvkhzyo02wj0">The Go Programming Language</a>
 </p>
 
 </div>
-<div id="outline-container-org397bb00" class="outline-2">
-<h2 id="org397bb00">Misc</h2>
-<div class="outline-text-2" id="text-org397bb00">
+<div id="outline-container-orgcfd6a77" class="outline-2">
+<h2 id="orgcfd6a77">Misc</h2>
+<div class="outline-text-2" id="text-orgcfd6a77">
 </div>
-<div id="outline-container-org3b2a148" class="outline-3">
-<h3 id="org3b2a148">Notes</h3>
-<div class="outline-text-3" id="text-org3b2a148">
+<div id="outline-container-org1dab11f" class="outline-3">
+<h3 id="org1dab11f">Notes</h3>
+<div class="outline-text-3" id="text-org1dab11f">
 <ul class="org-ul">
 <li>Reading from a nil channel would result in blocking forever.</li>
 <li>Writing to a nil map will cause a panic.</li>
@@ -573,7 +573,7 @@ Part of a series on <a href="../cs/go.html#lvkhzyo02wj0">The Go Programming Lang
 <li><p>
 First is a type alias. Second is a new type.
 </p>
-<pre class="example" id="org8e8314a">
+<pre class="example" id="orgf783071">
 type MyInt int
 type YourInt = int
 </pre></li>
@@ -584,8 +584,8 @@ type YourInt = int
 <li><p>
 Here:
 </p>
-<pre class="code"><code>for i := 0; i &lt; 3; i++ {
-    defer func() { println(i) }()
+<pre class="code"><code><span style="color: #4d9391;">for</span> <span style="color: #968cc7;">i</span> := 0; i &lt; 3; i++ {
+&#9474;   <span style="color: #4d9391;">defer</span> <span style="color: #4d9391;">func</span>() { <span style="color: #80bcb6;">println</span>(i) }()
 }
 </code></pre>
 
@@ -597,7 +597,7 @@ This prints 3 3 3. Because i is captured by reference not by value.
 <code>defer</code> might not be always useful inside a loop:
 </p>
 
-<figure id="org540db6a">
+<figure id="orga8c9ad1">
 <img src="../../media/Misc/2025-11-06_21-28-58_screenshot.png" alt="2025-11-06_21-28-58_screenshot.png">
 
 </figure></li>
@@ -609,13 +609,13 @@ This prints 3 3 3. Because i is captured by reference not by value.
 <li><p>
 Closures capture variables, not values:
 </p>
-<pre class="code"><code>    funcs := []func(){}
-    for i := 0; i &lt; 3; i++ {
-        funcs = append(funcs, func() { println(i) })
-    }
-    for _, f := range funcs {
-        f()
-    }
+<pre class="code"><code>&#9474;   <span style="color: #968cc7;">funcs</span> := []<span style="color: #4d9391;">func</span>(){}
+&#9474;   <span style="color: #4d9391;">for</span> <span style="color: #968cc7;">i</span> := 0; i &lt; 3; i++ {
+&#9474;   &#9474;   funcs = <span style="color: #80bcb6;">append</span>(funcs, <span style="color: #4d9391;">func</span>() { <span style="color: #80bcb6;">println</span>(i) })
+&#9474;   }
+&#9474;   <span style="color: #4d9391;">for</span> <span style="color: #968cc7;">_</span>, <span style="color: #968cc7;">f</span> := <span style="color: #4d9391;">range</span> funcs {
+&#9474;   &#9474;   <span style="color: #80bcb6;">f</span>()
+&#9474;   }
 </code></pre>
 <p>
 However; proposal #60078 changed loop variables to be per-iteration instead of per-loop.
@@ -627,7 +627,7 @@ However; proposal #60078 changed loop variables to be per-iteration instead of p
 Do not forget the decision tree for using primitives vs. channels.
 </p>
 
-<figure id="org139bd6d">
+<figure id="org5846c60">
 <img src="../../media/Misc/2025-11-07_20-38-51_screenshot.png" alt="2025-11-07_20-38-51_screenshot.png">
 
 </figure></li>
@@ -635,72 +635,72 @@ Do not forget the decision tree for using primitives vs. channels.
 <li><p>
 cond. Observe the example:
 </p>
-<pre class="code"><code>package main
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import (
-	"fmt"
-	"sync"
-	"time"
+<span style="color: #4d9391;">import</span> (
+&#9474;   <span style="color: #6fb593;">"fmt"</span>
+&#9474;   <span style="color: #6fb593;">"sync"</span>
+&#9474;   <span style="color: #6fb593;">"time"</span>
 )
 
-type JobQueue struct {
-	mu   sync.Mutex
-	jobs []string
-	cond *sync.Cond
+<span style="color: #4d9391;">type</span> <span style="color: #cd9575;">JobQueue</span> <span style="color: #4d9391;">struct</span> {
+&#9474;   mu   <span style="color: #cd9575;">sync.Mutex</span>
+&#9474;   jobs []<span style="color: #cd9575;">string</span>
+&#9474;   cond *<span style="color: #cd9575;">sync.Cond</span>
 }
 
-func NewJobQueue() *JobQueue {
-	q := &amp;JobQueue{}
-	q.cond = sync.NewCond(&amp;q.mu)
-	return q
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">NewJobQueue</span>() *<span style="color: #cd9575;">JobQueue</span> {
+&#9474;   <span style="color: #968cc7;">q</span> := &amp;<span style="color: #cd9575;">JobQueue</span>{}
+&#9474;   q.cond = sync.<span style="color: #80bcb6;">NewCond</span>(&amp;q.mu)
+&#9474;   <span style="color: #4d9391;">return</span> q
 }
 
-func (q *JobQueue) Add(job string) {
-	q.mu.Lock()
-	defer q.mu.Unlock()
+<span style="color: #4d9391;">func</span> (<span style="color: #968cc7;">q</span> *<span style="color: #cd9575;">JobQueue</span>) <span style="color: #80bcb6;">Add</span>(<span style="color: #968cc7;">job</span> <span style="color: #cd9575;">string</span>) {
+&#9474;   q.mu.<span style="color: #80bcb6;">Lock</span>()
+&#9474;   <span style="color: #4d9391;">defer</span> q.mu.<span style="color: #80bcb6;">Unlock</span>()
+&#9474;
+&#9474;   q.jobs = <span style="color: #80bcb6;">append</span>(q.jobs, job)
+&#9474;   q.cond.<span style="color: #80bcb6;">Signal</span>() <span style="color: #545c5e;">// </span><span style="color: #545c5e;">wake up one waiting worker
+</span>}
 
-	q.jobs = append(q.jobs, job)
-	q.cond.Signal() // wake up one waiting worker
+<span style="color: #4d9391;">func</span> (<span style="color: #968cc7;">q</span> *<span style="color: #cd9575;">JobQueue</span>) <span style="color: #80bcb6;">Get</span>() <span style="color: #cd9575;">string</span> {
+&#9474;   q.mu.<span style="color: #80bcb6;">Lock</span>()
+&#9474;   <span style="color: #4d9391;">defer</span> q.mu.<span style="color: #80bcb6;">Unlock</span>()
+&#9474;
+&#9474;   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Wait until a job becomes available
+&#9474;   </span><span style="color: #4d9391;">for</span> <span style="color: #80bcb6;">len</span>(q.jobs) == 0 {
+&#9474;   &#9474;   q.cond.<span style="color: #80bcb6;">Wait</span>()
+&#9474;   }
+&#9474;   <span style="color: #968cc7;">job</span> := q.jobs[0]
+&#9474;   q.jobs = q.jobs[1:]
+&#9474;   <span style="color: #4d9391;">return</span> job
 }
 
-func (q *JobQueue) Get() string {
-	q.mu.Lock()
-	defer q.mu.Unlock()
-
-	// Wait until a job becomes available
-	for len(q.jobs) == 0 {
-		q.cond.Wait()
-	}
-	job := q.jobs[0]
-	q.jobs = q.jobs[1:]
-	return job
-}
-
-func main() {
-	q := NewJobQueue()
-
-	// worker
-	go func() {
-		for {
-			job := q.Get()
-			fmt.Println("Processing:", job)
-			time.Sleep(time.Second)
-		}
-	}()
-
-	// producer
-	for i := 1; i &lt;= 5; i++ {
-		time.Sleep(time.Millisecond * 500)
-		q.Add(fmt.Sprintf("job-%d", i))
-	}
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #968cc7;">q</span> := <span style="color: #80bcb6;">NewJobQueue</span>()
+&#9474;
+&#9474;   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">worker
+&#9474;   </span><span style="color: #4d9391;">go</span> <span style="color: #4d9391;">func</span>() {
+&#9474;   &#9474;   <span style="color: #4d9391;">for</span> {
+&#9474;   &#9474;   &#9474;   <span style="color: #968cc7;">job</span> := q.<span style="color: #80bcb6;">Get</span>()
+&#9474;   &#9474;   &#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Processing:"</span>, job)
+&#9474;   &#9474;   &#9474;   time.<span style="color: #80bcb6;">Sleep</span>(time.Second)
+&#9474;   &#9474;   }
+&#9474;   }()
+&#9474;
+&#9474;   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">producer
+&#9474;   </span><span style="color: #4d9391;">for</span> <span style="color: #968cc7;">i</span> := 1; i &lt;= 5; i++ {
+&#9474;   &#9474;   time.<span style="color: #80bcb6;">Sleep</span>(time.Millisecond * 500)
+&#9474;   &#9474;   q.<span style="color: #80bcb6;">Add</span>(fmt.<span style="color: #80bcb6;">Sprintf</span>(<span style="color: #6fb593;">"job-%d"</span>, i))
+&#9474;   }
 }
 </code></pre></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgee86fa7" class="outline-3">
-<h3 id="orgee86fa7"><code>omitempty</code></h3>
-<div class="outline-text-3" id="text-orgee86fa7">
+<div id="outline-container-orgd65762a" class="outline-3">
+<h3 id="orgd65762a"><code>omitempty</code></h3>
+<div class="outline-text-3" id="text-orgd65762a">
 <p>
 If you’ve worked with Go for sometime, you have probably encountered the <code>omitempty</code> tag,
 when trying to encode a struct to JSON.
@@ -717,9 +717,9 @@ One key difference, is that in a struct, there are always clearly defined fields
 JSON there are not. For example, consider describing a dog as a struct in Go:
 </p>
 
-<pre class="code"><code>type Dog struct {
-	Breed string
-	WeightKg int
+<pre class="code"><code><span style="color: #4d9391;">type</span> <span style="color: #cd9575;">Dog</span> <span style="color: #4d9391;">struct</span> {
+&#9474;   Breed <span style="color: #cd9575;">string</span>
+&#9474;   WeightKg <span style="color: #cd9575;">int</span>
 }
 </code></pre>
 
@@ -727,13 +727,13 @@ JSON there are not. For example, consider describing a dog as a struct in Go:
 <p>
 Now, if we were to initialize, encode to JSON, and print a sample dog :
 </p>
-<pre class="code"><code>func main() {
-	d := Dog{
-		Breed:    "dalmation",
-		WeightKg: 45,
-	}
-	b, _ := json.Marshal(d)
-	fmt.Println(string(b))
+<pre class="code"><code><span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #968cc7;">d</span> := <span style="color: #cd9575;">Dog</span>{
+&#9474;   &#9474;   <span style="color: #ab98b5;">Breed</span>:    <span style="color: #6fb593;">"dalmation"</span>,
+&#9474;   &#9474;   <span style="color: #ab98b5;">WeightKg</span>: 45,
+&#9474;   }
+&#9474;   <span style="color: #968cc7;">b</span>, <span style="color: #968cc7;">_</span> := json.<span style="color: #80bcb6;">Marshal</span>(d)
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #80bcb6;">string</span>(b))
 }
 </code></pre>
 
@@ -747,12 +747,12 @@ Now, a dog for whom we do not have the weight, would be slightly awkward to deal
 </p>
 
 
-<pre class="code"><code>func main() {
-	d := Dog{
-		Breed:    "pug",
-	}
-	b, _ := json.Marshal(d)
-	fmt.Println(string(b))
+<pre class="code"><code><span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #968cc7;">d</span> := <span style="color: #cd9575;">Dog</span>{
+&#9474;   &#9474;   <span style="color: #ab98b5;">Breed</span>:    <span style="color: #6fb593;">"pug"</span>,
+&#9474;   }
+&#9474;   <span style="color: #968cc7;">b</span>, <span style="color: #968cc7;">_</span> := json.<span style="color: #80bcb6;">Marshal</span>(d)
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #80bcb6;">string</span>(b))
 }
 </code></pre>
 
@@ -768,10 +768,10 @@ better option would be to print <code>"WeightKg":null</code>, or to not have the
 This is where the omitempty tag helps us. Let’s add the <code>omitempty</code> tag to our Dog struct:
 </p>
 
-<pre class="code"><code>type Dog struct {
-	Breed    string
-	// The first comma below is to separate the name tag from the omitempty tag
-	WeightKg int `json:",omitempty"`
+<pre class="code"><code><span style="color: #4d9391;">type</span> <span style="color: #cd9575;">Dog</span> <span style="color: #4d9391;">struct</span> {
+&#9474;   Breed    <span style="color: #cd9575;">string</span>
+&#9474;   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">The first comma below is to separate the name tag from the omitempty tag
+&#9474;   </span>WeightKg <span style="color: #cd9575;">int</span> <span style="color: #6fb593;">`json:",omitempty"`</span>
 }
 </code></pre>
 
@@ -792,28 +792,28 @@ for example, does not have an empty value:
 </p>
 
 <pre class="code"><code>
-import (
-	"encoding/json"
-	"fmt"
+<span style="color: #4d9391;">import</span> (
+&#9474;   <span style="color: #6fb593;">"encoding/json"</span>
+&#9474;   <span style="color: #6fb593;">"fmt"</span>
 )
 
-type dimension struct {
-	Height int
-	Width int
-	}
-
-type Dog struct {
-	Breed    string
-	WeightKg int
-	Size dimension `json:",omitempty"`
+<span style="color: #4d9391;">type</span> <span style="color: #cd9575;">dimension</span> <span style="color: #4d9391;">struct</span> {
+&#9474;   Height <span style="color: #cd9575;">int</span>
+&#9474;   Width <span style="color: #cd9575;">int</span>
+&#9474;   }
+&#9474;
+<span style="color: #4d9391;">type</span> <span style="color: #cd9575;">Dog</span> <span style="color: #4d9391;">struct</span> {
+&#9474;   Breed    <span style="color: #cd9575;">string</span>
+&#9474;   WeightKg <span style="color: #cd9575;">int</span>
+&#9474;   Size <span style="color: #cd9575;">dimension</span> <span style="color: #6fb593;">`json:",omitempty"`</span>
 }
 
-func main() {
-	d := Dog{
-		Breed: "pug",
-	}
-	b, _ := json.Marshal(d)
-	fmt.Println(string(b))
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #968cc7;">d</span> := <span style="color: #cd9575;">Dog</span>{
+&#9474;   &#9474;   <span style="color: #ab98b5;">Breed</span>: <span style="color: #6fb593;">"pug"</span>,
+&#9474;   }
+&#9474;   <span style="color: #968cc7;">b</span>, <span style="color: #968cc7;">_</span> := json.<span style="color: #80bcb6;">Marshal</span>(d)
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #80bcb6;">string</span>(b))
 }
 
 </code></pre>
@@ -826,18 +826,18 @@ value in Go. To solve this, use a struct pointer instead :
 </p>
 
 
-<pre class="code"><code>type Dog struct {
-	Breed    string
-	WeightKg int
-	// Now `Size` is a pointer to a `dimension` instance
-	Size *dimension `json:",omitempty"`
+<pre class="code"><code><span style="color: #4d9391;">type</span> <span style="color: #cd9575;">Dog</span> <span style="color: #4d9391;">struct</span> {
+&#9474;   Breed    <span style="color: #cd9575;">string</span>
+&#9474;   WeightKg <span style="color: #cd9575;">int</span>
+&#9474;   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Now `Size` is a pointer to a `dimension` instance
+&#9474;   </span>Size *<span style="color: #cd9575;">dimension</span> <span style="color: #6fb593;">`json:",omitempty"`</span>
 }
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org793f029" class="outline-3">
-<h3 id="org793f029">Custom Sort</h3>
-<div class="outline-text-3" id="text-org793f029">
+<div id="outline-container-org71fca6c" class="outline-3">
+<h3 id="org71fca6c">Custom Sort</h3>
+<div class="outline-text-3" id="text-org71fca6c">
 <p>
 To sort a slice in reverse order, you can use the <code>Reverse()</code> function along with <code>StringSlice</code>,
 <code>IntSlice</code>, and <code>Float64Slice</code> types. These types implement the Interface for comparision and
@@ -849,28 +849,28 @@ The <code>Reverse()</code> function returns the reverse order of data. Let’s l
 sorting a slice of strings, integers, and floats in reverse order:
 </p>
 
-<pre class="code"><code>package main
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import (
-	"fmt"
-	"sort"
+<span style="color: #4d9391;">import</span> (
+&#9474;   <span style="color: #6fb593;">"fmt"</span>
+&#9474;   <span style="color: #6fb593;">"sort"</span>
 )
 
-func main() {
-	// Sorting a slice of Strings
-	strs := []string{"quick", "brown", "fox", "jumps"}
-	sort.Sort(sort.Reverse(sort.StringSlice(strs)))
-	fmt.Println("Sorted strings in reverse order: ", strs)
-
-	// Sorting a slice of Integers
-	ints := []int{56, 19, 78, 67, 14, 25}
-	sort.Sort(sort.Reverse(sort.IntSlice(ints)))
-	fmt.Println("Sorted integers in reverse order: ", ints)
-
-	// Sorting a slice of Floats
-	floats := []float64{176.8, 19.5, 20.8, 57.4}
-	sort.Sort(sort.Reverse(sort.Float64Slice(floats)))
-	fmt.Println("Sorted floats in reverse order: ", floats)
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Sorting a slice of Strings
+&#9474;   </span><span style="color: #968cc7;">strs</span> := []<span style="color: #cd9575;">string</span>{<span style="color: #6fb593;">"quick"</span>, <span style="color: #6fb593;">"brown"</span>, <span style="color: #6fb593;">"fox"</span>, <span style="color: #6fb593;">"jumps"</span>}
+&#9474;   sort.<span style="color: #80bcb6;">Sort</span>(sort.<span style="color: #80bcb6;">Reverse</span>(sort.<span style="color: #80bcb6;">StringSlice</span>(strs)))
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Sorted strings in reverse order: "</span>, strs)
+&#9474;
+&#9474;   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Sorting a slice of Integers
+&#9474;   </span><span style="color: #968cc7;">ints</span> := []<span style="color: #cd9575;">int</span>{56, 19, 78, 67, 14, 25}
+&#9474;   sort.<span style="color: #80bcb6;">Sort</span>(sort.<span style="color: #80bcb6;">Reverse</span>(sort.<span style="color: #80bcb6;">IntSlice</span>(ints)))
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Sorted integers in reverse order: "</span>, ints)
+&#9474;
+&#9474;   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Sorting a slice of Floats
+&#9474;   </span><span style="color: #968cc7;">floats</span> := []<span style="color: #cd9575;">float64</span>{176.8, 19.5, 20.8, 57.4}
+&#9474;   sort.<span style="color: #80bcb6;">Sort</span>(sort.<span style="color: #80bcb6;">Reverse</span>(sort.<span style="color: #80bcb6;">Float64Slice</span>(floats)))
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Sorted floats in reverse order: "</span>, floats)
 }
 
 </code></pre>
@@ -888,40 +888,40 @@ package. These are higher order functions that accept a less function as an argu
 </p>
 
 
-<pre class="code"><code>package main
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import (
-	"fmt"
-	"sort"
+<span style="color: #4d9391;">import</span> (
+&#9474;   <span style="color: #6fb593;">"fmt"</span>
+&#9474;   <span style="color: #6fb593;">"sort"</span>
 )
 
-func main() {
-	// Sorting a slice of strings by length
-	strs := []string{"United States", "India", "France", "United Kingdom", "Spain"}
-	sort.Slice(strs, func(i, j int) bool {
-		return len(strs[i]) &lt; len(strs[j])
-	})
-	fmt.Println("Sorted strings by length: ", strs)
-
-	// Stable sort
-	sort.SliceStable(strs, func(i, j int) bool {
-		return len(strs[i]) &lt; len(strs[j])
-	})
-	fmt.Println("[Stable] Sorted strings by length: ", strs)
-
-	// Sorting a slice of strings in the reverse order of length
-	sort.SliceStable(strs, func(i, j int) bool {
-		return len(strs[j]) &lt; len(strs[i])
-	})
-	fmt.Println("[Stable] Sorted strings by reverse order of length: ", strs)
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Sorting a slice of strings by length
+&#9474;   </span><span style="color: #968cc7;">strs</span> := []<span style="color: #cd9575;">string</span>{<span style="color: #6fb593;">"United States"</span>, <span style="color: #6fb593;">"India"</span>, <span style="color: #6fb593;">"France"</span>, <span style="color: #6fb593;">"United Kingdom"</span>, <span style="color: #6fb593;">"Spain"</span>}
+&#9474;   sort.<span style="color: #80bcb6;">Slice</span>(strs, <span style="color: #4d9391;">func</span>(<span style="color: #968cc7;">i</span>, <span style="color: #968cc7;">j</span> <span style="color: #cd9575;">int</span>) <span style="color: #cd9575;">bool</span> {
+&#9474;   &#9474;   <span style="color: #4d9391;">return</span> <span style="color: #80bcb6;">len</span>(strs[i]) &lt; <span style="color: #80bcb6;">len</span>(strs[j])
+&#9474;   })
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Sorted strings by length: "</span>, strs)
+&#9474;
+&#9474;   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Stable sort
+&#9474;   </span>sort.<span style="color: #80bcb6;">SliceStable</span>(strs, <span style="color: #4d9391;">func</span>(<span style="color: #968cc7;">i</span>, <span style="color: #968cc7;">j</span> <span style="color: #cd9575;">int</span>) <span style="color: #cd9575;">bool</span> {
+&#9474;   &#9474;   <span style="color: #4d9391;">return</span> <span style="color: #80bcb6;">len</span>(strs[i]) &lt; <span style="color: #80bcb6;">len</span>(strs[j])
+&#9474;   })
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"[Stable] Sorted strings by length: "</span>, strs)
+&#9474;
+&#9474;   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Sorting a slice of strings in the reverse order of length
+&#9474;   </span>sort.<span style="color: #80bcb6;">SliceStable</span>(strs, <span style="color: #4d9391;">func</span>(<span style="color: #968cc7;">i</span>, <span style="color: #968cc7;">j</span> <span style="color: #cd9575;">int</span>) <span style="color: #cd9575;">bool</span> {
+&#9474;   &#9474;   <span style="color: #4d9391;">return</span> <span style="color: #80bcb6;">len</span>(strs[j]) &lt; <span style="color: #80bcb6;">len</span>(strs[i])
+&#9474;   })
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"[Stable] Sorted strings by reverse order of length: "</span>, strs)
 }
 </code></pre>
 </div>
 </div>
 <div id="outline-container-lhoctcz0twj0" class="outline-3">
 <h3 id="lhoctcz0twj0">Integer Values</h3>
-<div class="outline-text-3" id="text-org859ca14">
-<pre class="example" id="org4f5da3a">
+<div class="outline-text-3" id="text-orgce41af2">
+<pre class="example" id="org636e0ed">
 uint8  : 0 to 255
 uint16 : 0 to 65535
 uint32 : 0 to 4294967295
@@ -935,48 +935,48 @@ int64  : -9223372036854775808 to 9223372036854775807
 </div>
 <div id="outline-container-vdali1i0z3k0" class="outline-3">
 <h3 id="vdali1i0z3k0">Check if file exists</h3>
-<div class="outline-text-3" id="text-orge16b0ba">
-<pre class="code"><code>if _, err := os.Stat("/path/to/whatever"); errors.Is(err, os.ErrNotExist) {
-  // path/to/whatever does not exist
-}
+<div class="outline-text-3" id="text-org05d4579">
+<pre class="code"><code><span style="color: #4d9391;">if</span> <span style="color: #968cc7;">_</span>, <span style="color: #968cc7;">err</span> := os.<span style="color: #80bcb6;">Stat</span>(<span style="color: #6fb593;">"/path/to/whatever"</span>); errors.<span style="color: #80bcb6;">Is</span>(err, os.ErrNotExist) {
+&#9474; <span style="color: #545c5e;">// </span><span style="color: #545c5e;">path/to/whatever does not exist
+</span>}
 </code></pre>
 </div>
 </div>
 <div id="outline-container-pxc3h8o0z3k0" class="outline-3">
 <h3 id="pxc3h8o0z3k0">Example for flag</h3>
-<div class="outline-text-3" id="text-org789cc43">
-<pre class="code"><code>package main
+<div class="outline-text-3" id="text-org1596724">
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import (
-    "flag"
-    "fmt"
+<span style="color: #4d9391;">import</span> (
+&#9474;   <span style="color: #6fb593;">"flag"</span>
+&#9474;   <span style="color: #6fb593;">"fmt"</span>
 )
 
-func main() {
-
-    wordPtr := flag.String("word", "foo", "a string")
-
-    numbPtr := flag.Int("numb", 42, "an int")
-    forkPtr := flag.Bool("fork", false, "a bool")
-
-    var svar string
-    flag.StringVar(&amp;svar, "svar", "bar", "a string var")
-
-    flag.Parse()
-
-    fmt.Println("word:", *wordPtr)
-    fmt.Println("numb:", *numbPtr)
-    fmt.Println("fork:", *forkPtr)
-    fmt.Println("svar:", svar)
-    fmt.Println("tail:", flag.Args())
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;
+&#9474;   <span style="color: #968cc7;">wordPtr</span> := flag.<span style="color: #80bcb6;">String</span>(<span style="color: #6fb593;">"word"</span>, <span style="color: #6fb593;">"foo"</span>, <span style="color: #6fb593;">"a string"</span>)
+&#9474;
+&#9474;   <span style="color: #968cc7;">numbPtr</span> := flag.<span style="color: #80bcb6;">Int</span>(<span style="color: #6fb593;">"numb"</span>, 42, <span style="color: #6fb593;">"an int"</span>)
+&#9474;   <span style="color: #968cc7;">forkPtr</span> := flag.<span style="color: #80bcb6;">Bool</span>(<span style="color: #6fb593;">"fork"</span>, <span style="color: #ab98b5;">false</span>, <span style="color: #6fb593;">"a bool"</span>)
+&#9474;
+&#9474;   <span style="color: #4d9391;">var</span> <span style="color: #968cc7;">svar</span> <span style="color: #cd9575;">string</span>
+&#9474;   flag.<span style="color: #80bcb6;">StringVar</span>(&amp;svar, <span style="color: #6fb593;">"svar"</span>, <span style="color: #6fb593;">"bar"</span>, <span style="color: #6fb593;">"a string var"</span>)
+&#9474;
+&#9474;   flag.<span style="color: #80bcb6;">Parse</span>()
+&#9474;
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"word:"</span>, *wordPtr)
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"numb:"</span>, *numbPtr)
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"fork:"</span>, *forkPtr)
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"svar:"</span>, svar)
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"tail:"</span>, flag.<span style="color: #80bcb6;">Args</span>())
 }
 </code></pre>
 </div>
 </div>
 <div id="outline-container-gnb2dda146k0" class="outline-3">
 <h3 id="gnb2dda146k0">Properly print errors</h3>
-<div class="outline-text-3" id="text-org71aaeff">
-<pre class="example" id="org15832d7">
+<div class="outline-text-3" id="text-orgfe09eb8">
+<pre class="example" id="org4088a7c">
 TL;DR; Neither. Use %w in 99.99% of cases. In the other 0.001% of cases, %v and
 %s probably "should" behave the same, except when the error value is nil, but
 there are no guarantees. The friendlier output of %v for nil errors may be
@@ -1014,17 +1014,17 @@ From <a href="https://stackoverflow.com/a/61287626">https://stackoverflow.com/a/
 </div>
 </div>
 </div>
-<div id="outline-container-org704e78b" class="outline-2">
-<h2 id="org704e78b">Old</h2>
-<div class="outline-text-2" id="text-org704e78b">
+<div id="outline-container-org7a42dff" class="outline-2">
+<h2 id="org7a42dff">Old</h2>
+<div class="outline-text-2" id="text-org7a42dff">
 <p>
 These are notes I wrote when I was still learning Go.
 </p>
 </div>
-<div id="outline-container-org01a16e2" class="outline-3">
-<h3 id="org01a16e2">Introduction</h3>
-<div class="outline-text-3" id="text-org01a16e2">
-<div class="PREVIEW" id="org66a1782">
+<div id="outline-container-org4bb6a63" class="outline-3">
+<h3 id="org4bb6a63">Introduction</h3>
+<div class="outline-text-3" id="text-org4bb6a63">
+<div class="PREVIEW" id="org1b375bc">
 <p>
 Go programming language notes. Based on Adam Freeman&rsquo;s Pro Go, some <a href="https://go.dev/blog/">https://go.dev/blog/</a>
 articles, and other online resources.
@@ -1033,9 +1033,9 @@ articles, and other online resources.
 </div>
 </div>
 </div>
-<div id="outline-container-org739b6f5" class="outline-3">
-<h3 id="org739b6f5">[basics] get-go</h3>
-<div class="outline-text-3" id="text-org739b6f5">
+<div id="outline-container-orgd8aa8c4" class="outline-3">
+<h3 id="orgd8aa8c4">[basics] get-go</h3>
+<div class="outline-text-3" id="text-orgd8aa8c4">
 <p>
 Open a command prompt, navigate to a convenient location, and create a folder named
 partyinvites.  Navigate to the partyinvites folder and run the command shown in Listing 1-2
@@ -1058,10 +1058,10 @@ Studio Code and this is your first time editing a Go file, then you will be prom
 install the extensions that support the Go language.
 </p>
 
-<pre class="code"><code>package main
-import "fmt"
-func main() {
-    fmt.Println("TODO: add some features")
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"</span><span style="color: #dbac66; font-weight: bold;">TODO:</span><span style="color: #6fb593;"> add some features"</span>)
 }
 </code></pre>
 
@@ -1100,18 +1100,18 @@ tasks in one step. The application produces the following output:
 <pre class="code"><code>TODO: add some features
 </code></pre>
 </div>
-<div id="outline-container-orge0c1c74" class="outline-4">
-<h4 id="orge0c1c74">Define a Data Type</h4>
-<div class="outline-text-4" id="text-orge0c1c74">
+<div id="outline-container-org67a96cd" class="outline-4">
+<h4 id="org67a96cd">Define a Data Type</h4>
+<div class="outline-text-4" id="text-org67a96cd">
 <p>
 The next step is to create a custom data type that will represent the RSVP responses, as
 shown:
 </p>
 
 
-<pre class="code"><code>type Rsvp struct {
-    Name, Email, Phone string
-    WillAttend bool
+<pre class="code"><code><span style="color: #4d9391;">type</span> <span style="color: #cd9575;">Rsvp</span> <span style="color: #4d9391;">struct</span> {
+&#9474;   Name, Email, Phone <span style="color: #cd9575;">string</span>
+&#9474;   WillAttend <span style="color: #cd9575;">bool</span>
 }
 </code></pre>
 
@@ -1135,15 +1135,15 @@ and maps that contain key-value pairs. the following block creates a slice, whic
 when the number of values that will be stored isn’t known in advance.
 </p>
 
-<pre class="code"><code>package main
-import "fmt"
-type Rsvp struct {
-    Name, Email, Phone string
-    WillAttend bool
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">type</span> <span style="color: #cd9575;">Rsvp</span> <span style="color: #4d9391;">struct</span> {
+&#9474;   Name, Email, Phone <span style="color: #cd9575;">string</span>
+&#9474;   WillAttend <span style="color: #cd9575;">bool</span>
 }
-var responses = make([]*Rsvp, 0, 10)
-func main() {
-    fmt.Println("TODO: add some features");
+<span style="color: #4d9391;">var</span> <span style="color: #968cc7;">responses</span> = <span style="color: #80bcb6;">make</span>([]*<span style="color: #cd9575;">Rsvp</span>, 0, 10)
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"</span><span style="color: #dbac66; font-weight: bold;">TODO:</span><span style="color: #6fb593;"> add some features"</span>);
 }
 </code></pre>
 
@@ -1191,9 +1191,9 @@ it.
 </p>
 </div>
 </div>
-<div id="outline-container-org81d6624" class="outline-4">
-<h4 id="org81d6624">Using Go Tools</h4>
-<div class="outline-text-4" id="text-org81d6624">
+<div id="outline-container-orgd3b9f37" class="outline-4">
+<h4 id="orgd3b9f37">Using Go Tools</h4>
+<div class="outline-text-4" id="text-orgd3b9f37">
 <p>
 The go command provides access to all the features needed to compile and execute Go code and
 is used throughout this book. The argument used with the go command specifies the operation
@@ -1270,19 +1270,19 @@ most useful ones
 </tbody>
 </table>
 </div>
-<div id="outline-container-orgf27aea9" class="outline-5">
-<h5 id="orgf27aea9">Creating a Go Project</h5>
-<div class="outline-text-5" id="text-orgf27aea9">
+<div id="outline-container-orgf9fce52" class="outline-5">
+<h5 id="orgf9fce52">Creating a Go Project</h5>
+<div class="outline-text-5" id="text-orgf9fce52">
 <p>
 Go projects don’t have an elaborate structure and are quick to set up. Open a new command
 prompt and create a folder named tools in a convenient location. Add a file named main.go to
 the tools folder with the content shown:
 </p>
 
-<pre class="code"><code>package main
-import "fmt"
-func main() {
-    fmt.Println("Hello, Go")
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Hello, Go"</span>)
 }
 </code></pre>
 
@@ -1308,9 +1308,9 @@ execution begins in a command-line application
 </p>
 </div>
 </div>
-<div id="outline-container-org8df5f39" class="outline-5">
-<h5 id="org8df5f39">Semicolons and Errors in Go Code</h5>
-<div class="outline-text-5" id="text-org8df5f39">
+<div id="outline-container-org636dfa3" class="outline-5">
+<h5 id="org636dfa3">Semicolons and Errors in Go Code</h5>
+<div class="outline-text-5" id="text-org636dfa3">
 <p>
 You may have noticed that I didn&rsquo;t append a semicolon in the previous code.
 Go has an unusual approach to semicolons: they are required to terminate code statements, but they
@@ -1329,10 +1329,10 @@ compiler errors if you attempt to put the opening brace for a function or for lo
 like this:
 </p>
 
-<pre class="code"><code>package main
-import "fmt"
-func main() {
-    fmt.Println("Hello, Go")
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Hello, Go"</span>)
 }
 </code></pre>
 
@@ -1342,10 +1342,10 @@ The errors report an unexpected semicolon and a missing function body. This is b
 have automatically inserted a semicolon like this:
 </p>
 
-<pre class="code"><code>package main
-import "fmt"
-func main() {
-    fmt.Println("Hello, Go")
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Hello, Go"</span>)
 }
 </code></pre>
 
@@ -1362,9 +1362,9 @@ remove semicolons and adjust other formatting issues.
 </p>
 </div>
 </div>
-<div id="outline-container-org01fb3ae" class="outline-5">
-<h5 id="org01fb3ae">Defining a Module</h5>
-<div class="outline-text-5" id="text-org01fb3ae">
+<div id="outline-container-org7773898" class="outline-5">
+<h5 id="org7773898">Defining a Module</h5>
+<div class="outline-text-5" id="text-org7773898">
 <p>
 The previous section demonstrated that you can get `tarted just by creating a code file, but
 a more common approach is to create a Go module, which is the conventional first step when
@@ -1382,9 +1382,9 @@ the project can be built and executed using a period, indicating the project in 
 </p>
 </div>
 </div>
-<div id="outline-container-org85bffa4" class="outline-5">
-<h5 id="org85bffa4">Linting Go Code</h5>
-<div class="outline-text-5" id="text-org85bffa4">
+<div id="outline-container-orged19a70" class="outline-5">
+<h5 id="orged19a70">Linting Go Code</h5>
+<div class="outline-text-5" id="text-orged19a70">
 <p>
 A linter is a tool that checks code files using a set of rules that describe problems that
 cause confusion, produce unexpected results, or reduce the readability of the code. The most
@@ -1405,9 +1405,9 @@ the command shown:
 <pre class="code"><code>go install github.com/mgechev/revive@latest
 </code></pre>
 </div>
-<div id="outline-container-org5e693f7" class="outline-6">
-<h6 id="org5e693f7">On Linting</h6>
-<div class="outline-text-6" id="text-org5e693f7">
+<div id="outline-container-org78746a4" class="outline-6">
+<h6 id="org78746a4">On Linting</h6>
+<div class="outline-text-6" id="text-org78746a4">
 <p>
 Linters can be a powerful tool for good, especially in a development team with mixed levels of skill and
 experience. Linters can detect common problems and subtle errors that lead to unexpected behavior
@@ -1437,37 +1437,37 @@ productivity is not achieved by slavishly enforcing arbitrary rules, however wel
 </p>
 </div>
 </div>
-<div id="outline-container-org7cc1e63" class="outline-6">
-<h6 id="org7cc1e63">Using the Linter</h6>
-<div class="outline-text-6" id="text-org7cc1e63">
+<div id="outline-container-org383e593" class="outline-6">
+<h6 id="org383e593">Using the Linter</h6>
+<div class="outline-text-6" id="text-org383e593">
 <p>
 The main.go file is so simple that it doesn’t have any problems for the linter to highlight.
 Add the following statements, which are legal Go code that does not comply with
 the rules applied by the linter.
 </p>
 
-<pre class="code"><code>package main
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import "fmt"
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
 
-func main() {
-	PrintHello()
-	for i := 0; i &lt; 5; i++ {
-		PrintNumber(i)
-	}
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #80bcb6;">PrintHello</span>()
+&#9474;   <span style="color: #4d9391;">for</span> <span style="color: #968cc7;">i</span> := 0; i &lt; 5; i++ {
+&#9474;   &#9474;   <span style="color: #80bcb6;">PrintNumber</span>(i)
+&#9474;   }
 }
 
-func PrintHello() {
-	fmt.Print("Hello, Go")
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">PrintHello</span>() {
+&#9474;   fmt.<span style="color: #80bcb6;">Print</span>(<span style="color: #6fb593;">"Hello, Go"</span>)
 }
 
-func PrintNumber(number int) {
-	fmt.Print(number)
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">PrintNumber</span>(<span style="color: #968cc7;">number</span> <span style="color: #cd9575;">int</span>) {
+&#9474;   fmt.<span style="color: #80bcb6;">Print</span>(number)
 }
 </code></pre>
 
-<pre class="code"><code>main.go:12:1: exported function PrintHello should have comment or be unexported
-main.go:16:1: exported function PrintNumber should have comment or be unexported
+<pre class="code"><code>main.go:12:1: exported <span style="color: #4d9391;">function</span> <span style="color: #80bcb6;">PrintHello</span> should have comment or be unexported
+main.go:16:1: exported <span style="color: #4d9391;">function</span> <span style="color: #80bcb6;">PrintNumber</span> should have comment or be unexported
 </code></pre>
 
 
@@ -1478,57 +1478,57 @@ functions is to provide a descriptive comment. The linter has flagged the fact t
 comments exist for the PrintHello and PrintNumber functions.
 </p>
 
-<pre class="code"><code>package main
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import "fmt"
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
 
-func main() {
-	PrintHello()
-	for i := 0; i &lt; 5; i++ {
-		PrintNumber(i)
-	}
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #80bcb6;">PrintHello</span>()
+&#9474;   <span style="color: #4d9391;">for</span> <span style="color: #968cc7;">i</span> := 0; i &lt; 5; i++ {
+&#9474;   &#9474;   <span style="color: #80bcb6;">PrintNumber</span>(i)
+&#9474;   }
 }
 
-// PrintHello Does staff
-func PrintHello() {
-	fmt.Print("Hello, Go")
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">PrintHello Does staff
+</span><span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">PrintHello</span>() {
+&#9474;   fmt.<span style="color: #80bcb6;">Print</span>(<span style="color: #6fb593;">"Hello, Go"</span>)
 }
 
-// PrintNumber does staff
-func PrintNumber(number int) {
-	fmt.Print(number)
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">PrintNumber does staff
+</span><span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">PrintNumber</span>(<span style="color: #968cc7;">number</span> <span style="color: #cd9575;">int</span>) {
+&#9474;   fmt.<span style="color: #80bcb6;">Print</span>(number)
 }
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org3c8ab2b" class="outline-6">
-<h6 id="org3c8ab2b">Disabling Linter Rules</h6>
-<div class="outline-text-6" id="text-org3c8ab2b">
+<div id="outline-container-orgd612cbc" class="outline-6">
+<h6 id="orgd612cbc">Disabling Linter Rules</h6>
+<div class="outline-text-6" id="text-orgd612cbc">
 <p>
 The revive package can be configured using comments in code files, disabling one or more
 rules for sections of code. I have used comments to disable the rule that causes the warning
 for the <code>PrintNumber</code> function.
 </p>
 
-<pre class="code"><code>package main
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import "fmt"
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
 
-func main() {
-	PrintHello()
-	for i := 0; i &lt; 5; i++ {
-		PrintNumber(i)
-	}
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #80bcb6;">PrintHello</span>()
+&#9474;   <span style="color: #4d9391;">for</span> <span style="color: #968cc7;">i</span> := 0; i &lt; 5; i++ {
+&#9474;   &#9474;   <span style="color: #80bcb6;">PrintNumber</span>(i)
+&#9474;   }
 }
 
-// revive:disable:exported
-func PrintHello() {
-	fmt.Print("Hello, Go")
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">revive:disable:exported
+</span><span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">PrintHello</span>() {
+&#9474;   fmt.<span style="color: #80bcb6;">Print</span>(<span style="color: #6fb593;">"Hello, Go"</span>)
 }
 
-// revive:enable:exported
-func PrintNumber(number int) {
-	fmt.Print(number)
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">revive:enable:exported
+</span><span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">PrintNumber</span>(<span style="color: #968cc7;">number</span> <span style="color: #cd9575;">int</span>) {
+&#9474;   fmt.<span style="color: #80bcb6;">Print</span>(number)
 }
 </code></pre>
 
@@ -1547,30 +1547,30 @@ format configuration file. Add a file named revive.toml to the tools folder with
 shown:
 </p>
 
-<pre class="code"><code>ignoreGeneratedHeader = false
-severity = "warning"
-confidence = 0.8
-errorCode = 0
-warningCode = 0
-[rule.blank-imports]
-[rule.context-as-argument]
-[rule.context-keys-type]
-[rule.dot-imports]
-[rule.error-return]
-[rule.error-strings]
-[rule.error-naming]
-#[rule.exported]
-[rule.if-return]
-[rule.increment-decrement]
-[rule.var-naming]
-[rule.var-declaration]
-[rule.package-comments]
-[rule.range]
-[rule.receiver-naming]
-[rule.time-naming]
-[rule.unexported-return]
-[rule.indent-error-flow]
-[rule.errorf]
+<pre class="code"><code><span style="color: #968cc7;">ignoreGeneratedHeader</span> = <span style="color: #4d9391;">false</span>
+<span style="color: #968cc7;">severity</span> = <span style="color: #6fb593;">"warning"</span>
+<span style="color: #968cc7;">confidence</span> = 0.8
+<span style="color: #968cc7;">errorCode</span> = 0
+<span style="color: #968cc7;">warningCode</span> = 0
+[<span style="color: #cd9575;">rule.blank-imports</span>]
+[<span style="color: #cd9575;">rule.context-as-argument</span>]
+[<span style="color: #cd9575;">rule.context-keys-type</span>]
+[<span style="color: #cd9575;">rule.dot-imports</span>]
+[<span style="color: #cd9575;">rule.error-return</span>]
+[<span style="color: #cd9575;">rule.error-strings</span>]
+[<span style="color: #cd9575;">rule.error-naming</span>]
+<span style="color: #545c5e;">#</span><span style="color: #545c5e;">[rule.exported]
+</span>[<span style="color: #cd9575;">rule.if-return</span>]
+[<span style="color: #cd9575;">rule.increment-decrement</span>]
+[<span style="color: #cd9575;">rule.var-naming</span>]
+[<span style="color: #cd9575;">rule.var-declaration</span>]
+[<span style="color: #cd9575;">rule.package-comments</span>]
+[<span style="color: #cd9575;">rule.range</span>]
+[<span style="color: #cd9575;">rule.receiver-naming</span>]
+[<span style="color: #cd9575;">rule.time-naming</span>]
+[<span style="color: #cd9575;">rule.unexported-return</span>]
+[<span style="color: #cd9575;">rule.indent-error-flow</span>]
+[<span style="color: #cd9575;">rule.errorf</span>]
 </code></pre>
 
 <p>
@@ -1581,9 +1581,9 @@ character before the entry that enables the exported rule.
 </div>
 </div>
 </div>
-<div id="outline-container-org56eb1cb" class="outline-5">
-<h5 id="org56eb1cb">Fixing Common Problems in Go</h5>
-<div class="outline-text-5" id="text-org56eb1cb">
+<div id="outline-container-orgb0e749f" class="outline-5">
+<h5 id="orgb0e749f">Fixing Common Problems in Go</h5>
+<div class="outline-text-5" id="text-orgb0e749f">
 <p>
 The go vet command identifies statements likely to be mistakes. Unlike a linter, which will
 often focus on style issues, the go vet command finds code that compiles but that probably
@@ -1599,24 +1599,24 @@ analyzers don’t spot every mistake and will sometimes highlight code that isn�
 Look at the following example:
 </p>
 
-<pre class="code"><code>package main
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import "fmt"
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
 
-func main() {
-	PrintHello()
-	for i := 0; i &lt; 5; i++ {
-		i = i
-		PrintNumber(i)
-	}
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #80bcb6;">PrintHello</span>()
+&#9474;   <span style="color: #4d9391;">for</span> <span style="color: #968cc7;">i</span> := 0; i &lt; 5; i++ {
+&#9474;   &#9474;   i = i
+&#9474;   &#9474;   <span style="color: #80bcb6;">PrintNumber</span>(i)
+&#9474;   }
 }
 
-func PrintHello() {
-	fmt.Print("Hello, Go")
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">PrintHello</span>() {
+&#9474;   fmt.<span style="color: #80bcb6;">Print</span>(<span style="color: #6fb593;">"Hello, Go"</span>)
 }
 
-func PrintNumber(number int) {
-	fmt.Print(number)
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">PrintNumber</span>(<span style="color: #968cc7;">number</span> <span style="color: #cd9575;">int</span>) {
+&#9474;   fmt.<span style="color: #80bcb6;">Print</span>(number)
 }
 </code></pre>
 
@@ -1648,22 +1648,22 @@ which analyzer is responsible for a warning, run the command:
 </code></pre>
 <pre class="code"><code># party
 {
-	"party": {
-		"assign": [
-			{
-				"posn": "E:\\leet\\go\\DummyPrograms\\main.go:8:3",
-				"message": "self-assignment of i to i"
-			}
-		]
-	}
+    <span style="color: #4d9391;">"party"</span>: {
+        <span style="color: #4d9391;">"assign"</span>: [
+            {
+                <span style="color: #4d9391;">"posn"</span>: <span style="color: #6fb593;">"E:\\leet\\go\\DummyPrograms\\main.go:8:3"</span>,
+                <span style="color: #4d9391;">"message"</span>: <span style="color: #6fb593;">"self-assignment of i to i"</span>
+            }
+        ]
+    }
 }
 </code></pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org55ec284" class="outline-4">
-<h4 id="org55ec284">Types, Values, Pointers</h4>
-<div class="outline-text-4" id="text-org55ec284">
+<div id="outline-container-orgd14ecce" class="outline-4">
+<h4 id="orgd14ecce">Types, Values, Pointers</h4>
+<div class="outline-text-4" id="text-orgd14ecce">
 <p>
 The folloing table puts the basic Go features in context.
 </p>
@@ -1723,15 +1723,15 @@ The folloing table puts the basic Go features in context.
 <p>
 I&rsquo;ve created this new main file:
 </p>
-<pre class="code"><code>package main
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import (
-	"fmt"
-	"math/rand"
+<span style="color: #4d9391;">import</span> (
+&#9474;   <span style="color: #6fb593;">"fmt"</span>
+&#9474;   <span style="color: #6fb593;">"math/rand"</span>
 )
 
-func main() {
-	fmt.Println(rand.Int())
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(rand.<span style="color: #80bcb6;">Int</span>())
 }
 </code></pre>
 <p>
@@ -1744,9 +1744,9 @@ The code in the main.go file will be compiled and executed, producing the follow
 The output from the code will always be the same value.
 </p>
 </div>
-<div id="outline-container-orgdcfb907" class="outline-5">
-<h5 id="orgdcfb907">Basic Data Types</h5>
-<div class="outline-text-5" id="text-orgdcfb907">
+<div id="outline-container-org1a169d9" class="outline-5">
+<h5 id="org1a169d9">Basic Data Types</h5>
+<div class="outline-text-5" id="text-org1a169d9">
 <p>
 Go provides a set of basic data types, which are described in the table.
 These types are the foundation of Go development, and many of
@@ -1816,16 +1816,16 @@ consistently. There are two ways to define constants in Go: typed constants and 
 constants. This is an example of typed constants:
 </p>
 
-<pre class="code"><code>package main
-import (
-    "fmt"
-    //"math/rand"
-)
-func main() {
-    const price float32 = 275.00
-    const tax float32 = 27.50
-	const quantity int = 2
-    fmt.Println("Total:", quantity * (price + tax))
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> (
+&#9474;   <span style="color: #6fb593;">"fmt"</span>
+&#9474;   <span style="color: #545c5e;">//</span><span style="color: #545c5e;">"math/rand"
+</span>)
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #4d9391;">const</span> <span style="color: #ab98b5;">price</span> <span style="color: #cd9575;">float32</span> = 275.00
+&#9474;   <span style="color: #4d9391;">const</span> <span style="color: #ab98b5;">tax</span> <span style="color: #cd9575;">float32</span> = 27.50
+&#9474;   <span style="color: #4d9391;">const</span> <span style="color: #ab98b5;">quantity</span> <span style="color: #cd9575;">int</span> = 2
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Total:"</span>, quantity * (price + tax))
 }
 </code></pre>
 
@@ -1839,16 +1839,16 @@ The above code should gives the following error:
 </code></pre>
 
 
-<pre class="code"><code>package main
-import (
-    "fmt"
-    //"math/rand"
-)
-func main() {
-    const price float32 = 275.00
-    const tax float32 = 27.50
-    const quantity = 2
-    fmt.Println("Total:", quantity * (price + tax))
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> (
+&#160;&#160;&#160;&#160;<span style="color: #6fb593;">"fmt"</span>
+&#160;&#160;&#160;&#160;<span style="color: #545c5e;">//</span><span style="color: #545c5e;">"math/rand"
+</span>)
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #ab98b5;">&#160;&#160;&#160;&#160;const</span> <span style="color: #ab98b5;">price</span> <span style="color: #cd9575;">float32</span> = 275.00
+<span style="color: #ab98b5;">&#160;&#160;&#160;&#160;const</span> <span style="color: #ab98b5;">tax</span> <span style="color: #cd9575;">float32</span> = 27.50
+<span style="color: #ab98b5;">&#160;&#160;&#160;&#160;const</span> <span style="color: #ab98b5;">quantity</span> = 2
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Total:"</span>, quantity * (price + tax))
 }
 </code></pre>
 
@@ -1869,16 +1869,16 @@ In practice, this means you can mix untyped integer and floating-point numeric v
 conversions between other data types must be done explicitly.
 </p>
 
-<pre class="code"><code>package main
-import (
-    "fmt"
-    //"math/rand"
-)
-func main() {
-    const price, tax float32 = 275, 27.50
-    const quantity, inStock = 2, true
-    fmt.Println("Total:", quantity * (price + tax))
-    fmt.Println("In stock: ", inStock)
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> (
+&#160;&#160;&#160;&#160;<span style="color: #6fb593;">"fmt"</span>
+&#160;&#160;&#160;&#160;<span style="color: #545c5e;">//</span><span style="color: #545c5e;">"math/rand"
+</span>)
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #ab98b5;">&#160;&#160;&#160;&#160;const</span> <span style="color: #ab98b5;">price</span>, <span style="color: #ab98b5;">tax</span> <span style="color: #cd9575;">float32</span> = 275, 27.50
+<span style="color: #ab98b5;">&#160;&#160;&#160;&#160;const</span> <span style="color: #ab98b5;">quantity</span>, <span style="color: #ab98b5;">inStock</span> = 2, <span style="color: #ab98b5;">true</span>
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Total:"</span>, quantity * (price + tax))
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"In stock: "</span>, inStock)
 }
 </code></pre>
 
@@ -1894,36 +1894,36 @@ values are untyped constants, which means that you can use literal values in exp
 rely on the compiler to deal with mismatched types, as shown:
 </p>
 
-<pre class="code"><code>package main
-import (
-    "fmt"
-    //"math/rand"
-)
-func main() {
-    const price, tax float32 = 275, 27.50
-    const quantity, inStock = 2, true
-    fmt.Println("Total:", 2 * quantity * (price + tax))
-    fmt.Println("In stock: ", inStock)
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> (
+&#160;&#160;&#160;&#160;<span style="color: #6fb593;">"fmt"</span>
+&#160;&#160;&#160;&#160;<span style="color: #545c5e;">//</span><span style="color: #545c5e;">"math/rand"
+</span>)
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #ab98b5;">&#160;&#160;&#160;&#160;const</span> <span style="color: #ab98b5;">price</span>, <span style="color: #ab98b5;">tax</span> <span style="color: #cd9575;">float32</span> = 275, 27.50
+<span style="color: #ab98b5;">&#160;&#160;&#160;&#160;const</span> <span style="color: #ab98b5;">quantity</span>, <span style="color: #ab98b5;">inStock</span> = 2, <span style="color: #ab98b5;">true</span>
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Total:"</span>, 2 * quantity * (price + tax))
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"In stock: "</span>, inStock)
 }
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org2d2674f" class="outline-5">
-<h5 id="org2d2674f">Variables</h5>
-<div class="outline-text-5" id="text-org2d2674f">
+<div id="outline-container-org4926617" class="outline-5">
+<h5 id="org4926617">Variables</h5>
+<div class="outline-text-5" id="text-org4926617">
 <p>
 Variables are defined using the var keyword, and, unlike constants, the value assigned to a
 variable can be changed, as shown:
 </p>
 
-<pre class="code"><code>package main
-import "fmt"
-func main() {
-    var price float32 = 275.00
-    var tax float32 = 27.50
-    fmt.Println(price + tax)
-    price = 300
-    fmt.Println(price + tax)
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;var</span> <span style="color: #968cc7;">price</span> <span style="color: #cd9575;">float32</span> = 275.00
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;var</span> <span style="color: #968cc7;">tax</span> <span style="color: #cd9575;">float32</span> = 27.50
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(price + tax)
+&#160;&#160;&#160;&#160;price = 300
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(price + tax)
 }
 </code></pre>
 
@@ -1932,15 +1932,15 @@ Variables are declared using the var keyword, a name, a type, and a value assign
 illustrated:
 </p>
 
-<pre class="code"><code>package main
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import "fmt"
-func main() {
-    var price float32 = 275.00
-    var tax float32 = 27.50
-    fmt.Println(price + tax)
-    price = 300
-    fmt.Println(price + tax)
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;var</span> <span style="color: #968cc7;">price</span> <span style="color: #cd9575;">float32</span> = 275.00
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;var</span> <span style="color: #968cc7;">tax</span> <span style="color: #cd9575;">float32</span> = 27.50
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(price + tax)
+&#160;&#160;&#160;&#160;price = 300
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(price + tax)
 }
 </code></pre>
 
@@ -1949,28 +1949,28 @@ The Go compiler can infer the type of variables based on the initial value, whic
 type to be omitted:
 </p>
 
-<pre class="code"><code>package main
-import "fmt"
-func main() {
-    var price = 275.00
-    var price2 = price
-    fmt.Println(price)
-    fmt.Println(price2)
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;var</span> <span style="color: #968cc7;">price</span> = 275.00
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;var</span> <span style="color: #968cc7;">price2</span> = price
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(price)
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(price2)
 }
 </code></pre>
 </div>
-<div id="outline-container-orgd8859a9" class="outline-6">
-<h6 id="orgd8859a9">Short Variable Declaration Syntax</h6>
-<div class="outline-text-6" id="text-orgd8859a9">
+<div id="outline-container-org9556566" class="outline-6">
+<h6 id="org9556566">Short Variable Declaration Syntax</h6>
+<div class="outline-text-6" id="text-org9556566">
 <p>
 The short variable declaration provides a shorthand for declaring variables, as shown:
 </p>
 
-<pre class="code"><code>package main
-import "fmt"
-func main() {
-    price := 275.00
-    fmt.Println(price)
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;price</span> := 275.00
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(price)
 }
 </code></pre>
 
@@ -1979,12 +1979,12 @@ Multiple variables can be defined with a single statement by creating comma-sepa
 and values, as shown:
 </p>
 
-<pre class="code"><code>package main
-import "fmt"
-func main() {
-    price, tax, inStock := 275.00, 27.50, true
-    fmt.Println("Total:", price + tax)
-    fmt.Println("In stock:", inStock)
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;price</span>, <span style="color: #968cc7;">tax</span>, <span style="color: #968cc7;">inStock</span> := 275.00, 27.50, <span style="color: #ab98b5;">true</span>
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Total:"</span>, price + tax)
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"In stock:"</span>, inStock)
 }
 </code></pre>
 
@@ -1995,14 +1995,14 @@ keyword to define a variable that has the same name as one that already exists w
 same function
 </p>
 
-<pre class="code"><code>package main
-import "fmt"
-func main() {
-    price, tax, inStock := 275.00, 27.50, true
-    fmt.Println("Total:", price + tax)
-    fmt.Println("In stock:", inStock)
-    var price2, tax = 200.00, 25.00
-    fmt.Println("Total 2:", price2 + tax)
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;price</span>, <span style="color: #968cc7;">tax</span>, <span style="color: #968cc7;">inStock</span> := 275.00, 27.50, <span style="color: #ab98b5;">true</span>
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Total:"</span>, price + tax)
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"In stock:"</span>, inStock)
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;var</span> <span style="color: #968cc7;">price2</span>, <span style="color: #968cc7;">tax</span> = 200.00, 25.00
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Total 2:"</span>, price2 + tax)
 }
 </code></pre>
 
@@ -2018,29 +2018,29 @@ However, redefining a variable is allowed if the short syntax is used, as shown 
 at least one of the other variables being defined doesn’t already exist and the type of the
 variable doesn’t change.
 </p>
-<pre class="code"><code>package main
-import "fmt"
-func main() {
-    price, tax, inStock := 275.00, 27.50, true
-    fmt.Println("Total:", price + tax)
-    fmt.Println("In stock:", inStock)
-    price2, tax := 200.00, 25.00
-    fmt.Println("Total 2:", price2 + tax)
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;price</span>, <span style="color: #968cc7;">tax</span>, <span style="color: #968cc7;">inStock</span> := 275.00, 27.50, <span style="color: #ab98b5;">true</span>
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Total:"</span>, price + tax)
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"In stock:"</span>, inStock)
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;price2</span>, <span style="color: #968cc7;">tax</span> := 200.00, 25.00
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Total 2:"</span>, price2 + tax)
 }
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org1dbdf5d" class="outline-6">
-<h6 id="org1dbdf5d">Blank Declaration</h6>
-<div class="outline-text-6" id="text-org1dbdf5d">
+<div id="outline-container-orgf90fb54" class="outline-6">
+<h6 id="orgf90fb54">Blank Declaration</h6>
+<div class="outline-text-6" id="text-orgf90fb54">
 <p>
 It is illegal in Go to define a variable and not use it:
 </p>
 
-<pre class="code"><code>    price, tax, inStock, discount := 275.00, 27.50, true, true
-    var salesPerson = "Alice"
-    fmt.Println("Total:", price + tax)
-    fmt.Println("In stock:", inStock)
+<pre class="code"><code>&#160;   <span style="color: #968cc7;">price</span>, <span style="color: #968cc7;">tax</span>, <span style="color: #968cc7;">inStock</span>, <span style="color: #968cc7;">discount</span> := 275.00, 27.50, <span style="color: #ab98b5;">true</span>, <span style="color: #ab98b5;">true</span>
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;var</span> <span style="color: #968cc7;">salesPerson</span> = <span style="color: #6fb593;">"Alice"</span>
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Total:"</span>, price + tax)
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"In stock:"</span>, inStock)
 </code></pre>
 <pre class="code"><code>.\main.go:6:26: discount declared but not used
 .\main.go:7:9: salesPerson declared but not used
@@ -2051,13 +2051,13 @@ One way to resolve this problem is to remove the unused variables, but this isn�
 possible. For these situations, Go provides the blank identifier, which is used to denote a
 value that won’t be used, as shown:
 </p>
-<pre class="code"><code>package main
-import "fmt"
-func main() {
-    price, tax, inStock, _ := 275.00, 27.50, true, true
-    var _ = "Alice"
-    fmt.Println("Total:", price + tax)
-    fmt.Println("In stock:", inStock)
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;price</span>, <span style="color: #968cc7;">tax</span>, <span style="color: #968cc7;">inStock</span>, <span style="color: #968cc7;">_</span> := 275.00, 27.50, <span style="color: #ab98b5;">true</span>, <span style="color: #ab98b5;">true</span>
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;var</span> <span style="color: #968cc7;">_</span> = <span style="color: #6fb593;">"Alice"</span>
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Total:"</span>, price + tax)
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"In stock:"</span>, inStock)
 }
 </code></pre>
 
@@ -2066,27 +2066,27 @@ func main() {
 It can be also used to ignore function return values:
 </p>
 
-<pre class="code"><code>package main
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import (
-	"fmt"
+<span style="color: #4d9391;">import</span> (
+&#9474;   <span style="color: #6fb593;">"fmt"</span>
 )
 
-func main() {
-	price4, _, _ := f()
-	fmt.Println(price4)
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #968cc7;">price4</span>, <span style="color: #968cc7;">_</span>, <span style="color: #968cc7;">_</span> := <span style="color: #80bcb6;">f</span>()
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(price4)
 }
 
-func f() (int, int, int) {
-	return 42, 53, 5
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">f</span>() (<span style="color: #cd9575;">int</span>, <span style="color: #cd9575;">int</span>, <span style="color: #cd9575;">int</span>) {
+&#9474;   <span style="color: #4d9391;">return</span> 42, 53, 5
 }
 </code></pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org23dc1dd" class="outline-5">
-<h5 id="org23dc1dd">Pointers</h5>
-<div class="outline-text-5" id="text-org23dc1dd">
+<div id="outline-container-orgd67bb00" class="outline-5">
+<h5 id="orgd67bb00">Pointers</h5>
+<div class="outline-text-5" id="text-orgd67bb00">
 <p>
 Pointers are often misunderstood, especially if you have come to Go from a language such as
 Java or C#, where pointers are used behind the scenes but carefully hidden from the
@@ -2094,14 +2094,14 @@ developer. To understand how pointers work, the best place to start is understan
 does when pointers are not used, as shown:
 </p>
 
-<pre class="code"><code>package main
-import "fmt"
-func main() {
-    first := 100
-    second := first;
-    first++
-    fmt.Println("First:", first)
-    fmt.Println("Second:", second)
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;first</span> := 100
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;second</span> := first;
+&#160;&#160;&#160;&#160;first++
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"First:"</span>, first)
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Second:"</span>, second)
 }
 </code></pre>
 
@@ -2134,9 +2134,9 @@ read the adjacent value. This can be useful but can cause unexpected results, su
 to access the wrong location or a location outside of the memory allocated to the program.
 </p>
 </div>
-<div id="outline-container-org7950eae" class="outline-6">
-<h6 id="org7950eae">Some Operators</h6>
-<div class="outline-text-6" id="text-org7950eae">
+<div id="outline-container-orgabf5365" class="outline-6">
+<h6 id="orgabf5365">Some Operators</h6>
+<div class="outline-text-6" id="text-orgabf5365">
 <p>
 Go doesn’t allow types to be mixed in operations and will not automatically convert types,
 except in the case of untyped constants. To show how the compiler responds to mixed data
@@ -2144,16 +2144,16 @@ types, Following contains a statement that applies the addition operator to valu
 different types.
 </p>
 
-<pre class="code"><code>package main
-import (
-    "fmt"
-//    "math"
-)
-func main() {
-    kayak := 275
-    soccerBall := 19.50
-    total := kayak + soccerBall
-    fmt.Println(total)
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> (
+&#160;&#160;&#160;&#160;<span style="color: #6fb593;">"fmt"</span>
+<span style="color: #545c5e;">//&#160;&#160;&#160;&#160;</span><span style="color: #545c5e;">"math"
+</span>)
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;kayak</span> := 275
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;soccerBall</span> := 19.50
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;total</span> := kayak + soccerBall
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(total)
 }
 </code></pre>
 
@@ -2163,7 +2163,7 @@ and a float64 value, which are then used in the addition operation to set the va
 total variable. When the code is compiled, the following error will be reported:
 </p>
 
-<pre class="code"><code>.\main.go:13:20: invalid operation: kayak + soccerBall (mismatched types int and float64)
+<pre class="code"><code><span style="color: #80bcb6;">.</span>\main.go:13:20: invalid operation: kayak + soccerBall (mismatched types int and float64)
 </code></pre>
 
 <p>
@@ -2173,18 +2173,18 @@ easy to change in real projects, which is why Go provides the features described
 sections that follow.
 </p>
 
-<pre class="code"><code>package main
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import (
-	"fmt"
-	//math"
-)
+<span style="color: #4d9391;">import</span> (
+&#9474;   <span style="color: #6fb593;">"fmt"</span>
+&#9474;   <span style="color: #545c5e;">//</span><span style="color: #545c5e;">math"
+</span>)
 
-func main() {
-	kayak := 275
-	soccerBall := 19.50
-	total := float64(kayak) + soccerBall
-	fmt.Println(total)
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #968cc7;">kayak</span> := 275
+&#9474;   <span style="color: #968cc7;">soccerBall</span> := 19.50
+&#9474;   <span style="color: #968cc7;">total</span> := <span style="color: #80bcb6;">float64</span>(kayak) + soccerBall
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(total)
 }
 </code></pre>
 
@@ -2196,9 +2196,9 @@ combinations, such as converting int values to bool values, are not supported.
 </div>
 </div>
 </div>
-<div id="outline-container-org58e8627" class="outline-5">
-<h5 id="org58e8627">Flow Control</h5>
-<div class="outline-text-5" id="text-org58e8627">
+<div id="outline-container-org7dc0c71" class="outline-5">
+<h5 id="org7dc0c71">Flow Control</h5>
+<div class="outline-text-5" id="text-org7dc0c71">
 <p>
 The flow of execution in a Go application is simple to understand, especially when the
 application is as simple as the example. The statements defined in the special main
@@ -2206,12 +2206,12 @@ function, known as the application’s entry point, are executed in the order in
 are defined. Once these statements have all been executed, the application exits.
 Example:
 </p>
-<pre class="code"><code>import "fmt"
-func main() {
-    kayakPrice := 275.00
-    if kayakPrice &gt; 100 {
-        fmt.Println("Price is greater than 100")
-    }
+<pre class="code"><code><span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #968cc7;">kayakPrice</span> := 275.00
+&#9474;   <span style="color: #4d9391;">if</span> kayakPrice &gt; 100 {
+&#9474;   &#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Price is greater than 100"</span>)
+&#9474;   }
 }
 </code></pre>
 
@@ -2222,49 +2222,49 @@ simple statement, which means—in broad terms—that the statement can define a
 assign a new value to an existing variable, or invoke a function
 </p>
 
-<pre class="code"><code>import (
-    "fmt"
-    "strconv"
+<pre class="code"><code><span style="color: #4d9391;">import</span> (
+&#9474;   <span style="color: #6fb593;">"fmt"</span>
+&#9474;   <span style="color: #6fb593;">"strconv"</span>
 )
-func main() {
-    priceString := "275"
-    if kayakPrice, err := strconv.Atoi(priceString); err == nil {
-        fmt.Println("Price:", kayakPrice)
-    } else {
-        fmt.Println("Error:", err)
-    }
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #968cc7;">priceString</span> := <span style="color: #6fb593;">"275"</span>
+&#9474;   <span style="color: #4d9391;">if</span> <span style="color: #968cc7;">kayakPrice</span>, <span style="color: #968cc7;">err</span> := strconv.<span style="color: #80bcb6;">Atoi</span>(priceString); err == <span style="color: #ab98b5;">nil</span> {
+&#9474;   &#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Price:"</span>, kayakPrice)
+&#9474;   } <span style="color: #4d9391;">else</span> {
+&#9474;   &#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Error:"</span>, err)
+&#9474;   }
 }
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org3ef7632" class="outline-5">
-<h5 id="org3ef7632">Loops</h5>
-<div class="outline-text-5" id="text-org3ef7632">
+<div id="outline-container-orgf99fa5b" class="outline-5">
+<h5 id="orgf99fa5b">Loops</h5>
+<div class="outline-text-5" id="text-orgf99fa5b">
 <ul class="org-ul">
 <li><p>
 <b>Three-component loop</b>
 </p>
-<pre class="code"><code>sum := 0
-for i := 1; i &lt; 5; i++ {
-    sum += i
+<pre class="code"><code><span style="color: #968cc7;">sum</span> := 0
+<span style="color: #4d9391;">for</span> <span style="color: #968cc7;">i</span> := 1; i &lt; 5; i++ {
+&#9474;   sum += i
 }
-fmt.Println(sum) // 10 (1+2+3+4)
+fmt.<span style="color: #80bcb6;">Println</span>(sum) <span style="color: #545c5e;">// </span><span style="color: #545c5e;">10 (1+2+3+4)</span>
 </code></pre></li>
 <li><p>
 <b>While Loop</b>
 </p>
-<pre class="code"><code>n := 1
-for n &lt; 5 {
-    n *= 2
+<pre class="code"><code><span style="color: #968cc7;">n</span> := 1
+<span style="color: #4d9391;">for</span> n &lt; 5 {
+&#9474;   n *= 2
 }
-fmt.Println(n) // 8 (1*2*2*2)
+fmt.<span style="color: #80bcb6;">Println</span>(n) <span style="color: #545c5e;">// </span><span style="color: #545c5e;">8 (1*2*2*2)</span>
 </code></pre></li>
 <li><p>
 <b>For-each range loop</b>
 </p>
-<pre class="code"><code>strings := []string{"hello", "world"}
-for i, s := range strings {
-    fmt.Println(i, s)
+<pre class="code"><code><span style="color: #968cc7;">strings</span> := []<span style="color: #cd9575;">string</span>{<span style="color: #6fb593;">"hello"</span>, <span style="color: #6fb593;">"world"</span>}
+<span style="color: #4d9391;">for</span> <span style="color: #968cc7;">i</span>, <span style="color: #968cc7;">s</span> := <span style="color: #4d9391;">range</span> strings {
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(i, s)
 }
 
 </code></pre></li>
@@ -2272,22 +2272,22 @@ for i, s := range strings {
 </div>
 </div>
 </div>
-<div id="outline-container-orge410bd0" class="outline-4">
-<h4 id="orge410bd0">Collection Types</h4>
-<div class="outline-text-4" id="text-orge410bd0">
+<div id="outline-container-org375b2be" class="outline-4">
+<h4 id="org375b2be">Collection Types</h4>
+<div class="outline-text-4" id="text-org375b2be">
 <p>
 Go arrays are a fixed length and contain elements of a single type, which are accessed by
 index,
 </p>
 
-<pre class="code"><code>package main
-import "fmt"
-func main() {
-    var names [3]string
-    names[0] = "Kayak"
-    names[1] = "Lifejacket"
-    names[2] = "Paddle"
-    fmt.Println(names)
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;var</span> <span style="color: #968cc7;">names</span> [3]<span style="color: #cd9575;">string</span>
+&#160;&#160;&#160;&#160;names[0] = <span style="color: #6fb593;">"Kayak"</span>
+&#160;&#160;&#160;&#160;names[1] = <span style="color: #6fb593;">"Lifejacket"</span>
+&#160;&#160;&#160;&#160;names[2] = <span style="color: #6fb593;">"Paddle"</span>
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(names)
 }
 </code></pre>
 
@@ -2302,11 +2302,11 @@ type of an array cannot be changed, and the array length must be specified as a 
 Arrays can be defined and populated in a single statement using the literal syntax:
 </p>
 
-<pre class="code"><code>package main
-import "fmt"
-func main() {
-    names := [3]string { "Kayak", "Lifejacket", "Paddle" }
-    fmt.Println(names)
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;names</span> := [3]<span style="color: #cd9575;">string</span> { <span style="color: #6fb593;">"Kayak"</span>, <span style="color: #6fb593;">"Lifejacket"</span>, <span style="color: #6fb593;">"Paddle"</span> }
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(names)
 }
 </code></pre>
 
@@ -2315,7 +2315,7 @@ When using the literal syntax, the compiler can infer the length of the array fr
 like this:
 </p>
 
-<pre class="code"><code>names := [...]string { "Kayak", "Lifejacket", "Paddle" }
+<pre class="code"><code><span style="color: #968cc7;">names</span> := [...]<span style="color: #cd9575;">string</span> { <span style="color: #6fb593;">"Kayak"</span>, <span style="color: #6fb593;">"Lifejacket"</span>, <span style="color: #6fb593;">"Paddle"</span> }
 </code></pre>
 
 <p>
@@ -2330,38 +2330,38 @@ possible.
 <p>
 Arrays are enumerated using the for and range keywords:
 </p>
-<pre class="code"><code>package main
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import (
-	"fmt"
+<span style="color: #4d9391;">import</span> (
+&#9474;   <span style="color: #6fb593;">"fmt"</span>
 )
 
-func main() {
-	names := [2][2]string{{"QW", "wQ"}, {"WQ", "WQ"}}
-	for i, v := range names {
-		fmt.Println("I", i)
-		fmt.Println("V", v)
-	}
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #968cc7;">names</span> := [2][2]<span style="color: #cd9575;">string</span>{{<span style="color: #6fb593;">"QW"</span>, <span style="color: #6fb593;">"wQ"</span>}, {<span style="color: #6fb593;">"WQ"</span>, <span style="color: #6fb593;">"WQ"</span>}}
+&#9474;   <span style="color: #4d9391;">for</span> <span style="color: #968cc7;">i</span>, <span style="color: #968cc7;">v</span> := <span style="color: #4d9391;">range</span> names {
+&#9474;   &#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"I"</span>, i)
+&#9474;   &#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"V"</span>, v)
+&#9474;   }
 }
 </code></pre>
 </div>
-<div id="outline-container-org2163ee1" class="outline-5">
-<h5 id="org2163ee1">Slices</h5>
-<div class="outline-text-5" id="text-org2163ee1">
+<div id="outline-container-org5313085" class="outline-5">
+<h5 id="org5313085">Slices</h5>
+<div class="outline-text-5" id="text-org5313085">
 <p>
 The best way to think of slices is as a variable-length array because they are useful when
 you don’t know how many values you need to store or when the number changes over time. One
 way to define a slice is to use the built-in make function
 </p>
 
-<pre class="code"><code>package main
-import "fmt"
-func main() {
-    names := make([]string, 3)
-    names[0] = "Kayak"
-    names[1] = "Lifejacket"
-    names[2] = "Paddle"
-    fmt.Println(names)
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;names</span> := <span style="color: #80bcb6;">make</span>([]<span style="color: #cd9575;">string</span>, 3)
+&#160;&#160;&#160;&#160;names[0] = <span style="color: #6fb593;">"Kayak"</span>
+&#160;&#160;&#160;&#160;names[1] = <span style="color: #6fb593;">"Lifejacket"</span>
+&#160;&#160;&#160;&#160;names[2] = <span style="color: #6fb593;">"Paddle"</span>
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(names)
 }
 </code></pre>
 
@@ -2378,11 +2378,11 @@ demonstrate later in this section. Slices can also be created using a literal sy
 shown:
 </p>
 
-<pre class="code"><code>package main
-import "fmt"
-func main() {
-    names := []string {"Kayak", "Lifejacket", "Paddle"}
-    fmt.Println(names)
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;names</span> := []<span style="color: #cd9575;">string</span> {<span style="color: #6fb593;">"Kayak"</span>, <span style="color: #6fb593;">"Lifejacket"</span>, <span style="color: #6fb593;">"Paddle"</span>}
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(names)
 }
 </code></pre>
 
@@ -2395,12 +2395,12 @@ elements that can be stored in the array. In this example, the length and the ca
 both 3:
 </p>
 
-<pre class="code"><code>package main
-import "fmt"
-func main() {
-    names := []string {"Kayak", "Lifejacket", "Paddle"}
-    names = append(names, "Hat", "Gloves")
-    fmt.Println(names)
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;names</span> := []<span style="color: #cd9575;">string</span> {<span style="color: #6fb593;">"Kayak"</span>, <span style="color: #6fb593;">"Lifejacket"</span>, <span style="color: #6fb593;">"Paddle"</span>}
+&#160;&#160;&#160;&#160;names = <span style="color: #80bcb6;">append</span>(names, <span style="color: #6fb593;">"Hat"</span>, <span style="color: #6fb593;">"Gloves"</span>)
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(names)
 }
 </code></pre>
 
@@ -2410,15 +2410,15 @@ Creating and copying arrays can be inefficient. If you expect that you will need
 items to a slice, you can specify additional capacity when using the make function:
 </p>
 
-<pre class="code"><code>package main
-import "fmt"
-func main() {
-    names := make([]string, 3, 6)
-    names[0] = "Kayak"
-    names[1] = "Lifejacket"
-    names[2] = "Paddle"
-    fmt.Println("len:", len(names))
-    fmt.Println("cap:", cap(names))
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;names</span> := <span style="color: #80bcb6;">make</span>([]<span style="color: #cd9575;">string</span>, 3, 6)
+&#160;&#160;&#160;&#160;names[0] = <span style="color: #6fb593;">"Kayak"</span>
+&#160;&#160;&#160;&#160;names[1] = <span style="color: #6fb593;">"Lifejacket"</span>
+&#160;&#160;&#160;&#160;names[2] = <span style="color: #6fb593;">"Paddle"</span>
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"len:"</span>, <span style="color: #80bcb6;">len</span>(names))
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"cap:"</span>, <span style="color: #80bcb6;">cap</span>(names))
 }
 </code></pre>
 
@@ -2439,110 +2439,110 @@ Slices can be created using existing arrays, which builds on the behavior descri
 earlier examples and emphasizes the nature of slices as views onto arrays
 </p>
 
-<pre class="code"><code>package main
-import "fmt"
-func main() {
-products := [4]string { "Shblanga", "Lifejacket", "Paddle", "Hat"}
-someNames := products[2:4]
-allNames := products[:]
-fmt.Println("someNames:", someNames)
-fmt.Println("allNames", allNames)
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #968cc7;">products</span> := [4]<span style="color: #cd9575;">string</span> { <span style="color: #6fb593;">"Shblanga"</span>, <span style="color: #6fb593;">"Lifejacket"</span>, <span style="color: #6fb593;">"Paddle"</span>, <span style="color: #6fb593;">"Hat"</span>}
+<span style="color: #968cc7;">someNames</span> := products[2:4]
+<span style="color: #968cc7;">allNames</span> := products[:]
+fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"someNames:"</span>, someNames)
+fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"allNames"</span>, allNames)
 }
 </code></pre>
 </div>
-<div id="outline-container-org96c89b6" class="outline-6">
-<h6 id="org96c89b6">The Copy Function</h6>
-<div class="outline-text-6" id="text-org96c89b6">
-<pre class="code"><code>package main
-import "fmt"
-func main() {
-    products := [4]string { "Kayak", "Lifejacket", "Paddle", "Hat"}
-    allNames := products[1:]
-    someNames := make([]string, 2)
-    copy(someNames, allNames)
-    fmt.Println("someNames:", someNames)
-    fmt.Println("allNames", allNames)
+<div id="outline-container-org22e1dd2" class="outline-6">
+<h6 id="org22e1dd2">The Copy Function</h6>
+<div class="outline-text-6" id="text-org22e1dd2">
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #968cc7;">products</span> := [4]<span style="color: #cd9575;">string</span> { <span style="color: #6fb593;">"Kayak"</span>, <span style="color: #6fb593;">"Lifejacket"</span>, <span style="color: #6fb593;">"Paddle"</span>, <span style="color: #6fb593;">"Hat"</span>}
+&#9474;   <span style="color: #968cc7;">allNames</span> := products[1:]
+&#9474;   <span style="color: #968cc7;">someNames</span> := <span style="color: #80bcb6;">make</span>([]<span style="color: #cd9575;">string</span>, 2)
+&#9474;   <span style="color: #80bcb6;">copy</span>(someNames, allNames)
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"someNames:"</span>, someNames)
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"allNames"</span>, allNames)
 }
 </code></pre>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-org7a79c12" class="outline-4">
-<h4 id="org7a79c12">Functions</h4>
-<div class="outline-text-4" id="text-org7a79c12">
+<div id="outline-container-org7129a40" class="outline-4">
+<h4 id="org7129a40">Functions</h4>
+<div class="outline-text-4" id="text-org7129a40">
 <p>
 Functions are groups of statements that can be used and reused as a single action. To get started
 define a simple function:
 </p>
-<pre class="code"><code>package main
-import "fmt"
-func printPrice() {
-    kayakPrice := 275.00
-    kayakTax := kayakPrice * 0.2
-    fmt.Println("Price:", kayakPrice, "Tax:", kayakTax)
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">printPrice</span>() {
+&#9474;   <span style="color: #968cc7;">kayakPrice</span> := 275.00
+&#9474;   <span style="color: #968cc7;">kayakTax</span> := kayakPrice * 0.2
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Price:"</span>, kayakPrice, <span style="color: #6fb593;">"Tax:"</span>, kayakTax)
 }
-func main() {
-    fmt.Println("About to call function")
-    printPrice()
-    fmt.Println("Function complete")
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"About to call function"</span>)
+&#9474;   <span style="color: #80bcb6;">printPrice</span>()
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Function complete"</span>)
 }
 </code></pre>
 </div>
-<div id="outline-container-org76c5717" class="outline-5">
-<h5 id="org76c5717"><code>defer</code></h5>
-<div class="outline-text-5" id="text-org76c5717">
+<div id="outline-container-orgb9baec3" class="outline-5">
+<h5 id="orgb9baec3"><code>defer</code></h5>
+<div class="outline-text-5" id="text-orgb9baec3">
 <p>
 The defer keyword is used to schedule a function call that will be performed immediately before the current
 function returns, as shown
 </p>
-<pre class="code"><code>package main
-import "fmt"
-func calcTotalPrice(products map[string]float64) (count int, total float64){
-    fmt.Println("Function started")
-    defer fmt.Println("First defer call")
-    count = len(products)
-    for _, price := range products {
-        total += price
-    }
-    defer fmt.Println("Second defer call")
-    fmt.Println("Function about to return")
-    return
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">calcTotalPrice</span>(<span style="color: #968cc7;">products</span> <span style="color: #4d9391;">map</span>[<span style="color: #cd9575;">string</span>]<span style="color: #cd9575;">float64</span>) (<span style="color: #968cc7;">count</span> <span style="color: #cd9575;">int</span>, <span style="color: #968cc7;">total</span> <span style="color: #cd9575;">float64</span>){
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Function started"</span>)
+&#9474;   <span style="color: #4d9391;">defer</span> fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"First defer call"</span>)
+&#9474;   count = <span style="color: #80bcb6;">len</span>(products)
+&#9474;   <span style="color: #4d9391;">for</span> <span style="color: #968cc7;">_</span>, <span style="color: #968cc7;">price</span> := <span style="color: #4d9391;">range</span> products {
+&#9474;   &#9474;   total += price
+&#9474;   }
+&#9474;   <span style="color: #4d9391;">defer</span> fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Second defer call"</span>)
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Function about to return"</span>)
+&#9474;   <span style="color: #4d9391;">return</span>
 }
-func main() {
-    products := map[string]float64 {
-        "Kayak" : 275,
-        "Lifejacket": 48.95,
-    }
-    _, total  := calcTotalPrice(products)
-    fmt.Println("Total:", total)
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #968cc7;">products</span> := <span style="color: #4d9391;">map</span>[<span style="color: #cd9575;">string</span>]<span style="color: #cd9575;">float64</span> {
+&#9474;   &#9474;   <span style="color: #6fb593;">"Kayak"</span> : 275,
+&#9474;   &#9474;   <span style="color: #6fb593;">"Lifejacket"</span>: 48.95,
+&#9474;   }
+&#9474;   <span style="color: #968cc7;">_</span>, <span style="color: #968cc7;">total</span>  := <span style="color: #80bcb6;">calcTotalPrice</span>(products)
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Total:"</span>, total)
 }
 </code></pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org007d466" class="outline-4">
-<h4 id="org007d466">Struct</h4>
-<div class="outline-text-4" id="text-org007d466">
+<div id="outline-container-orge3871c9" class="outline-4">
+<h4 id="orge3871c9">Struct</h4>
+<div class="outline-text-4" id="text-orge3871c9">
 <p>
 Custom data types are defined using the Go structs feature:
 </p>
 
-<pre class="code"><code>package main
-import "fmt"
-func main() {
-    type Product struct {
-        name, category string
-        price float64
-    }
-    kayak := Product {
-       name: "Kayak",
-        category: "Watersports",
-        price: 275,
-    }
-    fmt.Println(kayak.name, kayak.category, kayak.price)
-    kayak.price = 300
-    fmt.Println("Changed price:", kayak.price)
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #4d9391;">type</span> <span style="color: #cd9575;">Product</span> <span style="color: #4d9391;">struct</span> {
+&#9474;   &#9474;   name, category <span style="color: #cd9575;">string</span>
+&#9474;   &#9474;   price <span style="color: #cd9575;">float64</span>
+&#9474;   }
+&#9474;   <span style="color: #968cc7;">kayak</span> := Product {
+&#9474;   &#9474;  <span style="color: #ab98b5;">name</span>: <span style="color: #6fb593;">"Kayak"</span>,
+&#9474;   &#9474;   <span style="color: #ab98b5;">category</span>: <span style="color: #6fb593;">"Watersports"</span>,
+&#9474;   &#9474;   <span style="color: #ab98b5;">price</span>: 275,
+&#9474;   }
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(kayak.name, kayak.category, kayak.price)
+&#9474;   kayak.price = 300
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Changed price:"</span>, kayak.price)
 }
 </code></pre>
 
@@ -2557,9 +2557,9 @@ choice during coding. Neither approach is better, and the results are essentiall
 </p>
 </div>
 </div>
-<div id="outline-container-org73bd161" class="outline-4">
-<h4 id="org73bd161">Interfaces</h4>
-<div class="outline-text-4" id="text-org73bd161">
+<div id="outline-container-org34fd7b6" class="outline-4">
+<h4 id="org34fd7b6">Interfaces</h4>
+<div class="outline-text-4" id="text-org34fd7b6">
 <p>
 All the types we&rsquo;ve looked at so far have been concrete types. A concrete type specifies the
 exact representation of its values and exposes the intrinsic operations of that
@@ -2577,17 +2577,17 @@ or more precisely, what behaviors are provided by its methods.
 </p>
 </div>
 </div>
-<div id="outline-container-orge1bc98b" class="outline-4">
-<h4 id="orge1bc98b">Closures</h4>
-<div class="outline-text-4" id="text-orge1bc98b">
+<div id="outline-container-org7a68f2c" class="outline-4">
+<h4 id="org7a68f2c">Closures</h4>
+<div class="outline-text-4" id="text-org7a68f2c">
 <p>
 <a href="https://youtu.be/US3TGA-Dpqo?list=PLoILbKo9rG3skRCj37Kn5Zj803hhiuRK6">https://youtu.be/US3TGA-Dpqo?list=PLoILbKo9rG3skRCj37Kn5Zj803hhiuRK6</a>
 </p>
 </div>
 </div>
-<div id="outline-container-orgbac67a3" class="outline-4">
-<h4 id="orgbac67a3">Packages</h4>
-<div class="outline-text-4" id="text-orgbac67a3">
+<div id="outline-container-orgda970e0" class="outline-4">
+<h4 id="orgda970e0">Packages</h4>
+<div class="outline-text-4" id="text-orgda970e0">
 <p>
 The first step for all the example projects in this book has been to create a module file,
 which was done with the command:
@@ -2629,30 +2629,30 @@ together. Create the packages/store folder and add to it a file named product.go
 contents shown in:
 </p>
 
-<pre class="code"><code>package store
+<pre class="code"><code><span style="color: #4d9391;">package</span> store
 
-type Product struct {
-	Name, Category string
-	price          int
+<span style="color: #4d9391;">type</span> <span style="color: #cd9575;">Product</span> <span style="color: #4d9391;">struct</span> {
+&#9474;   Name, Category <span style="color: #cd9575;">string</span>
+&#9474;   price          <span style="color: #cd9575;">int</span>
 }
 </code></pre>
 
 <p>
 And use it in your main:
 </p>
-<pre class="code"><code>package main
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import (
-	"fmt"
-	"packges/store"
+<span style="color: #4d9391;">import</span> (
+&#9474;   <span style="color: #6fb593;">"fmt"</span>
+&#9474;   <span style="color: #6fb593;">"packges/store"</span>
 )
 
-func main() {
-	pr := store.Product{
-		Name:     "o",
-		Category: "fr",
-	}
-	fmt.Print(pr)
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #968cc7;">pr</span> := <span style="color: #cd9575;">store.Product</span>{
+&#9474;   &#9474;   <span style="color: #ab98b5;">Name</span>:     <span style="color: #6fb593;">"o"</span>,
+&#9474;   &#9474;   <span style="color: #ab98b5;">Category</span>: <span style="color: #6fb593;">"fr"</span>,
+&#9474;   }
+&#9474;   fmt.<span style="color: #80bcb6;">Print</span>(pr)
 }
 </code></pre>
 
@@ -2661,27 +2661,27 @@ Packages can contain multiple code files, and to simplify development, access co
 and package prefixes do not apply when accessing features defined in the same package. Add a
 file named tax.go to the store folder with the contents shown:
 </p>
-<pre class="code"><code>package store
-const defaultTaxRate float64 = 0.2
-const minThreshold = 10
-type taxRate struct {
-    rate, threshold float64
+<pre class="code"><code><span style="color: #4d9391;">package</span> store
+<span style="color: #4d9391;">const</span> <span style="color: #ab98b5;">defaultTaxRate</span> <span style="color: #cd9575;">float64</span> = 0.2
+<span style="color: #4d9391;">const</span> <span style="color: #ab98b5;">minThreshold</span> = 10
+<span style="color: #4d9391;">type</span> <span style="color: #cd9575;">taxRate</span> <span style="color: #4d9391;">struct</span> {
+&#160;&#160;&#160;&#160;rate, threshold <span style="color: #cd9575;">float64</span>
 }
 
-func newTaxRate(rate, threshold float64) *taxRate {
-    if (rate == 0) {
-        rate = defaultTaxRate
-    }
-    if (threshold &lt; minThreshold) {
-        threshold = minThreshold
-    }
-    return &amp;taxRate { rate, threshold }
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">newTaxRate</span>(<span style="color: #968cc7;">rate</span>, <span style="color: #968cc7;">threshold</span> <span style="color: #cd9575;">float64</span>) *<span style="color: #cd9575;">taxRate</span> {
+&#160;&#160;&#160;&#160;<span style="color: #4d9391;">if</span> (rate == 0) {
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;rate = defaultTaxRate
+&#160;&#160;&#160;&#160;}
+&#160;&#160;&#160;&#160;<span style="color: #4d9391;">if</span> (threshold &lt; minThreshold) {
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;threshold = minThreshold
+&#160;&#160;&#160;&#160;}
+&#160;&#160;&#160;&#160;<span style="color: #4d9391;">return</span> &amp;taxRate { rate, threshold }
 }
-func (taxRate *taxRate) calcTax(product *Product) float64 {
-    if (product.price &gt; taxRate.threshold) {
-        return product.price + (product.price * taxRate.rate)
-    }
-    return product.price
+<span style="color: #4d9391;">func</span> (<span style="color: #968cc7;">taxRate</span> *<span style="color: #cd9575;">taxRate</span>) <span style="color: #80bcb6;">calcTax</span>(<span style="color: #968cc7;">product</span> *<span style="color: #cd9575;">Product</span>) <span style="color: #cd9575;">float64</span> {
+&#160;&#160;&#160;&#160;<span style="color: #4d9391;">if</span> (product.price &gt; taxRate.threshold) {
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color: #4d9391;">return</span> product.price + (product.price * taxRate.rate)
+&#160;&#160;&#160;&#160;}
+&#160;&#160;&#160;&#160;<span style="color: #4d9391;">return</span> product.price
 }
 </code></pre>
 
@@ -2692,18 +2692,18 @@ the Product type and that it does so without having to refer to the type as stor
 because it is in the same package:
 </p>
 <pre class="code"><code>...
-func (taxRate *taxRate) calcTax(product *Product) float64 {
-    if (product.price &gt; taxRate.threshold) {
-        return product.price + (product.price * taxRate.rate)
-    }
-    return product.price
+<span style="color: #4d9391;">func</span> (<span style="color: #968cc7;">taxRate</span> *<span style="color: #cd9575;">taxRate</span>) <span style="color: #80bcb6;">calcTax</span>(<span style="color: #968cc7;">product</span> *<span style="color: #cd9575;">Product</span>) <span style="color: #cd9575;">float64</span> {
+&#160;&#160;&#160;&#160;<span style="color: #4d9391;">if</span> (product.price &gt; taxRate.threshold) {
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color: #4d9391;">return</span> product.price + (product.price * taxRate.rate)
+&#160;&#160;&#160;&#160;}
+&#160;&#160;&#160;&#160;<span style="color: #4d9391;">return</span> product.price
 }
 ...
 </code></pre>
 </div>
-<div id="outline-container-org46d976b" class="outline-5">
-<h5 id="org46d976b">Package Conflicts</h5>
-<div class="outline-text-5" id="text-org46d976b">
+<div id="outline-container-orgf152f52" class="outline-5">
+<h5 id="orgf152f52">Package Conflicts</h5>
+<div class="outline-text-5" id="text-orgf152f52">
 <p>
 When a package is imported, the combination of the module name and package name ensures that
 the package is uniquely identified. But only the package name is used when accessing the
@@ -2711,10 +2711,10 @@ features provided by the package, which can lead to conflicts. To see how this p
 arises, create the packages/fmt folder and add to it a file named formats.go with the code
 shown:
 </p>
-<pre class="code"><code>package fmt
-import "strconv"
-func ToCurrency(amount float64) string {
-    return "$" + strconv.FormatFloat(amount, 'f', 2, 64)
+<pre class="code"><code><span style="color: #4d9391;">package</span> fmt
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"strconv"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">ToCurrency</span>(<span style="color: #968cc7;">amount</span> <span style="color: #cd9575;">float64</span>) <span style="color: #cd9575;">string</span> {
+&#160;&#160;&#160;&#160;<span style="color: #4d9391;">return</span> <span style="color: #6fb593;">"$"</span> + strconv.<span style="color: #80bcb6;">FormatFloat</span>(amount, <span style="color: #6fb593;">'f'</span>, 2, 64)
 }
 </code></pre>
 
@@ -2723,27 +2723,27 @@ This will never compile:
 </p>
 
 <pre class="code"><code>go run .
-# packges
-./main.go:5:2: fmt redeclared in this block
-	./main.go:4:2: other declaration of fmt
-./main.go:5:2: imported and not used: "packges/fmt"
+<span style="color: #545c5e;"># </span><span style="color: #545c5e;">packges
+</span>./main.go:5:2: fmt redeclared<span style="color: #4d9391;"> in</span> this block
+    ./main.go:4:2: other declaration of fmt
+./main.go:5:2: imported and not used: <span style="color: #6fb593;">"packges/fmt"</span>
 </code></pre>
 
 <p>
 One way to deal with package name conflicts is to use an alias, which allows a package to be
 accessed using a different name, as shown:
 </p>
-<pre class="code"><code>package main
-import (
-    "fmt"
-    "packages/store"
-    currencyFmt "packages/fmt"
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> (
+&#160;&#160;&#160;&#160;<span style="color: #6fb593;">"fmt"</span>
+&#160;&#160;&#160;&#160;<span style="color: #6fb593;">"packages/store"</span>
+&#160;&#160;&#160;&#160;currencyFmt <span style="color: #6fb593;">"packages/fmt"</span>
 )
-func main() {
-    product := store.NewProduct("Kayak", "Watersports", 279)
-    fmt.Println("Name:", product.Name)
-    fmt.Println("Category:", product.Category)
-    fmt.Println("Price:", currencyFmt.ToCurrency(product.Price()))
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;product</span> := store.<span style="color: #80bcb6;">NewProduct</span>(<span style="color: #6fb593;">"Kayak"</span>, <span style="color: #6fb593;">"Watersports"</span>, 279)
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Name:"</span>, product.Name)
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Category:"</span>, product.Category)
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Price:"</span>, currencyFmt.<span style="color: #80bcb6;">ToCurrency</span>(product.<span style="color: #80bcb6;">Price</span>()))
 }
 </code></pre>
 
@@ -2752,78 +2752,78 @@ There is a special alias, known as the dot import, that allows a package’s fea
 used without using a prefix, as shown:
 </p>
 
-<pre class="code"><code>import (
-    "fmt"
-    "packages/store"
-    . "packages/fmt"
+<pre class="code"><code><span style="color: #4d9391;">import</span> (
+&#160;&#160;&#160;&#160;<span style="color: #6fb593;">"fmt"</span>
+&#160;&#160;&#160;&#160;<span style="color: #6fb593;">"packages/store"</span>
+&#160;&#160;&#160;&#160;. <span style="color: #6fb593;">"packages/fmt"</span>
 )
-func main() {
-    product := store.NewProduct("Kayak", "Watersports", 279)
-    fmt.Println("Name:", product.Name)
-    fmt.Println("Category:", product.Category)
-    fmt.Println("Price:", ToCurrency(product.Price()))
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;product</span> := store.<span style="color: #80bcb6;">NewProduct</span>(<span style="color: #6fb593;">"Kayak"</span>, <span style="color: #6fb593;">"Watersports"</span>, 279)
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Name:"</span>, product.Name)
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Category:"</span>, product.Category)
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Price:"</span>, <span style="color: #80bcb6;">ToCurrency</span>(product.<span style="color: #80bcb6;">Price</span>()))
 }
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org0f88774" class="outline-5">
-<h5 id="org0f88774">Package Initialization</h5>
-<div class="outline-text-5" id="text-org0f88774">
+<div id="outline-container-org045dc47" class="outline-5">
+<h5 id="org045dc47">Package Initialization</h5>
+<div class="outline-text-5" id="text-org045dc47">
 <p>
 Each code file can contain an initialization function that is executed only when all
 packages have been loaded and all other initialization—such as defining constants and
 variables—has been done. The most common use for initialization functions is to perform
 calculations that are difficult to perform or that require duplication to perform, as shown:
 </p>
-<pre class="code"><code>package store
-const defaultTaxRate float64 = 0.2
-const minThreshold = 10
-var categoryMaxPrices = map[string]float64 {
-    "Watersports": 250 + (250 * defaultTaxRate),
-    "Soccer": 150 + (150 * defaultTaxRate),
-    "Chess": 50 + (50 * defaultTaxRate),
+<pre class="code"><code><span style="color: #4d9391;">package</span> store
+<span style="color: #4d9391;">const</span> <span style="color: #ab98b5;">defaultTaxRate</span> <span style="color: #cd9575;">float64</span> = 0.2
+<span style="color: #4d9391;">const</span> <span style="color: #ab98b5;">minThreshold</span> = 10
+<span style="color: #4d9391;">var</span> <span style="color: #968cc7;">categoryMaxPrices</span> = <span style="color: #4d9391;">map</span>[<span style="color: #cd9575;">string</span>]<span style="color: #cd9575;">float64</span> {
+&#160;&#160;&#160;&#160;<span style="color: #6fb593;">"Watersports"</span>: 250 + (250 * defaultTaxRate),
+&#160;&#160;&#160;&#160;<span style="color: #6fb593;">"Soccer"</span>: 150 + (150 * defaultTaxRate),
+&#160;&#160;&#160;&#160;<span style="color: #6fb593;">"Chess"</span>: 50 + (50 * defaultTaxRate),
 }
-type taxRate struct {
-    rate, threshold float64
+<span style="color: #4d9391;">type</span> <span style="color: #cd9575;">taxRate</span> <span style="color: #4d9391;">struct</span> {
+&#160;&#160;&#160;&#160;rate, threshold <span style="color: #cd9575;">float64</span>
 }
-func newTaxRate(rate, threshold float64) *taxRate {
-    if (rate == 0) {
-        rate = defaultTaxRate
-    }
-    if (threshold &lt; minThreshold) {
-        threshold = minThreshold
-    }
-    return &amp;taxRate { rate, threshold }
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">newTaxRate</span>(<span style="color: #968cc7;">rate</span>, <span style="color: #968cc7;">threshold</span> <span style="color: #cd9575;">float64</span>) *<span style="color: #cd9575;">taxRate</span> {
+&#160;&#160;&#160;&#160;<span style="color: #4d9391;">if</span> (rate == 0) {
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;rate = defaultTaxRate
+&#160;&#160;&#160;&#160;}
+&#160;&#160;&#160;&#160;<span style="color: #4d9391;">if</span> (threshold &lt; minThreshold) {
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;threshold = minThreshold
+&#160;&#160;&#160;&#160;}
+&#160;&#160;&#160;&#160;<span style="color: #4d9391;">return</span> &amp;taxRate { rate, threshold }
 }
-func (taxRate *taxRate) calcTax(product *Product) (price float64) {
-    if (product.price &gt; taxRate.threshold) {
-        price = product.price + (product.price * taxRate.rate)
-    } else {
-        price = product.price
-    }
-    if max, ok := categoryMaxPrices[product.Category]; ok &amp;&amp; price &gt; max {
-        price = max
-    }
-    return
+<span style="color: #4d9391;">func</span> (<span style="color: #968cc7;">taxRate</span> *<span style="color: #cd9575;">taxRate</span>) <span style="color: #80bcb6;">calcTax</span>(<span style="color: #968cc7;">product</span> *<span style="color: #cd9575;">Product</span>) (<span style="color: #968cc7;">price</span> <span style="color: #cd9575;">float64</span>) {
+&#160;&#160;&#160;&#160;<span style="color: #4d9391;">if</span> (product.price &gt; taxRate.threshold) {
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;price = product.price + (product.price * taxRate.rate)
+&#160;&#160;&#160;&#160;} <span style="color: #4d9391;">else</span> {
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;price = product.price
+&#160;&#160;&#160;&#160;}
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;if</span> <span style="color: #968cc7;">max</span>, <span style="color: #968cc7;">ok</span> := categoryMaxPrices[product.Category]; ok &amp;&amp; price &gt; max {
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;price = max
+&#160;&#160;&#160;&#160;}
+&#160;&#160;&#160;&#160;<span style="color: #4d9391;">return</span>
 }
 </code></pre>
 </div>
-<div id="outline-container-org775c0ae" class="outline-6">
-<h6 id="org775c0ae">Import Package For Intialization</h6>
-<div class="outline-text-6" id="text-org775c0ae">
+<div id="outline-container-org50c55c6" class="outline-6">
+<h6 id="org50c55c6">Import Package For Intialization</h6>
+<div class="outline-text-6" id="text-org50c55c6">
 <p>
 Go prevents packages from being imported but not used, which can be a problem if you rely on
 the effect of an initialization function but don’t need to use any of the features the
 package exports. Create the packages/ data folder and add to it a file named data.go.
 </p>
 
-<pre class="code"><code>package data
-import "fmt"
-func init() {
-    fmt.Println(("data.go init function invoked"))
+<pre class="code"><code><span style="color: #4d9391;">package</span> data
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">init</span>() {
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>((<span style="color: #6fb593;">"data.go init function invoked"</span>))
 }
-func GetData() []string {
-    return []string {"Kayak", "Lifejacket", "Paddle", "Soccer Ball"}
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">GetData</span>() []<span style="color: #cd9575;">string</span> {
+&#160;&#160;&#160;&#160;<span style="color: #4d9391;">return</span> []<span style="color: #cd9575;">string</span> {<span style="color: #6fb593;">"Kayak"</span>, <span style="color: #6fb593;">"Lifejacket"</span>, <span style="color: #6fb593;">"Paddle"</span>, <span style="color: #6fb593;">"Soccer Ball"</span>}
 }
 </code></pre>
 
@@ -2834,31 +2834,31 @@ GetData function the package exports, then I can import the package using the bl
 identifier as an alias for the package name, as shown
 </p>
 
-<pre class="code"><code>package main
-import (
-    "fmt"
-    "packages/store"
-    . "packages/fmt"
-    "packages/store/cart"
-    _ "packages/data"
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> (
+&#160;&#160;&#160;&#160;<span style="color: #6fb593;">"fmt"</span>
+&#160;&#160;&#160;&#160;<span style="color: #6fb593;">"packages/store"</span>
+&#160;&#160;&#160;&#160;. <span style="color: #6fb593;">"packages/fmt"</span>
+&#160;&#160;&#160;&#160;<span style="color: #6fb593;">"packages/store/cart"</span>
+&#160;&#160;&#160;&#160;_ <span style="color: #6fb593;">"packages/data"</span>
 )
-func main() {
-    product := store.NewProduct("Kayak", "Watersports", 279)
-    cart := cart.Cart {
-        CustomerName: "Alice",
-        Products: []store.Product{ *product },
-    }
-    fmt.Println("Name:", cart.CustomerName)
-    fmt.Println("Total:",  ToCurrency(cart.GetTotal()))
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;product</span> := store.<span style="color: #80bcb6;">NewProduct</span>(<span style="color: #6fb593;">"Kayak"</span>, <span style="color: #6fb593;">"Watersports"</span>, 279)
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;cart</span> := cart.Cart {
+<span style="color: #ab98b5;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;CustomerName</span>: <span style="color: #6fb593;">"Alice"</span>,
+<span style="color: #ab98b5;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Products</span>: []<span style="color: #cd9575;">store.Product</span>{ *product },
+&#160;&#160;&#160;&#160;}
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Name:"</span>, cart.CustomerName)
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Total:"</span>,<span style="color: #80bcb6;">&#160;&#160;ToCurrency</span>(cart.<span style="color: #80bcb6;">GetTotal</span>()))
 }
 </code></pre>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-orgc507751" class="outline-4">
-<h4 id="orgc507751">Interface Composition</h4>
-<div class="outline-text-4" id="text-orgc507751">
+<div id="outline-container-org96a9153" class="outline-4">
+<h4 id="org96a9153">Interface Composition</h4>
+<div class="outline-text-4" id="text-org96a9153">
 <p>
 If you are used to languages such as C# or Java, then you will have created a base class and
 created subclasses to add more specific features. The subclasses inherit functionality from
@@ -2883,19 +2883,19 @@ first letter of the constructor function name determines whether it is exported 
 the package.
 </p>
 
-<pre class="code"><code>package store
+<pre class="code"><code><span style="color: #4d9391;">package</span> store
 
-type Product struct {
-	Name, Category string
-	price          float64
+<span style="color: #4d9391;">type</span> <span style="color: #cd9575;">Product</span> <span style="color: #4d9391;">struct</span> {
+&#9474;   Name, Category <span style="color: #cd9575;">string</span>
+&#9474;   price          <span style="color: #cd9575;">float64</span>
 }
 
-func NewProduct(name, category string, price float64) *Product {
-	return &amp;Product{name, category, price}
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">NewProduct</span>(<span style="color: #968cc7;">name</span>, <span style="color: #968cc7;">category</span> <span style="color: #cd9575;">string</span>, <span style="color: #968cc7;">price</span> <span style="color: #cd9575;">float64</span>) *<span style="color: #cd9575;">Product</span> {
+&#9474;   <span style="color: #4d9391;">return</span> &amp;<span style="color: #cd9575;">Product</span>{name, category, price}
 }
 
-func (p *Product) Price(taxRate float64) float64 {
-	return p.price + (p.price * taxRate)
+<span style="color: #4d9391;">func</span> (<span style="color: #968cc7;">p</span> *<span style="color: #cd9575;">Product</span>) <span style="color: #80bcb6;">Price</span>(<span style="color: #968cc7;">taxRate</span> <span style="color: #cd9575;">float64</span>) <span style="color: #cd9575;">float64</span> {
+&#9474;   <span style="color: #4d9391;">return</span> p.price + (p.price * taxRate)
 }
 </code></pre>
 
@@ -2907,19 +2907,19 @@ assigned to the unexported fields.  This shows the use of the constructor functi
 and the literal syntax:
 </p>
 
-<pre class="code"><code>package main
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import (
-	"comps/store"
-	"fmt"
+<span style="color: #4d9391;">import</span> (
+&#9474;   <span style="color: #6fb593;">"comps/store"</span>
+&#9474;   <span style="color: #6fb593;">"fmt"</span>
 )
 
-func main() {
-	kayak := store.NewProduct("Kayak", "Watersports", 275)
-	lifejacket := &amp;store.Product{Name: "Lifejacket", Category: "Watersports"}
-	for _, p := range []*store.Product{kayak, lifejacket} {
-		fmt.Println("Name:", p.Name, "Category:", p.Category, "Price:", p.Price(0.2))
-	}
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #968cc7;">kayak</span> := store.<span style="color: #80bcb6;">NewProduct</span>(<span style="color: #6fb593;">"Kayak"</span>, <span style="color: #6fb593;">"Watersports"</span>, 275)
+&#9474;   <span style="color: #968cc7;">lifejacket</span> := &amp;<span style="color: #cd9575;">store.Product</span>{<span style="color: #ab98b5;">Name</span>: <span style="color: #6fb593;">"Lifejacket"</span>, <span style="color: #ab98b5;">Category</span>: <span style="color: #6fb593;">"Watersports"</span>}
+&#9474;   <span style="color: #4d9391;">for</span> <span style="color: #968cc7;">_</span>, <span style="color: #968cc7;">p</span> := <span style="color: #4d9391;">range</span> []*<span style="color: #cd9575;">store.Product</span>{kayak, lifejacket} {
+&#9474;   &#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Name:"</span>, p.Name, <span style="color: #6fb593;">"Category:"</span>, p.Category, <span style="color: #6fb593;">"Price:"</span>, p.<span style="color: #80bcb6;">Price</span>(0.2))
+&#9474;   }
 }
 </code></pre>
 
@@ -2936,18 +2936,18 @@ Go supports composition, rather than inheritance, which is done by combining str
 Add a file named boat.go to the store folder with the contents shown:
 </p>
 
-<pre class="code"><code>package store
-type Boat struct {
-    *Product
-    Capacity int
-    Motorized bool
+<pre class="code"><code><span style="color: #4d9391;">package</span> store
+<span style="color: #4d9391;">type</span> <span style="color: #cd9575;">Boat</span> <span style="color: #4d9391;">struct</span> {
+&#9474;   *Product
+&#9474;   Capacity <span style="color: #cd9575;">int</span>
+&#9474;   Motorized <span style="color: #cd9575;">bool</span>
 }
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgd2928ea" class="outline-4">
-<h4 id="orgd2928ea"><span class="done KILL">KILL</span> Concurrency</h4>
-<div class="outline-text-4" id="text-orgd2928ea">
+<div id="outline-container-org40a1478" class="outline-4">
+<h4 id="org40a1478"><span class="done KILL">KILL</span> Concurrency</h4>
+<div class="outline-text-4" id="text-org40a1478">
 <p>
 &ldquo;Execution happens in some non-deterministic order&rdquo;, &ldquo;Undefined out-of-order execution&rdquo;,
 &ldquo;Non-sequential execution&rdquo;, &ldquo;Parts of a program excute out-of-order or in partial order&rdquo;.
@@ -2955,9 +2955,9 @@ All of those are valid definitions of concurrency.
 See <a href="deep_concurrency_in_go.html#03ogh2p02wj0">Concurrency Patterns in Go</a>
 </p>
 </div>
-<div id="outline-container-org592f1e6" class="outline-5">
-<h5 id="org592f1e6">Goroutines</h5>
-<div class="outline-text-5" id="text-org592f1e6">
+<div id="outline-container-orgef81189" class="outline-5">
+<h5 id="orgef81189">Goroutines</h5>
+<div class="outline-text-5" id="text-orgef81189">
 <p>
 Go has excellent support for writing concurrent applications, using features that are
 simpler and more intuitive than any other language I have used. In this chapter, I describe
@@ -2965,42 +2965,42 @@ the use of <code>goroutines</code>, which allow functions to be executed concurr
 through which <code>goroutines</code> can produce results asynchronously.
 </p>
 
-<pre class="code"><code>package main
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import "strconv"
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"strconv"</span>
 
-type Product struct {
-	Name, Category string
-	Price          float64
+<span style="color: #4d9391;">type</span> <span style="color: #cd9575;">Product</span> <span style="color: #4d9391;">struct</span> {
+&#9474;   Name, Category <span style="color: #cd9575;">string</span>
+&#9474;   Price          <span style="color: #cd9575;">float64</span>
 }
 
-var ProductList = []*Product{
-	{"Kayak", "Watersports", 279},
-	{"Lifejacket", "Watersports", 49.95},
-	{"Soccer Ball", "Soccer", 19.50},
-	{"Corner Flags", "Soccer", 34.95},
-	{"Stadium", "Soccer", 79500},
-	{"Thinking Cap", "Chess", 16},
-	{"Unsteady Chair", "Chess", 75},
-	{"Bling-Bling King", "Chess", 1200},
+<span style="color: #4d9391;">var</span> <span style="color: #968cc7;">ProductList</span> = []*<span style="color: #cd9575;">Product</span>{
+&#9474;   {<span style="color: #6fb593;">"Kayak"</span>, <span style="color: #6fb593;">"Watersports"</span>, 279},
+&#9474;   {<span style="color: #6fb593;">"Lifejacket"</span>, <span style="color: #6fb593;">"Watersports"</span>, 49.95},
+&#9474;   {<span style="color: #6fb593;">"Soccer Ball"</span>, <span style="color: #6fb593;">"Soccer"</span>, 19.50},
+&#9474;   {<span style="color: #6fb593;">"Corner Flags"</span>, <span style="color: #6fb593;">"Soccer"</span>, 34.95},
+&#9474;   {<span style="color: #6fb593;">"Stadium"</span>, <span style="color: #6fb593;">"Soccer"</span>, 79500},
+&#9474;   {<span style="color: #6fb593;">"Thinking Cap"</span>, <span style="color: #6fb593;">"Chess"</span>, 16},
+&#9474;   {<span style="color: #6fb593;">"Unsteady Chair"</span>, <span style="color: #6fb593;">"Chess"</span>, 75},
+&#9474;   {<span style="color: #6fb593;">"Bling-Bling King"</span>, <span style="color: #6fb593;">"Chess"</span>, 1200},
 }
 
-type ProductGroup []*Product
-type ProductData = map[string]ProductGroup
+<span style="color: #4d9391;">type</span> <span style="color: #cd9575;">ProductGroup</span> []*<span style="color: #cd9575;">Product</span>
+<span style="color: #4d9391;">type</span> <span style="color: #cd9575;">ProductData</span> = <span style="color: #4d9391;">map</span>[<span style="color: #cd9575;">string</span>]<span style="color: #cd9575;">ProductGroup</span>
 
-var Products = make(ProductData)
+<span style="color: #4d9391;">var</span> <span style="color: #968cc7;">Products</span> = <span style="color: #80bcb6;">make</span>(<span style="color: #cd9575;">ProductData</span>)
 
-func ToCurrency(val float64) string {
-	return "$" + strconv.FormatFloat(val, 'f', 2, 64)
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">ToCurrency</span>(<span style="color: #968cc7;">val</span> <span style="color: #cd9575;">float64</span>) <span style="color: #cd9575;">string</span> {
+&#9474;   <span style="color: #4d9391;">return</span> <span style="color: #6fb593;">"$"</span> + strconv.<span style="color: #80bcb6;">FormatFloat</span>(val, <span style="color: #6fb593;">'f'</span>, 2, 64)
 }
-func init() {
-	for _, p := range ProductList {
-		if _, ok := Products[p.Category]; ok {
-			Products[p.Category] = append(Products[p.Category], p)
-		} else {
-			Products[p.Category] = ProductGroup{p}
-		}
-	}
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">init</span>() {
+&#9474;   <span style="color: #4d9391;">for</span> <span style="color: #968cc7;">_</span>, <span style="color: #968cc7;">p</span> := <span style="color: #4d9391;">range</span> ProductList {
+&#9474;   &#9474;   <span style="color: #4d9391;">if</span> <span style="color: #968cc7;">_</span>, <span style="color: #968cc7;">ok</span> := Products[p.Category]; ok {
+&#9474;   &#9474;   &#9474;   Products[p.Category] = <span style="color: #80bcb6;">append</span>(Products[p.Category], p)
+&#9474;   &#9474;   } <span style="color: #4d9391;">else</span> {
+&#9474;   &#9474;   &#9474;   Products[p.Category] = <span style="color: #cd9575;">ProductGroup</span>{p}
+&#9474;   &#9474;   }
+&#9474;   }
 }
 </code></pre>
 
@@ -3014,23 +3014,23 @@ that formats float64 values into dollar currency strings, which I will use to fo
 results in this chapter. Add another file called <code>operation.go</code>:
 </p>
 
-<pre class="code"><code>package main
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import "fmt"
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
 
-func CalcStoreTotal(data ProductData) {
-	var storeTotal float64
-	for category, group := range data {
-		storeTotal += group.TotalPrice(category)
-	}
-	fmt.Println("Total:", ToCurrency(storeTotal))
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">CalcStoreTotal</span>(<span style="color: #968cc7;">data</span> <span style="color: #cd9575;">ProductData</span>) {
+&#9474;   <span style="color: #4d9391;">var</span> <span style="color: #968cc7;">storeTotal</span> <span style="color: #cd9575;">float64</span>
+&#9474;   <span style="color: #4d9391;">for</span> <span style="color: #968cc7;">category</span>, <span style="color: #968cc7;">group</span> := <span style="color: #4d9391;">range</span> data {
+&#9474;   &#9474;   storeTotal += group.<span style="color: #80bcb6;">TotalPrice</span>(category)
+&#9474;   }
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Total:"</span>, <span style="color: #80bcb6;">ToCurrency</span>(storeTotal))
 }
-func (group ProductGroup) TotalPrice(category string) (total float64) {
-	for _, p := range group {
-		total += p.Price
-	}
-	fmt.Println(category, "subtotal:", ToCurrency(total))
-	return
+<span style="color: #4d9391;">func</span> (<span style="color: #968cc7;">group</span> <span style="color: #cd9575;">ProductGroup</span>) <span style="color: #80bcb6;">TotalPrice</span>(<span style="color: #968cc7;">category</span> <span style="color: #cd9575;">string</span>) (<span style="color: #968cc7;">total</span> <span style="color: #cd9575;">float64</span>) {
+&#9474;   <span style="color: #4d9391;">for</span> <span style="color: #968cc7;">_</span>, <span style="color: #968cc7;">p</span> := <span style="color: #4d9391;">range</span> group {
+&#9474;   &#9474;   total += p.Price
+&#9474;   }
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(category, <span style="color: #6fb593;">"subtotal:"</span>, <span style="color: #80bcb6;">ToCurrency</span>(total))
+&#9474;   <span style="color: #4d9391;">return</span>
 }
 </code></pre>
 
@@ -3059,13 +3059,13 @@ Follows adds a statement that writes out details of each product as it is proces
 will demonstrate the flow shown in the figure:
 </p>
 
-<pre class="code"><code>func (group ProductGroup) TotalPrice(category string) (total float64) {
-	for _, p := range group {
-		fmt.Printf(category, "product", p.Name)
-		total += p.Price
-	}
-	fmt.Println(category, "subtotal:", ToCurrency(total))
-	return
+<pre class="code"><code><span style="color: #4d9391;">func</span> (<span style="color: #968cc7;">group</span> <span style="color: #cd9575;">ProductGroup</span>) <span style="color: #80bcb6;">TotalPrice</span>(<span style="color: #968cc7;">category</span> <span style="color: #cd9575;">string</span>) (<span style="color: #968cc7;">total</span> <span style="color: #cd9575;">float64</span>) {
+&#9474;   <span style="color: #4d9391;">for</span> <span style="color: #968cc7;">_</span>, <span style="color: #968cc7;">p</span> := <span style="color: #4d9391;">range</span> group {
+&#9474;   &#9474;   fmt.<span style="color: #80bcb6;">Printf</span>(category, <span style="color: #6fb593;">"product"</span>, p.Name)
+&#9474;   &#9474;   total += p.Price
+&#9474;   }
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(category, <span style="color: #6fb593;">"subtotal:"</span>, <span style="color: #80bcb6;">ToCurrency</span>(total))
+&#9474;   <span style="color: #4d9391;">return</span>
 }
 </code></pre>
 
@@ -3086,24 +3086,24 @@ Go allows the developer to create additional goroutines, which execute code at t
 as the main <code>goroutine</code>. Go makes it easy to create new goroutines, as shown:
 </p>
 
-<pre class="code"><code>package main
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import "fmt"
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
 
-func CalcStoreTotal(data ProductData) {
-	var storeTotal float64
-	for category, group := range data {
-		go group.TotalPrice(category)
-	}
-	fmt.Println("Total:", ToCurrency(storeTotal))
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">CalcStoreTotal</span>(<span style="color: #968cc7;">data</span> <span style="color: #cd9575;">ProductData</span>) {
+&#9474;   <span style="color: #4d9391;">var</span> <span style="color: #968cc7;">storeTotal</span> <span style="color: #cd9575;">float64</span>
+&#9474;   <span style="color: #4d9391;">for</span> <span style="color: #968cc7;">category</span>, <span style="color: #968cc7;">group</span> := <span style="color: #4d9391;">range</span> data {
+&#9474;   &#9474;   <span style="color: #4d9391;">go</span> group.<span style="color: #80bcb6;">TotalPrice</span>(category)
+&#9474;   }
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Total:"</span>, <span style="color: #80bcb6;">ToCurrency</span>(storeTotal))
 }
-func (group ProductGroup) TotalPrice(category string) (total float64) {
-	for _, p := range group {
-		fmt.Printf(category, "product", p.Name)
-		total += p.Price
-	}
-	fmt.Println(category, "subtotal:", ToCurrency(total))
-	return
+<span style="color: #4d9391;">func</span> (<span style="color: #968cc7;">group</span> <span style="color: #cd9575;">ProductGroup</span>) <span style="color: #80bcb6;">TotalPrice</span>(<span style="color: #968cc7;">category</span> <span style="color: #cd9575;">string</span>) (<span style="color: #968cc7;">total</span> <span style="color: #cd9575;">float64</span>) {
+&#9474;   <span style="color: #4d9391;">for</span> <span style="color: #968cc7;">_</span>, <span style="color: #968cc7;">p</span> := <span style="color: #4d9391;">range</span> group {
+&#9474;   &#9474;   fmt.<span style="color: #80bcb6;">Printf</span>(category, <span style="color: #6fb593;">"product"</span>, p.Name)
+&#9474;   &#9474;   total += p.Price
+&#9474;   }
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(category, <span style="color: #6fb593;">"subtotal:"</span>, <span style="color: #80bcb6;">ToCurrency</span>(total))
+&#9474;   <span style="color: #4d9391;">return</span>
 }
 </code></pre>
 
@@ -3131,25 +3131,25 @@ conduits through which data can be sent and received. I am going to introduce a 
 the example in steps:
 </p>
 
-<pre class="code"><code>package main
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import "fmt"
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
 
-func CalcStoreTotal(data ProductData) {
-	var storeTotal float64
-	for category, group := range data {
-		var channel chan float64 = make(chan float64)
-		go group.TotalPrice(category)
-	}
-	fmt.Println("Total:", ToCurrency(storeTotal))
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">CalcStoreTotal</span>(<span style="color: #968cc7;">data</span> <span style="color: #cd9575;">ProductData</span>) {
+&#9474;   <span style="color: #4d9391;">var</span> <span style="color: #968cc7;">storeTotal</span> <span style="color: #cd9575;">float64</span>
+&#9474;   <span style="color: #4d9391;">for</span> <span style="color: #968cc7;">category</span>, <span style="color: #968cc7;">group</span> := <span style="color: #4d9391;">range</span> data {
+&#9474;   &#9474;   <span style="color: #4d9391;">var</span> <span style="color: #968cc7;">channel</span> <span style="color: #4d9391;">chan</span> <span style="color: #968cc7;">float64</span> = <span style="color: #80bcb6;">make</span>(<span style="color: #4d9391;">chan</span> <span style="color: #cd9575;">float64</span>)
+&#9474;   &#9474;   <span style="color: #4d9391;">go</span> group.<span style="color: #80bcb6;">TotalPrice</span>(category)
+&#9474;   }
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Total:"</span>, <span style="color: #80bcb6;">ToCurrency</span>(storeTotal))
 }
-func (group ProductGroup) TotalPrice(category string) (total float64) {
-	for _, p := range group {
-		fmt.Printf(category, "product", p.Name)
-		total += p.Price
-	}
-	fmt.Println(category, "subtotal:", ToCurrency(total))
-	return
+<span style="color: #4d9391;">func</span> (<span style="color: #968cc7;">group</span> <span style="color: #cd9575;">ProductGroup</span>) <span style="color: #80bcb6;">TotalPrice</span>(<span style="color: #968cc7;">category</span> <span style="color: #cd9575;">string</span>) (<span style="color: #968cc7;">total</span> <span style="color: #cd9575;">float64</span>) {
+&#9474;   <span style="color: #4d9391;">for</span> <span style="color: #968cc7;">_</span>, <span style="color: #968cc7;">p</span> := <span style="color: #4d9391;">range</span> group {
+&#9474;   &#9474;   fmt.<span style="color: #80bcb6;">Printf</span>(category, <span style="color: #6fb593;">"product"</span>, p.Name)
+&#9474;   &#9474;   total += p.Price
+&#9474;   }
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(category, <span style="color: #6fb593;">"subtotal:"</span>, <span style="color: #80bcb6;">ToCurrency</span>(total))
+&#9474;   <span style="color: #4d9391;">return</span>
 }
 </code></pre>
 
@@ -3169,15 +3169,15 @@ chan float64, meaning a channel that will carry float64 values.
 The next step is to update the TotalPrice method so that it sends its result through the
 channel, as shown:
 </p>
-<pre class="code"><code>func (group ProductGroup) TotalPrice(category string, resultChannel chan float64)  {
-    var total float64
-    for _, p := range group {
-        fmt.Println(category, "product:", p.Name)
-        total += p.Price
-        time.Sleep(time.Millisecond * 100)
-    }
-    fmt.Println(category, "subtotal:", ToCurrency(total))
-    resultChannel &lt;- total
+<pre class="code"><code><span style="color: #4d9391;">func</span> (<span style="color: #968cc7;">group</span> <span style="color: #cd9575;">ProductGroup</span>) <span style="color: #80bcb6;">TotalPrice</span>(<span style="color: #968cc7;">category</span> <span style="color: #cd9575;">string</span>, <span style="color: #968cc7;">resultChannel</span> <span style="color: #4d9391;">chan</span> <span style="color: #cd9575;">float64</span>)<span style="color: #cd9575;">&#160;&#160;</span>{
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;var</span> <span style="color: #968cc7;">total</span> <span style="color: #cd9575;">float64</span>
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;for</span> <span style="color: #968cc7;">_</span>, <span style="color: #968cc7;">p</span> := <span style="color: #4d9391;">range</span> group {
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(category, <span style="color: #6fb593;">"product:"</span>, p.Name)
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;total += p.Price
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;time.<span style="color: #80bcb6;">Sleep</span>(time.Millisecond * 100)
+&#160;&#160;&#160;&#160;}
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(category, <span style="color: #6fb593;">"subtotal:"</span>, <span style="color: #80bcb6;">ToCurrency</span>(total))
+&#160;&#160;&#160;&#160;resultChannel &lt;- total
 }
 </code></pre>
 
@@ -3190,38 +3190,38 @@ received. This happens in the other direction, too, so that goroutines that rece
 will block until another goroutine sends one
 </p>
 
-<pre class="code"><code>package main
-import (
-    "fmt"
-    "time"
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> (
+&#160;&#160;&#160;&#160;<span style="color: #6fb593;">"fmt"</span>
+&#160;&#160;&#160;&#160;<span style="color: #6fb593;">"time"</span>
 )
-func CalcStoreTotal(data ProductData) {
-    var storeTotal float64
-    var channel chan float64 = make(chan float64)
-    for category, group := range data {
-        go group.TotalPrice(category, channel)
-    }
-    time.Sleep(time.Second * 5)
-    fmt.Println("-- Starting to receive from channel")
-    for i := 0; i &lt; len(data); i++ {
-        fmt.Println("-- channel read pending")
-        value :=  &lt;- channel
-        fmt.Println("-- channel read complete", value)
-        storeTotal += value
-        time.Sleep(time.Second)
-    }
-    fmt.Println("Total:", ToCurrency(storeTotal))
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">CalcStoreTotal</span>(<span style="color: #968cc7;">data</span> <span style="color: #cd9575;">ProductData</span>) {
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;var</span> <span style="color: #968cc7;">storeTotal</span> <span style="color: #cd9575;">float64</span>
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;var</span> <span style="color: #968cc7;">channel</span> <span style="color: #4d9391;">chan</span> <span style="color: #968cc7;">float64</span> = <span style="color: #80bcb6;">make</span>(<span style="color: #4d9391;">chan</span> <span style="color: #cd9575;">float64</span>)
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;for</span> <span style="color: #968cc7;">category</span>, <span style="color: #968cc7;">group</span> := <span style="color: #4d9391;">range</span> data {
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color: #4d9391;">go</span> group.<span style="color: #80bcb6;">TotalPrice</span>(category, channel)
+&#160;&#160;&#160;&#160;}
+&#160;&#160;&#160;&#160;time.<span style="color: #80bcb6;">Sleep</span>(time.Second * 5)
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"-- Starting to receive from channel"</span>)
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;for</span> <span style="color: #968cc7;">i</span> := 0; i &lt; <span style="color: #80bcb6;">len</span>(data); i++ {
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"-- channel read pending"</span>)
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;value</span> :=&#160;&#160;&lt;- channel
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"-- channel read complete"</span>, value)
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;storeTotal += value
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;time.<span style="color: #80bcb6;">Sleep</span>(time.Second)
+&#160;&#160;&#160;&#160;}
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Total:"</span>, <span style="color: #80bcb6;">ToCurrency</span>(storeTotal))
 }
-func (group ProductGroup) TotalPrice(category string, resultChannel chan float64)  {
-    var total float64
-    for _, p := range group {
-        //fmt.Println(category, "product:", p.Name)
-        total += p.Price
-        time.Sleep(time.Millisecond * 100)
-    }
-    fmt.Println(category, "channel sending", ToCurrency(total))
-    resultChannel &lt;- total
-    fmt.Println(category, "channel send complete")
+<span style="color: #4d9391;">func</span> (<span style="color: #968cc7;">group</span> <span style="color: #cd9575;">ProductGroup</span>) <span style="color: #80bcb6;">TotalPrice</span>(<span style="color: #968cc7;">category</span> <span style="color: #cd9575;">string</span>, <span style="color: #968cc7;">resultChannel</span> <span style="color: #4d9391;">chan</span> <span style="color: #cd9575;">float64</span>)<span style="color: #cd9575;">&#160;&#160;</span>{
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;var</span> <span style="color: #968cc7;">total</span> <span style="color: #cd9575;">float64</span>
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;for</span> <span style="color: #968cc7;">_</span>, <span style="color: #968cc7;">p</span> := <span style="color: #4d9391;">range</span> group {
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color: #545c5e;">//</span><span style="color: #545c5e;">fmt.Println(category, "product:", p.Name)
+</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;total += p.Price
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;time.<span style="color: #80bcb6;">Sleep</span>(time.Millisecond * 100)
+&#160;&#160;&#160;&#160;}
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(category, <span style="color: #6fb593;">"channel sending"</span>, <span style="color: #80bcb6;">ToCurrency</span>(total))
+&#160;&#160;&#160;&#160;resultChannel &lt;- total
+&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(category, <span style="color: #6fb593;">"channel send complete"</span>)
 }
 </code></pre>
 
@@ -3258,101 +3258,101 @@ channel. The direction of the arrow for a channel specifies the direction of flo
 <li><code>&lt;- chan</code>  :only reading from channel (input channel)</li>
 </ul>
 </div>
-<div id="outline-container-orge23ca65" class="outline-6">
-<h6 id="orge23ca65">Receiving Without Blocking</h6>
-<div class="outline-text-6" id="text-orge23ca65">
+<div id="outline-container-orgd1dac04" class="outline-6">
+<h6 id="orgd1dac04">Receiving Without Blocking</h6>
+<div class="outline-text-6" id="text-orgd1dac04">
 <p>
 The simplest use for select statements is to receive from a channel without blocking,
 ensuring that a goroutine won’t have to wait when the channel is empty.
 </p>
 
 
-<pre class="code"><code>package main
-import (
-    "fmt"
-    "time"
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
+<span style="color: #4d9391;">import</span> (
+&#160;&#160;&#160;&#160;<span style="color: #6fb593;">"fmt"</span>
+&#160;&#160;&#160;&#160;<span style="color: #6fb593;">"time"</span>
 )
-// func receiveDispatches(channel &lt;-chan DispatchNotification) {
-//     for details := range channel {
-//         fmt.Println("Dispatch to", details.Customer, ":", details.Quantity,
-//             "x", details.Product.Name)
-//     }
-//     fmt.Println("Channel has been closed")
-// }
-func main() {
-    dispatchChannel := make(chan DispatchNotification, 100)
-    go DispatchOrders(chan&lt;- DispatchNotification(dispatchChannel))
-    // receiveDispatches((&lt;-chan DispatchNotification)(dispatchChannel))
-    for {
-        select {
-            case details, ok := &lt;- dispatchChannel:
-	                if ok {
-                    fmt.Println("Dispatch to", details.Customer, ":",
-                        details.Quantity, "x", details.Product.Name)
-                } else {
-                    fmt.Println("Channel has been closed")
-                    goto alldone
-                }
-            default:
-                fmt.Println("-- No message ready to be received")
-                time.Sleep(time.Millisecond * 500)
-        }
-    }
-    alldone: fmt.Println("All values received")
+<span style="color: #545c5e;">// </span><span style="color: #545c5e;">func receiveDispatches(channel &lt;-chan DispatchNotification) {
+</span><span style="color: #545c5e;">//&#160;&#160;&#160;&#160;&#160;</span><span style="color: #545c5e;">for details := range channel {
+</span><span style="color: #545c5e;">//&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span style="color: #545c5e;">fmt.Println("Dispatch to", details.Customer, ":", details.Quantity,
+</span><span style="color: #545c5e;">//&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span><span style="color: #545c5e;">"x", details.Product.Name)
+</span><span style="color: #545c5e;">//&#160;&#160;&#160;&#160;&#160;</span><span style="color: #545c5e;">}
+</span><span style="color: #545c5e;">//&#160;&#160;&#160;&#160;&#160;</span><span style="color: #545c5e;">fmt.Println("Channel has been closed")
+</span><span style="color: #545c5e;">// </span><span style="color: #545c5e;">}
+</span><span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;dispatchChannel</span> := <span style="color: #80bcb6;">make</span>(<span style="color: #4d9391;">chan</span> <span style="color: #cd9575;">DispatchNotification</span>, 100)
+&#160;&#160;&#160;&#160;<span style="color: #4d9391;">go</span> <span style="color: #80bcb6;">DispatchOrders</span>(<span style="color: #4d9391;">chan</span>&lt;- <span style="color: #80bcb6;">DispatchNotification</span>(dispatchChannel))
+&#160;&#160;&#160;&#160;<span style="color: #545c5e;">// </span><span style="color: #545c5e;">receiveDispatches((&lt;-chan DispatchNotification)(dispatchChannel))
+</span>&#160;&#160;&#160;&#160;<span style="color: #4d9391;">for</span> {
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color: #4d9391;">select</span> {
+<span style="color: #968cc7;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;case</span> <span style="color: #968cc7;">details</span>, <span style="color: #968cc7;">ok</span> := &lt;- dispatchChannel:
+&#9474;   &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color: #4d9391;">if</span> ok {
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Dispatch to"</span>, details.Customer, <span style="color: #6fb593;">":"</span>,
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;details.Quantity, <span style="color: #6fb593;">"x"</span>, details.Product.Name)
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;} <span style="color: #4d9391;">else</span> {
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"Channel has been closed"</span>)
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color: #4d9391;">goto</span> <span style="color: #ab98b5;">alldone</span>
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span style="color: #4d9391;">default</span>:
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"-- No message ready to be received"</span>)
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;time.<span style="color: #80bcb6;">Sleep</span>(time.Millisecond * 500)
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;}
+&#160;&#160;&#160;&#160;}
+<span style="color: #ab98b5;">&#160;&#160;&#160;&#160;alldone</span>: fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"All values received"</span>)
 }
 </code></pre>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-orgfa75f20" class="outline-4">
-<h4 id="orgfa75f20">Error Handling</h4>
-<div class="outline-text-4" id="text-orgfa75f20">
+<div id="outline-container-org12465a1" class="outline-4">
+<h4 id="org12465a1">Error Handling</h4>
+<div class="outline-text-4" id="text-org12465a1">
 <p>
 This file defines a custom type named Product, an alias for a slice of *Product values, and
 a slice populated using the literal syntax. I have also defined a function to format float64
 values into dollar currency amounts.
 </p>
 
-<pre class="code"><code>package main
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import "strconv"
-import "fmt"
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"strconv"</span>
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"fmt"</span>
 
-type Product struct {
-	Name, Category string
-	Price          float64
+<span style="color: #4d9391;">type</span> <span style="color: #cd9575;">Product</span> <span style="color: #4d9391;">struct</span> {
+&#9474;   Name, Category <span style="color: #cd9575;">string</span>
+&#9474;   Price          <span style="color: #cd9575;">float64</span>
 }
-type ProductSlice []*Product
+<span style="color: #4d9391;">type</span> <span style="color: #cd9575;">ProductSlice</span> []*<span style="color: #cd9575;">Product</span>
 
-var Products = ProductSlice{
-	{"Kayak", "Watersports", 279},
-	{"Lifejacket", "Watersports", 49.95},
-	{"Soccer Ball", "Soccer", 19.50},
-	{"Corner Flags", "Soccer", 34.95},
-	{"Stadium", "Soccer", 79500},
-	{"Thinking Cap", "Chess", 16},
-	{"Unsteady Chair", "Chess", 75},
-	{"Bling-Bling King", "Chess", 1200},
+<span style="color: #4d9391;">var</span> <span style="color: #968cc7;">Products</span> = <span style="color: #cd9575;">ProductSlice</span>{
+&#9474;   {<span style="color: #6fb593;">"Kayak"</span>, <span style="color: #6fb593;">"Watersports"</span>, 279},
+&#9474;   {<span style="color: #6fb593;">"Lifejacket"</span>, <span style="color: #6fb593;">"Watersports"</span>, 49.95},
+&#9474;   {<span style="color: #6fb593;">"Soccer Ball"</span>, <span style="color: #6fb593;">"Soccer"</span>, 19.50},
+&#9474;   {<span style="color: #6fb593;">"Corner Flags"</span>, <span style="color: #6fb593;">"Soccer"</span>, 34.95},
+&#9474;   {<span style="color: #6fb593;">"Stadium"</span>, <span style="color: #6fb593;">"Soccer"</span>, 79500},
+&#9474;   {<span style="color: #6fb593;">"Thinking Cap"</span>, <span style="color: #6fb593;">"Chess"</span>, 16},
+&#9474;   {<span style="color: #6fb593;">"Unsteady Chair"</span>, <span style="color: #6fb593;">"Chess"</span>, 75},
+&#9474;   {<span style="color: #6fb593;">"Bling-Bling King"</span>, <span style="color: #6fb593;">"Chess"</span>, 1200},
 }
 
-func ToCurrency(val float64) string {
-	return "$" + strconv.FormatFloat(val, 'f', 2, 64)
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">ToCurrency</span>(<span style="color: #968cc7;">val</span> <span style="color: #cd9575;">float64</span>) <span style="color: #cd9575;">string</span> {
+&#9474;   <span style="color: #4d9391;">return</span> <span style="color: #6fb593;">"$"</span> + strconv.<span style="color: #80bcb6;">FormatFloat</span>(val, <span style="color: #6fb593;">'f'</span>, 2, 64)
 }
-func main() {
-	categories := []string{"Watersports", "Chess"}
-	for _, cat := range categories {
-		total := Products.TotalPrice(cat)
-		fmt.Println(cat, "Total:", ToCurrency(total))
-	}
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #968cc7;">categories</span> := []<span style="color: #cd9575;">string</span>{<span style="color: #6fb593;">"Watersports"</span>, <span style="color: #6fb593;">"Chess"</span>}
+&#9474;   <span style="color: #4d9391;">for</span> <span style="color: #968cc7;">_</span>, <span style="color: #968cc7;">cat</span> := <span style="color: #4d9391;">range</span> categories {
+&#9474;   &#9474;   <span style="color: #968cc7;">total</span> := Products.<span style="color: #80bcb6;">TotalPrice</span>(cat)
+&#9474;   &#9474;   fmt.<span style="color: #80bcb6;">Println</span>(cat, <span style="color: #6fb593;">"Total:"</span>, <span style="color: #80bcb6;">ToCurrency</span>(total))
+&#9474;   }
 }
-func (slice ProductSlice) TotalPrice(category string) (total float64) {
-	for _, p := range slice {
-		if p.Category == category {
-			total += p.Price
-		}
-	}
-	return
+<span style="color: #4d9391;">func</span> (<span style="color: #968cc7;">slice</span> <span style="color: #cd9575;">ProductSlice</span>) <span style="color: #80bcb6;">TotalPrice</span>(<span style="color: #968cc7;">category</span> <span style="color: #cd9575;">string</span>) (<span style="color: #968cc7;">total</span> <span style="color: #cd9575;">float64</span>) {
+&#9474;   <span style="color: #4d9391;">for</span> <span style="color: #968cc7;">_</span>, <span style="color: #968cc7;">p</span> := <span style="color: #4d9391;">range</span> slice {
+&#9474;   &#9474;   <span style="color: #4d9391;">if</span> p.Category == category {
+&#9474;   &#9474;   &#9474;   total += p.Price
+&#9474;   &#9474;   }
+&#9474;   }
+&#9474;   <span style="color: #4d9391;">return</span>
 }
 </code></pre>
 
@@ -3361,19 +3361,19 @@ Go makes it easy to express exceptional conditions, which allows a function or m
 indicate to the calling code that something has gone wrong. As an example this adds
 statements that produce a problematic response from the <code>TotalPrice</code> method
 </p>
-<pre class="code"><code>func main() {
-	categories := []string{"Watersports", "Chess", "Running"}
-	for _, cat := range categories {
-		total := Products.TotalPrice(cat)
-		fmt.Println(cat, "Total:", ToCurrency(total))
-	}
+<pre class="code"><code><span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #968cc7;">categories</span> := []<span style="color: #cd9575;">string</span>{<span style="color: #6fb593;">"Watersports"</span>, <span style="color: #6fb593;">"Chess"</span>, <span style="color: #6fb593;">"Running"</span>}
+&#9474;   <span style="color: #4d9391;">for</span> <span style="color: #968cc7;">_</span>, <span style="color: #968cc7;">cat</span> := <span style="color: #4d9391;">range</span> categories {
+&#9474;   &#9474;   <span style="color: #968cc7;">total</span> := Products.<span style="color: #80bcb6;">TotalPrice</span>(cat)
+&#9474;   &#9474;   fmt.<span style="color: #80bcb6;">Println</span>(cat, <span style="color: #6fb593;">"Total:"</span>, <span style="color: #80bcb6;">ToCurrency</span>(total))
+&#9474;   }
 }
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org05aed3e" class="outline-4">
-<h4 id="org05aed3e"><span class="done KILL">KILL</span> Go Modules</h4>
-<div class="outline-text-4" id="text-org05aed3e">
+<div id="outline-container-orgd4811ee" class="outline-4">
+<h4 id="orgd4811ee"><span class="done KILL">KILL</span> Go Modules</h4>
+<div class="outline-text-4" id="text-orgd4811ee">
 <p>
 A module is a collection of Go packages stored in a file tree with a go.mod file at its
 root. The go.mod file defines the module’s module path, which is also the import path used
@@ -3390,18 +3390,18 @@ if a go.mod is found. See the go command documentation for details.) Starting in
 module mode will be the default for all development.
 </p>
 </div>
-<div id="outline-container-orgb241c9d" class="outline-5">
-<h5 id="orgb241c9d">Creating a New Module</h5>
-<div class="outline-text-5" id="text-orgb241c9d">
+<div id="outline-container-org5c14c38" class="outline-5">
+<h5 id="org5c14c38">Creating a New Module</h5>
+<div class="outline-text-5" id="text-org5c14c38">
 <p>
 Create a new, empty directory somewhere outside $GOPATH/src, cd into that directory, and
 then create a new source file, hello.go:
 </p>
 
-<pre class="code"><code>package hello
+<pre class="code"><code><span style="color: #4d9391;">package</span> hello
 
-func Hello() string {
-    return "Hello, world."
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">Hello</span>() <span style="color: #cd9575;">string</span> {
+&#9474;   <span style="color: #4d9391;">return</span> <span style="color: #6fb593;">"Hello, world."</span>
 }
 
 </code></pre>
@@ -3410,15 +3410,15 @@ func Hello() string {
 Let’s write a test, too, in hello_test.go:
 </p>
 
-<pre class="code"><code>package hello
+<pre class="code"><code><span style="color: #4d9391;">package</span> hello
 
-import "testing"
+<span style="color: #4d9391;">import</span> <span style="color: #6fb593;">"testing"</span>
 
-func TestHello(t *testing.T) {
-    want := "Hello, world."
-    if got := Hello(); got != want {
-        t.Errorf("Hello() = %q, want %q", got, want)
-    }
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">TestHello</span>(<span style="color: #968cc7;">t</span> *<span style="color: #cd9575;">testing.T</span>) {
+&#9474;   <span style="color: #968cc7;">want</span> := <span style="color: #6fb593;">"Hello, world."</span>
+&#9474;   <span style="color: #4d9391;">if</span> <span style="color: #968cc7;">got</span> := <span style="color: #80bcb6;">Hello</span>(); got != want {
+&#9474;   &#9474;   t.<span style="color: #80bcb6;">Errorf</span>(<span style="color: #6fb593;">"Hello() = %q, want %q"</span>, got, want)
+&#9474;   }
 }
 
 </code></pre>
@@ -3444,13 +3444,13 @@ adding a dependency on) code written by other developers.
 </div>
 </div>
 </div>
-<div id="outline-container-org9ddfb8c" class="outline-3">
-<h3 id="org9ddfb8c">Go Standard Library</h3>
-<div class="outline-text-3" id="text-org9ddfb8c">
+<div id="outline-container-org11bcde6" class="outline-3">
+<h3 id="org11bcde6">Go Standard Library</h3>
+<div class="outline-text-3" id="text-org11bcde6">
 </div>
-<div id="outline-container-org5326bdc" class="outline-4">
-<h4 id="org5326bdc"><span class="done DONE">DONE</span> Go <code>fstream</code></h4>
-<div class="outline-text-4" id="text-org5326bdc">
+<div id="outline-container-org9c6294c" class="outline-4">
+<h4 id="org9c6294c"><span class="done DONE">DONE</span> Go <code>fstream</code></h4>
+<div class="outline-text-4" id="text-org9c6294c">
 <p>
 To work with files in Go, we use the <code>os</code> and ~ioutil~packages.
 </p>
@@ -3459,36 +3459,36 @@ To work with files in Go, we use the <code>os</code> and ~ioutil~packages.
 The os.Stat function returns the <code>FileInfo</code> structure describing the file.
 </p>
 </div>
-<div id="outline-container-orgc690fd5" class="outline-5">
-<h5 id="orgc690fd5">Operate on Files</h5>
-<div class="outline-text-5" id="text-orgc690fd5">
+<div id="outline-container-orgfb4634b" class="outline-5">
+<h5 id="orgfb4634b">Operate on Files</h5>
+<div class="outline-text-5" id="text-orgfb4634b">
 </div>
-<div id="outline-container-orgbfe1e28" class="outline-6">
-<h6 id="orgbfe1e28">Checking if a File Exists</h6>
-<div class="outline-text-6" id="text-orgbfe1e28">
+<div id="outline-container-org02f541c" class="outline-6">
+<h6 id="org02f541c">Checking if a File Exists</h6>
+<div class="outline-text-6" id="text-org02f541c">
 <p>
 In the following example, we check if the given file exists:
 </p>
 
-<pre class="code"><code>package main
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import (
-    "errors"
-    "fmt"
-    "os"
+<span style="color: #4d9391;">import</span> (
+&#9474;   <span style="color: #6fb593;">"errors"</span>
+&#9474;   <span style="color: #6fb593;">"fmt"</span>
+&#9474;   <span style="color: #6fb593;">"os"</span>
 )
 
-func main() {
-
-    _, err := os.Stat("words.txt")
-
-    if errors.Is(err, os.ErrNotExist) {
-
-        fmt.Println("file does not exist")
-    } else {
-
-        fmt.Println("file exists")
-    }
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;
+&#9474;   <span style="color: #968cc7;">_</span>, <span style="color: #968cc7;">err</span> := os.<span style="color: #80bcb6;">Stat</span>(<span style="color: #6fb593;">"words.txt"</span>)
+&#9474;
+&#9474;   <span style="color: #4d9391;">if</span> errors.<span style="color: #80bcb6;">Is</span>(err, os.ErrNotExist) {
+&#9474;   &#9474;
+&#9474;   &#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"file does not exist"</span>)
+&#9474;   } <span style="color: #4d9391;">else</span> {
+&#9474;   &#9474;
+&#9474;   &#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"file exists"</span>)
+&#9474;   }
 }
 
 </code></pre>
@@ -3499,167 +3499,167 @@ the file does not exist.
 </p>
 </div>
 </div>
-<div id="outline-container-org03ad35f" class="outline-6">
-<h6 id="org03ad35f">Creating a File</h6>
-<div class="outline-text-6" id="text-org03ad35f">
-<pre class="code"><code>package main
+<div id="outline-container-orge8f5ccb" class="outline-6">
+<h6 id="orge8f5ccb">Creating a File</h6>
+<div class="outline-text-6" id="text-orge8f5ccb">
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import (
-    "fmt"
-    "log"
-    "os"
+<span style="color: #4d9391;">import</span> (
+&#9474;   <span style="color: #6fb593;">"fmt"</span>
+&#9474;   <span style="color: #6fb593;">"log"</span>
+&#9474;   <span style="color: #6fb593;">"os"</span>
 )
 
-func main() {
-
-    file, err := os.Create("empty.txt")
-
-    defer file.Close()
-
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    fmt.Println("file created")
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;
+&#9474;   <span style="color: #968cc7;">file</span>, <span style="color: #968cc7;">err</span> := os.<span style="color: #80bcb6;">Create</span>(<span style="color: #6fb593;">"empty.txt"</span>)
+&#9474;
+&#9474;   <span style="color: #4d9391;">defer</span> file.<span style="color: #80bcb6;">Close</span>()
+&#9474;
+&#9474;   <span style="color: #4d9391;">if</span> err != <span style="color: #ab98b5;">nil</span> {
+&#9474;   &#9474;   log.<span style="color: #80bcb6;">Fatal</span>(err)
+&#9474;   }
+&#9474;
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"file created"</span>)
 }
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orga61d12c" class="outline-6">
-<h6 id="orga61d12c">Delete a File</h6>
-<div class="outline-text-6" id="text-orga61d12c">
-<pre class="code"><code>package main
+<div id="outline-container-org21fde5d" class="outline-6">
+<h6 id="org21fde5d">Delete a File</h6>
+<div class="outline-text-6" id="text-org21fde5d">
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import (
-    "fmt"
-    "log"
-    "os"
+<span style="color: #4d9391;">import</span> (
+&#9474;   <span style="color: #6fb593;">"fmt"</span>
+&#9474;   <span style="color: #6fb593;">"log"</span>
+&#9474;   <span style="color: #6fb593;">"os"</span>
 )
 
-func main() {
-
-    err := os.Remove("words.txt")
-
-    if err != nil {
-
-        log.Fatal(err)
-    }
-
-    fmt.Println("file deleted")
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;
+&#9474;   <span style="color: #968cc7;">err</span> := os.<span style="color: #80bcb6;">Remove</span>(<span style="color: #6fb593;">"words.txt"</span>)
+&#9474;
+&#9474;   <span style="color: #4d9391;">if</span> err != <span style="color: #ab98b5;">nil</span> {
+&#9474;   &#9474;
+&#9474;   &#9474;   log.<span style="color: #80bcb6;">Fatal</span>(err)
+&#9474;   }
+&#9474;
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #6fb593;">"file deleted"</span>)
 }
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgc49ffed" class="outline-6">
-<h6 id="orgc49ffed">Go File Size</h6>
-<div class="outline-text-6" id="text-orgc49ffed">
-<pre class="code"><code>package main
+<div id="outline-container-org4b4b6c9" class="outline-6">
+<h6 id="org4b4b6c9">Go File Size</h6>
+<div class="outline-text-6" id="text-org4b4b6c9">
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import (
-    "fmt"
-    "log"
-    "os"
+<span style="color: #4d9391;">import</span> (
+&#9474;   <span style="color: #6fb593;">"fmt"</span>
+&#9474;   <span style="color: #6fb593;">"log"</span>
+&#9474;   <span style="color: #6fb593;">"os"</span>
 )
 
-func main() {
-
-    fInfo, err := os.Stat("words.txt")
-
-    if err != nil {
-
-        log.Fatal(err)
-    }
-
-    fsize := fInfo.Size()
-
-    fmt.Printf("The file size is %d bytes\n", fsize)
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;
+&#9474;   <span style="color: #968cc7;">fInfo</span>, <span style="color: #968cc7;">err</span> := os.<span style="color: #80bcb6;">Stat</span>(<span style="color: #6fb593;">"words.txt"</span>)
+&#9474;
+&#9474;   <span style="color: #4d9391;">if</span> err != <span style="color: #ab98b5;">nil</span> {
+&#9474;   &#9474;
+&#9474;   &#9474;   log.<span style="color: #80bcb6;">Fatal</span>(err)
+&#9474;   }
+&#9474;
+&#9474;   <span style="color: #968cc7;">fsize</span> := fInfo.<span style="color: #80bcb6;">Size</span>()
+&#9474;
+&#9474;   fmt.<span style="color: #80bcb6;">Printf</span>(<span style="color: #6fb593;">"The file size is %d bytes\n"</span>, fsize)
 }
 
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgf0f2774" class="outline-6">
-<h6 id="orgf0f2774">Read File</h6>
-<div class="outline-text-6" id="text-orgf0f2774">
-<pre class="code"><code>package main
+<div id="outline-container-org91a1bc4" class="outline-6">
+<h6 id="org91a1bc4">Read File</h6>
+<div class="outline-text-6" id="text-org91a1bc4">
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import (
-    "fmt"
-    "io/ioutil"
-    "log"
+<span style="color: #4d9391;">import</span> (
+&#9474;   <span style="color: #6fb593;">"fmt"</span>
+&#9474;   <span style="color: #6fb593;">"io/ioutil"</span>
+&#9474;   <span style="color: #6fb593;">"log"</span>
 )
 
-func main() {
-
-    content, err := ioutil.ReadFile("words.txt")
-
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    fmt.Println(string(content))
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;
+&#9474;   <span style="color: #968cc7;">content</span>, <span style="color: #968cc7;">err</span> := ioutil.<span style="color: #80bcb6;">ReadFile</span>(<span style="color: #6fb593;">"words.txt"</span>)
+&#9474;
+&#9474;   <span style="color: #4d9391;">if</span> err != <span style="color: #ab98b5;">nil</span> {
+&#9474;   &#9474;   log.<span style="color: #80bcb6;">Fatal</span>(err)
+&#9474;   }
+&#9474;
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #80bcb6;">string</span>(content))
 }
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgfb2ff77" class="outline-6">
-<h6 id="orgfb2ff77">List Files</h6>
-<div class="outline-text-6" id="text-orgfb2ff77">
-<pre class="code"><code>package main
+<div id="outline-container-orgbba3a77" class="outline-6">
+<h6 id="orgbba3a77">List Files</h6>
+<div class="outline-text-6" id="text-orgbba3a77">
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import (
-    "fmt"
-    "log"
-    "os"
-    "path/filepath"
+<span style="color: #4d9391;">import</span> (
+&#9474;   <span style="color: #6fb593;">"fmt"</span>
+&#9474;   <span style="color: #6fb593;">"log"</span>
+&#9474;   <span style="color: #6fb593;">"os"</span>
+&#9474;   <span style="color: #6fb593;">"path/filepath"</span>
 )
 
-func main() {
-
-    var files []string
-
-    root := "/home/janbodnar/Documents"
-
-    err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-
-        if err != nil {
-
-            fmt.Println(err)
-            return nil
-        }
-
-        if !info.IsDir() &amp;&amp; filepath.Ext(path) == ".txt" {
-            files = append(files, path)
-        }
-
-        return nil
-    })
-
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    for _, file := range files {
-        fmt.Println(file)
-    }
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;
+&#9474;   <span style="color: #4d9391;">var</span> <span style="color: #968cc7;">files</span> []<span style="color: #cd9575;">string</span>
+&#9474;
+&#9474;   <span style="color: #968cc7;">root</span> := <span style="color: #6fb593;">"/home/janbodnar/Documents"</span>
+&#9474;
+&#9474;   <span style="color: #968cc7;">err</span> := filepath.<span style="color: #80bcb6;">Walk</span>(root, <span style="color: #4d9391;">func</span>(<span style="color: #968cc7;">path</span> <span style="color: #cd9575;">string</span>, <span style="color: #968cc7;">info</span> <span style="color: #cd9575;">os.FileInfo</span>, <span style="color: #968cc7;">err</span> <span style="color: #cd9575;">error</span>) <span style="color: #cd9575;">error</span> {
+&#9474;   &#9474;
+&#9474;   &#9474;   <span style="color: #4d9391;">if</span> err != <span style="color: #ab98b5;">nil</span> {
+&#9474;   &#9474;   &#9474;
+&#9474;   &#9474;   &#9474;   fmt.<span style="color: #80bcb6;">Println</span>(err)
+&#9474;   &#9474;   &#9474;   <span style="color: #4d9391;">return</span> <span style="color: #ab98b5;">nil</span>
+&#9474;   &#9474;   }
+&#9474;   &#9474;
+&#9474;   &#9474;   <span style="color: #4d9391;">if</span> <span style="color: #cd5c60;">!</span>info.<span style="color: #80bcb6;">IsDir</span>() &amp;&amp; filepath.<span style="color: #80bcb6;">Ext</span>(path) == <span style="color: #6fb593;">".txt"</span> {
+&#9474;   &#9474;   &#9474;   files = <span style="color: #80bcb6;">append</span>(files, path)
+&#9474;   &#9474;   }
+&#9474;   &#9474;
+&#9474;   &#9474;   <span style="color: #4d9391;">return</span> <span style="color: #ab98b5;">nil</span>
+&#9474;   })
+&#9474;
+&#9474;   <span style="color: #4d9391;">if</span> err != <span style="color: #ab98b5;">nil</span> {
+&#9474;   &#9474;   log.<span style="color: #80bcb6;">Fatal</span>(err)
+&#9474;   }
+&#9474;
+&#9474;   <span style="color: #4d9391;">for</span> <span style="color: #968cc7;">_</span>, <span style="color: #968cc7;">file</span> := <span style="color: #4d9391;">range</span> files {
+&#9474;   &#9474;   fmt.<span style="color: #80bcb6;">Println</span>(file)
+&#9474;   }
 }
 </code></pre>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-org47730b6" class="outline-4">
-<h4 id="org47730b6"><span class="done DONE">DONE</span> String</h4>
-<div class="outline-text-4" id="text-org47730b6">
+<div id="outline-container-org889f32d" class="outline-4">
+<h4 id="org889f32d"><span class="done DONE">DONE</span> String</h4>
+<div class="outline-text-4" id="text-org889f32d">
 <p>
 The strings package provides a set of functions for processing strings. In the sections that
 follow, I describe the most useful features of the strings package and demonstrate their
 use.
 </p>
 </div>
-<div id="outline-container-org4617a27" class="outline-5">
-<h5 id="org4617a27">Compare Strings</h5>
-<div class="outline-text-5" id="text-org4617a27">
+<div id="outline-container-orge6f8c2f" class="outline-5">
+<h5 id="orge6f8c2f">Compare Strings</h5>
+<div class="outline-text-5" id="text-orge6f8c2f">
 <p>
 The <code>strings</code> packages provides comparison functions;
 </p>
@@ -3712,12 +3712,12 @@ The <code>strings</code> packages provides comparison functions;
 </table>
 </div>
 </div>
-<div id="outline-container-org9cada32" class="outline-5">
-<h5 id="org9cada32">Builder</h5>
-<div class="outline-text-5" id="text-org9cada32">
-<pre class="code"><code>type Builder struct {
-	// contains filtered or unexported fields
-}
+<div id="outline-container-org1c0d5f6" class="outline-5">
+<h5 id="org1c0d5f6">Builder</h5>
+<div class="outline-text-5" id="text-org1c0d5f6">
+<pre class="code"><code><span style="color: #4d9391;">type</span> <span style="color: #cd9575;">Builder</span> <span style="color: #4d9391;">struct</span> {
+&#9474;   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">contains filtered or unexported fields
+</span>}
 </code></pre>
 <p>
 A Builder is used to efficiently build a string using Write methods. It minimizes memory
@@ -3727,21 +3727,21 @@ copying. The zero value is ready to use. Do not copy a non-zero Builder.
 <p>
 Example:
 </p>
-<pre class="code"><code>package main
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import (
-	"fmt"
-	"strings"
+<span style="color: #4d9391;">import</span> (
+&#9474;   <span style="color: #6fb593;">"fmt"</span>
+&#9474;   <span style="color: #6fb593;">"strings"</span>
 )
 
-func main() {
-	var b strings.Builder
-	for i := 3; i &gt;= 1; i-- {
-		fmt.Fprintf(&amp;b, "%d...", i)
-	}
-	b.WriteString("ignition")
-	fmt.Println(b.String())
-
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #4d9391;">var</span> <span style="color: #968cc7;">b</span> <span style="color: #cd9575;">strings.Builder</span>
+&#9474;   <span style="color: #4d9391;">for</span> <span style="color: #968cc7;">i</span> := 3; i &gt;= 1; i-- {
+&#9474;   &#9474;   fmt.<span style="color: #80bcb6;">Fprintf</span>(&amp;b, <span style="color: #6fb593;">"%d..."</span>, i)
+&#9474;   }
+&#9474;   b.<span style="color: #80bcb6;">WriteString</span>(<span style="color: #6fb593;">"ignition"</span>)
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(b.<span style="color: #80bcb6;">String</span>())
+&#9474;
 }
 </code></pre>
 
@@ -3750,55 +3750,55 @@ func main() {
 </p>
 </div>
 </div>
-<div id="outline-container-org93bdf4f" class="outline-5">
-<h5 id="org93bdf4f">Editing a String</h5>
-<div class="outline-text-5" id="text-org93bdf4f">
+<div id="outline-container-orgfad6864" class="outline-5">
+<h5 id="orgfad6864">Editing a String</h5>
+<div class="outline-text-5" id="text-orgfad6864">
 <p>
 Strings are immutable in Go, you have to convert it to runes then modify it then convert it
 back to a string.
 </p>
-<pre class="code"><code>func replaceAtIndex(in string, r rune, i int) string {
-    out := []rune(in)
-    out[i] = r
-    return string(out)
+<pre class="code"><code><span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">replaceAtIndex</span>(<span style="color: #968cc7;">in</span> <span style="color: #cd9575;">string</span>, <span style="color: #968cc7;">r</span> <span style="color: #cd9575;">rune</span>, <span style="color: #968cc7;">i</span> <span style="color: #cd9575;">int</span>) <span style="color: #cd9575;">string</span> {
+&#9474;   <span style="color: #968cc7;">out</span> := []<span style="color: #80bcb6;">rune</span>(in)
+&#9474;   out[i] = r
+&#9474;   <span style="color: #4d9391;">return</span> <span style="color: #80bcb6;">string</span>(out)
 }
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgf4464e8" class="outline-5">
-<h5 id="orgf4464e8">String Mapping</h5>
-<div class="outline-text-5" id="text-orgf4464e8">
-<pre class="code"><code>package main
+<div id="outline-container-org779cd5f" class="outline-5">
+<h5 id="org779cd5f">String Mapping</h5>
+<div class="outline-text-5" id="text-org779cd5f">
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import (
-    "fmt"
-    "strings"
+<span style="color: #4d9391;">import</span> (
+&#9474;   <span style="color: #6fb593;">"fmt"</span>
+&#9474;   <span style="color: #6fb593;">"strings"</span>
 )
 
-func main() {
-    transform := func(r rune) rune {
-        // Map uppercase A to underscore.
-        if r == 'A' {
-            return '_'
-        }
-        return r
-    }
-
-    input := "STARRY NIGHT, A PAINTING"
-    fmt.Println(input)
-
-    // Use Map() to run func on each rune.
-    result := strings.Map(transform, input)
-    fmt.Println(result)
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #968cc7;">transform</span> := <span style="color: #4d9391;">func</span>(<span style="color: #968cc7;">r</span> <span style="color: #cd9575;">rune</span>) <span style="color: #cd9575;">rune</span> {
+&#9474;   &#9474;   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Map uppercase A to underscore.
+&#9474;</span>   &#9474;   <span style="color: #4d9391;">if</span> r == <span style="color: #6fb593;">'A'</span> {
+&#9474;   &#9474;   &#9474;   <span style="color: #4d9391;">return</span> <span style="color: #6fb593;">'_'</span>
+&#9474;   &#9474;   }
+&#9474;   &#9474;   <span style="color: #4d9391;">return</span> r
+&#9474;   }
+&#9474;
+&#9474;   <span style="color: #968cc7;">input</span> := <span style="color: #6fb593;">"STARRY NIGHT, A PAINTING"</span>
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(input)
+&#9474;
+&#9474;   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">Use Map() to run func on each rune.
+&#9474;</span>   <span style="color: #968cc7;">result</span> := strings.<span style="color: #80bcb6;">Map</span>(transform, input)
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(result)
 }
 
 </code></pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orgb38a95f" class="outline-4">
-<h4 id="orgb38a95f"><span class="done DONE">DONE</span> Errors</h4>
-<div class="outline-text-4" id="text-orgb38a95f">
+<div id="outline-container-org55ad243" class="outline-4">
+<h4 id="org55ad243"><span class="done DONE">DONE</span> Errors</h4>
+<div class="outline-text-4" id="text-org55ad243">
 <p>
 An error is an abnormal, unexpected condition which occurs in the program. In programming,
 errors are often called bugs. The process of finding and resolving bugs is called debugging.
@@ -3817,10 +3817,10 @@ there is no error. By convention, the error value is the rightmost value among t
 values.
 </p>
 
-<pre class="code"><code>content, err := ioutil.ReadFile("thermopylae.txt")
+<pre class="code"><code><span style="color: #968cc7;">content</span>, <span style="color: #968cc7;">err</span> := ioutil.<span style="color: #80bcb6;">ReadFile</span>(<span style="color: #6fb593;">"thermopylae.txt"</span>)
 
-if err != nil {
-    log.Fatal(err)
+<span style="color: #4d9391;">if</span> err != <span style="color: #ab98b5;">nil</span> {
+&#9474;   log.<span style="color: #80bcb6;">Fatal</span>(err)
 }
 </code></pre>
 
@@ -3855,64 +3855,64 @@ execution of a program. A panic is Go prints the stack trace to the console, ass
 debugging.
 </p>
 </div>
-<div id="outline-container-org559e621" class="outline-5">
-<h5 id="org559e621">Implementing Errors</h5>
-<div class="outline-text-5" id="text-org559e621">
+<div id="outline-container-orgcb8978d" class="outline-5">
+<h5 id="orgcb8978d">Implementing Errors</h5>
+<div class="outline-text-5" id="text-orgcb8978d">
 <p>
 To define a custom error, we implement the error interface.
 </p>
-<pre class="code"><code>package main
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import (
-    "fmt"
-    "log"
+<span style="color: #4d9391;">import</span> (
+&#9474;   <span style="color: #6fb593;">"fmt"</span>
+&#9474;   <span style="color: #6fb593;">"log"</span>
 )
 
-func enterAge(age int) (string, error) {
-
-    if age &lt; 0 || age &gt; 130 {
-
-        return "", &amp;wrongAge{age, "wrong age value"}
-    }
-
-    return fmt.Sprintf("processing %d age value", age), nil
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">enterAge</span>(<span style="color: #968cc7;">age</span> <span style="color: #cd9575;">int</span>) (<span style="color: #cd9575;">string</span>, <span style="color: #cd9575;">error</span>) {
+&#9474;
+&#9474;   <span style="color: #4d9391;">if</span> age &lt; 0 || age &gt; 130 {
+&#9474;   &#9474;
+&#9474;   &#9474;   <span style="color: #4d9391;">return</span> <span style="color: #6fb593;">""</span>, &amp;<span style="color: #cd9575;">wrongAge</span>{age, <span style="color: #6fb593;">"wrong age value"</span>}
+&#9474;   }
+&#9474;
+&#9474;   <span style="color: #4d9391;">return</span> fmt.<span style="color: #80bcb6;">Sprintf</span>(<span style="color: #6fb593;">"processing %d age value"</span>, age), <span style="color: #ab98b5;">nil</span>
 }
 
-type wrongAge struct {
-    age int
-    msg string
+<span style="color: #4d9391;">type</span> <span style="color: #cd9575;">wrongAge</span> <span style="color: #4d9391;">struct</span> {
+&#9474;   age <span style="color: #cd9575;">int</span>
+&#9474;   msg <span style="color: #cd9575;">string</span>
 }
 
-func (e *wrongAge) Error() string {
-
-    return fmt.Sprintf("%d: %s", e.age, e.msg)
+<span style="color: #4d9391;">func</span> (<span style="color: #968cc7;">e</span> *<span style="color: #cd9575;">wrongAge</span>) <span style="color: #80bcb6;">Error</span>() <span style="color: #cd9575;">string</span> {
+&#9474;
+&#9474;   <span style="color: #4d9391;">return</span> fmt.<span style="color: #80bcb6;">Sprintf</span>(<span style="color: #6fb593;">"%d: %s"</span>, e.age, e.msg)
 }
 
-func main() {
-
-    var age int = 18
-    msg, err := enterAge(age)
-
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    fmt.Println(msg)
-
-    age = 178
-    msg, err = enterAge(age)
-
-    if err != nil {
-        log.Fatal(err)
-    }
-    fmt.Println(msg)
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;
+&#9474;   <span style="color: #4d9391;">var</span> <span style="color: #968cc7;">age</span> <span style="color: #cd9575;">int</span> = 18
+&#9474;   <span style="color: #968cc7;">msg</span>, <span style="color: #968cc7;">err</span> := <span style="color: #80bcb6;">enterAge</span>(age)
+&#9474;
+&#9474;   <span style="color: #4d9391;">if</span> err != <span style="color: #ab98b5;">nil</span> {
+&#9474;   &#9474;   log.<span style="color: #80bcb6;">Fatal</span>(err)
+&#9474;   }
+&#9474;
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(msg)
+&#9474;
+&#9474;   age = 178
+&#9474;   msg, err = <span style="color: #80bcb6;">enterAge</span>(age)
+&#9474;
+&#9474;   <span style="color: #4d9391;">if</span> err != <span style="color: #ab98b5;">nil</span> {
+&#9474;   &#9474;   log.<span style="color: #80bcb6;">Fatal</span>(err)
+&#9474;   }
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(msg)
 }
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org6d776b6" class="outline-5">
-<h5 id="org6d776b6">Comparing Errors</h5>
-<div class="outline-text-5" id="text-org6d776b6">
+<div id="outline-container-orgc390576" class="outline-5">
+<h5 id="orgc390576">Comparing Errors</h5>
+<div class="outline-text-5" id="text-orgc390576">
 <p>
 Declaring an error, and comparing it with <code>'==' (as in err == myPkg.ErrTokenExpired)</code> is no
 longer the best practice with Go 1.13 (Q3 2019).
@@ -3921,56 +3921,56 @@ longer the best practice with Go 1.13 (Q3 2019).
 <p>
 The right way is:
 </p>
-<pre class="code"><code>if errors.Is(err, io.ErrUnexpectedEOF)
+<pre class="code"><code><span style="color: #4d9391;">if</span> errors.<span style="color: #80bcb6;">Is</span>(err, io.ErrUnexpectedEOF)
 </code></pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org025c142" class="outline-4">
-<h4 id="org025c142"><span class="done DONE">DONE</span> JSON</h4>
-<div class="outline-text-4" id="text-org025c142">
+<div id="outline-container-orga1fbc78" class="outline-4">
+<h4 id="orga1fbc78"><span class="done DONE">DONE</span> JSON</h4>
+<div class="outline-text-4" id="text-orga1fbc78">
 <p>
 <code>JSON</code> is a lightweight data-interchange format. It is easily read and written by humans and
 parsed and generated by machines. The application/json is the official Internet media type
 for JSON. The JSON filename extension is .json.
 </p>
 
-<pre class="code"><code>package main
+<pre class="code"><code><span style="color: #4d9391;">package</span> main
 
-import (
-    "encoding/json"
-    "fmt"
-    "log"
+<span style="color: #4d9391;">import</span> (
+&#9474;   <span style="color: #6fb593;">"encoding/json"</span>
+&#9474;   <span style="color: #6fb593;">"fmt"</span>
+&#9474;   <span style="color: #6fb593;">"log"</span>
 )
 
-type User struct {
-    Id         int
-    Name       string
-    Occupation string
+<span style="color: #4d9391;">type</span> <span style="color: #cd9575;">User</span> <span style="color: #4d9391;">struct</span> {
+&#9474;   Id         <span style="color: #cd9575;">int</span>
+&#9474;   Name       <span style="color: #cd9575;">string</span>
+&#9474;   Occupation <span style="color: #cd9575;">string</span>
 }
 
-func main() {
-    u1 := User{1, "John Doe", "gardener"}
-    json_data, err := json.Marshal(u1)
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    fmt.Println(string(json_data))
-    users := []User{
-        {Id: 2, Name: "Roger Roe", Occupation: "driver"},
-        {Id: 3, Name: "Lucy Smith", Occupation: "teacher"},
-        {Id: 4, Name: "David Brown", Occupation: "programmer"},
-    }
-
-    json_data2, err := json.Marshal(users)
-
-    if err != nil {
-
-        log.Fatal(err)
-    }
-
-    fmt.Println(string(json_data2))
+<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
+&#9474;   <span style="color: #968cc7;">u1</span> := <span style="color: #cd9575;">User</span>{1, <span style="color: #6fb593;">"John Doe"</span>, <span style="color: #6fb593;">"gardener"</span>}
+&#9474;   <span style="color: #968cc7;">json_data</span>, <span style="color: #968cc7;">err</span> := json.<span style="color: #80bcb6;">Marshal</span>(u1)
+&#9474;   <span style="color: #4d9391;">if</span> err != <span style="color: #ab98b5;">nil</span> {
+&#9474;   &#9474;   log.<span style="color: #80bcb6;">Fatal</span>(err)
+&#9474;   }
+&#9474;
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #80bcb6;">string</span>(json_data))
+&#9474;   <span style="color: #968cc7;">users</span> := []<span style="color: #cd9575;">User</span>{
+&#9474;   &#9474;   {<span style="color: #ab98b5;">Id</span>: 2, <span style="color: #ab98b5;">Name</span>: <span style="color: #6fb593;">"Roger Roe"</span>, <span style="color: #ab98b5;">Occupation</span>: <span style="color: #6fb593;">"driver"</span>},
+&#9474;   &#9474;   {<span style="color: #ab98b5;">Id</span>: 3, <span style="color: #ab98b5;">Name</span>: <span style="color: #6fb593;">"Lucy Smith"</span>, <span style="color: #ab98b5;">Occupation</span>: <span style="color: #6fb593;">"teacher"</span>},
+&#9474;   &#9474;   {<span style="color: #ab98b5;">Id</span>: 4, <span style="color: #ab98b5;">Name</span>: <span style="color: #6fb593;">"David Brown"</span>, <span style="color: #ab98b5;">Occupation</span>: <span style="color: #6fb593;">"programmer"</span>},
+&#9474;   }
+&#9474;
+&#9474;   <span style="color: #968cc7;">json_data2</span>, <span style="color: #968cc7;">err</span> := json.<span style="color: #80bcb6;">Marshal</span>(users)
+&#9474;
+&#9474;   <span style="color: #4d9391;">if</span> err != <span style="color: #ab98b5;">nil</span> {
+&#9474;   &#9474;
+&#9474;   &#9474;   log.<span style="color: #80bcb6;">Fatal</span>(err)
+&#9474;   }
+&#9474;
+&#9474;   fmt.<span style="color: #80bcb6;">Println</span>(<span style="color: #80bcb6;">string</span>(json_data2))
 }
 
 </code></pre>
@@ -3979,10 +3979,10 @@ func main() {
 In the code example, we transform a Go struct and a slice of structs into <code>JSON</code> format.
 </p>
 
-<pre class="code"><code>type User struct {
-    Id         int
-    Name       string
-    Occupation string
+<pre class="code"><code><span style="color: #4d9391;">type</span> <span style="color: #cd9575;">User</span> <span style="color: #4d9391;">struct</span> {
+&#9474;   Id         <span style="color: #cd9575;">int</span>
+&#9474;   Name       <span style="color: #cd9575;">string</span>
+&#9474;   Occupation <span style="color: #cd9575;">string</span>
 }
 </code></pre>
 
@@ -3990,35 +3990,35 @@ In the code example, we transform a Go struct and a slice of structs into <code>
 We decode a JSON string into a Go struct and a slice of structs.
 </p>
 
-<pre class="code"><code>data := []byte(`{
-    "Id" : 1,
-    "Name": "John Doe",
-    "Occupation": "gardener"
-}`)
+<pre class="code"><code><span style="color: #968cc7;">data</span> := []<span style="color: #80bcb6;">byte</span>(<span style="color: #6fb593;">`{
+&#9474;   "Id" : 1,
+&#9474;   "Name": "John Doe",
+&#9474;   "Occupation": "gardener"
+}`</span>)
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgff6e779" class="outline-4">
-<h4 id="orgff6e779"><span class="done DONE">DONE</span> Object-Relational Mapper</h4>
-<div class="outline-text-4" id="text-orgff6e779">
+<div id="outline-container-orga42e42c" class="outline-4">
+<h4 id="orga42e42c"><span class="done DONE">DONE</span> Object-Relational Mapper</h4>
+<div class="outline-text-4" id="text-orga42e42c">
 <p>
 <b>I decided that ORMs suck, I&rsquo;m going raw SQL, or using SQLBoiler.</b>
 </p>
 </div>
 </div>
-<div id="outline-container-org6584380" class="outline-4">
-<h4 id="org6584380"><span class="done KILL">KILL</span> Compiler Options</h4>
+<div id="outline-container-org468d56f" class="outline-4">
+<h4 id="org468d56f"><span class="done KILL">KILL</span> Compiler Options</h4>
 </div>
-<div id="outline-container-org587abaf" class="outline-4">
-<h4 id="org587abaf"><span class="done KILL">KILL</span> Logging</h4>
+<div id="outline-container-orge76af6f" class="outline-4">
+<h4 id="orge76af6f"><span class="done KILL">KILL</span> Logging</h4>
 </div>
-<div id="outline-container-org6d922d0" class="outline-4">
-<h4 id="org6d922d0"><span class="done KILL">KILL</span> Testing</h4>
+<div id="outline-container-orgc421258" class="outline-4">
+<h4 id="orgc421258"><span class="done KILL">KILL</span> Testing</h4>
 </div>
 </div>
-<div id="outline-container-org814cce9" class="outline-3">
-<h3 id="org814cce9">Go Project Structure</h3>
-<div class="outline-text-3" id="text-org814cce9">
+<div id="outline-container-org05d5870" class="outline-3">
+<h3 id="org05d5870">Go Project Structure</h3>
+<div class="outline-text-3" id="text-org05d5870">
 <p>
 If you are trying to learn Go or if you are building a PoC or a simple project for yourself
 this project layout is an overkill. Start with something really simple instead (a single
@@ -4034,9 +4034,9 @@ None of these patterns are used in every single project. Even the vendor pattern
 universal.
 </p>
 </div>
-<div id="outline-container-org00a082e" class="outline-4">
-<h4 id="org00a082e"><code>/cmd</code></h4>
-<div class="outline-text-4" id="text-org00a082e">
+<div id="outline-container-org62230c8" class="outline-4">
+<h4 id="org62230c8"><code>/cmd</code></h4>
+<div class="outline-text-4" id="text-org62230c8">
 <p>
 Main applications for this project.
 </p>
@@ -4054,9 +4054,9 @@ You&rsquo;ll be surprised what others will do, so be explicit about your intenti
 </p>
 </div>
 </div>
-<div id="outline-container-orgae56236" class="outline-4">
-<h4 id="orgae56236"><code>/internal</code></h4>
-<div class="outline-text-4" id="text-orgae56236">
+<div id="outline-container-orge5dea13" class="outline-4">
+<h4 id="orge5dea13"><code>/internal</code></h4>
+<div class="outline-text-4" id="text-orge5dea13">
 <p>
 Private application and library code. This is the code you don&rsquo;t want others importing in
 their applications or libraries. Note that this layout pattern is enforced by the Go
@@ -4066,9 +4066,9 @@ at any level of your project tree.
 </p>
 </div>
 </div>
-<div id="outline-container-orgbf604bd" class="outline-4">
-<h4 id="orgbf604bd"><code>/pkg</code></h4>
-<div class="outline-text-4" id="text-orgbf604bd">
+<div id="outline-container-org12ccf36" class="outline-4">
+<h4 id="org12ccf36"><code>/pkg</code></h4>
+<div class="outline-text-4" id="text-org12ccf36">
 <p>
 Library code that&rsquo;s ok to use by external applications (e.g., /pkg/mypubliclib). Other
 projects will import these libraries expecting them to work, so think twice before you put
@@ -4080,8 +4080,8 @@ and internal directories and when it might make sense to use them.
 </p>
 </div>
 </div>
-<div id="outline-container-orgcdbecc7" class="outline-4">
-<h4 id="orgcdbecc7"><span class="done KILL">KILL</span> <code>/vendor</code></h4>
+<div id="outline-container-orgd09744a" class="outline-4">
+<h4 id="orgd09744a"><span class="done KILL">KILL</span> <code>/vendor</code></h4>
 </div>
 </div>
 </div>
