@@ -19,9 +19,9 @@
     <meta charset="utf-8" />
     <meta name="theme-color" content="#ffffff" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/style/toc.css?v=20250120" />
-    <link rel="stylesheet" href="/style/tufte.css?v=20250120" />
-    <link rel="stylesheet" href="/style/main.css?v=20250201" />
+    <link rel="stylesheet" href="/style/toc.css?v=20250121" />
+    <link rel="stylesheet" href="/style/tufte.css?v=20250121" />
+    <link rel="stylesheet" href="/style/main.css?v=20250202" />
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
@@ -552,7 +552,7 @@ margin-block-start: auto;
 <div id="content" class="content">
 <header>
 <h1 class="title">Effective Go: A Conclusion</h1>
-</header><div class="propert" id="org98b407a">
+</header><div class="propert" id="org23648d3">
 <p>
 Part of a series on <a href="../cs/go.html#lvkhzyo02wj0">The Go Programming Language</a>
 </p>
@@ -560,7 +560,7 @@ Part of a series on <a href="../cs/go.html#lvkhzyo02wj0">The Go Programming Lang
 </div>
 
 
-<div class="PREVIEW" id="org71928e9">
+<div class="PREVIEW" id="org1db035a">
 <p>
 Reading the effective Go document.
 </p>
@@ -590,9 +590,9 @@ References are used for non-tl;dr that might be interesting for nerds.<label for
 I also might use <a href="https://github.com/golang/go/wiki/CodeReview">https://github.com/golang/go/wiki/CodeReview</a>
 </span>
 </p>
-<div id="outline-container-orgc345591" class="outline-2">
-<h2 id="orgc345591">Naming</h2>
-<div class="outline-text-2" id="text-orgc345591">
+<div id="outline-container-orgaeb598d" class="outline-2">
+<h2 id="orgaeb598d">Naming</h2>
+<div class="outline-text-2" id="text-orgaeb598d">
 <p>
 Names are as important in Go as in any other language. They even have semantic effect: the
 visibility of a name outside a package is determined by whether its first character is upper
@@ -600,9 +600,9 @@ case. It&rsquo;s therefore worth spending a little time talking about naming con
 programs.
 </p>
 </div>
-<div id="outline-container-orgc5491cf" class="outline-3">
-<h3 id="orgc5491cf">Packages</h3>
-<div class="outline-text-3" id="text-orgc5491cf">
+<div id="outline-container-orgaeb9d77" class="outline-3">
+<h3 id="orgaeb9d77">Packages</h3>
+<div class="outline-text-3" id="text-orgaeb9d77">
 <p>
 package in <code>src/pkg/encoding/base64</code> is imported as &ldquo;<code>encoding/base64</code>&rdquo; but has name <code>base64</code>,
 <b>not</b> <code>encoding_base64</code> and not <code>encodingBase64</code>. The importer of a package will use the name to
@@ -610,9 +610,9 @@ refer to its contents (the import . notation is
 </p>
 </div>
 </div>
-<div id="outline-container-orgd1afc6f" class="outline-3">
-<h3 id="orgd1afc6f">Getters</h3>
-<div class="outline-text-3" id="text-orgd1afc6f">
+<div id="outline-container-org1101e46" class="outline-3">
+<h3 id="org1101e46">Getters</h3>
+<div class="outline-text-3" id="text-org1101e46">
 <p>
 Go doesn&rsquo;t provide automatic support for getters and setters. There&rsquo;s nothing wrong with
 providing getters and setters yourself, and it&rsquo;s often appropriate to do so, but it&rsquo;s
@@ -624,7 +624,7 @@ discriminate the field from the method. A setter function, if needed, will likel
 </p>
 
 
-<pre class="example" id="org2beb34d">
+<pre class="example" id="orge7cd743">
 owner := obj.Owner()
 if owner != user {
     obj.SetOwner(user)
@@ -632,9 +632,9 @@ if owner != user {
 </pre>
 </div>
 </div>
-<div id="outline-container-orgbb49b19" class="outline-3">
-<h3 id="orgbb49b19">Interface (single-method)</h3>
-<div class="outline-text-3" id="text-orgbb49b19">
+<div id="outline-container-org5314442" class="outline-3">
+<h3 id="org5314442">Interface (single-method)</h3>
+<div class="outline-text-3" id="text-org5314442">
 <p>
 By convention, one-method interfaces are named by the method name plus an -er suffix or
 similar modification to construct an agent noun: <code>Reader</code>, <code>Writer</code>, <code>Formatter</code>,
@@ -651,9 +651,9 @@ call your string-converter method <code>String</code> not <code>ToString</code>.
 </p>
 </div>
 </div>
-<div id="outline-container-orge9d3fa5" class="outline-3">
-<h3 id="orge9d3fa5">MixedCaps</h3>
-<div class="outline-text-3" id="text-orge9d3fa5">
+<div id="outline-container-org58a087e" class="outline-3">
+<h3 id="org58a087e">MixedCaps</h3>
+<div class="outline-text-3" id="text-org58a087e">
 <p>
 Finally, the convention in Go is to use <code>MixedCaps</code> or <code>mixedCaps</code> rather than underscores
 to write multiword names.
@@ -661,9 +661,9 @@ to write multiword names.
 </div>
 </div>
 </div>
-<div id="outline-container-org7ee1ece" class="outline-2">
-<h2 id="org7ee1ece">Comments</h2>
-<div class="outline-text-2" id="text-org7ee1ece">
+<div id="outline-container-org366619d" class="outline-2">
+<h2 id="org366619d">Comments</h2>
+<div class="outline-text-2" id="text-org366619d">
 <p>
 “Doc comments” are comments that appear immediately before top-level package, const, func,
 type, and var declarations with no intervening newlines. Every exported (capitalized) name
@@ -674,9 +674,9 @@ should have a doc comment.
 For syntax, read: <a href="https://go.dev/doc/comment#Syntax">https://go.dev/doc/comment#Syntax</a>
 </p>
 </div>
-<div id="outline-container-org6a95afe" class="outline-3">
-<h3 id="org6a95afe">Inside packages</h3>
-<div class="outline-text-3" id="text-org6a95afe">
+<div id="outline-container-org210aff2" class="outline-3">
+<h3 id="org210aff2">Inside packages</h3>
+<div class="outline-text-3" id="text-org210aff2">
 <p>
 Every package should have a package comment introducing the package. It provides information relevant to the package as a whole and generally sets expectations for the package. Especially in large packages, it can be helpful for the package comment to give a brief overview of the most important parts of the API, linking to other doc comments as needed.
 </p>
@@ -685,7 +685,7 @@ Every package should have a package comment introducing the package. It provides
 If the package is simple, the package comment can be brief. For example:
 </p>
 
-<pre class="example" id="org104719b">
+<pre class="example" id="orgf9583b8">
 // Package path implements utility routines for manipulating slash-separated
 // paths.
 //
@@ -697,18 +697,18 @@ package path
 </pre>
 </div>
 </div>
-<div id="outline-container-org3cc163e" class="outline-3">
-<h3 id="org3cc163e"><span class="done KILL">KILL</span> Commands</h3>
+<div id="outline-container-orga441a8a" class="outline-3">
+<h3 id="orga441a8a"><span class="done KILL">KILL</span> Commands</h3>
 </div>
-<div id="outline-container-org7d4758c" class="outline-3">
-<h3 id="org7d4758c"><code>type</code></h3>
-<div class="outline-text-3" id="text-org7d4758c">
+<div id="outline-container-orga105f75" class="outline-3">
+<h3 id="orga105f75"><code>type</code></h3>
+<div class="outline-text-3" id="text-orga105f75">
 <p>
 A type&rsquo;s doc comment should explain what each instance of that type represents or provides.
 If the API is simple, the doc comment can be quite short. For example:
 </p>
 
-<pre class="example" id="org6e14001">
+<pre class="example" id="org33d49ad">
 package zip
 
 // A Reader serves content from a ZIP archive.
@@ -726,7 +726,7 @@ example:
 </p>
 
 
-<pre class="example" id="org298a80f">
+<pre class="example" id="org7494733">
 package regexp
 
 // Regexp is the representation of a compiled regular expression.
@@ -745,7 +745,7 @@ explain the meaning of each exported field. For example, this type&rsquo;s doc c
 the fields:
 </p>
 
-<pre class="example" id="org8458679">
+<pre class="example" id="org8487db9">
  package io
 
 // A LimitedReader reads from R but limits the amount of
@@ -765,9 +765,9 @@ and it makes the text easier to search, whether on a web page or a command line.
 </p>
 </div>
 </div>
-<div id="outline-container-org0c93940" class="outline-3">
-<h3 id="org0c93940"><code>func</code></h3>
-<div class="outline-text-3" id="text-org0c93940">
+<div id="outline-container-org46b34df" class="outline-3">
+<h3 id="org46b34df"><code>func</code></h3>
+<div class="outline-text-3" id="text-org46b34df">
 <p>
 A func&rsquo;s doc comment should explain what the function returns or, for functions called for
 side effects, what it does. Named arguments or results can be referred to directly in the
@@ -777,7 +777,7 @@ example:
 </p>
 
 
-<pre class="example" id="org3d60bbc">
+<pre class="example" id="org2e03389">
  package strconv
 
 // Quote returns a double-quoted Go string literal representing s.
@@ -789,22 +789,22 @@ func Quote(s string) string {
 </pre>
 </div>
 </div>
-<div id="outline-container-orgbf0b4b9" class="outline-3">
-<h3 id="orgbf0b4b9"><code>const</code></h3>
-<div class="outline-text-3" id="text-orgbf0b4b9">
+<div id="outline-container-org063844f" class="outline-3">
+<h3 id="org063844f"><code>const</code></h3>
+<div class="outline-text-3" id="text-org063844f">
 <p>
 Go&rsquo;s declaration syntax allows grouping of declarations, in which case a single doc comment
 can introduce a group of related constants, with individual constants only documented by
 short end-of-line comments. For example:
 </p>
-<pre class="code"><code><span style="color: #545c5e;">// </span><span style="color: #545c5e;">The result of Scan is one of these tokens or a Unicode character.
-</span><span style="color: #4d9391;">const</span> (
-&#9474;   <span style="color: #ab98b5;">EOF</span> = -(<span style="color: #ab98b5;">iota</span> + 1)
-&#9474;   <span style="color: #ab98b5;">Ident</span>
-&#9474;   <span style="color: #ab98b5;">Int</span>
-&#9474;   <span style="color: #ab98b5;">Float</span>
-&#9474;   <span style="color: #ab98b5;">Char</span>
-&#9474;   ...
+<pre class="code"><code>// The result of Scan is one of these tokens or a Unicode character.
+const (
+    EOF = -(iota + 1)
+    Ident
+    Int
+    Float
+    Char
+    ...
 )
 </code></pre>
 
@@ -813,7 +813,7 @@ short end-of-line comments. For example:
 Sometimes the group needs no doc comment at all. For example:
 </p>
 
-<pre class="example" id="org5115f4b">
+<pre class="example" id="org6eb95d4">
  package unicode // import "unicode"
 
 const (
@@ -830,7 +830,7 @@ const (
 On the other hand, ungrouped constants typically warrant a full doc comment starting with a complete sentence. For example:
 </p>
 
-<pre class="example" id="orgaa5274a">
+<pre class="example" id="org56b96a1">
  package unicode
 
 // Version is the Unicode edition from which the tables are derived.
@@ -838,17 +838,17 @@ const Version = "13.0.0"
 </pre>
 </div>
 </div>
-<div id="outline-container-org407ee9c" class="outline-3">
-<h3 id="org407ee9c"><code>var</code></h3>
+<div id="outline-container-org963e8e1" class="outline-3">
+<h3 id="org963e8e1"><code>var</code></h3>
 </div>
 </div>
-<div id="outline-container-org9e36c4d" class="outline-2">
-<h2 id="org9e36c4d">CHECK Errors</h2>
-<div class="outline-text-2" id="text-org9e36c4d">
+<div id="outline-container-org47ceedf" class="outline-2">
+<h2 id="org47ceedf">CHECK Errors</h2>
+<div class="outline-text-2" id="text-org47ceedf">
 </div>
-<div id="outline-container-org471da5d" class="outline-3">
-<h3 id="org471da5d">Error Strings</h3>
-<div class="outline-text-3" id="text-org471da5d">
+<div id="outline-container-orgbecf4c4" class="outline-3">
+<h3 id="orgbecf4c4">Error Strings</h3>
+<div class="outline-text-3" id="text-orgbecf4c4">
 <p>
 Error strings should not be capitalized (unless beginning with proper nouns or acronyms) or
 end with punctuation, since they are usually printed following other context. That is, use
@@ -859,13 +859,13 @@ apply to logging, which is implicitly line-oriented and not combined inside othe
 </div>
 </div>
 </div>
-<div id="outline-container-orgf1f011a" class="outline-2">
-<h2 id="orgf1f011a">Other</h2>
-<div class="outline-text-2" id="text-orgf1f011a">
+<div id="outline-container-orgade4304" class="outline-2">
+<h2 id="orgade4304">Other</h2>
+<div class="outline-text-2" id="text-orgade4304">
 </div>
-<div id="outline-container-orgd90d746" class="outline-3">
-<h3 id="orgd90d746">Semicolons</h3>
-<div class="outline-text-3" id="text-orgd90d746">
+<div id="outline-container-org1a52c6f" class="outline-3">
+<h3 id="org1a52c6f">Semicolons</h3>
+<div class="outline-text-3" id="text-org1a52c6f">
 <p>
 Idiomatic Go programs have semicolons only in places such as <code>for</code> loop clauses, to separate
 the initializer, condition, and continuation elements. They are also necessary to separate
@@ -895,9 +895,9 @@ if i &lt; f()  // wrong!
 </p>
 </div>
 </div>
-<div id="outline-container-org603cc2a" class="outline-3">
-<h3 id="org603cc2a">Declaring Variables</h3>
-<div class="outline-text-3" id="text-org603cc2a">
+<div id="outline-container-org3c6384d" class="outline-3">
+<h3 id="org3c6384d">Declaring Variables</h3>
+<div class="outline-text-3" id="text-org3c6384d">
 <ul class="org-ul">
 <li>When declaring —but not initializing— a variable, <b>use the keyword <code>var</code></b></li>
 <li>When declaring and initializing in the same time, use the short declaration form: <code>:=</code></li>
@@ -906,12 +906,12 @@ if i &lt; f()  // wrong!
 <p>
 When declaring an empty slice, prefer
 </p>
-<pre class="code"><code><span style="color: #4d9391;">var</span> <span style="color: #968cc7;">t</span> []<span style="color: #cd9575;">string</span>
+<pre class="code"><code>var t []string
 </code></pre>
 <p>
 over
 </p>
-<pre class="code"><code><span style="color: #968cc7;">t</span> := []<span style="color: #cd9575;">string</span>{}
+<pre class="code"><code>t := []string{}
 </code></pre>
 
 <p>
@@ -933,9 +933,9 @@ zero-length slice, as this can lead to subtle programming errors.
 </p>
 </div>
 </div>
-<div id="outline-container-orga657647" class="outline-3">
-<h3 id="orga657647">Context</h3>
-<div class="outline-text-3" id="text-orga657647">
+<div id="outline-container-orge861e5b" class="outline-3">
+<h3 id="orge861e5b">Context</h3>
+<div class="outline-text-3" id="text-orge861e5b">
 <p>
 Values of the context.Context type carry security credentials, tracing information,
 deadlines, and cancellation signals across API and process boundaries. Go programs pass
@@ -947,7 +947,7 @@ requests to outgoing requests.
 <b>Most functions that use a Context should accept it as their first parameter:</b>
 </p>
 
-<pre class="code"><code><span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">F</span>(<span style="color: #968cc7;">ctx</span> <span style="color: #cd9575;">context.Context</span>, <span style="color: #545c5e;">/* </span><span style="color: #545c5e;">other arguments */</span>) {}
+<pre class="code"><code>func F(ctx context.Context, /* other arguments */) {}
 </code></pre>
 
 <p>
@@ -979,9 +979,9 @@ same deadline, cancellation signal, credentials, parent trace, etc.
 </p>
 </div>
 </div>
-<div id="outline-container-orge963868" class="outline-3">
-<h3 id="orge963868">Rand</h3>
-<div class="outline-text-3" id="text-orge963868">
+<div id="outline-container-orge173a18" class="outline-3">
+<h3 id="orge173a18">Rand</h3>
+<div class="outline-text-3" id="text-orge173a18">
 <p>
 Do not use package <code>math/rand</code> to generate keys, even throwaway ones. Unseeded, the generator
 is completely predictable. Seeded with <code>time.Nanoseconds()</code>, there are just a few bits of
@@ -989,55 +989,55 @@ entropy. Instead, use <code>crypto/rand</code>&rsquo;s Reader, and if you need t
 <code>base64</code>:
 </p>
 
-<pre class="code"><code><span style="color: #4d9391;">import</span> (
-&#9474;   <span style="color: #6fb593;">"crypto/rand"</span>
-&#9474;   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">"encoding/base64"
-&#9474;   </span><span style="color: #545c5e;">// </span><span style="color: #545c5e;">"encoding/hex"
-&#9474;   </span><span style="color: #6fb593;">"fmt"</span>
+<pre class="code"><code>import (
+	"crypto/rand"
+	// "encoding/base64"
+	// "encoding/hex"
+	"fmt"
 )
 
-<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">Key</span>() <span style="color: #cd9575;">string</span> {
-&#9474;   <span style="color: #968cc7;">buf</span> := <span style="color: #80bcb6;">make</span>([]<span style="color: #cd9575;">byte</span>, 16)
-&#9474;   <span style="color: #968cc7;">_</span>, <span style="color: #968cc7;">err</span> := rand.<span style="color: #80bcb6;">Read</span>(buf)
-&#9474;   <span style="color: #4d9391;">if</span> err != <span style="color: #ab98b5;">nil</span> {
-&#9474;   &#9474;   <span style="color: #80bcb6;">panic</span>(err)  <span style="color: #545c5e;">// </span><span style="color: #545c5e;">out of randomness, should never happen
-&#9474;   </span>}
-&#9474;   <span style="color: #4d9391;">return</span> fmt.<span style="color: #80bcb6;">Sprintf</span>(<span style="color: #6fb593;">"%x"</span>, buf)
-&#9474;   <span style="color: #545c5e;">// </span><span style="color: #545c5e;">or hex.EncodeToString(buf)
-&#9474;   </span><span style="color: #545c5e;">// </span><span style="color: #545c5e;">or base64.StdEncoding.EncodeToString(buf)
-</span>}
+func Key() string {
+	buf := make([]byte, 16)
+	_, err := rand.Read(buf)
+	if err != nil {
+		panic(err)  // out of randomness, should never happen
+	}
+	return fmt.Sprintf("%x", buf)
+	// or hex.EncodeToString(buf)
+	// or base64.StdEncoding.EncodeToString(buf)
+}
 
-<span style="color: #4d9391;">func</span> <span style="color: #80bcb6;">main</span>() {
-&#9474;   fmt.<span style="color: #80bcb6;">Print</span>(<span style="color: #80bcb6;">Key</span>())
-&#9474;   &#9474;   }
+func main() {
+	fmt.Print(Key())
+		}
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org271663a" class="outline-3">
-<h3 id="org271663a">Import Blank</h3>
-<div class="outline-text-3" id="text-org271663a">
+<div id="outline-container-org7501455" class="outline-3">
+<h3 id="org7501455">Import Blank</h3>
+<div class="outline-text-3" id="text-org7501455">
 <p>
 Packages that are imported only for their side effects (using the syntax <code>import _ "pkg"</code>)
 should only be imported in the main package of a program, or in tests that require them.
 </p>
 </div>
 </div>
-<div id="outline-container-org275867f" class="outline-3">
-<h3 id="org275867f">Named Result Parameters</h3>
-<div class="outline-text-3" id="text-org275867f">
+<div id="outline-container-org82d10bb" class="outline-3">
+<h3 id="org82d10bb">Named Result Parameters</h3>
+<div class="outline-text-3" id="text-org82d10bb">
 <p>
 Consider what it will look like in godoc. Named result parameters like:
 </p>
 
-<pre class="code"><code><span style="color: #4d9391;">func</span> (<span style="color: #968cc7;">n</span> *<span style="color: #cd9575;">Node</span>) <span style="color: #80bcb6;">Parent1</span>() (<span style="color: #968cc7;">node</span> *<span style="color: #cd9575;">Node</span>) {}
-<span style="color: #4d9391;">func</span> (<span style="color: #968cc7;">n</span> *<span style="color: #cd9575;">Node</span>) <span style="color: #80bcb6;">Parent2</span>() (<span style="color: #968cc7;">node</span> *<span style="color: #cd9575;">Node</span>, <span style="color: #968cc7;">err</span> <span style="color: #cd9575;">error</span>) {}
+<pre class="code"><code>func (n *Node) Parent1() (node *Node) {}
+func (n *Node) Parent2() (node *Node, err error) {}
 </code></pre>
 <p>
 will be repetitive in godoc; better to use:
 </p>
 
-<pre class="code"><code><span style="color: #4d9391;">func</span> (<span style="color: #968cc7;">n</span> *<span style="color: #cd9575;">Node</span>) <span style="color: #80bcb6;">Parent1</span>() *<span style="color: #cd9575;">Node</span> {}
-<span style="color: #4d9391;">func</span> (<span style="color: #968cc7;">n</span> *<span style="color: #cd9575;">Node</span>) <span style="color: #80bcb6;">Parent2</span>() (*<span style="color: #cd9575;">Node</span>, <span style="color: #cd9575;">error</span>) {}
+<pre class="code"><code>func (n *Node) Parent1() *Node {}
+func (n *Node) Parent2() (*Node, error) {}
 </code></pre>
 
 <p>
@@ -1048,9 +1048,9 @@ off a minor implementation brevity at the cost of unnecessary API verbosity.</b>
 </p>
 </div>
 </div>
-<div id="outline-container-org15d6f1f" class="outline-3">
-<h3 id="org15d6f1f">Return Values</h3>
-<div class="outline-text-3" id="text-org15d6f1f">
+<div id="outline-container-orgfc4ff09" class="outline-3">
+<h3 id="orgfc4ff09">Return Values</h3>
+<div class="outline-text-3" id="text-orgfc4ff09">
 <ul class="org-ul">
 <li>If the receiver is a <code>map</code>, <code>func</code> or <code>chan</code>, don&rsquo;t use a pointer to them. If the receiver is a
 slice and the method doesn&rsquo;t reslice or reallocate the slice, don&rsquo;t use a pointer to it.</li>
@@ -1088,9 +1088,9 @@ methods.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org823ed12" class="outline-3">
-<h3 id="org823ed12"><span class="done KILL">KILL</span> Interfaces</h3>
-<div class="outline-text-3" id="text-org823ed12">
+<div id="outline-container-org3ce8bc4" class="outline-3">
+<h3 id="org3ce8bc4"><span class="done KILL">KILL</span> Interfaces</h3>
+<div class="outline-text-3" id="text-org3ce8bc4">
 <p>
 Go interfaces generally belong in the package that uses values of the interface type, not
 the package that implements those values. The implementing package should return concrete
@@ -1115,7 +1115,7 @@ semicolon will be inserted before the brace, which could cause unwanted effects.
 like this
 </p>
 
-<pre class="example" id="org52565bb">
+<pre class="example" id="org250ab77">
 if i &lt; f() {
     g()
 }
@@ -1125,7 +1125,7 @@ if i &lt; f() {
 not like this
 </p>
 
-<pre class="example" id="org3421c9b">
+<pre class="example" id="org5077248">
 if i &lt; f()  // wrong!
 {           // wrong!
     g()

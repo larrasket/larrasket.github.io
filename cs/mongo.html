@@ -19,9 +19,9 @@
     <meta charset="utf-8" />
     <meta name="theme-color" content="#ffffff" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/style/toc.css?v=20250120" />
-    <link rel="stylesheet" href="/style/tufte.css?v=20250120" />
-    <link rel="stylesheet" href="/style/main.css?v=20250201" />
+    <link rel="stylesheet" href="/style/toc.css?v=20250121" />
+    <link rel="stylesheet" href="/style/tufte.css?v=20250121" />
+    <link rel="stylesheet" href="/style/main.css?v=20250202" />
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
@@ -552,169 +552,16 @@ margin-block-start: auto;
 <div id="content" class="content">
 <header>
 <h1 class="title">Some notes from Mongo</h1>
-</header><div class="tag" id="orgcef3093">
+</header><div class="tag" id="orgbbb6d87">
 <p>
 This section was labeled under, or is related to Databases and <a href="../t/programming.html#4u5664n02wj0">Programming</a>
 </p>
 
 </div>
-<div id="outline-container-org28879f2" class="outline-2">
-<h2 id="org28879f2">Basics</h2>
-<div class="outline-text-2" id="text-org28879f2">
-<ul class="org-ul">
-<li><p>
-MongoDB is optimized for scaling out, using its document-oriented model to distribute data efficiently across multiple servers. MongoDB’s document-oriented model is well suited to distributing data because each document is self-contained, meaning that all necessary information is stored in one place, reducing the need for the complex joins between data that are common in relational databases. As a result, MongoDB can efficiently manage and allocate data across servers, facilitating easy scaling. Because documents don’t rely on others to function or fulfill queries, the system can quickly retrieve data from the appropriate server, enhancing performance and scalability.
-</p>
-
-
-<figure id="org40809b2">
-<img src="../i/2025-11-08_23-03-13_screenshot.png" alt="2025-11-08_23-03-13_screenshot.png">
-
-</figure></li>
-<li>mongos routers are responsible for distributing client queries to the correct shards by using metadata from config servers. They support high availability and scalability through the deployment of multiple mongos</li>
-<li>Keep it under 30 Why? Each mongos constantly talks to the config servers, and too many conversations slow everything down (like too many people asking the librarian questions at once)</li>
-
-<li>Aggregation framework: Aggregation operations process data records and return computed results. Aggregation operations group values from multiple documents together and can perform a variety of operations on the grouped data to return a single result. The framework provides features similar to SQL’s GROUP BY, related operators, and basic self-joins; it also allows data reshaping.</li>
-
-<li>Change streams: Applications can use change streams to subscribe to all data changes on a single collection, a database, or an entire deployment and react to them immediately. Because change streams use the aggregation framework, applications can also filter for specific changes or transform the notifications at will</li>
-
-<li><p>
-Special collections and indexes: MongoDB features time-to-live (TTL) indexes for automatically expiring data, capped collections for maintaining recent data like logs, and partial indexes to index only documents that meet specific criteria, enhancing efficiency and saving storage space
-</p>
 
 <p>
-A TTL index automatically deletes documents after a specified time. You create it on a field containing a date (for example, createdAt), and MongoDB removes documents once that time expires. Use case: session data, cache entries, temporary logs, or anything that shouldn’t live forever. Equivalent concept: scheduled deletion or “auto-expiry” in SQL.
-</p></li>
-
-<li>Atlas Search—Built on industry-leading Apache Lucene. Atlas Search is an embedded full-text search in MongoDB, including abilities like custom scoring and facets to provide fast, relevant searches for users</li>
-</ul>
-
-
-<ul class="org-ul">
-<li><b>Capped Collections</b> A <b>capped collection</b> is a fixed-size collection that behaves like a circular buffer. When it reaches its maximum size, the oldest documents are automatically overwritten by new ones.
-
-<ul class="org-ul">
-<li>You define a maximum size (in bytes) when creating it.</li>
-<li>Documents are stored in insertion order and cannot be deleted (except
-by overwriting).</li>
-<li>Ideal for logging, caching, or telemetry data where you only care
-about recent entries.</li>
-<li><p>
-Fast inserts and reads because of the fixed size and no document
-relocation.
+TBP&#x2026;
 </p>
-<pre class="code"><code>db.createCollection(<span style="color: #6fb593;">"logs"</span>, { capped: <span style="color: #ab98b5;">true</span>, size: 1048576 }) <span style="color: #545c5e;">// </span><span style="color: #545c5e;">1MB capped collection</span>
-</code></pre></li>
-</ul></li>
-
-<li><b>Time-Series Collections</b> A <b>time-series collection</b> is optimized for data that changes over time &#x2014; such as metrics, IoT sensor data, or application monitoring.
-<ul class="org-ul">
-<li>Each document represents a measurement with a <b>timestamp</b> and <b>metadata</b> (like device ID).</li>
-<li>MongoDB automatically organizes data internally into “buckets” for efficient storage and queries.</li>
-<li>Supports automatic <b>data compression</b>, <b>TTL expiration</b>, and <b>fast range queries</b> on time fields.</li>
-<li><p>
-Great for analytics and monitoring use cases.
-<b>Example:</b>
-</p>
-<pre class="code"><code>db.createCollection(<span style="color: #6fb593;">"sensorData"</span>, {
-&#9474; timeseries: {
-&#9474;   timeField: <span style="color: #6fb593;">"timestamp"</span>,
-&#9474;   metaField: <span style="color: #6fb593;">"sensorId"</span>,
-&#9474;   granularity: <span style="color: #6fb593;">"minutes"</span>
-&#9474; }
-})
-</code></pre></li>
-</ul></li>
-</ul>
-
-
-
-<ul class="org-ul">
-<li><b>Capped collections</b> → fixed-size, high-speed, overwrite old data (like a log buffer).</li>
-<li><b>Time-series collections</b> → structured for chronological data, optimized for queries over time ranges.</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org7f8cbf3" class="outline-2">
-<h2 id="org7f8cbf3">Views and Materialized Views</h2>
-<div class="outline-text-2" id="text-org7f8cbf3">
-<p>
-<b>Views</b> A <b>view</b> in MongoDB is a <b>read-only, virtual collection</b> defined
-by an aggregation pipeline. It doesn&rsquo;t store data itself &#x2014; every time
-you query it, MongoDB executes the underlying aggregation on the base
-collection.
-</p>
-
-<p>
-<b>Key points:</b>
-</p>
-
-<ul class="org-ul">
-<li>Always up to date (since it runs live on source data).</li>
-<li>No additional storage cost.</li>
-<li>Can be indexed only through the underlying collection, not directly.</li>
-<li>Slower for large datasets because results are computed on each access.</li>
-</ul>
-<p>
-<b>Example:</b>
-</p>
-
-<pre class="code"><code>db.createView(<span style="color: #6fb593;">"activeUsersView"</span>, <span style="color: #6fb593;">"users"</span>, [
-&#9474; { $match: { active: <span style="color: #ab98b5;">true</span> } },
-&#9474; { $project: { name: 1, email: 1 } }
-])
-</code></pre>
-
-<hr>
-
-<p>
-<b>Materialized Views</b> A <b>materialized view</b> is <b>not a built-in MongoDB
-feature</b> (you have to implement it manually). It&rsquo;s a <b>precomputed and
-stored</b> version of a query result &#x2014; like a regular collection that you
-periodically refresh.
-</p>
-
-<p>
-<b>Key points:</b>
-</p>
-
-<ul class="org-ul">
-<li>Stores actual data (uses disk space).</li>
-<li>Faster query performance since data is precomputed.</li>
-<li>Must be refreshed manually or via a scheduled process (not
-automatically updated).</li>
-<li>Common in analytics or dashboard workloads.</li>
-</ul>
-
-<p>
-<b>Example (manual implementation):</b>
-</p>
-
-<pre class="code"><code><span style="color: #4d9391;">const</span> <span style="color: #968cc7;">data</span> = db.orders.aggregate([
-&#9474; { $group: { _id: <span style="color: #6fb593;">"$status"</span>, total: { $sum: 1 } } }
-])
-db.materializedOrders.drop()
-db.materializedOrders.insertMany(data.toArray())
-</code></pre>
-
-<p>
-<b>Interview tip:</b>
-</p>
-
-<ul class="org-ul">
-<li><b>View:</b> dynamic, no storage, slower, always current.</li>
-<li><b>Materialized view:</b> stored, faster, needs refresh, uses space.</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org6cbbd9f" class="outline-2">
-<h2 id="org6cbbd9f">Design</h2>
-<div class="outline-text-2" id="text-org6cbbd9f">
-<p>
-In database management, MongoDB stands out due to its flexible schema nature, offering a flexible, dynamic approach to data organization. Unlike traditional relational databases, which require a predefined schema to structure data, MongoDB allows documents within a collection to have different fields and data types. This flexible schema not only handles evolving requirements smoothly but also easily accommodates structured, unstructured, and semi-structured data, as each document inherently carries its own schema.
-</p>
-</div>
-</div>
 </div>
 <div id="postamble" class="status">
 <div id="postamble" class="status">
@@ -819,7 +666,7 @@ In database management, MongoDB stands out due to its flexible schema nature, of
 
 
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.34). Written by: Salih Muhammed, by the date of: 2025-11-08 Sat 23:00. Last build date: 2025-11-09 Sun 03:43.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.34). Written by: Salih Muhammed, by the date of: 2025-11-08 Sat 23:00. Last build date: 2025-12-06 Sat 18:46.</p>
 
 
 
