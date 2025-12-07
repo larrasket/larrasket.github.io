@@ -564,31 +564,31 @@ keep as a nice excerpt with &ldquo;@anthology&rdquo; tag. Today I thought why no
 those notes together? And here we go:
 </p>
 
-<pre class="code"><code>(defun salih/print-text-nodes-anth ()
-  (let* ((nodes (sort (salih/get-back-nodes "3xedczc0i2k0")
-                      #'salih/compare-org-id))
-         (strings '()))
-    (while nodes (push (salih/mkinclude (car nodes) t)
+<pre class="code"><code>(<span style="font-weight: bold;">defun</span> <span style="font-weight: bold;">salih/print-text-nodes-anth</span> ()
+  (<span style="font-weight: bold;">let*</span> ((nodes (<span style="color: #383a42;">sort</span> (<span style="font-weight: bold;">salih/get-back-nodes</span> <span style="color: #8a3b3c;">"3xedczc0i2k0"</span>)
+                      <span style="color: #383a42;">#'</span><span style="color: #383a42;">salih/compare-org-id</span>))
+         (strings <span style="color: #383a42;">'</span>()))
+    (<span style="font-weight: bold;">while</span> nodes (<span style="font-weight: bold;">push</span> (<span style="font-weight: bold;">salih/mkinclude</span> (<span style="color: #383a42;">car</span> nodes) t)
                        strings)
-           (setq nodes (cdr nodes)))
-    (mapconcat 'identity strings "")))
+           (<span style="font-weight: bold;">setq</span> nodes (<span style="color: #383a42;">cdr</span> nodes)))
+    (<span style="color: #383a42;">mapconcat</span> <span style="color: #383a42;">'</span><span style="color: #383a42;">identity</span> strings <span style="color: #8a3b3c;">""</span>)))
 </code></pre>
 
-<pre class="code"><code>(defun salih/mkinclude (node remove-title &amp;optional astr)
-  (unless astr
-    (setq astr "**"))
-  (let* ((id (org-roam-node-id node))
-         (entry (org-roam-node-file (org-roam-node-from-id id)))
-         (cite (file-name-sans-extension (file-name-nondirectory entry))))
-    (if remove-title
-        (format "#+INCLUDE: \"%s::#%s\" :only-contents t\n\n\n \n/Derived from/ [cite:@%s], p. %d. Appeared: %s\n-----\n"
+<pre class="code"><code>(<span style="font-weight: bold;">defun</span> <span style="font-weight: bold;">salih/mkinclude</span> (node remove-title <span style="font-weight: bold;">&amp;optional</span> astr)
+  (<span style="font-weight: bold;">unless</span> astr
+    (<span style="font-weight: bold;">setq</span> astr <span style="color: #8a3b3c;">"**"</span>))
+  (<span style="font-weight: bold;">let*</span> ((id (<span style="color: #383a42;">org-roam-node-id</span> node))
+         (entry (<span style="color: #383a42;">org-roam-node-file</span> (<span style="color: #383a42;">org-roam-node-from-id</span> id)))
+         (cite (<span style="color: #383a42;">file-name-sans-extension</span> (<span style="color: #383a42;">file-name-nondirectory</span> entry))))
+    (<span style="font-weight: bold;">if</span> remove-title
+        (<span style="color: #383a42;">format</span> <span style="color: #8a3b3c;">"#+INCLUDE: \"%s::#%s\" :only-contents t\n\n\n \n/Derived from/ [cite:@%s], p. %d. Appeared: %s\n-----\n"</span>
                 entry
                 id
                 cite
-                (first (read (cdr (assoc "NOTER_PAGE" (org-roam-node-properties node)))))
-                (format-time-string "%Y-%m-%d (%H:%M)" (cdr (org-id-decode  (org-roam-node-id node)))))
+                (first (<span style="color: #383a42;">read</span> (<span style="color: #383a42;">cdr</span> (<span style="color: #383a42;">assoc</span> <span style="color: #8a3b3c;">"NOTER_PAGE"</span> (<span style="color: #383a42;">org-roam-node-properties</span> node)))))
+                (<span style="color: #383a42;">format-time-string</span> <span style="color: #8a3b3c;">"%Y-%m-%d (%H:%M)"</span> (<span style="color: #383a42;">cdr</span> (<span style="color: #383a42;">org-id-decode</span>  (<span style="color: #383a42;">org-roam-node-id</span> node)))))
 
-        (format "#+INCLUDE: \"%s::#%s\" :only-contents nil\n"
+        (<span style="color: #383a42;">format</span> <span style="color: #8a3b3c;">"#+INCLUDE: \"%s::#%s\" :only-contents nil\n"</span>
             entry
             id))))
 </code></pre>

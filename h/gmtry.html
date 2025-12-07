@@ -589,24 +589,24 @@ margin-block-start: auto;
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org87c704f">Introduction</a></li>
-<li><a href="#orgda8d641">Vectors</a></li>
-<li><a href="#org25d8d5a">Intersection</a></li>
-<li><a href="#org3a4b217">Finding The Equation of a Line for a Segment</a></li>
-<li><a href="#orged27efa">Orientation of 3 Points</a></li>
-<li><a href="#orgc1f6340">Finding a Circle From 3 Points</a></li>
-<li><a href="#orga4207a2">Convex Hull</a></li>
+<li><a href="#org5b2e1a2">Introduction</a></li>
+<li><a href="#org5e205e5">Vectors</a></li>
+<li><a href="#org859752a">Intersection</a></li>
+<li><a href="#orga4249d2">Finding The Equation of a Line for a Segment</a></li>
+<li><a href="#orgee3bae2">Orientation of 3 Points</a></li>
+<li><a href="#org5d1db29">Finding a Circle From 3 Points</a></li>
+<li><a href="#org51d8834">Convex Hull</a></li>
 </ul>
 </div>
 </nav>
-<div class="PREVIEW" id="org603efe1">
+<div class="PREVIEW" id="orgb3dcdee">
 <p>
 Based on TopCoder&rsquo;s thrive and <a href="https://www.ti.inf.ethz.ch/ew/courses/CG13/index.html">Computational Geometry (252-1425-00L) HS13</a> lecture notes.
 </p>
 
 </div>
 
-<div class="propert" id="org578a38f">
+<div class="propert" id="org551e3df">
 <p>
 Part of a series on <a href="../cs/g.html#13122uo02wj0">Exploring Computational Geometry</a>
 </p>
@@ -617,9 +617,9 @@ Part of a series on <a href="../cs/g.html#13122uo02wj0">Exploring Computational 
 <p>
 (Problems mostly from <a href="https://leetcode.com/tag/geometry">LeetCode</a>)
 </p>
-<div id="outline-container-org87c704f" class="outline-2">
-<h2 id="org87c704f">Introduction</h2>
-<div class="outline-text-2" id="text-org87c704f">
+<div id="outline-container-org5b2e1a2" class="outline-2">
+<h2 id="org5b2e1a2">Introduction</h2>
+<div class="outline-text-2" id="text-org5b2e1a2">
 <p>
 I&rsquo;m not sure how to properly introduce this long plain text —or even how to put it—. You can
 easily consider it as a small handbook that contains some computational problems solutions,
@@ -646,9 +646,9 @@ aloud but I liked to put the quote😎).
 </p>
 </div>
 </div>
-<div id="outline-container-orgda8d641" class="outline-2">
-<h2 id="orgda8d641">Vectors</h2>
-<div class="outline-text-2" id="text-orgda8d641">
+<div id="outline-container-org5e205e5" class="outline-2">
+<h2 id="org5e205e5">Vectors</h2>
+<div class="outline-text-2" id="text-org5e205e5">
 <p>
 Basically, a vector is a geometric object with length and direction (direction and
 magnitude). In the case of two-dimension geometry, we represent vectors as a pair of numbers
@@ -659,13 +659,13 @@ the second representation, a vector only defines the direction and the magnitude
 segment, but it can&rsquo;t define the starting and the ending locations.
 </p>
 </div>
-<div id="outline-container-orgc072429" class="outline-3">
-<h3 id="orgc072429">Operations on Vectors</h3>
-<div class="outline-text-3" id="text-orgc072429">
+<div id="outline-container-orgc9aac0c" class="outline-3">
+<h3 id="orgc9aac0c">Operations on Vectors</h3>
+<div class="outline-text-3" id="text-orgc9aac0c">
 </div>
-<div id="outline-container-orgb9837b3" class="outline-4">
-<h4 id="orgb9837b3">Addition</h4>
-<div class="outline-text-4" id="text-orgb9837b3">
+<div id="outline-container-org223abd7" class="outline-4">
+<h4 id="org223abd7">Addition</h4>
+<div class="outline-text-4" id="text-org223abd7">
 <p>
 The most beloved operation in which authors wastes ~3 pages in their textbook to explain
 it. You can add two vector together and as a result you get a new vector, if you have two
@@ -674,9 +674,9 @@ y_2)\)
 </p>
 </div>
 </div>
-<div id="outline-container-orge3324bc" class="outline-4">
-<h4 id="orge3324bc">Dot Product</h4>
-<div class="outline-text-4" id="text-orge3324bc">
+<div id="outline-container-org847479f" class="outline-4">
+<h4 id="org847479f">Dot Product</h4>
+<div class="outline-text-4" id="text-org847479f">
 <p>
 The dot product is <b>the sum of the corresponding element</b>, notice that it is not a vector,
 but a number. For example, if we have the two vector \((x_1, y_1)\) and \((x_2, y_2)\) then
@@ -698,9 +698,9 @@ angle between two vectors simply using two steps:
 </ol>
 </div>
 </div>
-<div id="outline-container-orga16753a" class="outline-4">
-<h4 id="orga16753a">Cross Product</h4>
-<div class="outline-text-4" id="text-orga16753a">
+<div id="outline-container-org0d5e619" class="outline-4">
+<h4 id="org0d5e619">Cross Product</h4>
+<div class="outline-text-4" id="text-org0d5e619">
 <p>
 This is more like the regular product: the cross product of 2D vectors \((x_1, y_1)\) and
 \((x_2, y_2)\) is \(x_{1} \cdot y_{2} - y_{1} \cdot x_{2}\), and its formula \(A \cdot B = |A|
@@ -711,9 +711,9 @@ it is negative or positive based on the right-hand rule.
 </p>
 </div>
 </div>
-<div id="outline-container-org2f35020" class="outline-4">
-<h4 id="org2f35020">Line-Point Distance</h4>
-<div class="outline-text-4" id="text-org2f35020">
+<div id="outline-container-org6a6666a" class="outline-4">
+<h4 id="org6a6666a">Line-Point Distance</h4>
+<div class="outline-text-4" id="text-org6a6666a">
 <p>
 Lets say that you are given 3 points, \(A\), \(B\), and \(C\), and you want to find the distance
 from the point $C$to the line defined by \(A\) and \(B\).The first step is to find the two
@@ -726,7 +726,7 @@ Now, take the cross product \(AB \cdot AC\), and divide by \(|AB|\). This gives 
 </p>
 
 
-<figure id="orge237618">
+<figure id="orgc4aa97c">
 <img src="../i/old/2022-01-19_04-58-41_screenshot.png" alt="2022-01-19_04-58-41_screenshot.png">
 
 </figure>
@@ -745,59 +745,59 @@ is the absolute value.
 <p>
 Let&rsquo;s repeat in C(++):
 </p>
-<pre class="code"><code>//Compute the dot product AB ⋅ BC
-int dot(int[] A, int[] B, int[] C) {
-  AB = new int[2];
-  BC = new int[2];
+<pre class="code"><code><span style="color: #556b2f;">//</span><span style="color: #556b2f;">Compute the dot product AB &#8901; BC
+</span><span style="font-weight: bold;">int</span> <span style="font-weight: bold;">dot</span>(<span style="font-weight: bold;">int</span>[] A, <span style="font-weight: bold;">int</span>[] B, <span style="font-weight: bold;">int</span>[] C) {
+  AB = <span style="font-weight: bold;">new</span> <span style="font-weight: bold;">int</span>[2];
+  BC = <span style="font-weight: bold;">new</span> <span style="font-weight: bold;">int</span>[2];
   AB[0] = B[0] - A[0];
   AB[1] = B[1] - A[1];
   BC[0] = C[0] - B[0];
   BC[1] = C[1] - B[1];
-  int dot = AB[0] * BC[0] + AB[1] * BC[1];
-  return dot;
+  <span style="font-weight: bold;">int</span> <span style="color: #383a42;">dot</span> = AB[0] * BC[0] + AB[1] * BC[1];
+  <span style="font-weight: bold;">return</span> dot;
 }
-//Compute the cross product AB x AC
-int cross(int[] A, int[] B, int[] C) {
-  AB = new int[2];
-  AC = new int[2];
+<span style="color: #556b2f;">//</span><span style="color: #556b2f;">Compute the cross product AB x AC
+</span><span style="font-weight: bold;">int</span> <span style="font-weight: bold;">cross</span>(<span style="font-weight: bold;">int</span>[] A, <span style="font-weight: bold;">int</span>[] B, <span style="font-weight: bold;">int</span>[] C) {
+  AB = <span style="font-weight: bold;">new</span> <span style="font-weight: bold;">int</span>[2];
+  AC = <span style="font-weight: bold;">new</span> <span style="font-weight: bold;">int</span>[2];
   AB[0] = B[0] - A[0];
   AB[1] = B[1] - A[1];
   AC[0] = C[0] - A[0];
   AC[1] = C[1] - A[1];
-  int cross = AB[0] * AC[1] - AB[1] * AC[0];
-  return cross;
+  <span style="font-weight: bold;">int</span> <span style="color: #383a42;">cross</span> = AB[0] * AC[1] - AB[1] * AC[0];
+  <span style="font-weight: bold;">return</span> cross;
 }
-//Compute the distance from A to B
-double distance(int[] A, int[] B) {
-  int d1 = A[0] - B[0];
-  int d2 = A[1] - B[1];
-  return sqrt(d1d1 + d2d2);
+<span style="color: #556b2f;">//</span><span style="color: #556b2f;">Compute the distance from A to B
+</span><span style="font-weight: bold;">double</span> <span style="font-weight: bold;">distance</span>(<span style="font-weight: bold;">int</span>[] A, <span style="font-weight: bold;">int</span>[] B) {
+  <span style="font-weight: bold;">int</span> <span style="color: #383a42;">d1</span> = A[0] - B[0];
+  <span style="font-weight: bold;">int</span> <span style="color: #383a42;">d2</span> = A[1] - B[1];
+  <span style="font-weight: bold;">return</span> sqrt(d1d1 + d2d2);
 }
-//Compute the distance from AB to C
-//if isSegment is true, AB is a segment, not a line.
-double linePointDist(int[] A, int[] B, int[] C, boolean isSegment) {
-  double dist = cross(A, B, C) / distance(A, B);
-  if (isSegment) {
-    int dot1 = dot(A, B, C);
-    if (dot1 &gt; 0) return distance(B, C);
-    int dot2 = dot(B, A, C);
-    if (dot2 &gt; 0) return distance(A, C);
+<span style="color: #556b2f;">//</span><span style="color: #556b2f;">Compute the distance from AB to C
+</span><span style="color: #556b2f;">//</span><span style="color: #556b2f;">if isSegment is true, AB is a segment, not a line.
+</span><span style="font-weight: bold;">double</span> <span style="font-weight: bold;">linePointDist</span>(<span style="font-weight: bold;">int</span>[] A, <span style="font-weight: bold;">int</span>[] B, <span style="font-weight: bold;">int</span>[] C, <span style="font-weight: bold;">boolean</span> <span style="color: #383a42;">isSegment</span>) {
+  <span style="font-weight: bold;">double</span> <span style="color: #383a42;">dist</span> = cross(A, B, C) / distance(A, B);
+  <span style="font-weight: bold;">if</span> (isSegment) {
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">dot1</span> = dot(A, B, C);
+    <span style="font-weight: bold;">if</span> (dot1 &gt; 0) <span style="font-weight: bold;">return</span> distance(B, C);
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">dot2</span> = dot(B, A, C);
+    <span style="font-weight: bold;">if</span> (dot2 &gt; 0) <span style="font-weight: bold;">return</span> distance(A, C);
   }
-  return abs(dist);
+  <span style="font-weight: bold;">return</span> abs(dist);
 }
 </code></pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orgd938247" class="outline-3">
-<h3 id="orgd938247">Polygon Area</h3>
-<div class="outline-text-3" id="text-orgd938247">
+<div id="outline-container-org7501c74" class="outline-3">
+<h3 id="org7501c74">Polygon Area</h3>
+<div class="outline-text-3" id="text-org7501c74">
 <p>
 Consider this non-convex:
 </p>
 
 
-<figure id="orge18bccb">
+<figure id="orge454123">
 <img src="../i/old/2022-01-19_04-59-01_screenshot.png" alt="2022-01-19_04-59-01_screenshot.png">
 
 </figure>
@@ -832,30 +832,30 @@ it is obvious that the area of the polygon is the area of \(ABCD\) (which is the
 </p>
 
 
-<pre class="code"><code>// (X[i], Y[i]) are coordinates of i'th point.
-double polygonArea(double X[], double Y[], int n)
+<pre class="code"><code><span style="color: #556b2f;">// </span><span style="color: #556b2f;">(X[i], Y[i]) are coordinates of i'th point.
+</span><span style="font-weight: bold;">double</span> <span style="font-weight: bold;">polygonArea</span>(<span style="font-weight: bold;">double</span> <span style="color: #383a42;">X</span>[], <span style="font-weight: bold;">double</span> <span style="color: #383a42;">Y</span>[], <span style="font-weight: bold;">int</span> <span style="color: #383a42;">n</span>)
 {
-    // Initialize area
-    double area = 0.0;
+    <span style="color: #556b2f;">// </span><span style="color: #556b2f;">Initialize area
+</span>    <span style="font-weight: bold;">double</span> <span style="color: #383a42;">area</span> = 0.0;
 
-    // Calculate value of shoelace formula
-    int j = n - 1;
-    for (int i = 0; i &lt; n; i++)
+    <span style="color: #556b2f;">// </span><span style="color: #556b2f;">Calculate value of shoelace formula
+</span>    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">j</span> = n - 1;
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold;">int</span> <span style="color: #383a42;">i</span> = 0; i &lt; n; i++)
     {
         area += (X[j] + X[i]) * (Y[j] - Y[i]);
-        j = i;  // j is previous vertex to i
-    }
+        j = i;  <span style="color: #556b2f;">// </span><span style="color: #556b2f;">j is previous vertex to i
+</span>    }
 
-    // Return absolute value
-    return abs(area / 2.0);
+    <span style="color: #556b2f;">// </span><span style="color: #556b2f;">Return absolute value
+</span>    <span style="font-weight: bold;">return</span> abs(area / 2.0);
 }
 </code></pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org25d8d5a" class="outline-2">
-<h2 id="org25d8d5a">Intersection</h2>
-<div class="outline-text-2" id="text-org25d8d5a">
+<div id="outline-container-org859752a" class="outline-2">
+<h2 id="org859752a">Intersection</h2>
+<div class="outline-text-2" id="text-org859752a">
 <p>
 The first thing to think about in line-line intersection problem is what form we given our
 lines in, and what form would we like them in? In the best cases, each line will be in such
@@ -891,7 +891,7 @@ This basic formula is called <i>slope-intercept form</i>:
 </p>
 
 
-<figure id="orgcd62224">
+<figure id="org5512ed8">
 <img src="../i/old/2022-01-19_04-59-48_screenshot.png" alt="2022-01-19_04-59-48_screenshot.png">
 
 </figure>
@@ -962,7 +962,7 @@ Now, let&rsquo;s define what we mean by intersection, let&rsquo;s say we have th
 
 
 
-<figure id="orgd3c350d">
+<figure id="org39a2e22">
 <img src="../i/old/2022-01-19_05-00-07_screenshot.png" alt="2022-01-19_05-00-07_screenshot.png">
 
 </figure>
@@ -1041,19 +1041,19 @@ intersection point using the mentioned formulas.
 <p>
 Now, we can repeat easily in C:
 </p>
-<pre class="code"><code>double det = A1 * B2 - A2 * B1
-if (det == 0) {
-  //Lines are parallel
-} else {
-  double x = (B2 * C1 - B1 * C2) / det
-  double y = (A1 * C2 - A2 * C1) / det
+<pre class="code"><code><span style="font-weight: bold;">double</span> <span style="color: #383a42;">det</span> = A1 * B2 - A2 * B1
+<span style="font-weight: bold;">if</span> (det == 0) {
+  <span style="color: #556b2f;">//</span><span style="color: #556b2f;">Lines are parallel
+</span>} <span style="font-weight: bold;">else</span> {
+  <span style="font-weight: bold;">double</span> <span style="color: #383a42;">x</span> = (B2 * C1 - B1 * C2) / det
+  <span style="font-weight: bold;">double</span> y = (A1 * C2 - A2 * C1) / det
 }
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org3a4b217" class="outline-2">
-<h2 id="org3a4b217">Finding The Equation of a Line for a Segment</h2>
-<div class="outline-text-2" id="text-org3a4b217">
+<div id="outline-container-orga4249d2" class="outline-2">
+<h2 id="orga4249d2">Finding The Equation of a Line for a Segment</h2>
+<div class="outline-text-2" id="text-orga4249d2">
 <p>
 Let the given segment be \(PQ\)  i.e. the known coordinates of its ends \(P_x, P_y, Q_x, Q_y\)
 </p>
@@ -1081,19 +1081,19 @@ B &= Q_x - P_x, \\
 C &= - A P_x - B P_y.
 \end{align}
 </div>
-<div id="outline-container-orgf33dce6" class="outline-3">
-<h3 id="orgf33dce6"><span class="done KILL">KILL</span> Real Case vs. Integer Case</h3>
+<div id="outline-container-org7a7c83b" class="outline-3">
+<h3 id="org7a7c83b"><span class="done KILL">KILL</span> Real Case vs. Integer Case</h3>
 </div>
 </div>
-<div id="outline-container-orged27efa" class="outline-2">
-<h2 id="orged27efa">Orientation of 3 Points</h2>
-<div class="outline-text-2" id="text-orged27efa">
+<div id="outline-container-orgee3bae2" class="outline-2">
+<h2 id="orgee3bae2">Orientation of 3 Points</h2>
+<div class="outline-text-2" id="text-orgee3bae2">
 <p>
 To get the intuition of what is left and what is right turn, consider an example shown below.
 </p>
 
 
-<figure id="orgb21e55b">
+<figure id="org360e0a1">
 <img src="../i/old/2022-02-10_21-33-40_screenshot.png" alt="2022-02-10_21-33-40_screenshot.png">
 
 </figure>
@@ -1133,9 +1133,9 @@ them into the vectors. This can be done in the following way.
 </p>
 </div>
 </div>
-<div id="outline-container-orgc1f6340" class="outline-2">
-<h2 id="orgc1f6340">Finding a Circle From 3 Points</h2>
-<div class="outline-text-2" id="text-orgc1f6340">
+<div id="outline-container-org5d1db29" class="outline-2">
+<h2 id="org5d1db29">Finding a Circle From 3 Points</h2>
+<div class="outline-text-2" id="text-org5d1db29">
 <p>
 Given 3 points which are not colinear (all on the same line) those three points uniquely
 define a circle. But, how do you find the center and radius of that circle? This task turns
@@ -1145,7 +1145,7 @@ the center of the circle.
 </p>
 
 
-<figure id="org9311778">
+<figure id="orgbe8bdfb">
 <img src="../i/old/2022-01-19_05-00-24_screenshot.png" alt="2022-01-19_05-00-24_screenshot.png">
 
 </figure>
@@ -1163,61 +1163,61 @@ the equation of circle in general form is x² + y² + 2gx + 2fy + c = 0 and in r
 (x – h)² + (y -k)² = r², where (h, k) is the center of the circle and r is the radius.
 </p>
 
-<pre class="code"><code>void findCircle(int x1, int y1, int x2, int y2, int x3, int y3)
+<pre class="code"><code><span style="font-weight: bold;">void</span> <span style="font-weight: bold;">findCircle</span>(<span style="font-weight: bold;">int</span> <span style="color: #383a42;">x1</span>, <span style="font-weight: bold;">int</span> <span style="color: #383a42;">y1</span>, <span style="font-weight: bold;">int</span> <span style="color: #383a42;">x2</span>, <span style="font-weight: bold;">int</span> <span style="color: #383a42;">y2</span>, <span style="font-weight: bold;">int</span> <span style="color: #383a42;">x3</span>, <span style="font-weight: bold;">int</span> <span style="color: #383a42;">y3</span>)
 {
-    int x12 = x1 - x2;
-    int x13 = x1 - x3;
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">x12</span> = x1 - x2;
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">x13</span> = x1 - x3;
 
-    int y12 = y1 - y2;
-    int y13 = y1 - y3;
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">y12</span> = y1 - y2;
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">y13</span> = y1 - y3;
 
-    int y31 = y3 - y1;
-    int y21 = y2 - y1;
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">y31</span> = y3 - y1;
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">y21</span> = y2 - y1;
 
-    int x31 = x3 - x1;
-    int x21 = x2 - x1;
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">x31</span> = x3 - x1;
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">x21</span> = x2 - x1;
 
-    // x1^2 - x3^2
-    int sx13 = pow(x1, 2) - pow(x3, 2);
+    <span style="color: #556b2f;">// </span><span style="color: #556b2f;">x1^2 - x3^2
+</span>    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">sx13</span> = pow(x1, 2) - pow(x3, 2);
 
-    // y1^2 - y3^2
-    int sy13 = pow(y1, 2) - pow(y3, 2);
+    <span style="color: #556b2f;">// </span><span style="color: #556b2f;">y1^2 - y3^2
+</span>    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">sy13</span> = pow(y1, 2) - pow(y3, 2);
 
-    int sx21 = pow(x2, 2) - pow(x1, 2);
-    int sy21 = pow(y2, 2) - pow(y1, 2);
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">sx21</span> = pow(x2, 2) - pow(x1, 2);
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">sy21</span> = pow(y2, 2) - pow(y1, 2);
 
-    int f = ((sx13) * (x12)
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">f</span> = ((sx13) * (x12)
              + (sy13) * (x12)
              + (sx21) * (x13)
              + (sy21) * (x13))
             / (2 * ((y31) * (x12) - (y21) * (x13)));
-    int g = ((sx13) * (y12)
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">g</span> = ((sx13) * (y12)
              + (sy13) * (y12)
              + (sx21) * (y13)
              + (sy21) * (y13))
             / (2 * ((x31) * (y12) - (x21) * (y13)));
 
-    int c = -pow(x1, 2) - pow(y1, 2) - 2 * g * x1 - 2 * f * y1;
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">c</span> = -pow(x1, 2) - pow(y1, 2) - 2 * g * x1 - 2 * f * y1;
 
-    // eqn of circle be x^2 + y^2 + 2*g*x + 2*f*y + c = 0
-    // where centre is (h = -g, k = -f) and radius r
-    // as r^2 = h^2 + k^2 - c
-    int h = -g;
-    int k = -f;
-    int sqr_of_r = h * h + k * k - c;
+    <span style="color: #556b2f;">// </span><span style="color: #556b2f;">eqn of circle be x^2 + y^2 + 2*g*x + 2*f*y + c = 0
+</span>    <span style="color: #556b2f;">// </span><span style="color: #556b2f;">where centre is (h = -g, k = -f) and radius r
+</span>    <span style="color: #556b2f;">// </span><span style="color: #556b2f;">as r^2 = h^2 + k^2 - c
+</span>    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">h</span> = -g;
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">k</span> = -f;
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">sqr_of_r</span> = h * h + k * k - c;
 
-    // r is the radius
-    float r = sqrt(sqr_of_r);
+    <span style="color: #556b2f;">// </span><span style="color: #556b2f;">r is the radius
+</span>    <span style="font-weight: bold;">float</span> <span style="color: #383a42;">r</span> = sqrt(sqr_of_r);
 
-    cout &lt;&lt; "Centre = (" &lt;&lt; h &lt;&lt; ", " &lt;&lt; k &lt;&lt; ")" &lt;&lt; endl;
-    cout &lt;&lt; "Radius = " &lt;&lt; r;
+    cout &lt;&lt; <span style="color: #8a3b3c;">"Centre = ("</span> &lt;&lt; h &lt;&lt; <span style="color: #8a3b3c;">", "</span> &lt;&lt; k &lt;&lt; <span style="color: #8a3b3c;">")"</span> &lt;&lt; endl;
+    cout &lt;&lt; <span style="color: #8a3b3c;">"Radius = "</span> &lt;&lt; r;
 }
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orga4207a2" class="outline-2">
-<h2 id="orga4207a2">Convex Hull</h2>
-<div class="outline-text-2" id="text-orga4207a2">
+<div id="outline-container-org51d8834" class="outline-2">
+<h2 id="org51d8834">Convex Hull</h2>
+<div class="outline-text-2" id="text-org51d8834">
 <p>
 A convex hull of a set of points is the smallest convex polygon that contains every one of
 the points. It is defined by a subset of all the points in the original set. One way to
@@ -1226,9 +1226,9 @@ a board. Take a rubber band and stretch it around all of the points. The polygon
 the rubber band is a convex hull.
 </p>
 </div>
-<div id="outline-container-org8649b57" class="outline-3">
-<h3 id="org8649b57">Jarvi&rsquo;s algorithm</h3>
-<div class="outline-text-3" id="text-org8649b57">
+<div id="outline-container-org322bab9" class="outline-3">
+<h3 id="org322bab9">Jarvi&rsquo;s algorithm</h3>
+<div class="outline-text-3" id="text-org322bab9">
 <p>
 \(O(n^2)\)
 \(O(n \cdot h)\)
@@ -1260,7 +1260,7 @@ How to check if point is more counterclockwise? We can use orientation checker:
 </p>
 
 
-<figure id="org1a361a8">
+<figure id="orgc7cd832">
 <img src="../i/old/2022-01-19_05-00-40_screenshot.png" alt="2022-01-19_05-00-40_screenshot.png">
 
 </figure>
@@ -1269,14 +1269,14 @@ How to check if point is more counterclockwise? We can use orientation checker:
 (in this figure, clockwise triplet \(ABC\): cross product of \(AB\) and \(AC\) vectors is \(> 0\) anticlockwise triplet \(ACD\): cross product of \(AC\) and \(AD\) is negative.)
 </p>
 
-<pre class="code"><code>int orientation(Point p, Point q, Point r)
+<pre class="code"><code><span style="font-weight: bold;">int</span> <span style="font-weight: bold;">orientation</span>(<span style="font-weight: bold;">Point</span> <span style="color: #383a42;">p</span>, <span style="font-weight: bold;">Point</span> <span style="color: #383a42;">q</span>, <span style="font-weight: bold;">Point</span> <span style="color: #383a42;">r</span>)
 {
-    int val = (q.y - p.y) * (r.x - q.x) -
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">val</span> = (q.y - p.y) * (r.x - q.x) -
               (q.x - p.x) * (r.y - q.y);
 
-    if (val == 0) return 0;  // collinear
-    return (val &gt; 0)? 1: 2; // clock or counterclock wise
-}
+    <span style="font-weight: bold;">if</span> (val == 0) <span style="font-weight: bold;">return</span> 0;  <span style="color: #556b2f;">// </span><span style="color: #556b2f;">collinear
+</span>    <span style="font-weight: bold;">return</span> (val &gt; 0)? 1: 2; <span style="color: #556b2f;">// </span><span style="color: #556b2f;">clock or counterclock wise
+</span>}
 </code></pre>
 
 <p>
@@ -1284,8 +1284,8 @@ If we found that the points are collinear, we should consider taking the points 
 more distance, using a distance utility
 </p>
 
-<pre class="code"><code>float dis(point p, point q) {
-    return sqrt(   pow(p[x] - q[x], 2) +
+<pre class="code"><code><span style="font-weight: bold;">float</span> <span style="font-weight: bold;">dis</span>(<span style="font-weight: bold;">point</span> <span style="color: #383a42;">p</span>, <span style="font-weight: bold;">point</span> <span style="color: #383a42;">q</span>) {
+    <span style="font-weight: bold;">return</span> sqrt(   pow(p[x] - q[x], 2) +
                     pow(p[y] - q[y] , 2) * 1.0 );
 }
 </code></pre></li>
@@ -1300,57 +1300,57 @@ more distance, using a distance utility
 Now, let&rsquo;s repeat in C(++):
 </p>
 
-<pre class="code"><code>#include &lt;vector&gt;
-#include &lt;iostream&gt;
-#include &lt;cmath&gt;
-#define x 0
-#define y 1
-#define point vector&lt;int&gt;
-using namespace std;
-int orinetation(point p, point q, point r) {
-    int val = (q[y] - p[y] ) * (r[x] - q[x]) -
+<pre class="code"><code><span style="color: #383a42; font-weight: bold;">#include</span> <span style="color: #8a3b3c;">&lt;vector&gt;</span>
+<span style="color: #383a42; font-weight: bold;">#include</span> <span style="color: #8a3b3c;">&lt;iostream&gt;</span>
+<span style="color: #383a42; font-weight: bold;">#include</span> <span style="color: #8a3b3c;">&lt;cmath&gt;</span>
+<span style="color: #383a42; font-weight: bold;">#define</span> <span style="color: #383a42;">x</span> 0
+<span style="color: #383a42; font-weight: bold;">#define</span> <span style="color: #383a42;">y</span> 1
+<span style="color: #383a42; font-weight: bold;">#define</span> <span style="color: #383a42;">point</span> <span style="font-weight: bold;">vector</span>&lt;<span style="font-weight: bold;">int</span>&gt;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold;">namespace</span> <span style="color: #383a42;">std</span>;
+<span style="font-weight: bold;">int</span> <span style="font-weight: bold;">orinetation</span>(<span style="font-weight: bold;">point</span> <span style="color: #383a42;">p</span>, <span style="font-weight: bold;">point</span> <span style="color: #383a42;">q</span>, <span style="font-weight: bold;">point</span> <span style="color: #383a42;">r</span>) {
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">val</span> = (q[y] - p[y] ) * (r[x] - q[x]) -
         (q[x] - p [x] ) * (r[y] - q[y]);
-    if (val ==0 ) return 0; // collinear
-    return (val &gt; 0) ? 1 : 2;
+    <span style="font-weight: bold;">if</span> (val ==0 ) <span style="font-weight: bold;">return</span> 0; <span style="color: #556b2f;">// </span><span style="color: #556b2f;">collinear
+</span>    <span style="font-weight: bold;">return</span> (val &gt; 0) ? 1 : 2;
 
 }
 
-float dis(point p, point q) {
-    return sqrt(pow(p[x] - q[x], 2) +
+<span style="font-weight: bold;">float</span> <span style="font-weight: bold;">dis</span>(<span style="font-weight: bold;">point</span> <span style="color: #383a42;">p</span>, <span style="font-weight: bold;">point</span> <span style="color: #383a42;">q</span>) {
+    <span style="font-weight: bold;">return</span> sqrt(pow(p[x] - q[x], 2) +
                     pow(p[y] - q[y] , 2) * 1.0 );
 }
 
-vector&lt;vector&lt;int&gt;&gt; jarvis_march(vector&lt;vector&lt;int&gt;&gt; points) {
-    int n = points.size();
-    vector&lt;vector&lt;int&gt;&gt;hull;
-    if (n &lt; 3) return hull;
-    // find list most
-    int l = 0;
-    for (int i = 1; i &lt; n; i++) {
-        if (points[i][x] &lt; points[l][x])
+<span style="font-weight: bold;">vector</span>&lt;<span style="font-weight: bold;">vector</span>&lt;<span style="font-weight: bold;">int</span>&gt;&gt; <span style="font-weight: bold;">jarvis_march</span>(<span style="font-weight: bold;">vector</span>&lt;<span style="font-weight: bold;">vector</span>&lt;<span style="font-weight: bold;">int</span>&gt;&gt; <span style="color: #383a42;">points</span>) {
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">n</span> = points.size();
+    <span style="font-weight: bold;">vector</span>&lt;<span style="font-weight: bold;">vector</span>&lt;<span style="font-weight: bold;">int</span>&gt;&gt;<span style="color: #383a42;">hull</span>;
+    <span style="font-weight: bold;">if</span> (n &lt; 3) <span style="font-weight: bold;">return</span> hull;
+    <span style="color: #556b2f;">// </span><span style="color: #556b2f;">find list most
+</span>    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">l</span> = 0;
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold;">int</span> <span style="color: #383a42;">i</span> = 1; i &lt; n; i++) {
+        <span style="font-weight: bold;">if</span> (points[i][x] &lt; points[l][x])
             l = i;
     }
-    int q, left = l;
-    do {
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">q</span>, <span style="color: #383a42;">left</span> = l;
+    <span style="font-weight: bold;">do</span> {
     hull.push_back(points[l]);
     q = (l+1) % n;
-    for (int i = 0; i &lt; n; i++) {
-        int direction = orinetation(points[l], points[i], points[q]);
-        if(direction == 2 || ( direction == 0 &amp;&amp; dis(points[i], points[l]) &gt; dis(points[q],points[l]))  )
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold;">int</span> <span style="color: #383a42;">i</span> = 0; i &lt; n; i++) {
+        <span style="font-weight: bold;">int</span> <span style="color: #383a42;">direction</span> = orinetation(points[l], points[i], points[q]);
+        <span style="font-weight: bold;">if</span>(direction == 2 || ( direction == 0 &amp;&amp; dis(points[i], points[l]) &gt; dis(points[q],points[l]))  )
             q = i;
     }
     l=q;
 
-    } while (l != left );
-    return hull;
+    } <span style="font-weight: bold;">while</span> (l != left );
+    <span style="font-weight: bold;">return</span> hull;
 }
-int main() {
-    vector&lt;vector&lt;int&gt;&gt; po { {1,4}, {3,3} , {5,5} , {9,6} , {5,2}, {0,0} , {3,1} , {7,0} };
-    vector&lt;vector&lt;int&gt;&gt;l = jarvis_march(po);
-    for (auto i : l)
+<span style="font-weight: bold;">int</span> <span style="font-weight: bold;">main</span>() {
+    <span style="font-weight: bold;">vector</span>&lt;<span style="font-weight: bold;">vector</span>&lt;<span style="font-weight: bold;">int</span>&gt;&gt; <span style="color: #383a42;">po</span> { {1,4}, {3,3} , {5,5} , {9,6} , {5,2}, {0,0} , {3,1} , {7,0} };
+    <span style="font-weight: bold;">vector</span>&lt;<span style="font-weight: bold;">vector</span>&lt;<span style="font-weight: bold;">int</span>&gt;&gt;<span style="color: #383a42;">l</span> = jarvis_march(po);
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold;">auto</span> <span style="color: #383a42;">i</span> : l)
         {
-        for (auto k : i)
-            cout &lt;&lt; k &lt;&lt; " ";
+        <span style="font-weight: bold;">for</span> (<span style="font-weight: bold;">auto</span> <span style="color: #383a42;">k</span> : i)
+            cout &lt;&lt; k &lt;&lt; <span style="color: #8a3b3c;">" "</span>;
 
                 cout &lt;&lt; endl;
         }
@@ -1362,52 +1362,52 @@ int main() {
 <p>
 Python implementation:
 </p>
-<pre class="code"><code>def jarvis_march(points):
-    # find the leftmost point
-    a =  min(points, key = lambda point: point.x)
-    index = points.index(a)
+<pre class="code"><code><span style="font-weight: bold;">def</span> <span style="font-weight: bold;">jarvis_march</span>(points):
+    <span style="color: #556b2f;"># </span><span style="color: #556b2f;">find the leftmost point
+</span>    <span style="color: #383a42;">a</span> =  <span style="font-weight: bold;">min</span>(points, key = <span style="font-weight: bold;">lambda</span> point: point.x)
+    <span style="color: #383a42;">index</span> = points.index(a)
 
-    # selection sort
-    l = index
-    result = []
+    <span style="color: #556b2f;"># </span><span style="color: #556b2f;">selection sort
+</span>    <span style="color: #383a42;">l</span> = index
+    <span style="color: #383a42;">result</span> = []
     result.append(a)
-    while (True):
-        q = (l + 1) % len(points)
-        for i in range(len(points)):
-            if i == l:
-                continue
-            # find the greatest left turn
-            # in case of collinearity, consider the farthest point
-            d = direction(points[l], points[i], points[q])
-            if d &gt; 0 or (d == 0 and distance_sq(points[i], points[l]) &gt; distance_sq(points[q], points[l])):
-                q = i
-        l = q
-        if l == index:
-            break
+    <span style="font-weight: bold;">while</span> (<span style="color: #383a42;">True</span>):
+        <span style="color: #383a42;">q</span> = (l + 1) % <span style="font-weight: bold;">len</span>(points)
+        <span style="font-weight: bold;">for</span> i <span style="font-weight: bold;">in</span> <span style="font-weight: bold;">range</span>(<span style="font-weight: bold;">len</span>(points)):
+            <span style="font-weight: bold;">if</span> i == l:
+                <span style="font-weight: bold;">continue</span>
+            <span style="color: #556b2f;"># </span><span style="color: #556b2f;">find the greatest left turn
+</span>            <span style="color: #556b2f;"># </span><span style="color: #556b2f;">in case of collinearity, consider the farthest point
+</span>            <span style="color: #383a42;">d</span> = direction(points[l], points[i], points[q])
+            <span style="font-weight: bold;">if</span> d &gt; 0 <span style="font-weight: bold;">or</span> (d == 0 <span style="font-weight: bold;">and</span> distance_sq(points[i], points[l]) &gt; distance_sq(points[q], points[l])):
+                <span style="color: #383a42;">q</span> = i
+        <span style="color: #383a42;">l</span> = q
+        <span style="font-weight: bold;">if</span> l == index:
+            <span style="font-weight: bold;">break</span>
         result.append(points[q])
 
-    return result
+    <span style="font-weight: bold;">return</span> result
 </code></pre>
 <p>
 A visualization:
 </p>
 
 
-<figure id="orgbf09623">
+<figure id="org9bc89e4">
 <img src="../i/old/2022-01-19_05-01-38_Animation_depicting_the_gift_wrapping_algorithm.gif" alt="2022-01-19_05-01-38_Animation_depicting_the_gift_wrapping_algorithm.gif">
 
 </figure>
 </div>
-<div id="outline-container-org4844230" class="outline-4">
-<h4 id="org4844230">Trace</h4>
-<div class="outline-text-4" id="text-org4844230">
+<div id="outline-container-org930c45a" class="outline-4">
+<h4 id="org930c45a">Trace</h4>
+<div class="outline-text-4" id="text-org930c45a">
 <p>
 Let&rsquo;s try to trace the C(++) program above with the very same given points in the program:
 </p>
 
 
 
-<figure id="org68e163a">
+<figure id="org4fdeb21">
 <img src="../i/old/2022-01-19_05-01-56_screenshot.png" alt="2022-01-19_05-01-56_screenshot.png">
 
 </figure>
@@ -1419,7 +1419,7 @@ convex hull vertices as shown by the green circle in the figure below.
 </p>
 
 
-<figure id="org5d5df09">
+<figure id="orgc749ecf">
 <img src="../i/old/2022-01-19_05-02-14_screenshot.png" alt="2022-01-19_05-02-14_screenshot.png">
 
 </figure>
@@ -1453,7 +1453,7 @@ We add point \((1,4)\) to the convex hull.
 </p>
 
 
-<figure id="orga2089ce">
+<figure id="org29bc871">
 <img src="../i/old/2022-01-19_05-02-31_screenshot.png" alt="2022-01-19_05-02-31_screenshot.png">
 
 </figure>
@@ -1465,7 +1465,7 @@ above. If we follow all the steps, the leftmost point will be \((9,6)\).
 
 
 
-<figure id="orgd91b729">
+<figure id="org8e7d32d">
 <img src="../i/old/2022-01-19_05-02-42_screenshot.png" alt="2022-01-19_05-02-42_screenshot.png">
 
 </figure>
@@ -1477,7 +1477,7 @@ Using the same process, the leftmost point from \((9,6)\) will be the point \((7
 </p>
 
 
-<figure id="org7d2baff">
+<figure id="orgf425daa">
 <img src="../i/old/2022-01-19_05-02-53_screenshot.png" alt="2022-01-19_05-02-53_screenshot.png">
 
 </figure>
@@ -1488,9 +1488,9 @@ Finally from \((7,0)\) we compute the leftmost point. The leftmost point from \(
 </p>
 </div>
 </div>
-<div id="outline-container-org9194255" class="outline-4">
-<h4 id="org9194255">Complexity</h4>
-<div class="outline-text-4" id="text-org9194255">
+<div id="outline-container-org35ac1a2" class="outline-4">
+<h4 id="org35ac1a2">Complexity</h4>
+<div class="outline-text-4" id="text-org35ac1a2">
 <p>
 The algorithm spends \(O(n)\) time on each convex hull vertex. If there are h convex hull
 vertices, the total time complexity of the algorithm would be \(O(nh)\). Since h is the number
@@ -1499,9 +1499,9 @@ the complexity also depends on the number of output.
 </p>
 </div>
 </div>
-<div id="outline-container-orgac1e818" class="outline-4">
-<h4 id="orgac1e818">Further Reading</h4>
-<div class="outline-text-4" id="text-orgac1e818">
+<div id="outline-container-org13fcaae" class="outline-4">
+<h4 id="org13fcaae">Further Reading</h4>
+<div class="outline-text-4" id="text-org13fcaae">
 <ul class="org-ul">
 <li>Briquet, C. (n.d.). Introduction to Convex Hull Applications. Lecture. Retrieved August 23, 2018, from <a href="http://www.montefiore.ulg.ac.be/~briquet/algo3-chull-20070206.pdf">http://www.montefiore.ulg.ac.be/~briquet/algo3-chull-20070206.pdf</a></li>
 <li>Erickson, J. (n.d.). Convex Hulls. Lecture. Retrieved August 23, 2018, from <a href="http://jeffe.cs.illinois.edu/teaching/373/notes/x05-convexhull.pdf">http://jeffe.cs.illinois.edu/teaching/373/notes/x05-convexhull.pdf</a></li>
@@ -1510,9 +1510,9 @@ the complexity also depends on the number of output.
 </div>
 </div>
 </div>
-<div id="outline-container-orgf882a47" class="outline-3">
-<h3 id="orgf882a47">Grahm Scan</h3>
-<div class="outline-text-3" id="text-orgf882a47">
+<div id="outline-container-org4d8ce41" class="outline-3">
+<h3 id="org4d8ce41">Grahm Scan</h3>
+<div class="outline-text-3" id="text-org4d8ce41">
 <p>
 \(O(n \cdot log(n))\)
 </p>
@@ -1535,7 +1535,7 @@ Sort the points based on the polar angle i.e. the angle made by the line with th
 </p>
 
 
-<figure id="orgaf53f43">
+<figure id="orgefe1d25">
 <img src="../i/old/2022-01-19_05-03-08_screenshot.png" alt="2022-01-19_05-03-08_screenshot.png">
 
 </figure></li>
@@ -1552,7 +1552,7 @@ has complexity \(O(n \log n)\).
 </p>
 
 
-<figure id="orgb93ef59">
+<figure id="orge2bef66">
 <img src="../i/old/2022-01-19_05-03-21_screenshot.png" alt="2022-01-19_05-03-21_screenshot.png">
 
 </figure>
@@ -1568,7 +1568,7 @@ It looks like this:
 </p>
 
 
-<figure id="orge1e3652">
+<figure id="org1d8e797">
 <img src="../i/old/2022-01-19_05-03-40_screenshot.png" alt="2022-01-19_05-03-40_screenshot.png">
 
 </figure>
@@ -1587,51 +1587,51 @@ If we perform these steps on a set of points, we should get correct convex hull.
 Let&rsquo;s repeat in C(++):
 </p>
 
-<pre class="code"><code>#define x 0
-#define y 1
-#define point vector&lt;int&gt;
-using namespace std;
-int orinetation(point p, point q, point r) {
-    int val = (q[y] - p[y] ) * (r[x] - q[x]) -
+<pre class="code"><code><span style="color: #383a42; font-weight: bold;">#define</span> <span style="color: #383a42;">x</span> 0
+<span style="color: #383a42; font-weight: bold;">#define</span> <span style="color: #383a42;">y</span> 1
+<span style="color: #383a42; font-weight: bold;">#define</span> <span style="color: #383a42;">point</span> <span style="font-weight: bold;">vector</span>&lt;<span style="font-weight: bold;">int</span>&gt;
+<span style="font-weight: bold;">using</span> <span style="font-weight: bold;">namespace</span> <span style="color: #383a42;">std</span>;
+<span style="font-weight: bold;">int</span> <span style="font-weight: bold;">orinetation</span>(<span style="font-weight: bold;">point</span> <span style="color: #383a42;">p</span>, <span style="font-weight: bold;">point</span> <span style="color: #383a42;">q</span>, <span style="font-weight: bold;">point</span> <span style="color: #383a42;">r</span>) {
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">val</span> = (q[y] - p[y] ) * (r[x] - q[x]) -
         (q[x] - p [x] ) * (r[y] - q[y]);
-    if (val ==0 ) return 0; // collinear
-    return (val &gt; 0) ? 1 : 2; // clockwise : counterclockwise
-}
+    <span style="font-weight: bold;">if</span> (val ==0 ) <span style="font-weight: bold;">return</span> 0; <span style="color: #556b2f;">// </span><span style="color: #556b2f;">collinear
+</span>    <span style="font-weight: bold;">return</span> (val &gt; 0) ? 1 : 2; <span style="color: #556b2f;">// </span><span style="color: #556b2f;">clockwise : counterclockwise
+</span>}
 
-float dis(point p, point q) {
-    return sqrt(   pow(p[x] - q[x], 2) +
+<span style="font-weight: bold;">float</span> <span style="font-weight: bold;">dis</span>(<span style="font-weight: bold;">point</span> <span style="color: #383a42;">p</span>, <span style="font-weight: bold;">point</span> <span style="color: #383a42;">q</span>) {
+    <span style="font-weight: bold;">return</span> sqrt(   pow(p[x] - q[x], 2) +
                     pow(p[y] - q[y] , 2) * 1.0 );
 }
 
-vector&lt;vector&lt;int&gt;&gt; jarvis_march(vector&lt;vector&lt;int&gt;&gt; points) {
-    int n = points.size();
-    vector&lt;vector&lt;int&gt;&gt;hull;
-    if (n &lt; 3) return hull;
-    // find left most
-    int l = 0;
-    for (int i = 1; i &lt; n; i++) {
-        if (points[i][x] &lt; points[l][x])
+<span style="font-weight: bold;">vector</span>&lt;<span style="font-weight: bold;">vector</span>&lt;<span style="font-weight: bold;">int</span>&gt;&gt; <span style="font-weight: bold;">jarvis_march</span>(<span style="font-weight: bold;">vector</span>&lt;<span style="font-weight: bold;">vector</span>&lt;<span style="font-weight: bold;">int</span>&gt;&gt; <span style="color: #383a42;">points</span>) {
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">n</span> = points.size();
+    <span style="font-weight: bold;">vector</span>&lt;<span style="font-weight: bold;">vector</span>&lt;<span style="font-weight: bold;">int</span>&gt;&gt;<span style="color: #383a42;">hull</span>;
+    <span style="font-weight: bold;">if</span> (n &lt; 3) <span style="font-weight: bold;">return</span> hull;
+    <span style="color: #556b2f;">// </span><span style="color: #556b2f;">find left most
+</span>    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">l</span> = 0;
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold;">int</span> <span style="color: #383a42;">i</span> = 1; i &lt; n; i++) {
+        <span style="font-weight: bold;">if</span> (points[i][x] &lt; points[l][x])
             l = i;
     }
-    int q, left = l;
-    do {
+    <span style="font-weight: bold;">int</span> <span style="color: #383a42;">q</span>, <span style="color: #383a42;">left</span> = l;
+    <span style="font-weight: bold;">do</span> {
     hull.push_back(points[l]);
     q = (l+1) % n;
-    for (int i = 0; i &lt; n; i++) {
-        int direction = orinetation(points[l], points[i], points[q]);
-        if(direction == 2 || ( direction == 0 &amp;&amp; dis(points[i], points[l]) &gt; dis(points[q],points[l]))  )
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold;">int</span> <span style="color: #383a42;">i</span> = 0; i &lt; n; i++) {
+        <span style="font-weight: bold;">int</span> <span style="color: #383a42;">direction</span> = orinetation(points[l], points[i], points[q]);
+        <span style="font-weight: bold;">if</span>(direction == 2 || ( direction == 0 &amp;&amp; dis(points[i], points[l]) &gt; dis(points[q],points[l]))  )
             q = i;
     }
     l=q;
-    } while (l != left );
-    return hull;
+    } <span style="font-weight: bold;">while</span> (l != left );
+    <span style="font-weight: bold;">return</span> hull;
 }
 
-int main() {
-vector&lt;vector&lt;int&gt;&gt; pointts = {{0, 3}, {2, 2}, {1, 1}, {2, 1}, {3, 0}, {0, 0}, {3, 3}};
-vector &lt;vector&lt;int&gt;&gt; hull = jarvis_march(pointts);
-for (auto i : hull ) {
-    for (auto j : i ) {
+<span style="font-weight: bold;">int</span> <span style="font-weight: bold;">main</span>() {
+<span style="font-weight: bold;">vector</span>&lt;<span style="font-weight: bold;">vector</span>&lt;<span style="font-weight: bold;">int</span>&gt;&gt; <span style="color: #383a42;">pointts</span> = {{0, 3}, {2, 2}, {1, 1}, {2, 1}, {3, 0}, {0, 0}, {3, 3}};
+<span style="font-weight: bold;">vector</span> &lt;<span style="font-weight: bold;">vector</span>&lt;<span style="font-weight: bold;">int</span>&gt;&gt; <span style="color: #383a42;">hull</span> = jarvis_march(pointts);
+<span style="font-weight: bold;">for</span> (<span style="font-weight: bold;">auto</span> <span style="color: #383a42;">i</span> : hull ) {
+    <span style="font-weight: bold;">for</span> (<span style="font-weight: bold;">auto</span> <span style="color: #383a42;">j</span> : i ) {
         cout &lt;&lt; j &lt;&lt; endl;
     }
     cout &lt;&lt; endl;
@@ -1643,69 +1643,69 @@ for (auto i : hull ) {
 <p>
 Python implementation:
 </p>
-<pre class="code"><code>def find_min_y(points):
-    miny = 999999
-    mini = 0
-    for i, point in enumerate(points):
-        if point.y &lt; miny:
-            miny = point.y
-            mini = i
-        if point.y == miny:
-            if point.x &lt; points[mini].x:
-                mini = i
-    return points[mini], mini
+<pre class="code"><code><span style="font-weight: bold;">def</span> <span style="font-weight: bold;">find_min_y</span>(points):
+    <span style="color: #383a42;">miny</span> = 999999
+    <span style="color: #383a42;">mini</span> = 0
+    <span style="font-weight: bold;">for</span> i, point <span style="font-weight: bold;">in</span> <span style="font-weight: bold;">enumerate</span>(points):
+        <span style="font-weight: bold;">if</span> point.y &lt; miny:
+            <span style="color: #383a42;">miny</span> = point.y
+            <span style="color: #383a42;">mini</span> = i
+        <span style="font-weight: bold;">if</span> point.y == miny:
+            <span style="font-weight: bold;">if</span> point.x &lt; points[mini].x:
+                <span style="color: #383a42;">mini</span> = i
+    <span style="font-weight: bold;">return</span> points[mini], mini
 
-def polar_comparator(p1, p2, p0):
-    d = direction(p0, p1, p2)
-    if d &lt; 0:
-        return -1
-    if d &gt; 0:
-        return 1
-    if d == 0:
-        if distance_sq(p1, p0) &lt; distance_sq(p2, p0):
-            return -1
-        else:
-            return 1
+<span style="font-weight: bold;">def</span> <span style="font-weight: bold;">polar_comparator</span>(p1, p2, p0):
+    <span style="color: #383a42;">d</span> = direction(p0, p1, p2)
+    <span style="font-weight: bold;">if</span> d &lt; 0:
+        <span style="font-weight: bold;">return</span> -1
+    <span style="font-weight: bold;">if</span> d &gt; 0:
+        <span style="font-weight: bold;">return</span> 1
+    <span style="font-weight: bold;">if</span> d == 0:
+        <span style="font-weight: bold;">if</span> distance_sq(p1, p0) &lt; distance_sq(p2, p0):
+            <span style="font-weight: bold;">return</span> -1
+        <span style="font-weight: bold;">else</span>:
+            <span style="font-weight: bold;">return</span> 1
 
-def graham_scan(points):
-    p0, index = find_min_y(points)
-    points[0], points[index] = points[index], points[0]
-    sorted_polar = sorted(points[1:], cmp = lambda p1, p2: polar_comparator(p1, p2, p0))
-    to_remove = []
-    for i in range(len(sorted_polar) - 1):
-        d = direction(sorted_polar[i], sorted_polar[i + 1], p0)
-        if d == 0:
+<span style="font-weight: bold;">def</span> <span style="font-weight: bold;">graham_scan</span>(points):
+    <span style="color: #383a42;">p0</span>, <span style="color: #383a42;">index</span> = find_min_y(points)
+    <span style="color: #383a42;">points</span>[0], <span style="color: #383a42;">points</span>[index] = points[index], points[0]
+    <span style="color: #383a42;">sorted_polar</span> = <span style="font-weight: bold;">sorted</span>(points[1:], <span style="font-weight: bold;">cmp</span> = <span style="font-weight: bold;">lambda</span> p1, p2: polar_comparator(p1, p2, p0))
+    <span style="color: #383a42;">to_remove</span> = []
+    <span style="font-weight: bold;">for</span> i <span style="font-weight: bold;">in</span> <span style="font-weight: bold;">range</span>(<span style="font-weight: bold;">len</span>(sorted_polar) - 1):
+        <span style="color: #383a42;">d</span> = direction(sorted_polar[i], sorted_polar[i + 1], p0)
+        <span style="font-weight: bold;">if</span> d == 0:
             to_remove.append(i)
-    sorted_polar = [i for j, i in enumerate(sorted_polar) if j not in to_remove]
-    m = len(sorted_polar)
-    if m &lt; 2:
-        print 'Convex hull is empty'
+    <span style="color: #383a42;">sorted_polar</span> = [i <span style="font-weight: bold;">for</span> j, i <span style="font-weight: bold;">in</span> <span style="font-weight: bold;">enumerate</span>(sorted_polar) <span style="font-weight: bold;">if</span> j <span style="font-weight: bold;">not</span> <span style="font-weight: bold;">in</span> to_remove]
+    <span style="color: #383a42;">m</span> = <span style="font-weight: bold;">len</span>(sorted_polar)
+    <span style="font-weight: bold;">if</span> m &lt; 2:
+        <span style="font-weight: bold;">print</span> <span style="color: #8a3b3c;">'Convex hull is empty'</span>
 
-    else:
-        stack = []
-        stack_size = 0
+    <span style="font-weight: bold;">else</span>:
+        <span style="color: #383a42;">stack</span> = []
+        <span style="color: #383a42;">stack_size</span> = 0
         stack.append(points[0])
         stack.append(sorted_polar[0])
         stack.append(sorted_polar[1])
-        stack_size = 3
+        <span style="color: #383a42;">stack_size</span> = 3
 
-        for i in range(2, m):
-            while (True):
-                d = direction(stack[stack_size - 2], stack[stack_size - 1], sorted_polar[i])
-                if d &lt; 0: # if it makes left turn
-                    break
-                else: # if it makes non left turn
-                    stack.pop()
-                    stack_size -= 1
+        <span style="font-weight: bold;">for</span> i <span style="font-weight: bold;">in</span> <span style="font-weight: bold;">range</span>(2, m):
+            <span style="font-weight: bold;">while</span> (<span style="color: #383a42;">True</span>):
+                <span style="color: #383a42;">d</span> = direction(stack[stack_size - 2], stack[stack_size - 1], sorted_polar[i])
+                <span style="font-weight: bold;">if</span> d &lt; 0: <span style="color: #556b2f;"># </span><span style="color: #556b2f;">if it makes left turn
+</span>                    <span style="font-weight: bold;">break</span>
+                <span style="font-weight: bold;">else</span>: <span style="color: #556b2f;"># </span><span style="color: #556b2f;">if it makes non left turn
+</span>                    stack.pop()
+                    <span style="color: #383a42;">stack_size</span> -= 1
             stack.append(sorted_polar[i])
-            stack_size += 1
-    return stack
+            <span style="color: #383a42;">stack_size</span> += 1
+    <span style="font-weight: bold;">return</span> stack
 </code></pre>
 </div>
 </div>
 <div id="outline-container-c8a188da-1279-4cc2-a069-b5b7bb0b9633" class="outline-3">
 <h3 id="c8a188da-1279-4cc2-a069-b5b7bb0b9633"><span class="done KILL">KILL</span> Monotone chain</h3>
-<div class="outline-text-3" id="text-orgf743092">
+<div class="outline-text-3" id="text-orgbf5b97a">
 <p>
 \(O(n \cdot log(n))\)
 </p>

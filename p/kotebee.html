@@ -552,7 +552,7 @@ margin-block-start: auto;
 <div id="content" class="content">
 <header>
 <h1 class="title">Extract <a href="https://www.kotobee.com/">https://www.kotobee.com/</a></h1>
-</header><div class="tag" id="orgec0ebf4">
+</header><div class="tag" id="org596fc89">
 <p>
 This section was labeled under, or is related to <a href="../t/programming.html#4u5664n02wj0">Programming</a>
 </p>
@@ -577,7 +577,7 @@ First of all, simply, extract the exe content:
 <p>
 The extracted directory should have a similar tree to this:
 </p>
-<pre class="example" id="org81cd7b1">
+<pre class="example" id="org9213595">
 larrasket [~/tmp/rq/e]$ ls -l
 total 152
 -rw-r--r-- 1 l l   2227 Aug 21 14:42 config.js
@@ -610,8 +610,8 @@ from the provided epub directory:
 Inside the epub directory append the mimetype
 </p>
 
-<pre class="code"><code>zip -0X "../book.epub" mimetype
-zip -rDX9 "../book.epub" * -x "*.DS_Store" -x mimetype
+<pre class="code"><code>zip -0X <span style="color: #8a3b3c;">"../book.epub"</span> mimetype
+zip -rDX9 <span style="color: #8a3b3c;">"../book.epub"</span> * -x <span style="color: #8a3b3c;">"*.DS_Store"</span> -x mimetype
 </code></pre>
 
 <p>
@@ -626,8 +626,8 @@ This will get you the epub. Right after, you can convert it to pdf with
 As a single command:
 </p>
 
-<pre class="code"><code>(zip -0X "../book.epub" mimetype &amp;&amp; \\
-     zip -rDX9 "../book.epub" * -x "*.DS_Store" -x mimetype) \\
+<pre class="code"><code>(zip -0X <span style="color: #8a3b3c;">"../book.epub"</span> mimetype &amp;&amp; <span style="color: #8a3b3c;">\\</span>
+     zip -rDX9 <span style="color: #8a3b3c;">"../book.epub"</span> * -x <span style="color: #8a3b3c;">"*.DS_Store"</span> -x mimetype) <span style="color: #8a3b3c;">\\</span>
         &amp;&amp; ebook-convert ../book.epub ../book.pdf
 </code></pre>
 </div>
