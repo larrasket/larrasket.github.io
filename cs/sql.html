@@ -584,16 +584,16 @@ margin-block-start: auto;
 <div id="content" class="content">
 <header>
 <h1 class="title">Introduction to The Relational Language</h1>
-</header><div class="tag" id="org6782271">
+</header><div class="tag" id="org967aca7">
 <p>
 This section was labeled under, or is related to <a href="../t/programming.html#4u5664n02wj0">programming</a>.
 </p>
 
 </div>
-<div id="outline-container-org4c2fe2c" class="outline-2">
-<h2 id="org4c2fe2c">Sequel, The Structured Query Language</h2>
-<div class="outline-text-2" id="text-org4c2fe2c">
-<div class="PREVIEW" id="org9e93d7e">
+<div id="outline-container-orgeec964c" class="outline-2">
+<h2 id="orgeec964c">Sequel, The Structured Query Language</h2>
+<div class="outline-text-2" id="text-orgeec964c">
+<div class="PREVIEW" id="org89b2f43">
 <p>
 IBM developed the original version of SQL, originally called Sequel, as part of the
 System R project in the early 1970s. The Sequel language has evolved since then, and its
@@ -642,16 +642,16 @@ relation, including:
 <li>The physical storage structure of each relation on disk.</li>
 </ul>
 </div>
-<div id="outline-container-orgc1b56c6" class="outline-3">
-<h3 id="orgc1b56c6">Pre-theory</h3>
-<div class="outline-text-3" id="text-orgc1b56c6">
+<div id="outline-container-orgba91443" class="outline-3">
+<h3 id="orgba91443">Pre-theory</h3>
+<div class="outline-text-3" id="text-orgba91443">
 <p>
 Before going through any SQL flavor, let us take a look at the thoery prerequisites.
 </p>
 </div>
-<div id="outline-container-orgc785d4b" class="outline-4">
-<h4 id="orgc785d4b">Set Theory</h4>
-<div class="outline-text-4" id="text-orgc785d4b">
+<div id="outline-container-org3160869" class="outline-4">
+<h4 id="org3160869">Set Theory</h4>
+<div class="outline-text-4" id="text-org3160869">
 <p>
 Set theory, which originated with the mathematician Georg Cantor, is one of the mathematical
 branches on which the relational model is based. Cantor’s definition of a set follows:
@@ -693,9 +693,9 @@ table won’t qualify as a set. Rather, the table would be a multiset or a bag.
 </p>
 </div>
 </div>
-<div id="outline-container-org4b1dc15" class="outline-4">
-<h4 id="org4b1dc15">Predicate Logic</h4>
-<div class="outline-text-4" id="text-org4b1dc15">
+<div id="outline-container-org3de49ec" class="outline-4">
+<h4 id="org3de49ec">Predicate Logic</h4>
+<div class="outline-text-4" id="text-org3de49ec">
 <p>
 Predicate logic, is another branch of mathematics on which the relational model is based.
 Dr. Edgar F. Codd, in creating the relational model, had the insight to connect predicate
@@ -722,9 +722,9 @@ greater than or equal to 0 and smaller than or equal to 9.”
 </p>
 </div>
 </div>
-<div id="outline-container-orgc8a1d68" class="outline-4">
-<h4 id="orgc8a1d68">Propositions, Predicates, and Relations</h4>
-<div class="outline-text-4" id="text-orgc8a1d68">
+<div id="outline-container-orgae180d9" class="outline-4">
+<h4 id="orgae180d9">Propositions, Predicates, and Relations</h4>
+<div class="outline-text-4" id="text-orgae180d9">
 <p>
 The common belief that the term relational stems from relationships between tables is
 incorrect. “Relational” actually pertains to the mathematical term relation. In set theory,
@@ -748,9 +748,9 @@ is known as the close world assumption (CWA).
 </div>
 </div>
 </div>
-<div id="outline-container-org3f8ea42" class="outline-3">
-<h3 id="org3f8ea42">Basic Types</h3>
-<div class="outline-text-3" id="text-org3f8ea42">
+<div id="outline-container-orgbc1d942" class="outline-3">
+<h3 id="orgbc1d942">Basic Types</h3>
+<div class="outline-text-3" id="text-orgbc1d942">
 <p>
 The SQL standard supports a variety of built-in types, including:
 </p>
@@ -797,7 +797,7 @@ Street <span style="font-weight: bold;">VARCHAR</span>(10));
 <p>
 output will be:
 </p>
-<pre class="example" id="orgeed39c1">
+<pre class="example" id="orgbab81e2">
 length(City)          Length(street)
 10                    6
 </pre>
@@ -812,9 +812,9 @@ we may wish to prohibit null values from being entered, as we shall see shortly.
 </p>
 </div>
 </div>
-<div id="outline-container-org9b8809a" class="outline-3">
-<h3 id="org9b8809a">Schema Definition</h3>
-<div class="outline-text-3" id="text-org9b8809a">
+<div id="outline-container-orgd7a0899" class="outline-3">
+<h3 id="orgd7a0899">Schema Definition</h3>
+<div class="outline-text-3" id="text-orgd7a0899">
 <p>
 We define an SQL elation by using the create table command. The following command creates a
 relation <i>department</i> in the database:
@@ -841,7 +841,7 @@ department relation.
 The general form of writing this kind of schemas looks like this:
 </p>
 
-<pre class="example" id="orgaf863d0">
+<pre class="example" id="org5bd2c1d">
 create table r
     (A1 D1 ,
     A2 D2 ,
@@ -931,9 +931,9 @@ to either TRUE or UNKNOWN. For example, salary –1000 will be rejected, whereas
 </p>
 </div>
 </div>
-<div id="outline-container-orgae38ad9" class="outline-3">
-<h3 id="orgae38ad9">Structure of SQL Queries</h3>
-<div class="outline-text-3" id="text-orgae38ad9">
+<div id="outline-container-org9cc281a" class="outline-3">
+<h3 id="org9cc281a">Structure of SQL Queries</h3>
+<div class="outline-text-3" id="text-org9cc281a">
 <p>
 The basic structure of an SQL query consists of three clauses: select, from, and where.  A
 query takes as its input the relations listed in the from clause, operates on them as
@@ -942,9 +942,9 @@ introduce the SQL syntax through examples, and we describe the general structure
 queries later.
 </p>
 </div>
-<div id="outline-container-org86a1133" class="outline-4">
-<h4 id="org86a1133"><i>Select</i></h4>
-<div class="outline-text-4" id="text-org86a1133">
+<div id="outline-container-org14d466f" class="outline-4">
+<h4 id="org14d466f"><i>Select</i></h4>
+<div class="outline-text-4" id="text-org14d466f">
 <p>
 Database tables are objects that store all the data in a database. In a table, data is
 logically organized in a row-and-column format which is similar to a spreadsheet.
@@ -962,9 +962,9 @@ basic form of the <code>SELECT</code> statement:
 
 </code></pre>
 </div>
-<div id="outline-container-org2e7bd8b" class="outline-5">
-<h5 id="org2e7bd8b">Order by</h5>
-<div class="outline-text-5" id="text-org2e7bd8b">
+<div id="outline-container-org95f7bbd" class="outline-5">
+<h5 id="org95f7bbd">Order by</h5>
+<div class="outline-text-5" id="text-org95f7bbd">
 <p>
 When you use the <code>SELECT</code> statement to query data from a table, the order of rows in the
 result set is not guaranteed. It means that SQL can return a result set with an
@@ -984,9 +984,9 @@ The only way for you to guarantee that the rows in the result set are sorted is 
     <span style="font-weight: bold;">column_name</span> | expression [<span style="font-weight: bold;">ASC</span> | <span style="font-weight: bold;">DESC</span> ];
 </code></pre>
 </div>
-<div id="outline-container-orgdebd2d6" class="outline-6">
-<h6 id="orgdebd2d6">Offset Fetch</h6>
-<div class="outline-text-6" id="text-orgdebd2d6">
+<div id="outline-container-orgaec9820" class="outline-6">
+<h6 id="orgaec9820">Offset Fetch</h6>
+<div class="outline-text-6" id="text-orgaec9820">
 <p>
 The <code>OFFSET</code> and <code>FETCH</code> clauses are the options of the ORDER BY clause. They allow you to limit
 the number of rows to be returned by a query.
@@ -1024,9 +1024,9 @@ will get an error.
 </div>
 </div>
 </div>
-<div id="outline-container-orgf82209b" class="outline-4">
-<h4 id="orgf82209b">Top</h4>
-<div class="outline-text-4" id="text-orgf82209b">
+<div id="outline-container-org92c485a" class="outline-4">
+<h4 id="org92c485a">Top</h4>
+<div class="outline-text-4" id="text-org92c485a">
 <p>
 The SELECT TOP clause allows you to limit the number of rows or percentage of rows returned
 in a query result set.
@@ -1039,18 +1039,18 @@ in a query result set.
     <span style="font-weight: bold;">column_name</span>;
 </code></pre>
 </div>
-<div id="outline-container-orgaeb9192" class="outline-6">
-<h6 id="orgaeb9192">Percent</h6>
-<div class="outline-text-6" id="text-orgaeb9192">
+<div id="outline-container-org578719c" class="outline-6">
+<h6 id="org578719c">Percent</h6>
+<div class="outline-text-6" id="text-org578719c">
 <p>
 The <code>PERCENT</code> keyword indicates that the query returns the first <code>N</code> percentage of rows,
 where <code>N</code> is the result of the expression.
 </p>
 </div>
 </div>
-<div id="outline-container-org3d953bd" class="outline-6">
-<h6 id="org3d953bd">With Ties</h6>
-<div class="outline-text-6" id="text-org3d953bd">
+<div id="outline-container-orgc31dca3" class="outline-6">
+<h6 id="orgc31dca3">With Ties</h6>
+<div class="outline-text-6" id="text-orgc31dca3">
 <p>
 The WITH TIES allows you to return more rows with values that match the last row in the
 limited result set. Note that WITH TIES may cause more rows to be returned than you specify
@@ -1058,9 +1058,9 @@ in the expression.
 </p>
 </div>
 </div>
-<div id="outline-container-orgabb99df" class="outline-5">
-<h5 id="orgabb99df">Distinct</h5>
-<div class="outline-text-5" id="text-orgabb99df">
+<div id="outline-container-orgc76ad86" class="outline-5">
+<h5 id="orgc76ad86">Distinct</h5>
+<div class="outline-text-5" id="text-orgc76ad86">
 <p>
 Sometimes, you may want to get only distinct values in a specified column of a table. To do
 this, you use the SELECT DISTINCT clause as follows:
@@ -1072,9 +1072,9 @@ this, you use the SELECT DISTINCT clause as follows:
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgd8441ed" class="outline-5">
-<h5 id="orgd8441ed">Where</h5>
-<div class="outline-text-5" id="text-orgd8441ed">
+<div id="outline-container-org049151b" class="outline-5">
+<h5 id="org049151b">Where</h5>
+<div class="outline-text-5" id="text-org049151b">
 <p>
 When you use the SELECT statement to query data against a table, you get all the rows of
 that table, which is unnecessary because the application may only process a set of rows at
@@ -1094,9 +1094,9 @@ as follows:
     search_condition;
 </code></pre>
 </div>
-<div id="outline-container-orgf3ece16" class="outline-6">
-<h6 id="orgf3ece16">And</h6>
-<div class="outline-text-6" id="text-orgf3ece16">
+<div id="outline-container-orgfb56c35" class="outline-6">
+<h6 id="orgfb56c35">And</h6>
+<div class="outline-text-6" id="text-orgfb56c35">
 <p>
 The AND is a logical operator that allows you to combine two Boolean expressions. It returns
 TRUE only when both expressions evaluate to TRUE.
@@ -1117,9 +1117,9 @@ TRUE only when both expressions evaluate to TRUE.
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org4ddf3cf" class="outline-6">
-<h6 id="org4ddf3cf">Or</h6>
-<div class="outline-text-6" id="text-org4ddf3cf">
+<div id="outline-container-org67a6658" class="outline-6">
+<h6 id="org67a6658">Or</h6>
+<div class="outline-text-6" id="text-org67a6658">
 <p>
 The OR is a logical operator that allows you to combine two Boolean expressions.  It returns
 TRUE when either of the conditions evaluates to TRUE.
@@ -1140,9 +1140,9 @@ TRUE when either of the conditions evaluates to TRUE.
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgdd5f1c1" class="outline-6">
-<h6 id="orgdd5f1c1">Between</h6>
-<div class="outline-text-6" id="text-orgdd5f1c1">
+<div id="outline-container-org0364afb" class="outline-6">
+<h6 id="org0364afb">Between</h6>
+<div class="outline-text-6" id="text-org0364afb">
 <p>
 The BETWEEN operator is a logical operator that allows you to specify a range to test.
 </p>
@@ -1163,23 +1163,23 @@ The BETWEEN operator is a logical operator that allows you to specify a range to
 </div>
 </div>
 </div>
-<div id="outline-container-org170d2d7" class="outline-5">
-<h5 id="org170d2d7">Null</h5>
-<div class="outline-text-5" id="text-org170d2d7">
+<div id="outline-container-org2b95850" class="outline-5">
+<h5 id="org2b95850">Null</h5>
+<div class="outline-text-5" id="text-org2b95850">
 <p>
 In the database world, NULL is used to indicate the absence of any data value. For example,
 when recording the customer information, the email may be unknown, so you record it as NULL
 in the database.
 </p>
 </div>
-<div id="outline-container-org4ac437a" class="outline-6">
-<h6 id="org4ac437a">Is Null</h6>
-<div class="outline-text-6" id="text-org4ac437a">
+<div id="outline-container-orga3a1832" class="outline-6">
+<h6 id="orga3a1832">Is Null</h6>
+<div class="outline-text-6" id="text-orga3a1832">
 <p>
 See the following customers table from the sample database.
 </p>
 
-<pre class="example" id="orgeed5b1e">
+<pre class="example" id="org16e4101">
 customer_id(PK, int, not null),
 first_name(varchar, not null),
 last_name(varchar, not null),
@@ -1219,7 +1219,7 @@ The <code>WHERE</code> clause returns rows that cause its predicate evaluates to
 following expression evaluates to <code>UNKNOWN</code>.
 </p>
 
-<pre class="example" id="org2d028d4">
+<pre class="example" id="orgf8e30a0">
 phone = NULL;
 </pre>
 
@@ -1245,7 +1245,7 @@ The right way to do it is to use the following instead:
 <p>
 Which evaluates to:
 </p>
-<pre class="example" id="org8f30e90">
+<pre class="example" id="org3435f15">
 | customer_id | first_name | last_name | phone |
 |-------------+------------+-----------+-------|
 |         338 | Abbey      | Pugh      | NULL  |
@@ -1268,9 +1268,9 @@ As you may guess, to check if a value is not NULL, you can use the IS NOT NULL o
 </div>
 </div>
 </div>
-<div id="outline-container-org7747662" class="outline-4">
-<h4 id="org7747662">Joins</h4>
-<div class="outline-text-4" id="text-org7747662">
+<div id="outline-container-org440df93" class="outline-4">
+<h4 id="org440df93">Joins</h4>
+<div class="outline-text-4" id="text-org440df93">
 <p>
 The FROM clause of a query is the first clause to be logically processed, and within the
 FROM clause, table operators operate on input tables. Microsoft SQL Server supports four
@@ -1302,9 +1302,9 @@ query processing. The SQL Server relational engine often applies many shortcuts 
 optimization purposes when it knows that it can still produce the correct result.
 </p>
 </div>
-<div id="outline-container-orgb5ed53e" class="outline-5">
-<h5 id="orgb5ed53e">Cross Joins</h5>
-<div class="outline-text-5" id="text-orgb5ed53e">
+<div id="outline-container-org4cc0508" class="outline-5">
+<h5 id="org4cc0508">Cross Joins</h5>
+<div class="outline-text-5" id="text-org4cc0508">
 <p>
 Logically, a cross join is the simplest type of join. A cross join implements only one
 logical query processing phase—a Cartesian Product. This phase operates on the two tables
@@ -1313,9 +1313,9 @@ row from one input is matched with all rows from the other. So if you have \(m\)
 table and \(n\) rows in the other, you get \(m \cdot n\) rows in the result.
 </p>
 </div>
-<div id="outline-container-org5e7fc37" class="outline-6">
-<h6 id="org5e7fc37">ANSI Syntax</h6>
-<div class="outline-text-6" id="text-org5e7fc37">
+<div id="outline-container-orgad57ad6" class="outline-6">
+<h6 id="orgad57ad6">ANSI Syntax</h6>
+<div class="outline-text-6" id="text-orgad57ad6">
 <p>
 T-SQL supports two standard syntaxes for cross joins—the ANSI SQL-92 and ANSI SQL-89
 syntaxes. I recommend that you use the ANSI-SQL 92 syntax for reasons that I’ll describe
@@ -1333,9 +1333,9 @@ query produces a result set with 819 rows, as shown here in abbreviated form.
 </div>
 </div>
 </div>
-<div id="outline-container-org578552c" class="outline-5">
-<h5 id="org578552c">Inner Joins</h5>
-<div class="outline-text-5" id="text-org578552c">
+<div id="outline-container-orgca88c84" class="outline-5">
+<h5 id="orgca88c84">Inner Joins</h5>
+<div class="outline-text-5" id="text-orgca88c84">
 <p>
 An inner join applies two logical query processing phases—it applies a Cartesian product
 between the two input tables as in a cross join, and then it filters rows based on a
@@ -1377,14 +1377,14 @@ parser generates an error. For example, try to run the following code.
 <span style="font-weight: bold;">JOIN</span> Sales.Orders <span style="font-weight: bold;">AS</span> O;
 </code></pre>
 
-<pre class="example" id="orgfd495d2">
+<pre class="example" id="org0319816">
 Msg 102, Level 15, State 1, Line 3
 Incorrect syntax near ';'.
 </pre>
 </div>
-<div id="outline-container-org351342e" class="outline-6">
-<h6 id="org351342e">Composite Joins</h6>
-<div class="outline-text-6" id="text-org351342e">
+<div id="outline-container-org7b21d83" class="outline-6">
+<h6 id="org7b21d83">Composite Joins</h6>
+<div class="outline-text-6" id="text-org7b21d83">
 <p>
 A composite join is simply a join based on a predicate that involves more than one attribute
 from each side. A composite join is commonly required when you need to join two tables based
@@ -1408,9 +1408,9 @@ called OrderDetailsAudit.
 </p>
 </div>
 </div>
-<div id="outline-container-org57cf6c5" class="outline-6">
-<h6 id="org57cf6c5">Multi-Joins</h6>
-<div class="outline-text-6" id="text-org57cf6c5">
+<div id="outline-container-orgd44734e" class="outline-6">
+<h6 id="orgd44734e">Multi-Joins</h6>
+<div class="outline-text-6" id="text-orgd44734e">
 <p>
 A join table operator operates only on two tables, but a single query can have multiple
 joins. In general, when more than one table operator appears in the FROM clause, the table
@@ -1442,9 +1442,9 @@ OD.productid, OD.qty
 </div>
 </div>
 </div>
-<div id="outline-container-orgc9cef6a" class="outline-5">
-<h5 id="orgc9cef6a">Outer Joins</h5>
-<div class="outline-text-5" id="text-orgc9cef6a">
+<div id="outline-container-org244bdf3" class="outline-5">
+<h5 id="org244bdf3">Outer Joins</h5>
+<div class="outline-text-5" id="text-org244bdf3">
 <p>
 Outer joins were introduced in ANSI SQL-92 and, unlike inner joins and cross joins, have
 only one standard syntax—the one in which the JOIN keyword is specified between the table
@@ -1491,9 +1491,9 @@ respect to rows that it filters out, unlike the ON clause.
 </div>
 </div>
 </div>
-<div id="outline-container-org49b5784" class="outline-4">
-<h4 id="org49b5784">Aggregation with Grouping</h4>
-<div class="outline-text-4" id="text-org49b5784">
+<div id="outline-container-orgd394ad2" class="outline-4">
+<h4 id="orgd394ad2">Aggregation with Grouping</h4>
+<div class="outline-text-4" id="text-orgd394ad2">
 <p>
 There are circumstances where we would like to apply the aggregate function not only to a
 single set of tuples, but also to a group of sets of tuples; we specify this in SQL using
@@ -1514,9 +1514,9 @@ write this query as follows
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgaf5ea2f" class="outline-4">
-<h4 id="orgaf5ea2f">Nested Subqueries</h4>
-<div class="outline-text-4" id="text-orgaf5ea2f">
+<div id="outline-container-org2599e62" class="outline-4">
+<h4 id="org2599e62">Nested Subqueries</h4>
+<div class="outline-text-4" id="text-org2599e62">
 <p>
 SQL provides a mechanism for nesting subqueries. A subquery is a select-from-where
 expression that is nested within another query. A common use of subqueries is to perform
@@ -1524,9 +1524,9 @@ tests for set membership, make set comparisons, and determine set cardinality by
 subqueries in the where clause.
 </p>
 </div>
-<div id="outline-container-orga703296" class="outline-5">
-<h5 id="orga703296">Set Membership</h5>
-<div class="outline-text-5" id="text-orga703296">
+<div id="outline-container-orgf66acf1" class="outline-5">
+<h5 id="orgf66acf1">Set Membership</h5>
+<div class="outline-text-5" id="text-orgf66acf1">
 <p>
 SQL allows testing tuples for membership in a relation. The in connective tests for set
 membership, where the set is a collection of values produced by a select clause. The
@@ -1569,17 +1569,17 @@ course id <span style="font-weight: bold;">in</span> (<span style="font-weight: 
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orga3281ca" class="outline-5">
-<h5 id="orga3281ca">Set Comparison</h5>
-<div class="outline-text-5" id="text-orga3281ca">
+<div id="outline-container-org69c593e" class="outline-5">
+<h5 id="org69c593e">Set Comparison</h5>
+<div class="outline-text-5" id="text-org69c593e">
 <p>
 Check the MSDOCS; <a href="https://learn.microsoft.com/en-us/sql/t-sql/language-elements/some-any-transact-sql?view=sql-server-ver16">here</a>, <a href="https://learn.microsoft.com/en-us/sql/t-sql/language-elements/all-transact-sql?view=sql-server-ver16">here</a>.
 </p>
 </div>
 </div>
-<div id="outline-container-org3dff84a" class="outline-5">
-<h5 id="org3dff84a">Test for Empty Relations</h5>
-<div class="outline-text-5" id="text-org3dff84a">
+<div id="outline-container-org5ccc749" class="outline-5">
+<h5 id="org5ccc749">Test for Empty Relations</h5>
+<div class="outline-text-5" id="text-org5ccc749">
 <p>
 SQL includes a feature for testing whether a subquery has any tuples in its result. The
 exists construct returns the value true if the argument subquery is nonempty. Using the
@@ -1627,9 +1627,9 @@ R.<span style="font-weight: bold;">year</span> = 2017);
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org9d0cb04" class="outline-5">
-<h5 id="org9d0cb04"><i>From</i> Subqueries</h5>
-<div class="outline-text-5" id="text-org9d0cb04">
+<div id="outline-container-org02a34e8" class="outline-5">
+<h5 id="org02a34e8"><i>From</i> Subqueries</h5>
+<div class="outline-text-5" id="text-org02a34e8">
 <p>
 SQL allows a subquery expression to be used in the from clause. The key concept ap- plied
 here is that any select-from-where expression returns a relation as a result and, therefore,
@@ -1646,16 +1646,16 @@ can be inserted into another select-from-where anywhere that a relation can appe
 </div>
 </div>
 </div>
-<div id="outline-container-orge0ff7ee" class="outline-3">
-<h3 id="orge0ff7ee">Gotchas</h3>
-<div class="outline-text-3" id="text-orge0ff7ee">
+<div id="outline-container-org97c397a" class="outline-3">
+<h3 id="org97c397a">Gotchas</h3>
+<div class="outline-text-3" id="text-org97c397a">
 <p>
 This section contains several exercise and tricks for various topics.
 </p>
 </div>
-<div id="outline-container-orgfdd9fca" class="outline-4">
-<h4 id="orgfdd9fca">Generating Five Copies from Each Row&#xa0;&#xa0;&#xa0;<span class="tag"><span class="cross_joins">cross_joins</span></span></h4>
-<div class="outline-text-4" id="text-orgfdd9fca">
+<div id="outline-container-org56c5813" class="outline-4">
+<h4 id="org56c5813">Generating Five Copies from Each Row&#xa0;&#xa0;&#xa0;<span class="tag"><span class="cross_joins">cross_joins</span></span></h4>
+<div class="outline-text-4" id="text-org56c5813">
 <p>
 Producing multiple copies of rows can be achieved with a fundamental technique that utilizes
 a cross  join. If you need to produce five copies of each employee row, you need to perform
@@ -1685,7 +1685,7 @@ number of requested copies (five, in this case).
 <span style="font-weight: bold;">drop</span> <span style="font-weight: bold;">table</span> <span style="font-weight: bold;">temptable</span>;
 </code></pre>
 
-<pre class="example" id="org9b5e62a">
+<pre class="example" id="org27f88b4">
 | empid | firstname  | lastname | n |
 |-------+------------+----------+---|
 |    10 | Bernardine | Houston  | 1 |
@@ -1704,9 +1704,9 @@ Load 10 more... (10/50)
 </div>
 </div>
 </div>
-<div id="outline-container-org243f2c1" class="outline-3">
-<h3 id="org243f2c1">General Notes</h3>
-<div class="outline-text-3" id="text-org243f2c1">
+<div id="outline-container-org57c452b" class="outline-3">
+<h3 id="org57c452b">General Notes</h3>
+<div class="outline-text-3" id="text-org57c452b">
 <ul class="org-ul">
 <li>When you use the NOT IN predicate against a subquery that returns at least one NULL, the
 outer query always returns an empty set. Values from the outer table that are known to
@@ -1747,9 +1747,9 @@ be expressed in T-SQL with a correlated subquery like this.
 </code></pre></li>
 </ul>
 </div>
-<div id="outline-container-orgcd322a2" class="outline-4">
-<h4 id="orgcd322a2">Confusions</h4>
-<div class="outline-text-4" id="text-orgcd322a2">
+<div id="outline-container-orgae807d4" class="outline-4">
+<h4 id="orgae807d4">Confusions</h4>
+<div class="outline-text-4" id="text-orgae807d4">
 <ul class="org-ul">
 <li>The different between <code>UNION</code> and <code>UNION ALL</code> is that, <code>UNION</code> will remove duplicates from
 your query, <code>UNION ALL</code> will not.</li>
@@ -1757,9 +1757,9 @@ your query, <code>UNION ALL</code> will not.</li>
 </div>
 </div>
 </div>
-<div id="outline-container-orgd3b7fe1" class="outline-3">
-<h3 id="orgd3b7fe1">Table Expressions</h3>
-<div class="outline-text-3" id="text-orgd3b7fe1">
+<div id="outline-container-org3900a25" class="outline-3">
+<h3 id="org3900a25">Table Expressions</h3>
+<div class="outline-text-3" id="text-org3900a25">
 <p>
 A table expression is a named query expression that represents a valid relational table. You
 can use table expressions in data manipulation statements much like you use other tables.
@@ -1776,9 +1776,9 @@ language, such as the inability to refer to column aliases assigned in the SELEC
 query clauses that are logically processed before the <code>SELECT</code> clause.
 </p>
 </div>
-<div id="outline-container-org1a80537" class="outline-4">
-<h4 id="org1a80537">Derived Tables</h4>
-<div class="outline-text-4" id="text-org1a80537">
+<div id="outline-container-org8f75ec3" class="outline-4">
+<h4 id="org8f75ec3">Derived Tables</h4>
+<div class="outline-text-4" id="text-org8f75ec3">
 <p>
 Derived tables (also known as table subqueries) are defined in the FROM clause of an outer
 query. Their scope of existence is the outer query. As soon as the outer query is finished,
@@ -1827,9 +1827,9 @@ to define a table expression.
 </p>
 </div>
 </div>
-<div id="outline-container-orgc1694cd" class="outline-4">
-<h4 id="orgc1694cd">Common Table Expressions</h4>
-<div class="outline-text-4" id="text-orgc1694cd">
+<div id="outline-container-orgf82c111" class="outline-4">
+<h4 id="orgf82c111">Common Table Expressions</h4>
+<div class="outline-text-4" id="text-orgf82c111">
 <p>
 Common table expressions (CTEs) are another standard form of table expression very similar to derived tables, yet with a couple of important advantages.
 CTEs are defined by using a WITH statement and have the following general form.
@@ -1891,9 +1891,9 @@ The external form:
 </ul>
 </div>
 </div>
-<div id="outline-container-org06a6a52" class="outline-4">
-<h4 id="org06a6a52">Recursive Common Table Expressions</h4>
-<div class="outline-text-4" id="text-org06a6a52">
+<div id="outline-container-org8953deb" class="outline-4">
+<h4 id="org8953deb">Recursive Common Table Expressions</h4>
+<div class="outline-text-4" id="text-org8953deb">
 <p>
 CTEs are unique among table expressions because they have recursive capabilities. A recursive
 CTE is defined by at least two queries (more are possible)—at least one query known as the anchor
@@ -1961,9 +1961,9 @@ employee (Don Funk, employee ID 2) and all of the employee’s subordinates in a
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org720170d" class="outline-4">
-<h4 id="org720170d">Views</h4>
-<div class="outline-text-4" id="text-org720170d">
+<div id="outline-container-org3d2c60f" class="outline-4">
+<h4 id="org3d2c60f">Views</h4>
+<div class="outline-text-4" id="text-org3d2c60f">
 <p>
 The two types of table expressions discussed so far—derived tables and CTEs—have a very
 limited scope, which is the single-statement scope. As soon as the outer query against those
@@ -2018,9 +2018,9 @@ columns are added to the underlying tables and you need them in the view, use th
 statement to revise the view definition accordingly.
 </p>
 </div>
-<div id="outline-container-org1cbb493" class="outline-5">
-<h5 id="org1cbb493">Order</h5>
-<div class="outline-text-5" id="text-org1cbb493">
+<div id="outline-container-orgd8cce53" class="outline-5">
+<h5 id="orgd8cce53">Order</h5>
+<div class="outline-text-5" id="text-orgd8cce53">
 <p>
 The query that you use to define a view must meet all requirements mentioned earlier with
 respect to table expressions in the context of derived tables. The view should not guarantee
@@ -2066,9 +2066,9 @@ guaranteed.
 </p>
 </div>
 </div>
-<div id="outline-container-org71d6ec7" class="outline-5">
-<h5 id="org71d6ec7">Options</h5>
-<div class="outline-text-5" id="text-org71d6ec7">
+<div id="outline-container-orgfb7e7fb" class="outline-5">
+<h5 id="orgfb7e7fb">Options</h5>
+<div class="outline-text-5" id="text-orgfb7e7fb">
 <p>
 When you create or alter a view, you can specify view attributes and options as part of the view
 definition. In the header of the view, under the <code>WITH</code> clause, you can specify attributes such as
@@ -2076,9 +2076,9 @@ definition. In the header of the view, under the <code>WITH</code> clause, you c
 OPTION</code>.
 </p>
 </div>
-<div id="outline-container-org4b14d25" class="outline-6">
-<h6 id="org4b14d25">Encryption</h6>
-<div class="outline-text-6" id="text-org4b14d25">
+<div id="outline-container-orgef112b2" class="outline-6">
+<h6 id="orgef112b2">Encryption</h6>
+<div class="outline-text-6" id="text-orgef112b2">
 <p>
 The ENCRYPTION option is available when you create or alter views, stored procedures, triggers, and
 user-defined functions (UDFs). The ENCRYPTION option indicates that SQL Server will internally store
@@ -2107,7 +2107,7 @@ To get the definition of the view, invoke the <code>OBJECT_DEFINITION</code> fun
 <pre class="code"><code><span style="font-weight: bold;">SELECT</span> OBJECT_DEFINITION(OBJECT_ID(<span style="color: #8a3b3c;">'Sales.USACusts'</span>));
 </code></pre>
 
-<pre class="example" id="org0d030ae">
+<pre class="example" id="org4c03ebc">
 | (No column name)           |
 |----------------------------|
 | CREATE VIEW Sales.USACusts |
@@ -2154,7 +2154,7 @@ Next, alter the view definition—only this time, include the ENCRYPTION option.
 <p>
 You will get:
 </p>
-<pre class="example" id="orgd6995b4">
+<pre class="example" id="org8c05d92">
 | (No column name) |
 |------------------|
 | NULL             |
@@ -2165,9 +2165,9 @@ You will get:
 </p>
 </div>
 </div>
-<div id="outline-container-org7fdeb28" class="outline-6">
-<h6 id="org7fdeb28">Check</h6>
-<div class="outline-text-6" id="text-org7fdeb28">
+<div id="outline-container-org02f2aaa" class="outline-6">
+<h6 id="org02f2aaa">Check</h6>
+<div class="outline-text-6" id="text-org02f2aaa">
 <p>
 The purpose of CHECK OPTION is to prevent modifications through the view that conflict with
 the view’s filter—assuming that one exists in the query defining the view.
@@ -2216,9 +2216,9 @@ city, region, postalcode, country, phone, fax
 </div>
 </div>
 </div>
-<div id="outline-container-orgb484b62" class="outline-4">
-<h4 id="orgb484b62">Inline Table-Valued Function</h4>
-<div class="outline-text-4" id="text-orgb484b62">
+<div id="outline-container-orgfb82f35" class="outline-4">
+<h4 id="orgfb82f35">Inline Table-Valued Function</h4>
+<div class="outline-text-4" id="text-orgfb82f35">
 <p>
 Inline TVFs are reusable table expressions that support input parameters. In all respects except for the
 support for input parameters, inline TVFs are similar to views. For this reason, I like to think of inline
@@ -2257,9 +2257,9 @@ IF OBJECT_ID (<span style="color: #8a3b3c;">'dbo.GetCustOrders'</span>) <span st
 </code></pre>
 </div>
 </div>
-<div id="outline-container-orgfc1b7a7" class="outline-4">
-<h4 id="orgfc1b7a7"><span class="done KILL">KILL</span> Apply</h4>
-<div class="outline-text-4" id="text-orgfc1b7a7">
+<div id="outline-container-org1822da1" class="outline-4">
+<h4 id="org1822da1"><span class="done KILL">KILL</span> Apply</h4>
+<div class="outline-text-4" id="text-org1822da1">
 <p>
 The APPLY operator is a very powerful table operator. Like all table operators, this operator is used
 in the FROM clause of a query. The two supported types of APPLY operator are CROSS APPLY and
@@ -2269,9 +2269,9 @@ APPLY implements two.
 </div>
 </div>
 </div>
-<div id="outline-container-org0365314" class="outline-3">
-<h3 id="org0365314">Sets</h3>
-<div class="outline-text-3" id="text-org0365314">
+<div id="outline-container-org6f43204" class="outline-3">
+<h3 id="org6f43204">Sets</h3>
+<div class="outline-text-3" id="text-org6f43204">
 <p>
 Set operators are operators that are applied between two input sets—or, to use the more
 accurate SQL term, multisets—that result from two input queries. Remember, <b>a multiset is not
@@ -2283,9 +2283,9 @@ set operator (a DISTINCT flavor), the result is a set with no duplicates. If the
 a multiset operator (an ALL flavor), the result is a multiset with possible duplicates.
 </p>
 </div>
-<div id="outline-container-orga765a12" class="outline-4">
-<h4 id="orga765a12">Precedence</h4>
-<div class="outline-text-4" id="text-orga765a12">
+<div id="outline-container-orgc5e556d" class="outline-4">
+<h4 id="orgc5e556d">Precedence</h4>
+<div class="outline-text-4" id="text-orgc5e556d">
 <p>
 SQL defines precedence among set operators. The INTERSECT operator precedes UNION and EXCEPT,
 and UNION and EXCEPT are considered equal. In a query that contains multiple set operators, first
@@ -2316,9 +2316,9 @@ Write a query that returns customer and employee pairs that had order activity i
 </div>
 </div>
 </div>
-<div id="outline-container-org9bab826" class="outline-2">
-<h2 id="org9bab826">Terminology</h2>
-<div class="outline-text-2" id="text-org9bab826">
+<div id="outline-container-org8ef95f1" class="outline-2">
+<h2 id="org8ef95f1">Terminology</h2>
+<div class="outline-text-2" id="text-org8ef95f1">
 <p>
 Subqueries terminology might sound a little bit confusing, this section provides some basic
 glossary that might help you.
