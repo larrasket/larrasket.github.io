@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Thoughts on Chess</title>
+<title>Programmers and software developers lost the plot on naming their tools</title>
 <meta name="author" content="Salih Muhammed" />
 <meta name="generator" content="Org Mode" />
 <!doctype html>
@@ -551,186 +551,137 @@ margin-block-start: auto;
 </div>
 <div id="content" class="content">
 <header>
-<h1 class="title">Thoughts on Chess</h1>
-</header><div class="BACKLINKS" id="org7bc6ebb">
+<h1 class="title">Programmers and software developers lost the plot on naming their tools</h1>
+</header><div class="tag" id="orgbbb3f6e">
 <p>
-This section was referenced in <a href="../h/me.html#a8bf37c4-358e-4f6c-866b-33c50e4e2b80">I can also paint</a>.
-</p>
-
-</div>
-
-<div class="tag" id="org53c7fdd">
-<p>
-This section was labeled under, or is related to <a href="../t/chess.html#rgogo9p02wj0">chess</a>
+This section was labeled under, or is related to <a href="../t/programming.html#4u5664n02wj0">Programming</a>
 </p>
 
 </div>
 
 <p>
-I mentioned previously somewhere in this site (can&rsquo;t be sure where, check the
-<a href="../t/chess.html#rgogo9p02wj0">Chess</a> label for me and inform me please) that I aim to reach ~1600-1800 on the
-<a href="https://en.wikipedia.org/wiki/Glicko_rating_system">Glicko rating system.</a> According to lichess.org, As of the time of writing this
-post, I&rsquo;m now on 1951, and &ldquo;better than 90.3% of Rapid players&rdquo; with my brand
-new account.
-</p>
-
-<div class="PREVIEW" id="orgd6dca9e">
-<p>
-Here are my &rsquo;finial&rsquo; thoughts of chess after ~7 months of actively engaging with
-it.
-</p>
-
-</div>
-<div id="outline-container-orge72bd63" class="outline-2">
-<h2 id="orge72bd63">Ratings</h2>
-<div class="outline-text-2" id="text-orge72bd63">
-<p>
-I posses 2 accounts other than the mentioned one. I&rsquo;m rated 1800 in one of them,
-which is older and 1500-1600 in the other, which is oldest. I play actively on
-those accounts too since I&rsquo;m logged into them on my other machines, however my
-rating does not move much on them. I have developed a simple theory that
-accounts for that phenomenon; in internet chess, players may not always approach
-the game with utmost seriousness, things like hastiness and recklessness are
-likely to occur.  I have observed a recurring pattern in my games. After
-securing approximately five consecutive victories, I tend to lose three games
-consecutively. This may be attributed to a sense of vexation following a loss,
-leading to subsequent blunders similar to the fact that you are likely to
-blunder even worse after your first blunder in the game, no matter how
-insignificant it was). Thus, I do not really acknowledge any of these ratings,
-not only mine but I do not think that this rating is actually valid if it is to
-respect player actual performance (which is not the case, it&rsquo;s only interested
-in the record of wining/losing). I think in this case the FIDE rating is
-plausible since players tend to be more serious on their tournaments games.
+In Dec 2022 I watched Richard Stallman&rsquo;s talk on the EmacsConf, it was titled &ldquo;What I&rsquo;d like to see in Emacs&rdquo;. One of the interesting points Mr. Stallman pointed out in this talk was &ldquo;memorable names&rdquo;, &ldquo;I think every package that you [&#x2026;] should have a name that helps you remember what job it does. [&#x2026;] We&rsquo;ve had a tendency to give packages names for the sake of pure wordplay or lack of obvious meaning&rdquo;. That Stallman felt compelled to make this point in 2022 tells you everything about how far we&rsquo;ve fallen, even within the Emacs ecosystem (known for its descriptive naming conventions, dired for directory editor, eshell for Emacs shell).
 </p>
 
 <p>
-Let&rsquo;s take this game for example;
-</p>
-<iframe src="https://lichess.org/embed/game/jnUUKXfQ?theme=auto&bg=auto#14" width=600 height=397 frameborder=0></iframe>
-
-<p>
-In this particular game, my opponent committed a significant blunder by playing
-Nc6, which ultimately granted me a knight and a favorable winning position. The
-computer analysis indicates that, at best, my opponent would have to sacrifice
-the queen to avoid an inevitable checkmate. This blunder occurred early in the
-opening phase, leading to their defeat in just 9 moves.
-My opponent held a rating of 1948, slightly higher than my own rating of 1940.
-However, if this player had been randomly matched against a 1400-rated player,
-that player would likely have taken advantage of the opportunity and secured a
-quick victory; this would result in 100+ rating points for this player.
-</p>
-
-
-<p>
-During my observation of numerous chess live streams featuring top players, I
-came across a noteworthy phenomenon. In both rapid and blitz games, I noticed a
-recurring pattern of terrible blunders occurring in the opening and middle game
-stages. these blunders were not exploited by either side, I believe that this
-has to do with the complacency that those players have, yeah it is not likely
-that a high-rated opponent will blunder in the opening or miss a checkmate so it
-doesn&rsquo;t worth calculating for it, and of course the player does not want to lose
-time.
+There&rsquo;s an odd tendency in modern software development; we&rsquo;ve collectively decided that naming things after random nouns, mythological creatures, or random favorite fictional characters is somehow acceptable professional practice. This would be career suicide in virtually any other technical field.
 </p>
 
 <p>
-I think those ratings are valid only if we consider how unserious people are on
-internet chess, thus it is not really about how good you are at the game.
+I remembered Stallman&rsquo;s comment lately when I had some difficulties following my friend who was describing some situation in their infrastructure. She was saying something like that: &ldquo;We&rsquo;re using Viper for configuration management, which feeds into Cobra for the CLI, and then Melody handles our WebSocket connections, Casbin manages permissions, all through Asynq for our job queue.&rdquo;, perhaps only the last software in this statement was saying something about what the package/software actually does, I spent couple of moments trying to make sense of the names she mentioned, googled some of them, and really while I&rsquo;m doing that I remembered that I never had to do this when interacting with any other fields: the Golden Gate Bridge tells you it spans the Golden Gate strait. The Hoover Dam is a dam, named after the president who commissioned it, not &ldquo;Project Thunderfall&rdquo; or &ldquo;AquaHold.&rdquo; Steel I-beams are called I-beams because they&rsquo;re shaped like the letter I. Even when engineers get creative, there&rsquo;s logic: a butterfly valve actually looks like butterfly wings. You can tell how the name relates to what it actually defines, and how it can be memorable. If you wrote 100 CLIs, you will never counter with a <a href="https://github.com/spf13/cobra">cobra</a>.
+</p>
+
+<p>
+Same thing applies to other fields like chemical engineering, where people there maintain even stricter discipline. IUPAC nomenclature ensures that 2,2,4-trimethylpentane describes exactly one molecule. No chemist wakes up and decides to call it &ldquo;Steve&rdquo; because Steve is a funny name and they think it&rsquo;ll make their paper more approachable.
+</p>
+<div id="outline-container-org5561408" class="outline-2">
+<h2 id="org5561408">It was not always like that (I believe)</h2>
+<div class="outline-text-2" id="text-org5561408">
+<p>
+I read a lot into software history, and I can&rsquo;t really say that there was an era of fantastic naming (even very experienced engineers made <a href="https://en.wikipedia.org/wiki/Inferno_(operating_system)">some</a> <a href="https://en.wikipedia.org/wiki/Go_(programming_language)">very</a> <a href="https://en.wikipedia.org/wiki/Limbo_(programming_language)">silly</a> <a href="https://en.wikipedia.org/wiki/Sam_(text_editor)">naming</a>) but at least some current was trying to make some sense in the 80s; grep (global regular expression print), awk (Aho, Weinberger, Kernighan; the creators&rsquo; initials), sed (stream editor), cat (concatenate), diff (difference). Even when abbreviated, these names were either functional descriptions or systematic derivations. Nobody named the copy command &ldquo;Sparkle&rdquo; or the move command &ldquo;Whisper.&rdquo;
+</p>
+
+<p>
+Early programming languages followed similar logic: FORTRAN (Formula Translation), COBOL (Common Business-Oriented Language), BASIC (Beginner&rsquo;s All-purpose Symbolic Instruction Code), SQL (Structured Query Language), I believe Lisp stands for list processing. The pattern was clear: names conveyed purpose or origin. Somewhere around the 2010s, a memetic virus infected software engineering. Perhaps it started innocently, developers tired of boring corporate naming conventions wanted personality in their open-source projects? maybe. A few quirky names were charming. A database named after an animal? Sure, MongoDB (from &ldquo;humongous&rdquo;) at least has etymological connection to its purpose, even if &ldquo;Mongo&rdquo; became the shorthand.
+</p>
+
+<p>
+But we didn&rsquo;t stop there. We kept going. Now we&rsquo;re drowning in a zoo of meaningless appellations where the connection between name and function has been severed entirely. Probably pattern accelerated with the rise of GitHub and startup culture. Everyone wanted to be the next Google, a meaningless name that became iconic through market dominance. Google could afford to build brand recognition through billions in advertising and becoming a verb. Your MIT-licensed file parser with 45 GitHub stars cannot.
 </p>
 </div>
 </div>
-<div id="outline-container-org5706575" class="outline-2">
-<h2 id="org5706575">Brain</h2>
-<div class="outline-text-2" id="text-org5706575">
+<div id="outline-container-org9bb269e" class="outline-2">
+<h2 id="org9bb269e">The cognitive tax</h2>
+<div class="outline-text-2" id="text-org9bb269e">
 <p>
-I posted before on <a href="chess.html#i70j8rp02wj0">Chess and Brains</a>, yet it was only a draft from the
-internet. I&rsquo;ve tried to study chess effects thoroughly recently when I started
-to give the game more of my time. I don&rsquo;t believe, as scientifically proved as
-well<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle"/><span class="sidenote">I. N. Djakow, N. W. Petrowski, and P. A. Rudik, <i>Psychologie Des Schachspiels</i> (Berlin: de Gruyter, 1927).</span>.<label for="2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="2" class="margin-toggle"/><span class="sidenote">Jorg Doll and Ulrich Mayr, “Intelligenz Und Schachleistung—Eine Untersuchung an Schachexperten.,” 1987, <a href="https://api.semanticscholar.org/CorpusID:192806221">https://api.semanticscholar.org/CorpusID:192806221</a>.</span> Even other things
-that people would expect chess masters to be better at like cognitive processing
-and imagination, top players are not any better than the average of normal
-humans, they are only better at it in the domain of the game itself. Which I
-always believed about the &rsquo;cognitive improvement&rsquo; that was always exclaimed with
-video games, I think it&rsquo;s true, but it&rsquo;s only to the domain of the game.<label for="3" class="margin-toggle sidenote-number"></label><input type="checkbox" id="3" class="margin-toggle"/><span class="sidenote">Fernand Gobet and Guillermo Campitelli, “Intelligence and Chess,” <i>In J. Retschitzki &#38; R. Haddad-Zubel (Eds.), Step by Step. Proceedings of the 4th Colloquium Board Games in Academia (Pp 103-112). Fribourg: Edition Universitaires Fribourg Suisse.</i>, 2014.</span>
+Every obscure name is a transaction cost levied on every developer who encounters it. When you see &ldquo;libsodium,&rdquo; you must context-switch from problem-solving mode to detective mode: &ldquo;What does this do? Let me check the README. Ah, it&rsquo;s a crypto library. Why is it called sodium? Because chemistry? Because NaCl? Clever, I suppose.&rdquo; Now, multiply this by dozens of dependencies in a modern project. Each one demands tribute: a few seconds of mental processing to decode the semantic cipher. Those seconds accumulate into minutes and effort, then career-spanning mountains of wasted cognitive effort.
+</p>
+
+<p>
+Imagine that you are to explain to a new engineer how is your codebase structured, and the general architecture of some project, and go through the dependencies you use to delegate some certain tasks to and explain how they orchestrate together. Actually let me put my friend&rsquo;s statement again instead: &ldquo;We&rsquo;re using Viper for configuration management, which feeds into Cobra for the CLI, and then Melody handles our WebSocket connections, Casbin manages permissions, all through Asynq for our job queue&rdquo;.
+</p>
+
+
+<p>
+Now pause and actually process that sentence. there&rsquo;s a snake, another snake, music, a mysterious proper noun, and&#x2026; async-with-a-q? Half your mental RAM is busy pattern-matching these arbitrary tokens to their actual functions instead of focusing on the architectural decisions being discussed. This is the equivalent of a cardiologist saying &ldquo;we&rsquo;ll install a Butterfly in your Whisper to improve your Thunderbeat&rdquo; instead of &ldquo;we&rsquo;ll place a stent in your artery to improve your cardiac output.&rdquo; Compare this to reading a scientific paper in materials science. When you encounter &ldquo;high-entropy alloys&rdquo; or &ldquo;shape-memory polymers,&rdquo; the name itself conveys information. You can make educated guesses about properties and applications before reading a single word of description.
 </p>
 </div>
 </div>
-<div id="outline-container-org456cdda" class="outline-2">
-<h2 id="org456cdda">General Improvement</h2>
-<div class="outline-text-2" id="text-org456cdda">
+<div id="outline-container-org3aecbbd" class="outline-2">
+<h2 id="org3aecbbd">Some excuses I&rsquo;ve heard of</h2>
+<div class="outline-text-2" id="text-org3aecbbd">
 <p>
-I believe that chess is very useful though; I like the fact that it was  the
-only game that received adherence from Islamists back in the day, because unlike
-other dice-based games, which was prohibited by the prophet, chess is
-essentially related to your willingness and not to luck and chances.
+I was told some of the following when I shared my concerns about naming <a href="../sh/2023.html#bek89831uxj0">before</a>, here&rsquo;s my thoughts of some:
+</p>
+
+<ul class="org-ul">
+<li><p>
+&ldquo;But memorable names help with marketing!&rdquo;
 </p>
 
 <p>
-Engaging in chess exercises the mind, providing valuable mental training, though
-its benefits might not always be fully quantifiable or universally experienced
-by players.
-</p>
+Sure, if you&rsquo;re building a consumer product. Your HTTP client, cli utility helper, whatever library is not a consumer product. The people who will ever care about it just want to know what it does.
+</p></li>
 
-
-<p>
-An exemplar lesson from chess is pragmatism. The game teaches individuals to
-adopt a pragmatic approach, always striving to make the best moves, even in the
-face of blunders. Players learn to anticipate their opponent&rsquo;s potential moves
-and plan their tactics accordingly, preparing for the worst-case scenario (that
-is the best move they can play). These qualities are not only valuable within
-the context of the game but can also be applied to real-life situations.
+<li><p>
+&ldquo;Descriptive names are boring!&rdquo;
 </p>
 
 <p>
-However, as one&rsquo;s chess rating surpasses 1800, the focus often shifts more
-towards memorization and minimal pattern recognition, rather than purely strategic
-thinking. If you want to advance over 1600; you probably have to memorize an
-opening, defense and a system.
+Yes, and surgical instruments are boring. Boring is fine when clarity is paramount. This isn&rsquo;t creative writing class.
+</p></li>
+
+<li><p>
+&ldquo;It&rsquo;s just for fun!&rdquo; Your fun has externalities.
 </p>
 
 <p>
-The journey in chess is replete with numerous rewards before
-reaching that point (when memorization activity becoming dominate, and most of
-your opponents are &rsquo;professional&rsquo; players). It remains an exquisite abstract game, founded on
-fundamental principles such as precise calculations, piece development, and
-coordination. The path to improvement lies in wholeheartedly committing to these
-principles. Observing how this dedication elevates one&rsquo;s mentality can be
-analogous to the philosophy advocated by Stoicists, which revolves around the
-pursuit of 1. precision. 2. action. 3. will.<label for="4" class="margin-toggle sidenote-number"></label><input type="checkbox" id="4" class="margin-toggle"/><span class="sidenote">Marcus Aurelius, <i>The Thoughts of Marcus Aurelius</i> (Duke Classics, 2012), <a href="https://libgen.li/file.php?md5=1169f89cf3cb237fa6b11a8acad7ea9a">https://libgen.li/file.php?md5=1169f89cf3cb237fa6b11a8acad7ea9a</a>.</span>
+Every person who encounters your &ldquo;fun&rdquo; name pays a small tax. Across the industry, these taxes compound into significant waste<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle"/><span class="sidenote">
+And yeah, I know, this is not our biggest concern nor the biggest problem the industry is facing now, but sorry I had to talk about it. 
+</span>.
+</p></li>
+
+<li><p>
+&ldquo;All the good descriptive names are taken!&rdquo;
 </p>
 
 <p>
-See also <a href="../sh/2023.html#6swjyso02wj0">All Life is Problem Solving</a>.
-</p>
+We could have used namespaces, prefixes, or compound terms like every other engineering discipline has done for centuries. We have the technology. But even if you can not do that, at least make the name has anything to do with the product, put a &ldquo;DB&rdquo; post-fix, do some word play like how &ldquo;magit&rdquo; does. If you couldn&rsquo;t not be clear, you could have made it relatable at least.
+</p></li>
+</ul>
 </div>
 </div>
-<div id="outline-container-mp56qej0fzj0" class="outline-2">
-<h2 id="mp56qej0fzj0">A View on Chess</h2>
-<div class="outline-text-2" id="text-orge67ebd3">
-<div class="BACKLINKS" id="orgd8dcbfb">
+<div id="outline-container-orgd4df5de" class="outline-2">
+<h2 id="orgd4df5de">The path forward</h2>
+<div class="outline-text-2" id="text-orgd4df5de">
 <p>
-This section was referenced in <a href="../h/me.html#a8bf37c4-358e-4f6c-866b-33c50e4e2b80">I can also paint</a>.
-</p>
-
-</div>
-
-<p>
-Not only improvement in chess becomes more and more related to training on,
-studying and memorizing non-reusable knowledge, but also the state of
-&rsquo;maintaining&rsquo; a level or a rating mostly transforms from psychologically
-strenuous battles into medulla spinalis-based automatic routinized moves; it
-becomes more of a a time-killer.
+Whatever happened wasn&rsquo;t malicious—it was cultural. As programming shifted from corporate mainframe work to the community builders.<label for="2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="2" class="margin-toggle"/><span class="sidenote">
+Which was a good thing. 
+</span>, the social norms shifted too. 
 </p>
 
 <p>
-At this point, I do not think that I will keep my routine of playing chess. I
-closed one of my accounts to announce the end of this peregrination but I
-quickly realized that I may change my mind at some point. So I kept my second
-account <a href="https://lichess.org/@/Halag2/perf/rapid">Halag2</a>.
+Thus, we need a cultural correction. Not regulation open source thrives on freedom, but a revival of professional standards through social pressure and education.
 </p>
 
 <p>
-My closed account reached its highest rating at 1951, and it was 1940 before
-closing it (the other <a href="https://lichess.org/@/Halag2/perf/rapid">Halag2</a> c.r. 1808. h.r. 1861).
+Name your library after what it does. Use compound terms. Embrace verbosity if necessary. http-request-validator is infinitely superior to &ldquo;zephyr&rdquo; when someone is scanning dependencies at 2 AM debugging a production incident.
+</p>
+
+<p>
+If you absolutely must have a cute mascot or reference, fine-make it the project mascot, not the name. PostgreSQL has Slonik the elephant. PostgreSQL is still called PostgreSQL. The elephant doesn&rsquo;t replace semantic meaning.
+</p>
+
+<p>
+Reserve the creative names for end-user products where branding matters. For infrastructure, tools, and libraries, choose clarity. Every time.
+</p>
+
+<p>
+The next time you&rsquo;re about to name your project after your favorite anime character, pause. Ask yourself: &ldquo;Would a civil engineer name a bridge support system this way?&rdquo; If the answer is no, choose a better name.
+</p>
+
+<p>
+Our field deserves better than a zoo of random nouns masquerading as professional nomenclature. Clarity isn&rsquo;t boring, it&rsquo;s respect for your users&rsquo; time and cognitive resources. 
 </p>
 </div>
 </div>
@@ -738,13 +689,13 @@ closing it (the other <a href="https://lichess.org/@/Halag2/perf/rapid">Halag2</
 <h2 class="footnotes">Footnotes: </h2>
 <div id="text-footnotes">
 
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">I. N. Djakow, N. W. Petrowski, and P. A. Rudik, <i>Psychologie Des Schachspiels</i> (Berlin: de Gruyter, 1927).</p></div></div>
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+And yeah, I know, this is not our biggest concern nor the biggest problem the industry is facing now, but sorry I had to talk about it. 
+</p></div></div>
 
-<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">Jorg Doll and Ulrich Mayr, “Intelligenz Und Schachleistung—Eine Untersuchung an Schachexperten.,” 1987, <a href="https://api.semanticscholar.org/CorpusID:192806221">https://api.semanticscholar.org/CorpusID:192806221</a>.</p></div></div>
-
-<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">Fernand Gobet and Guillermo Campitelli, “Intelligence and Chess,” <i>In J. Retschitzki &#38; R. Haddad-Zubel (Eds.), Step by Step. Proceedings of the 4th Colloquium Board Games in Academia (Pp 103-112). Fribourg: Edition Universitaires Fribourg Suisse.</i>, 2014.</p></div></div>
-
-<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">Marcus Aurelius, <i>The Thoughts of Marcus Aurelius</i> (Duke Classics, 2012), <a href="https://libgen.li/file.php?md5=1169f89cf3cb237fa6b11a8acad7ea9a">https://libgen.li/file.php?md5=1169f89cf3cb237fa6b11a8acad7ea9a</a>.</p></div></div>
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Which was a good thing. 
+</p></div></div>
 
 
 </div>
@@ -852,7 +803,7 @@ closing it (the other <a href="https://lichess.org/@/Halag2/perf/rapid">Halag2</
 
 
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.34). Written by: Salih Muhammed, by the date of: 2023-08-01 Tue 12:10. Last build date: 2025-07-25 Fri 00:00.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.34). Written by: Salih Muhammed, by the date of: 2025-12-11 Thu 18:27. Last build date: 2025-12-11 Thu 19:37.</p>
 
 
 

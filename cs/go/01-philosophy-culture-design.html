@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Thoughts on Chess</title>
+<title>Philosophy, culture and design</title>
 <meta name="author" content="Salih Muhammed" />
 <meta name="generator" content="Org Mode" />
 <!doctype html>
@@ -551,204 +551,178 @@ margin-block-start: auto;
 </div>
 <div id="content" class="content">
 <header>
-<h1 class="title">Thoughts on Chess</h1>
-</header><div class="BACKLINKS" id="org7bc6ebb">
-<p>
-This section was referenced in <a href="../h/me.html#a8bf37c4-358e-4f6c-866b-33c50e4e2b80">I can also paint</a>.
+<h1 class="title">Philosophy, culture and design</h1>
+</header><p>
+Salih Muhammed.
+Contact: l@larr.net
 </p>
+<div id="outline-container-org8a451a9" class="outline-2">
+<h2 id="org8a451a9">Prerequisites</h2>
+<div class="outline-text-2" id="text-org8a451a9">
+<ul class="org-ul">
+<li>Go is not always a good first-programming-language choice.</li>
 
+<li>It&rsquo;s better if you are familiar with programming.</li>
+</ul>
 </div>
-
-<div class="tag" id="org53c7fdd">
-<p>
-This section was labeled under, or is related to <a href="../t/chess.html#rgogo9p02wj0">chess</a>
-</p>
-
 </div>
+<div id="outline-container-orgc4d2102" class="outline-2">
+<h2 id="orgc4d2102">Why Go Exists</h2>
+<div class="outline-text-2" id="text-orgc4d2102">
+<ul class="org-ul">
+<li>Large codebases taking too long to compile (C++ builds taking hours)</li>
 
-<p>
-I mentioned previously somewhere in this site (can&rsquo;t be sure where, check the
-<a href="../t/chess.html#rgogo9p02wj0">Chess</a> label for me and inform me please) that I aim to reach ~1600-1800 on the
-<a href="https://en.wikipedia.org/wiki/Glicko_rating_system">Glicko rating system.</a> According to lichess.org, As of the time of writing this
-post, I&rsquo;m now on 1951, and &ldquo;better than 90.3% of Rapid players&rdquo; with my brand
-new account.
-</p>
+<li>Difficulty managing dependencies in existing languages</li>
 
-<div class="PREVIEW" id="orgd6dca9e">
-<p>
-Here are my &rsquo;finial&rsquo; thoughts of chess after ~7 months of actively engaging with
-it.
-</p>
+<li>Complexity of modern languages making them hard to learn and maintain</li>
 
+<li>Multicore processors becoming standard, but concurrency was Development</li>
+</ul>
 </div>
-<div id="outline-container-orge72bd63" class="outline-2">
-<h2 id="orge72bd63">Ratings</h2>
-<div class="outline-text-2" id="text-orge72bd63">
-<p>
-I posses 2 accounts other than the mentioned one. I&rsquo;m rated 1800 in one of them,
-which is older and 1500-1600 in the other, which is oldest. I play actively on
-those accounts too since I&rsquo;m logged into them on my other machines, however my
-rating does not move much on them. I have developed a simple theory that
-accounts for that phenomenon; in internet chess, players may not always approach
-the game with utmost seriousness, things like hastiness and recklessness are
-likely to occur.  I have observed a recurring pattern in my games. After
-securing approximately five consecutive victories, I tend to lose three games
-consecutively. This may be attributed to a sense of vexation following a loss,
-leading to subsequent blunders similar to the fact that you are likely to
-blunder even worse after your first blunder in the game, no matter how
-insignificant it was). Thus, I do not really acknowledge any of these ratings,
-not only mine but I do not think that this rating is actually valid if it is to
-respect player actual performance (which is not the case, it&rsquo;s only interested
-in the record of wining/losing). I think in this case the FIDE rating is
-plausible since players tend to be more serious on their tournaments games.
-</p>
-
-<p>
-Let&rsquo;s take this game for example;
-</p>
-<iframe src="https://lichess.org/embed/game/jnUUKXfQ?theme=auto&bg=auto#14" width=600 height=397 frameborder=0></iframe>
-
-<p>
-In this particular game, my opponent committed a significant blunder by playing
-Nc6, which ultimately granted me a knight and a favorable winning position. The
-computer analysis indicates that, at best, my opponent would have to sacrifice
-the queen to avoid an inevitable checkmate. This blunder occurred early in the
-opening phase, leading to their defeat in just 9 moves.
-My opponent held a rating of 1948, slightly higher than my own rating of 1940.
-However, if this player had been randomly matched against a 1400-rated player,
-that player would likely have taken advantage of the opportunity and secured a
-quick victory; this would result in 100+ rating points for this player.
-</p>
+</div>
+<div id="outline-container-org2b618ce" class="outline-2">
+<h2 id="org2b618ce">Primary Design Goals</h2>
+<div class="outline-text-2" id="text-org2b618ce">
+<ul class="org-ul">
+<li>Fast compilation</li>
+</ul>
 
 
-<p>
-During my observation of numerous chess live streams featuring top players, I
-came across a noteworthy phenomenon. In both rapid and blitz games, I noticed a
-recurring pattern of terrible blunders occurring in the opening and middle game
-stages. these blunders were not exploited by either side, I believe that this
-has to do with the complacency that those players have, yeah it is not likely
-that a high-rated opponent will blunder in the opening or miss a checkmate so it
-doesn&rsquo;t worth calculating for it, and of course the player does not want to lose
-time.
-</p>
+<figure id="orgd88dbd5">
+<img src="../i/Primary_Design_Goals/2025-11-30_21-05-35_screenshot.png" alt="2025-11-30_21-05-35_screenshot.png">
+
+</figure>
+
+<ul class="org-ul">
+<li>Easy concurrency</li>
+
+<li>Simple syntax</li>
+
+<li>Strong tooling</li>
+
+<li>Efficient execution</li>
+
+<li>Scale well</li>
+</ul>
 
 <p>
-I think those ratings are valid only if we consider how unserious people are on
-internet chess, thus it is not really about how good you are at the game.
+More on that on: Go at Google: Language Design in the Service of Software Engineering <a href="https://go.dev/talks/2012/splash.article">https://go.dev/talks/2012/splash.article</a>
 </p>
 </div>
 </div>
-<div id="outline-container-org5706575" class="outline-2">
-<h2 id="org5706575">Brain</h2>
-<div class="outline-text-2" id="text-org5706575">
+<div id="outline-container-org4b26e46" class="outline-2">
+<h2 id="org4b26e46">Go&rsquo;s Core Design Philosophy</h2>
+<div class="outline-text-2" id="text-org4b26e46">
+<div class="epigraph"><blockquote>
 <p>
-I posted before on <a href="chess.html#i70j8rp02wj0">Chess and Brains</a>, yet it was only a draft from the
-internet. I&rsquo;ve tried to study chess effects thoroughly recently when I started
-to give the game more of my time. I don&rsquo;t believe, as scientifically proved as
-well<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle"/><span class="sidenote">I. N. Djakow, N. W. Petrowski, and P. A. Rudik, <i>Psychologie Des Schachspiels</i> (Berlin: de Gruyter, 1927).</span>.<label for="2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="2" class="margin-toggle"/><span class="sidenote">Jorg Doll and Ulrich Mayr, “Intelligenz Und Schachleistung—Eine Untersuchung an Schachexperten.,” 1987, <a href="https://api.semanticscholar.org/CorpusID:192806221">https://api.semanticscholar.org/CorpusID:192806221</a>.</span> Even other things
-that people would expect chess masters to be better at like cognitive processing
-and imagination, top players are not any better than the average of normal
-humans, they are only better at it in the domain of the game itself. Which I
-always believed about the &rsquo;cognitive improvement&rsquo; that was always exclaimed with
-video games, I think it&rsquo;s true, but it&rsquo;s only to the domain of the game.<label for="3" class="margin-toggle sidenote-number"></label><input type="checkbox" id="3" class="margin-toggle"/><span class="sidenote">Fernand Gobet and Guillermo Campitelli, “Intelligence and Chess,” <i>In J. Retschitzki &#38; R. Haddad-Zubel (Eds.), Step by Step. Proceedings of the 4th Colloquium Board Games in Academia (Pp 103-112). Fribourg: Edition Universitaires Fribourg Suisse.</i>, 2014.</span>
+&ldquo;Simplicity is complicated, but the clarity is worth it&rdquo; - Rob Pike
 </p>
+
+</blockquote></div>
+
+<ul class="org-ul">
+<li><p>
+Clarity over cleverness
+</p>
+
+<pre class="code"><code><span style="color: #383a42;">evens</span> = <span style="font-weight: bold;">list</span>(<span style="font-weight: bold;">filter</span>(<span style="font-weight: bold;">lambda</span> x: x % 2 == 0, <span style="font-weight: bold;">range</span>(20)))
+</code></pre></li>
+</ul>
+
+<pre class="code"><code><span style="font-weight: bold;">func</span> <span style="font-weight: bold;">EvenNumbers</span>(<span style="color: #383a42;">n</span> <span style="font-weight: bold;">int</span>) []<span style="font-weight: bold;">int</span> {
+    <span style="color: #383a42;">result</span> := []<span style="font-weight: bold;">int</span>{}
+    <span style="font-weight: bold;">for</span> <span style="color: #383a42;">i</span> := 0; i &lt; n; i++ {
+        <span style="font-weight: bold;">if</span> i%2 == 0 {
+            result = <span style="font-weight: bold;">append</span>(result, i)
+        }
+    }
+    <span style="font-weight: bold;">return</span> result
+}
+</code></pre>
 </div>
 </div>
-<div id="outline-container-org456cdda" class="outline-2">
-<h2 id="org456cdda">General Improvement</h2>
-<div class="outline-text-2" id="text-org456cdda">
-<p>
-I believe that chess is very useful though; I like the fact that it was  the
-only game that received adherence from Islamists back in the day, because unlike
-other dice-based games, which was prohibited by the prophet, chess is
-essentially related to your willingness and not to luck and chances.
+<div id="outline-container-orge5a167b" class="outline-2">
+<h2 id="orge5a167b">Cont. Go&rsquo;s Core Design Philosophy</h2>
+<div class="outline-text-2" id="text-orge5a167b">
+<ul class="org-ul">
+<li>Composition over inheritance, always build complex things from simple parts</li>
+
+<li><p>
+Explicit over implicit and no hidden behavior or magic.
 </p>
 
-<p>
-Engaging in chess exercises the mind, providing valuable mental training, though
-its benefits might not always be fully quantifiable or universally experienced
-by players.
-</p>
+<pre class="code"><code><span style="color: #383a42;">i</span> = 42
+<span style="color: #383a42;">f</span> = i + 1. 5  <span style="color: #556b2f;"># </span><span style="color: #556b2f;">Auto-converts int to float</span>
+</code></pre>
 
+<pre class="code"><code><span style="font-weight: bold;">var</span> <span style="color: #383a42;">i</span> <span style="font-weight: bold;">int</span> = 42
+<span style="font-weight: bold;">var</span> <span style="color: #383a42;">f</span> <span style="font-weight: bold;">float64</span> = <span style="font-weight: bold;">float64</span>(i)  <span style="color: #556b2f;">// </span><span style="color: #556b2f;">Must convert explicitly</span>
+</code></pre></li>
 
-<p>
-An exemplar lesson from chess is pragmatism. The game teaches individuals to
-adopt a pragmatic approach, always striving to make the best moves, even in the
-face of blunders. Players learn to anticipate their opponent&rsquo;s potential moves
-and plan their tactics accordingly, preparing for the worst-case scenario (that
-is the best move they can play). These qualities are not only valuable within
-the context of the game but can also be applied to real-life situations.
-</p>
-
-<p>
-However, as one&rsquo;s chess rating surpasses 1800, the focus often shifts more
-towards memorization and minimal pattern recognition, rather than purely strategic
-thinking. If you want to advance over 1600; you probably have to memorize an
-opening, defense and a system.
-</p>
-
-<p>
-The journey in chess is replete with numerous rewards before
-reaching that point (when memorization activity becoming dominate, and most of
-your opponents are &rsquo;professional&rsquo; players). It remains an exquisite abstract game, founded on
-fundamental principles such as precise calculations, piece development, and
-coordination. The path to improvement lies in wholeheartedly committing to these
-principles. Observing how this dedication elevates one&rsquo;s mentality can be
-analogous to the philosophy advocated by Stoicists, which revolves around the
-pursuit of 1. precision. 2. action. 3. will.<label for="4" class="margin-toggle sidenote-number"></label><input type="checkbox" id="4" class="margin-toggle"/><span class="sidenote">Marcus Aurelius, <i>The Thoughts of Marcus Aurelius</i> (Duke Classics, 2012), <a href="https://libgen.li/file.php?md5=1169f89cf3cb237fa6b11a8acad7ea9a">https://libgen.li/file.php?md5=1169f89cf3cb237fa6b11a8acad7ea9a</a>.</span>
-</p>
-
-<p>
-See also <a href="../sh/2023.html#6swjyso02wj0">All Life is Problem Solving</a>.
-</p>
+<li>Consistency. Only one way to do things</li>
+</ul>
 </div>
 </div>
-<div id="outline-container-mp56qej0fzj0" class="outline-2">
-<h2 id="mp56qej0fzj0">A View on Chess</h2>
-<div class="outline-text-2" id="text-orge67ebd3">
-<div class="BACKLINKS" id="orgd8dcbfb">
+<div id="outline-container-org393dc3f" class="outline-2">
+<h2 id="org393dc3f">Go is &ldquo;Simple&rdquo; But Not Small</h2>
+<div class="outline-text-2" id="text-org393dc3f">
 <p>
-This section was referenced in <a href="../h/me.html#a8bf37c4-358e-4f6c-866b-33c50e4e2b80">I can also paint</a>.
+&ldquo;Simple&rdquo; Means:
 </p>
 
-</div>
+<ul class="org-ul">
+<li>Small language specification (~50 pages vs C++&rsquo;s 1,300+)</li>
+
+<li>Only 25 keywords (vs Java&rsquo;s 50+)</li>
+
+<li>Limited type system compared to other modern languages</li>
+</ul>
 
 <p>
-Not only improvement in chess becomes more and more related to training on,
-studying and memorizing non-reusable knowledge, but also the state of
-&rsquo;maintaining&rsquo; a level or a rating mostly transforms from psychologically
-strenuous battles into medulla spinalis-based automatic routinized moves; it
-becomes more of a a time-killer.
+&ldquo;Not Small&rdquo; Means:
 </p>
 
+<ul class="org-ul">
+<li>Rich standard library covering most common needs</li>
+
+<li>Powerful concurrency primitives built-in</li>
+
+<li>Complete toolchain included (formatter, test runner, profiler)</li>
+
+<li>Can build anything from CLIs to web services to systems software</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org9910d4e" class="outline-2">
+<h2 id="org9910d4e">Less is (Exponentially) More</h2>
+<div class="outline-text-2" id="text-org9910d4e">
 <p>
-At this point, I do not think that I will keep my routine of playing chess. I
-closed one of my accounts to announce the end of this peregrination but I
-quickly realized that I may change my mind at some point. So I kept my second
-account <a href="https://lichess.org/@/Halag2/perf/rapid">Halag2</a>.
+Go deliberately leaves out features found in other languages to keep the core simple. This means occasionally more verbose code, but code that&rsquo;s easier to understand six months later.
 </p>
 
-<p>
-My closed account reached its highest rating at 1951, and it was 1940 before
-closing it (the other <a href="https://lichess.org/@/Halag2/perf/rapid">Halag2</a> c.r. 1808. h.r. 1861).
-</p>
+<ul class="org-ul">
+<li>Every feature has a maintenance cost for everyone</li>
+
+<li>Features interact in unexpected ways (complexity grows exponentially)</li>
+
+<li>Removing features is nearly impossible once added</li>
+
+<li>A smaller surface area means easier onboarding and maintenance</li>
+</ul>
 </div>
 </div>
-<div id="footnotes">
-<h2 class="footnotes">Footnotes: </h2>
-<div id="text-footnotes">
-
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">I. N. Djakow, N. W. Petrowski, and P. A. Rudik, <i>Psychologie Des Schachspiels</i> (Berlin: de Gruyter, 1927).</p></div></div>
-
-<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">Jorg Doll and Ulrich Mayr, “Intelligenz Und Schachleistung—Eine Untersuchung an Schachexperten.,” 1987, <a href="https://api.semanticscholar.org/CorpusID:192806221">https://api.semanticscholar.org/CorpusID:192806221</a>.</p></div></div>
-
-<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">Fernand Gobet and Guillermo Campitelli, “Intelligence and Chess,” <i>In J. Retschitzki &#38; R. Haddad-Zubel (Eds.), Step by Step. Proceedings of the 4th Colloquium Board Games in Academia (Pp 103-112). Fribourg: Edition Universitaires Fribourg Suisse.</i>, 2014.</p></div></div>
-
-<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">Marcus Aurelius, <i>The Thoughts of Marcus Aurelius</i> (Duke Classics, 2012), <a href="https://libgen.li/file.php?md5=1169f89cf3cb237fa6b11a8acad7ea9a">https://libgen.li/file.php?md5=1169f89cf3cb237fa6b11a8acad7ea9a</a>.</p></div></div>
-
-
+<div id="outline-container-org2e893cb" class="outline-2">
+<h2 id="org2e893cb">Further Learning</h2>
+<div class="outline-text-2" id="text-org2e893cb">
+<ul class="org-ul">
+<li>Go Proverbs by Rob Pike</li>
+<li>&ldquo;Less is Exponentially More&rdquo; - Rob Pike&rsquo;s blog</li>
+<li>Go specification (short enough to actually read!)</li>
+<li>Effective Go (official documentation)</li>
+</ul>
 </div>
-</div></div>
+</div>
+</div>
 <div id="postamble" class="status">
 <div id="postamble" class="status">
 <hr style="
@@ -852,7 +826,7 @@ closing it (the other <a href="https://lichess.org/@/Halag2/perf/rapid">Halag2</
 
 
 
-<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.34). Written by: Salih Muhammed, by the date of: 2023-08-01 Tue 12:10. Last build date: 2025-07-25 Fri 00:00.</p>
+<p> I seek refuge in God, from Satan the rejected. Generated by: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.34). Written by: Salih Muhammed, by the date of: 2025-11-30 Sun 16:58. Last build date: 2025-11-30 Sun 23:56.</p>
 
 
 
