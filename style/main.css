@@ -47,14 +47,16 @@ a:active {
     text-decoration: none;
 }
 
-/* .tag a:after { */
-/*     color: #a1887f; */
-/*     content: " •"; */
-/* } */
-
-.tag a:before {
-    color: #a1887f;
+.tag a::before {
     content: "~";
+    font-weight: bold;
+}
+
+.tag a {
+    background: transparent;
+    padding: 1px 1px;
+    color: #8d6e63;
+    background: rgba(141, 110, 99, 0.12);
 }
 
 a {
