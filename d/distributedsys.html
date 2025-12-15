@@ -19,9 +19,9 @@
     <meta charset="utf-8" />
     <meta name="theme-color" content="#ffffff" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/style/toc.css?v=20250121" />
-    <link rel="stylesheet" href="/style/tufte.css?v=20250121" />
-    <link rel="stylesheet" href="/style/main.css?v=20250202" />
+    <link rel="stylesheet" href="/style/toc.css?v=20250129" />
+    <link rel="stylesheet" href="/style/tufte.css?v=20250129" />
+    <link rel="stylesheet" href="/style/main.css?v=20250209" />
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
@@ -552,9 +552,9 @@ margin-block-start: auto;
 <div id="content" class="content">
 <header>
 <h1 class="title">What is a distributed system</h1>
-</header><div id="outline-container-orgcf3a149" class="outline-2">
-<h2 id="orgcf3a149"><span class="todo TODO">TODO</span> Rewrite this&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h2>
-<div class="outline-text-2" id="text-orgcf3a149">
+</header><div id="outline-container-org8e771f1" class="outline-2">
+<h2 id="org8e771f1"><span class="todo TODO">TODO</span> Rewrite this&#xa0;&#xa0;&#xa0;<span class="tag"><span class="_write">@write</span></span></h2>
+<div class="outline-text-2" id="text-org8e771f1">
 <p>
 I&rsquo;ve been reading recently Distributed Systems by Steen, M. v., &amp;
 Tanenbaum, A. S..<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle"/><span class="sidenote">Maarten van Steen and Andrew S. Tanenbaum, <i>Distributed Systems: Principles and Paradigms</i>, 4.01 (Maarten van Steen, 2023), <a href="https://libgen.li/file.php?md5=d46eeafcf46684d5421d07300af499ed">https://libgen.li/file.php?md5=d46eeafcf46684d5421d07300af499ed</a>.</span> And it provides a very nice
@@ -567,7 +567,7 @@ service-based architecture and the like.
 </p>
 
 
-<figure id="orgb14d80c">
+<figure id="org28c527f">
 <img src="../i/2025-04-01_14-04-55_screenshot.png" alt="2025-04-01_14-04-55_screenshot.png">
 
 </figure>
@@ -631,9 +631,9 @@ achieve specific quality attributes.
 </p>
 </div>
 </div>
-<div id="outline-container-org8d74091" class="outline-2">
-<h2 id="org8d74091">When Distribution Cannot Be Avoided</h2>
-<div class="outline-text-2" id="text-org8d74091">
+<div id="outline-container-orga16768f" class="outline-2">
+<h2 id="orga16768f">When Distribution Cannot Be Avoided</h2>
+<div class="outline-text-2" id="text-orga16768f">
 <p>
 Decentralized systems emerge when resources and processes must be
 distributed across multiple computers due to constraints that make
@@ -641,9 +641,9 @@ centralization impossible or infeasible. These constraints typically
 fall into several categories:
 </p>
 </div>
-<div id="outline-container-org582d4a3" class="outline-3">
-<h3 id="org582d4a3">Administrative and Organizational Boundaries</h3>
-<div class="outline-text-3" id="text-org582d4a3">
+<div id="outline-container-org2814f56" class="outline-3">
+<h3 id="org2814f56">Administrative and Organizational Boundaries</h3>
+<div class="outline-text-3" id="text-org2814f56">
 <p>
 Many systems must operate across organizational boundaries where each
 participant maintains independent control over their resources. Medical
@@ -673,9 +673,9 @@ decentralization is necessary, not optional.
 </p>
 </div>
 </div>
-<div id="outline-container-org7e252a0" class="outline-3">
-<h3 id="org7e252a0">Trust Limitations</h3>
-<div class="outline-text-3" id="text-org7e252a0">
+<div id="outline-container-orga72fb50" class="outline-3">
+<h3 id="orga72fb50">Trust Limitations</h3>
+<div class="outline-text-3" id="text-orga72fb50">
 <p>
 Some systems operate in environments where no single entity can or
 should be trusted with complete control. Financial systems often
@@ -702,9 +702,9 @@ the core innovation that enables the system&rsquo;s trustless operation.
 </p>
 </div>
 </div>
-<div id="outline-container-org68a621b" class="outline-3">
-<h3 id="org68a621b">Geographic and Physical Constraints</h3>
-<div class="outline-text-3" id="text-org68a621b">
+<div id="outline-container-orgc8cbc1e" class="outline-3">
+<h3 id="orgc8cbc1e">Geographic and Physical Constraints</h3>
+<div class="outline-text-3" id="text-orgc8cbc1e">
 <p>
 Some systems are decentralized because their physical components must
 exist in specific geographic locations. Weather monitoring networks
@@ -731,9 +731,9 @@ the system too slow to respond to rapidly changing conditions.
 </p>
 </div>
 </div>
-<div id="outline-container-org0def681" class="outline-3">
-<h3 id="org0def681">Regulatory Requirements</h3>
-<div class="outline-text-3" id="text-org0def681">
+<div id="outline-container-org637f6c4" class="outline-3">
+<h3 id="org637f6c4">Regulatory Requirements</h3>
+<div class="outline-text-3" id="text-org637f6c4">
 <p>
 Increasingly, regulatory frameworks require certain types of data to
 remain within specific geographic or jurisdictional boundaries. The
@@ -752,9 +752,9 @@ impossible.
 </div>
 </div>
 </div>
-<div id="outline-container-orga855492" class="outline-2">
-<h2 id="orga855492">When Distribution Is a Choice</h2>
-<div class="outline-text-2" id="text-orga855492">
+<div id="outline-container-org273db37" class="outline-2">
+<h2 id="org273db37">When Distribution Is a Choice</h2>
+<div class="outline-text-2" id="text-org273db37">
 <p>
 Distributed systems, by contrast, involve spreading processes and
 resources across multiple computers to achieve goals like scalability,
@@ -763,9 +763,9 @@ distribution is fundamentally necessary. In these systems,
 centralization would be theoretically possible, if not always practical.
 </p>
 </div>
-<div id="outline-container-orgdad4f5c" class="outline-3">
-<h3 id="orgdad4f5c">Web Search Engines</h3>
-<div class="outline-text-3" id="text-orgdad4f5c">
+<div id="outline-container-org85d0cbf" class="outline-3">
+<h3 id="org85d0cbf">Web Search Engines</h3>
+<div class="outline-text-3" id="text-org85d0cbf">
 <p>
 Google&rsquo;s search engine handles billions of queries daily across a
 massive distributed infrastructure. When users enter a search query,
@@ -791,9 +791,9 @@ approach provided cost advantages and simplified scaling as demand grew.
 </p>
 </div>
 </div>
-<div id="outline-container-orgd0447bc" class="outline-3">
-<h3 id="orgd0447bc">Content Delivery Networks</h3>
-<div class="outline-text-3" id="text-orgd0447bc">
+<div id="outline-container-org8bfa765" class="outline-3">
+<h3 id="org8bfa765">Content Delivery Networks</h3>
+<div class="outline-text-3" id="text-org8bfa765">
 <p>
 Akamai operates over 340,000 servers in more than 135 countries. When
 users visit websites served through Akamai&rsquo;s CDN, they&rsquo;re transparently
@@ -819,9 +819,9 @@ distribution to achieve their performance requirements.
 </div>
 </div>
 </div>
-<div id="outline-container-org9148dd4" class="outline-2">
-<h2 id="org9148dd4">Centralized Solutions Work</h2>
-<div class="outline-text-2" id="text-org9148dd4">
+<div id="outline-container-org095df76" class="outline-2">
+<h2 id="org095df76">Centralized Solutions Work</h2>
+<div class="outline-text-2" id="text-org095df76">
 <p>
 A persistent misconception in system design holds that centralized
 solutions are inherently flawed—unable to scale, vulnerable to
@@ -857,9 +857,9 @@ enable this illusion.
 </p>
 </div>
 </div>
-<div id="outline-container-orgbb02a8f" class="outline-2">
-<h2 id="orgbb02a8f">Necessity versus Sufficiency</h2>
-<div class="outline-text-2" id="text-orgbb02a8f">
+<div id="outline-container-org6e6f538" class="outline-2">
+<h2 id="org6e6f538">Necessity versus Sufficiency</h2>
+<div class="outline-text-2" id="text-org6e6f538">
 <p>
 The key distinction between decentralized and distributed systems stems
 from whether the distribution is necessary or merely sufficient:
@@ -883,9 +883,9 @@ This distinction has profound implications for system design,
 implementation, and operation:
 </p>
 </div>
-<div id="outline-container-org5ddf27f" class="outline-3">
-<h3 id="org5ddf27f">Complexity Management</h3>
-<div class="outline-text-3" id="text-org5ddf27f">
+<div id="outline-container-orgaff66cd" class="outline-3">
+<h3 id="orgaff66cd">Complexity Management</h3>
+<div class="outline-text-3" id="text-orgaff66cd">
 <p>
 Decentralized systems must manage the inherent complexity of
 distribution without the option of simplifying through centralization.
@@ -911,9 +911,9 @@ management.
 </p>
 </div>
 </div>
-<div id="outline-container-org713abdd" class="outline-3">
-<h3 id="org713abdd">Performance Expectations and Tradeoffs</h3>
-<div class="outline-text-3" id="text-org713abdd">
+<div id="outline-container-org8f88a81" class="outline-3">
+<h3 id="org8f88a81">Performance Expectations and Tradeoffs</h3>
+<div class="outline-text-3" id="text-org8f88a81">
 <p>
 Decentralized systems typically incur performance penalties for their
 necessary distribution. Bitcoin processes only a few transactions per
@@ -930,9 +930,9 @@ liability.
 </p>
 </div>
 </div>
-<div id="outline-container-org714783e" class="outline-3">
-<h3 id="org714783e">Evolution and Governance</h3>
-<div class="outline-text-3" id="text-org714783e">
+<div id="outline-container-org4e2b34b" class="outline-3">
+<h3 id="org4e2b34b">Evolution and Governance</h3>
+<div class="outline-text-3" id="text-org4e2b34b">
 <p>
 Decentralized systems face unique challenges in evolution. Changes to
 the Bitcoin protocol, for example, require broad consensus among a
@@ -950,9 +950,9 @@ more agile responses to changing requirements.
 </div>
 </div>
 </div>
-<div id="outline-container-org744f621" class="outline-2">
-<h2 id="org744f621">Minimal Distribution</h2>
-<div class="outline-text-2" id="text-org744f621">
+<div id="outline-container-org88b9df2" class="outline-2">
+<h2 id="org88b9df2">Minimal Distribution</h2>
+<div class="outline-text-2" id="text-org88b9df2">
 <p>
 The distinction between distributed and decentralized systems—based on whether
 distribution is sufficient or necessary—provides a powerful framework for

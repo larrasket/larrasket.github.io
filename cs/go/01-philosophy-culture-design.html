@@ -19,9 +19,9 @@
     <meta charset="utf-8" />
     <meta name="theme-color" content="#ffffff" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/style/toc.css?v=20250121" />
-    <link rel="stylesheet" href="/style/tufte.css?v=20250121" />
-    <link rel="stylesheet" href="/style/main.css?v=20250202" />
+    <link rel="stylesheet" href="/style/toc.css?v=20250129" />
+    <link rel="stylesheet" href="/style/tufte.css?v=20250129" />
+    <link rel="stylesheet" href="/style/main.css?v=20250209" />
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
@@ -556,9 +556,9 @@ margin-block-start: auto;
 Salih Muhammed.
 Contact: l@larr.net
 </p>
-<div id="outline-container-org323c8ee" class="outline-2">
-<h2 id="org323c8ee">Prerequisites</h2>
-<div class="outline-text-2" id="text-org323c8ee">
+<div id="outline-container-org3b29f9f" class="outline-2">
+<h2 id="org3b29f9f">Prerequisites</h2>
+<div class="outline-text-2" id="text-org3b29f9f">
 <ul class="org-ul">
 <li>Go is not always a good first-programming-language choice.</li>
 
@@ -566,9 +566,9 @@ Contact: l@larr.net
 </ul>
 </div>
 </div>
-<div id="outline-container-orgcfc28c6" class="outline-2">
-<h2 id="orgcfc28c6">Why Go Exists</h2>
-<div class="outline-text-2" id="text-orgcfc28c6">
+<div id="outline-container-org4bbab70" class="outline-2">
+<h2 id="org4bbab70">Why Go Exists</h2>
+<div class="outline-text-2" id="text-org4bbab70">
 <ul class="org-ul">
 <li>Large codebases taking too long to compile (C++ builds taking hours)</li>
 
@@ -580,15 +580,15 @@ Contact: l@larr.net
 </ul>
 </div>
 </div>
-<div id="outline-container-org5d84ddc" class="outline-2">
-<h2 id="org5d84ddc">Primary Design Goals</h2>
-<div class="outline-text-2" id="text-org5d84ddc">
+<div id="outline-container-orgdb35f70" class="outline-2">
+<h2 id="orgdb35f70">Primary Design Goals</h2>
+<div class="outline-text-2" id="text-orgdb35f70">
 <ul class="org-ul">
 <li>Fast compilation</li>
 </ul>
 
 
-<figure id="orgbd33acd">
+<figure id="org2b78585">
 <img src="../i/Primary_Design_Goals/2025-11-30_21-05-35_screenshot.png" alt="2025-11-30_21-05-35_screenshot.png">
 
 </figure>
@@ -610,9 +610,9 @@ More on that on: Go at Google: Language Design in the Service of Software Engine
 </p>
 </div>
 </div>
-<div id="outline-container-org07a7b2e" class="outline-2">
-<h2 id="org07a7b2e">Go&rsquo;s Core Design Philosophy</h2>
-<div class="outline-text-2" id="text-org07a7b2e">
+<div id="outline-container-org2b800b2" class="outline-2">
+<h2 id="org2b800b2">Go&rsquo;s Core Design Philosophy</h2>
+<div class="outline-text-2" id="text-org2b800b2">
 <div class="epigraph"><blockquote>
 <p>
 &ldquo;Simplicity is complicated, but the clarity is worth it&rdquo; - Rob Pike
@@ -641,9 +641,9 @@ Clarity over cleverness
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org29e06dd" class="outline-2">
-<h2 id="org29e06dd">Cont. Go&rsquo;s Core Design Philosophy</h2>
-<div class="outline-text-2" id="text-org29e06dd">
+<div id="outline-container-orge738453" class="outline-2">
+<h2 id="orge738453">Cont. Go&rsquo;s Core Design Philosophy</h2>
+<div class="outline-text-2" id="text-orge738453">
 <ul class="org-ul">
 <li>Composition over inheritance, always build complex things from simple parts</li>
 
@@ -663,9 +663,9 @@ Explicit over implicit and no hidden behavior or magic.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb01d377" class="outline-2">
-<h2 id="orgb01d377">Go is &ldquo;Simple&rdquo; But Not Small</h2>
-<div class="outline-text-2" id="text-orgb01d377">
+<div id="outline-container-org2182180" class="outline-2">
+<h2 id="org2182180">Go is &ldquo;Simple&rdquo; But Not Small</h2>
+<div class="outline-text-2" id="text-org2182180">
 <p>
 &ldquo;Simple&rdquo; Means:
 </p>
@@ -693,9 +693,9 @@ Explicit over implicit and no hidden behavior or magic.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb54fca5" class="outline-2">
-<h2 id="orgb54fca5">Less is (Exponentially) More</h2>
-<div class="outline-text-2" id="text-orgb54fca5">
+<div id="outline-container-org685a954" class="outline-2">
+<h2 id="org685a954">Less is (Exponentially) More</h2>
+<div class="outline-text-2" id="text-org685a954">
 <p>
 Go deliberately leaves out features found in other languages to keep the core simple. This means occasionally more verbose code, but code that&rsquo;s easier to understand six months later.
 </p>
@@ -711,9 +711,9 @@ Go deliberately leaves out features found in other languages to keep the core si
 </ul>
 </div>
 </div>
-<div id="outline-container-org7ec7f2c" class="outline-2">
-<h2 id="org7ec7f2c">Further Learning</h2>
-<div class="outline-text-2" id="text-org7ec7f2c">
+<div id="outline-container-orgf643d0a" class="outline-2">
+<h2 id="orgf643d0a">Further Learning</h2>
+<div class="outline-text-2" id="text-orgf643d0a">
 <ul class="org-ul">
 <li>Go Proverbs by Rob Pike</li>
 <li>&ldquo;Less is Exponentially More&rdquo; - Rob Pike&rsquo;s blog</li>
