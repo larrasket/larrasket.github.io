@@ -19,9 +19,9 @@
     <meta charset="utf-8" />
     <meta name="theme-color" content="#ffffff" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/style/toc.css?v=20250130" />
-    <link rel="stylesheet" href="/style/tufte.css?v=20250130" />
-    <link rel="stylesheet" href="/style/main.css?v=20250230" />
+    <link rel="stylesheet" href="/style/toc.css?v=20250131" />
+    <link rel="stylesheet" href="/style/tufte.css?v=20250131" />
+    <link rel="stylesheet" href="/style/main.css?v=20250231" />
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
@@ -556,50 +556,50 @@ margin-block-start: auto;
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org109c0de">Why?</a>
+<li><a href="#orga4182fa">Why?</a>
 <ul>
-<li><a href="#org9ae1b48">Moore&rsquo;s Law, Web, And the Current Mess</a></li>
+<li><a href="#orgcd12de7">Moore&rsquo;s Law, Web, And the Current Mess</a></li>
 </ul>
 </li>
-<li><a href="#orge3aef5c">Problems</a>
+<li><a href="#org63c38b6">Problems</a>
 <ul>
-<li><a href="#org5237266">Race Conditions</a></li>
-<li><a href="#org08d4fa4">Atomicity</a></li>
-<li><a href="#orgfd20bf1">Deadlocks</a></li>
-<li><a href="#orgef6e412"><span class="done KILL">KILL</span> Livelock</a></li>
-<li><a href="#orgd7b8f61"><span class="done KILL">KILL</span> Starvation</a></li>
+<li><a href="#org29a4db5">Race Conditions</a></li>
+<li><a href="#org2dccc83">Atomicity</a></li>
+<li><a href="#org217dd1d">Deadlocks</a></li>
+<li><a href="#org57cb7e0"><span class="done KILL">KILL</span> Livelock</a></li>
+<li><a href="#orgf3e0b58"><span class="done KILL">KILL</span> Starvation</a></li>
 </ul>
 </li>
 <li><a href="#y6c6tzo02wj0">Concurrency vs Parallelism</a></li>
 <li><a href="#ddj750p02wj0">CPS</a></li>
-<li><a href="#orgc160414"><code>Goroutine</code></a></li>
-<li><a href="#org8d19a24"><code>sync</code></a>
+<li><a href="#org1172ea4"><code>Goroutine</code></a></li>
+<li><a href="#org970ba48"><code>sync</code></a>
 <ul>
-<li><a href="#org3efe0d8"><code>WaitGroup</code></a></li>
-<li><a href="#org2a9e819"><code>Mutex</code> and <code>RWMutex</code></a></li>
-<li><a href="#org4ae688e"><code>Cond</code></a>
+<li><a href="#orgd09fb39"><code>WaitGroup</code></a></li>
+<li><a href="#orgab52bb5"><code>Mutex</code> and <code>RWMutex</code></a></li>
+<li><a href="#orgf717870"><code>Cond</code></a>
 <ul>
-<li><a href="#org42ce45a"><span class="done KILL">KILL</span> <code>Brodcast</code></a></li>
+<li><a href="#org0af4967"><span class="done KILL">KILL</span> <code>Brodcast</code></a></li>
 </ul>
 </li>
-<li><a href="#orga0cea3a"><code>Once</code></a></li>
+<li><a href="#orgffc45af"><code>Once</code></a></li>
 </ul>
 </li>
 <li><a href="#03ogh2p02wj0">Concurrency Patterns in Go</a>
 <ul>
-<li><a href="#org6405c1a">Confinement</a>
+<li><a href="#orgfcaafff">Confinement</a>
 <ul>
-<li><a href="#orgcdae3bf">Ad Hoc</a></li>
-<li><a href="#org231172a">Lexical</a></li>
+<li><a href="#org2130252">Ad Hoc</a></li>
+<li><a href="#org762bb01">Lexical</a></li>
 </ul>
 </li>
-<li><a href="#org9822e7b">For-Select</a></li>
-<li><a href="#orgd0a8a25">Preventing Goroutine Leaks</a></li>
+<li><a href="#orga1b8610">For-Select</a></li>
+<li><a href="#org383a376">Preventing Goroutine Leaks</a></li>
 </ul>
 </li>
-<li><a href="#org0e97f1b">Notes</a>
+<li><a href="#orgf4ee26e">Notes</a>
 <ul>
-<li><a href="#org91d6432"><span class="done KILL">KILL</span> Rendezvous</a></li>
+<li><a href="#org60507b1"><span class="done KILL">KILL</span> Rendezvous</a></li>
 </ul>
 </li>
 </ul>
@@ -609,7 +609,7 @@ margin-block-start: auto;
 <b>This is incomplete!!</b>
 </p>
 
-<div class="PREVIEW" id="orga0a2d4c">
+<div class="PREVIEW" id="org96ba96a">
 <p>
 A tutorial in concurrency and parallelism with the Go programming language.
 </p>
@@ -628,23 +628,23 @@ living their lives. They are existing <i>concurrently</i> to you.
 </p>
 
 
-<div class="propert" id="org02511a1">
+<div class="propert" id="orgfe8c496">
 <p>
 Part of a series on <a href="../cs/go.html#lvkhzyo02wj0">The Go Programming Language</a>
 </p>
 
 </div>
-<div id="outline-container-org109c0de" class="outline-2">
-<h2 id="org109c0de">Why?</h2>
-<div class="outline-text-2" id="text-org109c0de">
+<div id="outline-container-orga4182fa" class="outline-2">
+<h2 id="orga4182fa">Why?</h2>
+<div class="outline-text-2" id="text-orga4182fa">
 <p>
 As with most paths toward understanding, we’ll begin with a bit of history. Let’s first
 take a look at how concurrency became such an important topic.
 </p>
 </div>
-<div id="outline-container-org9ae1b48" class="outline-3">
-<h3 id="org9ae1b48">Moore&rsquo;s Law, Web, And the Current Mess</h3>
-<div class="outline-text-3" id="text-org9ae1b48">
+<div id="outline-container-orgcd12de7" class="outline-3">
+<h3 id="orgcd12de7">Moore&rsquo;s Law, Web, And the Current Mess</h3>
+<div class="outline-text-3" id="text-orgcd12de7">
 <p>
 In 1965, Gordon Moore wrote a three-page paper that described both the consolidation of
 the electronics market toward integrated circuits and the doubling of the number of
@@ -693,9 +693,9 @@ chunks of a problem to different instances of your application.
 </div>
 </div>
 </div>
-<div id="outline-container-orge3aef5c" class="outline-2">
-<h2 id="orge3aef5c">Problems</h2>
-<div class="outline-text-2" id="text-orge3aef5c">
+<div id="outline-container-org63c38b6" class="outline-2">
+<h2 id="org63c38b6">Problems</h2>
+<div class="outline-text-2" id="text-org63c38b6">
 <p>
 Concurrent code is notoriously difficult to get right. It usually takes a few iterations to
 get it working as expected, and even then it’s not uncommon for bugs to exist in code for
@@ -704,9 +704,9 @@ system, etc.) causes a previously undiscovered bug to rear its head. Indeed, for
 book, I’ve gotten as many eyes as possible on the code to try and mitigate this.
 </p>
 </div>
-<div id="outline-container-org5237266" class="outline-3">
-<h3 id="org5237266">Race Conditions</h3>
-<div class="outline-text-3" id="text-org5237266">
+<div id="outline-container-org29a4db5" class="outline-3">
+<h3 id="org29a4db5">Race Conditions</h3>
+<div class="outline-text-3" id="text-org29a4db5">
 <p>
 A race condition occurs when two or more operations must execute in the correct order, but
 the program has not been written so that this order is guaranteed to be maintained.
@@ -732,9 +732,9 @@ Here’s a basic example:
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org08d4fa4" class="outline-3">
-<h3 id="org08d4fa4">Atomicity</h3>
-<div class="outline-text-3" id="text-org08d4fa4">
+<div id="outline-container-org2dccc83" class="outline-3">
+<h3 id="org2dccc83">Atomicity</h3>
+<div class="outline-text-3" id="text-org2dccc83">
 <p>
 When something is considered atomic, or has the property of atomicity, this means that
 within the context that it is operating, it is indivisible, or uninterruptible.
@@ -768,7 +768,7 @@ without anything happening in that context simultaneously. That’s still a mout
 look at an example:
 </p>
 
-<pre class="example" id="orgb1b1bb0">
+<pre class="example" id="org56e8908">
 i++
 </pre>
 <p>
@@ -793,9 +793,9 @@ context is a goroutine that doesn’t expose I to other goroutines, then this co
 </p>
 </div>
 </div>
-<div id="outline-container-orgfd20bf1" class="outline-3">
-<h3 id="orgfd20bf1">Deadlocks</h3>
-<div class="outline-text-3" id="text-orgfd20bf1">
+<div id="outline-container-org217dd1d" class="outline-3">
+<h3 id="org217dd1d">Deadlocks</h3>
+<div class="outline-text-3" id="text-org217dd1d">
 <p>
 A deadlocked program is one in which all concurrent processes are waiting on one
 another. In this state, the program will never recover without outside intervention.
@@ -832,7 +832,7 @@ wg.<span style="font-weight: bold;">Wait</span>()
 <p>
 If you were to try and run this code, you’d probably see:
 </p>
-<pre class="example" id="orga908d12">
+<pre class="example" id="org7b49944">
 fatal error: all goroutines are asleep - deadlock!
 </pre>
 
@@ -844,7 +844,7 @@ graphic
 </p>
 
 
-<figure id="orga1969e7">
+<figure id="org902c15a">
 <img src="../i/old/2022-10-03_04-44-38_screenshot.png" alt="2022-10-03_04-44-38_screenshot.png">
 
 </figure>
@@ -874,9 +874,9 @@ too.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgef6e412" class="outline-3">
-<h3 id="orgef6e412"><span class="done KILL">KILL</span> Livelock</h3>
-<div class="outline-text-3" id="text-orgef6e412">
+<div id="outline-container-org57cb7e0" class="outline-3">
+<h3 id="org57cb7e0"><span class="done KILL">KILL</span> Livelock</h3>
+<div class="outline-text-3" id="text-org57cb7e0">
 <p>
 Livelocks are programs that are actively performing concurrent operations, but these
 operations do nothing to move the state of the program forward.
@@ -889,13 +889,13 @@ the same. Imagine this going on forever, and you understand livelocks.
 </p>
 </div>
 </div>
-<div id="outline-container-orgd7b8f61" class="outline-3">
-<h3 id="orgd7b8f61"><span class="done KILL">KILL</span> Starvation</h3>
+<div id="outline-container-orgf3e0b58" class="outline-3">
+<h3 id="orgf3e0b58"><span class="done KILL">KILL</span> Starvation</h3>
 </div>
 </div>
 <div id="outline-container-y6c6tzo02wj0" class="outline-2">
 <h2 id="y6c6tzo02wj0">Concurrency vs Parallelism</h2>
-<div class="outline-text-2" id="text-org00e2f9f">
+<div class="outline-text-2" id="text-org38d78b5">
 <p>
 The fact that concurrency is different from parallelism is often overlooked or
 misunderstood. In conversations between many developers, the two terms are often used
@@ -960,7 +960,7 @@ We’ll come back to this.
 </div>
 <div id="outline-container-ddj750p02wj0" class="outline-2">
 <h2 id="ddj750p02wj0">CPS</h2>
-<div class="outline-text-2" id="text-org8d80fca">
+<div class="outline-text-2" id="text-org9a6cdfd">
 <p>
 A CSP stands for “Communicating Sequential Processes,” which is both a technique and
 the name of the paper that introduced it. In 1978, Charles Antony Richard Hoare
@@ -1034,9 +1034,9 @@ well.
 </p>
 </div>
 </div>
-<div id="outline-container-orgc160414" class="outline-2">
-<h2 id="orgc160414"><code>Goroutine</code></h2>
-<div class="outline-text-2" id="text-orgc160414">
+<div id="outline-container-org1172ea4" class="outline-2">
+<h2 id="org1172ea4"><code>Goroutine</code></h2>
+<div class="outline-text-2" id="text-org1172ea4">
 <p>
 The Goroutines are one of the most basic units of organization in a Go program, so it’s
 important we understand what they are and how they work. Every Go program has at
@@ -1130,17 +1130,17 @@ sayHello goroutine. This can be done in a number of ways.
 </code></pre>
 </div>
 </div>
-<div id="outline-container-org8d19a24" class="outline-2">
-<h2 id="org8d19a24"><code>sync</code></h2>
-<div class="outline-text-2" id="text-org8d19a24">
+<div id="outline-container-org970ba48" class="outline-2">
+<h2 id="org970ba48"><code>sync</code></h2>
+<div class="outline-text-2" id="text-org970ba48">
 <p>
 The sync package contains the concurrency primitives that are most useful for low- level
 memory access synchronization.
 </p>
 </div>
-<div id="outline-container-org3efe0d8" class="outline-3">
-<h3 id="org3efe0d8"><code>WaitGroup</code></h3>
-<div class="outline-text-3" id="text-org3efe0d8">
+<div id="outline-container-orgd09fb39" class="outline-3">
+<h3 id="orgd09fb39"><code>WaitGroup</code></h3>
+<div class="outline-text-3" id="text-orgd09fb39">
 <p>
 <code>WaitGroup</code> is a great way to wait for a set of concurrent operations to complete when you
 either don’t care about the result of the concurrent operation, or you have other means of
@@ -1181,9 +1181,9 @@ The output will differ probably in your machine.
 </p>
 </div>
 </div>
-<div id="outline-container-org2a9e819" class="outline-3">
-<h3 id="org2a9e819"><code>Mutex</code> and <code>RWMutex</code></h3>
-<div class="outline-text-3" id="text-org2a9e819">
+<div id="outline-container-orgab52bb5" class="outline-3">
+<h3 id="orgab52bb5"><code>Mutex</code> and <code>RWMutex</code></h3>
+<div class="outline-text-3" id="text-orgab52bb5">
 <p>
 Mutex stands for “mutual exclusion” and is a way to guard critical sections of your program.
 A critical section is an area of your program that requires exclusive access to a shared
@@ -1245,9 +1245,9 @@ memory access; however, <code>RWMutex</code> gives you a little bit more control
 </p>
 </div>
 </div>
-<div id="outline-container-org4ae688e" class="outline-3">
-<h3 id="org4ae688e"><code>Cond</code></h3>
-<div class="outline-text-3" id="text-org4ae688e">
+<div id="outline-container-orgf717870" class="outline-3">
+<h3 id="orgf717870"><code>Cond</code></h3>
+<div class="outline-text-3" id="text-orgf717870">
 <p>
 The comment for the <code>Cond</code> type does a great job of describing its purpose:
 </p>
@@ -1266,7 +1266,7 @@ at how to accomplish this without the Cond type, one naive approach is to use an
 loop:
 </p>
 
-<pre class="example" id="org6201718">
+<pre class="example" id="org78d20d4">
 for conditionTrue() == false {
 }
 </pre>
@@ -1275,7 +1275,7 @@ for conditionTrue() == false {
 However, this would consume all cycles of one core. To fix that, we could introduce a
 <code>time.sleep</code>
 </p>
-<pre class="example" id="org27caf03">
+<pre class="example" id="orge6a6f83">
 time.Sleep:
 for conditionTrue() == false {
     time.Sleep(1*time.Millisecond)
@@ -1290,7 +1290,7 @@ a way for a goroutine to efficiently sleep until it was signaled to wake and che
 condition.  This is exactly what the Cond type does for us. Using a Cond, we could write the
 example like:
 </p>
-<pre class="example" id="org5c65de0">
+<pre class="example" id="orgb753df1">
 c := sync.NewCond(&amp;sync.Mutex{})
 c.L.Lock()
 for conditionTrue() == false {
@@ -1339,13 +1339,13 @@ that are waiting. Broadcast is arguably the more interesting of the two methods 
 provides a way to communicate with multiple goroutines at once.
 </p>
 </div>
-<div id="outline-container-org42ce45a" class="outline-4">
-<h4 id="org42ce45a"><span class="done KILL">KILL</span> <code>Brodcast</code></h4>
+<div id="outline-container-org0af4967" class="outline-4">
+<h4 id="org0af4967"><span class="done KILL">KILL</span> <code>Brodcast</code></h4>
 </div>
 </div>
-<div id="outline-container-orga0cea3a" class="outline-3">
-<h3 id="orga0cea3a"><code>Once</code></h3>
-<div class="outline-text-3" id="text-orga0cea3a">
+<div id="outline-container-orgffc45af" class="outline-3">
+<h3 id="orgffc45af"><code>Once</code></h3>
+<div class="outline-text-3" id="text-orgffc45af">
 <p>
 Once is an object that will perform exactly one action.  Sounds simple enough, what’s so
 useful about it then?
@@ -1498,8 +1498,8 @@ the <code>entry.wait</code> channel as before.
 </div>
 <div id="outline-container-03ogh2p02wj0" class="outline-2">
 <h2 id="03ogh2p02wj0">Concurrency Patterns in Go</h2>
-<div class="outline-text-2" id="text-orgd7199d2">
-<div class="BACKLINKS" id="org3402852">
+<div class="outline-text-2" id="text-orge362fa2">
+<div class="BACKLINKS" id="orgba04949">
 <p>
 This section was referenced in <a href="go.html#uq35rvn02wj0">[draft][don&rsquo;t take it seriously] Go Incomplete Guide</a>.
 </p>
@@ -1518,9 +1518,9 @@ contained in this chapter. In a lot of the examples, we’ll be using channels t
 interfaces (interface{}) around.
 </p>
 </div>
-<div id="outline-container-org6405c1a" class="outline-3">
-<h3 id="org6405c1a">Confinement</h3>
-<div class="outline-text-3" id="text-org6405c1a">
+<div id="outline-container-orgfcaafff" class="outline-3">
+<h3 id="orgfcaafff">Confinement</h3>
+<div class="outline-text-3" id="text-orgfcaafff">
 <p>
 When working with concurrent code, there are a few different options for safe operation.
 We’ve gone over two of them:
@@ -1558,9 +1558,9 @@ and no synchronization is needed. There are two kinds of confinement possible: a
 lexical.
 </p>
 </div>
-<div id="outline-container-orgcdae3bf" class="outline-4">
-<h4 id="orgcdae3bf">Ad Hoc</h4>
-<div class="outline-text-4" id="text-orgcdae3bf">
+<div id="outline-container-org2130252" class="outline-4">
+<h4 id="org2130252">Ad Hoc</h4>
+<div class="outline-text-4" id="text-org2130252">
 <p>
 Ad hoc confinement is when you achieve confinement through a convention whether it be set by
 the languages community, the group you work within, or the code-base you work within. In my
@@ -1593,9 +1593,9 @@ the loopData function.
 </p>
 </div>
 </div>
-<div id="outline-container-org231172a" class="outline-4">
-<h4 id="org231172a">Lexical</h4>
-<div class="outline-text-4" id="text-org231172a">
+<div id="outline-container-org762bb01" class="outline-4">
+<h4 id="org762bb01">Lexical</h4>
+<div class="outline-text-4" id="text-org762bb01">
 <p>
 Lexical confinement involves using lexical scope to expose only the correct data and
 concurrency primitives for multiple concurrent processes to use. It makes it impossible to
@@ -1653,17 +1653,17 @@ Note that lexical might abuse the memory usage in this example; for larger types
 </div>
 </div>
 </div>
-<div id="outline-container-org9822e7b" class="outline-3">
-<h3 id="org9822e7b">For-Select</h3>
-<div class="outline-text-3" id="text-org9822e7b">
+<div id="outline-container-orga1b8610" class="outline-3">
+<h3 id="orga1b8610">For-Select</h3>
+<div class="outline-text-3" id="text-orga1b8610">
 <p>
 Obviously.
 </p>
 </div>
 </div>
-<div id="outline-container-orgd0a8a25" class="outline-3">
-<h3 id="orgd0a8a25">Preventing Goroutine Leaks</h3>
-<div class="outline-text-3" id="text-orgd0a8a25">
+<div id="outline-container-org383a376" class="outline-3">
+<h3 id="org383a376">Preventing Goroutine Leaks</h3>
+<div class="outline-text-3" id="text-org383a376">
 <p>
 When you are dealing with a memory leak in Go, there is a possability by 99% that your
 dealing with goroutines leak.
@@ -1775,16 +1775,16 @@ cancel the child goroutine. Here’s an example:
 </div>
 </div>
 </div>
-<div id="outline-container-org0e97f1b" class="outline-2">
-<h2 id="org0e97f1b">Notes</h2>
-<div class="outline-text-2" id="text-org0e97f1b">
+<div id="outline-container-orgf4ee26e" class="outline-2">
+<h2 id="orgf4ee26e">Notes</h2>
+<div class="outline-text-2" id="text-orgf4ee26e">
 <ul class="org-ul">
 <li>It is useful to use the buffered channel, but only when you have a good reason to (since they
 might help hiding race conditions)</li>
 </ul>
 </div>
-<div id="outline-container-org91d6432" class="outline-3">
-<h3 id="org91d6432"><span class="done KILL">KILL</span> Rendezvous</h3>
+<div id="outline-container-org60507b1" class="outline-3">
+<h3 id="org60507b1"><span class="done KILL">KILL</span> Rendezvous</h3>
 </div>
 </div>
 <div id="footnotes">
